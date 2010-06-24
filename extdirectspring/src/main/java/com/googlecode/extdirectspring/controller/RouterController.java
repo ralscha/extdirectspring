@@ -117,34 +117,7 @@ public class RouterController implements ApplicationContextAware {
           } else if (SupportedParameters.LOCALE.getSupportedClass().isAssignableFrom(parameterType)) {
             parameters[paramIndex] = locale;
           } else {
-            boolean required = false;
-            String parameterName = null;
-            String defaultValue = null;
-            for (Annotation paramAnn : parameterAnnotations[paramIndex]) {
-              if (RequestParam.class.isInstance(paramAnn)) {
-                RequestParam requestParam = (RequestParam)paramAnn;
-                parameterName = requestParam.value();
-                required = requestParam.required();
-                defaultValue = requestParam.defaultValue();
-                defaultValue = (ValueConstants.DEFAULT_NONE.equals(defaultValue) ? null : defaultValue);
-              }
-            }
-
-            if (parameterName != null) {
-              String value = request.getParameter(parameterName);
-              if (value == null) {
-                value = defaultValue;
-              }
-
-              if (value != null) {
-                parameters[paramIndex] = genericConversionService.convert(value, parameterType);
-              } else {
-                if (required) {
-                  throw new IllegalArgumentException("Missing request parameter: " + parameterName);
-                }
-              }
-            }
-
+            parameters[paramIndex] = handleRequestParam(request, null, parameterAnnotations[paramIndex], parameterType);
           }
 
           paramIndex++;
@@ -301,33 +274,7 @@ public class RouterController implements ApplicationContextAware {
             parameters[paramIndex] = directStoreReadRequest;
           } else if (directStoreReadRequest != null && remaingParameters != null && 
               ExtDirectSpringUtil.containsAnnotation(parameterAnnotations[paramIndex], RequestParam.class)) {
-            boolean required = false;
-            String parameterName = null;
-            String defaultValue = null;
-            for (Annotation paramAnn : parameterAnnotations[paramIndex]) {
-              if (RequestParam.class.isInstance(paramAnn)) {
-                RequestParam requestParam = (RequestParam)paramAnn;
-                parameterName = requestParam.value();
-                required = requestParam.required();
-                defaultValue = requestParam.defaultValue();
-                defaultValue = (ValueConstants.DEFAULT_NONE.equals(defaultValue) ? null : defaultValue);
-              }
-            }
-
-            if (parameterName != null) {
-              Object value = remaingParameters.get(parameterName);
-              if (value == null) {
-                value = defaultValue;
-              }
-
-              if (value != null) {
-                parameters[paramIndex] = genericConversionService.convert(value, parameterType);
-              } else {
-                if (required) {
-                  throw new IllegalArgumentException("Missing request parameter: " + parameterName);
-                }
-              }
-            }
+            parameters[paramIndex] = handleRequestParam(null, remaingParameters, parameterAnnotations[paramIndex], parameterType);
           } else if (directRequest.getData() != null && directRequest.getData().length > jsonParamIndex) {
             
             Object jsonParam = directRequest.getData()[jsonParamIndex];
@@ -359,7 +306,42 @@ public class RouterController implements ApplicationContextAware {
     return null;
   }
   
+  private Object handleRequestParam(HttpServletRequest request, Map<String,Object> valueContainer, Annotation[] parameterAnnotations, Class<?> parameterType) {
+    boolean required = false;
+    String parameterName = null;
+    String defaultValue = null;
+    for (Annotation paramAnn : parameterAnnotations) {
+      if (RequestParam.class.isInstance(paramAnn)) {
+        RequestParam requestParam = (RequestParam)paramAnn;
+        parameterName = requestParam.value();
+        required = requestParam.required();
+        defaultValue = requestParam.defaultValue();
+        defaultValue = (ValueConstants.DEFAULT_NONE.equals(defaultValue) ? null : defaultValue);
+      }
+    }
 
+    if (parameterName != null) { 
+      Object value;
+      if (request != null) {
+        value = request.getParameter(parameterName);
+      } else {
+        value = valueContainer.get(parameterName);
+      }
+      if (value == null) {
+        value = defaultValue;
+      }
+
+      if (value != null) {
+        return genericConversionService.convert(value, parameterType);
+      } 
+      if (required) {
+        throw new IllegalArgumentException("Missing request parameter: " + parameterName);
+      }
+    }
+    
+    return null;
+  }
+  
   private Map<String,Object> fillObjectFromMap(Object to, Map<String,Object> from) {
     Set<String> foundParameters = new HashSet<String>();
     
