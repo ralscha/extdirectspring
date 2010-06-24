@@ -297,11 +297,11 @@ public class RouterController implements ApplicationContextAware {
             parameters[paramIndex] = locale;
           } else if (directStoreReadRequest != null && ExtDirectStoreReadRequest.class.isAssignableFrom(parameterType)) {
             parameters[paramIndex] = directStoreReadRequest;
-          } else if (remainingParameters != null && (directStoreReadRequest != null || directStoreModifyRecords != null) && 
-              ExtDirectSpringUtil.containsAnnotation(parameterAnnotations[paramIndex], RequestParam.class)) {
-            parameters[paramIndex] = handleRequestParam(null, remainingParameters, parameterAnnotations[paramIndex], parameterType);
           } else if (directStoreModifyRecords != null && parameterType.isAssignableFrom(directStoreModifyRecords.getClass())) {
-            parameters[paramIndex] = directStoreModifyRecords;          
+            parameters[paramIndex] = directStoreModifyRecords;
+          } else if ((directStoreReadRequest != null || directStoreModifyRecords != null) && 
+              containsAnnotation(parameterAnnotations[paramIndex], RequestParam.class)) {
+            parameters[paramIndex] = handleRequestParam(null, remainingParameters, parameterAnnotations[paramIndex], parameterType);            
           } else if (directRequest.getData() != null && directRequest.getData().length > jsonParamIndex) {
             
             Object jsonParam = directRequest.getData()[jsonParamIndex];
@@ -348,9 +348,12 @@ public class RouterController implements ApplicationContextAware {
       Object value;
       if (request != null) {
         value = request.getParameter(parameterName);
-      } else {
+      } else if (valueContainer != null) {
         value = valueContainer.get(parameterName);
+      } else {
+        value = null;
       }
+      
       if (value == null) {
         value = defaultValue;
       }
@@ -419,4 +422,12 @@ public class RouterController implements ApplicationContextAware {
     return directRequests;
   }
 
+  private boolean containsAnnotation(Annotation[] annotations, Class<RequestParam> requestedAnnotation) {
+    for (Annotation annotation : annotations) {
+      if (requestedAnnotation.isInstance(annotation)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

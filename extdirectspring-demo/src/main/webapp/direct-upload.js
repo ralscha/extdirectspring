@@ -69,20 +69,23 @@ Ext.onReady(function(){
         text: "Submit",
         handler: function() {
           form.getForm().submit({
-            success: function(form, action) {              
+            success: function(form, action) {    
               textArea1.setValue( action.result.fileContents);
+            },
+            failure: function(form, action) {
+              switch (action.failureType) {
+                case Ext.form.Action.CLIENT_INVALID:
+                  Ext.Msg.alert('Failure', 'Form fields may not be submitted with invalid values');
+                  break;
+                case Ext.form.Action.CONNECT_FAILURE:
+                  Ext.Msg.alert('Failure', 'Ajax communication failed');
+                  break;
+                case Ext.form.Action.SERVER_INVALID:
+                  Ext.Msg.alert('Failure', action.result);
+              }
             }
           });
           
-          
-//          FormPostDemo.handleSubmit(form.getForm().el, function(result, e){
-//            if( e.type === 'exception') {
-//              Ext.MessageBox.alert("Unexpected server error", e.message );
-//              return;
-//            }
-//            Ext.MessageBox.alert("Posted values", result.fieldNamesAndValues);
-//            textArea1.setValue( result.fileContents);
-//          });
         }
       },
       {

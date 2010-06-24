@@ -16,7 +16,6 @@
 
 package com.googlecode.extdirectspring.api;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
@@ -186,11 +185,11 @@ public class ApiController implements ApplicationContextAware {
           }
         } else if (AnnotationUtils.findAnnotation(method, ExtDirectStoreModifyMethod.class) != null) {
           if (isSameGroup(group, AnnotationUtils.findAnnotation(method, ExtDirectStoreModifyMethod.class).group())) {
-            addAction(remotingApi, beanName, ExtDirectSpringUtil.findMethodWithAnnotation(method, ExtDirectStoreModifyMethod.class));
+            remotingApi.addAction(beanName, method.getName(), 1, false);
           }
         } else if (AnnotationUtils.findAnnotation(method, ExtDirectStoreReadMethod.class) != null) {
           if (isSameGroup(group, AnnotationUtils.findAnnotation(method, ExtDirectStoreReadMethod.class).group())) {
-            addAction(remotingApi, beanName, ExtDirectSpringUtil.findMethodWithAnnotation(method, ExtDirectStoreReadMethod.class));
+            remotingApi.addAction(beanName, method.getName(), 1, false);
           }
         }
       }
@@ -221,12 +220,9 @@ public class ApiController implements ApplicationContextAware {
 
   private void addAction(RemotingApi remotingApi, String beanName, Method method) {
     Class< ? >[] parameterTypes = method.getParameterTypes();
-    Annotation[][] parameterAnnotations = method.getParameterAnnotations();
-    
     int paramLength = 0;
-    for (int i = 0; i < parameterTypes.length; i++) {
-      if (!SupportedParameters.isSupported(parameterTypes[i]) &&
-          !ExtDirectSpringUtil.containsAnnotation(parameterAnnotations[i], RequestParam.class)) {        
+    for (Class< ? > parameterType : parameterTypes) {
+      if (!SupportedParameters.isSupported(parameterType)) {
         paramLength++;
       }
     }

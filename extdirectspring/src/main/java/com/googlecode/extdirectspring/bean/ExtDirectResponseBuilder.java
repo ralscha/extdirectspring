@@ -80,6 +80,14 @@ public class ExtDirectResponseBuilder {
     result.put(key, value);    
   }
   
+  public void successful() {
+    result.put("success", true);
+  }
+  
+  public void unsuccessful() {
+    result.put("success", false);
+  }  
+  
   public ExtDirectResponse build() {
     return response;
   }

@@ -95,7 +95,7 @@ public class PersonAction {
 
   @ExtDirectStoreReadMethod
   public ExtDirectStoreResponse<Person> loadWithPaging(ExtDirectStoreReadRequest request,
-      @RequestParam(value = "no", required = false) int no, @RequestParam(value = "name", required = false) String name) {
+      @RequestParam(value = "no", defaultValue="0") int no, @RequestParam(value = "name", required = false) String name) {
 
     List<Person> persons = dataBean.findPersons(request.getQuery());
     int totalSize = persons.size();
@@ -118,21 +118,20 @@ public class PersonAction {
   }
 
   @ExtDirectStoreModifyMethod(type = Person.class)
-  public ExtDirectStoreResponse<Person> create(DirectStorePersonRequest newPersons) {
+  public List<Person> create(List<Person> newPersons) {
     List<Person> insertedPersons = Lists.newArrayList();
 
-    if (newPersons != null && newPersons.getRecords() != null) {
-      for (Person newPerson : newPersons.getRecords()) {
-        dataBean.insert(newPerson);
-        insertedPersons.add(newPerson);
-      }
+
+    for (Person newPerson : newPersons) {
+      dataBean.insert(newPerson);
+      insertedPersons.add(newPerson);
     }
 
-    return new ExtDirectStoreResponse<Person>(insertedPersons);
+    return insertedPersons;
   }
 
   @ExtDirectStoreModifyMethod(type = Person.class)
-  public List<Person> update(@RequestParam(value = "no", required = false) int no,
+  public List<Person> update(@RequestParam(value = "no", defaultValue="0") int no,
       @RequestParam(value = "name", required = false) String name, List<Person> modifiedPersons) {
 
     List<Person> updatedRecords = Lists.newArrayList();

@@ -41,7 +41,8 @@ public class UploadController {
     if (file != null && !file.isEmpty()) {
       builder.addResultProperty("fileContents", new String(file.getBytes()));
     }
-
+    builder.successful();
+    
     return builder.buildUploadResponse();
   }
 }

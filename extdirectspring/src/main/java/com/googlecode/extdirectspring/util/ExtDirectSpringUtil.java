@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.web.bind.annotation.RequestParam;
 import com.googlecode.extdirectspring.annotation.ExtDirectMethod;
 import com.googlecode.extdirectspring.annotation.ExtDirectPollMethod;
 import com.googlecode.extdirectspring.annotation.ExtDirectStoreModifyMethod;
@@ -142,14 +141,7 @@ public class ExtDirectSpringUtil {
     return serializeObjectToJson(obj, false);
   }
 
-  public static boolean containsAnnotation(Annotation[] annotations, Class<RequestParam> requestedAnnotation) {
-    for (Annotation annotation : annotations) {
-      if (requestedAnnotation.isInstance(annotation)) {
-        return true;
-      }
-    }
-    return false;
-  }
+
   
   /**
    * Converts a object into a String containing the json representation of this object.
