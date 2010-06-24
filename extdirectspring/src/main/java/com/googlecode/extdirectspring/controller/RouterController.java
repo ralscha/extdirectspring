@@ -236,21 +236,46 @@ public class RouterController implements ApplicationContextAware {
     Method method = ExtDirectSpringUtil.findMethod(context, directRequest.getAction(), directRequest.getMethod());
     if (method != null) {
       
-      Class<?> directStoreModifyType = getDirectStoreType(method);
-
-      int jsonParamIndex = 0;
       
+      int jsonParamIndex = 0;
+            
       ExtDirectStoreReadRequest directStoreReadRequest = null;
+      
+      List<Object> directStoreModifyRecords = null;
+      Class<?> directStoreModifyType = null;
+      
       Annotation[][] parameterAnnotations = null; 
-      Map<String,Object> remaingParameters = null;
+      Map<String,Object> remainingParameters = null;
+      
       if (isDirectStoreReadMethod(method)) {
         Method beanMethod = ExtDirectSpringUtil.findMethodWithAnnotation(method, ExtDirectStoreReadMethod.class);
         parameterAnnotations = beanMethod.getParameterAnnotations();
         if (directRequest.getData() != null && directRequest.getData().length > 0) {
           directStoreReadRequest = new ExtDirectStoreReadRequest();
-          remaingParameters = fillObjectFromMap(directStoreReadRequest, (Map)directRequest.getData()[0]);
+          remainingParameters = fillObjectFromMap(directStoreReadRequest, (Map)directRequest.getData()[0]);
           jsonParamIndex = 1;
         }
+      } else if ((directStoreModifyType = getDirectStoreType(method)) != null) {
+        Method beanMethod = ExtDirectSpringUtil.findMethodWithAnnotation(method, ExtDirectStoreModifyMethod.class);
+        parameterAnnotations = beanMethod.getParameterAnnotations();
+        
+        
+        if (directRequest.getData() != null && directRequest.getData().length > 0) {
+          Map<String,Object> jsonData = (LinkedHashMap<String,Object>)directRequest.getData()[0];
+          
+          ArrayList<Object> records = (ArrayList<Object>)jsonData.get("records");
+          directStoreModifyRecords = convertObjectEntriesToType(records, directStoreModifyType);
+          jsonParamIndex = 1;
+          
+          remainingParameters = new HashMap<String,Object>();
+          for (String parameterName : jsonData.keySet()) {
+            if (!"records".equals(parameterName)) {
+              remainingParameters.put(parameterName, jsonData.get(parameterName));
+            }
+          }
+
+        }
+        
       }
       
       
@@ -272,9 +297,11 @@ public class RouterController implements ApplicationContextAware {
             parameters[paramIndex] = locale;
           } else if (directStoreReadRequest != null && ExtDirectStoreReadRequest.class.isAssignableFrom(parameterType)) {
             parameters[paramIndex] = directStoreReadRequest;
-          } else if (directStoreReadRequest != null && remaingParameters != null && 
+          } else if (remainingParameters != null && (directStoreReadRequest != null || directStoreModifyRecords != null) && 
               ExtDirectSpringUtil.containsAnnotation(parameterAnnotations[paramIndex], RequestParam.class)) {
-            parameters[paramIndex] = handleRequestParam(null, remaingParameters, parameterAnnotations[paramIndex], parameterType);
+            parameters[paramIndex] = handleRequestParam(null, remainingParameters, parameterAnnotations[paramIndex], parameterType);
+          } else if (directStoreModifyRecords != null && parameterType.isAssignableFrom(directStoreModifyRecords.getClass())) {
+            parameters[paramIndex] = directStoreModifyRecords;          
           } else if (directRequest.getData() != null && directRequest.getData().length > jsonParamIndex) {
             
             Object jsonParam = directRequest.getData()[jsonParamIndex];
@@ -283,9 +310,6 @@ public class RouterController implements ApplicationContextAware {
               parameters[paramIndex] = ExtDirectSpringUtil.serializeObjectToJson(jsonParam);
             } else if (parameterType.isPrimitive()) {
               parameters[paramIndex] = jsonParam;
-            } else if (directStoreModifyType != null) {
-              ArrayList<Object> records = (ArrayList<Object>)((LinkedHashMap<String,Object>)jsonParam).get("records");
-              parameters[paramIndex] = convertObjectEntriesToType(records, directStoreModifyType);
             } else {
               parameters[paramIndex] = ExtDirectSpringUtil.deserializeJsonToObject(ExtDirectSpringUtil.serializeObjectToJson(jsonParam), parameterType);
             }

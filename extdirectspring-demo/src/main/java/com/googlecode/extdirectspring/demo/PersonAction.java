@@ -94,10 +94,9 @@ public class PersonAction {
   }
 
   @ExtDirectStoreReadMethod
-  public ExtDirectStoreResponse<Person> loadWithPaging(ExtDirectStoreReadRequest request, 
-      @RequestParam(value="no", required=false)int no, 
-      @RequestParam(value="name", required=false)String name) {
-        
+  public ExtDirectStoreResponse<Person> loadWithPaging(ExtDirectStoreReadRequest request,
+      @RequestParam(value = "no", required = false) int no, @RequestParam(value = "name", required = false) String name) {
+
     List<Person> persons = dataBean.findPersons(request.getQuery());
     int totalSize = persons.size();
 
@@ -118,7 +117,7 @@ public class PersonAction {
     return new ExtDirectStoreResponse<Person>(totalSize, persons);
   }
 
-  @ExtDirectStoreModifyMethod(type=Person.class)
+  @ExtDirectStoreModifyMethod(type = Person.class)
   public ExtDirectStoreResponse<Person> create(DirectStorePersonRequest newPersons) {
     List<Person> insertedPersons = Lists.newArrayList();
 
@@ -132,8 +131,10 @@ public class PersonAction {
     return new ExtDirectStoreResponse<Person>(insertedPersons);
   }
 
-  @ExtDirectStoreModifyMethod(type=Person.class)
-  public List<Person> update(List<Person> modifiedPersons) {
+  @ExtDirectStoreModifyMethod(type = Person.class)
+  public List<Person> update(@RequestParam(value = "no", required = false) int no,
+      @RequestParam(value = "name", required = false) String name, List<Person> modifiedPersons) {
+
     List<Person> updatedRecords = Lists.newArrayList();
 
     for (Person modifiedPerson : modifiedPersons) {
@@ -147,7 +148,7 @@ public class PersonAction {
     return updatedRecords;
   }
 
-  @ExtDirectStoreModifyMethod(type=Integer.class)
+  @ExtDirectStoreModifyMethod(type = Integer.class)
   public List<Integer> destroy(List<Integer> destroyIds) {
     List<Integer> deletedPersonsId = Lists.newArrayList();
 
