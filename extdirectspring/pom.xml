@@ -176,7 +176,7 @@
         <groupId>com.mycila.maven-license-plugin</groupId>
         <artifactId>maven-license-plugin</artifactId>
         <configuration>
-          <header>${basedir}/src/config/header.txt</header>
+          <header>${basedir}/src/main/config/header.txt</header>
           <properties>
             <owner>Ralph Schaer</owner>
             <year>${project.inceptionYear}</year>
