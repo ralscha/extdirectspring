@@ -56,7 +56,6 @@ public class ApiControllerTest {
     
     apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", null, request, mockResponse);
     String response = mockResponse.getContentAsString();
-
     assertTrue(StringUtils.hasText(response));
 
     String[] lines = response.split("\n");
