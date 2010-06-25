@@ -65,6 +65,19 @@ public class ExtDirectSpringUtil {
    * @throws IllegalArgumentException if the method is not annotated with a ExtDirectSpring annotation or there is no method in the bean
    */
   public static Method findMethod(final ApplicationContext context, final String beanName, final String methodName) {
+    
+    if (context == null) {
+      throw new IllegalArgumentException("ApplicatonContext cannot be null");
+    }
+    
+    if (beanName == null) {
+      throw new IllegalArgumentException("beanName cannot be null");
+    }
+    
+    if (methodName == null) {
+      throw new IllegalArgumentException("methodName cannot be null");
+    }
+    
     Method method = MethodCache.INSTANCE.get(beanName, methodName);
 
     if (method != null) {
@@ -152,13 +165,16 @@ public class ExtDirectSpringUtil {
   public static Object invoke(final ApplicationContext context, final String beanName, final String methodName, final Object[] params)
       throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
     Method method = findMethod(context, beanName, methodName);
-    Object bean = context.getBean(beanName);
-
-    if (bean == null) {
-      throw new IllegalArgumentException("Bean '" + beanName + "' not found");
+    if (method != null) {
+      Object bean = context.getBean(beanName);
+  
+      if (bean == null) {
+        throw new IllegalArgumentException("Bean '" + beanName + "' not found");
+      }
+  
+      return method.invoke(bean, params);
     }
-
-    return method.invoke(bean, params);
+    return null;
   }
 
   /**

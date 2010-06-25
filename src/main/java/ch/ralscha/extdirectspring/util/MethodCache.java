@@ -47,7 +47,9 @@ public enum MethodCache {
    * @param method the method
    */
   public void put(final String beanName, final String methodName, final Method method) {
-    cache.put(new Key(beanName, methodName), method);
+    if (method != null) {
+      cache.put(new Key(beanName, methodName), method);
+    }
   }
 
   /**
