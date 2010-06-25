@@ -6,6 +6,8 @@
   <version>1.0.0</version>
   <packaging>war</packaging>
 
+  <inceptionYear>2010</inceptionYear>
+
   <name>Ext.Direct Spring Demo</name>
   <description>Demoapplication for Ext.Direct Spring</description>
 
@@ -173,6 +175,34 @@
           <source>1.6</source>
           <target>1.6</target>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.mycila.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <configuration>
+          <header>${basedir}/src/main/config/header.txt</header>
+          <properties>
+            <owner>Ralph Schaer</owner>
+            <year>${project.inceptionYear}</year>
+            <email>ralphschaer@gmail.com</email>
+          </properties>
+          <excludes>
+            <exclude>**/*.csv</exclude>
+            <exclude>**/COPY_EXTJS_FILES_HERE</exclude>
+            <exclude>**/*.psd</exclude>
+            <exclude>**/webdefault.xml</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <id>check-headers</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
     </plugins>
