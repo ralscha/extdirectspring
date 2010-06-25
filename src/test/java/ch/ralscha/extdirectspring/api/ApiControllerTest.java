@@ -30,6 +30,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.StringUtils;
@@ -51,7 +52,10 @@ public class ApiControllerTest {
   public void noActionNamespaceApiTest() throws JsonParseException, JsonMappingException, IOException {
 
     MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
-    String response = apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", null, request);
+    MockHttpServletResponse mockResponse = new MockHttpServletResponse();
+    
+    apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", null, request, mockResponse);
+    String response = mockResponse.getContentAsString();
 
     assertTrue(StringUtils.hasText(response));
 
@@ -158,7 +162,9 @@ public class ApiControllerTest {
   public void withActionNamespaceApiTest() throws JsonParseException, JsonMappingException, IOException {
 
     MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
-    String response = apiController.api("Ext.app", "actionns", "REMOTING_API", "POLLING_URLS", null, request); 
+    MockHttpServletResponse mockResponse = new MockHttpServletResponse();
+    apiController.api("Ext.app", "actionns", "REMOTING_API", "POLLING_URLS", null, request, mockResponse); 
+    String response = mockResponse.getContentAsString();
     assertTrue(StringUtils.hasText(response));
 
     String[] lines = response.split("\n");

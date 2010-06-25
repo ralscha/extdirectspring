@@ -98,7 +98,6 @@ public class RouterController implements ApplicationContextAware {
       beanMethod = ExtDirectSpringUtil.findMethodWithAnnotation(beanMethod, ExtDirectPollMethod.class);
     }
     
-    
     if (beanMethod != null) {
 
       Annotation[][] parameterAnnotations = beanMethod.getParameterAnnotations();
