@@ -51,7 +51,8 @@ Ext.onReady(function(){
       textArea1 = new Ext.form.TextArea( {
         name: 'textArea', 
         fieldLabel: "File contents",
-        height: 100,
+        height: 200,
+        width: 200,
         disabled: true
       }),
       {

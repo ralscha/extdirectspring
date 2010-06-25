@@ -16,10 +16,12 @@
 
 package ch.ralscha.extdirectspring.bean;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -93,14 +95,12 @@ public class ExtDirectResponseBuilder {
     return response;
   }
   
-  public String buildUploadResponse() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("<html><body><textarea>");
-    sb.append(ExtDirectSpringUtil.serializeObjectToJson(response));
-    sb.append("</textarea></body></html>");
-    return sb.toString();
+  public void buildAndWriteUploadResponse(HttpServletResponse servletResponse) throws IOException {
+    servletResponse.setContentType("text/html");
+    
+    servletResponse.getOutputStream().write("<html><body><textarea>".getBytes());
+    servletResponse.getOutputStream().write(ExtDirectSpringUtil.serializeObjectToJson(response).getBytes());
+    servletResponse.getOutputStream().write("</textarea></body></html>".getBytes());    
   }
-
-
   
 }
