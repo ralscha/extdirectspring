@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -163,9 +164,10 @@ public class ApiController implements ApplicationContextAware {
   private void scanForExtDirectAnnotations(RemotingApi remotingApi, String group) {
     Map<String, Object> beanDefinitions = getAllBeanDefinitions();
 
-    for (String beanName : beanDefinitions.keySet()) {
-      Object bean = beanDefinitions.get(beanName);
-
+    for (Entry<String,Object> entry : beanDefinitions.entrySet()) {
+      Object bean = entry.getValue();
+      String beanName = entry.getKey();
+      
       Method[] methods = bean.getClass().getMethods();
 
       for (Method method : methods) {

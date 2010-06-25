@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.codehaus.jackson.type.TypeReference;
@@ -270,9 +271,9 @@ public class RouterController implements ApplicationContextAware {
           jsonParamIndex = 1;
           
           remainingParameters = new HashMap<String,Object>();
-          for (String parameterName : jsonData.keySet()) {
-            if (!"records".equals(parameterName)) {
-              remainingParameters.put(parameterName, jsonData.get(parameterName));
+          for (Entry<String,Object> entry : jsonData.entrySet()) {
+            if (!"records".equals(entry.getKey())) {
+              remainingParameters.put(entry.getKey(), entry.getValue());
             }
           }
 
@@ -374,12 +375,12 @@ public class RouterController implements ApplicationContextAware {
   private Map<String,Object> fillObjectFromMap(Object to, Map<String,Object> from) {
     Set<String> foundParameters = new HashSet<String>();
     
-    for (String parameterName : from.keySet()) {
-      PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(to.getClass(), parameterName);
+    for (Entry<String,Object> entry : from.entrySet()) {
+      PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(to.getClass(), entry.getKey());
       if (descriptor != null && descriptor.getWriteMethod() != null) {        
         try {
-          descriptor.getWriteMethod().invoke(to, genericConversionService.convert(from.get(parameterName), descriptor.getPropertyType()));
-          foundParameters.add(parameterName);
+          descriptor.getWriteMethod().invoke(to, genericConversionService.convert(entry.getValue(), descriptor.getPropertyType()));
+          foundParameters.add(entry.getKey());
         } catch (IllegalArgumentException e) {
           log.error("fillObjectFromMap", e);
         } catch (IllegalAccessException e) {
@@ -391,9 +392,9 @@ public class RouterController implements ApplicationContextAware {
     }
     
     Map<String,Object> remainingParameters = new HashMap<String,Object>();
-    for (String parameterName : from.keySet()) {
-      if (!foundParameters.contains(parameterName)) {
-        remainingParameters.put(parameterName, from.get(parameterName));
+    for (Entry<String,Object> entry : from.entrySet()) {
+      if (!foundParameters.contains(entry.getKey())) {
+        remainingParameters.put(entry.getKey(), entry.getValue());
       }
     }
     return remainingParameters;
