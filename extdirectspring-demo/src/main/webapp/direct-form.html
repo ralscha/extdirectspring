@@ -1,0 +1,30 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="extjs/resources/css/ext-all.css" />
+  <link rel="stylesheet" type="text/css" href="examples.css" />
+    
+  <script type="text/javascript" src="extjs/adapter/ext/ext-base.js"></script>
+  <script type="text/javascript" src="extjs/ext-all.js"></script>
+  <script type="text/javascript">
+    Ext.BLANK_IMAGE_URL = Ext.isIE6 || Ext.isIE7 || Ext.isAir ?
+                          '/extjs/resources/images/default/s.gif' :
+                          'data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+
+  </script>
+  
+  <script type="text/javascript" src="controller/api.js"></script>
+  <script type="text/javascript" src="direct-form.js"></script>
+
+</head>
+<body>
+
+<h1>Ext.Direct Form Integration</h1>
+
+<p>The js is not minified so it is readable. See <a href="direct-form.js">direct-form.js</a>.</p>
+
+<p>The following example illustrates how to load a FormPanel or BasicForm through Ext.Direct.</p>
+<p>Notice that Direct requests will batch together if they occur within the enableBuffer delay period (in milliseconds).</p>
+<p>The Ext.Direct Form api also supports submit in addition to load. The server-side must mark the submit handler as a 'formHandler' and will not be batched.</p>
+
+</body>
+</html>
