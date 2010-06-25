@@ -42,6 +42,8 @@
     <slf4j.version>1.6.0</slf4j.version>
     <logback.version>0.9.22</logback.version>
     <hibernatevalidator.version>4.1.0.CR1</hibernatevalidator.version>
+    
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencies>
@@ -150,6 +152,23 @@
 
   </dependencies>
 
+  <repositories>
+    <repository>
+      <id>jboss-public-repository-group</id>
+      <name>JBoss Public Maven Repository Group</name>
+      <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <build>
 
     <plugins>
@@ -174,6 +193,7 @@
         <configuration>
           <source>1.6</source>
           <target>1.6</target>
+          <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
 
