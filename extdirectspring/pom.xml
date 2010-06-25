@@ -12,8 +12,10 @@
   <artifactId>extdirectspring</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
-  <name>Ext.Direct Spring</name>
-  <description>Implements the Ext.Direct protocoll with Java/Spring 3</description>
+  <inceptionYear>2010</inceptionYear>
+
+  <name>Ext Direct Spring</name>
+  <description>Implements the Ext Direct specification with Java/Spring 3</description>
   <url>http://code.google.com/p/extdirectspring/</url>
 
   <developers>
@@ -42,7 +44,7 @@
     <url>http://extdirectspring.googlecode.com/svn/trunk/extdirectspring</url>
   </scm>
 
-  
+
   <properties>
     <spring.version>3.0.3.RELEASE</spring.version>
     <slf4j.version>1.6.0</slf4j.version>
@@ -61,10 +63,10 @@
       <artifactId>spring-webmvc</artifactId>
       <version>${spring.version}</version>
       <exclusions>
-      	<exclusion>
-      		<artifactId>commons-logging</artifactId>
-      		<groupId>commons-logging</groupId>
-      	</exclusion>
+        <exclusion>
+          <artifactId>commons-logging</artifactId>
+          <groupId>commons-logging</groupId>
+        </exclusion>
       </exclusions>
     </dependency>
 
@@ -79,12 +81,12 @@
       <artifactId>slf4j-api</artifactId>
       <version>${slf4j.version}</version>
     </dependency>
-    
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
       <version>${slf4j.version}</version>
-    </dependency>    
+    </dependency>
 
     <!-- TEST dependencies -->
     <dependency>
@@ -107,13 +109,13 @@
       <version>0.9.22</version>
       <scope>test</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>javax.inject</groupId>
       <artifactId>javax.inject</artifactId>
       <version>1</version>
       <scope>test</scope>
-    </dependency>    
+    </dependency>
 
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -130,8 +132,8 @@
           <artifactId>jaxb-impl</artifactId>
         </exclusion>
       </exclusions>
-    </dependency> 
-  </dependencies>  
+    </dependency>
+  </dependencies>
 
   <repositories>
     <repository>
@@ -147,7 +149,7 @@
         <enabled>true</enabled>
         <updatePolicy>never</updatePolicy>
       </snapshots>
-    </repository>      
+    </repository>
   </repositories>
 
   <build>
@@ -159,6 +161,39 @@
           <target>1.6</target>
         </configuration>
       </plugin>
+
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/main/assembly/download-nodep.xml</descriptor>
+            <descriptor>src/main/assembly/download-dep.xml</descriptor>
+          </descriptors>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.mycila.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <configuration>
+          <header>${basedir}/src/config/header.txt</header>
+          <properties>
+            <owner>Ralph Schaer</owner>
+            <year>${project.inceptionYear}</year>
+            <email>ralphschaer@gmail.com</email>
+          </properties>
+        </configuration>
+        <executions>
+          <execution>
+            <id>check-headers</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
 

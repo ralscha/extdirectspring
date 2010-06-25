@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Copyright 2010 Ralph Schaer <ralphschaer@gmail.com>
@@ -17,16 +16,17 @@
 
 -->
 
-<configuration debug="false">
-  
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-    </encoder>   
-  </appender>
-
-  <root level="WARN">    
-    <appender-ref ref="STDOUT" />
-  </root>  
-   
-</configuration>
+<assembly 
+    xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.1" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.1 http://maven.apache.org/xsd/assembly-1.1.1.xsd"
+>
+    <id>nodep</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <componentDescriptors>
+        <componentDescriptor>src/main/assembly/base-component.xml</componentDescriptor>
+    </componentDescriptors>
+    
+</assembly>
