@@ -30,10 +30,9 @@ import com.googlecode.extdirectspring.annotation.ExtDirectMethod;
 import com.googlecode.extdirectspring.annotation.ExtDirectPollMethod;
 import com.googlecode.extdirectspring.annotation.ExtDirectStoreModifyMethod;
 import com.googlecode.extdirectspring.annotation.ExtDirectStoreReadMethod;
-import com.googlecode.extdirectspring.controller.MethodCache;
 
 /**
- * Utility class with methods to support the library 
+ * Utility class
  *
  * @author mansari
  * @author Ralph Schaer
@@ -45,16 +44,26 @@ public class ExtDirectSpringUtil {
   }
 
   /**
-   * Checks if two objects are equal. If both objects are null method returns true
+   * Checks if two objects are equal. Returns true if both objects are null
    * 
    * @param a object one
    * @param b object two
-   * @return true if the objects are equal
+   * @return true if objects are equal
    */
   public static boolean equal(final Object a, final Object b) {
     return a == b || (a != null && a.equals(b));
   }
 
+  /**
+   * Retrieves a method in a spring managed bean. The found method will be cached in {@link MethodCache} 
+   * with the key beanName,methodName
+   * 
+   * @param context Spring application context
+   * @param beanName name of the bean to find the method in 
+   * @param methodName name of the method to retrieve
+   * @return the method
+   * @throws IllegalArgumentException if the method is not annotated with a ExtDirectSpring annotation or there is no method in the bean
+   */
   public static Method findMethod(final ApplicationContext context, final String beanName, final String methodName) {
     Method method = MethodCache.INSTANCE.get(beanName, methodName);
 
@@ -79,6 +88,14 @@ public class ExtDirectSpringUtil {
 
   }
   
+  /**
+   * Find a method that is annotated with a specific annotation. Starts with the method and goes 
+   * up to the superclasses of the class. 
+   * 
+   * @param method the starting method
+   * @param annotation the annotation to look for
+   * @return the method if there is a annotated method, else null
+   */
   public static Method findMethodWithAnnotation(final Method method, final Class<? extends Annotation> annotation) {
     if (method.isAnnotationPresent(annotation)) {
       return method; 
@@ -103,11 +120,13 @@ public class ExtDirectSpringUtil {
   /**
    * Checks if the method is annotated with a supported ExtDirectSpring annotation
    * 
-   * @param method The method in question
-   * @return true if a supported annotation is present
+   * @param method the method to check for the annotations
+   * @return true if a supported annotation is present, else false
    * 
    * @see com.googlecode.extdirectspring.annotation.ExtDirectMethod
    * @see com.googlecode.extdirectspring.annotation.ExtDirectPollMethod
+   * @see com.googlecode.extdirectspring.annotation.ExtDirectStoreModifyMethod
+   * @see com.googlecode.extdirectspring.annotation.ExtDirectStoreReadMethod
    */
   public static boolean isSupportedAnnotationPresent(final Method method) {
 
@@ -118,6 +137,18 @@ public class ExtDirectSpringUtil {
 
   }
 
+  /**
+   * Invokes a method on a Spring managed bean. 
+   * 
+   * @param context a Spring application context
+   * @param beanName the name of the bean
+   * @param methodName the name of the method
+   * @param params the parameters
+   * @return the result of the method invokation
+   * @throws IllegalArgumentException if there is no bean in the context
+   * @throws IllegalAccessException
+   * @throws InvocationTargetException
+   */
   public static Object invoke(final ApplicationContext context, final String beanName, final String methodName, final Object[] params)
       throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
     Method method = findMethod(context, beanName, methodName);
@@ -132,7 +163,7 @@ public class ExtDirectSpringUtil {
 
   /**
    * Converts a object into a String containing the json representation of this object.
-   * In case of a exceptions returns null and logs the exception. 
+   * In case of an exception returns null and logs the exception. 
    * 
    * @param obj the object to serialize into json
    * @return obj in json format
@@ -145,11 +176,11 @@ public class ExtDirectSpringUtil {
   
   /**
    * Converts a object into a String containing the json representation of this object.
-   * In case of a exceptions returns null and logs the exception.
+   * In case of an exceptions returns null and logs the exception.
    * 
    * @param obj the object to serialize into json
    * @param indent if false writes json on one line
-   * @return obj in json format
+   * @return obj in json format, null if there is an exception 
    */
   public static String serializeObjectToJson(final Object obj, final boolean indent) {
     try {
@@ -168,12 +199,12 @@ public class ExtDirectSpringUtil {
 
   /**
    * Creates a object from a json String. 
-   * In case of a exceptions returns null and logs the exception.
+   * In case of an exception returns null and logs the exception.
    * 
    * @param <T> type of the object to create
    * @param json String with the json
    * @param typeReference TypeReference instance of the desired result type {@link org.codehaus.jackson.type.TypeReference}
-   * @return the created object
+   * @return the created object, null if there is an exception
    */
   @SuppressWarnings("unchecked")
   public static <T> T deserializeJsonToObject(final String json, final TypeReference<T> typeReference) {
@@ -188,12 +219,12 @@ public class ExtDirectSpringUtil {
 
   /**
    * Creates a object from a json String. 
-   * In case of a exceptions returns null and logs the exception.
+   * In case of an exception returns null and logs the exception.
    * 
    * @param <T> type of the object to create
    * @param json String with the json
    * @param clazz Class of object to create
-   * @return the created object
+   * @return the created object, null if there is an exception
    */
   public static <T> T deserializeJsonToObject(final String json, final Class<T> clazz) {
     try {

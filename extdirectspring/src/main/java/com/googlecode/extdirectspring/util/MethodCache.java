@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package com.googlecode.extdirectspring.controller;
+package com.googlecode.extdirectspring.util;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import com.googlecode.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
  * A simple cache for methods
@@ -43,22 +42,22 @@ public enum MethodCache {
   /**
    * Put a method into the MethodCache.
    * 
-   * @param beanName The name of the bean
-   * @param methodName The name of the method
-   * @param method The method
+   * @param beanName the name of the bean
+   * @param methodName the name of the method
+   * @param method the method
    */
-  public void put(String beanName, String methodName, Method method) {
+  public void put(final String beanName, final String methodName, final Method method) {
     cache.put(new Key(beanName, methodName), method);
   }
 
   /**
    * Get a method from the MethodCache. 
    * 
-   * @param beanName The name of the bean
+   * @param beanName the name of the bean
    * @param methodName the name of the method
-   * @return the found method. Returns null if the method is not in the cache
+   * @return the found method, null if there is no method found in the cache
    */
-  public Method get(String beanName, String methodName) {
+  public Method get(final String beanName, final String methodName) {
     return cache.get(new Key(beanName, methodName));
   }
 

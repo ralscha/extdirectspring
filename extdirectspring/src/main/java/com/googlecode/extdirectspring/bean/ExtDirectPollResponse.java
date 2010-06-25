@@ -17,7 +17,8 @@
 package com.googlecode.extdirectspring.bean;
 
 /**
-*
+* Class representing the response of a poll request
+* 
 * @author Ralph Schaer
 */
 public class ExtDirectPollResponse {

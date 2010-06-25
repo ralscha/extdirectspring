@@ -65,6 +65,7 @@ import com.googlecode.extdirectspring.util.ExtDirectSpringUtil;
 import com.googlecode.extdirectspring.util.SupportedParameters;
 
 /**
+* Main router controller who handles polling, form handler and normal Ext.Direct calls
 *
 * @author mansari
 * @author Ralph Schaer
@@ -157,6 +158,7 @@ public class RouterController implements ApplicationContextAware {
 
   }
 
+  @SuppressWarnings("unchecked")
   @RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction")
   @ResponseBody
   public List<ExtDirectResponse> router(HttpServletRequest request, HttpServletResponse response, Locale locale,

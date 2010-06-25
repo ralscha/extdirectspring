@@ -19,6 +19,7 @@ package com.googlecode.extdirectspring.bean;
 import org.codehaus.jackson.annotate.JsonWriteNullProperties;
 
 /**
+ * Class representing the response of a Ext.Direct call
  *
  * @author mansari
  * @author Ralph Schaer

@@ -20,6 +20,7 @@ import java.util.Collection;
 import org.codehaus.jackson.annotate.JsonWriteNullProperties;
 
 /**
+* Class representing the response of a DirectStore request
 *
 * @author Ralph Schaer
 */

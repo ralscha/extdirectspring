@@ -18,6 +18,8 @@ package com.googlecode.extdirectspring.bean;
 
 /**
 *
+* Class representing the request of a DirectStore read call
+*
 * @author Ralph Schaer
 */
 public class ExtDirectStoreReadRequest {

@@ -26,6 +26,7 @@ import org.springframework.validation.FieldError;
 import com.googlecode.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
+* An utility class that helps building a {@link ExtDirectResponse}
 *
 * @author Ralph Schaer
 */
