@@ -72,7 +72,7 @@ Ext.onReady(function(){
       }),
       {
         xtype: 'checkbox',
-        fieldLabel: 'Check if you like springextjs!',
+        fieldLabel: 'Check if you like ExtDirectSpring!',
         name : 'checkbox',
         width: 15 
       }
