@@ -16,12 +16,14 @@
 
 package ch.ralscha.extdirectspring.api;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectPollMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectStoreModifyMethod;
@@ -54,14 +57,13 @@ public class ApiController implements ApplicationContextAware {
   }
 
   @RequestMapping(value = {"/api.js", "/api-debug.js"}, method = RequestMethod.GET)
-  @ResponseBody
-  public String api(@RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app") final String apiNs,
+  public void api(@RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app") final String apiNs,
       @RequestParam(value = "actionNs", required = false) final String actionNs,
       @RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API") final String remotingApiVar,
       @RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS") final String pollingUrlsVar,
-      @RequestParam(value = "group", required = false) final String group, HttpServletRequest request) {
+      @RequestParam(value = "group", required = false) final String group, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-    //response.setContentType("application/x-javascript");
+    response.setContentType("application/x-javascript");
 
     String requestUrlString = request.getRequestURL().toString();
     boolean debug = requestUrlString.contains("api-debug.js");
@@ -84,7 +86,7 @@ public class ApiController implements ApplicationContextAware {
       ApiCache.INSTANCE.put(apiKey, apiString);
     }
 
-    return apiString;
+    response.getOutputStream().write(apiString.getBytes());
 
   }
 
@@ -209,7 +211,7 @@ public class ApiController implements ApplicationContextAware {
 
   private boolean isFormHandlerMethod(Method method) {
     if (AnnotationUtils.findAnnotation(method, RequestMapping.class) != null
-        && AnnotationUtils.findAnnotation(method, ResponseBody.class) != null) {
+        /*&& AnnotationUtils.findAnnotation(method, ResponseBody.class) != null*/) {
       RequestMethod[] requestMethods = AnnotationUtils.findAnnotation(method, RequestMapping.class).method();
       if (requestMethods != null && requestMethods.length > 0) {
         if (requestMethods[0].equals(RequestMethod.POST)) {
