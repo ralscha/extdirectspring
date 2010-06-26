@@ -20,7 +20,11 @@ import static org.junit.Assert.*;
 import java.lang.reflect.Method;
 import org.junit.Test;
 
-
+/**
+ * Tests for {@link MethodCache}.
+ *
+ * @author Ralph Schaer
+ */
 public class MethodCacheTest {
 
   @Test

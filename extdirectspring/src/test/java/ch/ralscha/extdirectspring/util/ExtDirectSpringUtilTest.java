@@ -35,8 +35,13 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StringUtils;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
+import ch.ralscha.extdirectspring.controller.RouterController;
 
-
+/**
+ * Tests for {@link ExtDirectSpringUtil}.
+ *
+ * @author Ralph Schaer
+ */
 public class ExtDirectSpringUtilTest {
 
   @Test
@@ -175,12 +180,12 @@ public class ExtDirectSpringUtilTest {
     map.put("four", false);
     map.put("five", new int[]{1,2});
     
-    String expected = "{\r\n  \"one\" : 1,\r\n  \"two\" : \"2\",\r\n  \"three\" : null,\r\n  \"four\" : false,\r\n  \"five\" : [ 1, 2 ]\r\n}"; 
-    assertEquals(expected, ExtDirectSpringUtil.serializeObjectToJson(map, true));
+    String expected = "{\n  \"one\" : 1,\n  \"two\" : \"2\",\n  \"three\" : null,\n  \"four\" : false,\n  \"five\" : [ 1, 2 ]\n}"; 
+    assertEquals(expected, ExtDirectSpringUtil.serializeObjectToJson(map, true).replace("\r",""));
     
     JsonTestBean testBean = new JsonTestBean(1, "2", null, false, new Integer[]{1,2});
-    expected = "{\r\n  \"a\" : 1,\r\n  \"b\" : \"2\",\r\n  \"c\" : null,\r\n  \"d\" : false,\r\n  \"e\" : [ 1, 2 ]\r\n}"; 
-    assertEquals(expected, ExtDirectSpringUtil.serializeObjectToJson(testBean, true));
+    expected = "{\n  \"a\" : 1,\n  \"b\" : \"2\",\n  \"c\" : null,\n  \"d\" : false,\n  \"e\" : [ 1, 2 ]\n}"; 
+    assertEquals(expected, ExtDirectSpringUtil.serializeObjectToJson(testBean, true).replace("\r",""));
 
   }
 
