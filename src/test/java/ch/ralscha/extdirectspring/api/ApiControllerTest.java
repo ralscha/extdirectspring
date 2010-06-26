@@ -52,13 +52,13 @@ public class ApiControllerTest {
   public void noActionNamespaceApiTest() throws JsonParseException, JsonMappingException, IOException {
 
     MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
-    MockHttpServletResponse mockResponse = new MockHttpServletResponse();
+    MockHttpServletResponse response = new MockHttpServletResponse();
     
-    apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", null, request, mockResponse);
-    String response = mockResponse.getContentAsString();
-    assertTrue(StringUtils.hasText(response));
+    apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", null, request, response);
+    String content = response.getContentAsString();
+    assertTrue(StringUtils.hasText(content));
 
-    String[] lines = response.split("\n");
+    String[] lines = content.split("\n");
     assertEquals(40, lines.length);
 
     assertEquals("Ext.ns('test');", lines[0]);

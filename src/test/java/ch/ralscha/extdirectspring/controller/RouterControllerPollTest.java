@@ -17,14 +17,9 @@
 package ch.ralscha.extdirectspring.controller;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Locale;
 import javax.inject.Inject;
 import org.junit.Before;
@@ -35,16 +30,11 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.ExpectedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
-import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
-import ch.ralscha.extdirectspring.controller.RouterController;
-import ch.ralscha.extdirectspring.mock.FormInfo;
 
 /**
  * Tests for {@link RouterController}.
  *
- * @author mansari
  * @author Ralph Schaer
  */
 @RunWith(SpringJUnit4ClassRunner.class)

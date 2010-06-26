@@ -16,7 +16,6 @@
 
 package ch.ralscha.extdirectspring.util;
 
-import javax.inject.Named;
 
 public class SpringManagedSubBean extends SpringManagedBean {
 

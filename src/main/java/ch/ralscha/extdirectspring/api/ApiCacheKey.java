@@ -24,7 +24,7 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
  * 
  * @author Ralph Schaer
  */
-public class ApiCacheKey {
+class ApiCacheKey {
 
   private String apiNs;
   private String actionNs;

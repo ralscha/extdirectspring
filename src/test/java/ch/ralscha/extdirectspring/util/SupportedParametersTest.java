@@ -16,8 +16,9 @@
 
 package ch.ralscha.extdirectspring.util;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import java.util.Locale;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -25,7 +26,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 
 /**
- * Tests for {@link SupportedParameters}.
+ * Tests for {@link SupportedParameterTypes}.
  *
  * @author Ralph Schaer
  */
@@ -33,13 +34,13 @@ public class SupportedParametersTest {
 
   @Test
   public void testIsSupported() {
-    assertEquals(4, SupportedParameters.values().length);
-    assertFalse(SupportedParameters.isSupported(String.class));
-    assertFalse(SupportedParameters.isSupported(null));
-    assertTrue(SupportedParameters.isSupported(MockHttpServletResponse.class));
-    assertTrue(SupportedParameters.isSupported(MockHttpServletRequest.class));
-    assertTrue(SupportedParameters.isSupported(MockHttpSession.class));
-    assertTrue(SupportedParameters.isSupported(Locale.class));
+    assertEquals(4, SupportedParameterTypes.values().length);
+    assertFalse(SupportedParameterTypes.isSupported(String.class));
+    assertFalse(SupportedParameterTypes.isSupported(null));
+    assertTrue(SupportedParameterTypes.isSupported(MockHttpServletResponse.class));
+    assertTrue(SupportedParameterTypes.isSupported(MockHttpServletRequest.class));
+    assertTrue(SupportedParameterTypes.isSupported(MockHttpSession.class));
+    assertTrue(SupportedParameterTypes.isSupported(Locale.class));
   }
 
 }

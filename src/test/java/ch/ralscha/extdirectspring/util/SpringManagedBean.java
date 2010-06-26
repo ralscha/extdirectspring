@@ -16,7 +16,6 @@
 
 package ch.ralscha.extdirectspring.util;
 
-import javax.inject.Named;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 
 public class SpringManagedBean {

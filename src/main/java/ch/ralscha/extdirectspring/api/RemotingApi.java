@@ -26,12 +26,10 @@ import org.springframework.util.StringUtils;
 
 
 /**
- * 
- * 
  * @author Ralph Schaer
  */
 @JsonWriteNullProperties(false)
-public class RemotingApi {
+class RemotingApi {
 
   private String url;
   private String namespace;
