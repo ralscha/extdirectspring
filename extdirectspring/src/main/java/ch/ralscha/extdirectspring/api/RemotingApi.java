@@ -47,7 +47,7 @@ public class RemotingApi {
     this.url = url;
     
     if (StringUtils.hasText(namespace)) {
-      this.namespace = namespace;
+      this.namespace = namespace.trim();
     } else {
       this.namespace = null;
     }

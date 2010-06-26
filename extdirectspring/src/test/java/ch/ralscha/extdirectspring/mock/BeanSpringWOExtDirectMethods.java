@@ -16,29 +16,18 @@
 
 package ch.ralscha.extdirectspring.mock;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import javax.inject.Named;
-import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 
 @Named
-public class SecondBeanWithExtDirectMethods {
+public class BeanSpringWOExtDirectMethods {
 
-  @ExtDirectMethod
-  public int add(int a, int b) {
-    return a + b;
+  public void methodA() {
+    //a dummy method
   }
 
-  @ExtDirectMethod(formLoad = true)
-  public FormInfo getFormInfo(double d) {
-    FormInfo info = new FormInfo();
-    info.setBack(d);
-    info.setAdmin(true);
-    info.setAge(31);
-    info.setBirthday(new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime());
-    info.setName("Bob");
-    info.setSalary(new BigDecimal("10000.55"));
-    return info;    
+  public boolean methodB() {
+    //a dummy method
+    return false;
   }
+
 }

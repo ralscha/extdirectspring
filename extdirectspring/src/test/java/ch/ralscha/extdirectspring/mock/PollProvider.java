@@ -21,34 +21,48 @@ import java.util.Date;
 import java.util.Locale;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.junit.Assert;
 import org.springframework.web.bind.annotation.RequestParam;
 import ch.ralscha.extdirectspring.annotation.ExtDirectPollMethod;
 
 @Named
-public class Poll {
+public class PollProvider {
 
-  @ExtDirectPollMethod(event="message")
-  public String handleMessagePoll() {    
+  @ExtDirectPollMethod(event="message1")
+  public String handleMessage1() {    
     Date now = new Date();
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd 'at' hh:mm:ss");
     return "Successfully polled at: " + formatter.format( now );
   }
   
   @ExtDirectPollMethod(event="message2")
-  public int handleMessage2(Locale locale, @RequestParam(value="id") int id) {
-    Assert.assertNotNull(locale);
-    return id*2;
+  public String handleMessage2(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {   
+    Assert.assertNotNull(response);
+    Assert.assertNotNull(request);
+    Assert.assertNotNull(session);
+    Assert.assertEquals(Locale.ENGLISH, locale);
+    
+    Date now = new Date();
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd 'at' hh:mm:ss");
+    return "Successfully polled at: " + formatter.format( now );
   }
   
   @ExtDirectPollMethod(event="message3")
-  public int handleMessage3(@RequestParam(value="id", defaultValue="1") int id, HttpServletRequest request) {
+  public String handleMessage3(Locale locale, @RequestParam(value="id") int id) {
+    Assert.assertEquals(Locale.ENGLISH, locale);
+    return "Result: " + id;
+  }
+  
+  @ExtDirectPollMethod(event="message4")
+  public int handleMessage4(@RequestParam(value="id", defaultValue="1") int id, HttpServletRequest request) {
     Assert.assertNotNull(request);
     return id*2;
   }
   
-  @ExtDirectPollMethod(event="message4")
-  public Integer handleMessage4(@RequestParam(value="id", required=false) Integer id, String dummy) {
+  @ExtDirectPollMethod(event="message5")
+  public Integer handleMessage5(@RequestParam(value="id", required=false) Integer id, String dummy) {
     Assert.assertNull(dummy);
     if (id != null) {
       return id*2;
