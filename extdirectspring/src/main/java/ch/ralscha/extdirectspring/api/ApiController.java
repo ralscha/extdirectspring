@@ -138,14 +138,16 @@ public class ApiController implements ApplicationContextAware {
           sb.append("  ");
         }
 
+        sb.append("\"");
         sb.append(pollingProviders.get(i).getEvent());
-        sb.append(" : '").append(basePollUrl).append("/");
+        sb.append("\"");
+        sb.append(" : \"").append(basePollUrl).append("/");
         sb.append(pollingProviders.get(i).getBeanName());
         sb.append("/");
         sb.append(pollingProviders.get(i).getMethod());
         sb.append("/");
         sb.append(pollingProviders.get(i).getEvent());
-        sb.append("'");
+        sb.append("\"");
         if (i < pollingProviders.size() - 1) {
           sb.append(",");
           if (debug) {

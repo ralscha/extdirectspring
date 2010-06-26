@@ -19,8 +19,6 @@ package ch.ralscha.extdirectspring.api;
 import org.springframework.util.StringUtils;
 
 /**
- * 
- * 
  * @author Ralph Schaer
  */
 class PollingProvider {
