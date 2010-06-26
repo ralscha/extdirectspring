@@ -80,4 +80,16 @@ public class RemoteProvider1 {
   public FormInfo method9() {
     return null; 
   }
+  
+  @ExtDirectMethod
+  public FormInfo method10(double d) {
+    FormInfo info = new FormInfo();
+    info.setBack(d);
+    info.setAdmin(false);
+    info.setAge(32);
+    info.setBirthday(new GregorianCalendar(1986, Calendar.JULY, 22).getTime());
+    info.setName("John");
+    info.setSalary(new BigDecimal("8720.20"));
+    return info;    
+  }
 }
