@@ -19,6 +19,7 @@ package ch.ralscha.extdirectspring.mock;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import javax.inject.Named;
@@ -76,9 +77,12 @@ public class RemoteProvider2 {
   }
 
   @ExtDirectStoreReadMethod
-  public List<Row> method7(@RequestParam(value = "id", required = false) Integer id, String dummy) {
-    Assert.assertNull(id);
-    Assert.assertNull(dummy);
+  public List<Row> method7(@RequestParam(value = "id", required = false) Integer id) {
+    if (id == null) {
+      Assert.assertNull(id);
+    } else {
+      Assert.assertEquals(Integer.valueOf(11), id);
+    }
     return createRows();
   }
 
@@ -89,8 +93,26 @@ public class RemoteProvider2 {
 
     if (request != null) {
 
+      if ("name".equals(request.getQuery())) {
+        for (Iterator iterator = rows.listIterator(); iterator.hasNext();) {
+          Row row = (Row)iterator.next();
+          if (!row.getName().startsWith("name")) {
+            iterator.remove();
+          }
+        }
+      } else if ("firstname".equals(request.getQuery())) {
+        for (Iterator iterator = rows.listIterator(); iterator.hasNext();) {
+          Row row = (Row)iterator.next();
+          if (!row.getName().startsWith("firstname")) {
+            iterator.remove();
+          }
+        }
+      }
+      
+      totalSize = rows.size();
+      
       if (StringUtils.hasText(request.getSort())) {
-        Assert.assertEquals("name", request.getSort());
+        Assert.assertEquals("id", request.getSort());
 
         if (request.isAscendingSort()) {
           Collections.sort(rows);
@@ -99,7 +121,7 @@ public class RemoteProvider2 {
 
             @Override
             public int compare(Row o1, Row o2) {
-              return o2.getName().compareTo(o1.getName());
+              return o2.getId() - o1.getId();
             }
           });
         }

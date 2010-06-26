@@ -55,7 +55,7 @@ public class Row implements Comparable<Row> {
 
   @Override
   public int compareTo(Row o) {
-    return name.compareTo(o.name);
+    return id - o.id;
   }
 
 }
