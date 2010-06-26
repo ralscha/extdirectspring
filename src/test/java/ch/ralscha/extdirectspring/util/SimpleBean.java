@@ -22,34 +22,33 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectPollMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectStoreModifyMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectStoreReadMethod;
 
-
 class SimpleBean {
-  
+
   @ExtDirectMethod
   public void methodA() {
     //no code here
   }
-  
+
   @ExtDirectPollMethod
   public void methodB() {
     //nothing here
   }
-  
-  @ExtDirectStoreModifyMethod(type=Integer.class)
+
+  @ExtDirectStoreModifyMethod(type = Integer.class)
   public void methodC() {
     //nothing here
   }
-  
+
   @ExtDirectStoreReadMethod
   public void methodD() {
     //nothing here
   }
-  
+
   @JsonIgnore
   public void methodE() {
     //nothing here
   }
-  
+
   public void methodF() {
     //nothing here
   }

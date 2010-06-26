@@ -31,7 +31,6 @@ public class ExtDirectStoreResponse<T> {
   private Collection<T> records;
   private Boolean success;
 
-     
   public ExtDirectStoreResponse() {
     // default constructor
   }
@@ -39,7 +38,7 @@ public class ExtDirectStoreResponse<T> {
   public ExtDirectStoreResponse(Collection<T> records) {
     this(null, records, true);
   }
-  
+
   public ExtDirectStoreResponse(Integer total, Collection<T> records) {
     this(total, records, true);
   }

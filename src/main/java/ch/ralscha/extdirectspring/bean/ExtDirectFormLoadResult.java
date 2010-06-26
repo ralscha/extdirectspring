@@ -34,7 +34,7 @@ public class ExtDirectFormLoadResult {
   public ExtDirectFormLoadResult(Object data) {
     this(data, true);
   }
-  
+
   public ExtDirectFormLoadResult(Object data, boolean success) {
     this.data = data;
     this.success = success;

@@ -68,12 +68,12 @@ public class ExtDirectStoreReadRequest {
   public boolean isAscendingSort() {
     return ("ASC".equals(getDir()));
   }
-  
+
   @JsonIgnore
   public boolean isDecendingSort() {
     return ("DESC".equals(getDir()));
   }
-  
+
   public String getSort() {
     return sort;
   }
@@ -87,5 +87,4 @@ public class ExtDirectStoreReadRequest {
     return "ExtDirectStoreReadRequest [dir=" + dir + ", limit=" + limit + ", query=" + query + ", sort=" + sort + ", start=" + start + "]";
   }
 
-  
 }

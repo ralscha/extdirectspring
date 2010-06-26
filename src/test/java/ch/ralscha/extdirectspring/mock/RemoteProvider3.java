@@ -63,7 +63,7 @@ public class RemoteProvider3 {
     return rows;
   }
 
-  @ExtDirectStoreModifyMethod(type = Row.class)
+  @ExtDirectStoreModifyMethod(type = Row.class, group = "group2")
   public List<Row> update4(@RequestParam(value = "id", required = false) Integer id, List<Row> rows) {
     if (id == null) {
       Assert.assertNull(id);
@@ -73,7 +73,7 @@ public class RemoteProvider3 {
     return rows;
   }
 
-  @ExtDirectStoreModifyMethod(type = Integer.class)
+  @ExtDirectStoreModifyMethod(type = Integer.class, group = "group3")
   public List<Integer> destroy(List<Integer> rows) {
     return rows;
   }

@@ -19,16 +19,16 @@ package ch.ralscha.extdirectspring.util;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 
 public class SpringManagedBean {
+
   public boolean methodA() {
-    return true;  
+    return true;
   }
-  
+
   @ExtDirectMethod
   public boolean methodB() {
-    return false;  
+    return false;
   }
-  
-  
+
   @ExtDirectMethod
   public int sum(int a, int b) {
     return a + b;

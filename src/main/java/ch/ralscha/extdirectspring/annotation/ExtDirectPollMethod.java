@@ -16,7 +16,6 @@
 
 package ch.ralscha.extdirectspring.annotation;
 
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -34,13 +33,14 @@ import java.lang.annotation.Target;
 @Inherited
 @Documented
 public @interface ExtDirectPollMethod {
+
   /**
    * The name of the event this method is sending messages to
-   */  
+   */
   String event() default "";
 
   /**
    * The name of a api group this method is part of. 
-   */  
+   */
   String group() default "";
 }

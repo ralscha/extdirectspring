@@ -63,7 +63,7 @@ public class RouterControllerRemote1Test {
 
   @Test
   public void testBeanNotFound() {
-    String json = createRequestJson("remoteProvider", "method1", 1, 3,2.5, "string.param");
+    String json = createRequestJson("remoteProvider", "method1", 1, 3, 2.5, "string.param");
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
     assertEquals(1, responses.size());
     checkBeanNotFoundResponse(responses.get(0));
@@ -82,7 +82,7 @@ public class RouterControllerRemote1Test {
 
   @Test
   public void testMethodNotFound() {
-    String json = createRequestJson("remoteProvider1", "method4", 2, 3,2.5, "string.param");
+    String json = createRequestJson("remoteProvider1", "method4", 2, 3, 2.5, "string.param");
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -103,7 +103,7 @@ public class RouterControllerRemote1Test {
 
   @Test
   public void testNoParameters() {
-    String json = createRequestJson("remoteProvider1", "method1", 1, null);    
+    String json = createRequestJson("remoteProvider1", "method1", 1, null);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -120,20 +120,20 @@ public class RouterControllerRemote1Test {
     assertNull(resp.getMessage());
     assertEquals("method1() called", resp.getResult());
   }
-  
+
   @Test
   public void testNoParametersWithRequestParameter() {
-    String json = createRequestJson("remoteProvider1", "method1", 1, "requestparameter");    
+    String json = createRequestJson("remoteProvider1", "method1", 1, "requestparameter");
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
     ExtDirectResponse resp = responses.get(0);
     checkNoParametersResponse(resp, 1);
   }
-  
+
   @Test
   public void testNoParameters2() {
-    String json = createRequestJson("remoteProvider1", "method2", 1, null);    
+    String json = createRequestJson("remoteProvider1", "method2", 1, null);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -147,10 +147,10 @@ public class RouterControllerRemote1Test {
     assertNull(resp.getMessage());
     assertEquals("method2() called", resp.getResult());
   }
-  
+
   @Test
   public void testWithParameters() {
-    String json = createRequestJson("remoteProvider1", "method3", 10, 1, 3.1, "requestParameter");    
+    String json = createRequestJson("remoteProvider1", "method3", 10, 1, 3.1, "requestParameter");
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -164,10 +164,10 @@ public class RouterControllerRemote1Test {
     assertNull(resp.getMessage());
     assertEquals("method3() called-1-3.1-requestParameter", resp.getResult());
   }
-  
+
   @Test
   public void testWithParametersNoRequestParameter() {
-    String json = createRequestJson("remoteProvider1", "method3", 1, null);    
+    String json = createRequestJson("remoteProvider1", "method3", 1, null);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -180,11 +180,11 @@ public class RouterControllerRemote1Test {
     assertFalse(resp.isSuccess());
     assertEquals("server error", resp.getMessage());
     assertNull(resp.getResult());
-  }  
+  }
 
   @Test
   public void testResultTrue() {
-    String json = createRequestJson("remoteProvider1", "method5", 1, "ralph");    
+    String json = createRequestJson("remoteProvider1", "method5", 1, "ralph");
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -201,7 +201,7 @@ public class RouterControllerRemote1Test {
 
   @Test
   public void testResultFalse() {
-    String json = createRequestJson("remoteProvider1", "method5", 1, "joe");    
+    String json = createRequestJson("remoteProvider1", "method5", 1, "joe");
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -215,10 +215,10 @@ public class RouterControllerRemote1Test {
     assertNull(resp.getMessage());
     assertEquals(false, resp.getResult());
   }
- 
+
   @Test
   public void testResultNull() {
-    String json = createRequestJson("remoteProvider1", "method5", 1, "martin");    
+    String json = createRequestJson("remoteProvider1", "method5", 1, "martin");
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -232,10 +232,10 @@ public class RouterControllerRemote1Test {
     assertNull(resp.getMessage());
     assertNull(resp.getResult());
   }
-  
+
   @Test
   public void testIntParameterAndResult() {
-    String json = createRequestJson("remoteProvider1", "method6", 3, 10,20);    
+    String json = createRequestJson("remoteProvider1", "method6", 3, 10, 20);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -253,10 +253,10 @@ public class RouterControllerRemote1Test {
     assertNull(resp.getMessage());
     assertEquals(30, resp.getResult());
   }
-  
+
   @Test
   public void testResultStringNull() {
-    String json = createRequestJson("remoteProvider1", "method7", 1, null);    
+    String json = createRequestJson("remoteProvider1", "method7", 1, null);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -269,11 +269,11 @@ public class RouterControllerRemote1Test {
     assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertNull(resp.getResult());
-  }  
-  
+  }
+
   @Test
   public void testFormLoad() {
-    String json = createRequestJson("remoteProvider1", "method8", 1, 3.141);    
+    String json = createRequestJson("remoteProvider1", "method8", 1, 3.141);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -305,11 +305,11 @@ public class RouterControllerRemote1Test {
     assertEquals("Bob", info.getName());
     assertEquals(new BigDecimal("10000.55"), info.getSalary());
     assertEquals(new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime(), info.getBirthday());
-  }  
-  
+  }
+
   @Test
   public void testFormLoadReturnsNull() {
-    String json = createRequestJson("remoteProvider1", "method9", 1, null);    
+    String json = createRequestJson("remoteProvider1", "method9", 1, null);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -324,10 +324,10 @@ public class RouterControllerRemote1Test {
     assertNull(resp.getMessage());
     assertNull(resp.getResult());
   }
-  
+
   @Test
   public void testReturnsObject() {
-    String json = createRequestJson("remoteProvider1", "method10", 1, 7.34);    
+    String json = createRequestJson("remoteProvider1", "method10", 1, 7.34);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -341,7 +341,7 @@ public class RouterControllerRemote1Test {
     assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertNotNull(resp.getResult());
-    
+
     assertTrue(resp.getResult() instanceof FormInfo);
     FormInfo info = (FormInfo)resp.getResult();
 
@@ -352,11 +352,11 @@ public class RouterControllerRemote1Test {
     assertEquals(new BigDecimal("8720.20"), info.getSalary());
     assertEquals(new GregorianCalendar(1986, Calendar.JULY, 22).getTime(), info.getBirthday());
   }
-  
+
   @Test
   public void testSupportedArguments() {
     String json = createRequestJson("remoteProvider1", "method11", 1, null);
-    
+
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -371,16 +371,16 @@ public class RouterControllerRemote1Test {
     assertNull(resp.getMessage());
     assertEquals(42l, resp.getResult());
   }
-    
+
   @Test
   public void testMultipleRequests() {
-    String json1 = createRequestJson("remoteProvider", "method1", 1, 3,2.5, "string.param");    
-    String json2 = createRequestJson("remoteProvider1", "method4", 2, 3,2.5, "string.param");
-    String json3 = createRequestJson("remoteProvider1", "method1", 3, null); 
-    String json4 = createRequestJson("remoteProvider1", "method8", 4, 1.1);    
-    String json5 = createRequestJson("remoteProvider1", "method8", 5, 2.2);    
-    String json6 = createRequestJson("remoteProvider1", "method6", 6, 10,20);    
-    
+    String json1 = createRequestJson("remoteProvider", "method1", 1, 3, 2.5, "string.param");
+    String json2 = createRequestJson("remoteProvider1", "method4", 2, 3, 2.5, "string.param");
+    String json3 = createRequestJson("remoteProvider1", "method1", 3, null);
+    String json4 = createRequestJson("remoteProvider1", "method8", 4, 1.1);
+    String json5 = createRequestJson("remoteProvider1", "method8", 5, 2.2);
+    String json6 = createRequestJson("remoteProvider1", "method6", 6, 10, 20);
+
     String requestBody = String.format("[%s,%s,%s,%s,%s,%s]", json1, json2, json3, json4, json5, json6);
 
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, requestBody);
@@ -393,7 +393,7 @@ public class RouterControllerRemote1Test {
     checkFormLoadResult(responses.get(4), 2.2, 5);
     checkIntParameterResult(responses.get(5), 6);
   }
-  
+
   private String createRequestJson(String action, String method, int tid, Object... data) {
     ExtDirectRequest dr = new ExtDirectRequest();
     dr.setAction(action);

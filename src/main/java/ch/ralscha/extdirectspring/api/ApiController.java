@@ -60,7 +60,8 @@ public class ApiController implements ApplicationContextAware {
       @RequestParam(value = "actionNs", required = false) final String actionNs,
       @RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API") final String remotingApiVar,
       @RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS") final String pollingUrlsVar,
-      @RequestParam(value = "group", required = false) final String group, HttpServletRequest request, HttpServletResponse response) throws IOException {
+      @RequestParam(value = "group", required = false) final String group, HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
 
     response.setContentType("application/x-javascript");
 
@@ -167,10 +168,10 @@ public class ApiController implements ApplicationContextAware {
   private void scanForExtDirectAnnotations(RemotingApi remotingApi, String group) {
     Map<String, Object> beanDefinitions = getAllBeanDefinitions();
 
-    for (Entry<String,Object> entry : beanDefinitions.entrySet()) {
+    for (Entry<String, Object> entry : beanDefinitions.entrySet()) {
       Object bean = entry.getValue();
       String beanName = entry.getKey();
-      
+
       Method[] methods = bean.getClass().getMethods();
 
       for (Method method : methods) {
@@ -179,9 +180,9 @@ public class ApiController implements ApplicationContextAware {
             if (isFormHandlerMethod(method)) {
               remotingApi.addAction(beanName, method.getName(), 0, true);
             } else {
-              Class< ? >[] parameterTypes = method.getParameterTypes();
+              Class<?>[] parameterTypes = method.getParameterTypes();
               int paramLength = 0;
-              for (Class< ? > parameterType : parameterTypes) {
+              for (Class<?> parameterType : parameterTypes) {
                 if (!SupportedParameterTypes.isSupported(parameterType)) {
                   paramLength++;
                 }
@@ -201,9 +202,9 @@ public class ApiController implements ApplicationContextAware {
           }
         } else if (AnnotationUtils.findAnnotation(method, ExtDirectStoreReadMethod.class) != null) {
           if (isSameGroup(group, AnnotationUtils.findAnnotation(method, ExtDirectStoreReadMethod.class).group())) {
-            Class< ? >[] parameterTypes = method.getParameterTypes();
+            Class<?>[] parameterTypes = method.getParameterTypes();
             int paramLength = 0;
-            for (Class< ? > parameterType : parameterTypes) {
+            for (Class<?> parameterType : parameterTypes) {
               if (ExtDirectStoreReadRequest.class.isAssignableFrom(parameterType)) {
                 paramLength = 1;
                 break;
@@ -227,7 +228,7 @@ public class ApiController implements ApplicationContextAware {
 
   private boolean isFormHandlerMethod(Method method) {
     if (AnnotationUtils.findAnnotation(method, RequestMapping.class) != null
-        /*&& AnnotationUtils.findAnnotation(method, ResponseBody.class) != null*/) {
+    /*&& AnnotationUtils.findAnnotation(method, ResponseBody.class) != null*/) {
       RequestMethod[] requestMethods = AnnotationUtils.findAnnotation(method, RequestMapping.class).method();
       if (requestMethods != null && requestMethods.length > 0) {
         if (requestMethods[0].equals(RequestMethod.POST)) {

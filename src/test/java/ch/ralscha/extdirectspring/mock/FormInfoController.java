@@ -33,18 +33,19 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 @Controller
 public class FormInfoController {
 
-  @ExtDirectMethod
+  @ExtDirectMethod(group = "group3")
   @ResponseBody
   @RequestMapping(value = "/updateInfo", method = RequestMethod.POST)
-  public ExtDirectResponse updateInfo(Locale locale, HttpServletRequest request, @Valid FormInfo formInfo, BindingResult result) {    
+  public ExtDirectResponse updateInfo(Locale locale, HttpServletRequest request, @Valid FormInfo formInfo, BindingResult result) {
     ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
     builder.addErrors(locale, result);
     return builder.build();
   }
-  
-  @ExtDirectMethod
+
+  @ExtDirectMethod(group = "group2")
   @RequestMapping(value = "/upload", method = RequestMethod.POST)
-  public void upload(Locale locale, HttpServletRequest request, HttpServletResponse response, @Valid FormInfo formInfo, BindingResult result) throws IOException {    
+  public void upload(Locale locale, HttpServletRequest request, HttpServletResponse response, @Valid FormInfo formInfo, BindingResult result)
+      throws IOException {
     ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
     builder.addErrors(locale, result);
     builder.buildAndWriteUploadResponse(response);

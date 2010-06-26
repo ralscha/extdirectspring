@@ -33,24 +33,22 @@ public class MethodCacheTest {
   public void testPutAndGet() throws SecurityException, NoSuchMethodException {
     assertNotNull(MethodCache.INSTANCE);
     Method thisMethod = getClass().getMethod("testPutAndGet", null);
-    
-    MethodCache.INSTANCE.put(null, null, null);    
+
+    MethodCache.INSTANCE.put(null, null, null);
     assertNull(MethodCache.INSTANCE.get(null, null));
-    
+
     MethodCache.INSTANCE.put(null, null, thisMethod);
     assertEquals(thisMethod, MethodCache.INSTANCE.get(null, null));
-    
+
     MethodCache.INSTANCE.put(null, "testPut", thisMethod);
     assertNull(MethodCache.INSTANCE.get(null, "testPu"));
     assertEquals(thisMethod, MethodCache.INSTANCE.get(null, "testPut"));
-    
+
     MethodCache.INSTANCE.put("methodCacheTest", "testPut", thisMethod);
     assertNull(MethodCache.INSTANCE.get("methodCacheTest", "testPu"));
     assertNull(MethodCache.INSTANCE.get("methodCacheTes", "testPut"));
     assertEquals(thisMethod, MethodCache.INSTANCE.get("methodCacheTest", "testPut"));
-    
-  }
 
- 
+  }
 
 }

@@ -75,7 +75,7 @@ import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
 public class RouterController implements ApplicationContextAware {
 
   private static final GenericConversionService genericConversionService = ConversionServiceFactory.createDefaultConversionService();
-  
+
   private static final Logger log = LoggerFactory.getLogger(RouterController.class);
 
   private ApplicationContext context;
@@ -93,11 +93,11 @@ public class RouterController implements ApplicationContextAware {
     directPollResponse.setName(event);
 
     Method beanMethod = ExtDirectSpringUtil.findMethod(context, beanName, method);
-    
+
     if (AopUtils.isAopProxy(context.getBean(beanName))) {
       beanMethod = ExtDirectSpringUtil.findMethodWithAnnotation(beanMethod, ExtDirectPollMethod.class);
     }
-    
+
     if (beanMethod != null) {
 
       Annotation[][] parameterAnnotations = beanMethod.getParameterAnnotations();
@@ -123,7 +123,7 @@ public class RouterController implements ApplicationContextAware {
 
           paramIndex++;
         }
-      } 
+      }
 
       directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, method, parameters));
       return directPollResponse;
@@ -134,10 +134,8 @@ public class RouterController implements ApplicationContextAware {
 
   }
 
-  
   @RequestMapping(value = "/router", method = RequestMethod.POST, params = "extAction")
-  public String router(@RequestParam(value = "extAction") String extAction, 
-                       @RequestParam(value = "extMethod") String extMethod) {
+  public String router(@RequestParam(value = "extAction") String extAction, @RequestParam(value = "extMethod") String extMethod) {
 
     Method method = ExtDirectSpringUtil.findMethod(context, extAction, extMethod);
     if (method != null) {
@@ -180,12 +178,12 @@ public class RouterController implements ApplicationContextAware {
 
         if (result != null) {
           Method method = ExtDirectSpringUtil.findMethod(context, directRequest.getAction(), directRequest.getMethod());
-          
+
           if (isFormLoadMethod(method)) {
             if (!ExtDirectFormLoadResult.class.isAssignableFrom(result.getClass())) {
               result = new ExtDirectFormLoadResult(result);
             }
-          } else if (getDirectStoreType(method) != null) {            
+          } else if (getDirectStoreType(method) != null) {
             if (!ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())) {
               result = new ExtDirectStoreResponse((Collection)result);
             }
@@ -213,43 +211,40 @@ public class RouterController implements ApplicationContextAware {
 
   }
 
-  private final boolean isFormLoadMethod(Method method) {    
+  private final boolean isFormLoadMethod(Method method) {
     ExtDirectMethod annotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
     return annotation != null && annotation.formLoad();
   }
 
-  private final boolean isDirectStoreReadMethod(Method method) {    
+  private final boolean isDirectStoreReadMethod(Method method) {
     return AnnotationUtils.findAnnotation(method, ExtDirectStoreReadMethod.class) != null;
   }
 
-  
   private final Class<?> getDirectStoreType(Method method) {
     ExtDirectStoreModifyMethod annotation = AnnotationUtils.findAnnotation(method, ExtDirectStoreModifyMethod.class);
     if (annotation != null) {
-      return  annotation.type();
+      return annotation.type();
     }
     return null;
   }
-  
 
   private final Object processRemotingRequest(HttpServletRequest request, HttpServletResponse response, Locale locale,
       ExtDirectRequest directRequest) throws Exception {
 
     Method method = ExtDirectSpringUtil.findMethod(context, directRequest.getAction(), directRequest.getMethod());
     if (method != null) {
-      
-      
+
       int jsonParamIndex = 0;
-            
+
       boolean isDirectStoreReadRequest = false;
       ExtDirectStoreReadRequest directStoreReadRequest = null;
-      
+
       List<Object> directStoreModifyRecords = null;
       Class<?> directStoreModifyType = null;
-      
-      Annotation[][] parameterAnnotations = null; 
-      Map<String,Object> remainingParameters = null;
-      
+
+      Annotation[][] parameterAnnotations = null;
+      Map<String, Object> remainingParameters = null;
+
       if (isDirectStoreReadMethod(method)) {
         isDirectStoreReadRequest = true;
         Method beanMethod = ExtDirectSpringUtil.findMethodWithAnnotation(method, ExtDirectStoreReadMethod.class);
@@ -262,33 +257,31 @@ public class RouterController implements ApplicationContextAware {
       } else if ((directStoreModifyType = getDirectStoreType(method)) != null) {
         Method beanMethod = ExtDirectSpringUtil.findMethodWithAnnotation(method, ExtDirectStoreModifyMethod.class);
         parameterAnnotations = beanMethod.getParameterAnnotations();
-        
-        
+
         if (directRequest.getData() != null && directRequest.getData().length > 0) {
-          Map<String,Object> jsonData = (LinkedHashMap<String,Object>)directRequest.getData()[0];
-          
+          Map<String, Object> jsonData = (LinkedHashMap<String, Object>)directRequest.getData()[0];
+
           ArrayList<Object> records = (ArrayList<Object>)jsonData.get("records");
           directStoreModifyRecords = convertObjectEntriesToType(records, directStoreModifyType);
           jsonParamIndex = 1;
-          
-          remainingParameters = new HashMap<String,Object>();
-          for (Entry<String,Object> entry : jsonData.entrySet()) {
+
+          remainingParameters = new HashMap<String, Object>();
+          for (Entry<String, Object> entry : jsonData.entrySet()) {
             if (!"records".equals(entry.getKey())) {
               remainingParameters.put(entry.getKey(), entry.getValue());
             }
           }
 
         }
-        
+
       }
-      
-      
+
       Class<?>[] parameterTypes = method.getParameterTypes();
       Object[] parameters = null;
-      
+
       if (parameterTypes.length > 0) {
         parameters = new Object[parameterTypes.length];
-        int paramIndex = 0;        
+        int paramIndex = 0;
         for (Class<?> parameterType : parameterTypes) {
 
           if (SupportedParameterTypes.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
@@ -303,19 +296,20 @@ public class RouterController implements ApplicationContextAware {
             parameters[paramIndex] = directStoreReadRequest;
           } else if (directStoreModifyRecords != null && parameterType.isAssignableFrom(directStoreModifyRecords.getClass())) {
             parameters[paramIndex] = directStoreModifyRecords;
-          } else if ((isDirectStoreReadRequest || directStoreModifyRecords != null) && 
-              containsAnnotation(parameterAnnotations[paramIndex], RequestParam.class)) {
-            parameters[paramIndex] = handleRequestParam(null, remainingParameters, parameterAnnotations[paramIndex], parameterType);            
+          } else if ((isDirectStoreReadRequest || directStoreModifyRecords != null)
+              && containsAnnotation(parameterAnnotations[paramIndex], RequestParam.class)) {
+            parameters[paramIndex] = handleRequestParam(null, remainingParameters, parameterAnnotations[paramIndex], parameterType);
           } else if (directRequest.getData() != null && directRequest.getData().length > jsonParamIndex) {
-            
+
             Object jsonParam = directRequest.getData()[jsonParamIndex];
-            
-            if (parameterType.getClass().equals(String.class)) {            
+
+            if (parameterType.getClass().equals(String.class)) {
               parameters[paramIndex] = ExtDirectSpringUtil.serializeObjectToJson(jsonParam);
             } else if (parameterType.isPrimitive()) {
               parameters[paramIndex] = jsonParam;
             } else {
-              parameters[paramIndex] = ExtDirectSpringUtil.deserializeJsonToObject(ExtDirectSpringUtil.serializeObjectToJson(jsonParam), parameterType);
+              parameters[paramIndex] = ExtDirectSpringUtil.deserializeJsonToObject(ExtDirectSpringUtil.serializeObjectToJson(jsonParam),
+                  parameterType);
             }
 
             jsonParamIndex++;
@@ -330,11 +324,12 @@ public class RouterController implements ApplicationContextAware {
 
       return ExtDirectSpringUtil.invoke(context, directRequest.getAction(), directRequest.getMethod(), parameters);
     }
-   
+
     return null;
   }
-  
-  private Object handleRequestParam(HttpServletRequest request, Map<String,Object> valueContainer, Annotation[] parameterAnnotations, Class<?> parameterType) {
+
+  private Object handleRequestParam(HttpServletRequest request, Map<String, Object> valueContainer, Annotation[] parameterAnnotations,
+      Class<?> parameterType) {
     boolean required = false;
     String parameterName = null;
     String defaultValue = null;
@@ -348,7 +343,7 @@ public class RouterController implements ApplicationContextAware {
       }
     }
 
-    if (parameterName != null) { 
+    if (parameterName != null) {
       Object value;
       if (request != null) {
         value = request.getParameter(parameterName);
@@ -357,28 +352,28 @@ public class RouterController implements ApplicationContextAware {
       } else {
         value = null;
       }
-      
+
       if (value == null) {
         value = defaultValue;
       }
 
       if (value != null) {
         return genericConversionService.convert(value, parameterType);
-      } 
+      }
       if (required) {
         throw new IllegalArgumentException("Missing request parameter: " + parameterName);
       }
     }
-    
+
     return null;
   }
-  
-  private Map<String,Object> fillObjectFromMap(Object to, Map<String,Object> from) {
+
+  private Map<String, Object> fillObjectFromMap(Object to, Map<String, Object> from) {
     Set<String> foundParameters = new HashSet<String>();
-    
-    for (Entry<String,Object> entry : from.entrySet()) {
+
+    for (Entry<String, Object> entry : from.entrySet()) {
       PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(to.getClass(), entry.getKey());
-      if (descriptor != null && descriptor.getWriteMethod() != null) {        
+      if (descriptor != null && descriptor.getWriteMethod() != null) {
         try {
           descriptor.getWriteMethod().invoke(to, genericConversionService.convert(entry.getValue(), descriptor.getPropertyType()));
           foundParameters.add(entry.getKey());
@@ -391,9 +386,9 @@ public class RouterController implements ApplicationContextAware {
         }
       }
     }
-    
-    Map<String,Object> remainingParameters = new HashMap<String,Object>();
-    for (Entry<String,Object> entry : from.entrySet()) {
+
+    Map<String, Object> remainingParameters = new HashMap<String, Object>();
+    for (Entry<String, Object> entry : from.entrySet()) {
       if (!foundParameters.contains(entry.getKey())) {
         remainingParameters.put(entry.getKey(), entry.getValue());
       }
@@ -401,11 +396,12 @@ public class RouterController implements ApplicationContextAware {
     return remainingParameters;
   }
 
-  private List<Object> convertObjectEntriesToType(ArrayList<Object> records, Class< ? > directStoreType) {
+  private List<Object> convertObjectEntriesToType(ArrayList<Object> records, Class<?> directStoreType) {
     if (records != null) {
       List<Object> convertedList = new ArrayList<Object>();
       for (Object record : records) {
-        Object convertedObject = ExtDirectSpringUtil.deserializeJsonToObject(ExtDirectSpringUtil.serializeObjectToJson(record), directStoreType);
+        Object convertedObject = ExtDirectSpringUtil.deserializeJsonToObject(ExtDirectSpringUtil.serializeObjectToJson(record),
+            directStoreType);
         convertedList.add(convertedObject);
       }
       return convertedList;
@@ -417,7 +413,8 @@ public class RouterController implements ApplicationContextAware {
     List<ExtDirectRequest> directRequests = new ArrayList<ExtDirectRequest>();
 
     if (rawRequestString.length() > 0 && rawRequestString.charAt(0) == '[') {
-      directRequests.addAll(ExtDirectSpringUtil.deserializeJsonToObject(rawRequestString, new TypeReference<List<ExtDirectRequest>>() {/*empty*/}));
+      directRequests.addAll(ExtDirectSpringUtil.deserializeJsonToObject(rawRequestString, new TypeReference<List<ExtDirectRequest>>() {/*empty*/
+      }));
     } else {
       ExtDirectRequest directRequest = ExtDirectSpringUtil.deserializeJsonToObject(rawRequestString, ExtDirectRequest.class);
       directRequests.add(directRequest);
