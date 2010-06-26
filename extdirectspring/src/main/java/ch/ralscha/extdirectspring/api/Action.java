@@ -23,7 +23,7 @@ import org.codehaus.jackson.annotate.JsonWriteNullProperties;
  * 
  * @author Ralph Schaer
  */
-public class Action {
+class Action {
 
   private String name;
   private int len;

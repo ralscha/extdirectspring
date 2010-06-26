@@ -63,7 +63,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
-import ch.ralscha.extdirectspring.util.SupportedParameters;
+import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
 
 /**
 * Main router controller who handles polling, form handler and normal Ext.Direct calls
@@ -109,13 +109,13 @@ public class RouterController implements ApplicationContextAware {
         int paramIndex = 0;
         for (Class<?> parameterType : parameterTypes) {
 
-          if (SupportedParameters.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
+          if (SupportedParameterTypes.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
             parameters[paramIndex] = response;
-          } else if (SupportedParameters.SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
+          } else if (SupportedParameterTypes.SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
             parameters[paramIndex] = request;
-          } else if (SupportedParameters.SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
+          } else if (SupportedParameterTypes.SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
             parameters[paramIndex] = request.getSession();
-          } else if (SupportedParameters.LOCALE.getSupportedClass().isAssignableFrom(parameterType)) {
+          } else if (SupportedParameterTypes.LOCALE.getSupportedClass().isAssignableFrom(parameterType)) {
             parameters[paramIndex] = locale;
           } else {
             parameters[paramIndex] = handleRequestParam(request, null, parameterAnnotations[paramIndex], parameterType);
@@ -291,13 +291,13 @@ public class RouterController implements ApplicationContextAware {
         int paramIndex = 0;        
         for (Class<?> parameterType : parameterTypes) {
 
-          if (SupportedParameters.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
+          if (SupportedParameterTypes.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
             parameters[paramIndex] = response;
-          } else if (SupportedParameters.SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
+          } else if (SupportedParameterTypes.SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
             parameters[paramIndex] = request;
-          } else if (SupportedParameters.SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
+          } else if (SupportedParameterTypes.SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
             parameters[paramIndex] = request.getSession();
-          } else if (SupportedParameters.LOCALE.getSupportedClass().isAssignableFrom(parameterType)) {
+          } else if (SupportedParameterTypes.LOCALE.getSupportedClass().isAssignableFrom(parameterType)) {
             parameters[paramIndex] = locale;
           } else if (directStoreReadRequest != null && ExtDirectStoreReadRequest.class.isAssignableFrom(parameterType)) {
             parameters[paramIndex] = directStoreReadRequest;

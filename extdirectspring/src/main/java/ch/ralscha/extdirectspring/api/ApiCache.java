@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  * @author Ralph Schaer
  */
-public enum ApiCache {
+enum ApiCache {
 
   /**
    * Singleton enum pattern

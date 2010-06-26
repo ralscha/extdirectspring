@@ -94,15 +94,15 @@ public class RemoteProvider2 {
     if (request != null) {
 
       if ("name".equals(request.getQuery())) {
-        for (Iterator iterator = rows.listIterator(); iterator.hasNext();) {
-          Row row = (Row)iterator.next();
+        for (Iterator<Row> iterator = rows.listIterator(); iterator.hasNext();) {
+          Row row = iterator.next();
           if (!row.getName().startsWith("name")) {
             iterator.remove();
           }
         }
       } else if ("firstname".equals(request.getQuery())) {
-        for (Iterator iterator = rows.listIterator(); iterator.hasNext();) {
-          Row row = (Row)iterator.next();
+        for (Iterator<Row> iterator = rows.listIterator(); iterator.hasNext();) {
+          Row row = iterator.next();
           if (!row.getName().startsWith("firstname")) {
             iterator.remove();
           }

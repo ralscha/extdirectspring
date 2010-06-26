@@ -27,7 +27,7 @@ import javax.servlet.http.HttpSession;
  * @author mansari
  * @author Ralph Schaer
  */
-public enum SupportedParameters {
+public enum SupportedParameterTypes {
 
   SERVLET_REQUEST(ServletRequest.class),
   SERVLET_RESPONSE(ServletResponse.class),
@@ -36,7 +36,7 @@ public enum SupportedParameters {
   
   private Class<?> clazz;
   
-  private SupportedParameters(Class<?> clazz) {
+  private SupportedParameterTypes(Class<?> clazz) {
     this.clazz = clazz;
   }
   
@@ -55,7 +55,7 @@ public enum SupportedParameters {
    */
   public static boolean isSupported(final Class<?> clazz) {
     if (clazz != null) {
-      for (SupportedParameters supportedParameter : SupportedParameters.values()) {
+      for (SupportedParameterTypes supportedParameter : SupportedParameterTypes.values()) {
         if (supportedParameter.clazz.isAssignableFrom(clazz)) {
           return true;
         }

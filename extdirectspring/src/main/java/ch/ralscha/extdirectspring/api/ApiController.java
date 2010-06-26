@@ -32,18 +32,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectPollMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectStoreModifyMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectStoreReadMethod;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
-import ch.ralscha.extdirectspring.util.SupportedParameters;
+import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
 
 /**
- * 
+ * Spring managed controller that handles  /api.jsp and /api-debug.js requests
  * 
  * @author Ralph Schaer
  */
@@ -182,7 +180,7 @@ public class ApiController implements ApplicationContextAware {
               Class< ? >[] parameterTypes = method.getParameterTypes();
               int paramLength = 0;
               for (Class< ? > parameterType : parameterTypes) {
-                if (!SupportedParameters.isSupported(parameterType)) {
+                if (!SupportedParameterTypes.isSupported(parameterType)) {
                   paramLength++;
                 }
               }
