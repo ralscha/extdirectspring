@@ -97,7 +97,7 @@ public class ExtDirectResponseBuilder {
   
   public void buildAndWriteUploadResponse(HttpServletResponse servletResponse) throws IOException {
     servletResponse.setContentType("text/html");
-    
+    //TODO: escape &quot;
     servletResponse.getOutputStream().write("<html><body><textarea>".getBytes());
     servletResponse.getOutputStream().write(ExtDirectSpringUtil.serializeObjectToJson(response).getBytes());
     servletResponse.getOutputStream().write("</textarea></body></html>".getBytes());    
