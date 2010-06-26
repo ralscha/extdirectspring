@@ -19,7 +19,12 @@ package ch.ralscha.extdirectspring.mock;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.junit.Assert;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 
 @Named
@@ -91,5 +96,15 @@ public class RemoteProvider1 {
     info.setName("John");
     info.setSalary(new BigDecimal("8720.20"));
     return info;    
+  }
+  
+  @ExtDirectMethod
+  public long method11(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {   
+    Assert.assertNotNull(response);
+    Assert.assertNotNull(request);
+    Assert.assertNotNull(session);
+    Assert.assertEquals(Locale.ENGLISH, locale);
+    
+    return 42;
   }
 }
