@@ -29,24 +29,21 @@ import javax.servlet.http.HttpSession;
  */
 public enum SupportedParameterTypes {
 
-  SERVLET_REQUEST(ServletRequest.class),
-  SERVLET_RESPONSE(ServletResponse.class),
-  SESSION(HttpSession.class),
-  LOCALE(Locale.class);
-  
+  SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class), SESSION(HttpSession.class), LOCALE(Locale.class);
+
   private Class<?> clazz;
-  
+
   private SupportedParameterTypes(Class<?> clazz) {
     this.clazz = clazz;
   }
-  
+
   /**
    * @return the enclosing Class
    */
   public Class<?> getSupportedClass() {
     return clazz;
   }
-  
+
   /**
    * Checks if the clazz is a supported parameter type
    * 
@@ -63,7 +60,5 @@ public enum SupportedParameterTypes {
     }
     return false;
   }
-  
-  
-  
+
 }

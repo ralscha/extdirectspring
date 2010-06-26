@@ -28,7 +28,7 @@ public class Row implements Comparable<Row> {
   public Row() {
     //no action
   }
-  
+
   public Row(int id, String name, boolean admin, String salary) {
     super();
     this.id = id;

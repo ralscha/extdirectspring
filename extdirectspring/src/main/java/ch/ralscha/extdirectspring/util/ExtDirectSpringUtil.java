@@ -65,19 +65,19 @@ public class ExtDirectSpringUtil {
    * @throws IllegalArgumentException if the method is not annotated with a ExtDirectSpring annotation or there is no method in the bean
    */
   public static Method findMethod(final ApplicationContext context, final String beanName, final String methodName) {
-    
+
     if (context == null) {
       throw new IllegalArgumentException("ApplicatonContext cannot be null");
     }
-    
+
     if (beanName == null) {
       throw new IllegalArgumentException("beanName cannot be null");
     }
-    
+
     if (methodName == null) {
       throw new IllegalArgumentException("methodName cannot be null");
     }
-    
+
     Method method = MethodCache.INSTANCE.get(beanName, methodName);
 
     if (method != null) {
@@ -100,7 +100,7 @@ public class ExtDirectSpringUtil {
     throw new IllegalArgumentException("Method '" + beanName + "." + methodName + "' not found");
 
   }
-  
+
   /**
    * Find a method that is annotated with a specific annotation. Starts with the method and goes 
    * up to the superclasses of the class. 
@@ -111,22 +111,22 @@ public class ExtDirectSpringUtil {
    */
   public static Method findMethodWithAnnotation(final Method method, final Class<? extends Annotation> annotation) {
     if (method.isAnnotationPresent(annotation)) {
-      return method; 
+      return method;
     }
-    
+
     Class<?> cl = method.getDeclaringClass();
     while (cl != null) {
       try {
         Method equivalentMethod = cl.getDeclaredMethod(method.getName(), method.getParameterTypes());
         if (equivalentMethod.isAnnotationPresent(annotation)) {
-          return equivalentMethod; 
+          return equivalentMethod;
         }
       } catch (NoSuchMethodException e) {
         //do nothing here
       }
       cl = cl.getSuperclass();
     }
-    
+
     return null;
   }
 
@@ -167,11 +167,11 @@ public class ExtDirectSpringUtil {
     Method method = findMethod(context, beanName, methodName);
     if (method != null) {
       Object bean = context.getBean(beanName);
-  
+
       if (bean == null) {
         throw new IllegalArgumentException("Bean '" + beanName + "' not found");
       }
-  
+
       return method.invoke(bean, params);
     }
     return null;
@@ -188,8 +188,6 @@ public class ExtDirectSpringUtil {
     return serializeObjectToJson(obj, false);
   }
 
-
-  
   /**
    * Converts a object into a String containing the json representation of this object.
    * In case of an exceptions returns null and logs the exception.

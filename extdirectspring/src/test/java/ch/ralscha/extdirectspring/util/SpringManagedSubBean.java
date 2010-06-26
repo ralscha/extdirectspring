@@ -16,7 +16,6 @@
 
 package ch.ralscha.extdirectspring.util;
 
-
 public class SpringManagedSubBean extends SpringManagedBean {
 
   @Override

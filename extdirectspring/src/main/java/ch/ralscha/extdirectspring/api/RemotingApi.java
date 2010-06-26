@@ -24,7 +24,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonWriteNullProperties;
 import org.springframework.util.StringUtils;
 
-
 /**
  * @author Ralph Schaer
  */
@@ -35,15 +34,15 @@ class RemotingApi {
   private String namespace;
   private final String type = "remoting";
   private Map<String, List<Action>> actions;
-  
+
   private List<PollingProvider> pollingProviders;
-  
+
   public RemotingApi(final String url, final String namespace) {
     this.actions = new HashMap<String, List<Action>>();
     this.pollingProviders = new ArrayList<PollingProvider>();
-    
+
     this.url = url;
-    
+
     if (StringUtils.hasText(namespace)) {
       this.namespace = namespace.trim();
     } else {
@@ -77,14 +76,13 @@ class RemotingApi {
     if (beanActions == null) {
       beanActions = new ArrayList<Action>();
       actions.put(beanName, beanActions);
-    } 
-    
-    beanActions.add(new Action(methodName, len, formHandler));  
+    }
+
+    beanActions.add(new Action(methodName, len, formHandler));
   }
-  
+
   public void addPollingProvider(String beanName, String method, String event) {
     pollingProviders.add(new PollingProvider(beanName, method, event));
   }
-  
-  
+
 }

@@ -31,7 +31,7 @@ enum ApiCache {
    * Singleton enum pattern
    */
   INSTANCE;
-  
+
   private Map<ApiCacheKey, SoftReference<String>> cache;
 
   private ApiCache() {

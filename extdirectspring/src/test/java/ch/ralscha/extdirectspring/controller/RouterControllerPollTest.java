@@ -53,7 +53,6 @@ public class RouterControllerPollTest {
     request = new MockHttpServletRequest();
   }
 
- 
   @Test
   public void pollNoArguments() throws Exception {
     ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage1", "message1", request, response, Locale.ENGLISH);
@@ -62,11 +61,11 @@ public class RouterControllerPollTest {
     assertEquals("message1", resp.getName());
     assertTrue(((String)resp.getData()).startsWith("Successfully polled at: "));
   }
-  
+
   @Test
   public void pollSupportedArguments() throws Exception {
     ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage2", "message2", request, response, Locale.ENGLISH);
-    assertNotNull(resp);    
+    assertNotNull(resp);
     assertEquals("event", resp.getType());
     assertEquals("message2", resp.getName());
     assertTrue(((String)resp.getData()).startsWith("Successfully polled at: "));
@@ -125,7 +124,5 @@ public class RouterControllerPollTest {
     assertEquals("message5", resp.getName());
     assertNull(resp.getData());
   }
-
-  
 
 }

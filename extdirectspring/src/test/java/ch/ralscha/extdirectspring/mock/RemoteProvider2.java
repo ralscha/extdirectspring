@@ -61,14 +61,14 @@ public class RemoteProvider2 {
     return createExtDirectStoreResponse(request);
   }
 
-  @ExtDirectStoreReadMethod
+  @ExtDirectStoreReadMethod(group = "group3")
   public ExtDirectStoreResponse<Row> method5(ExtDirectStoreReadRequest request, Locale locale, @RequestParam(value = "id") int id) {
     Assert.assertEquals(10, id);
     Assert.assertEquals(Locale.ENGLISH, locale);
     return createExtDirectStoreResponse(request);
   }
 
-  @ExtDirectStoreReadMethod
+  @ExtDirectStoreReadMethod(group = "group2")
   public ExtDirectStoreResponse<Row> method6(@RequestParam(value = "id", defaultValue = "1") int id, HttpServletRequest servletRequest,
       ExtDirectStoreReadRequest request) {
     Assert.assertEquals(1, id);
@@ -76,7 +76,7 @@ public class RemoteProvider2 {
     return createExtDirectStoreResponse(request);
   }
 
-  @ExtDirectStoreReadMethod
+  @ExtDirectStoreReadMethod(group = "group2")
   public List<Row> method7(@RequestParam(value = "id", required = false) Integer id) {
     if (id == null) {
       Assert.assertNull(id);
@@ -108,9 +108,9 @@ public class RemoteProvider2 {
           }
         }
       }
-      
+
       totalSize = rows.size();
-      
+
       if (StringUtils.hasText(request.getSort())) {
         Assert.assertEquals("id", request.getSort());
 

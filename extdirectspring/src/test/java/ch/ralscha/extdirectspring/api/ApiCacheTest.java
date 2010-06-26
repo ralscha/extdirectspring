@@ -29,7 +29,7 @@ public class ApiCacheTest {
   @Test
   public void testPutAndGet() {
     assertNotNull(ApiCache.INSTANCE);
-    
+
     ApiCacheKey key1 = new ApiCacheKey(null, null, null, null, null, false);
     ApiCacheKey key2 = new ApiCacheKey(null, null, null, null, null, true);
     ApiCacheKey key3 = new ApiCacheKey(null, null, null, null, "group", true);
@@ -43,7 +43,7 @@ public class ApiCacheTest {
     ApiCache.INSTANCE.put(key5, "five");
     ApiCache.INSTANCE.put(key6, "six");
     ApiCache.INSTANCE.put(key7, "seven");
-    
+
     assertNull(ApiCache.INSTANCE.get(null));
     assertNull(ApiCache.INSTANCE.get(key2));
     assertNotNull(ApiCache.INSTANCE.get(key1));
@@ -53,10 +53,7 @@ public class ApiCacheTest {
     assertEquals("five", ApiCache.INSTANCE.get(key5));
     assertEquals("six", ApiCache.INSTANCE.get(key6));
     assertEquals("seven", ApiCache.INSTANCE.get(key7));
-    
-    
-    
-  }
 
+  }
 
 }

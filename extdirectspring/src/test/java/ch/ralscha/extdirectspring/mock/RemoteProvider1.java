@@ -30,7 +30,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 @Named
 public class RemoteProvider1 {
 
-  @ExtDirectMethod
+  @ExtDirectMethod(group = "group1")
   public String method1() {
     return "method1() called";
   }
@@ -40,7 +40,7 @@ public class RemoteProvider1 {
     return "method2() called";
   }
 
-  @ExtDirectMethod
+  @ExtDirectMethod(group = "group2")
   public String method3(long i, Double d, String s) {
     return String.format("method3() called-%d-%.1f-%s", i, d, s);
   }
@@ -48,8 +48,8 @@ public class RemoteProvider1 {
   public String method4(long i, Double d, String s) {
     return "method4() called";
   }
-  
-  @ExtDirectMethod
+
+  @ExtDirectMethod(group = "group2")
   public Boolean method5(String userName) {
     if ("ralph".equals(userName)) {
       return true;
@@ -58,18 +58,18 @@ public class RemoteProvider1 {
     }
     return null;
   }
-  
+
   @ExtDirectMethod
   public int method6(int a, int b) {
     return a + b;
   }
-  
+
   @ExtDirectMethod
   public String method7() {
     return null;
   }
-  
-  @ExtDirectMethod(formLoad = true)
+
+  @ExtDirectMethod(formLoad = true, group = "group3")
   public FormInfo method8(double d) {
     FormInfo info = new FormInfo();
     info.setBack(d);
@@ -78,14 +78,14 @@ public class RemoteProvider1 {
     info.setBirthday(new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime());
     info.setName("Bob");
     info.setSalary(new BigDecimal("10000.55"));
-    return info;    
+    return info;
   }
-  
+
   @ExtDirectMethod(formLoad = true)
   public FormInfo method9() {
-    return null; 
+    return null;
   }
-  
+
   @ExtDirectMethod
   public FormInfo method10(double d) {
     FormInfo info = new FormInfo();
@@ -95,16 +95,16 @@ public class RemoteProvider1 {
     info.setBirthday(new GregorianCalendar(1986, Calendar.JULY, 22).getTime());
     info.setName("John");
     info.setSalary(new BigDecimal("8720.20"));
-    return info;    
+    return info;
   }
-  
-  @ExtDirectMethod
-  public long method11(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {   
+
+  @ExtDirectMethod(group = "group3")
+  public long method11(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {
     Assert.assertNotNull(response);
     Assert.assertNotNull(request);
     Assert.assertNotNull(session);
     Assert.assertEquals(Locale.ENGLISH, locale);
-    
+
     return 42;
   }
 }

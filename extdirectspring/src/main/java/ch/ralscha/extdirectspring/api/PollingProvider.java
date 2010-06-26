@@ -30,12 +30,12 @@ class PollingProvider {
   public PollingProvider(String beanName, String method, String event) {
     this.beanName = beanName;
     this.method = method;
-    
+
     if (StringUtils.hasText(event)) {
       this.event = event.trim();
     } else {
       this.event = method;
-    }        
+    }
   }
 
   public String getBeanName() {

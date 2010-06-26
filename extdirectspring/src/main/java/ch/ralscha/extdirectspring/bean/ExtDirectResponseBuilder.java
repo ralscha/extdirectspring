@@ -37,7 +37,7 @@ public class ExtDirectResponseBuilder {
 
   private ExtDirectResponse response;
   private Map<String, Object> result;
-  
+
   /**
    * Creates a builder that builds the response object 
    * needed for form handler and form upload handler methods.
@@ -49,27 +49,27 @@ public class ExtDirectResponseBuilder {
   public ExtDirectResponseBuilder(final HttpServletRequest request) {
     response = new ExtDirectResponse();
     result = new HashMap<String, Object>();
-      
+
     response.setSuccess(true);
     response.setAction(request.getParameter("extAction"));
     response.setMethod(request.getParameter("extMethod"));
     response.setType(request.getParameter("extType"));
     response.setTid(Integer.parseInt(request.getParameter("extTID")));
-        
+
     successful();
-    response.setResult(result);    
+    response.setResult(result);
   }
-  
+
   /**
    * Creates a errors property in the response if there are any errors in the bindingResult
    * Sets the success flag to false if there are errors
    * 
    * @param bindingResult
    */
-  public void addErrors(final BindingResult bindingResult) {      
+  public void addErrors(final BindingResult bindingResult) {
     addErrors(null, null, bindingResult);
   }
-  
+
   /**
    * Creates a errors property in the response if there are any errors in the bindingResult
    * Sets the success flag to false if there are errors
@@ -80,7 +80,7 @@ public class ExtDirectResponseBuilder {
   public void addErrors(final Locale locale, final BindingResult bindingResult) {
     addErrors(locale, null, bindingResult);
   }
-  
+
   /**
    * Creates a errors property in the response if there are any errors in the bindingResult
    * Sets the success flag to false if there are errors
@@ -89,7 +89,7 @@ public class ExtDirectResponseBuilder {
    * @param messageSource
    * @param bindingResult
    */
-  public void addErrors(final Locale locale, final MessageSource messageSource, final BindingResult bindingResult) {      
+  public void addErrors(final Locale locale, final MessageSource messageSource, final BindingResult bindingResult) {
     if (bindingResult != null && bindingResult.hasFieldErrors()) {
       Map<String, String> errorMap = new HashMap<String, String>();
       for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -107,8 +107,8 @@ public class ExtDirectResponseBuilder {
         result.put("success", false);
       }
     }
-  }  
-  
+  }
+
   /**
    * Add additional property to the response
    * 
@@ -116,23 +116,23 @@ public class ExtDirectResponseBuilder {
    * @param value the value of this property
    */
   public void addResultProperty(final String key, final Object value) {
-    result.put(key, value);    
+    result.put(key, value);
   }
-  
+
   /**
    * Sets success flag to true
    */
   public void successful() {
     result.put("success", true);
   }
-  
+
   /**
    * Sets success flag to false
    */
   public void unsuccessful() {
     result.put("success", false);
-  }  
-  
+  }
+
   /**
    * Builds the response object
    * 
@@ -141,7 +141,7 @@ public class ExtDirectResponseBuilder {
   public ExtDirectResponse build() {
     return response;
   }
-  
+
   /**
    * Builds and writes the response to the OutputStream of the response.
    * This methods has to be called at the end of a form upload handler method.
@@ -156,7 +156,7 @@ public class ExtDirectResponseBuilder {
     String responseJson = ExtDirectSpringUtil.serializeObjectToJson(response);
     responseJson = responseJson.replace("&quot;", "\\&quot;");
     servletResponse.getOutputStream().write(responseJson.getBytes());
-    servletResponse.getOutputStream().write("</textarea></body></html>".getBytes());    
+    servletResponse.getOutputStream().write("</textarea></body></html>".getBytes());
   }
-  
+
 }

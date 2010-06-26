@@ -34,16 +34,16 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 @Inherited
 @Documented
 public @interface ExtDirectMethod {
+
   /**
    * The name of a api group this method is part of. 
    */
   String group() default "";
-  
+
   /**
    * Set this attribute to true if the result should automatically wrapped with {@link ExtDirectFormLoadResult}
    * Necessary return type for load methods 
-   */  
+   */
   boolean formLoad() default false;
-
 
 }

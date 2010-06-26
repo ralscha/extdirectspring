@@ -72,20 +72,20 @@ public class RouterControllerRemote2Test {
     assertEquals("method1", resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(1, resp.getTid());
-    assertTrue(resp.isSuccess());    
+    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
-    
+
     List<Row> rows = (List<Row>)resp.getResult();
     assertEquals(100, rows.size());
   }
-  
+
   @Test
   public void testNoArgumentsWithRequestParameters() {
     ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
     storeRead.setQuery("ralph");
-    
+
     String json = createRequestJson("remoteProvider2", "method1", 1, storeRead);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
@@ -95,15 +95,15 @@ public class RouterControllerRemote2Test {
     assertEquals("method1", resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(1, resp.getTid());
-    assertTrue(resp.isSuccess());    
+    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
-    
+
     List<Row> rows = (List<Row>)resp.getResult();
     assertEquals(100, rows.size());
   }
-  
+
   @Test
   public void testReturnsNull() {
     String json = createRequestJson("remoteProvider2", "method2", 1, null);
@@ -115,11 +115,11 @@ public class RouterControllerRemote2Test {
     assertEquals("method2", resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(1, resp.getTid());
-    assertTrue(resp.isSuccess());    
+    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertNull(resp.getWhere());
     assertNull(resp.getResult());
-  }  
+  }
 
   @Test
   public void testSupportedArguments() {
@@ -132,44 +132,44 @@ public class RouterControllerRemote2Test {
     assertEquals("method3", resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(1, resp.getTid());
-    assertTrue(resp.isSuccess());    
+    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
-    
+
     List<Row> rows = (List<Row>)resp.getResult();
     assertEquals(100, rows.size());
   }
-  
+
   @Test
   public void testWithExtDirectStoreReadRequest() {
     ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
-    storeRead.setQuery("name");    
-    ExtDirectResponse resp = executeWithExtDirectStoreReadRequest(storeRead);    
+    storeRead.setQuery("name");
+    ExtDirectResponse resp = executeWithExtDirectStoreReadRequest(storeRead);
     ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
     assertEquals(Integer.valueOf(50), storeResponse.getTotal());
     assertEquals(50, storeResponse.getRecords().size());
     for (Row row : storeResponse.getRecords()) {
       assertTrue(row.getName().startsWith("name"));
     }
-    
+
     storeRead = new ExtDirectStoreReadRequest();
-    storeRead.setQuery("firstname");    
-    resp = executeWithExtDirectStoreReadRequest(storeRead);    
+    storeRead.setQuery("firstname");
+    resp = executeWithExtDirectStoreReadRequest(storeRead);
     storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
     assertEquals(Integer.valueOf(50), storeResponse.getTotal());
     assertEquals(50, storeResponse.getRecords().size());
     for (Row row : storeResponse.getRecords()) {
       assertTrue(row.getName().startsWith("firstname"));
     }
-    
+
     storeRead = new ExtDirectStoreReadRequest();
     storeRead.setQuery("");
     storeRead.setSort("id");
     storeRead.setDir("ASC");
     storeRead.setLimit(10);
     storeRead.setStart(10);
-    resp = executeWithExtDirectStoreReadRequest(storeRead);    
+    resp = executeWithExtDirectStoreReadRequest(storeRead);
     storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
     assertEquals(Integer.valueOf(100), storeResponse.getTotal());
     assertEquals(10, storeResponse.getRecords().size());
@@ -178,14 +178,14 @@ public class RouterControllerRemote2Test {
       assertEquals(id, row.getId());
       id++;
     }
-    
+
     storeRead = new ExtDirectStoreReadRequest();
     storeRead.setQuery("");
     storeRead.setSort("id");
     storeRead.setDir("DESC");
     storeRead.setLimit(10);
     storeRead.setStart(20);
-    resp = executeWithExtDirectStoreReadRequest(storeRead);    
+    resp = executeWithExtDirectStoreReadRequest(storeRead);
     storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
     assertEquals(Integer.valueOf(100), storeResponse.getTotal());
     assertEquals(10, storeResponse.getRecords().size());
@@ -202,21 +202,21 @@ public class RouterControllerRemote2Test {
 
     assertEquals(1, responses.size());
     ExtDirectResponse resp = responses.get(0);
-    
+
     assertEquals("remoteProvider2", resp.getAction());
     assertEquals("method4", resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(1, resp.getTid());
-    assertTrue(resp.isSuccess());    
+    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
     return resp;
   }
-  
+
   @Test
   public void testWithAdditionalParameters() {
-    Map<String,Object> readRequest = new HashMap<String,Object>();
+    Map<String, Object> readRequest = new HashMap<String, Object>();
     readRequest.put("id", 10);
     readRequest.put("query", "name");
 
@@ -225,25 +225,24 @@ public class RouterControllerRemote2Test {
 
     assertEquals(1, responses.size());
     ExtDirectResponse resp = responses.get(0);
-    
+
     assertEquals("remoteProvider2", resp.getAction());
     assertEquals("method5", resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(1, resp.getTid());
-    assertTrue(resp.isSuccess());    
+    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
-    
+
     ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
     assertEquals(Integer.valueOf(50), storeResponse.getTotal());
     assertEquals(50, storeResponse.getRecords().size());
     for (Row row : storeResponse.getRecords()) {
       assertTrue(row.getName().startsWith("name"));
     }
-    
-    
-    readRequest = new HashMap<String,Object>();
+
+    readRequest = new HashMap<String, Object>();
     readRequest.put("query", "name");
 
     json = createRequestJson("remoteProvider2", "method5", 1, readRequest);
@@ -251,18 +250,18 @@ public class RouterControllerRemote2Test {
 
     assertEquals(1, responses.size());
     resp = responses.get(0);
-    
+
     assertEquals("remoteProvider2", resp.getAction());
     assertEquals("method5", resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(1, resp.getTid());
-    assertFalse(resp.isSuccess());    
+    assertFalse(resp.isSuccess());
     assertEquals("server error", resp.getMessage());
   }
-  
+
   @Test
   public void testWithAdditionalParametersDefaultValue() {
-    Map<String,Object> readRequest = new HashMap<String,Object>();
+    Map<String, Object> readRequest = new HashMap<String, Object>();
     readRequest.put("query", "firstname");
 
     String json = createRequestJson("remoteProvider2", "method6", 1, readRequest);
@@ -270,16 +269,16 @@ public class RouterControllerRemote2Test {
 
     assertEquals(1, responses.size());
     ExtDirectResponse resp = responses.get(0);
-    
+
     assertEquals("remoteProvider2", resp.getAction());
     assertEquals("method6", resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(1, resp.getTid());
-    assertTrue(resp.isSuccess());    
+    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
-    
+
     ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
     assertEquals(Integer.valueOf(50), storeResponse.getTotal());
     assertEquals(50, storeResponse.getRecords().size());
@@ -287,7 +286,7 @@ public class RouterControllerRemote2Test {
       assertTrue(row.getName().startsWith("firstname"));
     }
   }
-  
+
   @Test
   public void testWithAdditionalParametersOptional() {
 
@@ -296,21 +295,20 @@ public class RouterControllerRemote2Test {
 
     assertEquals(1, responses.size());
     ExtDirectResponse resp = responses.get(0);
-    
+
     assertEquals("remoteProvider2", resp.getAction());
     assertEquals("method7", resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(1, resp.getTid());
-    assertTrue(resp.isSuccess());    
+    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
-    
+
     List<Row> rows = (List<Row>)resp.getResult();
     assertEquals(100, rows.size());
-    
-    
-    Map<String,Object> readRequest = new HashMap<String,Object>();
+
+    Map<String, Object> readRequest = new HashMap<String, Object>();
     readRequest.put("id", 11);
     readRequest.put("query", "");
 
@@ -319,20 +317,20 @@ public class RouterControllerRemote2Test {
 
     assertEquals(1, responses.size());
     resp = responses.get(0);
-    
+
     assertEquals("remoteProvider2", resp.getAction());
     assertEquals("method7", resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(1, resp.getTid());
-    assertTrue(resp.isSuccess());    
+    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
-    
+
     rows = (List<Row>)resp.getResult();
     assertEquals(100, rows.size());
   }
-  
+
   private String createRequestJson(String action, String method, int tid, Object... data) {
     ExtDirectRequest dr = new ExtDirectRequest();
     dr.setAction(action);

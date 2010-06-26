@@ -22,28 +22,27 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectPollMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectStoreModifyMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectStoreReadMethod;
 
-
 public class BeanNotSpringWExtDirectMethods {
-  
+
   @ExtDirectMethod
-  public void methodA() { 
+  public void methodA() {
     //a dummy method
   }
-  
+
   @ExtDirectPollMethod
   public void methodB() {
     //a dummy method
   }
-  
-  @ExtDirectStoreModifyMethod(type=Integer.class) 
+
+  @ExtDirectStoreModifyMethod(type = Integer.class)
   public List<Integer> methodC(List<Integer> ids) {
     //a dummy method
     return null;
   }
-  
+
   @ExtDirectStoreReadMethod
   public List<Integer> methodD() {
     //a dummy method
     return null;
-  }  
+  }
 }

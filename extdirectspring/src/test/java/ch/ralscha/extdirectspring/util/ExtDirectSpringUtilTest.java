@@ -52,14 +52,14 @@ public class ExtDirectSpringUtilTest {
   public void testEqual() {
     assertTrue(ExtDirectSpringUtil.equal(1, 1));
     assertFalse(ExtDirectSpringUtil.equal(1, 2));
-    
+
     assertTrue(ExtDirectSpringUtil.equal(true, true));
     assertTrue(ExtDirectSpringUtil.equal(false, false));
-    
+
     assertFalse(ExtDirectSpringUtil.equal(true, false));
     assertFalse(ExtDirectSpringUtil.equal(false, true));
     assertFalse(ExtDirectSpringUtil.equal(false, null));
-    
+
     assertTrue(ExtDirectSpringUtil.equal("a", "a"));
     assertFalse(ExtDirectSpringUtil.equal("a", "b"));
     assertFalse(ExtDirectSpringUtil.equal(null, "a"));
@@ -73,7 +73,7 @@ public class ExtDirectSpringUtilTest {
     Method methodB = ExtDirectSpringUtil.findMethod(context, "springManagedBean", "methodB");
     Method methodBWithAnnotation = ExtDirectSpringUtil.findMethodWithAnnotation(methodB, ExtDirectMethod.class);
     assertEquals(methodB, methodBWithAnnotation);
-    
+
     Method methodSubB = ExtDirectSpringUtil.findMethod(context, "springManagedSubBean", "methodB");
     methodBWithAnnotation = ExtDirectSpringUtil.findMethodWithAnnotation(methodSubB, ExtDirectMethod.class);
     assertFalse(methodSubB.equals(methodBWithAnnotation));
@@ -88,86 +88,81 @@ public class ExtDirectSpringUtilTest {
     Method d = SimpleBean.class.getMethod("methodD", null);
     Method e = SimpleBean.class.getMethod("methodE", null);
     Method f = SimpleBean.class.getMethod("methodF", null);
-    
+
     assertTrue(ExtDirectSpringUtil.isSupportedAnnotationPresent(a));
     assertTrue(ExtDirectSpringUtil.isSupportedAnnotationPresent(b));
     assertTrue(ExtDirectSpringUtil.isSupportedAnnotationPresent(c));
     assertTrue(ExtDirectSpringUtil.isSupportedAnnotationPresent(d));
     assertFalse(ExtDirectSpringUtil.isSupportedAnnotationPresent(e));
-    assertFalse(ExtDirectSpringUtil.isSupportedAnnotationPresent(f));   
+    assertFalse(ExtDirectSpringUtil.isSupportedAnnotationPresent(f));
   }
 
   @Test
-  public void testFindMethodAndInvoke() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {    
+  public void testFindMethodAndInvoke() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
     ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
-    
+
     try {
       assertNull(ExtDirectSpringUtil.invoke(null, null, null, null));
     } catch (Exception e) {
       assertTrue(e instanceof IllegalArgumentException);
-      assertEquals("ApplicatonContext cannot be null", 
-          e.getMessage());
+      assertEquals("ApplicatonContext cannot be null", e.getMessage());
     }
-    
+
     try {
       assertNull(ExtDirectSpringUtil.invoke(context, null, null, null));
     } catch (Exception e) {
       assertTrue(e instanceof IllegalArgumentException);
-      assertEquals("beanName cannot be null", 
-          e.getMessage());
+      assertEquals("beanName cannot be null", e.getMessage());
     }
-    
+
     try {
       assertNull(ExtDirectSpringUtil.invoke(context, "springManagedBean", null, null));
     } catch (Exception e) {
       assertTrue(e instanceof IllegalArgumentException);
-      assertEquals("methodName cannot be null", 
-          e.getMessage());
+      assertEquals("methodName cannot be null", e.getMessage());
     }
-    
+
     try {
       assertNull(ExtDirectSpringUtil.invoke(context, "springManagedBeanA", "methodA", null));
     } catch (Exception e) {
       assertTrue(e instanceof NoSuchBeanDefinitionException);
       assertEquals("No bean named 'springManagedBeanA' is defined", e.getMessage());
-    }    
-    
+    }
+
     try {
       ExtDirectSpringUtil.invoke(context, "springManagedBean", "methodA", null);
     } catch (Exception e) {
       assertTrue(e instanceof IllegalArgumentException);
-      assertEquals("Invalid remoting method 'springManagedBean.methodA'. Missing ExtDirectSpring annotation", 
-          e.getMessage());
+      assertEquals("Invalid remoting method 'springManagedBean.methodA'. Missing ExtDirectSpring annotation", e.getMessage());
     }
-    
+
     assertFalse((Boolean)ExtDirectSpringUtil.invoke(context, "springManagedBean", "methodB", null));
     assertFalse((Boolean)ExtDirectSpringUtil.invoke(context, "springManagedBean", "methodB", null));
-    assertEquals(Integer.valueOf(3), ExtDirectSpringUtil.invoke(context, "springManagedBean", "sum", new Object[]{1,2}));
-    assertEquals(Integer.valueOf(9), ExtDirectSpringUtil.invoke(context, "springManagedBean", "sum", new Object[]{6,3}));
+    assertEquals(Integer.valueOf(3), ExtDirectSpringUtil.invoke(context, "springManagedBean", "sum", new Object[]{1, 2}));
+    assertEquals(Integer.valueOf(9), ExtDirectSpringUtil.invoke(context, "springManagedBean", "sum", new Object[]{6, 3}));
   }
 
   @Test
-  public void testSerializeObjectToJsonObject() {    
+  public void testSerializeObjectToJsonObject() {
     assertEquals("null", ExtDirectSpringUtil.serializeObjectToJson(null));
     assertEquals("\"a\"", ExtDirectSpringUtil.serializeObjectToJson("a"));
     assertEquals("1", ExtDirectSpringUtil.serializeObjectToJson(1));
     assertEquals("true", ExtDirectSpringUtil.serializeObjectToJson(true));
-    
-    Map<String,Object> map = new LinkedHashMap<String,Object>();
+
+    Map<String, Object> map = new LinkedHashMap<String, Object>();
     map.put("one", 1);
     map.put("two", "2");
     map.put("three", null);
     map.put("four", false);
-    map.put("five", new int[]{1,2});
-    
+    map.put("five", new int[]{1, 2});
+
     String expected = "{\"one\":1,\"two\":\"2\",\"three\":null,\"four\":false,\"five\":[1,2]}";
     assertEquals(expected, ExtDirectSpringUtil.serializeObjectToJson(map));
-    
-    JsonTestBean testBean = new JsonTestBean(1, "2", null, false, new Integer[]{1,2});
+
+    JsonTestBean testBean = new JsonTestBean(1, "2", null, false, new Integer[]{1, 2});
     expected = "{\"a\":1,\"b\":\"2\",\"c\":null,\"d\":false,\"e\":[1,2]}";
     assertEquals(expected, ExtDirectSpringUtil.serializeObjectToJson(testBean));
-    
-    
+
   }
 
   @Test
@@ -176,27 +171,28 @@ public class ExtDirectSpringUtilTest {
     assertEquals("\"a\"", ExtDirectSpringUtil.serializeObjectToJson("a", true));
     assertEquals("1", ExtDirectSpringUtil.serializeObjectToJson(1, true));
     assertEquals("true", ExtDirectSpringUtil.serializeObjectToJson(true, true));
-    
-    Map<String,Object> map = new LinkedHashMap<String,Object>();
+
+    Map<String, Object> map = new LinkedHashMap<String, Object>();
     map.put("one", 1);
     map.put("two", "2");
     map.put("three", null);
     map.put("four", false);
-    map.put("five", new int[]{1,2});
-    
-    String expected = "{\n  \"one\" : 1,\n  \"two\" : \"2\",\n  \"three\" : null,\n  \"four\" : false,\n  \"five\" : [ 1, 2 ]\n}"; 
-    assertEquals(expected, ExtDirectSpringUtil.serializeObjectToJson(map, true).replace("\r",""));
-    
-    JsonTestBean testBean = new JsonTestBean(1, "2", null, false, new Integer[]{1,2});
-    expected = "{\n  \"a\" : 1,\n  \"b\" : \"2\",\n  \"c\" : null,\n  \"d\" : false,\n  \"e\" : [ 1, 2 ]\n}"; 
-    assertEquals(expected, ExtDirectSpringUtil.serializeObjectToJson(testBean, true).replace("\r",""));
+    map.put("five", new int[]{1, 2});
+
+    String expected = "{\n  \"one\" : 1,\n  \"two\" : \"2\",\n  \"three\" : null,\n  \"four\" : false,\n  \"five\" : [ 1, 2 ]\n}";
+    assertEquals(expected, ExtDirectSpringUtil.serializeObjectToJson(map, true).replace("\r", ""));
+
+    JsonTestBean testBean = new JsonTestBean(1, "2", null, false, new Integer[]{1, 2});
+    expected = "{\n  \"a\" : 1,\n  \"b\" : \"2\",\n  \"c\" : null,\n  \"d\" : false,\n  \"e\" : [ 1, 2 ]\n}";
+    assertEquals(expected, ExtDirectSpringUtil.serializeObjectToJson(testBean, true).replace("\r", ""));
 
   }
 
   @Test
   public void testDeserializeJsonToObjectStringTypeReferenceOfT() {
     String json = "[\"1\",\"2\",\"3\",\"4\"]";
-    List<String> result = ExtDirectSpringUtil.deserializeJsonToObject(json, new TypeReference<List<String>>() {/*empty*/});
+    List<String> result = ExtDirectSpringUtil.deserializeJsonToObject(json, new TypeReference<List<String>>() {/*empty*/
+    });
     assertEquals(4, result.size());
     assertEquals("1", result.get(0));
     assertEquals("2", result.get(1));
@@ -210,7 +206,7 @@ public class ExtDirectSpringUtilTest {
     assertEquals("a", ExtDirectSpringUtil.deserializeJsonToObject("\"a\"", String.class));
     assertEquals(Integer.valueOf(1), ExtDirectSpringUtil.deserializeJsonToObject("1", Integer.class));
     assertTrue(ExtDirectSpringUtil.deserializeJsonToObject("true", Boolean.class));
-    
+
     String json1 = "{\"a\":1,\"b\":\"2\",\"c\":null,\"d\":false,\"e\":[1,2]}";
     String json2 = "{\r\n  \"a\" : 1,\r\n  \"b\" : \"2\",\r\n  \"c\" : null,\r\n  \"d\" : false,\r\n  \"e\" : [ 1, 2 ]\r\n}";
     JsonTestBean testBean = ExtDirectSpringUtil.deserializeJsonToObject(json1, JsonTestBean.class);
@@ -218,15 +214,15 @@ public class ExtDirectSpringUtilTest {
     assertEquals("2", testBean.getB());
     assertNull(testBean.getC());
     assertFalse(testBean.getD());
-    assertArrayEquals(new Integer[]{1,2}, testBean.getE());
-    
+    assertArrayEquals(new Integer[]{1, 2}, testBean.getE());
+
     testBean = ExtDirectSpringUtil.deserializeJsonToObject(json2, JsonTestBean.class);
     assertEquals(Integer.valueOf(1), testBean.getA());
     assertEquals("2", testBean.getB());
     assertNull(testBean.getC());
     assertFalse(testBean.getD());
-    assertArrayEquals(new Integer[]{1,2}, testBean.getE());
-    
+    assertArrayEquals(new Integer[]{1, 2}, testBean.getE());
+
   }
 
   @Test
@@ -275,7 +271,8 @@ public class ExtDirectSpringUtilTest {
     ObjectMapper mapper = new ObjectMapper();
     String json = mapper.writeValueAsString(requests);
 
-    List<ExtDirectRequest> desRequests = ExtDirectSpringUtil.deserializeJsonToObject(json, new TypeReference<List<ExtDirectRequest>>() {/*empty*/});
+    List<ExtDirectRequest> desRequests = ExtDirectSpringUtil.deserializeJsonToObject(json, new TypeReference<List<ExtDirectRequest>>() {/*empty*/
+    });
 
     assertEquals(requests.size(), desRequests.size());
     for (int i = 0; i < requests.size(); i++) {
@@ -290,5 +287,4 @@ public class ExtDirectSpringUtilTest {
     }
   }
 
-  
 }
