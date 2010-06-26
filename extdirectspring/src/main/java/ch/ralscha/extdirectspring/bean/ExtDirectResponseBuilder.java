@@ -29,6 +29,7 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
 * An utility class that helps building a {@link ExtDirectResponse}
+* A form handler must return such a response
 *
 * @author Ralph Schaer
 */
@@ -37,7 +38,15 @@ public class ExtDirectResponseBuilder {
   private ExtDirectResponse response;
   private Map<String, Object> result;
   
-  public ExtDirectResponseBuilder(HttpServletRequest request) {
+  /**
+   * Creates a builder that builds the response object 
+   * needed for form handler and form upload handler methods.
+   * Sets the successful flag to true, can be overriden with the
+   * successful() and unsuccessful() methods
+   * 
+   * @param request the current request
+   */
+  public ExtDirectResponseBuilder(final HttpServletRequest request) {
     response = new ExtDirectResponse();
     result = new HashMap<String, Object>();
       
@@ -47,19 +56,40 @@ public class ExtDirectResponseBuilder {
     response.setType(request.getParameter("extType"));
     response.setTid(Integer.parseInt(request.getParameter("extTID")));
         
-    response.setResult(result);
-    
+    successful();
+    response.setResult(result);    
   }
   
-  public void addErrors(BindingResult bindingResult) {      
+  /**
+   * Creates a errors property in the response if there are any errors in the bindingResult
+   * Sets the success flag to false if there are errors
+   * 
+   * @param bindingResult
+   */
+  public void addErrors(final BindingResult bindingResult) {      
     addErrors(null, null, bindingResult);
   }
   
-  public void addErrors(Locale locale, BindingResult bindingResult) {
+  /**
+   * Creates a errors property in the response if there are any errors in the bindingResult
+   * Sets the success flag to false if there are errors
+   * 
+   * @param locale
+   * @param bindingResult
+   */
+  public void addErrors(final Locale locale, final BindingResult bindingResult) {
     addErrors(locale, null, bindingResult);
   }
   
-  public void addErrors(Locale locale, MessageSource messageSource, BindingResult bindingResult) {      
+  /**
+   * Creates a errors property in the response if there are any errors in the bindingResult
+   * Sets the success flag to false if there are errors
+   * 
+   * @param locale
+   * @param messageSource
+   * @param bindingResult
+   */
+  public void addErrors(final Locale locale, final MessageSource messageSource, final BindingResult bindingResult) {      
     if (bindingResult != null && bindingResult.hasFieldErrors()) {
       Map<String, String> errorMap = new HashMap<String, String>();
       for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -79,27 +109,53 @@ public class ExtDirectResponseBuilder {
     }
   }  
   
-  public void addResultProperty(String key, Object value) {
+  /**
+   * Add additional property to the response
+   * 
+   * @param key the key of the property
+   * @param value the value of this property
+   */
+  public void addResultProperty(final String key, final Object value) {
     result.put(key, value);    
   }
   
+  /**
+   * Sets success flag to true
+   */
   public void successful() {
     result.put("success", true);
   }
   
+  /**
+   * Sets success flag to false
+   */
   public void unsuccessful() {
     result.put("success", false);
   }  
   
+  /**
+   * Builds the response object
+   * 
+   * @return the response object
+   */
   public ExtDirectResponse build() {
     return response;
   }
   
-  public void buildAndWriteUploadResponse(HttpServletResponse servletResponse) throws IOException {
+  /**
+   * Builds and writes the response to the OutputStream of the response.
+   * This methods has to be called at the end of a form upload handler method.
+   * 
+   * @param servletResponse current servlet response
+   * @throws IOException 
+   */
+  public void buildAndWriteUploadResponse(final HttpServletResponse servletResponse) throws IOException {
     servletResponse.setContentType("text/html");
-    //TODO: escape &quot;
+
     servletResponse.getOutputStream().write("<html><body><textarea>".getBytes());
-    servletResponse.getOutputStream().write(ExtDirectSpringUtil.serializeObjectToJson(response).getBytes());
+    String responseJson = ExtDirectSpringUtil.serializeObjectToJson(response);
+    responseJson = responseJson.replace("&quot;", "\\&quot;");
+    servletResponse.getOutputStream().write(responseJson.getBytes());
     servletResponse.getOutputStream().write("</textarea></body></html>".getBytes());    
   }
   
