@@ -23,7 +23,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestParam;
-import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectStoreModifyMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectStoreReadMethod;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
@@ -158,7 +157,7 @@ public class PersonAction {
     return deletedPersonsId;
   }
 
-  @ExtDirectMethod
+  @ExtDirectStoreReadMethod
   public Set<State> getStates() {
     List<Person> persons = dataBean.findPersons(null);
     Set<State> states = Sets.newTreeSet();
