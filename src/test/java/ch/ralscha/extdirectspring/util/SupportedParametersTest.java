@@ -24,7 +24,11 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 
-
+/**
+ * Tests for {@link SupportedParameters}.
+ *
+ * @author Ralph Schaer
+ */
 public class SupportedParametersTest {
 
   @Test

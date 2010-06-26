@@ -38,6 +38,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectPollMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectStoreModifyMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectStoreReadMethod;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.SupportedParameters;
 
@@ -178,7 +179,14 @@ public class ApiController implements ApplicationContextAware {
             if (isFormHandlerMethod(method)) {
               remotingApi.addAction(beanName, method.getName(), 0, true);
             } else {
-              addAction(remotingApi, beanName, method);
+              Class< ? >[] parameterTypes = method.getParameterTypes();
+              int paramLength = 0;
+              for (Class< ? > parameterType : parameterTypes) {
+                if (!SupportedParameters.isSupported(parameterType)) {
+                  paramLength++;
+                }
+              }
+              remotingApi.addAction(beanName, method.getName(), paramLength, null);
             }
           }
         } else if (AnnotationUtils.findAnnotation(method, ExtDirectPollMethod.class) != null) {
@@ -189,11 +197,19 @@ public class ApiController implements ApplicationContextAware {
           }
         } else if (AnnotationUtils.findAnnotation(method, ExtDirectStoreModifyMethod.class) != null) {
           if (isSameGroup(group, AnnotationUtils.findAnnotation(method, ExtDirectStoreModifyMethod.class).group())) {
-            remotingApi.addAction(beanName, method.getName(), 1, false);
+            remotingApi.addAction(beanName, method.getName(), 1, null);
           }
         } else if (AnnotationUtils.findAnnotation(method, ExtDirectStoreReadMethod.class) != null) {
           if (isSameGroup(group, AnnotationUtils.findAnnotation(method, ExtDirectStoreReadMethod.class).group())) {
-            remotingApi.addAction(beanName, method.getName(), 1, false);
+            Class< ? >[] parameterTypes = method.getParameterTypes();
+            int paramLength = 0;
+            for (Class< ? > parameterType : parameterTypes) {
+              if (ExtDirectStoreReadRequest.class.isAssignableFrom(parameterType)) {
+                paramLength = 1;
+                break;
+              }
+            }
+            remotingApi.addAction(beanName, method.getName(), paramLength, null);
           }
         }
       }
@@ -220,17 +236,6 @@ public class ApiController implements ApplicationContextAware {
       }
     }
     return false;
-  }
-
-  private void addAction(RemotingApi remotingApi, String beanName, Method method) {
-    Class< ? >[] parameterTypes = method.getParameterTypes();
-    int paramLength = 0;
-    for (Class< ? > parameterType : parameterTypes) {
-      if (!SupportedParameters.isSupported(parameterType)) {
-        paramLength++;
-      }
-    }
-    remotingApi.addAction(beanName, method.getName(), paramLength, null);
   }
 
   private Map<String, Object> getAllBeanDefinitions() {
