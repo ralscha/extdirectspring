@@ -264,72 +264,7 @@ public class RouterControllerTest {
   }
 
 
-  @Test
-  public void pollNoArguments() throws Exception {
-    ExtDirectPollResponse resp = controller.poll("poll", "handleMessagePoll", "message", request, response, Locale.ENGLISH);
-    assertNotNull(resp);
-    assertEquals("event", resp.getType());
-    assertEquals("message", resp.getName());
-    assertTrue(((String)resp.getData()).startsWith("Successfully polled at: "));
-  }
-
-  @Test
-  public void pollRequiredArgument() throws Exception {
-    request.setParameter("id", "2");
-    ExtDirectPollResponse resp = controller.poll("poll", "handleMessage2", "message2", request, response, Locale.ENGLISH);
-    assertNotNull(resp);
-    assertEquals("event", resp.getType());
-    assertEquals("message2", resp.getName());
-    assertEquals(Integer.valueOf(4), resp.getData());
-  }
-
-  @Test
-  @ExpectedException(IllegalArgumentException.class)
-  public void pollRequiredArgumentNoRequestParameter() throws Exception {
-    ExtDirectPollResponse resp = controller.poll("poll", "handleMessage2", "message2", request, response, Locale.ENGLISH);
-    assertNotNull(resp);
-    assertEquals("event", resp.getType());
-    assertEquals("message2", resp.getName());
-    assertEquals(Integer.valueOf(4), resp.getData());
-  }
-
-  @Test
-  public void pollDefaultValueArgumentWithRequestParameter() throws Exception {
-    request.setParameter("id", "7");
-    ExtDirectPollResponse resp = controller.poll("poll", "handleMessage3", "message3", request, response, Locale.ENGLISH);
-    assertNotNull(resp);
-    assertEquals("event", resp.getType());
-    assertEquals("message3", resp.getName());
-    assertEquals(Integer.valueOf(14), resp.getData());
-  }
-
-  @Test
-  public void pollDefaultValueArgumentNoRequestParameter() throws Exception {
-    ExtDirectPollResponse resp = controller.poll("poll", "handleMessage3", "message3", request, response, Locale.ENGLISH);
-    assertNotNull(resp);
-    assertEquals("event", resp.getType());
-    assertEquals("message3", resp.getName());
-    assertEquals(Integer.valueOf(2), resp.getData());
-  }
-
-  @Test
-  public void pollNotRequiredArgumentWithRequestParameter() throws Exception {
-    request.setParameter("id", "3");
-    ExtDirectPollResponse resp = controller.poll("poll", "handleMessage4", "message4", request, response, Locale.ENGLISH);
-    assertNotNull(resp);
-    assertEquals("event", resp.getType());
-    assertEquals("message4", resp.getName());
-    assertEquals(Integer.valueOf(6), resp.getData());
-  }
-
-  @Test
-  public void pollNotRequiredArgumentNoRequestParameter() throws Exception {
-    ExtDirectPollResponse resp = controller.poll("poll", "handleMessage4", "message4", request, response, Locale.ENGLISH);
-    assertNotNull(resp);
-    assertEquals("event", resp.getType());
-    assertEquals("message4", resp.getName());
-    assertNull(resp.getData());
-  }
+ 
 
   
 //  @Test

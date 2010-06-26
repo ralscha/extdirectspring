@@ -16,13 +16,34 @@
 
 package ch.ralscha.extdirectspring.mock;
 
+import java.util.List;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectPollMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectStoreModifyMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectStoreReadMethod;
 
 
-public class BeanWithoutExtDirectAction {
+public class BeanNotSpringWExtDirectMethods {
   
   @ExtDirectMethod
-  public void aMethod() { 
+  public void methodA() { 
     //a dummy method
   }
+  
+  @ExtDirectPollMethod
+  public void methodB() {
+    //a dummy method
+  }
+  
+  @ExtDirectStoreModifyMethod(type=Integer.class) 
+  public List<Integer> methodC(List<Integer> ids) {
+    //a dummy method
+    return null;
+  }
+  
+  @ExtDirectStoreReadMethod
+  public List<Integer> methodD() {
+    //a dummy method
+    return null;
+  }  
 }

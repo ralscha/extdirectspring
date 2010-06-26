@@ -43,9 +43,11 @@ public enum ApiCache {
   }
 
   public String get(ApiCacheKey key) {
-    SoftReference<String> apiStringReference = cache.get(key);
-    if (apiStringReference != null && apiStringReference.get() != null) {
-      return apiStringReference.get();
+    if (key != null) {
+      SoftReference<String> apiStringReference = cache.get(key);
+      if (apiStringReference != null && apiStringReference.get() != null) {
+        return apiStringReference.get();
+      }
     }
     return null;
   }
