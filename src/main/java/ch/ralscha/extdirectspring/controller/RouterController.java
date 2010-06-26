@@ -241,6 +241,7 @@ public class RouterController implements ApplicationContextAware {
       
       int jsonParamIndex = 0;
             
+      boolean isDirectStoreReadRequest = false;
       ExtDirectStoreReadRequest directStoreReadRequest = null;
       
       List<Object> directStoreModifyRecords = null;
@@ -250,6 +251,7 @@ public class RouterController implements ApplicationContextAware {
       Map<String,Object> remainingParameters = null;
       
       if (isDirectStoreReadMethod(method)) {
+        isDirectStoreReadRequest = true;
         Method beanMethod = ExtDirectSpringUtil.findMethodWithAnnotation(method, ExtDirectStoreReadMethod.class);
         parameterAnnotations = beanMethod.getParameterAnnotations();
         if (directRequest.getData() != null && directRequest.getData().length > 0) {
@@ -301,7 +303,7 @@ public class RouterController implements ApplicationContextAware {
             parameters[paramIndex] = directStoreReadRequest;
           } else if (directStoreModifyRecords != null && parameterType.isAssignableFrom(directStoreModifyRecords.getClass())) {
             parameters[paramIndex] = directStoreModifyRecords;
-          } else if ((directStoreReadRequest != null || directStoreModifyRecords != null) && 
+          } else if ((isDirectStoreReadRequest || directStoreModifyRecords != null) && 
               containsAnnotation(parameterAnnotations[paramIndex], RequestParam.class)) {
             parameters[paramIndex] = handleRequestParam(null, remainingParameters, parameterAnnotations[paramIndex], parameterType);            
           } else if (directRequest.getData() != null && directRequest.getData().length > jsonParamIndex) {

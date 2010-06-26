@@ -16,6 +16,8 @@
 
 package ch.ralscha.extdirectspring.bean;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 /**
 *
 * Class representing the request of a DirectStore read call
@@ -62,10 +64,12 @@ public class ExtDirectStoreReadRequest {
     this.dir = dir;
   }
 
+  @JsonIgnore
   public boolean isAscendingSort() {
     return ("ASC".equals(getDir()));
   }
   
+  @JsonIgnore
   public boolean isDecendingSort() {
     return ("DESC".equals(getDir()));
   }
