@@ -74,4 +74,9 @@ public class ExtDirectStoreResponse<T> {
     this.success = success;
   }
 
+  @Override
+  public String toString() {
+    return "ExtDirectStoreResponse [records=" + records + ", success=" + success + ", total=" + total + "]";
+  }
+
 }

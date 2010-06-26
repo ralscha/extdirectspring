@@ -82,4 +82,10 @@ public class ExtDirectStoreReadRequest {
     this.sort = sort;
   }
 
+  @Override
+  public String toString() {
+    return "ExtDirectStoreReadRequest [dir=" + dir + ", limit=" + limit + ", query=" + query + ", sort=" + sort + ", start=" + start + "]";
+  }
+
+  
 }
