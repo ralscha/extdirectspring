@@ -17,6 +17,8 @@
 package ch.ralscha.extdirectspring.api;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import org.junit.Test;
@@ -54,6 +56,24 @@ public class ApiCacheTest {
     assertEquals("six", ApiCache.INSTANCE.get(key6));
     assertEquals("seven", ApiCache.INSTANCE.get(key7));
 
+    assertFalse(key1.equals("test"));
+    assertFalse(key1.equals(null));
+    
+    assertTrue(key1.equals(key1));
+    assertTrue(key2.equals(key2));
+    assertTrue(key3.equals(key3));
+    assertTrue(key4.equals(key4));
+    assertTrue(key5.equals(key5));
+    assertTrue(key6.equals(key6));
+    assertTrue(key7.equals(key7));
+
+    assertFalse(key2.equals(key1));
+    assertFalse(key3.equals(key1));
+    assertFalse(key4.equals(key1));
+    assertFalse(key5.equals(key1));
+    assertFalse(key6.equals(key1));
+    assertFalse(key7.equals(key1));
+    
   }
 
 }
