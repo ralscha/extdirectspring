@@ -18,11 +18,9 @@ package ch.ralscha.extdirectspring.mock;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import org.hibernate.validator.constraints.NotEmpty;
 
 public class FormInfo {
 
-  @NotEmpty
   private String name;
   private int age;
   private boolean admin;

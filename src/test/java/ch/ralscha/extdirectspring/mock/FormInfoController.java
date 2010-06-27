@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +35,7 @@ public class FormInfoController {
   @ExtDirectMethod(group = "group3")
   @ResponseBody
   @RequestMapping(value = "/updateInfo", method = RequestMethod.POST)
-  public ExtDirectResponse updateInfo(Locale locale, HttpServletRequest request, @Valid FormInfo formInfo, BindingResult result) {
+  public ExtDirectResponse updateInfo(Locale locale, HttpServletRequest request, FormInfo formInfo, BindingResult result) {
     ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
     builder.addErrors(locale, result);
     return builder.build();
@@ -44,7 +43,7 @@ public class FormInfoController {
 
   @ExtDirectMethod(group = "group2")
   @RequestMapping(value = "/upload", method = RequestMethod.POST)
-  public void upload(Locale locale, HttpServletRequest request, HttpServletResponse response, @Valid FormInfo formInfo, BindingResult result)
+  public void upload(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo, BindingResult result)
       throws IOException {
     ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
     builder.addErrors(locale, result);

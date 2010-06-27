@@ -140,6 +140,14 @@ public class ExtDirectSpringUtilTest {
     assertFalse((Boolean)ExtDirectSpringUtil.invoke(context, "springManagedBean", "methodB", null));
     assertEquals(Integer.valueOf(3), ExtDirectSpringUtil.invoke(context, "springManagedBean", "sum", new Object[]{1, 2}));
     assertEquals(Integer.valueOf(9), ExtDirectSpringUtil.invoke(context, "springManagedBean", "sum", new Object[]{6, 3}));
+    
+    
+    try {
+      ExtDirectSpringUtil.findMethod(context, "springManagedBean", "methodC");
+    } catch (Exception e) {
+      assertTrue(e instanceof IllegalArgumentException);
+      assertEquals("Method 'springManagedBean.methodC' not found", e.getMessage());
+    }
   }
 
   @Test

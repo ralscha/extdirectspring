@@ -48,7 +48,7 @@ public class MethodCacheTest {
     assertNull(MethodCache.INSTANCE.get("methodCacheTest", "testPu"));
     assertNull(MethodCache.INSTANCE.get("methodCacheTes", "testPut"));
     assertEquals(thisMethod, MethodCache.INSTANCE.get("methodCacheTest", "testPut"));
-
+    
   }
 
 }
