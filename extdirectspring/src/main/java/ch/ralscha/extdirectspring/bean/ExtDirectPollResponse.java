@@ -23,7 +23,7 @@ package ch.ralscha.extdirectspring.bean;
 */
 public class ExtDirectPollResponse {
 
-  private String type = "event";
+  private final String type = "event";
   private String name;
   private Object data;
 

@@ -33,7 +33,7 @@ public enum MethodCache {
    */
   INSTANCE;
 
-  private Map<Key, Method> cache;
+  private final Map<Key, Method> cache;
 
   private MethodCache() {
     cache = new ConcurrentHashMap<Key, Method>();
@@ -67,8 +67,8 @@ public enum MethodCache {
 
 final class Key {
 
-  private String beanName;
-  private String methodName;
+  private final String beanName;
+  private final String methodName;
 
   public Key(String beanName, String methodName) {
     this.beanName = beanName;

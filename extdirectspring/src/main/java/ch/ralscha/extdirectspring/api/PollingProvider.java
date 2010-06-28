@@ -23,9 +23,9 @@ import org.springframework.util.StringUtils;
  */
 class PollingProvider {
 
-  private String beanName;
-  private String method;
-  private String event;
+  private final String beanName;
+  private final String method;
+  private final String event;
 
   public PollingProvider(String beanName, String method, String event) {
     this.beanName = beanName;

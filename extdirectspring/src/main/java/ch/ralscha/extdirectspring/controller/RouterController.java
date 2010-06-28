@@ -81,7 +81,7 @@ public class RouterController implements ApplicationContextAware {
   private ApplicationContext context;
 
   @Override
-  public void setApplicationContext(ApplicationContext context) throws BeansException {
+  public void setApplicationContext(ApplicationContext context)  {
     this.context = context;
   }
 
@@ -211,16 +211,16 @@ public class RouterController implements ApplicationContextAware {
 
   }
 
-  private final boolean isFormLoadMethod(Method method) {
+  private boolean isFormLoadMethod(Method method) {
     ExtDirectMethod annotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
     return annotation != null && annotation.formLoad();
   }
 
-  private final boolean isDirectStoreReadMethod(Method method) {
+  private boolean isDirectStoreReadMethod(Method method) {
     return AnnotationUtils.findAnnotation(method, ExtDirectStoreReadMethod.class) != null;
   }
 
-  private final Class<?> getDirectStoreType(Method method) {
+  private Class<?> getDirectStoreType(Method method) {
     ExtDirectStoreModifyMethod annotation = AnnotationUtils.findAnnotation(method, ExtDirectStoreModifyMethod.class);
     if (annotation != null) {
       return annotation.type();
@@ -228,7 +228,7 @@ public class RouterController implements ApplicationContextAware {
     return null;
   }
 
-  private final Object processRemotingRequest(HttpServletRequest request, HttpServletResponse response, Locale locale,
+  private Object processRemotingRequest(HttpServletRequest request, HttpServletResponse response, Locale locale,
       ExtDirectRequest directRequest) throws Exception {
 
     Method method = ExtDirectSpringUtil.findMethod(context, directRequest.getAction(), directRequest.getMethod());
@@ -240,7 +240,7 @@ public class RouterController implements ApplicationContextAware {
       ExtDirectStoreReadRequest directStoreReadRequest = null;
 
       List<Object> directStoreModifyRecords = null;
-      Class<?> directStoreModifyType = null;
+      Class<?> directStoreModifyType  ;
 
       Annotation[][] parameterAnnotations = null;
       Map<String, Object> remainingParameters = null;

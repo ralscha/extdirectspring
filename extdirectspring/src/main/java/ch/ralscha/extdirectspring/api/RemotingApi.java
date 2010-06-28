@@ -30,12 +30,12 @@ import org.springframework.util.StringUtils;
 @JsonWriteNullProperties(false)
 class RemotingApi {
 
-  private String url;
-  private String namespace;
+  private final String url;
+  private final String namespace;
   private final String type = "remoting";
-  private Map<String, List<Action>> actions;
+  private final Map<String, List<Action>> actions;
 
-  private List<PollingProvider> pollingProviders;
+  private final List<PollingProvider> pollingProviders;
 
   public RemotingApi(final String url, final String namespace) {
     this.actions = new HashMap<String, List<Action>>();

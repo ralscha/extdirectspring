@@ -31,7 +31,7 @@ public enum SupportedParameterTypes {
 
   SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class), SESSION(HttpSession.class), LOCALE(Locale.class);
 
-  private Class<?> clazz;
+  private final Class<?> clazz;
 
   private SupportedParameterTypes(Class<?> clazz) {
     this.clazz = clazz;

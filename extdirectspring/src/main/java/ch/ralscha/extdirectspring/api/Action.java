@@ -25,9 +25,9 @@ import org.codehaus.jackson.annotate.JsonWriteNullProperties;
  */
 class Action {
 
-  private String name;
-  private int len;
-  private Boolean formHandler;
+  private final String name;
+  private final int len;
+  private final Boolean formHandler;
 
   public Action(final String name, final int len, final Boolean formHandler) {
     this.name = name;

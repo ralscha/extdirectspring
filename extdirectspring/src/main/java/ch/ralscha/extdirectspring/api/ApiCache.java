@@ -32,7 +32,7 @@ enum ApiCache {
    */
   INSTANCE;
 
-  private Map<ApiCacheKey, SoftReference<String>> cache;
+  private final Map<ApiCacheKey, SoftReference<String>> cache;
 
   private ApiCache() {
     cache = new ConcurrentHashMap<ApiCacheKey, SoftReference<String>>();
