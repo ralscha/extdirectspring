@@ -14,8 +14,8 @@
 
   <inceptionYear>2010</inceptionYear>
 
-  <name>Ext Direct Spring</name>
-  <description>Implements the Ext Direct specification with Java/Spring 3</description>
+  <name>Ext.Direct Spring</name>
+  <description>Implements the Ext.Direct specification with Java/Spring 3</description>
   <url>http://code.google.com/p/extdirectspring/</url>
 
   <developers>
