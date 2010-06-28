@@ -35,8 +35,8 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 */
 public class ExtDirectResponseBuilder {
 
-  private ExtDirectResponse response;
-  private Map<String, Object> result;
+  private final ExtDirectResponse response;
+  private final Map<String, Object> result;
 
   /**
    * Creates a builder that builds the response object 
@@ -148,8 +148,9 @@ public class ExtDirectResponseBuilder {
    * 
    * @param servletResponse current servlet response
    * @throws IOException 
+   * @throws IOException 
    */
-  public void buildAndWriteUploadResponse(final HttpServletResponse servletResponse) throws IOException {
+  public void buildAndWriteUploadResponse(final HttpServletResponse servletResponse) throws IOException  {
     servletResponse.setContentType("text/html");
 
     servletResponse.getOutputStream().write("<html><body><textarea>".getBytes());

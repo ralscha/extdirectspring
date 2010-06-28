@@ -51,7 +51,7 @@ public class ApiController implements ApplicationContextAware {
   private ApplicationContext context;
 
   @Override
-  public void setApplicationContext(ApplicationContext context) throws BeansException {
+  public void setApplicationContext(ApplicationContext context) {
     this.context = context;
   }
 

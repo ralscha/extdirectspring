@@ -26,12 +26,12 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
  */
 class ApiCacheKey {
 
-  private String apiNs;
-  private String actionNs;
-  private String remotingApiVar;
-  private String pollingUrlsVar;
-  private String group;
-  private boolean debug;
+  private final String apiNs;
+  private final String actionNs;
+  private final String remotingApiVar;
+  private final String pollingUrlsVar;
+  private final String group;
+  private final boolean debug;
 
   public ApiCacheKey(final String apiNs, final String actionNs, final String remotingApiVar, final String pollingUrlsVar,
       final String group, final boolean debug) {
