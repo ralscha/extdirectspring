@@ -166,11 +166,6 @@ public class ExtDirectSpringUtil {
       throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
     Method method = findMethod(context, beanName, methodName);
     Object bean = context.getBean(beanName);
-
-    if (bean == null) {
-      throw new IllegalArgumentException("Bean '" + beanName + "' not found");
-    }
-
     return method.invoke(bean, params);
   }
 
