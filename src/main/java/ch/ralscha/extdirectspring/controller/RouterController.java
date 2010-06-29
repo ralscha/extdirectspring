@@ -37,7 +37,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -98,39 +97,34 @@ public class RouterController implements ApplicationContextAware {
       beanMethod = ExtDirectSpringUtil.findMethodWithAnnotation(beanMethod, ExtDirectPollMethod.class);
     }
 
-    if (beanMethod != null) {
+    Annotation[][] parameterAnnotations = beanMethod.getParameterAnnotations();
 
-      Annotation[][] parameterAnnotations = beanMethod.getParameterAnnotations();
+    Class<?>[] parameterTypes = beanMethod.getParameterTypes();
+    Object[] parameters = null;
+    if (parameterTypes.length > 0) {
+      parameters = new Object[parameterTypes.length];
+      int paramIndex = 0;
+      for (Class<?> parameterType : parameterTypes) {
 
-      Class<?>[] parameterTypes = beanMethod.getParameterTypes();
-      Object[] parameters = null;
-      if (parameterTypes.length > 0) {
-        parameters = new Object[parameterTypes.length];
-        int paramIndex = 0;
-        for (Class<?> parameterType : parameterTypes) {
-
-          if (SupportedParameterTypes.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
-            parameters[paramIndex] = response;
-          } else if (SupportedParameterTypes.SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
-            parameters[paramIndex] = request;
-          } else if (SupportedParameterTypes.SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
-            parameters[paramIndex] = request.getSession();
-          } else if (SupportedParameterTypes.LOCALE.getSupportedClass().isAssignableFrom(parameterType)) {
-            parameters[paramIndex] = locale;
-          } else {
-            parameters[paramIndex] = handleRequestParam(request, null, parameterAnnotations[paramIndex], parameterType);
-          }
-
-          paramIndex++;
+        if (SupportedParameterTypes.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
+          parameters[paramIndex] = response;
+        } else if (SupportedParameterTypes.SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
+          parameters[paramIndex] = request;
+        } else if (SupportedParameterTypes.SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
+          parameters[paramIndex] = request.getSession();
+        } else if (SupportedParameterTypes.LOCALE.getSupportedClass().isAssignableFrom(parameterType)) {
+          parameters[paramIndex] = locale;
+        } else {
+          parameters[paramIndex] = handleRequestParam(request, null, parameterAnnotations[paramIndex], parameterType);
         }
+
+        paramIndex++;
       }
-
-      directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, method, parameters));
-      return directPollResponse;
-
     }
 
-    throw new IllegalArgumentException("Method '" + beanName + "." + method + "' not found");
+    directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, method, parameters));
+    return directPollResponse;
+
 
   }
 
@@ -138,21 +132,18 @@ public class RouterController implements ApplicationContextAware {
   public String router(@RequestParam(value = "extAction") String extAction, @RequestParam(value = "extMethod") String extMethod) {
 
     Method method = ExtDirectSpringUtil.findMethod(context, extAction, extMethod);
-    if (method != null) {
-      RequestMapping annotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-      if (annotation != null && StringUtils.hasText(annotation.value()[0])) {
+    
+    RequestMapping annotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
+    if (annotation != null && StringUtils.hasText(annotation.value()[0])) {
 
-        String forwardPath = annotation.value()[0];
-        if (forwardPath.charAt(0) == '/' && forwardPath.length() > 1) {
-          forwardPath = forwardPath.substring(1, forwardPath.length());
-        }
-
-        return "forward:" + forwardPath;
+      String forwardPath = annotation.value()[0];
+      if (forwardPath.charAt(0) == '/' && forwardPath.length() > 1) {
+        forwardPath = forwardPath.substring(1, forwardPath.length());
       }
-      throw new IllegalArgumentException("Invalid remoting form method: " + extAction + "." + extMethod);
-    }
 
-    return null;
+      return "forward:" + forwardPath;
+    }
+    throw new IllegalArgumentException("Invalid remoting form method: " + extAction + "." + extMethod);
 
   }
 
@@ -232,100 +223,97 @@ public class RouterController implements ApplicationContextAware {
       ExtDirectRequest directRequest) throws Exception {
 
     Method method = ExtDirectSpringUtil.findMethod(context, directRequest.getAction(), directRequest.getMethod());
-    if (method != null) {
 
-      int jsonParamIndex = 0;
+    int jsonParamIndex = 0;
 
-      boolean isDirectStoreReadRequest = false;
-      ExtDirectStoreReadRequest directStoreReadRequest = null;
+    boolean isDirectStoreReadRequest = false;
+    ExtDirectStoreReadRequest directStoreReadRequest = null;
 
-      List<Object> directStoreModifyRecords = null;
-      Class<?> directStoreModifyType  ;
+    List<Object> directStoreModifyRecords = null;
+    Class<?> directStoreModifyType  ;
 
-      Annotation[][] parameterAnnotations = null;
-      Map<String, Object> remainingParameters = null;
+    Annotation[][] parameterAnnotations = null;
+    Map<String, Object> remainingParameters = null;
 
-      if (isDirectStoreReadMethod(method)) {
-        isDirectStoreReadRequest = true;
-        Method beanMethod = ExtDirectSpringUtil.findMethodWithAnnotation(method, ExtDirectStoreReadMethod.class);
-        parameterAnnotations = beanMethod.getParameterAnnotations();
-        if (directRequest.getData() != null && directRequest.getData().length > 0) {
-          directStoreReadRequest = new ExtDirectStoreReadRequest();
-          remainingParameters = fillObjectFromMap(directStoreReadRequest, (Map)directRequest.getData()[0]);
-          jsonParamIndex = 1;
-        }
-      } else if ((directStoreModifyType = getDirectStoreType(method)) != null) {
-        Method beanMethod = ExtDirectSpringUtil.findMethodWithAnnotation(method, ExtDirectStoreModifyMethod.class);
-        parameterAnnotations = beanMethod.getParameterAnnotations();
+    if (isDirectStoreReadMethod(method)) {
+      isDirectStoreReadRequest = true;
+      Method beanMethod = ExtDirectSpringUtil.findMethodWithAnnotation(method, ExtDirectStoreReadMethod.class);
+      parameterAnnotations = beanMethod.getParameterAnnotations();
+      if (directRequest.getData() != null && directRequest.getData().length > 0) {
+        directStoreReadRequest = new ExtDirectStoreReadRequest();
+        remainingParameters = fillObjectFromMap(directStoreReadRequest, (Map)directRequest.getData()[0]);
+        jsonParamIndex = 1;
+      }
+    } else if ((directStoreModifyType = getDirectStoreType(method)) != null) {
+      Method beanMethod = ExtDirectSpringUtil.findMethodWithAnnotation(method, ExtDirectStoreModifyMethod.class);
+      parameterAnnotations = beanMethod.getParameterAnnotations();
 
-        if (directRequest.getData() != null && directRequest.getData().length > 0) {
-          Map<String, Object> jsonData = (LinkedHashMap<String, Object>)directRequest.getData()[0];
+      if (directRequest.getData() != null && directRequest.getData().length > 0) {
+        Map<String, Object> jsonData = (LinkedHashMap<String, Object>)directRequest.getData()[0];
 
-          ArrayList<Object> records = (ArrayList<Object>)jsonData.get("records");
-          directStoreModifyRecords = convertObjectEntriesToType(records, directStoreModifyType);
-          jsonParamIndex = 1;
+        ArrayList<Object> records = (ArrayList<Object>)jsonData.get("records");
+        directStoreModifyRecords = convertObjectEntriesToType(records, directStoreModifyType);
+        jsonParamIndex = 1;
 
-          remainingParameters = new HashMap<String, Object>();
-          for (Entry<String, Object> entry : jsonData.entrySet()) {
-            if (!"records".equals(entry.getKey())) {
-              remainingParameters.put(entry.getKey(), entry.getValue());
-            }
+        remainingParameters = new HashMap<String, Object>();
+        for (Entry<String, Object> entry : jsonData.entrySet()) {
+          if (!"records".equals(entry.getKey())) {
+            remainingParameters.put(entry.getKey(), entry.getValue());
           }
-
         }
 
       }
 
-      Class<?>[] parameterTypes = method.getParameterTypes();
-      Object[] parameters = null;
-
-      if (parameterTypes.length > 0) {
-        parameters = new Object[parameterTypes.length];
-        int paramIndex = 0;
-        for (Class<?> parameterType : parameterTypes) {
-
-          if (SupportedParameterTypes.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
-            parameters[paramIndex] = response;
-          } else if (SupportedParameterTypes.SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
-            parameters[paramIndex] = request;
-          } else if (SupportedParameterTypes.SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
-            parameters[paramIndex] = request.getSession();
-          } else if (SupportedParameterTypes.LOCALE.getSupportedClass().isAssignableFrom(parameterType)) {
-            parameters[paramIndex] = locale;
-          } else if (directStoreReadRequest != null && ExtDirectStoreReadRequest.class.isAssignableFrom(parameterType)) {
-            parameters[paramIndex] = directStoreReadRequest;
-          } else if (directStoreModifyRecords != null && parameterType.isAssignableFrom(directStoreModifyRecords.getClass())) {
-            parameters[paramIndex] = directStoreModifyRecords;
-          } else if ((isDirectStoreReadRequest || directStoreModifyRecords != null)
-              && containsAnnotation(parameterAnnotations[paramIndex], RequestParam.class)) {
-            parameters[paramIndex] = handleRequestParam(null, remainingParameters, parameterAnnotations[paramIndex], parameterType);
-          } else if (directRequest.getData() != null && directRequest.getData().length > jsonParamIndex) {
-
-            Object jsonParam = directRequest.getData()[jsonParamIndex];
-
-            if (parameterType.getClass().equals(String.class)) {
-              parameters[paramIndex] = ExtDirectSpringUtil.serializeObjectToJson(jsonParam);
-            } else if (parameterType.isPrimitive()) {
-              parameters[paramIndex] = jsonParam;
-            } else {
-              parameters[paramIndex] = ExtDirectSpringUtil.deserializeJsonToObject(ExtDirectSpringUtil.serializeObjectToJson(jsonParam),
-                  parameterType);
-            }
-
-            jsonParamIndex++;
-          } else {
-            throw new IllegalArgumentException(
-                "Error, param mismatch. Please check your remoting method signature to ensure all supported param types are used.");
-          }
-
-          paramIndex++;
-        }
-      }
-
-      return ExtDirectSpringUtil.invoke(context, directRequest.getAction(), directRequest.getMethod(), parameters);
     }
 
-    return null;
+    Class<?>[] parameterTypes = method.getParameterTypes();
+    Object[] parameters = null;
+
+    if (parameterTypes.length > 0) {
+      parameters = new Object[parameterTypes.length];
+      int paramIndex = 0;
+      for (Class<?> parameterType : parameterTypes) {
+
+        if (SupportedParameterTypes.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
+          parameters[paramIndex] = response;
+        } else if (SupportedParameterTypes.SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
+          parameters[paramIndex] = request;
+        } else if (SupportedParameterTypes.SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
+          parameters[paramIndex] = request.getSession();
+        } else if (SupportedParameterTypes.LOCALE.getSupportedClass().isAssignableFrom(parameterType)) {
+          parameters[paramIndex] = locale;
+        } else if (directStoreReadRequest != null && ExtDirectStoreReadRequest.class.isAssignableFrom(parameterType)) {
+          parameters[paramIndex] = directStoreReadRequest;
+        } else if (directStoreModifyRecords != null && parameterType.isAssignableFrom(directStoreModifyRecords.getClass())) {
+          parameters[paramIndex] = directStoreModifyRecords;
+        } else if ((isDirectStoreReadRequest || directStoreModifyRecords != null)
+            && containsAnnotation(parameterAnnotations[paramIndex], RequestParam.class)) {
+          parameters[paramIndex] = handleRequestParam(null, remainingParameters, parameterAnnotations[paramIndex], parameterType);
+        } else if (directRequest.getData() != null && directRequest.getData().length > jsonParamIndex) {
+
+          Object jsonParam = directRequest.getData()[jsonParamIndex];
+
+          if (parameterType.getClass().equals(String.class)) {
+            parameters[paramIndex] = ExtDirectSpringUtil.serializeObjectToJson(jsonParam);
+          } else if (parameterType.isPrimitive()) {
+            parameters[paramIndex] = jsonParam;
+          } else {
+            parameters[paramIndex] = ExtDirectSpringUtil.deserializeJsonToObject(ExtDirectSpringUtil.serializeObjectToJson(jsonParam),
+                parameterType);
+          }
+
+          jsonParamIndex++;
+        } else {
+          throw new IllegalArgumentException(
+              "Error, param mismatch. Please check your remoting method signature to ensure all supported param types are used.");
+        }
+
+        paramIndex++;
+      }
+    }
+
+    return ExtDirectSpringUtil.invoke(context, directRequest.getAction(), directRequest.getMethod(), parameters);
+
   }
 
   private Object handleRequestParam(HttpServletRequest request, Map<String, Object> valueContainer, Annotation[] parameterAnnotations,

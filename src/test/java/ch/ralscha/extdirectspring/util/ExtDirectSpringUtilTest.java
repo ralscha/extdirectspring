@@ -22,6 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -103,6 +104,7 @@ public class ExtDirectSpringUtilTest {
 
     try {
       assertNull(ExtDirectSpringUtil.invoke(null, null, null, null));
+      fail("has to throw a IllegalArgumentException");
     } catch (Exception e) {
       assertTrue(e instanceof IllegalArgumentException);
       assertEquals("ApplicatonContext cannot be null", e.getMessage());
@@ -110,6 +112,7 @@ public class ExtDirectSpringUtilTest {
 
     try {
       assertNull(ExtDirectSpringUtil.invoke(context, null, null, null));
+      fail("has to throw a IllegalArgumentException");
     } catch (Exception e) {
       assertTrue(e instanceof IllegalArgumentException);
       assertEquals("beanName cannot be null", e.getMessage());
@@ -117,6 +120,7 @@ public class ExtDirectSpringUtilTest {
 
     try {
       assertNull(ExtDirectSpringUtil.invoke(context, "springManagedBean", null, null));
+      fail("has to throw a IllegalArgumentException");
     } catch (Exception e) {
       assertTrue(e instanceof IllegalArgumentException);
       assertEquals("methodName cannot be null", e.getMessage());
@@ -124,6 +128,7 @@ public class ExtDirectSpringUtilTest {
 
     try {
       assertNull(ExtDirectSpringUtil.invoke(context, "springManagedBeanA", "methodA", null));
+      fail("has to throw a NoSuchBeanDefinitionException");
     } catch (Exception e) {
       assertTrue(e instanceof NoSuchBeanDefinitionException);
       assertEquals("No bean named 'springManagedBeanA' is defined", e.getMessage());
@@ -131,6 +136,7 @@ public class ExtDirectSpringUtilTest {
 
     try {
       ExtDirectSpringUtil.invoke(context, "springManagedBean", "methodA", null);
+      fail("has to throw a IllegalArgumentException");
     } catch (Exception e) {
       assertTrue(e instanceof IllegalArgumentException);
       assertEquals("Invalid remoting method 'springManagedBean.methodA'. Missing ExtDirectSpring annotation", e.getMessage());
@@ -144,6 +150,7 @@ public class ExtDirectSpringUtilTest {
     
     try {
       ExtDirectSpringUtil.findMethod(context, "springManagedBean", "methodC");
+      fail("has to throw a IllegalArgumentException");
     } catch (Exception e) {
       assertTrue(e instanceof IllegalArgumentException);
       assertEquals("Method 'springManagedBean.methodC' not found", e.getMessage());
