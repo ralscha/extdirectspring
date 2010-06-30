@@ -75,7 +75,7 @@ public class RouterControllerRemote1Test {
     assertEquals("exception", resp.getType());
     assertEquals(1, resp.getTid());
     assertNull(resp.getResult());
-    assertEquals("server error", resp.getMessage());
+    assertEquals("Server Error", resp.getMessage());
     assertNull(resp.getWhere());
   }
 
@@ -95,7 +95,7 @@ public class RouterControllerRemote1Test {
     assertEquals("exception", resp.getType());
     assertEquals(2, resp.getTid());
     assertNull(resp.getResult());
-    assertEquals("server error", resp.getMessage());
+    assertEquals("Server Error", resp.getMessage());
     assertNull(resp.getWhere());
   }
 
@@ -172,7 +172,7 @@ public class RouterControllerRemote1Test {
     assertEquals(1, resp.getTid());
     assertEquals("exception", resp.getType());
     assertNull(resp.getWhere());
-    assertEquals("server error", resp.getMessage());
+    assertEquals("Server Error", resp.getMessage());
     assertNull(resp.getResult());
   }
 
