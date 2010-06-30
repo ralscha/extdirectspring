@@ -249,7 +249,7 @@ public class RouterControllerRemote2Test {
     assertEquals("method5", resp.getMethod());
     assertEquals("exception", resp.getType());
     assertEquals(1, resp.getTid());
-    assertEquals("server error", resp.getMessage());
+    assertEquals("Server Error", resp.getMessage());
   }
 
   @Test
