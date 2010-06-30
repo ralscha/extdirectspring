@@ -17,6 +17,8 @@
 package ch.ralscha.extdirectspring.controller;
 
 import java.beans.PropertyDescriptor;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -189,9 +191,9 @@ public class RouterController implements ApplicationContextAware {
 
         if (log.isDebugEnabled()) {
           directResponse.setMessage(e.getMessage());
-          directResponse.setWhere(e.getMessage());
+          directResponse.setWhere(getStackTrace(e));
         } else {
-          directResponse.setMessage("server error");
+          directResponse.setMessage("Server Error");
           directResponse.setWhere(null);
         }
       }
@@ -203,6 +205,15 @@ public class RouterController implements ApplicationContextAware {
 
   }
 
+  private String getStackTrace(Throwable t) {
+      StringWriter sw = new StringWriter();
+      PrintWriter pw = new PrintWriter(sw, true);
+      t.printStackTrace(pw);
+      pw.flush();
+      sw.flush();
+      return sw.toString();
+  }
+  
   private boolean isFormLoadMethod(Method method) {
     ExtDirectMethod annotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
     return annotation != null && annotation.formLoad();
