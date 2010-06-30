@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.ralscha.extdirectspring.demo;
+package ch.ralscha.extdirectspring.demo.form;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -34,12 +34,13 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 public class Profile {
 
   public static class PhoneInfo {
+
     public String cell;
     public String office;
     public String home;
   }
 
-  @ExtDirectMethod(formLoad=true)
+  @ExtDirectMethod(formLoad = true, group = "form")
   public BasicInfo getBasicInfo(Long userId, String foo) {
 
     BasicInfo basicInfo = new BasicInfo();
@@ -50,7 +51,7 @@ public class Profile {
     return basicInfo;
   }
 
-  @ExtDirectMethod(formLoad=true)
+  @ExtDirectMethod(formLoad = true, group = "form")
   public PhoneInfo getPhoneInfo(Long userId) {
 
     PhoneInfo phoneInfo = new PhoneInfo();
@@ -60,7 +61,7 @@ public class Profile {
     return phoneInfo;
   }
 
-  @ExtDirectMethod(formLoad=true)
+  @ExtDirectMethod(formLoad = true, group = "form")
   public Map<String, String> getLocationInfo(Long userId) {
     Map<String, String> data = new HashMap<String, String>();
     data.put("street", "1234 Red Dog Rd.");
@@ -70,9 +71,9 @@ public class Profile {
     return data;
   }
 
-  @ExtDirectMethod
+  @ExtDirectMethod(group = "form")
   @ResponseBody
-  @RequestMapping(value = "/updateBasicInfo", method=RequestMethod.POST)
+  @RequestMapping(value = "/updateBasicInfo", method = RequestMethod.POST)
   public ExtDirectResponse updateBasicInfo(Locale locale, HttpServletRequest request, @Valid BasicInfo basicInfo, BindingResult result) {
 
     if (!result.hasErrors()) {
@@ -84,6 +85,6 @@ public class Profile {
     ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
     builder.addErrors(locale, result);
     return builder.build();
-    
+
   }
 }

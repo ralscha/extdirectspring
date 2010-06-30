@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.ralscha.extdirectspring.demo;
+package ch.ralscha.extdirectspring.demo.store;
 
 import com.google.common.base.Objects;
 

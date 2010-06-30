@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.ralscha.extdirectspring.demo;
+package ch.ralscha.extdirectspring.demo.store;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class RandomDataBean {
 
   @Inject
   private Resource randomdata;
-  
+
   private int maxId;
 
   private Map<Integer, Person> persons;
@@ -74,7 +74,7 @@ public class RandomDataBean {
 
     return Lists.newArrayList(persons.values());
   }
-  
+
   public Person findPerson(final String id) {
     return persons.get(Integer.valueOf(id));
   }

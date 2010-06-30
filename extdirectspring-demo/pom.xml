@@ -41,7 +41,7 @@
     <spring.version>3.0.3.RELEASE</spring.version>
     <slf4j.version>1.6.0</slf4j.version>
     <logback.version>0.9.22</logback.version>
-    <hibernatevalidator.version>4.1.0.CR1</hibernatevalidator.version>
+    <hibernatevalidator.version>4.1.0.Final</hibernatevalidator.version>
     
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -167,6 +167,16 @@
         <updatePolicy>never</updatePolicy>
       </snapshots>
     </repository>
+    <repository>
+	    <id>sonatype</id>
+	    <name>sonatype</name>
+	    <url>https://oss.sonatype.org/content/groups/public</url>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+        <checksumPolicy>fail</checksumPolicy>
+      </snapshots>      
+	</repository>    
   </repositories>
 
   <build>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.ralscha.extdirectspring.demo;
+package ch.ralscha.extdirectspring.demo.store;
 
 import java.util.List;
 import java.util.Map;
@@ -87,12 +87,12 @@ public class PersonAction {
 
   }
 
-  @ExtDirectStoreReadMethod
+  @ExtDirectStoreReadMethod(group = "store")
   public List<Person> load(ExtDirectStoreReadRequest request) {
     return dataBean.findPersons(request.getQuery());
   }
 
-  @ExtDirectStoreReadMethod
+  @ExtDirectStoreReadMethod(group = "store")
   public ExtDirectStoreResponse<Person> loadWithPaging(ExtDirectStoreReadRequest request,
       @RequestParam(value = "no", defaultValue = "0") int no, @RequestParam(value = "name", required = false) String name) {
 
@@ -116,7 +116,7 @@ public class PersonAction {
     return new ExtDirectStoreResponse<Person>(totalSize, persons);
   }
 
-  @ExtDirectStoreModifyMethod(type = Person.class)
+  @ExtDirectStoreModifyMethod(type = Person.class, group = "store")
   public List<Person> create(List<Person> newPersons) {
     List<Person> insertedPersons = Lists.newArrayList();
 
@@ -128,7 +128,7 @@ public class PersonAction {
     return insertedPersons;
   }
 
-  @ExtDirectStoreModifyMethod(type = Person.class)
+  @ExtDirectStoreModifyMethod(type = Person.class, group = "store")
   public List<Person> update(@RequestParam(value = "no", defaultValue = "0") int no,
       @RequestParam(value = "name", required = false) String name, List<Person> modifiedPersons) {
 
@@ -145,7 +145,7 @@ public class PersonAction {
     return updatedRecords;
   }
 
-  @ExtDirectStoreModifyMethod(type = Integer.class)
+  @ExtDirectStoreModifyMethod(type = Integer.class, group = "store")
   public List<Integer> destroy(List<Integer> destroyIds) {
     List<Integer> deletedPersonsId = Lists.newArrayList();
 
@@ -157,7 +157,7 @@ public class PersonAction {
     return deletedPersonsId;
   }
 
-  @ExtDirectStoreReadMethod
+  @ExtDirectStoreReadMethod(group = "store")
   public Set<State> getStates() {
     List<Person> persons = dataBean.findPersons(null);
     Set<State> states = Sets.newTreeSet();

@@ -11,7 +11,7 @@ Ext.onReady(function(){
             text: 'Root'
         },
         loader: new Ext.tree.TreeLoader({
-            directFn: testAction.getTree
+            directFn: treeProvider.getTree
         }),
         fbar: [{
             text: 'Reload root',

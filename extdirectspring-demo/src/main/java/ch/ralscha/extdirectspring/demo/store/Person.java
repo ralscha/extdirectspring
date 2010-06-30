@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.ralscha.extdirectspring.demo;
+package ch.ralscha.extdirectspring.demo.store;
 
 public class Person {
 
@@ -43,7 +43,7 @@ public class Person {
     this.zip = nextLine[6];
     this.country = nextLine[7];
   }
-  
+
   public void update(Person newValues) {
     this.firstName = newValues.getFirstName();
     this.lastName = newValues.getLastName();
@@ -53,7 +53,7 @@ public class Person {
     this.state = newValues.getState();
     this.zip = newValues.getZip();
     this.country = newValues.getCountry();
-    
+
   }
 
   public String getFullName() {
@@ -127,6 +127,5 @@ public class Person {
   public void setCountry(String country) {
     this.country = country;
   }
-
 
 }

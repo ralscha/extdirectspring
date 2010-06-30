@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.ralscha.extdirectspring.demo;
+package ch.ralscha.extdirectspring.demo.upload;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -31,17 +31,17 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 @Controller
 public class UploadController {
 
-  @ExtDirectMethod
+  @ExtDirectMethod(group = "upload")
   @RequestMapping(value = "/uploadTest", method = RequestMethod.POST)
   public void uploadTest(Locale locale, HttpServletRequest request, @RequestParam("fileUpload") MultipartFile file,
       HttpServletResponse response) throws IOException {
 
     ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-    
+
     if (file != null && !file.isEmpty()) {
       builder.addResultProperty("fileContents", new String(file.getBytes()));
     }
     builder.successful();
-    builder.buildAndWriteUploadResponse(response);    
+    builder.buildAndWriteUploadResponse(response);
   }
 }

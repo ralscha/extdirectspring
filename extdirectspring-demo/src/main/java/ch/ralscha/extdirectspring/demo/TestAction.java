@@ -16,23 +16,13 @@
 
 package ch.ralscha.extdirectspring.demo;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.inject.Named;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
-
 
 @Named
 public class TestAction {
 
-  public static class Node {
-
-    public String id;
-    public String text;
-    public boolean leaf;
-  }
-
-  @ExtDirectMethod
+  @ExtDirectMethod(group = "example")
   public Long multiply(String num) {
     try {
       return Long.valueOf(num) * 8;
@@ -41,33 +31,9 @@ public class TestAction {
     }
   }
 
-  @ExtDirectMethod
+  @ExtDirectMethod(group = "example")
   public String doEcho(String message) {
     return message;
-  }
-
-  @ExtDirectMethod
-  public List<Node> getTree(String id) {
-    List<Node> result = new ArrayList<Node>();
-    if (id.equals("root")) {
-      for (int i = 1; i <= 5; ++i) {
-        Node node = new Node();
-        node.id = "n" + i;
-        node.text = "Node " + i;
-        node.leaf = false;
-        result.add(node);
-      }
-    } else if (id.length() == 2) {
-      String num = id.substring(1);
-      for (int i = 1; i <= 5; ++i) {
-        Node node = new Node();
-        node.id = "id" + i;
-        node.text = "Node " + num + "." + i;
-        node.leaf = true;
-        result.add(node);
-      }
-    }
-    return result;
   }
 
 }
