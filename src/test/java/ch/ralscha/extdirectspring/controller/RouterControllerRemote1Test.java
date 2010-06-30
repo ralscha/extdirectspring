@@ -74,7 +74,6 @@ public class RouterControllerRemote1Test {
     assertEquals("method1", resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(1, resp.getTid());
-    assertFalse(resp.isSuccess());
     assertNull(resp.getResult());
     assertEquals("server error", resp.getMessage());
     assertNull(resp.getWhere());
@@ -95,7 +94,6 @@ public class RouterControllerRemote1Test {
     assertEquals("method4", resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(2, resp.getTid());
-    assertFalse(resp.isSuccess());
     assertNull(resp.getResult());
     assertEquals("server error", resp.getMessage());
     assertNull(resp.getWhere());
@@ -116,7 +114,6 @@ public class RouterControllerRemote1Test {
     assertEquals(tid, resp.getTid());
     assertEquals("rpc", resp.getType());
     assertNull(resp.getWhere());
-    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertEquals("method1() called", resp.getResult());
   }
@@ -143,7 +140,6 @@ public class RouterControllerRemote1Test {
     assertEquals(1, resp.getTid());
     assertEquals("rpc", resp.getType());
     assertNull(resp.getWhere());
-    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertEquals("method2() called", resp.getResult());
   }
@@ -160,7 +156,6 @@ public class RouterControllerRemote1Test {
     assertEquals(10, resp.getTid());
     assertEquals("rpc", resp.getType());
     assertNull(resp.getWhere());
-    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertEquals("method3() called-1-3.1-requestParameter", resp.getResult());
   }
@@ -177,7 +172,6 @@ public class RouterControllerRemote1Test {
     assertEquals(1, resp.getTid());
     assertEquals("rpc", resp.getType());
     assertNull(resp.getWhere());
-    assertFalse(resp.isSuccess());
     assertEquals("server error", resp.getMessage());
     assertNull(resp.getResult());
   }
@@ -194,7 +188,6 @@ public class RouterControllerRemote1Test {
     assertEquals(1, resp.getTid());
     assertEquals("rpc", resp.getType());
     assertNull(resp.getWhere());
-    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertEquals(true, resp.getResult());
   }
@@ -211,7 +204,6 @@ public class RouterControllerRemote1Test {
     assertEquals(1, resp.getTid());
     assertEquals("rpc", resp.getType());
     assertNull(resp.getWhere());
-    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertEquals(false, resp.getResult());
   }
@@ -228,7 +220,6 @@ public class RouterControllerRemote1Test {
     assertEquals(1, resp.getTid());
     assertEquals("rpc", resp.getType());
     assertNull(resp.getWhere());
-    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertNull(resp.getResult());
   }
@@ -249,7 +240,6 @@ public class RouterControllerRemote1Test {
     assertEquals(tid, resp.getTid());
     assertEquals("rpc", resp.getType());
     assertNull(resp.getWhere());
-    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertEquals(30, resp.getResult());
   }
@@ -266,7 +256,6 @@ public class RouterControllerRemote1Test {
     assertEquals(1, resp.getTid());
     assertEquals("rpc", resp.getType());
     assertNull(resp.getWhere());
-    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertNull(resp.getResult());
   }
@@ -288,7 +277,6 @@ public class RouterControllerRemote1Test {
     assertEquals(tid, resp.getTid());
     assertEquals("rpc", resp.getType());
     assertNull(resp.getWhere());
-    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertNotNull(resp.getResult());
 
@@ -320,7 +308,6 @@ public class RouterControllerRemote1Test {
     assertEquals(1, resp.getTid());
     assertEquals("rpc", resp.getType());
     assertNull(resp.getWhere());
-    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertNull(resp.getResult());
   }
@@ -338,7 +325,6 @@ public class RouterControllerRemote1Test {
     assertEquals(1, resp.getTid());
     assertEquals("rpc", resp.getType());
     assertNull(resp.getWhere());
-    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertNotNull(resp.getResult());
 
@@ -367,7 +353,6 @@ public class RouterControllerRemote1Test {
     assertEquals(1, resp.getTid());
     assertEquals("rpc", resp.getType());
     assertNull(resp.getWhere());
-    assertTrue(resp.isSuccess());
     assertNull(resp.getMessage());
     assertEquals(42l, resp.getResult());
   }

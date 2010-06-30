@@ -50,7 +50,6 @@ public class ExtDirectResponseBuilder {
     response = new ExtDirectResponse();
     result = new HashMap<String, Object>();
 
-    response.setSuccess(true);
     response.setAction(request.getParameter("extAction"));
     response.setMethod(request.getParameter("extMethod"));
     response.setType(request.getParameter("extType"));

@@ -184,14 +184,15 @@ public class RouterController implements ApplicationContextAware {
         directResponse.setResult(result);
       } catch (Exception e) {
         log.error("Error on method: " + directRequest.getMethod(), e);
+        
+        directResponse.setType("exception");
 
-        directResponse.setSuccess(false);
         if (log.isDebugEnabled()) {
-          directResponse.setType("exception");
           directResponse.setMessage(e.getMessage());
           directResponse.setWhere(e.getMessage());
         } else {
           directResponse.setMessage("server error");
+          directResponse.setWhere(null);
         }
       }
 
