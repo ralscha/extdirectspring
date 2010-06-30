@@ -33,7 +33,6 @@ public class ExtDirectResponse {
   private Object result;
   private String message;
   private String where;
-  private boolean success = true;
 
   public String getAction() {
     return action;
@@ -93,18 +92,10 @@ public class ExtDirectResponse {
     this.where = where;
   }
 
-  public boolean isSuccess() {
-    return success;
-  }
-
-  public void setSuccess(boolean success) {
-    this.success = success;
-  }
-
   @Override
   public String toString() {
-    return "ExtDirectResponse [action=" + action + ", message=" + message + ", method=" + method + ", result=" + result + ", success="
-        + success + ", tid=" + tid + ", type=" + type + ", where=" + where + "]";
+    return "ExtDirectResponse [action=" + action + ", message=" + message + ", method=" + method + ", result=" + result + ", tid=" + tid
+        + ", type=" + type + ", where=" + where + "]";
   }
 
 }
