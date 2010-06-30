@@ -72,7 +72,7 @@ public class RouterControllerRemote1Test {
   private void checkBeanNotFoundResponse(ExtDirectResponse resp) {
     assertEquals("remoteProvider", resp.getAction());
     assertEquals("method1", resp.getMethod());
-    assertEquals("rpc", resp.getType());
+    assertEquals("exception", resp.getType());
     assertEquals(1, resp.getTid());
     assertNull(resp.getResult());
     assertEquals("server error", resp.getMessage());
@@ -92,7 +92,7 @@ public class RouterControllerRemote1Test {
   private void checkMethodNotFoundResponse(ExtDirectResponse resp) {
     assertEquals("remoteProvider1", resp.getAction());
     assertEquals("method4", resp.getMethod());
-    assertEquals("rpc", resp.getType());
+    assertEquals("exception", resp.getType());
     assertEquals(2, resp.getTid());
     assertNull(resp.getResult());
     assertEquals("server error", resp.getMessage());
@@ -170,7 +170,7 @@ public class RouterControllerRemote1Test {
     assertEquals("remoteProvider1", resp.getAction());
     assertEquals("method3", resp.getMethod());
     assertEquals(1, resp.getTid());
-    assertEquals("rpc", resp.getType());
+    assertEquals("exception", resp.getType());
     assertNull(resp.getWhere());
     assertEquals("server error", resp.getMessage());
     assertNull(resp.getResult());
