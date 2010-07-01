@@ -25,8 +25,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
@@ -40,9 +42,12 @@ public class Profile {
     public String home;
   }
 
-  @ExtDirectMethod(formLoad = true, group = "form")
-  public BasicInfo getBasicInfo(Long userId, String foo) {
-
+  @ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "form")
+  public BasicInfo getBasicInfo(@RequestParam(value="uid") long userId, @RequestParam(value="foo") String foo) {
+   
+    System.out.println("userId: " + userId);
+    System.out.println("foo   : " + foo);
+    
     BasicInfo basicInfo = new BasicInfo();
     basicInfo.setFoo(foo);
     basicInfo.setName("Aaron Conran");
@@ -51,9 +56,10 @@ public class Profile {
     return basicInfo;
   }
 
-  @ExtDirectMethod(formLoad = true, group = "form")
-  public PhoneInfo getPhoneInfo(Long userId) {
-
+  @ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "form")
+  public PhoneInfo getPhoneInfo(@RequestParam(value="uid") long userId) {
+    System.out.println("userId: " + userId);
+    
     PhoneInfo phoneInfo = new PhoneInfo();
     phoneInfo.cell = "443-555-1234";
     phoneInfo.office = "1-800-CALLEXT";
@@ -61,8 +67,10 @@ public class Profile {
     return phoneInfo;
   }
 
-  @ExtDirectMethod(formLoad = true, group = "form")
-  public Map<String, String> getLocationInfo(Long userId) {
+  @ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "form")
+  public Map<String, String> getLocationInfo(@RequestParam(value="uid")  long userId) {
+    System.out.println("userId: " + userId);
+    
     Map<String, String> data = new HashMap<String, String>();
     data.put("street", "1234 Red Dog Rd.");
     data.put("city", "Seminole");
@@ -71,7 +79,7 @@ public class Profile {
     return data;
   }
 
-  @ExtDirectMethod(group = "form")
+  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "form")
   @ResponseBody
   @RequestMapping(value = "/updateBasicInfo", method = RequestMethod.POST)
   public ExtDirectResponse updateBasicInfo(Locale locale, HttpServletRequest request, @Valid BasicInfo basicInfo, BindingResult result) {

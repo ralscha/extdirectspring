@@ -18,13 +18,14 @@ package ch.ralscha.extdirectspring.demo.book;
 
 import java.util.List;
 import javax.inject.Named;
-import ch.ralscha.extdirectspring.annotation.ExtDirectStoreReadMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import com.google.common.collect.ImmutableList;
 
 @Named
 public class BookService {
 
-  @ExtDirectStoreReadMethod(group = "book")
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "book")
   public List<Book> getBooks() {
     return BOOKS;
   }

@@ -29,6 +29,22 @@ Ext.onReady(function() {
           margin: '10px 100px 0 0' // center it
         }
       },
+      tooltip: {
+        formatter: function() {
+          return '<b>'+ this.point.name +'</b>: '+ this.y;
+        }
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          dataLabels: {
+            enabled: true,
+            formatter: function() {
+              return this.point.name;
+            }
+          }
+        }
+      },            
       subtitle: {
         text: 'Source: sencha.com',
         style: {

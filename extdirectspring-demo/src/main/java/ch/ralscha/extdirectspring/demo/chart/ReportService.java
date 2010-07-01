@@ -20,7 +20,8 @@ import java.util.List;
 import java.util.Random;
 import javax.inject.Named;
 import org.springframework.web.bind.annotation.RequestParam;
-import ch.ralscha.extdirectspring.annotation.ExtDirectStoreReadMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import com.google.common.collect.ImmutableList;
 
 @Named
@@ -28,7 +29,7 @@ public class ReportService {
 
   private Random randomGenerator = new Random();
 
-  @ExtDirectStoreReadMethod(group = "pie")
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "pie")
   public List<SeasonData> getSeasonData(@RequestParam(value = "minRandomValue", defaultValue = "50") int minRandomValue,
       @RequestParam(value = "maxRandomValue", defaultValue = "250") int maxRandomValue) {
 

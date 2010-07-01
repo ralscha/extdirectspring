@@ -26,12 +26,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 @Controller
 public class UploadController {
 
-  @ExtDirectMethod(group = "upload")
+  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "upload")
   @RequestMapping(value = "/uploadTest", method = RequestMethod.POST)
   public void uploadTest(Locale locale, HttpServletRequest request, @RequestParam("fileUpload") MultipartFile file,
       HttpServletResponse response) throws IOException {
