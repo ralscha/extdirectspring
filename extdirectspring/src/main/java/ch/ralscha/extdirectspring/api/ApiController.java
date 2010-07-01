@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -32,9 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
-import ch.ralscha.extdirectspring.annotation.ExtDirectPollMethod;
-import ch.ralscha.extdirectspring.annotation.ExtDirectStoreModifyMethod;
-import ch.ralscha.extdirectspring.annotation.ExtDirectStoreReadMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
 
@@ -92,7 +91,7 @@ public class ApiController implements ApplicationContextAware {
       final String routerUrl, final String basePollUrl, final String group, final boolean debug) {
 
     RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
-    scanForExtDirectAnnotations(remotingApi, group);
+    scanForExtDirectMethods(remotingApi, group);
 
     StringBuilder sb = new StringBuilder();
 
@@ -163,7 +162,7 @@ public class ApiController implements ApplicationContextAware {
     return sb.toString();
   }
 
-  private void scanForExtDirectAnnotations(RemotingApi remotingApi, String group) {
+  private void scanForExtDirectMethods(RemotingApi remotingApi, String group) {
     Map<String, Object> beanDefinitions = getAllBeanDefinitions();
 
     for (Entry<String, Object> entry : beanDefinitions.entrySet()) {
@@ -173,47 +172,58 @@ public class ApiController implements ApplicationContextAware {
       Method[] methods = bean.getClass().getMethods();
 
       for (Method method : methods) {
-        if (AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) != null) {
-          if (isSameGroup(group, AnnotationUtils.findAnnotation(method, ExtDirectMethod.class).group())) {
-            if (isFormHandlerMethod(method)) {
-              remotingApi.addAction(beanName, method.getName(), 0, true);
-            } else {
-              Class<?>[] parameterTypes = method.getParameterTypes();
-              int paramLength = 0;
-              for (Class<?> parameterType : parameterTypes) {
-                if (!SupportedParameterTypes.isSupported(parameterType)) {
-                  paramLength++;
-                }
-              }
-              remotingApi.addAction(beanName, method.getName(), paramLength, null);
-            }
-          }
-        } else if (AnnotationUtils.findAnnotation(method, ExtDirectPollMethod.class) != null) {
-          ExtDirectPollMethod annotation = AnnotationUtils.findAnnotation(method, ExtDirectPollMethod.class);
+        ExtDirectMethod annotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+        if (annotation != null) {
           if (isSameGroup(group, annotation.group())) {
-            String event = annotation.event();
-            remotingApi.addPollingProvider(beanName, method.getName(), event);
-          }
-        } else if (AnnotationUtils.findAnnotation(method, ExtDirectStoreModifyMethod.class) != null) {
-          if (isSameGroup(group, AnnotationUtils.findAnnotation(method, ExtDirectStoreModifyMethod.class).group())) {
-            remotingApi.addAction(beanName, method.getName(), 1, null);
-          }
-        } else if (AnnotationUtils.findAnnotation(method, ExtDirectStoreReadMethod.class) != null) {
-          if (isSameGroup(group, AnnotationUtils.findAnnotation(method, ExtDirectStoreReadMethod.class).group())) {
-//            Class<?>[] parameterTypes = method.getParameterTypes();
-//            int paramLength = 0;
-//            for (Class<?> parameterType : parameterTypes) {
-//              if (ExtDirectStoreReadRequest.class.isAssignableFrom(parameterType)) {
-//                paramLength = 1;
-//                break;
-//              }
-//            }
-            remotingApi.addAction(beanName, method.getName(), 1, null);
+            ExtDirectMethodType type = annotation.value();
+            
+            switch (type) {
+              case SIMPLE :
+                remotingApi.addAction(beanName, method.getName(), numberOfParameters(method));                
+                break;
+              case FORM_LOAD :
+              case STORE_READ :
+                remotingApi.addAction(beanName, method.getName(), 1);
+                break;                
+              case STORE_MODIFY :
+                if (annotation.entryClass() != ExtDirectMethod.class) {
+                  remotingApi.addAction(beanName, method.getName(), 1);                 
+                } else {
+                  LoggerFactory.getLogger(getClass()).warn("Method '{}.{}' is annotated as a store modify method but does "+
+                      "not specify a entryClass. Method ignored.", beanName, method.getName());
+                }
+                break;
+              case FORM_POST :
+                if (isValidFormPostMethod(method)) {
+                  remotingApi.addAction(beanName, method.getName(), 0, true);
+                } else {
+                  LoggerFactory.getLogger(getClass()).warn("Method '{}.{}' is annotated as a form post method but is not valid. " + 
+                      "A form post method must be annotated with @RequestMapping and method=RequestMethod.POST. Method ignored.", beanName, method.getName());                
+                }
+                break;
+              case POLL :
+                remotingApi.addPollingProvider(beanName, method.getName(), annotation.event());
+                break;
+                
+            }
+            
           }
         }
+
       }
 
     }
+  }
+
+  private int numberOfParameters(Method method) {
+    Class<?>[] parameterTypes = method.getParameterTypes();
+    int paramLength = 0;
+    for (Class<?> parameterType : parameterTypes) {
+      if (!SupportedParameterTypes.isSupported(parameterType)) {
+        paramLength++;
+      }
+    }
+    return paramLength;
   }
 
   private boolean isSameGroup(String requestedGroup, String annotationGroup) {
@@ -224,9 +234,10 @@ public class ApiController implements ApplicationContextAware {
     return true;
   }
 
-  private boolean isFormHandlerMethod(Method method) {
-    if (AnnotationUtils.findAnnotation(method, RequestMapping.class) != null) {
-      RequestMethod[] requestMethods = AnnotationUtils.findAnnotation(method, RequestMapping.class).method();
+  private boolean isValidFormPostMethod(Method method) {
+    RequestMapping annotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
+    if (annotation != null) {
+      RequestMethod[] requestMethods = annotation.method();
       if (requestMethods != null && requestMethods.length > 0) {
         if (requestMethods[0].equals(RequestMethod.POST)) {
           return true;

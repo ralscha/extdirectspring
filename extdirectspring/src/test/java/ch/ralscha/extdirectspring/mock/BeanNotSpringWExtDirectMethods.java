@@ -18,10 +18,9 @@ package ch.ralscha.extdirectspring.mock;
 
 import java.util.List;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
-import ch.ralscha.extdirectspring.annotation.ExtDirectPollMethod;
-import ch.ralscha.extdirectspring.annotation.ExtDirectStoreModifyMethod;
-import ch.ralscha.extdirectspring.annotation.ExtDirectStoreReadMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
+@SuppressWarnings("all")
 public class BeanNotSpringWExtDirectMethods {
 
   @ExtDirectMethod
@@ -29,18 +28,18 @@ public class BeanNotSpringWExtDirectMethods {
     //a dummy method
   }
 
-  @ExtDirectPollMethod
+  @ExtDirectMethod(value = ExtDirectMethodType.POLL)
   public void methodB() {
     //a dummy method
   }
 
-  @ExtDirectStoreModifyMethod(type = Integer.class)
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Integer.class)
   public List<Integer> methodC(List<Integer> ids) {
     //a dummy method
     return null;
   }
 
-  @ExtDirectStoreReadMethod
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, entryClass = Integer.class)
   public List<Integer> methodD() {
     //a dummy method
     return null;

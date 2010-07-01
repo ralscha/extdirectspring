@@ -26,13 +26,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 @Controller
+@SuppressWarnings("all")
 public class FormInfoController {
 
-  @ExtDirectMethod(group = "group3")
+  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
   @ResponseBody
   @RequestMapping(value = "/updateInfo", method = RequestMethod.POST)
   public ExtDirectResponse updateInfo(Locale locale, HttpServletRequest request, FormInfo formInfo, BindingResult result) {
@@ -41,7 +43,7 @@ public class FormInfoController {
     return builder.build();
   }
 
-  @ExtDirectMethod(group = "group2")
+  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2")
   @RequestMapping(value = "/upload", method = RequestMethod.POST)
   public void upload(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo, BindingResult result)
       throws IOException {
@@ -50,4 +52,16 @@ public class FormInfoController {
     builder.buildAndWriteUploadResponse(response);
   }
 
+  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2")
+  public void invalidMethod1(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
+      BindingResult result) {
+    //dummy test method
+  }
+
+  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2")
+  @RequestMapping(value = "/upload", method = RequestMethod.GET)
+  public void invalidMethod2(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
+      BindingResult result) {
+    //dummy test method
+  }
 }

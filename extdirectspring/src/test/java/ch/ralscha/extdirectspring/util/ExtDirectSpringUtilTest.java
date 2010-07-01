@@ -82,23 +82,6 @@ public class ExtDirectSpringUtilTest {
   }
 
   @Test
-  public void testIsSupportedAnnotationPresent() throws SecurityException, NoSuchMethodException {
-    Method a = SimpleBean.class.getMethod("methodA", null);
-    Method b = SimpleBean.class.getMethod("methodB", null);
-    Method c = SimpleBean.class.getMethod("methodC", null);
-    Method d = SimpleBean.class.getMethod("methodD", null);
-    Method e = SimpleBean.class.getMethod("methodE", null);
-    Method f = SimpleBean.class.getMethod("methodF", null);
-
-    assertTrue(ExtDirectSpringUtil.isSupportedAnnotationPresent(a));
-    assertTrue(ExtDirectSpringUtil.isSupportedAnnotationPresent(b));
-    assertTrue(ExtDirectSpringUtil.isSupportedAnnotationPresent(c));
-    assertTrue(ExtDirectSpringUtil.isSupportedAnnotationPresent(d));
-    assertFalse(ExtDirectSpringUtil.isSupportedAnnotationPresent(e));
-    assertFalse(ExtDirectSpringUtil.isSupportedAnnotationPresent(f));
-  }
-
-  @Test
   public void testFindMethodAndInvoke() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
     ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 
@@ -139,7 +122,7 @@ public class ExtDirectSpringUtilTest {
       fail("has to throw a IllegalArgumentException");
     } catch (Exception e) {
       assertTrue(e instanceof IllegalArgumentException);
-      assertEquals("Invalid remoting method 'springManagedBean.methodA'. Missing ExtDirectSpring annotation", e.getMessage());
+      assertEquals("Invalid remoting method 'springManagedBean.methodA'. Missing ExtDirectMethod annotation", e.getMessage());
     }
 
     assertFalse((Boolean)ExtDirectSpringUtil.invoke(context, "springManagedBean", "methodB", null));

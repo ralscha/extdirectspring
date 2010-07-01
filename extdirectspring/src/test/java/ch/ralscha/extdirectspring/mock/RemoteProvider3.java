@@ -24,17 +24,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.junit.Assert;
 import org.springframework.web.bind.annotation.RequestParam;
-import ch.ralscha.extdirectspring.annotation.ExtDirectStoreModifyMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
 @Named
 public class RemoteProvider3 {
 
-  @ExtDirectStoreModifyMethod(type = Row.class)
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Row.class)
   public List<Row> create1(List<Row> rows) {
     return rows;
   }
 
-  @ExtDirectStoreModifyMethod(type = Row.class)
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Row.class)
   public List<Row> create2(List<Row> rows, HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {
     Assert.assertNotNull(response);
     Assert.assertNotNull(request);
@@ -44,26 +45,26 @@ public class RemoteProvider3 {
     return rows;
   }
 
-  @ExtDirectStoreModifyMethod(type = Row.class)
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Row.class)
   public List<Row> update1(List<Row> rows) {
     return rows;
   }
 
-  @ExtDirectStoreModifyMethod(type = Row.class)
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Row.class)
   public List<Row> update2(Locale locale, @RequestParam(value = "id") int id, List<Row> rows) {
     Assert.assertEquals(10, id);
     Assert.assertEquals(Locale.ENGLISH, locale);
     return rows;
   }
 
-  @ExtDirectStoreModifyMethod(type = Row.class)
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Row.class)
   public List<Row> update3(List<Row> rows, @RequestParam(value = "id", defaultValue = "1") int id, HttpServletRequest servletRequest) {
     Assert.assertEquals(1, id);
     Assert.assertNotNull(servletRequest);
     return rows;
   }
 
-  @ExtDirectStoreModifyMethod(type = Row.class, group = "group2")
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Row.class, group = "group2")
   public List<Row> update4(@RequestParam(value = "id", required = false) Integer id, List<Row> rows) {
     if (id == null) {
       Assert.assertNull(id);
@@ -73,9 +74,13 @@ public class RemoteProvider3 {
     return rows;
   }
 
-  @ExtDirectStoreModifyMethod(type = Integer.class, group = "group3")
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Integer.class, group = "group3")
   public List<Integer> destroy(List<Integer> rows) {
     return rows;
   }
 
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group3")
+  public List<Integer> invalidMethod(List<Integer> rows) {
+    return rows;
+  }
 }

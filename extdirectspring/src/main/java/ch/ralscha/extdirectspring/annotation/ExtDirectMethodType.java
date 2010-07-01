@@ -16,31 +16,41 @@
 
 package ch.ralscha.extdirectspring.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
- * Annotation for methods whose implement polling method
+ * Enumeration of all possible remote method types. 
  * 
  * @author Ralph Schaer
  */
-@Target({ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-@Inherited
-@Documented
-public @interface ExtDirectPollMethod {
-
+public enum ExtDirectMethodType {
   /**
-   * The name of the event this method is sending messages to
+   * Specifies a simple remote method
    */
-  String event() default "";
-
+  SIMPLE, 
+    
   /**
-   * The name of a api group this method is part of. 
+   * Specifies a method that handles a form load
    */
-  String group() default "";
+  FORM_LOAD, 
+  
+  /**
+   * Specifies a method that handles a read call from DirectStore
+   */  
+  STORE_READ, 
+  
+  /**
+   * Specifies a method that handles a create, update or delete call from DirectStore
+   */  
+  STORE_MODIFY, 
+  
+  
+  /**
+   * Specifies a method that handles a form post (with or without upload)
+   */
+  FORM_POST,
+  
+  /**
+   * Specifies a method that handles polling
+   */
+  POLL 
+  
 }

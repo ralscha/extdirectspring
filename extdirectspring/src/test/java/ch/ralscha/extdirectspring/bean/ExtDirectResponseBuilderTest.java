@@ -32,6 +32,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
  *
  * @author Ralph Schaer
  */
+@SuppressWarnings("all")
 public class ExtDirectResponseBuilderTest {
 
   @Test

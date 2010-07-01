@@ -25,9 +25,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.junit.Assert;
+import org.springframework.web.bind.annotation.RequestParam;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
 @Named
+@SuppressWarnings("unused")
 public class RemoteProvider1 {
 
   @ExtDirectMethod(group = "group1")
@@ -69,8 +72,8 @@ public class RemoteProvider1 {
     return null;
   }
 
-  @ExtDirectMethod(formLoad = true, group = "group3")
-  public FormInfo method8(double d) {
+  @ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3")
+  public FormInfo method8(@RequestParam(value = "d") double d) {
     FormInfo info = new FormInfo();
     info.setBack(d);
     info.setAdmin(true);
@@ -81,7 +84,7 @@ public class RemoteProvider1 {
     return info;
   }
 
-  @ExtDirectMethod(formLoad = true)
+  @ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
   public FormInfo method9() {
     return null;
   }

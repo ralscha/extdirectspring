@@ -70,7 +70,11 @@ class RemotingApi {
   public List<PollingProvider> getPollingProviders() {
     return pollingProviders;
   }
-
+  
+  public void addAction(String beanName, String methodName, int len) {
+    addAction(beanName, methodName, len, null);
+  }
+  
   public void addAction(String beanName, String methodName, int len, Boolean formHandler) {
     List<Action> beanActions = actions.get(beanName);
     if (beanActions == null) {

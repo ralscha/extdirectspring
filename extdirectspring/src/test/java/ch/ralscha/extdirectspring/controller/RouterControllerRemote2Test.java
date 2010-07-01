@@ -44,6 +44,7 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
  *
  * @author Ralph Schaer
  */
+@SuppressWarnings("all")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerRemote2Test {
