@@ -18,9 +18,7 @@ package ch.ralscha.extdirectspring.util;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
-import ch.ralscha.extdirectspring.annotation.ExtDirectPollMethod;
-import ch.ralscha.extdirectspring.annotation.ExtDirectStoreModifyMethod;
-import ch.ralscha.extdirectspring.annotation.ExtDirectStoreReadMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
 class SimpleBean {
 
@@ -29,17 +27,17 @@ class SimpleBean {
     //no code here
   }
 
-  @ExtDirectPollMethod
+  @ExtDirectMethod(ExtDirectMethodType.POLL)
   public void methodB() {
     //nothing here
   }
 
-  @ExtDirectStoreModifyMethod(type = Integer.class)
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Integer.class)
   public void methodC() {
     //nothing here
   }
 
-  @ExtDirectStoreReadMethod
+  @ExtDirectMethod(ExtDirectMethodType.STORE_READ)
   public void methodD() {
     //nothing here
   }

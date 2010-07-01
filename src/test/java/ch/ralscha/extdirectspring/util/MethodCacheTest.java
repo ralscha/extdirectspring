@@ -27,6 +27,7 @@ import org.junit.Test;
  *
  * @author Ralph Schaer
  */
+@SuppressWarnings("all") 
 public class MethodCacheTest {
 
   @Test

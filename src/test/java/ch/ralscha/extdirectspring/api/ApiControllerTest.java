@@ -41,6 +41,7 @@ import org.springframework.util.StringUtils;
  *
  * @author Ralph Schaer
  */
+@SuppressWarnings("all")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ApiControllerTest {
@@ -160,6 +161,7 @@ public class ApiControllerTest {
     remotingApi.addAction("formInfoController", "upload", 0, true);
     remotingApi.addPollingProvider("pollProvider", "handleMessage1", "message1");
     remotingApi.addPollingProvider("pollProvider", "handleMessage2", "message2");
+    remotingApi.addPollingProvider("pollProvider", "message6", "message6");
     return remotingApi;
   }
 
@@ -189,7 +191,7 @@ public class ApiControllerTest {
     remotingApi.addAction("remoteProvider1", "method6", 2, false);
     remotingApi.addAction("remoteProvider1", "method7", 0, false);
     remotingApi.addAction("remoteProvider1", "method8", 1, false);
-    remotingApi.addAction("remoteProvider1", "method9", 0, false);
+    remotingApi.addAction("remoteProvider1", "method9", 1, false);
     remotingApi.addAction("remoteProvider1", "method10", 1, false);
     remotingApi.addAction("remoteProvider1", "method11", 0, false);
 
@@ -217,7 +219,8 @@ public class ApiControllerTest {
     remotingApi.addPollingProvider("pollProvider", "handleMessage3", "message3");
     remotingApi.addPollingProvider("pollProvider", "handleMessage4", "message4");
     remotingApi.addPollingProvider("pollProvider", "handleMessage5", "message5");
-
+    remotingApi.addPollingProvider("pollProvider", "message6", "message6");
+    
     return remotingApi;
   }
 

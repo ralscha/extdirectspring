@@ -27,9 +27,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
-import ch.ralscha.extdirectspring.annotation.ExtDirectPollMethod;
-import ch.ralscha.extdirectspring.annotation.ExtDirectStoreModifyMethod;
-import ch.ralscha.extdirectspring.annotation.ExtDirectStoreReadMethod;
 
 /**
  * Utility class
@@ -88,9 +85,9 @@ public class ExtDirectSpringUtil {
     method = BeanUtils.findMethodWithMinimalParameters(bean.getClass(), methodName);
 
     if (method != null) {
-      if (!isSupportedAnnotationPresent(method)) {
+      if (AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) == null) {
         throw new IllegalArgumentException("Invalid remoting method '" + beanName + "." + methodName
-            + "'. Missing ExtDirectSpring annotation");
+            + "'. Missing ExtDirectMethod annotation");
       }
 
       MethodCache.INSTANCE.put(beanName, methodName, method);
@@ -128,26 +125,6 @@ public class ExtDirectSpringUtil {
     }
 
     return null;
-  }
-
-  /**
-   * Checks if the method is annotated with a supported ExtDirectSpring annotation
-   * 
-   * @param method the method to check for the annotations
-   * @return true if a supported annotation is present, else false
-   * 
-   * @see ch.ralscha.extdirectspring.annotation.ExtDirectMethod
-   * @see ch.ralscha.extdirectspring.annotation.ExtDirectPollMethod
-   * @see ch.ralscha.extdirectspring.annotation.ExtDirectStoreModifyMethod
-   * @see ch.ralscha.extdirectspring.annotation.ExtDirectStoreReadMethod
-   */
-  public static boolean isSupportedAnnotationPresent(final Method method) {
-
-    return AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) != null
-        || AnnotationUtils.findAnnotation(method, ExtDirectPollMethod.class) != null
-        || AnnotationUtils.findAnnotation(method, ExtDirectStoreModifyMethod.class) != null
-        || AnnotationUtils.findAnnotation(method, ExtDirectStoreReadMethod.class) != null;
-
   }
 
   /**

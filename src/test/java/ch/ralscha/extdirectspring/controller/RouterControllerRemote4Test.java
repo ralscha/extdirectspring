@@ -34,6 +34,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  * @author Ralph Schaer
  */
+@SuppressWarnings("all")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerRemote4Test {

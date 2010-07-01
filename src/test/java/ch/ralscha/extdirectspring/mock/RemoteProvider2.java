@@ -29,24 +29,25 @@ import javax.servlet.http.HttpSession;
 import org.junit.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestParam;
-import ch.ralscha.extdirectspring.annotation.ExtDirectStoreReadMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 
 @Named
 public class RemoteProvider2 {
 
-  @ExtDirectStoreReadMethod
+  @ExtDirectMethod(ExtDirectMethodType.STORE_READ)
   public List<Row> method1() {
     return createRows();
   }
 
-  @ExtDirectStoreReadMethod
+  @ExtDirectMethod(ExtDirectMethodType.STORE_READ)
   public List<Row> method2() {
     return null;
   }
 
-  @ExtDirectStoreReadMethod
+  @ExtDirectMethod(ExtDirectMethodType.STORE_READ)
   public List<Row> method3(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {
     Assert.assertNotNull(response);
     Assert.assertNotNull(request);
@@ -56,19 +57,19 @@ public class RemoteProvider2 {
     return createRows();
   }
 
-  @ExtDirectStoreReadMethod
+  @ExtDirectMethod(ExtDirectMethodType.STORE_READ)
   public ExtDirectStoreResponse<Row> method4(ExtDirectStoreReadRequest request) {
     return createExtDirectStoreResponse(request);
   }
 
-  @ExtDirectStoreReadMethod(group = "group3")
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group3")
   public ExtDirectStoreResponse<Row> method5(ExtDirectStoreReadRequest request, Locale locale, @RequestParam(value = "id") int id) {
     Assert.assertEquals(10, id);
     Assert.assertEquals(Locale.ENGLISH, locale);
     return createExtDirectStoreResponse(request);
   }
 
-  @ExtDirectStoreReadMethod(group = "group2")
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
   public ExtDirectStoreResponse<Row> method6(@RequestParam(value = "id", defaultValue = "1") int id, HttpServletRequest servletRequest,
       ExtDirectStoreReadRequest request) {
     Assert.assertEquals(1, id);
@@ -76,7 +77,7 @@ public class RemoteProvider2 {
     return createExtDirectStoreResponse(request);
   }
 
-  @ExtDirectStoreReadMethod(group = "group2")
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
   public List<Row> method7(@RequestParam(value = "id", required = false) Integer id) {
     if (id == null) {
       Assert.assertNull(id);

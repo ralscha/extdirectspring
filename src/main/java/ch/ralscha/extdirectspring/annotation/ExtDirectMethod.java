@@ -22,10 +22,9 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 
 /**
- * Annotation for methods whose implement a simple remote call
+ * Annotation for methods whose implement a call
  * 
  * @author Ralph Schaer
  */
@@ -36,14 +35,28 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 public @interface ExtDirectMethod {
 
   /**
+   * Specifies the type of the remote method. Defaults to simple method call.
+   */
+  ExtDirectMethodType value() default ExtDirectMethodType.SIMPLE;
+  
+  /**
    * The name of a api group this method is part of. 
    */
   String group() default "";
 
   /**
-   * Set this attribute to true if the result should automatically wrapped with {@link ExtDirectFormLoadResult}
-   * Necessary return type for load methods 
+   * A STORE_MODIFY method must specifiy the class of the entries in the collection.
+   * Defaults to ExtDirectMethod.class as a workaround, because annotations parameters
+   * can't default to null. This value behaves like the parameter entryType is null.  
    */
-  boolean formLoad() default false;
-
+  Class<?> entryClass() default ExtDirectMethod.class;
+  
+  
+  /**
+   * Optional parameter if the method is a POLL method.
+   * The name of the event this method is sending messages to
+   * If parameter is empty the name of the method will be used as event name 
+   */
+  String event() default "";
+  
 }
