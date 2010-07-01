@@ -1,0 +1,34 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="extjs/resources/css/ext-all.css" />
+  <link rel="stylesheet" type="text/css" href="examples.css" />
+    
+  <script type="text/javascript" src="extjs/adapter/ext/ext-base.js"></script>
+  <script type="text/javascript" src="extjs/ext-all.js"></script>
+  <script type="text/javascript">
+    Ext.BLANK_IMAGE_URL = Ext.isIE6 || Ext.isIE7 || Ext.isAir ?
+                          '/extjs/resources/images/default/s.gif' :
+                          'data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+
+  </script>
+  
+  <!-- ExtJS adapter for Highcharts -->
+  <script type="text/javascript" src="highcharts/adapter-extjs.js"></script>
+
+  <!-- Highcharts includes -->
+  <script type="text/javascript" src="highcharts/highcharts.js"></script>
+  <!--[if IE]><script type="text/javascript" src="highcharts/excanvas.compiled.js"></script><![endif]-->
+
+  <!-- ExtJS Plugin for Highcharts -->
+  <script type="text/javascript" src="highcharts/Ext.ux.HighChart.js"></script>  
+  
+  <script type="text/javascript" src="controller/api-debug.js?group=pie"></script>
+  <script type="text/javascript" src="direct-pie.js"></script>
+</head>
+<body>
+<h1>Ext.Direct Highcharts with DirectStore</h1>
+
+<p>The js is not minified so it is readable. See <a href="direct-pie.js">direct-pie.js</a>.</p>
+
+</body>
+</html>
