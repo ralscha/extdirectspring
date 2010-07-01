@@ -72,25 +72,8 @@ public class RemoteProvider1 {
     return null;
   }
 
-  @ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3")
-  public FormInfo method8(@RequestParam(value = "d") double d) {
-    FormInfo info = new FormInfo();
-    info.setBack(d);
-    info.setAdmin(true);
-    info.setAge(31);
-    info.setBirthday(new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime());
-    info.setName("Bob");
-    info.setSalary(new BigDecimal("10000.55"));
-    return info;
-  }
-
-  @ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-  public FormInfo method9() {
-    return null;
-  }
-
   @ExtDirectMethod
-  public FormInfo method10(double d) {
+  public FormInfo method8(double d) {
     FormInfo info = new FormInfo();
     info.setBack(d);
     info.setAdmin(false);
@@ -102,7 +85,7 @@ public class RemoteProvider1 {
   }
 
   @ExtDirectMethod(group = "group3")
-  public long method11(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {
+  public long method9(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {
     Assert.assertNotNull(response);
     Assert.assertNotNull(request);
     Assert.assertNotNull(session);
