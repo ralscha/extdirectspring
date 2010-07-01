@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -36,7 +35,6 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectPollMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectStoreModifyMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectStoreReadMethod;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
 
@@ -202,15 +200,15 @@ public class ApiController implements ApplicationContextAware {
           }
         } else if (AnnotationUtils.findAnnotation(method, ExtDirectStoreReadMethod.class) != null) {
           if (isSameGroup(group, AnnotationUtils.findAnnotation(method, ExtDirectStoreReadMethod.class).group())) {
-            Class<?>[] parameterTypes = method.getParameterTypes();
-            int paramLength = 0;
-            for (Class<?> parameterType : parameterTypes) {
-              if (ExtDirectStoreReadRequest.class.isAssignableFrom(parameterType)) {
-                paramLength = 1;
-                break;
-              }
-            }
-            remotingApi.addAction(beanName, method.getName(), paramLength, null);
+//            Class<?>[] parameterTypes = method.getParameterTypes();
+//            int paramLength = 0;
+//            for (Class<?> parameterType : parameterTypes) {
+//              if (ExtDirectStoreReadRequest.class.isAssignableFrom(parameterType)) {
+//                paramLength = 1;
+//                break;
+//              }
+//            }
+            remotingApi.addAction(beanName, method.getName(), 1, null);
           }
         }
       }
@@ -227,8 +225,7 @@ public class ApiController implements ApplicationContextAware {
   }
 
   private boolean isFormHandlerMethod(Method method) {
-    if (AnnotationUtils.findAnnotation(method, RequestMapping.class) != null
-    /*&& AnnotationUtils.findAnnotation(method, ResponseBody.class) != null*/) {
+    if (AnnotationUtils.findAnnotation(method, RequestMapping.class) != null) {
       RequestMethod[] requestMethods = AnnotationUtils.findAnnotation(method, RequestMapping.class).method();
       if (requestMethods != null && requestMethods.length > 0) {
         if (requestMethods[0].equals(RequestMethod.POST)) {
