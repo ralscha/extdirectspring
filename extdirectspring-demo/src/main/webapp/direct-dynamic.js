@@ -90,8 +90,8 @@ Ext.onReady(function() {
       Ext.Direct.on({
             newData: function(e) {
               var x = (new Date()).getTime();
-              chart.chart.series[0].addPoint([x, Math.random()], true, true);
-              chart.chart.series[1].addPoint([x, Math.random()], true, true);
+              chart.chart.series[0].addPoint([x, e.data.x], true, true);
+              chart.chart.series[1].addPoint([x, e.data.y], true, true);
             }
           });
 
