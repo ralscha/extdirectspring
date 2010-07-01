@@ -155,7 +155,7 @@ public class ApiControllerTest {
     remotingApi.addAction("remoteProvider1", "method3", 3, false);
     remotingApi.addAction("remoteProvider1", "method5", 1, false);
     remotingApi.addAction("remoteProvider2", "method6", 1, false);
-    remotingApi.addAction("remoteProvider2", "method7", 0, false);
+    remotingApi.addAction("remoteProvider2", "method7", 1, false);
     remotingApi.addAction("remoteProvider3", "update4", 1, false);
     remotingApi.addAction("formInfoController", "upload", 0, true);
     remotingApi.addPollingProvider("pollProvider", "handleMessage1", "message1");
@@ -193,13 +193,13 @@ public class ApiControllerTest {
     remotingApi.addAction("remoteProvider1", "method10", 1, false);
     remotingApi.addAction("remoteProvider1", "method11", 0, false);
 
-    remotingApi.addAction("remoteProvider2", "method1", 0, false);
-    remotingApi.addAction("remoteProvider2", "method2", 0, false);
-    remotingApi.addAction("remoteProvider2", "method3", 0, false);
+    remotingApi.addAction("remoteProvider2", "method1", 1, false);
+    remotingApi.addAction("remoteProvider2", "method2", 1, false);
+    remotingApi.addAction("remoteProvider2", "method3", 1, false);
     remotingApi.addAction("remoteProvider2", "method4", 1, false);
     remotingApi.addAction("remoteProvider2", "method5", 1, false);
     remotingApi.addAction("remoteProvider2", "method6", 1, false);
-    remotingApi.addAction("remoteProvider2", "method7", 0, false);
+    remotingApi.addAction("remoteProvider2", "method7", 1, false);
 
     remotingApi.addAction("remoteProvider3", "create1", 1, false);
     remotingApi.addAction("remoteProvider3", "create2", 1, false);
