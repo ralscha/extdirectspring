@@ -15,8 +15,7 @@ Ext.onReady(function(){
             no: 1,
             name: 'Ralph'
           }
-        }
-        
+        }        
     );
 
     var out = new Ext.form.DisplayField({
