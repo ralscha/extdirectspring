@@ -36,7 +36,7 @@ public class ExtDirectStoreReadRequest {
     return query;
   }
 
-  public void setQuery(String query) {
+  public void setQuery(final String query) {
     this.query = query;
   }
 
@@ -44,7 +44,7 @@ public class ExtDirectStoreReadRequest {
     return limit;
   }
 
-  public void setLimit(Integer limit) {
+  public void setLimit(final Integer limit) {
     this.limit = limit;
   }
 
@@ -52,7 +52,7 @@ public class ExtDirectStoreReadRequest {
     return start;
   }
 
-  public void setStart(Integer start) {
+  public void setStart(final Integer start) {
     this.start = start;
   }
 
@@ -60,7 +60,7 @@ public class ExtDirectStoreReadRequest {
     return dir;
   }
 
-  public void setDir(String dir) {
+  public void setDir(final String dir) {
     this.dir = dir;
   }
 
@@ -78,7 +78,7 @@ public class ExtDirectStoreReadRequest {
     return sort;
   }
 
-  public void setSort(String sort) {
+  public void setSort(final String sort) {
     this.sort = sort;
   }
 

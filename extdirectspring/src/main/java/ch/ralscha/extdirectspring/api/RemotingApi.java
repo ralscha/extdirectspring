@@ -71,11 +71,11 @@ class RemotingApi {
     return pollingProviders;
   }
 
-  public void addAction(String beanName, String methodName, int len) {
+  public void addAction(final String beanName, final String methodName, final int len) {
     addAction(beanName, methodName, len, null);
   }
 
-  public void addAction(String beanName, String methodName, int len, Boolean formHandler) {
+  public void addAction(final String beanName, final String methodName, final int len, final Boolean formHandler) {
     List<Action> beanActions = actions.get(beanName);
     if (beanActions == null) {
       beanActions = new ArrayList<Action>();
@@ -85,7 +85,7 @@ class RemotingApi {
     beanActions.add(new Action(methodName, len, formHandler));
   }
 
-  public void addPollingProvider(String beanName, String method, String event) {
+  public void addPollingProvider(final String beanName, final String method, final String event) {
     pollingProviders.add(new PollingProvider(beanName, method, event));
   }
 

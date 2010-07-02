@@ -16,6 +16,8 @@
 
 package ch.ralscha.extdirectspring.bean;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.codehaus.jackson.annotate.JsonWriteNullProperties;
 
 /**
@@ -34,11 +36,25 @@ public class ExtDirectResponse {
   private String message;
   private String where;
 
+  public ExtDirectResponse(final ExtDirectRequest directRequest) {
+    action = directRequest.getAction();
+    method = directRequest.getMethod();
+    tid = directRequest.getTid();
+    type = directRequest.getType();   
+  }
+
+  public ExtDirectResponse(HttpServletRequest request) {
+    action = request.getParameter("extAction");
+    method = request.getParameter("extMethod");
+    tid = Integer.parseInt(request.getParameter("extTID"));
+    type = request.getParameter("extType");    
+  }
+
   public String getAction() {
     return action;
   }
 
-  public void setAction(String action) {
+  public void setAction(final String action) {
     this.action = action;
   }
 
@@ -46,7 +62,7 @@ public class ExtDirectResponse {
     return method;
   }
 
-  public void setMethod(String method) {
+  public void setMethod(final String method) {
     this.method = method;
   }
 
@@ -54,7 +70,7 @@ public class ExtDirectResponse {
     return result;
   }
 
-  public void setResult(Object result) {
+  public void setResult(final Object result) {
     this.result = result;
   }
 
@@ -62,7 +78,7 @@ public class ExtDirectResponse {
     return tid;
   }
 
-  public void setTid(int tid) {
+  public void setTid(final int tid) {
     this.tid = tid;
   }
 
@@ -70,7 +86,7 @@ public class ExtDirectResponse {
     return type;
   }
 
-  public void setType(String type) {
+  public void setType(final String type) {
     this.type = type;
   }
 
@@ -79,7 +95,7 @@ public class ExtDirectResponse {
     return message;
   }
 
-  public void setMessage(String message) {
+  public void setMessage(final String message) {
     this.message = message;
   }
 
@@ -88,7 +104,7 @@ public class ExtDirectResponse {
     return where;
   }
 
-  public void setWhere(String where) {
+  public void setWhere(final String where) {
     this.where = where;
   }
 

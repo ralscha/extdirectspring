@@ -35,7 +35,7 @@ public class ExtDirectPollResponse {
     return name;
   }
 
-  public void setName(String name) {
+  public void setName(final String name) {
     this.name = name;
   }
 
@@ -43,7 +43,7 @@ public class ExtDirectPollResponse {
     return data;
   }
 
-  public void setData(Object data) {
+  public void setData(final Object data) {
     this.data = data;
   }
 
