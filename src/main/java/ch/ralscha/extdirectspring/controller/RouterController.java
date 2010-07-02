@@ -21,7 +21,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -30,21 +29,21 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.convert.support.ConversionServiceFactory;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +51,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ValueConstants;
+
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
@@ -61,6 +61,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
+import ch.ralscha.extdirectspring.util.MethodInfo;
 import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
 
 /**
@@ -90,13 +91,13 @@ public class RouterController implements ApplicationContextAware {
   public ExtDirectPollResponse poll(@PathVariable String beanName, @PathVariable String method,
       @PathVariable String event, HttpServletRequest request, HttpServletResponse response, Locale locale)
       throws Exception {
+
     ExtDirectPollResponse directPollResponse = new ExtDirectPollResponse();
     directPollResponse.setName(event);
 
-    Method beanMethod = ExtDirectSpringUtil.findMethod(context, beanName, method);
-    Annotation[][] parameterAnnotations = getParameterAnnotations(beanMethod);
+    MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, beanName, method);
 
-    Class<?>[] parameterTypes = beanMethod.getParameterTypes();
+    Class<?>[] parameterTypes = methodInfo.getParameterTypes();
     Object[] parameters = null;
     if (parameterTypes.length > 0) {
       parameters = new Object[parameterTypes.length];
@@ -112,14 +113,16 @@ public class RouterController implements ApplicationContextAware {
         } else if (SupportedParameterTypes.LOCALE.getSupportedClass().isAssignableFrom(parameterType)) {
           parameters[paramIndex] = locale;
         } else {
-          parameters[paramIndex] = handleRequestParam(request, null, parameterAnnotations[paramIndex], parameterType);
+          parameters[paramIndex] = handleRequestParam(request, null, methodInfo.getParameterAnnotations()[paramIndex],
+              parameterType);
         }
 
         paramIndex++;
       }
     }
 
-    directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, method, parameters));
+    directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
+
     return directPollResponse;
 
   }
@@ -128,23 +131,15 @@ public class RouterController implements ApplicationContextAware {
   public String router(@RequestParam(value = "extAction") String extAction,
       @RequestParam(value = "extMethod") String extMethod) {
 
-    Method method = ExtDirectSpringUtil.findMethod(context, extAction, extMethod);
-
-    RequestMapping annotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-    if (annotation != null && StringUtils.hasText(annotation.value()[0])) {
-
-      String forwardPath = annotation.value()[0];
-      if (forwardPath.charAt(0) == '/' && forwardPath.length() > 1) {
-        forwardPath = forwardPath.substring(1, forwardPath.length());
-      }
-
-      return "forward:" + forwardPath;
+    MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, extAction, extMethod);
+    if (methodInfo.getForwardPath() != null) {
+      return methodInfo.getForwardPath();
     }
     throw new IllegalArgumentException("Invalid remoting form method: " + extAction + "." + extMethod);
 
   }
 
-  @SuppressWarnings({"rawtypes", "unchecked" })
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction")
   @ResponseBody
   public List<ExtDirectResponse> router(HttpServletRequest request, HttpServletResponse response, Locale locale,
@@ -162,11 +157,13 @@ public class RouterController implements ApplicationContextAware {
       directResponse.setType(directRequest.getType());
 
       try {
-        Object result = processRemotingRequest(request, response, locale, directRequest);
+        MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, directRequest.getAction(),
+            directRequest.getMethod());
+
+        Object result = processRemotingRequest(request, response, locale, directRequest, methodInfo);
 
         if (result != null) {
-          Method method = ExtDirectSpringUtil.findMethod(context, directRequest.getAction(), directRequest.getMethod());
-          ExtDirectMethod annotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+          ExtDirectMethod annotation = methodInfo.getExtDirectMethodAnnotation();
 
           if (annotation.value() == ExtDirectMethodType.FORM_LOAD) {
             if (!ExtDirectFormLoadResult.class.isAssignableFrom(result.getClass())) {
@@ -211,16 +208,15 @@ public class RouterController implements ApplicationContextAware {
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
-  private Object processRemotingRequest(HttpServletRequest request, HttpServletResponse response, Locale locale,
-      ExtDirectRequest directRequest) throws Exception {
+  private Object processRemotingRequest(final HttpServletRequest request, final HttpServletResponse response,
+      final Locale locale, final ExtDirectRequest directRequest, final MethodInfo methodInfo) throws Exception {
 
-    Method method = ExtDirectSpringUtil.findMethod(context, directRequest.getAction(), directRequest.getMethod());
-    ExtDirectMethod annotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+    ExtDirectMethod annotation = methodInfo.getExtDirectMethodAnnotation();
 
     ExtDirectMethodType type = annotation.value();
 
     int jsonParamIndex = 0;
-    Annotation[][] parameterAnnotations = null;
+    Annotation[][] parameterAnnotations = methodInfo.getParameterAnnotations();
     Map<String, Object> remainingParameters = null;
     ExtDirectStoreReadRequest directStoreReadRequest = null;
 
@@ -228,7 +224,6 @@ public class RouterController implements ApplicationContextAware {
     Class<?> directStoreEntryClass;
 
     if (type == ExtDirectMethodType.STORE_READ || type == ExtDirectMethodType.FORM_LOAD) {
-      parameterAnnotations = getParameterAnnotations(method);
 
       if (directRequest.getData() != null && directRequest.getData().length > 0) {
         if (type == ExtDirectMethodType.STORE_READ) {
@@ -241,7 +236,6 @@ public class RouterController implements ApplicationContextAware {
       }
     } else if (type == ExtDirectMethodType.STORE_MODIFY) {
       directStoreEntryClass = annotation.entryClass();
-      parameterAnnotations = getParameterAnnotations(method);
 
       if (directRequest.getData() != null && directRequest.getData().length > 0) {
         Map<String, Object> jsonData = (LinkedHashMap<String, Object>) directRequest.getData()[0];
@@ -263,7 +257,7 @@ public class RouterController implements ApplicationContextAware {
       throw new IllegalStateException("this controller does not handle form posts");
     }
 
-    Class<?>[] parameterTypes = method.getParameterTypes();
+    Class<?>[] parameterTypes = methodInfo.getParameterTypes();
     Object[] parameters = null;
 
     if (parameterTypes.length > 0) {
@@ -311,7 +305,7 @@ public class RouterController implements ApplicationContextAware {
       }
     }
 
-    return ExtDirectSpringUtil.invoke(context, directRequest.getAction(), directRequest.getMethod(), parameters);
+    return ExtDirectSpringUtil.invoke(context, directRequest.getAction(), methodInfo, parameters);
   }
 
   private Object handleRequestParam(HttpServletRequest request, Map<String, Object> valueContainer,
@@ -382,11 +376,6 @@ public class RouterController implements ApplicationContextAware {
       }
     }
     return remainingParameters;
-  }
-
-  private Annotation[][] getParameterAnnotations(Method method) {
-    Method beanMethod = ExtDirectSpringUtil.findMethodWithAnnotation(method, ExtDirectMethod.class);
-    return beanMethod.getParameterAnnotations();
   }
 
   private List<Object> convertObjectEntriesToType(ArrayList<Object> records, Class<?> directStoreType) {

@@ -22,21 +22,21 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A simple cache for methods
+ * A simple cache for methods with key beanName/methodName
  * 
  * @author Ralph Schaer
  */
-public enum MethodCache {
+public enum MethodInfoCache {
 
   /**
    * Singleton enum pattern
    */
   INSTANCE;
 
-  private final Map<Key, Method> cache;
+  private final Map<Key, MethodInfo> cache;
 
-  private MethodCache() {
-    cache = new ConcurrentHashMap<Key, Method>();
+  private MethodInfoCache() {
+    cache = new ConcurrentHashMap<Key, MethodInfo>();
   }
 
   /**
@@ -48,11 +48,15 @@ public enum MethodCache {
    *          the name of the method
    * @param method
    *          the method
+   * @return the methodInfo object of the method
    */
-  public void put(final String beanName, final String methodName, final Method method) {
+  public MethodInfo put(final String beanName, final String methodName, final Method method) {
     if (method != null) {
-      cache.put(new Key(beanName, methodName), method);
+      MethodInfo info = new MethodInfo(method);
+      cache.put(new Key(beanName, methodName), info);
+      return info;
     }
+    return null;
   }
 
   /**
@@ -62,38 +66,37 @@ public enum MethodCache {
    *          the name of the bean
    * @param methodName
    *          the name of the method
-   * @return the found method, null if there is no method found in the cache
+   * @return the found methodInfo object, null if there is no method found in the cache
    */
-  public Method get(final String beanName, final String methodName) {
+  public MethodInfo get(final String beanName, final String methodName) {
     return cache.get(new Key(beanName, methodName));
   }
 
-}
+  final static class Key {
 
-final class Key {
+    private final String beanName;
+    private final String methodName;
 
-  private final String beanName;
-  private final String methodName;
-
-  public Key(String beanName, String methodName) {
-    this.beanName = beanName;
-    this.methodName = methodName;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (!(o instanceof Key)) {
-      return false;
+    public Key(final String beanName, final String methodName) {
+      this.beanName = beanName;
+      this.methodName = methodName;
     }
 
-    Key other = (Key) o;
-    return (ExtDirectSpringUtil.equal(beanName, other.beanName) && ExtDirectSpringUtil.equal(methodName,
-        other.methodName));
-  }
+    @Override
+    public boolean equals(Object o) {
+      if (!(o instanceof Key)) {
+        return false;
+      }
 
-  @Override
-  public int hashCode() {
-    return Arrays.hashCode(new Object[] { beanName, methodName });
-  }
+      Key other = (Key) o;
+      return (ExtDirectSpringUtil.equal(beanName, other.beanName) && ExtDirectSpringUtil.equal(methodName,
+          other.methodName));
+    }
 
+    @Override
+    public int hashCode() {
+      return Arrays.hashCode(new Object[] { beanName, methodName });
+    }
+
+  }
 }
