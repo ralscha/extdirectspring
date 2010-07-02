@@ -164,19 +164,18 @@
       </releases>
       <snapshots>
         <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
       </snapshots>
     </repository>
+    
     <repository>
 	    <id>sonatype</id>
 	    <name>sonatype</name>
 	    <url>https://oss.sonatype.org/content/groups/public</url>
       <snapshots>
         <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-        <checksumPolicy>fail</checksumPolicy>
       </snapshots>      
-	</repository>    
+	 </repository>    
+  
   </repositories>
 
   <build>
