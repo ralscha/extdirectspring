@@ -58,7 +58,7 @@ public class ApiCacheTest {
 
     assertFalse(key1.equals("test"));
     assertFalse(key1.equals(null));
-    
+
     assertTrue(key1.equals(key1));
     assertTrue(key2.equals(key2));
     assertTrue(key3.equals(key3));
@@ -73,7 +73,7 @@ public class ApiCacheTest {
     assertFalse(key5.equals(key1));
     assertFalse(key6.equals(key1));
     assertFalse(key7.equals(key1));
-    
+
   }
 
 }

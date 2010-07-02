@@ -19,11 +19,11 @@ package ch.ralscha.extdirectspring.bean;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
-*
-* Class representing the request of a DirectStore read call
-*
-* @author Ralph Schaer
-*/
+ * 
+ * Class representing the request of a DirectStore read call
+ * 
+ * @author Ralph Schaer
+ */
 public class ExtDirectStoreReadRequest {
 
   private String query;
@@ -84,7 +84,8 @@ public class ExtDirectStoreReadRequest {
 
   @Override
   public String toString() {
-    return "ExtDirectStoreReadRequest [dir=" + dir + ", limit=" + limit + ", query=" + query + ", sort=" + sort + ", start=" + start + "]";
+    return "ExtDirectStoreReadRequest [dir=" + dir + ", limit=" + limit + ", query=" + query + ", sort=" + sort
+        + ", start=" + start + "]";
   }
 
 }

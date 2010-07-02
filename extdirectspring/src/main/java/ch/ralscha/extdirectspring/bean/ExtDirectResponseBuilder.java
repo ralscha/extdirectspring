@@ -28,23 +28,23 @@ import org.springframework.validation.FieldError;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
-* An utility class that helps building a {@link ExtDirectResponse}
-* A form handler must return such a response
-*
-* @author Ralph Schaer
-*/
+ * An utility class that helps building a {@link ExtDirectResponse} A form
+ * handler must return such a response
+ * 
+ * @author Ralph Schaer
+ */
 public class ExtDirectResponseBuilder {
 
   private final ExtDirectResponse response;
   private final Map<String, Object> result;
 
   /**
-   * Creates a builder that builds the response object 
-   * needed for form handler and form upload handler methods.
-   * Sets the successful flag to true, can be overriden with the
-   * successful() and unsuccessful() methods
+   * Creates a builder that builds the response object needed for form handler
+   * and form upload handler methods. Sets the successful flag to true, can be
+   * overriden with the successful() and unsuccessful() methods
    * 
-   * @param request the current request
+   * @param request
+   *          the current request
    */
   public ExtDirectResponseBuilder(final HttpServletRequest request) {
     response = new ExtDirectResponse();
@@ -60,8 +60,8 @@ public class ExtDirectResponseBuilder {
   }
 
   /**
-   * Creates a errors property in the response if there are any errors in the bindingResult
-   * Sets the success flag to false if there are errors
+   * Creates a errors property in the response if there are any errors in the
+   * bindingResult Sets the success flag to false if there are errors
    * 
    * @param bindingResult
    */
@@ -70,8 +70,8 @@ public class ExtDirectResponseBuilder {
   }
 
   /**
-   * Creates a errors property in the response if there are any errors in the bindingResult
-   * Sets the success flag to false if there are errors
+   * Creates a errors property in the response if there are any errors in the
+   * bindingResult Sets the success flag to false if there are errors
    * 
    * @param locale
    * @param bindingResult
@@ -81,8 +81,8 @@ public class ExtDirectResponseBuilder {
   }
 
   /**
-   * Creates a errors property in the response if there are any errors in the bindingResult
-   * Sets the success flag to false if there are errors
+   * Creates a errors property in the response if there are any errors in the
+   * bindingResult Sets the success flag to false if there are errors
    * 
    * @param locale
    * @param messageSource
@@ -111,8 +111,10 @@ public class ExtDirectResponseBuilder {
   /**
    * Add additional property to the response
    * 
-   * @param key the key of the property
-   * @param value the value of this property
+   * @param key
+   *          the key of the property
+   * @param value
+   *          the value of this property
    */
   public void addResultProperty(final String key, final Object value) {
     result.put(key, value);
@@ -142,14 +144,15 @@ public class ExtDirectResponseBuilder {
   }
 
   /**
-   * Builds and writes the response to the OutputStream of the response.
-   * This methods has to be called at the end of a form upload handler method.
+   * Builds and writes the response to the OutputStream of the response. This
+   * methods has to be called at the end of a form upload handler method.
    * 
-   * @param servletResponse current servlet response
-   * @throws IOException 
-   * @throws IOException 
+   * @param servletResponse
+   *          current servlet response
+   * @throws IOException
+   * @throws IOException
    */
-  public void buildAndWriteUploadResponse(final HttpServletResponse servletResponse) throws IOException  {
+  public void buildAndWriteUploadResponse(final HttpServletResponse servletResponse) throws IOException {
     servletResponse.setContentType("text/html");
 
     servletResponse.getOutputStream().write("<html><body><textarea>".getBytes());

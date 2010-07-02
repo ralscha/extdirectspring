@@ -39,7 +39,8 @@ public class PollProvider {
   }
 
   @ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message2", group = "group2")
-  public String handleMessage2(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {
+  public String handleMessage2(HttpServletResponse response, HttpServletRequest request, HttpSession session,
+      Locale locale) {
     Assert.assertNotNull(response);
     Assert.assertNotNull(request);
     Assert.assertNotNull(session);
@@ -70,7 +71,7 @@ public class PollProvider {
     }
     return null;
   }
-  
+
   @ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group2")
   public String message6() {
     Date now = new Date();

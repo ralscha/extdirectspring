@@ -31,7 +31,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Tests for {@link RouterController}.
- *
+ * 
  * @author Ralph Schaer
  */
 @SuppressWarnings("all")
@@ -68,7 +68,7 @@ public class RouterControllerRemote4Test {
       assertTrue(e instanceof NoSuchBeanDefinitionException);
       assertEquals("No bean named 'RemoteProvider1' is defined", e.getMessage());
     }
-    
+
     String redirect = controller.router("formInfoController", "updateInfo");
     assertEquals("forward:updateInfo", redirect);
   }

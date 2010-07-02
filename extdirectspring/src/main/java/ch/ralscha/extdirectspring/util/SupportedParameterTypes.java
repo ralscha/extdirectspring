@@ -29,7 +29,8 @@ import javax.servlet.http.HttpSession;
  */
 public enum SupportedParameterTypes {
 
-  SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class), SESSION(HttpSession.class), LOCALE(Locale.class);
+  SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class), SESSION(HttpSession.class), LOCALE(
+      Locale.class);
 
   private final Class<?> clazz;
 
@@ -47,7 +48,7 @@ public enum SupportedParameterTypes {
   /**
    * Checks if the clazz is a supported parameter type
    * 
-   * @param clazz 
+   * @param clazz
    * @return true if is supporeted, else false
    */
   public static boolean isSupported(final Class<?> clazz) {

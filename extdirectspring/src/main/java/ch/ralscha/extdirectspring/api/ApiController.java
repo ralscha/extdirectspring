@@ -38,7 +38,7 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
 
 /**
- * Spring managed controller that handles  /api.jsp and /api-debug.js requests
+ * Spring managed controller that handles /api.jsp and /api-debug.js requests
  * 
  * @author Ralph Schaer
  */
@@ -52,13 +52,14 @@ public class ApiController implements ApplicationContextAware {
     this.context = context;
   }
 
-  @RequestMapping(value = {"/api.js", "/api-debug.js"}, method = RequestMethod.GET)
-  public void api(@RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app") final String apiNs,
+  @RequestMapping(value = { "/api.js", "/api-debug.js" }, method = RequestMethod.GET)
+  public void api(
+      @RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app") final String apiNs,
       @RequestParam(value = "actionNs", required = false) final String actionNs,
       @RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API") final String remotingApiVar,
       @RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS") final String pollingUrlsVar,
-      @RequestParam(value = "group", required = false) final String group, HttpServletRequest request, HttpServletResponse response)
-      throws IOException {
+      @RequestParam(value = "group", required = false) final String group, HttpServletRequest request,
+      HttpServletResponse response) throws IOException {
 
     response.setContentType("application/x-javascript");
 
@@ -87,8 +88,9 @@ public class ApiController implements ApplicationContextAware {
 
   }
 
-  private String buildApiString(final String apiNs, final String actionNs, final String remotingApiVar, final String pollingUrlsVar,
-      final String routerUrl, final String basePollUrl, final String group, final boolean debug) {
+  private String buildApiString(final String apiNs, final String actionNs, final String remotingApiVar,
+      final String pollingUrlsVar, final String routerUrl, final String basePollUrl, final String group,
+      final boolean debug) {
 
     RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
     scanForExtDirectMethods(remotingApi, group);
@@ -176,37 +178,42 @@ public class ApiController implements ApplicationContextAware {
         if (annotation != null) {
           if (isSameGroup(group, annotation.group())) {
             ExtDirectMethodType type = annotation.value();
-            
+
             switch (type) {
-              case SIMPLE :
-                remotingApi.addAction(beanName, method.getName(), numberOfParameters(method));                
-                break;
-              case FORM_LOAD :
-              case STORE_READ :
+            case SIMPLE:
+              remotingApi.addAction(beanName, method.getName(), numberOfParameters(method));
+              break;
+            case FORM_LOAD:
+            case STORE_READ:
+              remotingApi.addAction(beanName, method.getName(), 1);
+              break;
+            case STORE_MODIFY:
+              if (annotation.entryClass() != ExtDirectMethod.class) {
                 remotingApi.addAction(beanName, method.getName(), 1);
-                break;                
-              case STORE_MODIFY :
-                if (annotation.entryClass() != ExtDirectMethod.class) {
-                  remotingApi.addAction(beanName, method.getName(), 1);                 
-                } else {
-                  LoggerFactory.getLogger(getClass()).warn("Method '{}.{}' is annotated as a store modify method but does "+
-                      "not specify a entryClass. Method ignored.", beanName, method.getName());
-                }
-                break;
-              case FORM_POST :
-                if (isValidFormPostMethod(method)) {
-                  remotingApi.addAction(beanName, method.getName(), 0, true);
-                } else {
-                  LoggerFactory.getLogger(getClass()).warn("Method '{}.{}' is annotated as a form post method but is not valid. " + 
-                      "A form post method must be annotated with @RequestMapping and method=RequestMethod.POST. Method ignored.", beanName, method.getName());                
-                }
-                break;
-              case POLL :
-                remotingApi.addPollingProvider(beanName, method.getName(), annotation.event());
-                break;
-                
+              } else {
+                LoggerFactory.getLogger(getClass()).warn(
+                    "Method '{}.{}' is annotated as a store modify method but does "
+                        + "not specify a entryClass. Method ignored.", beanName, method.getName());
+              }
+              break;
+            case FORM_POST:
+              if (isValidFormPostMethod(method)) {
+                remotingApi.addAction(beanName, method.getName(), 0, true);
+              } else {
+                LoggerFactory
+                    .getLogger(getClass())
+                    .warn(
+                        "Method '{}.{}' is annotated as a form post method but is not valid. "
+                            + "A form post method must be annotated with @RequestMapping and method=RequestMethod.POST. Method ignored.",
+                        beanName, method.getName());
+              }
+              break;
+            case POLL:
+              remotingApi.addPollingProvider(beanName, method.getName(), annotation.event());
+              break;
+
             }
-            
+
           }
         }
 

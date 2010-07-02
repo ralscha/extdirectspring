@@ -25,23 +25,23 @@ public class BeanNotSpringWExtDirectMethods {
 
   @ExtDirectMethod
   public void methodA() {
-    //a dummy method
+    // a dummy method
   }
 
   @ExtDirectMethod(value = ExtDirectMethodType.POLL)
   public void methodB() {
-    //a dummy method
+    // a dummy method
   }
 
   @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Integer.class)
   public List<Integer> methodC(List<Integer> ids) {
-    //a dummy method
+    // a dummy method
     return null;
   }
 
   @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, entryClass = Integer.class)
   public List<Integer> methodD() {
-    //a dummy method
+    // a dummy method
     return null;
   }
 }

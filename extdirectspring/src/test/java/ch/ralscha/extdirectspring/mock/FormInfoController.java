@@ -45,23 +45,23 @@ public class FormInfoController {
 
   @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2")
   @RequestMapping(value = "/upload", method = RequestMethod.POST)
-  public void upload(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo, BindingResult result)
-      throws IOException {
+  public void upload(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
+      BindingResult result) throws IOException {
     ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
     builder.addErrors(locale, result);
     builder.buildAndWriteUploadResponse(response);
   }
 
   @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2")
-  public void invalidMethod1(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
-      BindingResult result) {
-    //dummy test method
+  public void invalidMethod1(Locale locale, HttpServletRequest request, HttpServletResponse response,
+      FormInfo formInfo, BindingResult result) {
+    // dummy test method
   }
 
   @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2")
   @RequestMapping(value = "/upload", method = RequestMethod.GET)
-  public void invalidMethod2(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
-      BindingResult result) {
-    //dummy test method
+  public void invalidMethod2(Locale locale, HttpServletRequest request, HttpServletResponse response,
+      FormInfo formInfo, BindingResult result) {
+    // dummy test method
   }
 }

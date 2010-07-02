@@ -22,11 +22,11 @@ import javax.inject.Named;
 public class BeanSpringWOExtDirectMethods {
 
   public void methodA() {
-    //a dummy method
+    // a dummy method
   }
 
   public boolean methodB() {
-    //a dummy method
+    // a dummy method
     return false;
   }
 

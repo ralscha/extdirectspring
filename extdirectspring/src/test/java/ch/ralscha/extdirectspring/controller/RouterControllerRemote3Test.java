@@ -42,7 +42,7 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
  * Tests for {@link RouterController}.
- *
+ * 
  * @author Ralph Schaer
  */
 @SuppressWarnings("all")
@@ -79,7 +79,7 @@ public class RouterControllerRemote3Test {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
+    ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
     assertTrue(storeResponse.getRecords().isEmpty());
     assertNull(storeResponse.getTotal());
     assertTrue(storeResponse.isSuccess());
@@ -106,7 +106,7 @@ public class RouterControllerRemote3Test {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
+    ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
     assertNull(storeResponse.getTotal());
     assertTrue(storeResponse.isSuccess());
     assertEquals(2, storeResponse.getRecords().size());
@@ -136,7 +136,7 @@ public class RouterControllerRemote3Test {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
+    ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
     assertNull(storeResponse.getTotal());
     assertTrue(storeResponse.isSuccess());
     assertEquals(1, storeResponse.getRecords().size());
@@ -202,7 +202,7 @@ public class RouterControllerRemote3Test {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
+    ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
     assertNull(storeResponse.getTotal());
     assertTrue(storeResponse.isSuccess());
     assertEquals(1, storeResponse.getRecords().size());
@@ -230,7 +230,7 @@ public class RouterControllerRemote3Test {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    ExtDirectStoreResponse<Integer> storeResponse = (ExtDirectStoreResponse<Integer>)resp.getResult();
+    ExtDirectStoreResponse<Integer> storeResponse = (ExtDirectStoreResponse<Integer>) resp.getResult();
     assertNull(storeResponse.getTotal());
     assertTrue(storeResponse.isSuccess());
     assertEquals(1, storeResponse.getRecords().size());

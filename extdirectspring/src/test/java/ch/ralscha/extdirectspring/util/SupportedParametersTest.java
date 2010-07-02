@@ -27,7 +27,7 @@ import org.springframework.mock.web.MockHttpSession;
 
 /**
  * Tests for {@link SupportedParameterTypes}.
- *
+ * 
  * @author Ralph Schaer
  */
 public class SupportedParametersTest {

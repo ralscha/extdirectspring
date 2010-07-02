@@ -24,30 +24,30 @@ class SimpleBean {
 
   @ExtDirectMethod
   public void methodA() {
-    //no code here
+    // no code here
   }
 
   @ExtDirectMethod(ExtDirectMethodType.POLL)
   public void methodB() {
-    //nothing here
+    // nothing here
   }
 
   @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Integer.class)
   public void methodC() {
-    //nothing here
+    // nothing here
   }
 
   @ExtDirectMethod(ExtDirectMethodType.STORE_READ)
   public void methodD() {
-    //nothing here
+    // nothing here
   }
 
   @JsonIgnore
   public void methodE() {
-    //nothing here
+    // nothing here
   }
 
   public void methodF() {
-    //nothing here
+    // nothing here
   }
 }
