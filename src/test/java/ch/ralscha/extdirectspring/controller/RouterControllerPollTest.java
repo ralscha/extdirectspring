@@ -34,7 +34,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 
 /**
  * Tests for {@link RouterController}.
- *
+ * 
  * @author Ralph Schaer
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -55,26 +55,29 @@ public class RouterControllerPollTest {
 
   @Test
   public void pollNoArguments() throws Exception {
-    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage1", "message1", request, response, Locale.ENGLISH);
+    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage1", "message1", request, response,
+        Locale.ENGLISH);
     assertNotNull(resp);
     assertEquals("event", resp.getType());
     assertEquals("message1", resp.getName());
-    assertTrue(((String)resp.getData()).startsWith("Successfully polled at: "));
+    assertTrue(((String) resp.getData()).startsWith("Successfully polled at: "));
   }
 
   @Test
   public void pollSupportedArguments() throws Exception {
-    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage2", "message2", request, response, Locale.ENGLISH);
+    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage2", "message2", request, response,
+        Locale.ENGLISH);
     assertNotNull(resp);
     assertEquals("event", resp.getType());
     assertEquals("message2", resp.getName());
-    assertTrue(((String)resp.getData()).startsWith("Successfully polled at: "));
+    assertTrue(((String) resp.getData()).startsWith("Successfully polled at: "));
   }
 
   @Test
   public void pollRequiredArgument() throws Exception {
     request.setParameter("id", "2");
-    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage3", "message3", request, response, Locale.ENGLISH);
+    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage3", "message3", request, response,
+        Locale.ENGLISH);
     assertNotNull(resp);
     assertEquals("event", resp.getType());
     assertEquals("message3", resp.getName());
@@ -90,7 +93,8 @@ public class RouterControllerPollTest {
   @Test
   public void pollDefaultValueArgumentWithRequestParameter() throws Exception {
     request.setParameter("id", "7");
-    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage4", "message4", request, response, Locale.ENGLISH);
+    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage4", "message4", request, response,
+        Locale.ENGLISH);
     assertNotNull(resp);
     assertEquals("event", resp.getType());
     assertEquals("message4", resp.getName());
@@ -99,7 +103,8 @@ public class RouterControllerPollTest {
 
   @Test
   public void pollDefaultValueArgumentWithoutRequestParameter() throws Exception {
-    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage4", "message4", request, response, Locale.ENGLISH);
+    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage4", "message4", request, response,
+        Locale.ENGLISH);
     assertNotNull(resp);
     assertEquals("event", resp.getType());
     assertEquals("message4", resp.getName());
@@ -109,7 +114,8 @@ public class RouterControllerPollTest {
   @Test
   public void pollNotRequiredArgumentWithRequestParameter() throws Exception {
     request.setParameter("id", "3");
-    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage5", "message5", request, response, Locale.ENGLISH);
+    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage5", "message5", request, response,
+        Locale.ENGLISH);
     assertNotNull(resp);
     assertEquals("event", resp.getType());
     assertEquals("message5", resp.getName());
@@ -118,7 +124,8 @@ public class RouterControllerPollTest {
 
   @Test
   public void pollNotRequiredArgumentWithoutRequestParameter() throws Exception {
-    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage5", "message5", request, response, Locale.ENGLISH);
+    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage5", "message5", request, response,
+        Locale.ENGLISH);
     assertNotNull(resp);
     assertEquals("event", resp.getType());
     assertEquals("message5", resp.getName());

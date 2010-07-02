@@ -17,7 +17,7 @@
 package ch.ralscha.extdirectspring.annotation;
 
 /**
- * Enumeration of all possible remote method types. 
+ * Enumeration of all possible remote method types.
  * 
  * @author Ralph Schaer
  */
@@ -25,32 +25,32 @@ public enum ExtDirectMethodType {
   /**
    * Specifies a simple remote method
    */
-  SIMPLE, 
-    
+  SIMPLE,
+
   /**
    * Specifies a method that handles a form load
    */
-  FORM_LOAD, 
-  
+  FORM_LOAD,
+
   /**
    * Specifies a method that handles a read call from DirectStore
-   */  
-  STORE_READ, 
-  
+   */
+  STORE_READ,
+
   /**
-   * Specifies a method that handles a create, update or delete call from DirectStore
-   */  
-  STORE_MODIFY, 
-  
-  
+   * Specifies a method that handles a create, update or delete call from
+   * DirectStore
+   */
+  STORE_MODIFY,
+
   /**
    * Specifies a method that handles a form post (with or without upload)
    */
   FORM_POST,
-  
+
   /**
    * Specifies a method that handles polling
    */
-  POLL 
-  
+  POLL
+
 }

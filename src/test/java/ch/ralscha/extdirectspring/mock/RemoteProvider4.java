@@ -51,7 +51,7 @@ public class RemoteProvider4 {
   public FormInfo method2() {
     return null;
   }
-  
+
   @ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
   public FormInfo method3(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {
     Assert.assertNotNull(response);
@@ -62,7 +62,6 @@ public class RemoteProvider4 {
     return null;
   }
 
- 
   @ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
   public FormInfo method4(Locale locale, @RequestParam(value = "id") int id) {
     Assert.assertEquals(10, id);
@@ -71,7 +70,8 @@ public class RemoteProvider4 {
   }
 
   @ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3")
-  public ExtDirectFormLoadResult method5(@RequestParam(value = "id", defaultValue = "1") int id, HttpServletRequest servletRequest) {
+  public ExtDirectFormLoadResult method5(@RequestParam(value = "id", defaultValue = "1") int id,
+      HttpServletRequest servletRequest) {
     Assert.assertEquals(1, id);
     Assert.assertNotNull(servletRequest);
     return new ExtDirectFormLoadResult();
@@ -85,6 +85,6 @@ public class RemoteProvider4 {
       Assert.assertEquals(Integer.valueOf(11), id);
     }
     return new ExtDirectFormLoadResult("TEST");
-  }  
-  
+  }
+
 }

@@ -43,7 +43,7 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
  * Tests for {@link RouterController}.
- *
+ * 
  * @author Ralph Schaer
  */
 @SuppressWarnings("all")
@@ -262,7 +262,6 @@ public class RouterControllerRemote1Test {
     assertNull(resp.getResult());
   }
 
-
   @Test
   public void testReturnsObject() {
     String json = TestUtil.createRequestJson("remoteProvider1", "method8", 1, 7.34);
@@ -280,7 +279,7 @@ public class RouterControllerRemote1Test {
     assertNotNull(resp.getResult());
 
     assertTrue(resp.getResult() instanceof FormInfo);
-    FormInfo info = (FormInfo)resp.getResult();
+    FormInfo info = (FormInfo) resp.getResult();
 
     assertTrue(Double.compare(7.34, info.getBack()) == 0);
     assertEquals(false, info.isAdmin());
@@ -307,9 +306,5 @@ public class RouterControllerRemote1Test {
     assertNull(resp.getMessage());
     assertEquals(42l, resp.getResult());
   }
-
-
-
-
 
 }

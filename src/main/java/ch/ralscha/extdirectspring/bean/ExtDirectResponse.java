@@ -20,7 +20,7 @@ import org.codehaus.jackson.annotate.JsonWriteNullProperties;
 
 /**
  * Class representing the response of a Ext.Direct call
- *
+ * 
  * @author mansari
  * @author Ralph Schaer
  */
@@ -94,8 +94,8 @@ public class ExtDirectResponse {
 
   @Override
   public String toString() {
-    return "ExtDirectResponse [action=" + action + ", message=" + message + ", method=" + method + ", result=" + result + ", tid=" + tid
-        + ", type=" + type + ", where=" + where + "]";
+    return "ExtDirectResponse [action=" + action + ", message=" + message + ", method=" + method + ", result=" + result
+        + ", tid=" + tid + ", type=" + type + ", where=" + where + "]";
   }
 
 }

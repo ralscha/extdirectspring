@@ -20,7 +20,7 @@ import java.util.Arrays;
 
 /**
  * Class representing the request of a Ext.Direct call
- *
+ * 
  * @author mansari
  * @author Ralph Schaer
  */
@@ -74,8 +74,8 @@ public class ExtDirectRequest {
 
   @Override
   public String toString() {
-    return "ExtDirectRequest [action=" + action + ", data=" + Arrays.toString(data) + ", method=" + method + ", tid=" + tid + ", type="
-        + type + "]";
+    return "ExtDirectRequest [action=" + action + ", data=" + Arrays.toString(data) + ", method=" + method + ", tid="
+        + tid + ", type=" + type + "]";
   }
 
 }

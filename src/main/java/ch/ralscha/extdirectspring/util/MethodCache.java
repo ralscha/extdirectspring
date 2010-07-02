@@ -42,9 +42,12 @@ public enum MethodCache {
   /**
    * Put a method into the MethodCache.
    * 
-   * @param beanName the name of the bean
-   * @param methodName the name of the method
-   * @param method the method
+   * @param beanName
+   *          the name of the bean
+   * @param methodName
+   *          the name of the method
+   * @param method
+   *          the method
    */
   public void put(final String beanName, final String methodName, final Method method) {
     if (method != null) {
@@ -53,10 +56,12 @@ public enum MethodCache {
   }
 
   /**
-   * Get a method from the MethodCache. 
+   * Get a method from the MethodCache.
    * 
-   * @param beanName the name of the bean
-   * @param methodName the name of the method
+   * @param beanName
+   *          the name of the bean
+   * @param methodName
+   *          the name of the method
    * @return the found method, null if there is no method found in the cache
    */
   public Method get(final String beanName, final String methodName) {
@@ -81,13 +86,14 @@ final class Key {
       return false;
     }
 
-    Key other = (Key)o;
-    return (ExtDirectSpringUtil.equal(beanName, other.beanName) && ExtDirectSpringUtil.equal(methodName, other.methodName));
+    Key other = (Key) o;
+    return (ExtDirectSpringUtil.equal(beanName, other.beanName) && ExtDirectSpringUtil.equal(methodName,
+        other.methodName));
   }
 
   @Override
   public int hashCode() {
-    return Arrays.hashCode(new Object[]{beanName, methodName});
+    return Arrays.hashCode(new Object[] { beanName, methodName });
   }
 
 }

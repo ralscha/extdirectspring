@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  * 
  * @author Ralph Schaer
  */
-@Target({ElementType.METHOD})
+@Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
@@ -38,25 +38,25 @@ public @interface ExtDirectMethod {
    * Specifies the type of the remote method. Defaults to simple method call.
    */
   ExtDirectMethodType value() default ExtDirectMethodType.SIMPLE;
-  
+
   /**
-   * The name of a api group this method is part of. 
+   * The name of an api group this method is part of.
    */
   String group() default "";
 
   /**
-   * A STORE_MODIFY method must specifiy the class of the entries in the collection.
-   * Defaults to ExtDirectMethod.class as a workaround, because annotations parameters
-   * can't default to null. This value behaves like the parameter entryType is null.  
+   * A STORE_MODIFY method must specify the class of the entries in the
+   * collection. Defaults to ExtDirectMethod.class as a workaround, because
+   * annotations parameters can't default to null. This value behaves like the
+   * parameter entryType is null.
    */
   Class<?> entryClass() default ExtDirectMethod.class;
-  
-  
+
   /**
-   * Optional parameter if the method is a POLL method.
-   * The name of the event this method is sending messages to
-   * If parameter is empty the name of the method will be used as event name 
+   * Optional parameter if the method is a POLL method. The name of the event
+   * this method is sending messages to If parameter is empty the name of the
+   * method will be used as event name
    */
   String event() default "";
-  
+
 }

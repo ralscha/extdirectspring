@@ -38,7 +38,7 @@ import org.springframework.util.StringUtils;
 
 /**
  * Tests for {@link ApiController}.
- *
+ * 
  * @author Ralph Schaer
  */
 @SuppressWarnings("all")
@@ -74,7 +74,7 @@ public class ApiControllerTest {
     apiController.api("Ext.ns", "actionns", "TEST_REMOTING_API", "TEST_POLLING_URLS", null, request, response);
     compare(response, allApis("actionns"), "Ext.ns", "TEST_REMOTING_API", "TEST_POLLING_URLS");
   }
-  
+
   @Test
   public void testUnknownGroup() throws IOException {
     MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
@@ -87,7 +87,7 @@ public class ApiControllerTest {
     apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "xy", request, response);
     compare(response, noApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
   }
-  
+
   @Test
   public void testGroup1() throws IOException {
     MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
@@ -100,7 +100,7 @@ public class ApiControllerTest {
     apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", request, response);
     compare(response, group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS");
   }
-  
+
   @Test
   public void testGroup2() throws IOException {
     MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
@@ -112,8 +112,8 @@ public class ApiControllerTest {
     response = new MockHttpServletResponse();
     apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "group2", request, response);
     compare(response, group2Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
-  }  
-  
+  }
+
   @Test
   public void testGroup3() throws IOException {
     MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
@@ -125,8 +125,8 @@ public class ApiControllerTest {
     response = new MockHttpServletResponse();
     apiController.api("Extns", "ns", "RAPI", "PURLS", "group3", request, response);
     compare(response, group3Apis("ns"), "Extns", "RAPI", "PURLS");
-  }  
-  
+  }
+
   @Test
   public void testGroup4() throws IOException {
     MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
@@ -138,7 +138,7 @@ public class ApiControllerTest {
     response = new MockHttpServletResponse();
     apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "group4", request, response);
     compare(response, group4Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
-  }    
+  }
 
   private RemotingApi noApis(String namespace) {
     RemotingApi remotingApi = new RemotingApi("http://localhost:80/action/router", namespace);
@@ -209,14 +209,13 @@ public class ApiControllerTest {
     remotingApi.addAction("remoteProvider3", "update3", 1, false);
     remotingApi.addAction("remoteProvider3", "update4", 1, false);
     remotingApi.addAction("remoteProvider3", "destroy", 1, false);
-    
+
     remotingApi.addAction("remoteProvider4", "method1", 1, false);
     remotingApi.addAction("remoteProvider4", "method2", 1, false);
     remotingApi.addAction("remoteProvider4", "method3", 1, false);
     remotingApi.addAction("remoteProvider4", "method4", 1, false);
     remotingApi.addAction("remoteProvider4", "method5", 1, false);
     remotingApi.addAction("remoteProvider4", "method6", 1, false);
-    
 
     remotingApi.addAction("formInfoController", "updateInfo", 0, true);
     remotingApi.addAction("formInfoController", "upload", 0, true);
@@ -227,12 +226,12 @@ public class ApiControllerTest {
     remotingApi.addPollingProvider("pollProvider", "handleMessage4", "message4");
     remotingApi.addPollingProvider("pollProvider", "handleMessage5", "message5");
     remotingApi.addPollingProvider("pollProvider", "message6", "message6");
-    
+
     return remotingApi;
   }
 
-  private void compare(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs, String remotingApiVar, String pollingUrlsVar)
-      throws JsonParseException, JsonMappingException, IOException {
+  private void compare(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs, String remotingApiVar,
+      String pollingUrlsVar) throws JsonParseException, JsonMappingException, IOException {
     String content = response.getContentAsString();
     content = content.replace(";", ";\n");
     content = content.replace("{", "{\n");
@@ -247,8 +246,8 @@ public class ApiControllerTest {
 
     assertContains(extNsLine, lines);
     int startRemotingApi = assertContains(remotingApiLine, lines);
-    
-    int startPollingApi = lines.length; 
+
+    int startPollingApi = lines.length;
     if (!remotingApi.getPollingProviders().isEmpty()) {
       startPollingApi = assertContains(pollingApiLine, lines);
     }
@@ -269,7 +268,7 @@ public class ApiControllerTest {
         pollingJson += lines[i];
       }
     }
-    
+
     ObjectMapper mapper = new ObjectMapper();
     Map<String, Object> rootAsMap = mapper.readValue(remotingJson, Map.class);
     if (remotingApi.getNamespace() == null) {
@@ -286,11 +285,11 @@ public class ApiControllerTest {
       assertEquals(remotingApi.getNamespace(), rootAsMap.get("namespace"));
     }
 
-    Map<String, Object> beans = (Map<String, Object>)rootAsMap.get("actions");
+    Map<String, Object> beans = (Map<String, Object>) rootAsMap.get("actions");
 
     assertEquals(remotingApi.getActions().size(), beans.size());
     for (String beanName : remotingApi.getActions().keySet()) {
-      List<Map<String, Object>> actions = (List<Map<String, Object>>)beans.get(beanName);
+      List<Map<String, Object>> actions = (List<Map<String, Object>>) beans.get(beanName);
       List<Action> expectedActions = remotingApi.getActions().get(beanName);
       compare(expectedActions, actions);
     }
@@ -300,10 +299,11 @@ public class ApiControllerTest {
       Map<String, Object> pollingMap = mapper.readValue(pollingJson, Map.class);
       assertEquals(remotingApi.getPollingProviders().size(), pollingMap.size());
       for (PollingProvider pp : remotingApi.getPollingProviders()) {
-        String url = (String)pollingMap.get(pp.getEvent());
+        String url = (String) pollingMap.get(pp.getEvent());
         assertNotNull(url);
-        assertEquals(String.format("%s/%s/%s/%s", remotingApi.getUrl().replace("router", "poll"), pp.getBeanName(), pp.getMethod(), pp
-            .getEvent()), url);
+        assertEquals(
+            String.format("%s/%s/%s/%s", remotingApi.getUrl().replace("router", "poll"), pp.getBeanName(),
+                pp.getMethod(), pp.getEvent()), url);
       }
     }
   }

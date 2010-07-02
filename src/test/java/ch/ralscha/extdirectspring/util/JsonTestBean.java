@@ -25,7 +25,7 @@ public class JsonTestBean {
   private Integer[] e;
 
   public JsonTestBean() {
-    //no action here
+    // no action here
   }
 
   public JsonTestBean(Integer a, String b, String c, Boolean d, Integer[] e) {

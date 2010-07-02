@@ -24,10 +24,10 @@ import org.junit.Test;
 
 /**
  * Tests for {@link MethodCache}.
- *
+ * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all") 
+@SuppressWarnings("all")
 public class MethodCacheTest {
 
   @Test
@@ -49,7 +49,7 @@ public class MethodCacheTest {
     assertNull(MethodCache.INSTANCE.get("methodCacheTest", "testPu"));
     assertNull(MethodCache.INSTANCE.get("methodCacheTes", "testPut"));
     assertEquals(thisMethod, MethodCache.INSTANCE.get("methodCacheTest", "testPut"));
-    
+
   }
 
 }
