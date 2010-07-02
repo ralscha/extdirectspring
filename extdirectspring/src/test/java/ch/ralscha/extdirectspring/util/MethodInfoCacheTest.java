@@ -23,32 +23,32 @@ import java.lang.reflect.Method;
 import org.junit.Test;
 
 /**
- * Tests for {@link MethodCache}.
+ * Tests for {@link MethodInfoCache}.
  * 
  * @author Ralph Schaer
  */
 @SuppressWarnings("all")
-public class MethodCacheTest {
+public class MethodInfoCacheTest {
 
   @Test
   public void testPutAndGet() throws SecurityException, NoSuchMethodException {
-    assertNotNull(MethodCache.INSTANCE);
+    assertNotNull(MethodInfoCache.INSTANCE);
     Method thisMethod = getClass().getMethod("testPutAndGet", null);
 
-    MethodCache.INSTANCE.put(null, null, null);
-    assertNull(MethodCache.INSTANCE.get(null, null));
+    MethodInfoCache.INSTANCE.put(null, null, null);
+    assertNull(MethodInfoCache.INSTANCE.get(null, null));
 
-    MethodCache.INSTANCE.put(null, null, thisMethod);
-    assertEquals(thisMethod, MethodCache.INSTANCE.get(null, null));
+    MethodInfoCache.INSTANCE.put(null, null, thisMethod);
+    assertEquals(thisMethod, MethodInfoCache.INSTANCE.get(null, null).getMethod());
 
-    MethodCache.INSTANCE.put(null, "testPut", thisMethod);
-    assertNull(MethodCache.INSTANCE.get(null, "testPu"));
-    assertEquals(thisMethod, MethodCache.INSTANCE.get(null, "testPut"));
+    MethodInfoCache.INSTANCE.put(null, "testPut", thisMethod);
+    assertNull(MethodInfoCache.INSTANCE.get(null, "testPu"));
+    assertEquals(thisMethod, MethodInfoCache.INSTANCE.get(null, "testPut").getMethod());
 
-    MethodCache.INSTANCE.put("methodCacheTest", "testPut", thisMethod);
-    assertNull(MethodCache.INSTANCE.get("methodCacheTest", "testPu"));
-    assertNull(MethodCache.INSTANCE.get("methodCacheTes", "testPut"));
-    assertEquals(thisMethod, MethodCache.INSTANCE.get("methodCacheTest", "testPut"));
+    MethodInfoCache.INSTANCE.put("methodCacheTest", "testPut", thisMethod);
+    assertNull(MethodInfoCache.INSTANCE.get("methodCacheTest", "testPu"));
+    assertNull(MethodInfoCache.INSTANCE.get("methodCacheTes", "testPut"));
+    assertEquals(thisMethod, MethodInfoCache.INSTANCE.get("methodCacheTest", "testPut").getMethod());
 
   }
 

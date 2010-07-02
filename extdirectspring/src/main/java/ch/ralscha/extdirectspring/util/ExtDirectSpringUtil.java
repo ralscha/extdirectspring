@@ -54,8 +54,8 @@ public class ExtDirectSpringUtil {
   }
 
   /**
-   * Retrieves a method in a spring managed bean. The found method will be
-   * cached in {@link MethodCache} with the key beanName,methodName
+   * Retrieves a methodInfo from a method in a spring managed bean. The found method will be
+   * cached in {@link MethodInfoCache} with the key beanName,methodName
    * 
    * @param context
    *          Spring application context
@@ -68,7 +68,7 @@ public class ExtDirectSpringUtil {
    *           if the method is not annotated with a ExtDirectSpring annotation
    *           or there is no method in the bean
    */
-  public static Method findMethod(final ApplicationContext context, final String beanName, final String methodName) {
+  public static MethodInfo findMethodInfo(final ApplicationContext context, final String beanName, final String methodName) {
 
     if (context == null) {
       throw new IllegalArgumentException("ApplicatonContext cannot be null");
@@ -82,14 +82,14 @@ public class ExtDirectSpringUtil {
       throw new IllegalArgumentException("methodName cannot be null");
     }
 
-    Method method = MethodCache.INSTANCE.get(beanName, methodName);
+    MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(beanName, methodName);
 
-    if (method != null) {
-      return method;
+    if (methodInfo != null) {
+      return methodInfo;
     }
-
+ 
     Object bean = context.getBean(beanName);
-    method = BeanUtils.findMethodWithMinimalParameters(bean.getClass(), methodName);
+    Method method = BeanUtils.findMethodWithMinimalParameters(bean.getClass(), methodName);
 
     if (method != null) {
       if (AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) == null) {
@@ -97,8 +97,7 @@ public class ExtDirectSpringUtil {
             + "'. Missing ExtDirectMethod annotation");
       }
 
-      MethodCache.INSTANCE.put(beanName, methodName, method);
-      return method;
+      return MethodInfoCache.INSTANCE.put(beanName, methodName, method);
     }
 
     throw new IllegalArgumentException("Method '" + beanName + "." + methodName + "' not found");
@@ -143,8 +142,8 @@ public class ExtDirectSpringUtil {
    *          a Spring application context
    * @param beanName
    *          the name of the bean
-   * @param methodName
-   *          the name of the method
+   * @param methodInfo
+   *          the methodInfo object
    * @param params
    *          the parameters
    * @return the result of the method invokation
@@ -152,12 +151,11 @@ public class ExtDirectSpringUtil {
    *           if there is no bean in the context
    * @throws IllegalAccessException
    * @throws InvocationTargetException
-   */
-  public static Object invoke(final ApplicationContext context, final String beanName, final String methodName,
+   */  
+  public static Object invoke(final ApplicationContext context, final String beanName, final MethodInfo methodInfo,
       final Object[] params) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-    Method method = findMethod(context, beanName, methodName);
     Object bean = context.getBean(beanName);
-    return method.invoke(bean, params);
+    return methodInfo.getMethod().invoke(bean, params);
   }
 
   /**

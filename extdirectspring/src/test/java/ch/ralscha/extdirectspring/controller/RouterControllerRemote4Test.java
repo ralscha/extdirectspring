@@ -42,15 +42,6 @@ public class RouterControllerRemote4Test {
   @Inject
   private RouterController controller;
 
-  private MockHttpServletResponse response;
-  private MockHttpServletRequest request;
-
-  @Before
-  public void beforeTest() {
-    response = new MockHttpServletResponse();
-    request = new MockHttpServletRequest();
-  }
-
   @Test
   public void testFormPostRouter() {
     try {
