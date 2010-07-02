@@ -144,7 +144,7 @@ public class RouterController implements ApplicationContextAware {
 
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"rawtypes", "unchecked" })
   @RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction")
   @ResponseBody
   public List<ExtDirectResponse> router(HttpServletRequest request, HttpServletResponse response, Locale locale,
@@ -210,7 +210,7 @@ public class RouterController implements ApplicationContextAware {
     return sw.toString();
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   private Object processRemotingRequest(HttpServletRequest request, HttpServletResponse response, Locale locale,
       ExtDirectRequest directRequest) throws Exception {
 

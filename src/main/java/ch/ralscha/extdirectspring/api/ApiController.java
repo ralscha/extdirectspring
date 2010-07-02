@@ -52,14 +52,26 @@ public class ApiController implements ApplicationContextAware {
     this.context = context;
   }
 
+  /**
+   * Method that handles api.js calls. Generates a Javascript with the necessary code for Ext.Direct
+   * 
+   * @param apiNs Name of the namespace the variable remotingApiVar will live in. Defaults to Ext.app
+   * @param actionNs Name of the namespace the action will live in. 
+   * @param remotingApiVar Name of the remoting api variable. Defaults to REMOTING_API
+   * @param pollingUrlsVar Name of the polling urls object. Defaults to POLLING_URLS
+   * @param group Name of the api group 
+   * @param request 
+   * @param response
+   * @throws IOException
+   */
   @RequestMapping(value = { "/api.js", "/api-debug.js" }, method = RequestMethod.GET)
   public void api(
       @RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app") final String apiNs,
       @RequestParam(value = "actionNs", required = false) final String actionNs,
       @RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API") final String remotingApiVar,
       @RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS") final String pollingUrlsVar,
-      @RequestParam(value = "group", required = false) final String group, HttpServletRequest request,
-      HttpServletResponse response) throws IOException {
+      @RequestParam(value = "group", required = false) final String group, final HttpServletRequest request,
+      final HttpServletResponse response) throws IOException {
 
     response.setContentType("application/x-javascript");
 
