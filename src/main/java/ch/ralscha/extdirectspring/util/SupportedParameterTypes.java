@@ -46,10 +46,10 @@ public enum SupportedParameterTypes {
   }
 
   /**
-   * Checks if the clazz is a supported parameter type
+   * Checks if the class is a supported parameter type
    * 
    * @param clazz
-   * @return true if is supporeted, else false
+   * @return true if is supported, else false
    */
   public static boolean isSupported(final Class<?> clazz) {
     if (clazz != null) {

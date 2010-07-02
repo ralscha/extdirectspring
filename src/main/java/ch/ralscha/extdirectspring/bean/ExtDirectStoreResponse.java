@@ -35,15 +35,15 @@ public class ExtDirectStoreResponse<T> {
     // default constructor
   }
 
-  public ExtDirectStoreResponse(Collection<T> records) {
+  public ExtDirectStoreResponse(final Collection<T> records) {
     this(null, records, true);
   }
 
-  public ExtDirectStoreResponse(Integer total, Collection<T> records) {
+  public ExtDirectStoreResponse(final Integer total, final Collection<T> records) {
     this(total, records, true);
   }
 
-  public ExtDirectStoreResponse(Integer total, Collection<T> records, Boolean success) {
+  public ExtDirectStoreResponse(final Integer total, final Collection<T> records, final Boolean success) {
     this.total = total;
     this.records = records;
     this.success = success;
@@ -53,7 +53,7 @@ public class ExtDirectStoreResponse<T> {
     return total;
   }
 
-  public void setTotal(Integer total) {
+  public void setTotal(final Integer total) {
     this.total = total;
   }
 
@@ -61,7 +61,7 @@ public class ExtDirectStoreResponse<T> {
     return records;
   }
 
-  public void setRecords(Collection<T> records) {
+  public void setRecords(final Collection<T> records) {
     this.records = records;
   }
 
@@ -69,7 +69,7 @@ public class ExtDirectStoreResponse<T> {
     return success;
   }
 
-  public void setSuccess(Boolean success) {
+  public void setSuccess(final Boolean success) {
     this.success = success;
   }
 

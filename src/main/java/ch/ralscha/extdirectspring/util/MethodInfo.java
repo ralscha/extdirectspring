@@ -38,7 +38,7 @@ public class MethodInfo {
   private ExtDirectMethod extDirectMethodAnnotation;
   private String forwardPath;
 
-  public MethodInfo(Method method) {
+  public MethodInfo(final Method method) {
     this.method = method;
     this.parameterTypes = method.getParameterTypes();
     

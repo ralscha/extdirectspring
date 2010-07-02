@@ -150,11 +150,8 @@ public class RouterController implements ApplicationContextAware {
 
     for (ExtDirectRequest directRequest : directRequests) {
 
-      ExtDirectResponse directResponse = new ExtDirectResponse();
-      directResponse.setAction(directRequest.getAction());
-      directResponse.setMethod(directRequest.getMethod());
-      directResponse.setTid(directRequest.getTid());
-      directResponse.setType(directRequest.getType());
+      ExtDirectResponse directResponse = new ExtDirectResponse(directRequest);
+
 
       try {
         MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, directRequest.getAction(),
@@ -198,7 +195,7 @@ public class RouterController implements ApplicationContextAware {
 
   }
 
-  private String getStackTrace(Throwable t) {
+  private String getStackTrace(final Throwable t) {
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw, true);
     t.printStackTrace(pw);
@@ -308,8 +305,8 @@ public class RouterController implements ApplicationContextAware {
     return ExtDirectSpringUtil.invoke(context, directRequest.getAction(), methodInfo, parameters);
   }
 
-  private Object handleRequestParam(HttpServletRequest request, Map<String, Object> valueContainer,
-      Annotation[] parameterAnnotations, Class<?> parameterType) {
+  private Object handleRequestParam(final HttpServletRequest request, final Map<String, Object> valueContainer,
+      final Annotation[] parameterAnnotations, final Class<?> parameterType) {
     boolean required = false;
     String parameterName = null;
     String defaultValue = null;
@@ -349,7 +346,7 @@ public class RouterController implements ApplicationContextAware {
     return null;
   }
 
-  private Map<String, Object> fillObjectFromMap(Object to, Map<String, Object> from) {
+  private Map<String, Object> fillObjectFromMap(final Object to, final Map<String, Object> from) {
     Set<String> foundParameters = new HashSet<String>();
 
     for (Entry<String, Object> entry : from.entrySet()) {
@@ -378,7 +375,7 @@ public class RouterController implements ApplicationContextAware {
     return remainingParameters;
   }
 
-  private List<Object> convertObjectEntriesToType(ArrayList<Object> records, Class<?> directStoreType) {
+  private List<Object> convertObjectEntriesToType(final ArrayList<Object> records, final Class<?> directStoreType) {
     if (records != null) {
       List<Object> convertedList = new ArrayList<Object>();
       for (Object record : records) {
@@ -391,7 +388,7 @@ public class RouterController implements ApplicationContextAware {
     return null;
   }
 
-  private List<ExtDirectRequest> getExtDirectRequests(String rawRequestString) {
+  private List<ExtDirectRequest> getExtDirectRequests(final String rawRequestString) {
     List<ExtDirectRequest> directRequests = new ArrayList<ExtDirectRequest>();
 
     if (rawRequestString.length() > 0 && rawRequestString.charAt(0) == '[') {
@@ -407,7 +404,7 @@ public class RouterController implements ApplicationContextAware {
     return directRequests;
   }
 
-  private boolean containsAnnotation(Annotation[] annotations, Class<RequestParam> requestedAnnotation) {
+  private boolean containsAnnotation(final Annotation[] annotations, final Class<RequestParam> requestedAnnotation) {
     if (annotations != null) {
       for (Annotation annotation : annotations) {
         if (requestedAnnotation.isInstance(annotation)) {

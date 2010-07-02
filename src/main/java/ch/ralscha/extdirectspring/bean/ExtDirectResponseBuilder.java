@@ -41,20 +41,14 @@ public class ExtDirectResponseBuilder {
   /**
    * Creates a builder that builds the response object needed for form handler
    * and form upload handler methods. Sets the successful flag to true, can be
-   * overriden with the successful() and unsuccessful() methods
+   * changed with the successful() and unsuccessful() methods
    * 
    * @param request
    *          the current request
    */
   public ExtDirectResponseBuilder(final HttpServletRequest request) {
-    response = new ExtDirectResponse();
+    response = new ExtDirectResponse(request);
     result = new HashMap<String, Object>();
-
-    response.setAction(request.getParameter("extAction"));
-    response.setMethod(request.getParameter("extMethod"));
-    response.setType(request.getParameter("extType"));
-    response.setTid(Integer.parseInt(request.getParameter("extTID")));
-
     successful();
     response.setResult(result);
   }

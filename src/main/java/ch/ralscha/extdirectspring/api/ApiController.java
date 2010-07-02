@@ -176,7 +176,7 @@ public class ApiController implements ApplicationContextAware {
     return sb.toString();
   }
 
-  private void scanForExtDirectMethods(RemotingApi remotingApi, String group) {
+  private void scanForExtDirectMethods(final RemotingApi remotingApi, final String group) {
     Map<String, Object> beanDefinitions = getAllBeanDefinitions();
 
     for (Entry<String, Object> entry : beanDefinitions.entrySet()) {
@@ -234,7 +234,7 @@ public class ApiController implements ApplicationContextAware {
     }
   }
 
-  private int numberOfParameters(Method method) {
+  private int numberOfParameters(final Method method) {
     Class<?>[] parameterTypes = method.getParameterTypes();
     int paramLength = 0;
     for (Class<?> parameterType : parameterTypes) {
@@ -245,7 +245,7 @@ public class ApiController implements ApplicationContextAware {
     return paramLength;
   }
 
-  private boolean isSameGroup(String requestedGroup, String annotationGroup) {
+  private boolean isSameGroup(final String requestedGroup, final String annotationGroup) {
     if (requestedGroup != null) {
       return ExtDirectSpringUtil.equal(requestedGroup, annotationGroup);
     }
@@ -253,7 +253,7 @@ public class ApiController implements ApplicationContextAware {
     return true;
   }
 
-  private boolean isValidFormPostMethod(Method method) {
+  private boolean isValidFormPostMethod(final Method method) {
     RequestMapping annotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
     if (annotation != null) {
       RequestMethod[] requestMethods = annotation.method();
