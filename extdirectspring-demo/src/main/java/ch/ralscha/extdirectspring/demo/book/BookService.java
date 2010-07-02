@@ -29,7 +29,7 @@ public class BookService {
   public List<Book> getBooks() {
     return BOOKS;
   }
-  
+
   private static final ImmutableList<Book> BOOKS;
 
   static {
@@ -78,7 +78,5 @@ public class BookService {
 
     BOOKS = builder.build();
   }
-
-
 
 }

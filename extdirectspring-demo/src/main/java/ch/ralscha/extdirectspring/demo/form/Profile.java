@@ -43,11 +43,11 @@ public class Profile {
   }
 
   @ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "form")
-  public BasicInfo getBasicInfo(@RequestParam(value="uid") long userId, @RequestParam(value="foo") String foo) {
-   
+  public BasicInfo getBasicInfo(@RequestParam(value = "uid") long userId, @RequestParam(value = "foo") String foo) {
+
     System.out.println("userId: " + userId);
     System.out.println("foo   : " + foo);
-    
+
     BasicInfo basicInfo = new BasicInfo();
     basicInfo.setFoo(foo);
     basicInfo.setName("Aaron Conran");
@@ -57,9 +57,9 @@ public class Profile {
   }
 
   @ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "form")
-  public PhoneInfo getPhoneInfo(@RequestParam(value="uid") long userId) {
+  public PhoneInfo getPhoneInfo(@RequestParam(value = "uid") long userId) {
     System.out.println("userId: " + userId);
-    
+
     PhoneInfo phoneInfo = new PhoneInfo();
     phoneInfo.cell = "443-555-1234";
     phoneInfo.office = "1-800-CALLEXT";
@@ -68,9 +68,9 @@ public class Profile {
   }
 
   @ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "form")
-  public Map<String, String> getLocationInfo(@RequestParam(value="uid")  long userId) {
+  public Map<String, String> getLocationInfo(@RequestParam(value = "uid") long userId) {
     System.out.println("userId: " + userId);
-    
+
     Map<String, String> data = new HashMap<String, String>();
     data.put("street", "1234 Red Dog Rd.");
     data.put("city", "Seminole");
@@ -82,7 +82,8 @@ public class Profile {
   @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "form")
   @ResponseBody
   @RequestMapping(value = "/updateBasicInfo", method = RequestMethod.POST)
-  public ExtDirectResponse updateBasicInfo(Locale locale, HttpServletRequest request, @Valid BasicInfo basicInfo, BindingResult result) {
+  public ExtDirectResponse updateBasicInfo(Locale locale, HttpServletRequest request, @Valid BasicInfo basicInfo,
+      BindingResult result) {
 
     if (!result.hasErrors()) {
       if (basicInfo.getEmail().equals("aaron@extjs.com")) {

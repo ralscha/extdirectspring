@@ -29,7 +29,7 @@ public class Person {
   private String country;
 
   public Person() {
-    //no action here
+    // no action here
   }
 
   public Person(String[] nextLine) {
