@@ -4,97 +4,97 @@ Ext.onReady(function() {
   Ext.Direct.addProvider(Ext.app.REMOTING_API);
 
   var storeFields = [ {
-    name : 'lastName'
+    name: 'lastName'
   }, {
-    name : 'firstName'
+    name: 'firstName'
   }, {
-    name : 'id'
+    name: 'id'
   }, {
-    name : 'street'
+    name: 'street'
   }, {
-    name : 'city'
+    name: 'city'
   }, {
-    name : 'state'
+    name: 'state'
   }, {
-    name : 'zip'
+    name: 'zip'
   } ];
 
   var writer = new Ext.data.JsonWriter( {
-    writeAllFields : true,
-    listful : true,
-    encode : false
+    writeAllFields: true,
+    listful: true,
+    encode: false
   });
 
   var directStore = new Ext.data.DirectStore( {
-    id : 'directStore',
-    autoDestroy : true,
-    paramsAsHash : true,
-    root : 'records',
-    totalProperty : 'total',
-    autoLoad : false,
-    autoSave : true,
-    successProperty : 'success',
-    fields : storeFields,
-    remoteSort : true,
-    idProperty : 'id',
-    writer : writer,
-    baseParams : {
-      no : 1,
-      name : 'Ralph'
+    id: 'directStore',
+    autoDestroy: true,
+    paramsAsHash: true,
+    root: 'records',
+    totalProperty: 'total',
+    autoLoad: false,
+    autoSave: true,
+    successProperty: 'success',
+    fields: storeFields,
+    remoteSort: true,
+    idProperty: 'id',
+    writer: writer,
+    baseParams: {
+      no: 1,
+      name: 'Ralph'
     },
-    api : {
-      read : personAction.loadWithPaging,
-      create : personAction.create,
-      update : personAction.update,
-      destroy : personAction.destroy
+    api: {
+      read: personAction.loadWithPaging,
+      create: personAction.create,
+      update: personAction.update,
+      destroy: personAction.destroy
     }
   });
 
   var textFieldEditor = new Ext.form.TextField();
 
   var comboEditor = {
-    xtype : 'combo',
-    triggerAction : 'all',
-    displayField : 'state',
-    valueField : 'state',
-    store : {
-      xtype : 'directstore',
-      root : '',
-      directFn : personAction.getStates,
-      fields : [ 'state' ]
+    xtype: 'combo',
+    triggerAction: 'all',
+    displayField: 'state',
+    valueField: 'state',
+    store: {
+      xtype: 'directstore',
+      root: '',
+      directFn: personAction.getStates,
+      fields: [ 'state' ]
     }
   };
 
   var columnModel = [ {
-    header : 'Last Name',
-    dataIndex : 'lastName',
-    sortable : true,
-    editor : textFieldEditor
+    header: 'Last Name',
+    dataIndex: 'lastName',
+    sortable: true,
+    editor: textFieldEditor
   }, {
-    header : 'First Name',
-    dataIndex : 'firstName',
-    sortable : true,
-    editor : textFieldEditor
+    header: 'First Name',
+    dataIndex: 'firstName',
+    sortable: true,
+    editor: textFieldEditor
   }, {
-    header : 'Street Address',
-    dataIndex : 'street',
-    sortable : true,
-    editor : textFieldEditor
+    header: 'Street Address',
+    dataIndex: 'street',
+    sortable: true,
+    editor: textFieldEditor
   }, {
-    header : 'City',
-    dataIndex : 'city',
-    sortable : true,
-    editor : textFieldEditor
+    header: 'City',
+    dataIndex: 'city',
+    sortable: true,
+    editor: textFieldEditor
   }, {
-    header : 'State',
-    dataIndex : 'state',
-    sortable : true,
-    editor : comboEditor
+    header: 'State',
+    dataIndex: 'state',
+    sortable: true,
+    editor: comboEditor
   }, {
-    header : 'Zip Code',
-    dataIndex : 'zip',
-    sortable : true,
-    editor : textFieldEditor
+    header: 'Zip Code',
+    dataIndex: 'zip',
+    sortable: true,
+    editor: textFieldEditor
   } ];
 
   var onInsertRecord = function() {
@@ -110,12 +110,12 @@ Ext.onReady(function() {
     evtObj.stopEvent();
     if (!editorGrid.rowCtxMenu) {
       editorGrid.rowCtxMenu = new Ext.menu.Menu( {
-        items : [ {
-          text : 'Insert Record',
-          handler : onInsertRecord
+        items: [ {
+          text: 'Insert Record',
+          handler: onInsertRecord
         }, {
-          text : 'Delete Record',
-          handler : onDelete
+          text: 'Delete Record',
+          handler: onDelete
         } ]
       });
     }
@@ -131,42 +131,42 @@ Ext.onReady(function() {
   };
 
   var pagingToolbar = {
-    xtype : 'paging',
-    store : directStore,
-    pageSize : 50,
-    displayInfo : true
+    xtype: 'paging',
+    store: directStore,
+    pageSize: 50,
+    displayInfo: true
   };
 
   var grid = {
-    xtype : 'editorgrid',
-    columns : columnModel,
-    store : directStore,
-    loadMask : true,
-    id : 'myEditorGrid',
-    bbar : pagingToolbar,
-    stripeRows : true,
-    viewConfig : {
-      forceFit : true
+    xtype: 'editorgrid',
+    columns: columnModel,
+    store: directStore,
+    loadMask: true,
+    id: 'myEditorGrid',
+    bbar: pagingToolbar,
+    stripeRows: true,
+    viewConfig: {
+      forceFit: true
     },
-    listeners : {
-      cellcontextmenu : doCellCtxMenu
+    listeners: {
+      cellcontextmenu: doCellCtxMenu
     }
   };
 
   new Ext.Panel( {
-    renderTo : Ext.getBody(),
-    height : 350,
-    width : 700,
-    border : false,
-    frame : false,
-    layout : 'fit',
-    items : grid
+    renderTo: Ext.getBody(),
+    height: 350,
+    width: 700,
+    border: false,
+    frame: false,
+    layout: 'fit',
+    items: grid
   });
 
   Ext.StoreMgr.get('directStore').load( {
-    params : {
-      start : 0,
-      limit : 50
+    params: {
+      start: 0,
+      limit: 50
     }
   });
 

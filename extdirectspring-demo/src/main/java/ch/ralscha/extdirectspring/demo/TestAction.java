@@ -23,12 +23,8 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 public class TestAction {
 
   @ExtDirectMethod(group = "example")
-  public Long multiply(String num) {
-    try {
-      return Long.valueOf(num) * 8;
-    } catch (NumberFormatException e) {
-      return -1l;
-    }
+  public long multiply(long num) {
+    return num * 8;
   }
 
   @ExtDirectMethod(group = "example")
