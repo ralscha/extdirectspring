@@ -23,12 +23,22 @@ package ch.ralscha.extdirectspring.bean;
  */
 public class ExtDirectPollResponse {
 
-  private final String type = "event";
+  private String type;
   private String name;
   private Object data;
+  private String message;
+  private String where;
+
+  public ExtDirectPollResponse() {
+    type = "event";
+  }
 
   public String getType() {
     return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
   }
 
   public String getName() {
@@ -47,9 +57,26 @@ public class ExtDirectPollResponse {
     this.data = data;
   }
 
+  public String getMessage() {
+    return message;
+  }
+
+  public void setMessage(String message) {
+    this.message = message;
+  }
+
+  public String getWhere() {
+    return where;
+  }
+
+  public void setWhere(String where) {
+    this.where = where;
+  }
+
   @Override
   public String toString() {
-    return "ExtDirectPollResponse [data=" + data + ", name=" + name + ", type=" + type + "]";
+    return "ExtDirectPollResponse [type=" + type + ", name=" + name + ", data=" + data + ", message=" + message
+        + ", where=" + where + "]";
   }
 
 }

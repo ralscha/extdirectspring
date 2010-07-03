@@ -61,6 +61,8 @@ public class RouterControllerPollTest {
     assertEquals("event", resp.getType());
     assertEquals("message1", resp.getName());
     assertTrue(((String) resp.getData()).startsWith("Successfully polled at: "));
+    assertNull(resp.getWhere());
+    assertNull(resp.getMessage());
   }
 
   @Test
@@ -71,6 +73,8 @@ public class RouterControllerPollTest {
     assertEquals("event", resp.getType());
     assertEquals("message2", resp.getName());
     assertTrue(((String) resp.getData()).startsWith("Successfully polled at: "));
+    assertNull(resp.getWhere());
+    assertNull(resp.getMessage());
   }
 
   @Test
@@ -82,12 +86,19 @@ public class RouterControllerPollTest {
     assertEquals("event", resp.getType());
     assertEquals("message3", resp.getName());
     assertEquals("Result: 2", resp.getData());
+    assertNull(resp.getWhere());
+    assertNull(resp.getMessage());    
   }
 
   @Test
-  @ExpectedException(IllegalArgumentException.class)
   public void pollRequiredArgumentNoRequestParameter() throws Exception {
-    controller.poll("pollProvider", "handleMessage3", "message3", request, response, Locale.ENGLISH);
+    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage3", "message3", request, response, Locale.ENGLISH);
+    assertNotNull(resp);
+    assertEquals("exception", resp.getType());
+    assertEquals("message3", resp.getName());
+    assertNull(resp.getData());
+    assertEquals("Server Error", resp.getMessage());
+    assertNull(resp.getWhere());
   }
 
   @Test
@@ -99,6 +110,8 @@ public class RouterControllerPollTest {
     assertEquals("event", resp.getType());
     assertEquals("message4", resp.getName());
     assertEquals(Integer.valueOf(14), resp.getData());
+    assertNull(resp.getWhere());
+    assertNull(resp.getMessage());
   }
 
   @Test
@@ -109,6 +122,8 @@ public class RouterControllerPollTest {
     assertEquals("event", resp.getType());
     assertEquals("message4", resp.getName());
     assertEquals(Integer.valueOf(2), resp.getData());
+    assertNull(resp.getWhere());
+    assertNull(resp.getMessage());
   }
 
   @Test
@@ -120,6 +135,8 @@ public class RouterControllerPollTest {
     assertEquals("event", resp.getType());
     assertEquals("message5", resp.getName());
     assertEquals(Integer.valueOf(6), resp.getData());
+    assertNull(resp.getWhere());
+    assertNull(resp.getMessage());
   }
 
   @Test
@@ -130,6 +147,8 @@ public class RouterControllerPollTest {
     assertEquals("event", resp.getType());
     assertEquals("message5", resp.getName());
     assertNull(resp.getData());
+    assertNull(resp.getWhere());
+    assertNull(resp.getMessage());
   }
 
 }
