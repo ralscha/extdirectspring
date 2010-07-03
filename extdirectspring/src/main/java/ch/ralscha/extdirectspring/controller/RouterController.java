@@ -95,34 +95,47 @@ public class RouterController implements ApplicationContextAware {
     ExtDirectPollResponse directPollResponse = new ExtDirectPollResponse();
     directPollResponse.setName(event);
 
-    MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, beanName, method);
+    try {
+      MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, beanName, method);
 
-    Class<?>[] parameterTypes = methodInfo.getParameterTypes();
-    Object[] parameters = null;
-    if (parameterTypes.length > 0) {
-      parameters = new Object[parameterTypes.length];
-      int paramIndex = 0;
-      for (Class<?> parameterType : parameterTypes) {
+      Class<?>[] parameterTypes = methodInfo.getParameterTypes();
+      Object[] parameters = null;
+      if (parameterTypes.length > 0) {
+        parameters = new Object[parameterTypes.length];
+        int paramIndex = 0;
+        for (Class<?> parameterType : parameterTypes) {
 
-        if (SupportedParameterTypes.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
-          parameters[paramIndex] = response;
-        } else if (SupportedParameterTypes.SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
-          parameters[paramIndex] = request;
-        } else if (SupportedParameterTypes.SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
-          parameters[paramIndex] = request.getSession();
-        } else if (SupportedParameterTypes.LOCALE.getSupportedClass().isAssignableFrom(parameterType)) {
-          parameters[paramIndex] = locale;
-        } else {
-          parameters[paramIndex] = handleRequestParam(request, null, methodInfo.getParameterAnnotations()[paramIndex],
-              parameterType);
+          if (SupportedParameterTypes.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
+            parameters[paramIndex] = response;
+          } else if (SupportedParameterTypes.SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
+            parameters[paramIndex] = request;
+          } else if (SupportedParameterTypes.SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
+            parameters[paramIndex] = request.getSession();
+          } else if (SupportedParameterTypes.LOCALE.getSupportedClass().isAssignableFrom(parameterType)) {
+            parameters[paramIndex] = locale;
+          } else {
+            parameters[paramIndex] = handleRequestParam(request, null,
+                methodInfo.getParameterAnnotations()[paramIndex], parameterType);
+          }
+
+          paramIndex++;
         }
+      }
 
-        paramIndex++;
+      directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
+    } catch (Exception e) {
+      log.error("Error on polling method '" + beanName + "." + method + "'", e);
+
+      directPollResponse.setType("exception");
+
+      if (log.isDebugEnabled()) {
+        directPollResponse.setMessage(e.getMessage());
+        directPollResponse.setWhere(getStackTrace(e));
+      } else {
+        directPollResponse.setMessage("Server Error");
+        directPollResponse.setWhere(null);
       }
     }
-
-    directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
-
     return directPollResponse;
 
   }
@@ -151,7 +164,6 @@ public class RouterController implements ApplicationContextAware {
     for (ExtDirectRequest directRequest : directRequests) {
 
       ExtDirectResponse directResponse = new ExtDirectResponse(directRequest);
-
 
       try {
         MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, directRequest.getAction(),
