@@ -16,6 +16,8 @@
 
 package ch.ralscha.extdirectspring.bean;
 
+import org.codehaus.jackson.annotate.JsonWriteNullProperties;
+
 /**
  * Class representing the response of a poll request
  * 
@@ -57,6 +59,7 @@ public class ExtDirectPollResponse {
     this.data = data;
   }
 
+  @JsonWriteNullProperties(false)
   public String getMessage() {
     return message;
   }
@@ -65,6 +68,7 @@ public class ExtDirectPollResponse {
     this.message = message;
   }
 
+  @JsonWriteNullProperties(false)
   public String getWhere() {
     return where;
   }
