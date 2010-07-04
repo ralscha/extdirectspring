@@ -28,8 +28,8 @@ import org.springframework.validation.FieldError;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
- * An utility class that helps building a {@link ExtDirectResponse} A form
- * handler must return such a response
+ * An utility class that helps building a {@link ExtDirectResponse}. A form
+ * handler must return an instance of such type.
  * 
  * @author Ralph Schaer
  */
