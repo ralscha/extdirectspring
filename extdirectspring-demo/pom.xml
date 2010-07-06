@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ch.ralscha</groupId>
   <artifactId>extdirectspring-demo</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <packaging>war</packaging>
 
   <inceptionYear>2010</inceptionYear>
@@ -224,6 +224,7 @@
             <exclude>**/*.xml</exclude>
             <exclude>**/extjs/**</exclude>
             <exclude>**/webapp/**</exclude>
+            <exclude>**/*.launch</exclude>
           </excludes>
         </configuration>
         <executions>
