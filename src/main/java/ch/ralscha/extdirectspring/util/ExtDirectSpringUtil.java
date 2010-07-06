@@ -19,10 +19,11 @@ package ch.ralscha.extdirectspring.util;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig.Feature;
 import org.codehaus.jackson.type.TypeReference;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -190,7 +191,7 @@ public class ExtDirectSpringUtil {
 
       return mapper.writeValueAsString(obj);
     } catch (Exception e) {
-      LoggerFactory.getLogger(ExtDirectSpringUtil.class).info("serialize object to json", e);
+      LogFactory.getLog(ExtDirectSpringUtil.class).info("serialize object to json", e);
       return null;
     }
   }
@@ -214,7 +215,7 @@ public class ExtDirectSpringUtil {
       ObjectMapper mapper = new ObjectMapper();
       return (T) mapper.readValue(json, typeReference);
     } catch (Exception e) {
-      LoggerFactory.getLogger(ExtDirectSpringUtil.class).info("deserialize json to object", e);
+      LogFactory.getLog(ExtDirectSpringUtil.class).info("deserialize json to object", e);
       return null;
     }
   }
@@ -236,7 +237,7 @@ public class ExtDirectSpringUtil {
       ObjectMapper mapper = new ObjectMapper();
       return mapper.readValue(json, clazz);
     } catch (Exception e) {
-      LoggerFactory.getLogger(ExtDirectSpringUtil.class).info("deserialize json to object", e);
+      LogFactory.getLog(ExtDirectSpringUtil.class).info("deserialize json to object", e);
       return null;
     }
   }
