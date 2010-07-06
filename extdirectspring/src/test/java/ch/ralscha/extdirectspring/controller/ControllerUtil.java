@@ -16,12 +16,10 @@
 
 package ch.ralscha.extdirectspring.controller;
 
-import org.junit.Ignore;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
-@Ignore
-public class TestUtil {
+public class ControllerUtil {
   public static String createRequestJson(String action, String method, int tid, Object... data) {
     ExtDirectRequest dr = new ExtDirectRequest();
     dr.setAction(action);

@@ -65,7 +65,7 @@ public class RouterControllerRemote5Test {
   public void testFormLoad() {
     Map<String, Object> data = new HashMap<String, Object>();
     data.put("d", 3.141);
-    String json = TestUtil.createRequestJson("remoteProvider4", "method1", 1, data);
+    String json = ControllerUtil.createRequestJson("remoteProvider4", "method1", 1, data);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -76,7 +76,7 @@ public class RouterControllerRemote5Test {
 
   @Test
   public void testFormLoadReturnsNull() {
-    String json = TestUtil.createRequestJson("remoteProvider4", "method2", 1, null);
+    String json = ControllerUtil.createRequestJson("remoteProvider4", "method2", 1, null);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -93,7 +93,7 @@ public class RouterControllerRemote5Test {
 
   @Test
   public void testWithSupportedArguments() {
-    String json = TestUtil.createRequestJson("remoteProvider4", "method3", 1, null);
+    String json = ControllerUtil.createRequestJson("remoteProvider4", "method3", 1, null);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -112,7 +112,7 @@ public class RouterControllerRemote5Test {
   public void testWithRequestParam() {
     Map<String, Object> data = new HashMap<String, Object>();
     data.put("id", 10);
-    String json = TestUtil.createRequestJson("remoteProvider4", "method4", 1, data);
+    String json = ControllerUtil.createRequestJson("remoteProvider4", "method4", 1, data);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -135,7 +135,7 @@ public class RouterControllerRemote5Test {
 
   @Test
   public void testWithRequestParamDefaultValue() {
-    String json = TestUtil.createRequestJson("remoteProvider4", "method5", 1, null);
+    String json = ControllerUtil.createRequestJson("remoteProvider4", "method5", 1, null);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -157,7 +157,7 @@ public class RouterControllerRemote5Test {
 
   @Test
   public void testWithRequestParamOptional() {
-    String json = TestUtil.createRequestJson("remoteProvider4", "method6", 1, null);
+    String json = ControllerUtil.createRequestJson("remoteProvider4", "method6", 1, null);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -178,7 +178,7 @@ public class RouterControllerRemote5Test {
 
     Map<String, Object> data = new HashMap<String, Object>();
     data.put("id", 11);
-    json = TestUtil.createRequestJson("remoteProvider4", "method6", 1, data);
+    json = ControllerUtil.createRequestJson("remoteProvider4", "method6", 1, data);
     responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
@@ -224,19 +224,19 @@ public class RouterControllerRemote5Test {
 
   @Test
   public void testMultipleRequests() {
-    String json1 = TestUtil.createRequestJson("remoteProvider", "method1", 1, 3, 2.5, "string.param");
-    String json2 = TestUtil.createRequestJson("remoteProvider1", "method4", 2, 3, 2.5, "string.param");
-    String json3 = TestUtil.createRequestJson("remoteProvider1", "method1", 3, null);
+    String json1 = ControllerUtil.createRequestJson("remoteProvider", "method1", 1, 3, 2.5, "string.param");
+    String json2 = ControllerUtil.createRequestJson("remoteProvider1", "method4", 2, 3, 2.5, "string.param");
+    String json3 = ControllerUtil.createRequestJson("remoteProvider1", "method1", 3, null);
 
     Map<String, Object> data = new HashMap<String, Object>();
     data.put("d", 1.1);
-    String json4 = TestUtil.createRequestJson("remoteProvider4", "method1", 4, data);
+    String json4 = ControllerUtil.createRequestJson("remoteProvider4", "method1", 4, data);
 
     data = new HashMap<String, Object>();
     data.put("d", 2.2);
-    String json5 = TestUtil.createRequestJson("remoteProvider4", "method1", 5, data);
+    String json5 = ControllerUtil.createRequestJson("remoteProvider4", "method1", 5, data);
 
-    String json6 = TestUtil.createRequestJson("remoteProvider1", "method6", 6, 10, 20);
+    String json6 = ControllerUtil.createRequestJson("remoteProvider1", "method6", 6, 10, 20);
 
     String requestBody = String.format("[%s,%s,%s,%s,%s,%s]", json1, json2, json3, json4, json5, json6);
 
