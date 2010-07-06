@@ -24,7 +24,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.LoggerFactory;
+
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -203,21 +204,19 @@ public class ApiController implements ApplicationContextAware {
               if (annotation.entryClass() != ExtDirectMethod.class) {
                 remotingApi.addAction(beanName, method.getName(), 1);
               } else {
-                LoggerFactory.getLogger(getClass()).warn(
-                    "Method '{}.{}' is annotated as a store modify method but does "
-                        + "not specify a entryClass. Method ignored.", beanName, method.getName());
+                LogFactory.getLog(getClass()).warn(
+                    "Method '"+beanName+"."+method.getName()+"' is annotated as a store modify method but does "
+                        + "not specify a entryClass. Method ignored.");
               }
               break;
             case FORM_POST:
               if (isValidFormPostMethod(method)) {
                 remotingApi.addAction(beanName, method.getName(), 0, true);
               } else {
-                LoggerFactory
-                    .getLogger(getClass())
+                LogFactory.getLog(getClass())
                     .warn(
-                        "Method '{}.{}' is annotated as a form post method but is not valid. "
-                            + "A form post method must be annotated with @RequestMapping and method=RequestMethod.POST. Method ignored.",
-                        beanName, method.getName());
+                        "Method '"+beanName+"."+method.getName()+"' is annotated as a form post method but is not valid. "
+                            + "A form post method must be annotated with @RequestMapping and method=RequestMethod.POST. Method ignored.");
               }
               break;
             case POLL:
