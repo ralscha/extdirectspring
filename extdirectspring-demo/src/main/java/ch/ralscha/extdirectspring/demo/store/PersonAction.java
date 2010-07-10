@@ -100,16 +100,35 @@ public class PersonAction {
     List<Person> persons = dataBean.findPersons(request.getQuery());
     int totalSize = persons.size();
 
-    if (StringUtils.hasText(request.getSort())) {
-      Ordering<Person> ordering = orderingMap.get(request.getSort());
+    Ordering<Person> ordering = null;
+    
+    if (StringUtils.hasText(request.getGroupBy())) {
+      ordering = orderingMap.get(request.getGroupBy());
       if (ordering != null) {
-        if (request.isDecendingSort()) {
+        if (request.isDescendingGroupSort()) {
           ordering = ordering.reverse();
         }
-        persons = ordering.sortedCopy(persons);
       }
     }
 
+    if (StringUtils.hasText(request.getSort())) {
+      Ordering<Person> sortOrdering = orderingMap.get(request.getSort());
+      if (sortOrdering != null) {
+        if (request.isDescendingSort()) {
+          sortOrdering = sortOrdering.reverse();
+        }       
+      }
+      if (ordering == null) {
+        ordering = sortOrdering;
+      } else {
+        ordering = ordering.compound(sortOrdering);
+      }
+    }
+    
+    if (ordering != null) {
+      persons = ordering.sortedCopy(persons);
+    }
+    
     if (request.getStart() != null && request.getLimit() != null) {
       persons = persons.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
     }

@@ -80,7 +80,7 @@ Ext.onReady(function() {
             fbar: ['->', {
                   text: 'Clear Grouping',
                   handler: function() {
-                    store.clearGrouping();
+                    myStore.clearGrouping();
                   }
                 }]
 
