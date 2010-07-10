@@ -31,6 +31,8 @@ public class ExtDirectStoreReadRequest {
   private Integer start;
   private String dir;
   private String sort;
+  private String groupBy;
+  private String groupDir;
 
   public String getQuery() {
     return query;
@@ -70,7 +72,7 @@ public class ExtDirectStoreReadRequest {
   }
 
   @JsonIgnore
-  public boolean isDecendingSort() {
+  public boolean isDescendingSort() {
     return ("DESC".equals(getDir()));
   }
 
@@ -82,10 +84,36 @@ public class ExtDirectStoreReadRequest {
     this.sort = sort;
   }
 
+  public String getGroupBy() {
+    return groupBy;
+  }
+
+  public void setGroupBy(String groupBy) {
+    this.groupBy = groupBy;
+  }
+
+  public String getGroupDir() {
+    return groupDir;
+  }
+
+  public void setGroupDir(String groupDir) {
+    this.groupDir = groupDir;
+  }
+  
+  @JsonIgnore
+  public boolean isAscendingGroupSort() {
+    return ("ASC".equals(getGroupDir()));
+  }
+
+  @JsonIgnore
+  public boolean isDescendingGroupSort() {
+    return ("DESC".equals(getGroupDir()));
+  }
+
   @Override
   public String toString() {
-    return "ExtDirectStoreReadRequest [dir=" + dir + ", limit=" + limit + ", query=" + query + ", sort=" + sort
-        + ", start=" + start + "]";
+    return "ExtDirectStoreReadRequest [query=" + query + ", limit=" + limit + ", start=" + start + ", dir=" + dir
+        + ", sort=" + sort + ", groupBy=" + groupBy + ", groupDir=" + groupDir + "]";
   }
 
 }

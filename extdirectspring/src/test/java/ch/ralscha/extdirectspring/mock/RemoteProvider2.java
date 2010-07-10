@@ -118,7 +118,7 @@ public class RemoteProvider2 {
 
         if (request.isAscendingSort()) {
           Collections.sort(rows);
-        } else if (request.isDecendingSort()) {
+        } else if (request.isDescendingSort()) {
           Collections.sort(rows, new Comparator<Row>() {
 
             @Override
