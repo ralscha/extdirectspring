@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -30,16 +31,17 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StringUtils;
+
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 
@@ -157,6 +159,8 @@ public class ExtDirectSpringUtilTest {
     expected = "{\"a\":1,\"b\":\"2\",\"c\":null,\"d\":false,\"e\":[1,2]}";
     assertEquals(expected, ExtDirectSpringUtil.serializeObjectToJson(testBean));
 
+    
+    
   }
 
   @Test
@@ -192,6 +196,14 @@ public class ExtDirectSpringUtilTest {
     assertEquals("2", result.get(1));
     assertEquals("3", result.get(2));
     assertEquals("4", result.get(3));
+    
+    Object o = ExtDirectSpringUtil.deserializeJsonToObject("", new TypeReference<String>() {/*empty*/});
+    assertNull(o);
+    
+    o = ExtDirectSpringUtil.deserializeJsonToObject("xy", new TypeReference<Integer>() {/*empty*/});
+    assertNull(o);
+
+    
   }
 
   @Test
@@ -217,6 +229,12 @@ public class ExtDirectSpringUtilTest {
     assertFalse(testBean.getD());
     assertArrayEquals(new Integer[] { 1, 2 }, testBean.getE());
 
+    Object o = ExtDirectSpringUtil.deserializeJsonToObject("", String.class);
+    assertNull(o);
+    
+    o = ExtDirectSpringUtil.deserializeJsonToObject("xy", Integer.class);
+    assertNull(o);
+    
   }
 
   @Test

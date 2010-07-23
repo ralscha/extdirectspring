@@ -128,6 +128,22 @@ public class RemoteProvider2 {
           });
         }
       }
+      
+      if (StringUtils.hasText(request.getGroupBy())) {
+        Assert.assertEquals("id", request.getGroupBy());
+        
+        if (request.isAscendingGroupSort()) {
+          Collections.sort(rows);
+        } else if (request.isDescendingGroupSort()) {
+          Collections.sort(rows, new Comparator<Row>() {
+
+            @Override
+            public int compare(Row o1, Row o2) {
+              return o2.getId() - o1.getId();
+            }
+          });
+        }        
+      }
 
       if (request.getStart() != null && request.getLimit() != null) {
         rows = rows.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));

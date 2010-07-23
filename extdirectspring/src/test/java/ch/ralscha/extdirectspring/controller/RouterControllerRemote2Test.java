@@ -190,6 +190,38 @@ public class RouterControllerRemote2Test {
       assertEquals(id, row.getId());
       id--;
     }
+    
+    storeRead = new ExtDirectStoreReadRequest();
+    storeRead.setQuery("");
+    storeRead.setGroupBy("id");
+    storeRead.setGroupDir("ASC");
+    storeRead.setLimit(10);
+    storeRead.setStart(10);
+    resp = executeWithExtDirectStoreReadRequest(storeRead);
+    storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
+    assertEquals(Integer.valueOf(100), storeResponse.getTotal());
+    assertEquals(10, storeResponse.getRecords().size());
+    id = 10;
+    for (Row row : storeResponse.getRecords()) {
+      assertEquals(id, row.getId());
+      id++;
+    }    
+    
+    storeRead = new ExtDirectStoreReadRequest();
+    storeRead.setQuery("");
+    storeRead.setGroupBy("id");
+    storeRead.setGroupDir("DESC");
+    storeRead.setLimit(10);
+    storeRead.setStart(20);
+    resp = executeWithExtDirectStoreReadRequest(storeRead);
+    storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
+    assertEquals(Integer.valueOf(100), storeResponse.getTotal());
+    assertEquals(10, storeResponse.getRecords().size());
+    id = 79;
+    for (Row row : storeResponse.getRecords()) {
+      assertEquals(id, row.getId());
+      id--;
+    }
   }
 
   private ExtDirectResponse executeWithExtDirectStoreReadRequest(ExtDirectStoreReadRequest storeRead) {
