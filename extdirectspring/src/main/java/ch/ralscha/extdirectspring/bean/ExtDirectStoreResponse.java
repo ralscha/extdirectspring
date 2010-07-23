@@ -23,6 +23,7 @@ import org.codehaus.jackson.annotate.JsonWriteNullProperties;
  * Class representing the response of a DirectStore request
  * 
  * @author Ralph Schaer
+ * @param <T> Type of the entry inside the collection
  */
 @JsonWriteNullProperties(false)
 public class ExtDirectStoreResponse<T> {
