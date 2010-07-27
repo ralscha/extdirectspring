@@ -19,7 +19,10 @@ package ch.ralscha.extdirectspring.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.security.Principal;
 import java.util.Locale;
+
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -34,13 +37,14 @@ public class SupportedParametersTest {
 
   @Test
   public void testIsSupported() {
-    assertEquals(4, SupportedParameterTypes.values().length);
+    assertEquals(5, SupportedParameterTypes.values().length);
     assertFalse(SupportedParameterTypes.isSupported(String.class));
     assertFalse(SupportedParameterTypes.isSupported(null));
     assertTrue(SupportedParameterTypes.isSupported(MockHttpServletResponse.class));
     assertTrue(SupportedParameterTypes.isSupported(MockHttpServletRequest.class));
     assertTrue(SupportedParameterTypes.isSupported(MockHttpSession.class));
     assertTrue(SupportedParameterTypes.isSupported(Locale.class));
+    assertTrue(SupportedParameterTypes.isSupported(Principal.class)); 
   }
 
 }

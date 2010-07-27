@@ -17,8 +17,8 @@
 package ch.ralscha.extdirectspring.util;
 
 /**
- * Object holds information about a parameter like the name, type and the attributes 
- * of a RequestParam annotation 
+ * Object holds information about a parameter like the name, type and the
+ * attributes of a RequestParam annotation
  * 
  * @author Ralph Schaer
  */
@@ -29,6 +29,8 @@ public class ParameterInfo {
   private boolean hasRequestParamAnnotation;
   private boolean required;
   private String defaultValue;
+
+  private boolean supportedParameter;
 
   public Class<?> getType() {
     return type;
@@ -68,6 +70,14 @@ public class ParameterInfo {
 
   public void setDefaultValue(String defaultValue) {
     this.defaultValue = defaultValue;
+  }
+
+  public boolean isSupportedParameter() {
+    return supportedParameter;
+  }
+
+  public void setSupportedParameter(boolean supportedParameter) {
+    this.supportedParameter = supportedParameter;
   }
 
 }

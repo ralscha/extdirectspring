@@ -81,6 +81,8 @@ public class MethodInfo {
       ParameterInfo parameterInfo = new ParameterInfo();
       parameterInfo.setType(parameterTypes[i]);
 
+      parameterInfo.setSupportedParameter(SupportedParameterTypes.isSupported(parameterTypes[i]));
+      
       if (parameterNames != null) {
         parameterInfo.setName(parameterNames[i]);
       }
