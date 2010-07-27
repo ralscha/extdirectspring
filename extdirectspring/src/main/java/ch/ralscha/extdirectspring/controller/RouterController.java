@@ -19,7 +19,6 @@ package ch.ralscha.extdirectspring.controller;
 import java.beans.PropertyDescriptor;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,7 +49,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ValueConstants;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
@@ -62,6 +60,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.MethodInfo;
+import ch.ralscha.extdirectspring.util.ParameterInfo;
 import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
 
 /**
@@ -88,8 +87,8 @@ public class RouterController implements ApplicationContextAware {
 
   @RequestMapping(value = "/poll/{beanName}/{method}/{event}")
   @ResponseBody
-  public ExtDirectPollResponse poll(@PathVariable String beanName, @PathVariable String method,
-      @PathVariable String event, HttpServletRequest request, HttpServletResponse response, Locale locale)
+  public ExtDirectPollResponse poll(@PathVariable("beanName") String beanName, @PathVariable("method") String method,
+      @PathVariable("event") String event, HttpServletRequest request, HttpServletResponse response, Locale locale)
       throws Exception {
 
     ExtDirectPollResponse directPollResponse = new ExtDirectPollResponse();
@@ -98,27 +97,26 @@ public class RouterController implements ApplicationContextAware {
     try {
       MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, beanName, method);
 
-      Class<?>[] parameterTypes = methodInfo.getParameterTypes();
+      List<ParameterInfo> methodParameters = methodInfo.getParameters();
       Object[] parameters = null;
-      if (parameterTypes.length > 0) {
-        parameters = new Object[parameterTypes.length];
-        int paramIndex = 0;
-        for (Class<?> parameterType : parameterTypes) {
-
-          if (SupportedParameterTypes.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
+      if (!methodParameters.isEmpty()) {
+        parameters = new Object[methodParameters.size()];
+        
+        for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
+          ParameterInfo methodParameter = methodParameters.get(paramIndex);
+          
+          if (SupportedParameterTypes.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(methodParameter.getType())) {
             parameters[paramIndex] = response;
-          } else if (SupportedParameterTypes.SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
+          } else if (SupportedParameterTypes.SERVLET_REQUEST.getSupportedClass().isAssignableFrom(methodParameter.getType())) {
             parameters[paramIndex] = request;
-          } else if (SupportedParameterTypes.SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
+          } else if (SupportedParameterTypes.SESSION.getSupportedClass().isAssignableFrom(methodParameter.getType())) {
             parameters[paramIndex] = request.getSession();
-          } else if (SupportedParameterTypes.LOCALE.getSupportedClass().isAssignableFrom(parameterType)) {
+          } else if (SupportedParameterTypes.LOCALE.getSupportedClass().isAssignableFrom(methodParameter.getType())) {
             parameters[paramIndex] = locale;
           } else {
-            parameters[paramIndex] = handleRequestParam(request, null,
-                methodInfo.getParameterAnnotations()[paramIndex], parameterType);
+            parameters[paramIndex] = handleRequestParam(request, null, methodParameter);
           }
 
-          paramIndex++;
         }
       }
 
@@ -141,8 +139,8 @@ public class RouterController implements ApplicationContextAware {
   }
 
   @RequestMapping(value = "/router", method = RequestMethod.POST, params = "extAction")
-  public String router(@RequestParam(value = "extAction") String extAction,
-      @RequestParam(value = "extMethod") String extMethod) {
+  public String router(@RequestParam("extAction") String extAction,
+      @RequestParam("extMethod") String extMethod) {
 
     MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, extAction, extMethod);
     if (methodInfo.getForwardPath() != null) {
@@ -225,7 +223,6 @@ public class RouterController implements ApplicationContextAware {
     ExtDirectMethodType type = annotation.value();
 
     int jsonParamIndex = 0;
-    Annotation[][] parameterAnnotations = methodInfo.getParameterAnnotations();
     Map<String, Object> remainingParameters = null;
     ExtDirectStoreReadRequest directStoreReadRequest = null;
 
@@ -266,42 +263,40 @@ public class RouterController implements ApplicationContextAware {
       throw new IllegalStateException("this controller does not handle form posts");
     }
 
-    Class<?>[] parameterTypes = methodInfo.getParameterTypes();
+    List<ParameterInfo> methodParameters = methodInfo.getParameters();
     Object[] parameters = null;
 
-    if (parameterTypes.length > 0) {
-      parameters = new Object[parameterTypes.length];
-      int paramIndex = 0;
-      for (Class<?> parameterType : parameterTypes) {
+    if (!methodParameters.isEmpty()) {
+      parameters = new Object[methodParameters.size()];
+      
+      for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
+        ParameterInfo methodParameter = methodParameters.get(paramIndex);
 
-        if (SupportedParameterTypes.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
+        if (SupportedParameterTypes.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(methodParameter.getType())) {
           parameters[paramIndex] = response;
-        } else if (SupportedParameterTypes.SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
+        } else if (SupportedParameterTypes.SERVLET_REQUEST.getSupportedClass().isAssignableFrom(methodParameter.getType())) {
           parameters[paramIndex] = request;
-        } else if (SupportedParameterTypes.SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
+        } else if (SupportedParameterTypes.SESSION.getSupportedClass().isAssignableFrom(methodParameter.getType())) {
           parameters[paramIndex] = request.getSession();
-        } else if (SupportedParameterTypes.LOCALE.getSupportedClass().isAssignableFrom(parameterType)) {
+        } else if (SupportedParameterTypes.LOCALE.getSupportedClass().isAssignableFrom(methodParameter.getType())) {
           parameters[paramIndex] = locale;
-        } else if (ExtDirectStoreReadRequest.class.isAssignableFrom(parameterType)) {
+        } else if (ExtDirectStoreReadRequest.class.isAssignableFrom(methodParameter.getType())) {
           parameters[paramIndex] = directStoreReadRequest;
         } else if (directStoreModifyRecords != null
-            && parameterType.isAssignableFrom(directStoreModifyRecords.getClass())) {
+            && methodParameter.getType().isAssignableFrom(directStoreModifyRecords.getClass())) {
           parameters[paramIndex] = directStoreModifyRecords;
-        } else if (parameterAnnotations != null
-            && containsAnnotation(parameterAnnotations[paramIndex], RequestParam.class)) {
-          parameters[paramIndex] = handleRequestParam(null, remainingParameters, parameterAnnotations[paramIndex],
-              parameterType);
+        } else if (methodParameter.isHasRequestParamAnnotation()) {
+          parameters[paramIndex] = handleRequestParam(null, remainingParameters, methodParameter);
         } else if (directRequest.getData() != null && directRequest.getData().length > jsonParamIndex) {
 
           Object jsonParam = directRequest.getData()[jsonParamIndex];
 
-          if (parameterType.getClass().equals(String.class)) {
+          if (methodParameter.getType().getClass().equals(String.class)) {
             parameters[paramIndex] = ExtDirectSpringUtil.serializeObjectToJson(jsonParam);
-          } else if (parameterType.isPrimitive()) {
+          } else if (methodParameter.getType().isPrimitive()) {
             parameters[paramIndex] = jsonParam;
           } else {
-            parameters[paramIndex] = ExtDirectSpringUtil.deserializeJsonToObject(
-                ExtDirectSpringUtil.serializeObjectToJson(jsonParam), parameterType);
+            parameters[paramIndex] = ExtDirectSpringUtil.deserializeJsonToObject(ExtDirectSpringUtil.serializeObjectToJson(jsonParam), methodParameter.getType());
           }
 
           jsonParamIndex++;
@@ -310,48 +305,35 @@ public class RouterController implements ApplicationContextAware {
               "Error, parameter mismatch. Please check your remoting method signature to ensure all supported parameters types are used.");
         }
 
-        paramIndex++;
       }
     }
 
     return ExtDirectSpringUtil.invoke(context, directRequest.getAction(), methodInfo, parameters);
   }
 
-  private Object handleRequestParam(final HttpServletRequest request, final Map<String, Object> valueContainer,
-      final Annotation[] parameterAnnotations, final Class<?> parameterType) {
-    boolean required = false;
-    String parameterName = null;
-    String defaultValue = null;
-    for (Annotation paramAnn : parameterAnnotations) {
-      if (RequestParam.class.isInstance(paramAnn)) {
-        RequestParam requestParam = (RequestParam) paramAnn;
-        parameterName = requestParam.value();
-        required = requestParam.required();
-        defaultValue = (ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()) ? null : requestParam
-            .defaultValue());
-        break;
-      }
-    }
+  private Object handleRequestParam(final HttpServletRequest request, final Map<String, Object> valueContainer, final ParameterInfo parameterInfo) {
+    
 
-    if (parameterName != null) {
+    if (parameterInfo.getName() != null) {
       Object value;
       if (request != null) {
-        value = request.getParameter(parameterName);
+        value = request.getParameter(parameterInfo.getName());
       } else if (valueContainer != null) {
-        value = valueContainer.get(parameterName);
+        value = valueContainer.get(parameterInfo.getName());
       } else {
         value = null;
       }
 
       if (value == null) {
-        value = defaultValue;
+        value = parameterInfo.getDefaultValue();
       }
 
       if (value != null) {
-        return genericConversionService.convert(value, parameterType);
+        return genericConversionService.convert(value, parameterInfo.getType());
       }
-      if (required) {
-        throw new IllegalArgumentException("Missing request parameter: " + parameterName);
+      
+      if (parameterInfo.isRequired()) {
+        throw new IllegalArgumentException("Missing request parameter: " + parameterInfo.getName());
       }
     }
 
@@ -416,14 +398,5 @@ public class RouterController implements ApplicationContextAware {
     return directRequests;
   }
 
-  private boolean containsAnnotation(final Annotation[] annotations, final Class<RequestParam> requestedAnnotation) {
-    if (annotations != null) {
-      for (Annotation annotation : annotations) {
-        if (requestedAnnotation.isInstance(annotation)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
+
 }
