@@ -18,30 +18,36 @@ package ch.ralscha.extdirectspring.util;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ValueConstants;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 
 /**
- * Object holds information about a method like the method itself, the array of
- * the parameter types and the annotations of the parameters
+ * Object holds information about a method like the method itself and a list
+ * of parameters
  * 
  * @author Ralph Schaer
  */
 public class MethodInfo {
-  private Annotation[][] parameterAnnotations;
-  private Class<?>[] parameterTypes;
+  private static final LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
+
+  private List<ParameterInfo> parameters;
   private Method method;
   private ExtDirectMethod extDirectMethodAnnotation;
   private String forwardPath;
 
   public MethodInfo(final Method method) {
+
     this.method = method;
-    this.parameterTypes = method.getParameterTypes();
-    
+
     RequestMapping requestMappingAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
     if (requestMappingAnnotation != null && StringUtils.hasText(requestMappingAnnotation.value()[0])) {
       String path = requestMappingAnnotation.value()[0];
@@ -49,22 +55,57 @@ public class MethodInfo {
         path = path.substring(1, path.length());
       }
       this.forwardPath = "forward:" + path;
-    }    
-    
+    }
+
     this.extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 
-    Method methodWithAnnotation = ExtDirectSpringUtil.findMethodWithAnnotation(method, ExtDirectMethod.class);
+    this.parameters = buildParameterList(method);
+
+  }
+
+  private static List<ParameterInfo> buildParameterList(Method m) {
+    List<ParameterInfo> params = new ArrayList<ParameterInfo>();
+
+    Class<?>[] parameterTypes = m.getParameterTypes();
+    Annotation[][] parameterAnnotations = null;
+    String[] parameterNames = null;
+
+    Method methodWithAnnotation = ExtDirectSpringUtil.findMethodWithAnnotation(m, ExtDirectMethod.class);
     if (methodWithAnnotation != null) {
-      this.parameterAnnotations = methodWithAnnotation.getParameterAnnotations();
+      parameterAnnotations = methodWithAnnotation.getParameterAnnotations();
+      parameterNames = discoverer.getParameterNames(methodWithAnnotation);
     }
-  }
 
-  public Annotation[][] getParameterAnnotations() {
-    return parameterAnnotations;
-  }
+    for (int i = 0; i < parameterTypes.length; i++) {
 
-  public Class<?>[] getParameterTypes() {
-    return parameterTypes;
+      ParameterInfo parameterInfo = new ParameterInfo();
+      parameterInfo.setType(parameterTypes[i]);
+
+      if (parameterNames != null) {
+        parameterInfo.setName(parameterNames[i]);
+      }
+
+      if (parameterAnnotations != null) {
+
+        for (Annotation paramAnn : parameterAnnotations[i]) {
+          if (RequestParam.class.isInstance(paramAnn)) {
+            RequestParam requestParam = (RequestParam) paramAnn;
+            if (StringUtils.hasText(requestParam.value())) {
+              parameterInfo.setName(requestParam.value());
+            }
+            parameterInfo.setRequired(requestParam.required());
+            parameterInfo.setDefaultValue(ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()) ? null
+                : requestParam.defaultValue());
+            parameterInfo.setHasRequestParamAnnotation(true);
+            break;
+          }
+        }
+      }
+
+      params.add(parameterInfo);
+    }
+
+    return params;
   }
 
   public Method getMethod() {
@@ -78,5 +119,13 @@ public class MethodInfo {
   public ExtDirectMethod getExtDirectMethodAnnotation() {
     return extDirectMethodAnnotation;
   }
+
+  public List<ParameterInfo> getParameters() {
+    return parameters;
+  }
+
+  // public ParameterInfo getParameter(int parameterIndex) {
+  // return parameters.get(parameterIndex);
+  // }
 
 }
