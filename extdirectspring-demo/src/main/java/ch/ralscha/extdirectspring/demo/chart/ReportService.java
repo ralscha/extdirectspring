@@ -31,7 +31,7 @@ public class ReportService {
 
   @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "pie")
   public List<SeasonData> getSeasonData(
-      @RequestParam(value = "minRandomValue", defaultValue = "50") int minRandomValue,
+      @RequestParam(defaultValue = "50") int minRandomValue,
       @RequestParam(value = "maxRandomValue", defaultValue = "250") int maxRandomValue) {
 
     System.out.println("min=" + minRandomValue);
