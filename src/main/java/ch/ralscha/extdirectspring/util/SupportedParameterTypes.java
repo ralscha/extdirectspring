@@ -16,9 +16,13 @@
 
 package ch.ralscha.extdirectspring.util;
 
+import java.security.Principal;
 import java.util.Locale;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -30,7 +34,7 @@ import javax.servlet.http.HttpSession;
 public enum SupportedParameterTypes {
 
   SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class), SESSION(HttpSession.class), LOCALE(
-      Locale.class);
+      Locale.class), PRINCIPAL(Principal.class);
 
   private final Class<?> clazz;
 
@@ -60,6 +64,25 @@ public enum SupportedParameterTypes {
       }
     }
     return false;
+  }
+
+  public static Object resolveParameter(Class<?> parameterType, HttpServletRequest request,
+      HttpServletResponse response, Locale locale) {
+
+    if (SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
+      return request;
+    } else if (SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
+      return response;
+    } else if (SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
+      return request.getSession();
+    } else if (PRINCIPAL.getSupportedClass().isAssignableFrom(parameterType)) {
+      return request.getUserPrincipal();
+    } else if (LOCALE.getSupportedClass().equals(parameterType)) {
+      return locale;
+    }
+
+    return null;
+
   }
 
 }

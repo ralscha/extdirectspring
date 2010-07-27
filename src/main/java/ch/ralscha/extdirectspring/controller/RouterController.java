@@ -105,14 +105,8 @@ public class RouterController implements ApplicationContextAware {
         for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
           ParameterInfo methodParameter = methodParameters.get(paramIndex);
           
-          if (SupportedParameterTypes.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(methodParameter.getType())) {
-            parameters[paramIndex] = response;
-          } else if (SupportedParameterTypes.SERVLET_REQUEST.getSupportedClass().isAssignableFrom(methodParameter.getType())) {
-            parameters[paramIndex] = request;
-          } else if (SupportedParameterTypes.SESSION.getSupportedClass().isAssignableFrom(methodParameter.getType())) {
-            parameters[paramIndex] = request.getSession();
-          } else if (SupportedParameterTypes.LOCALE.getSupportedClass().isAssignableFrom(methodParameter.getType())) {
-            parameters[paramIndex] = locale;
+          if (methodParameter.isSupportedParameter()) {
+            parameters[paramIndex] = SupportedParameterTypes.resolveParameter(methodParameter.getType(), request, response, locale);
           } else {
             parameters[paramIndex] = handleRequestParam(request, null, methodParameter);
           }
@@ -272,14 +266,8 @@ public class RouterController implements ApplicationContextAware {
       for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
         ParameterInfo methodParameter = methodParameters.get(paramIndex);
 
-        if (SupportedParameterTypes.SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(methodParameter.getType())) {
-          parameters[paramIndex] = response;
-        } else if (SupportedParameterTypes.SERVLET_REQUEST.getSupportedClass().isAssignableFrom(methodParameter.getType())) {
-          parameters[paramIndex] = request;
-        } else if (SupportedParameterTypes.SESSION.getSupportedClass().isAssignableFrom(methodParameter.getType())) {
-          parameters[paramIndex] = request.getSession();
-        } else if (SupportedParameterTypes.LOCALE.getSupportedClass().isAssignableFrom(methodParameter.getType())) {
-          parameters[paramIndex] = locale;
+        if (methodParameter.isSupportedParameter()) {
+          parameters[paramIndex] = SupportedParameterTypes.resolveParameter(methodParameter.getType(), request, response, locale);
         } else if (ExtDirectStoreReadRequest.class.isAssignableFrom(methodParameter.getType())) {
           parameters[paramIndex] = directStoreReadRequest;
         } else if (directStoreModifyRecords != null
