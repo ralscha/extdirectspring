@@ -44,6 +44,7 @@
     <hibernatevalidator.version>4.1.0.Final</hibernatevalidator.version>
     
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.debug>true</maven.compiler.debug>
   </properties>
 
   <dependencies>
