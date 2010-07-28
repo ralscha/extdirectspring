@@ -24,6 +24,7 @@ package ch.ralscha.extdirectspring.util;
  */
 public class ParameterInfo {
   private Class<?> type;
+  private Class<?> collectionType;
   private String name;
 
   private boolean hasRequestParamAnnotation;
@@ -38,6 +39,14 @@ public class ParameterInfo {
 
   public void setType(Class<?> type) {
     this.type = type;
+  }
+
+  public Class<?> getCollectionType() {
+    return collectionType;
+  }
+
+  public void setCollectionType(Class<?> collectionType) {
+    this.collectionType = collectionType;
   }
 
   public String getName() {

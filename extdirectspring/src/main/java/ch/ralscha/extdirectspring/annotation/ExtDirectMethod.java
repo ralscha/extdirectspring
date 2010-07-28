@@ -45,14 +45,6 @@ public @interface ExtDirectMethod {
   String group() default "";
 
   /**
-   * A STORE_MODIFY method must specify the class of the entries in the
-   * collection. Defaults to ExtDirectMethod.class as a workaround, because
-   * annotations parameters can't default to null. This value behaves like the
-   * parameter entryType is null.
-   */
-  Class<?> entryClass() default ExtDirectMethod.class;
-
-  /**
    * Optional parameter if the method is a POLL method. The name of the event
    * this method is sending messages to If parameter is empty the name of the
    * method will be used as event name

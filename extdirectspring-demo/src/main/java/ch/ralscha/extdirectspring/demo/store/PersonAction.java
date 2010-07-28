@@ -139,7 +139,7 @@ public class PersonAction {
     return new ExtDirectStoreResponse<Person>(totalSize, persons);
   }
 
-  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Person.class, group = "store")
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
   public List<Person> create(List<Person> newPersons) {
     List<Person> insertedPersons = Lists.newArrayList();
 
@@ -151,7 +151,7 @@ public class PersonAction {
     return insertedPersons;
   }
 
-  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Person.class, group = "store")
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
   public List<Person> update(@RequestParam(value = "no", defaultValue = "0") int no,
       @RequestParam(value = "name", required = false) String name, List<Person> modifiedPersons) {
 
@@ -168,7 +168,7 @@ public class PersonAction {
     return updatedRecords;
   }
 
-  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Integer.class, group = "store")
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
   public List<Integer> destroy(List<Integer> destroyIds) {
     List<Integer> deletedPersonsId = Lists.newArrayList();
 

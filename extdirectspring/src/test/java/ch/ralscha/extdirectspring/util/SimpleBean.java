@@ -32,7 +32,7 @@ class SimpleBean {
     // nothing here
   }
 
-  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Integer.class)
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
   public void methodC() {
     // nothing here
   }

@@ -33,13 +33,13 @@ public class BeanNotSpringWExtDirectMethods {
     // a dummy method
   }
 
-  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Integer.class)
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
   public List<Integer> methodC(List<Integer> ids) {
     // a dummy method
     return null;
   }
 
-  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, entryClass = Integer.class)
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
   public List<Integer> methodD() {
     // a dummy method
     return null;

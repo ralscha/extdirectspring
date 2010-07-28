@@ -19,9 +19,12 @@ package ch.ralscha.extdirectspring.util;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.springframework.core.GenericCollectionTypeResolver;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,10 +32,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ValueConstants;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
 /**
- * Object holds information about a method like the method itself and a list
- * of parameters
+ * Object holds information about a method like the method itself and a list of
+ * parameters
  * 
  * @author Ralph Schaer
  */
@@ -41,8 +45,10 @@ public class MethodInfo {
 
   private List<ParameterInfo> parameters;
   private Method method;
-  private ExtDirectMethod extDirectMethodAnnotation;
   private String forwardPath;
+
+  private ExtDirectMethodType type;
+  private Class<?> collectionType;
 
   public MethodInfo(final Method method) {
 
@@ -57,9 +63,19 @@ public class MethodInfo {
       this.forwardPath = "forward:" + path;
     }
 
-    this.extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+    ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+    if (extDirectMethodAnnotation != null) {
+      this.type = extDirectMethodAnnotation.value();
+    }
 
     this.parameters = buildParameterList(method);
+    
+    for (ParameterInfo parameter : parameters) {
+      if (parameter.getCollectionType() != null) {
+        this.collectionType = parameter.getCollectionType();
+        break;
+      }
+    }  
 
   }
 
@@ -76,20 +92,20 @@ public class MethodInfo {
       parameterNames = discoverer.getParameterNames(methodWithAnnotation);
     }
 
-    for (int i = 0; i < parameterTypes.length; i++) {
+    for (int paramIndex = 0; paramIndex < parameterTypes.length; paramIndex++) {
 
       ParameterInfo parameterInfo = new ParameterInfo();
-      parameterInfo.setType(parameterTypes[i]);
+      parameterInfo.setType(parameterTypes[paramIndex]);
 
-      parameterInfo.setSupportedParameter(SupportedParameterTypes.isSupported(parameterTypes[i]));
-      
+      parameterInfo.setSupportedParameter(SupportedParameterTypes.isSupported(parameterTypes[paramIndex]));
+
       if (parameterNames != null) {
-        parameterInfo.setName(parameterNames[i]);
+        parameterInfo.setName(parameterNames[paramIndex]);
       }
 
       if (parameterAnnotations != null) {
 
-        for (Annotation paramAnn : parameterAnnotations[i]) {
+        for (Annotation paramAnn : parameterAnnotations[paramIndex]) {
           if (RequestParam.class.isInstance(paramAnn)) {
             RequestParam requestParam = (RequestParam) paramAnn;
             if (StringUtils.hasText(requestParam.value())) {
@@ -104,6 +120,11 @@ public class MethodInfo {
         }
       }
 
+      if (Collection.class.isAssignableFrom(parameterTypes[paramIndex])) {
+        parameterInfo.setCollectionType(GenericCollectionTypeResolver.getCollectionParameterType(new MethodParameter(m,
+            paramIndex)));        
+      }
+      
       params.add(parameterInfo);
     }
 
@@ -118,16 +139,16 @@ public class MethodInfo {
     return forwardPath;
   }
 
-  public ExtDirectMethod getExtDirectMethodAnnotation() {
-    return extDirectMethodAnnotation;
-  }
-
   public List<ParameterInfo> getParameters() {
     return parameters;
   }
 
-  // public ParameterInfo getParameter(int parameterIndex) {
-  // return parameters.get(parameterIndex);
-  // }
+  public Class<?> getCollectionType() {
+    return collectionType;
+  }
+
+  public boolean isType(ExtDirectMethodType methodType) {
+    return this.type == methodType;
+  }
 
 }
