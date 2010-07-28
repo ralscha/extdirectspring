@@ -46,7 +46,7 @@
 
   <properties>
     <spring.version>3.0.3.RELEASE</spring.version>
-    <jackson.version>1.5.4</jackson.version>
+    <jackson.version>1.5.5</jackson.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
