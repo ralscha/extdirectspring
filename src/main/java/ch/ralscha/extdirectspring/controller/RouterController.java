@@ -57,6 +57,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
+import ch.ralscha.extdirectspring.filter.Filter;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.MethodInfo;
 import ch.ralscha.extdirectspring.util.ParameterInfo;
@@ -100,12 +101,13 @@ public class RouterController implements ApplicationContextAware {
       Object[] parameters = null;
       if (!methodParameters.isEmpty()) {
         parameters = new Object[methodParameters.size()];
-        
+
         for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
           ParameterInfo methodParameter = methodParameters.get(paramIndex);
-          
+
           if (methodParameter.isSupportedParameter()) {
-            parameters[paramIndex] = SupportedParameterTypes.resolveParameter(methodParameter.getType(), request, response, locale);
+            parameters[paramIndex] = SupportedParameterTypes.resolveParameter(methodParameter.getType(), request,
+                response, locale);
           } else {
             parameters[paramIndex] = handleRequestParam(request, null, methodParameter);
           }
@@ -132,8 +134,7 @@ public class RouterController implements ApplicationContextAware {
   }
 
   @RequestMapping(value = "/router", method = RequestMethod.POST, params = "extAction")
-  public String router(@RequestParam("extAction") String extAction,
-      @RequestParam("extMethod") String extMethod) {
+  public String router(@RequestParam("extAction") String extAction, @RequestParam("extMethod") String extMethod) {
 
     MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, extAction, extMethod);
     if (methodInfo.getForwardPath() != null) {
@@ -256,12 +257,13 @@ public class RouterController implements ApplicationContextAware {
 
     if (!methodParameters.isEmpty()) {
       parameters = new Object[methodParameters.size()];
-      
+
       for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
         ParameterInfo methodParameter = methodParameters.get(paramIndex);
 
         if (methodParameter.isSupportedParameter()) {
-          parameters[paramIndex] = SupportedParameterTypes.resolveParameter(methodParameter.getType(), request, response, locale);
+          parameters[paramIndex] = SupportedParameterTypes.resolveParameter(methodParameter.getType(), request,
+              response, locale);
         } else if (ExtDirectStoreReadRequest.class.isAssignableFrom(methodParameter.getType())) {
           parameters[paramIndex] = directStoreReadRequest;
         } else if (directStoreModifyRecords != null && methodParameter.getCollectionType() != null) {
@@ -277,7 +279,8 @@ public class RouterController implements ApplicationContextAware {
           } else if (methodParameter.getType().isPrimitive()) {
             parameters[paramIndex] = jsonParam;
           } else {
-            parameters[paramIndex] = ExtDirectSpringUtil.deserializeJsonToObject(ExtDirectSpringUtil.serializeObjectToJson(jsonParam), methodParameter.getType());
+            parameters[paramIndex] = ExtDirectSpringUtil.deserializeJsonToObject(
+                ExtDirectSpringUtil.serializeObjectToJson(jsonParam), methodParameter.getType());
           }
 
           jsonParamIndex++;
@@ -292,8 +295,9 @@ public class RouterController implements ApplicationContextAware {
     return ExtDirectSpringUtil.invoke(context, directRequest.getAction(), methodInfo, parameters);
   }
 
-  private Object handleRequestParam(final HttpServletRequest request, final Map<String, Object> valueContainer, final ParameterInfo parameterInfo) {
-    
+  private Object handleRequestParam(final HttpServletRequest request, final Map<String, Object> valueContainer,
+      final ParameterInfo parameterInfo) {
+
     if (parameterInfo.getName() != null) {
       Object value;
       if (request != null) {
@@ -311,7 +315,7 @@ public class RouterController implements ApplicationContextAware {
       if (value != null) {
         return genericConversionService.convert(value, parameterInfo.getType());
       }
-      
+
       if (parameterInfo.isRequired()) {
         throw new IllegalArgumentException("Missing request parameter: " + parameterInfo.getName());
       }
@@ -320,22 +324,40 @@ public class RouterController implements ApplicationContextAware {
     return null;
   }
 
-  private Map<String, Object> fillObjectFromMap(final Object to, final Map<String, Object> from) {
+  private Map<String, Object> fillObjectFromMap(final ExtDirectStoreReadRequest to, final Map<String, Object> from) {
     Set<String> foundParameters = new HashSet<String>();
 
     for (Entry<String, Object> entry : from.entrySet()) {
-      PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(to.getClass(), entry.getKey());
-      if (descriptor != null && descriptor.getWriteMethod() != null) {
-        try {
-          descriptor.getWriteMethod().invoke(to,
-              genericConversionService.convert(entry.getValue(), descriptor.getPropertyType()));
-          foundParameters.add(entry.getKey());
-        } catch (IllegalArgumentException e) {
-          log.error("fillObjectFromMap", e);
-        } catch (IllegalAccessException e) {
-          log.error("fillObjectFromMap", e);
-        } catch (InvocationTargetException e) {
-          log.error("fillObjectFromMap", e);
+
+      if (entry.getKey().equals("filter")) {
+        List<Filter> filters = new ArrayList<Filter>();
+        
+        List<Map<String, Object>> rawFilters = ExtDirectSpringUtil.deserializeJsonToObject((String) entry.getValue(),
+            new TypeReference<List<Map<String, Object>>>() {/* empty */});
+
+        for (Map<String, Object> rawFilter : rawFilters) {
+          filters.add(Filter.createFilter(rawFilter));
+        }
+        
+        to.setFilters(filters);        
+        foundParameters.add(entry.getKey());
+      } else {
+
+        PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(to.getClass(), entry.getKey());
+        if (descriptor != null && descriptor.getWriteMethod() != null) {
+          try {
+
+            descriptor.getWriteMethod().invoke(to,
+                genericConversionService.convert(entry.getValue(), descriptor.getPropertyType()));
+
+            foundParameters.add(entry.getKey());
+          } catch (IllegalArgumentException e) {
+            log.error("fillObjectFromMap", e);
+          } catch (IllegalAccessException e) {
+            log.error("fillObjectFromMap", e);
+          } catch (InvocationTargetException e) {
+            log.error("fillObjectFromMap", e);
+          }
         }
       }
     }
@@ -377,6 +399,5 @@ public class RouterController implements ApplicationContextAware {
 
     return directRequests;
   }
-
 
 }
