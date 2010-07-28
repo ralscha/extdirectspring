@@ -33,7 +33,14 @@ import javax.inject.Named;
 import org.springframework.core.io.Resource;
 
 import au.com.bytecode.opencsv.CSVReader;
+import ch.ralscha.extdirectspring.filter.BooleanFilter;
+import ch.ralscha.extdirectspring.filter.Filter;
+import ch.ralscha.extdirectspring.filter.StringFilter;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -73,8 +80,54 @@ public class CompanyDataBean {
     is.close();
   }
 
-  public List<Company> listAllCompanies() {
-    return Lists.newArrayList(companies.values());
+  public List<Company> findAllCompanies() {
+    return ImmutableList.copyOf(companies.values());
+  }
+
+  public List<Company> findCompanies(List<Filter> filters) {
+
+    List<Predicate<Company>> predicates = Lists.newArrayList();
+    for (Filter filter : filters) {
+      if (filter.getField().equals("company")) {
+        predicates.add(new CompanyPredicate(((StringFilter)filter).getValue()));
+      } else if (filter.getField().equals("visible")) {
+        predicates.add(new VisiblePredicate(((BooleanFilter)filter).getValue()));
+      }
+
+    }
+
+    Iterable<Company> filtered = Iterables.filter(companies.values(), Predicates.and(predicates));
+    return ImmutableList.copyOf(filtered);
+
+  }
+
+  private static class CompanyPredicate implements Predicate<Company> {
+
+    private String value;
+
+    CompanyPredicate(String value) {
+      this.value = value;
+    }
+
+    @Override
+    public boolean apply(Company company) {
+      return company.getCompany().toLowerCase().startsWith(value.trim().toLowerCase());
+    }
+
+  }
+
+  private static class VisiblePredicate implements Predicate<Company> {
+    private boolean flag;
+
+    VisiblePredicate(boolean flag) {
+      this.flag = flag;
+    }
+
+    @Override
+    public boolean apply(Company company) {
+      return company.isVisible() == flag;
+    }
+
   }
 
 }

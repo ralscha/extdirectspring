@@ -29,7 +29,7 @@ public class Company {
     this.company = company;
   }
 
-  @JsonSerialize(using=PriceSerializer.class)
+  @JsonSerialize(using = PriceSerializer.class)
   public BigDecimal getPrice() {
     return price;
   }
@@ -38,7 +38,7 @@ public class Company {
     this.price = price;
   }
 
-  @JsonSerialize(using=MyDateSerializer.class)
+  @JsonSerialize(using = MyDateSerializer.class)
   public Date getDate() {
     return date;
   }
@@ -55,7 +55,7 @@ public class Company {
     this.visible = visible;
   }
 
-  @JsonSerialize(using=SizeSerializer.class)
+  @JsonSerialize(using = SizeSerializer.class)
   public SizeEnum getSize() {
     return size;
   }

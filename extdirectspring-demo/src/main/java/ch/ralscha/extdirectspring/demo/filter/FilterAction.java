@@ -17,7 +17,6 @@
 package ch.ralscha.extdirectspring.demo.filter;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,10 +28,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 
-import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
-import com.google.common.primitives.Booleans;
-import com.google.common.primitives.Ints;
 
 @Named
 public class FilterAction {
@@ -40,65 +36,23 @@ public class FilterAction {
   @Inject
   private CompanyDataBean dataBean;
 
-  private Map<String, Ordering<Company>> orderingMap;
-
-  public FilterAction() {
-    orderingMap = Maps.newHashMap();
-
-    orderingMap.put("company", new Ordering<Company>() {
-      public int compare(Company left, Company right) {
-        return left.getCompany().compareTo(right.getCompany());
-      }
-    });
-
-    orderingMap.put("id", new Ordering<Company>() {
-      public int compare(Company left, Company right) {
-        return Ints.compare(left.getId(), right.getId());
-      }
-    });
-
-    orderingMap.put("price", new Ordering<Company>() {
-      public int compare(Company left, Company right) {
-        return left.getPrice().compareTo(right.getPrice());
-      }
-    });
-
-    orderingMap.put("date", new Ordering<Company>() {
-      public int compare(Company left, Company right) {
-        return left.getDate().compareTo(right.getDate());
-      }
-    });
-
-    orderingMap.put("visible", new Ordering<Company>() {
-      public int compare(Company left, Company right) {
-        return Booleans.compare(left.isVisible(), right.isVisible());
-      }
-    });
-
-    orderingMap.put("size", new Ordering<Company>() {
-      public int compare(Company left, Company right) {
-        return left.getSize().ordinal() - right.getSize().ordinal();
-      }
-    });
-
-  }
-
   @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "filter")
   public ExtDirectStoreResponse<Company> load(ExtDirectStoreReadRequest request) {
-System.out.println(request.getFilters());
-    List<Company> companies = dataBean.listAllCompanies();
+
+    List<Company> companies;
+    if (!request.getFilters().isEmpty()) {
+      companies = dataBean.findCompanies(request.getFilters());
+    } else {
+      companies = dataBean.findAllCompanies();
+    }
+
     int totalSize = companies.size();
 
-    Ordering<Company> ordering = null;
-
     if (StringUtils.hasText(request.getSort())) {
-      ordering = orderingMap.get(request.getSort());
+      Ordering<Object> ordering = new PropertyOrdering(Company.class, request.getSort());
       if (request.isDescendingSort()) {
         ordering = ordering.reverse();
       }
-    }
-
-    if (ordering != null) {
       companies = ordering.sortedCopy(companies);
     }
 

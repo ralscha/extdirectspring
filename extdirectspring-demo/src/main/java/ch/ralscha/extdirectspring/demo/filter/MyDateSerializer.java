@@ -12,8 +12,9 @@ import org.codehaus.jackson.map.SerializerProvider;
 
 public class MyDateSerializer extends JsonSerializer<Date> {
   @Override
-  public void serialize(Date value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
-    
+  public void serialize(Date value, JsonGenerator jgen, SerializerProvider provider) throws IOException,
+      JsonProcessingException {
+
     DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     jgen.writeString(formatter.format(value.getTime()));
   }
