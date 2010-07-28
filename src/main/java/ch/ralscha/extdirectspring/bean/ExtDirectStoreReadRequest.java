@@ -16,6 +16,7 @@
 
 package ch.ralscha.extdirectspring.bean;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -38,6 +39,10 @@ public class ExtDirectStoreReadRequest {
   private String groupBy;
   private String groupDir;
   private List<Filter> filters;
+
+  public ExtDirectStoreReadRequest() {
+    this.filters = Collections.emptyList();
+  }
 
   public String getQuery() {
     return query;
@@ -104,7 +109,7 @@ public class ExtDirectStoreReadRequest {
   public void setGroupDir(String groupDir) {
     this.groupDir = groupDir;
   }
-  
+
   @JsonIgnore
   public boolean isAscendingGroupSort() {
     return ("ASC".equals(getGroupDir()));
