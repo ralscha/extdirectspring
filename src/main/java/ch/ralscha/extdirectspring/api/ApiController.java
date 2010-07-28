@@ -198,17 +198,9 @@ public class ApiController implements ApplicationContextAware {
               break;
             case FORM_LOAD:
             case STORE_READ:
-              remotingApi.addAction(beanName, method.getName(), 1);
-              break;
             case STORE_MODIFY:
-              if (annotation.entryClass() != ExtDirectMethod.class) {
-                remotingApi.addAction(beanName, method.getName(), 1);
-              } else {
-                LogFactory.getLog(getClass()).warn(
-                    "Method '"+beanName+"."+method.getName()+"' is annotated as a store modify method but does "
-                        + "not specify a entryClass. Method ignored.");
-              }
-              break;
+              remotingApi.addAction(beanName, method.getName(), 1);
+              break;            
             case FORM_POST:
               if (isValidFormPostMethod(method)) {
                 remotingApi.addAction(beanName, method.getName(), 0, true);

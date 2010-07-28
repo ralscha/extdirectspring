@@ -50,7 +50,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
@@ -164,13 +163,12 @@ public class RouterController implements ApplicationContextAware {
         Object result = processRemotingRequest(request, response, locale, directRequest, methodInfo);
 
         if (result != null) {
-          ExtDirectMethod annotation = methodInfo.getExtDirectMethodAnnotation();
 
-          if (annotation.value() == ExtDirectMethodType.FORM_LOAD) {
+          if (methodInfo.isType(ExtDirectMethodType.FORM_LOAD)) {
             if (!ExtDirectFormLoadResult.class.isAssignableFrom(result.getClass())) {
               result = new ExtDirectFormLoadResult(result);
             }
-          } else if (annotation.value() == ExtDirectMethodType.STORE_MODIFY) {
+          } else if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)) {
             if (!ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())) {
               result = new ExtDirectStoreResponse((Collection) result);
             }
@@ -212,10 +210,6 @@ public class RouterController implements ApplicationContextAware {
   private Object processRemotingRequest(final HttpServletRequest request, final HttpServletResponse response,
       final Locale locale, final ExtDirectRequest directRequest, final MethodInfo methodInfo) throws Exception {
 
-    ExtDirectMethod annotation = methodInfo.getExtDirectMethodAnnotation();
-
-    ExtDirectMethodType type = annotation.value();
-
     int jsonParamIndex = 0;
     Map<String, Object> remainingParameters = null;
     ExtDirectStoreReadRequest directStoreReadRequest = null;
@@ -223,10 +217,10 @@ public class RouterController implements ApplicationContextAware {
     List<Object> directStoreModifyRecords = null;
     Class<?> directStoreEntryClass;
 
-    if (type == ExtDirectMethodType.STORE_READ || type == ExtDirectMethodType.FORM_LOAD) {
+    if (methodInfo.isType(ExtDirectMethodType.STORE_READ) || methodInfo.isType(ExtDirectMethodType.FORM_LOAD)) {
 
       if (directRequest.getData() != null && directRequest.getData().length > 0) {
-        if (type == ExtDirectMethodType.STORE_READ) {
+        if (methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
           directStoreReadRequest = new ExtDirectStoreReadRequest();
           remainingParameters = fillObjectFromMap(directStoreReadRequest, (Map) directRequest.getData()[0]);
         } else {
@@ -234,8 +228,8 @@ public class RouterController implements ApplicationContextAware {
         }
         jsonParamIndex = 1;
       }
-    } else if (type == ExtDirectMethodType.STORE_MODIFY) {
-      directStoreEntryClass = annotation.entryClass();
+    } else if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)) {
+      directStoreEntryClass = methodInfo.getCollectionType();
 
       if (directRequest.getData() != null && directRequest.getData().length > 0) {
         Map<String, Object> jsonData = (LinkedHashMap<String, Object>) directRequest.getData()[0];
@@ -251,9 +245,9 @@ public class RouterController implements ApplicationContextAware {
           }
         }
       }
-    } else if (type == ExtDirectMethodType.POLL) {
+    } else if (methodInfo.isType(ExtDirectMethodType.POLL)) {
       throw new IllegalStateException("this controller does not handle poll calls");
-    } else if (type == ExtDirectMethodType.FORM_POST) {
+    } else if (methodInfo.isType(ExtDirectMethodType.FORM_POST)) {
       throw new IllegalStateException("this controller does not handle form posts");
     }
 
@@ -270,8 +264,7 @@ public class RouterController implements ApplicationContextAware {
           parameters[paramIndex] = SupportedParameterTypes.resolveParameter(methodParameter.getType(), request, response, locale);
         } else if (ExtDirectStoreReadRequest.class.isAssignableFrom(methodParameter.getType())) {
           parameters[paramIndex] = directStoreReadRequest;
-        } else if (directStoreModifyRecords != null
-            && methodParameter.getType().isAssignableFrom(directStoreModifyRecords.getClass())) {
+        } else if (directStoreModifyRecords != null && methodParameter.getCollectionType() != null) {
           parameters[paramIndex] = directStoreModifyRecords;
         } else if (methodParameter.isHasRequestParamAnnotation()) {
           parameters[paramIndex] = handleRequestParam(null, remainingParameters, methodParameter);
@@ -301,7 +294,6 @@ public class RouterController implements ApplicationContextAware {
 
   private Object handleRequestParam(final HttpServletRequest request, final Map<String, Object> valueContainer, final ParameterInfo parameterInfo) {
     
-
     if (parameterInfo.getName() != null) {
       Object value;
       if (request != null) {
