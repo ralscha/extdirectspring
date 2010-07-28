@@ -3,6 +3,8 @@ package ch.ralscha.extdirectspring.demo.filter;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 public class Company {
   private int id;
   private String company;
@@ -27,6 +29,7 @@ public class Company {
     this.company = company;
   }
 
+  @JsonSerialize(using=PriceSerializer.class)
   public BigDecimal getPrice() {
     return price;
   }
@@ -35,6 +38,7 @@ public class Company {
     this.price = price;
   }
 
+  @JsonSerialize(using=MyDateSerializer.class)
   public Date getDate() {
     return date;
   }
@@ -51,6 +55,7 @@ public class Company {
     this.visible = visible;
   }
 
+  @JsonSerialize(using=SizeSerializer.class)
   public SizeEnum getSize() {
     return size;
   }

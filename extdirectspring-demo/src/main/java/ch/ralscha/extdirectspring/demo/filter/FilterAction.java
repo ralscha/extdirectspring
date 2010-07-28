@@ -85,7 +85,7 @@ public class FilterAction {
 
   @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "filter")
   public ExtDirectStoreResponse<Company> load(ExtDirectStoreReadRequest request) {
-
+System.out.println(request.getFilters());
     List<Company> companies = dataBean.listAllCompanies();
     int totalSize = companies.size();
 
