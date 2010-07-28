@@ -31,26 +31,26 @@ public class Filter {
   }
 
   public static Filter createFilter(Map<String, Object> jsonData) {
-    String field = (String) jsonData.get("field");
-    String type = (String) jsonData.get("type");
+    String field = (String)jsonData.get("field");
+    String type = (String)jsonData.get("type");
 
     if (type.equals("numeric")) {
-      String comparison = (String) jsonData.get("comparison");
-      Number value = (Number) jsonData.get("value");
+      String comparison = (String)jsonData.get("comparison");
+      Number value = (Number)jsonData.get("value");
       return new NumericFilter(field, value, ComparisonEnum.find(comparison));
     } else if (type.equals("string")) {
-      String value = (String) jsonData.get("value");
+      String value = (String)jsonData.get("value");
       return new StringFilter(field, value);
     } else if (type.equals("date")) {
-      String comparison = (String) jsonData.get("comparison");
-      String value = (String) jsonData.get("value");
+      String comparison = (String)jsonData.get("comparison");
+      String value = (String)jsonData.get("value");
       return new DateFilter(field, value, ComparisonEnum.find(comparison));
     } else if (type.equals("list")) {
-      String value = (String) jsonData.get("value");
+      String value = (String)jsonData.get("value");
       String[] values = value.split(",");
       return new ListFilter(field, Arrays.asList(values));
     } else if (type.equals("boolean")) {
-      boolean value = (Boolean) jsonData.get("value");
+      boolean value = (Boolean)jsonData.get("value");
       return new BooleanFilter(field, value);
     } else {
       return null;

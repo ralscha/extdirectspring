@@ -66,7 +66,8 @@ public enum MethodInfoCache {
    *          the name of the bean
    * @param methodName
    *          the name of the method
-   * @return the found methodInfo object, null if there is no method found in the cache
+   * @return the found methodInfo object, null if there is no method found in
+   *         the cache
    */
   public MethodInfo get(final String beanName, final String methodName) {
     return cache.get(new Key(beanName, methodName));
@@ -88,7 +89,7 @@ public enum MethodInfoCache {
         return false;
       }
 
-      Key other = (Key) o;
+      Key other = (Key)o;
       return (ExtDirectSpringUtil.equal(beanName, other.beanName) && ExtDirectSpringUtil.equal(methodName,
           other.methodName));
     }

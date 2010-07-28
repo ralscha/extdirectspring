@@ -55,8 +55,9 @@ public class ExtDirectSpringUtil {
   }
 
   /**
-   * Retrieves a methodInfo from a method in a spring managed bean. The found method will be
-   * cached in {@link MethodInfoCache} with the key beanName,methodName
+   * Retrieves a methodInfo from a method in a spring managed bean. The found
+   * method will be cached in {@link MethodInfoCache} with the key
+   * beanName,methodName
    * 
    * @param context
    *          Spring application context
@@ -69,7 +70,8 @@ public class ExtDirectSpringUtil {
    *           if the method is not annotated with a ExtDirectSpring annotation
    *           or there is no method in the bean
    */
-  public static MethodInfo findMethodInfo(final ApplicationContext context, final String beanName, final String methodName) {
+  public static MethodInfo findMethodInfo(final ApplicationContext context, final String beanName,
+      final String methodName) {
 
     if (context == null) {
       throw new IllegalArgumentException("ApplicatonContext cannot be null");
@@ -88,7 +90,7 @@ public class ExtDirectSpringUtil {
     if (methodInfo != null) {
       return methodInfo;
     }
- 
+
     Object bean = context.getBean(beanName);
     Method method = BeanUtils.findMethodWithMinimalParameters(bean.getClass(), methodName);
 
@@ -152,7 +154,7 @@ public class ExtDirectSpringUtil {
    *           if there is no bean in the context
    * @throws IllegalAccessException
    * @throws InvocationTargetException
-   */  
+   */
   public static Object invoke(final ApplicationContext context, final String beanName, final MethodInfo methodInfo,
       final Object[] params) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
     Object bean = context.getBean(beanName);
@@ -213,7 +215,7 @@ public class ExtDirectSpringUtil {
   public static <T> T deserializeJsonToObject(final String json, final TypeReference<T> typeReference) {
     try {
       ObjectMapper mapper = new ObjectMapper();
-      return (T) mapper.readValue(json, typeReference);
+      return (T)mapper.readValue(json, typeReference);
     } catch (Exception e) {
       LogFactory.getLog(ExtDirectSpringUtil.class).info("deserialize json to object", e);
       return null;

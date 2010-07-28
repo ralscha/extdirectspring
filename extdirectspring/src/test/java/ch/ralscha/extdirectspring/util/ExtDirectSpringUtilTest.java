@@ -75,11 +75,13 @@ public class ExtDirectSpringUtilTest {
   public void testFindMethodWithAnnotation() {
     ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
     MethodInfo methodBInfo = ExtDirectSpringUtil.findMethodInfo(context, "springManagedBean", "methodB");
-    Method methodBWithAnnotation = ExtDirectSpringUtil.findMethodWithAnnotation(methodBInfo.getMethod(), ExtDirectMethod.class);
+    Method methodBWithAnnotation = ExtDirectSpringUtil.findMethodWithAnnotation(methodBInfo.getMethod(),
+        ExtDirectMethod.class);
     assertEquals(methodBInfo.getMethod(), methodBWithAnnotation);
 
     MethodInfo methodSubBInfo = ExtDirectSpringUtil.findMethodInfo(context, "springManagedSubBean", "methodB");
-    methodBWithAnnotation = ExtDirectSpringUtil.findMethodWithAnnotation(methodSubBInfo.getMethod(), ExtDirectMethod.class);
+    methodBWithAnnotation = ExtDirectSpringUtil.findMethodWithAnnotation(methodSubBInfo.getMethod(),
+        ExtDirectMethod.class);
     assertFalse(methodSubBInfo.getMethod().equals(methodBWithAnnotation));
     assertTrue(methodBInfo.getMethod().equals(methodBWithAnnotation));
   }
@@ -97,8 +99,8 @@ public class ExtDirectSpringUtilTest {
     }
 
     try {
-      MethodInfo info = ExtDirectSpringUtil.findMethodInfo(context, "springManagedBeanA", "methodA");      
-      
+      MethodInfo info = ExtDirectSpringUtil.findMethodInfo(context, "springManagedBeanA", "methodA");
+
       assertNull(ExtDirectSpringUtil.invoke(context, "springManagedBeanA", info, null));
       fail("has to throw a NoSuchBeanDefinitionException");
     } catch (Exception e) {
@@ -107,7 +109,7 @@ public class ExtDirectSpringUtilTest {
     }
 
     try {
-      MethodInfo info = ExtDirectSpringUtil.findMethodInfo(context, "springManagedBean", "methodA");      
+      MethodInfo info = ExtDirectSpringUtil.findMethodInfo(context, "springManagedBean", "methodA");
       ExtDirectSpringUtil.invoke(context, "springManagedBean", info, null);
       fail("has to throw a IllegalArgumentException");
     } catch (Exception e) {
@@ -116,14 +118,13 @@ public class ExtDirectSpringUtilTest {
           e.getMessage());
     }
 
-    MethodInfo infoB = ExtDirectSpringUtil.findMethodInfo(context, "springManagedBean", "methodB");      
-    
-    assertFalse((Boolean) ExtDirectSpringUtil.invoke(context, "springManagedBean", infoB, null));
-    assertFalse((Boolean) ExtDirectSpringUtil.invoke(context, "springManagedBean", infoB, null));
-    
-    
-    MethodInfo infoSum = ExtDirectSpringUtil.findMethodInfo(context, "springManagedBean", "sum");      
-    
+    MethodInfo infoB = ExtDirectSpringUtil.findMethodInfo(context, "springManagedBean", "methodB");
+
+    assertFalse((Boolean)ExtDirectSpringUtil.invoke(context, "springManagedBean", infoB, null));
+    assertFalse((Boolean)ExtDirectSpringUtil.invoke(context, "springManagedBean", infoB, null));
+
+    MethodInfo infoSum = ExtDirectSpringUtil.findMethodInfo(context, "springManagedBean", "sum");
+
     assertEquals(Integer.valueOf(3),
         ExtDirectSpringUtil.invoke(context, "springManagedBean", infoSum, new Object[] { 1, 2 }));
     assertEquals(Integer.valueOf(9),
@@ -159,8 +160,6 @@ public class ExtDirectSpringUtilTest {
     expected = "{\"a\":1,\"b\":\"2\",\"c\":null,\"d\":false,\"e\":[1,2]}";
     assertEquals(expected, ExtDirectSpringUtil.serializeObjectToJson(testBean));
 
-    
-    
   }
 
   @Test
@@ -196,14 +195,15 @@ public class ExtDirectSpringUtilTest {
     assertEquals("2", result.get(1));
     assertEquals("3", result.get(2));
     assertEquals("4", result.get(3));
-    
-    Object o = ExtDirectSpringUtil.deserializeJsonToObject("", new TypeReference<String>() {/*empty*/});
-    assertNull(o);
-    
-    o = ExtDirectSpringUtil.deserializeJsonToObject("xy", new TypeReference<Integer>() {/*empty*/});
+
+    Object o = ExtDirectSpringUtil.deserializeJsonToObject("", new TypeReference<String>() {/* empty */
+    });
     assertNull(o);
 
-    
+    o = ExtDirectSpringUtil.deserializeJsonToObject("xy", new TypeReference<Integer>() {/* empty */
+    });
+    assertNull(o);
+
   }
 
   @Test
@@ -231,10 +231,10 @@ public class ExtDirectSpringUtilTest {
 
     Object o = ExtDirectSpringUtil.deserializeJsonToObject("", String.class);
     assertNull(o);
-    
+
     o = ExtDirectSpringUtil.deserializeJsonToObject("xy", Integer.class);
     assertNull(o);
-    
+
   }
 
   @Test

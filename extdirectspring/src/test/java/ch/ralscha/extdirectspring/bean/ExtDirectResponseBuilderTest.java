@@ -59,14 +59,14 @@ public class ExtDirectResponseBuilderTest {
     assertNull(response.getWhere());
     assertNull(response.getMessage());
 
-    Map<String, Object> data = (Map<String, Object>) response.getResult();
+    Map<String, Object> data = (Map<String, Object>)response.getResult();
     assertEquals(2, data.size());
     assertEquals(11, data.get("additionalProperty"));
     assertEquals(true, data.get("success"));
 
     builder.unsuccessful();
     response = builder.build();
-    data = (Map<String, Object>) response.getResult();
+    data = (Map<String, Object>)response.getResult();
     assertEquals(2, data.size());
     assertEquals(11, data.get("additionalProperty"));
     assertEquals(false, data.get("success"));
@@ -104,9 +104,9 @@ public class ExtDirectResponseBuilderTest {
     assertEquals("type", header.get("type"));
     assertEquals(1, header.get("tid"));
 
-    Map<String, Object> result = (Map<String, Object>) header.get("result");
+    Map<String, Object> result = (Map<String, Object>)header.get("result");
     assertEquals(3, result.size());
-    assertTrue((Boolean) result.get("success"));
+    assertTrue((Boolean)result.get("success"));
     assertEquals("a lot of 'text'", result.get("text"));
     assertEquals(false, result.get("additionalProperty"));
   }

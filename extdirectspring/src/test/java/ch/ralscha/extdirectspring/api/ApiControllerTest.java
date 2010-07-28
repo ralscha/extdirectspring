@@ -285,11 +285,11 @@ public class ApiControllerTest {
       assertEquals(remotingApi.getNamespace(), rootAsMap.get("namespace"));
     }
 
-    Map<String, Object> beans = (Map<String, Object>) rootAsMap.get("actions");
+    Map<String, Object> beans = (Map<String, Object>)rootAsMap.get("actions");
 
     assertEquals(remotingApi.getActions().size(), beans.size());
     for (String beanName : remotingApi.getActions().keySet()) {
-      List<Map<String, Object>> actions = (List<Map<String, Object>>) beans.get(beanName);
+      List<Map<String, Object>> actions = (List<Map<String, Object>>)beans.get(beanName);
       List<Action> expectedActions = remotingApi.getActions().get(beanName);
       compare(expectedActions, actions);
     }
@@ -299,7 +299,7 @@ public class ApiControllerTest {
       Map<String, Object> pollingMap = mapper.readValue(pollingJson, Map.class);
       assertEquals(remotingApi.getPollingProviders().size(), pollingMap.size());
       for (PollingProvider pp : remotingApi.getPollingProviders()) {
-        String url = (String) pollingMap.get(pp.getEvent());
+        String url = (String)pollingMap.get(pp.getEvent());
         assertNotNull(url);
         assertEquals(
             String.format("%s/%s/%s/%s", remotingApi.getUrl().replace("router", "poll"), pp.getBeanName(),
