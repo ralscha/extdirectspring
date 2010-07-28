@@ -16,7 +16,11 @@
 
 package ch.ralscha.extdirectspring.bean;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonIgnore;
+
+import ch.ralscha.extdirectspring.filter.Filter;
 
 /**
  * 
@@ -33,6 +37,7 @@ public class ExtDirectStoreReadRequest {
   private String sort;
   private String groupBy;
   private String groupDir;
+  private List<Filter> filters;
 
   public String getQuery() {
     return query;
@@ -110,10 +115,18 @@ public class ExtDirectStoreReadRequest {
     return ("DESC".equals(getGroupDir()));
   }
 
+  public List<Filter> getFilters() {
+    return filters;
+  }
+
+  public void setFilters(List<Filter> filters) {
+    this.filters = filters;
+  }
+
   @Override
   public String toString() {
     return "ExtDirectStoreReadRequest [query=" + query + ", limit=" + limit + ", start=" + start + ", dir=" + dir
-        + ", sort=" + sort + ", groupBy=" + groupBy + ", groupDir=" + groupDir + "]";
+        + ", sort=" + sort + ", groupBy=" + groupBy + ", groupDir=" + groupDir + ", filters=" + filters + "]";
   }
 
 }
