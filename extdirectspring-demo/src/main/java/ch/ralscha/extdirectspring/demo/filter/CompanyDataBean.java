@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,10 @@ import org.springframework.core.io.Resource;
 
 import au.com.bytecode.opencsv.CSVReader;
 import ch.ralscha.extdirectspring.filter.BooleanFilter;
+import ch.ralscha.extdirectspring.filter.ComparisonEnum;
 import ch.ralscha.extdirectspring.filter.Filter;
+import ch.ralscha.extdirectspring.filter.ListFilter;
+import ch.ralscha.extdirectspring.filter.NumericFilter;
 import ch.ralscha.extdirectspring.filter.StringFilter;
 
 import com.google.common.base.Predicate;
@@ -69,7 +73,7 @@ public class CompanyDataBean {
       company.setCompany(nextLine[2]);
 
       company.setDate(new GregorianCalendar(rand.nextInt(50) + 1950, rand.nextInt(12), rand.nextInt(28)).getTime());
-      company.setPrice(new BigDecimal(rand.nextFloat() * 100));
+      company.setPrice(new BigDecimal(rand.nextFloat() * 100).setScale(2, RoundingMode.HALF_EVEN));
       company.setSize(SizeEnum.values()[rand.nextInt(4)]);
       company.setVisible(rand.nextBoolean());
 
@@ -92,8 +96,18 @@ public class CompanyDataBean {
         predicates.add(new CompanyPredicate(((StringFilter)filter).getValue()));
       } else if (filter.getField().equals("visible")) {
         predicates.add(new VisiblePredicate(((BooleanFilter)filter).getValue()));
+      } else if (filter.getField().equals("id")) {
+        NumericFilter numericFilter = (NumericFilter)filter;
+        predicates.add(new IdPredicate(numericFilter.getComparison(), numericFilter.getValue()));
+      } else if (filter.getField().equals("price")) {
+        NumericFilter numericFilter = (NumericFilter)filter;
+        predicates.add(new PricePredicate(numericFilter.getComparison(), numericFilter.getValue()));
+      } else if (filter.getField().equals("size")) {
+        ListFilter listFilter = (ListFilter)filter;
+        predicates.add(new SizePredicate(listFilter.getValue()));
+      } else if (filter.getField().equals("date")) {
+        
       }
-
     }
 
     Iterable<Company> filtered = Iterables.filter(companies.values(), Predicates.and(predicates));
@@ -128,6 +142,61 @@ public class CompanyDataBean {
       return company.isVisible() == flag;
     }
 
+  }
+
+  private static class SizePredicate implements Predicate<Company> {
+    private List<String> values;
+
+    SizePredicate(List<String> values) {
+      this.values = values;
+    }
+
+    @Override
+    public boolean apply(Company company) {
+      return values.contains(company.getSize().getLabel());
+    }
+
+  }
+
+  
+  private static class IdPredicate implements Predicate<Company> {
+    private ComparisonEnum comparison;
+    private Number value;
+    
+    IdPredicate(ComparisonEnum comparison, Number value) {
+      this.comparison = comparison;
+      this.value = value;
+    }
+
+    @Override
+    public boolean apply(Company company) {
+      switch(comparison) {
+        case EQUAL : return company.getId() == value.intValue();
+        case GREATER_THAN : return company.getId() > value.intValue();
+        case LESS_THAN: return company.getId() < value.intValue();
+      }
+      return false;
+    }
+  }
+  
+  private static class PricePredicate implements Predicate<Company> {
+    private ComparisonEnum comparison;
+    private Number value;
+    
+    PricePredicate(ComparisonEnum comparison, Number value) {
+      this.comparison = comparison;
+      this.value = value;
+    }
+
+    @Override
+    public boolean apply(Company company) {
+      switch(comparison) {      
+        case EQUAL : return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) == 0;
+        case GREATER_THAN : return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) > 0;
+        case LESS_THAN: return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) < 0;
+      }
+      return false;
+    }
   }
 
 }
