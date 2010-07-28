@@ -29,7 +29,6 @@ public class Company {
     this.company = company;
   }
 
-  //@JsonSerialize(using = PriceSerializer.class)
   public BigDecimal getPrice() {
     return price;
   }

@@ -22,6 +22,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +40,7 @@ import org.springframework.core.io.Resource;
 import au.com.bytecode.opencsv.CSVReader;
 import ch.ralscha.extdirectspring.filter.BooleanFilter;
 import ch.ralscha.extdirectspring.filter.ComparisonEnum;
+import ch.ralscha.extdirectspring.filter.DateFilter;
 import ch.ralscha.extdirectspring.filter.Filter;
 import ch.ralscha.extdirectspring.filter.ListFilter;
 import ch.ralscha.extdirectspring.filter.NumericFilter;
@@ -106,6 +111,14 @@ public class CompanyDataBean {
         ListFilter listFilter = (ListFilter)filter;
         predicates.add(new SizePredicate(listFilter.getValue()));
       } else if (filter.getField().equals("date")) {
+        DateFilter dateFilter = (DateFilter)filter;
+        DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        try {
+          Date d = formatter.parse(dateFilter.getValue());
+          predicates.add(new DatePredicate(dateFilter.getComparison(), d));
+        } catch (ParseException e) {
+          //nothing to do
+        }
         
       }
     }
@@ -199,4 +212,24 @@ public class CompanyDataBean {
     }
   }
 
+  private static class DatePredicate implements Predicate<Company> {
+    private ComparisonEnum comparison;
+    private Date value;
+    
+    DatePredicate(ComparisonEnum comparison, Date value) {
+      this.comparison = comparison;
+      this.value = value;
+    }
+
+    @Override
+    public boolean apply(Company company) {
+      switch(comparison) {
+        case EQUAL : return company.getDate().compareTo(value) == 0;
+        case GREATER_THAN : return company.getDate().compareTo(value) > 0;
+        case LESS_THAN: return company.getDate().compareTo(value) < 0;
+      }
+      return false;
+    }
+  }
+  
 }
