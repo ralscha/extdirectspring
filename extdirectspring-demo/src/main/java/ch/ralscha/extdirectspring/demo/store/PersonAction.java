@@ -94,17 +94,16 @@ public class PersonAction {
 
   @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")
   public ExtDirectStoreResponse<Person> loadWithPaging(ExtDirectStoreReadRequest request,
-      @RequestParam(value = "no", defaultValue = "0") int no,
-      @RequestParam(required = false) String name) {
+      @RequestParam(value = "no", defaultValue = "0") int no, @RequestParam(required = false) String name) {
 
     System.out.println("no   = " + no);
     System.out.println("name = " + name);
-    
+
     List<Person> persons = dataBean.findPersons(request.getQuery());
     int totalSize = persons.size();
 
     Ordering<Person> ordering = null;
-    
+
     if (StringUtils.hasText(request.getGroupBy())) {
       ordering = orderingMap.get(request.getGroupBy());
       if (ordering != null) {
@@ -119,7 +118,7 @@ public class PersonAction {
       if (sortOrdering != null) {
         if (request.isDescendingSort()) {
           sortOrdering = sortOrdering.reverse();
-        }       
+        }
       }
       if (ordering == null) {
         ordering = sortOrdering;
@@ -127,11 +126,11 @@ public class PersonAction {
         ordering = ordering.compound(sortOrdering);
       }
     }
-    
+
     if (ordering != null) {
       persons = ordering.sortedCopy(persons);
     }
-    
+
     if (request.getStart() != null && request.getLimit() != null) {
       persons = persons.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
     }

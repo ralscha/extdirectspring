@@ -44,7 +44,7 @@ public class State implements Comparable<State> {
     if (!(o instanceof State)) {
       return false;
     }
-    State other = (State) o;
+    State other = (State)o;
     return Objects.equal(state, other.getState());
   }
 

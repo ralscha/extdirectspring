@@ -28,6 +28,7 @@ import javax.inject.Named;
 import org.springframework.core.io.Resource;
 import au.com.bytecode.opencsv.CSVReader;
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -69,10 +70,10 @@ public class RandomDataBean {
           return input.getLastName().toLowerCase().startsWith(query.toLowerCase());
         }
       });
-      return Lists.newArrayList(filtered);
+      return ImmutableList.copyOf(filtered);
     }
 
-    return Lists.newArrayList(persons.values());
+    return ImmutableList.copyOf(persons.values());
   }
 
   public Person findPerson(final String id) {
