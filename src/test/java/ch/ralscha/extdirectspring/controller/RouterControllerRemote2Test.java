@@ -76,7 +76,7 @@ public class RouterControllerRemote2Test {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    List<Row> rows = (List<Row>) resp.getResult();
+    List<Row> rows = (List<Row>)resp.getResult();
     assertEquals(100, rows.size());
   }
 
@@ -98,7 +98,7 @@ public class RouterControllerRemote2Test {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    List<Row> rows = (List<Row>) resp.getResult();
+    List<Row> rows = (List<Row>)resp.getResult();
     assertEquals(100, rows.size());
   }
 
@@ -133,7 +133,7 @@ public class RouterControllerRemote2Test {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    List<Row> rows = (List<Row>) resp.getResult();
+    List<Row> rows = (List<Row>)resp.getResult();
     assertEquals(100, rows.size());
   }
 
@@ -142,7 +142,7 @@ public class RouterControllerRemote2Test {
     ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
     storeRead.setQuery("name");
     ExtDirectResponse resp = executeWithExtDirectStoreReadRequest(storeRead);
-    ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
+    ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
     assertEquals(Integer.valueOf(50), storeResponse.getTotal());
     assertEquals(50, storeResponse.getRecords().size());
     for (Row row : storeResponse.getRecords()) {
@@ -152,7 +152,7 @@ public class RouterControllerRemote2Test {
     storeRead = new ExtDirectStoreReadRequest();
     storeRead.setQuery("firstname");
     resp = executeWithExtDirectStoreReadRequest(storeRead);
-    storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
+    storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
     assertEquals(Integer.valueOf(50), storeResponse.getTotal());
     assertEquals(50, storeResponse.getRecords().size());
     for (Row row : storeResponse.getRecords()) {
@@ -166,7 +166,7 @@ public class RouterControllerRemote2Test {
     storeRead.setLimit(10);
     storeRead.setStart(10);
     resp = executeWithExtDirectStoreReadRequest(storeRead);
-    storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
+    storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
     assertEquals(Integer.valueOf(100), storeResponse.getTotal());
     assertEquals(10, storeResponse.getRecords().size());
     int id = 10;
@@ -182,7 +182,7 @@ public class RouterControllerRemote2Test {
     storeRead.setLimit(10);
     storeRead.setStart(20);
     resp = executeWithExtDirectStoreReadRequest(storeRead);
-    storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
+    storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
     assertEquals(Integer.valueOf(100), storeResponse.getTotal());
     assertEquals(10, storeResponse.getRecords().size());
     id = 79;
@@ -190,7 +190,7 @@ public class RouterControllerRemote2Test {
       assertEquals(id, row.getId());
       id--;
     }
-    
+
     storeRead = new ExtDirectStoreReadRequest();
     storeRead.setQuery("");
     storeRead.setGroupBy("id");
@@ -198,15 +198,15 @@ public class RouterControllerRemote2Test {
     storeRead.setLimit(10);
     storeRead.setStart(10);
     resp = executeWithExtDirectStoreReadRequest(storeRead);
-    storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
+    storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
     assertEquals(Integer.valueOf(100), storeResponse.getTotal());
     assertEquals(10, storeResponse.getRecords().size());
     id = 10;
     for (Row row : storeResponse.getRecords()) {
       assertEquals(id, row.getId());
       id++;
-    }    
-    
+    }
+
     storeRead = new ExtDirectStoreReadRequest();
     storeRead.setQuery("");
     storeRead.setGroupBy("id");
@@ -214,7 +214,7 @@ public class RouterControllerRemote2Test {
     storeRead.setLimit(10);
     storeRead.setStart(20);
     resp = executeWithExtDirectStoreReadRequest(storeRead);
-    storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
+    storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
     assertEquals(Integer.valueOf(100), storeResponse.getTotal());
     assertEquals(10, storeResponse.getRecords().size());
     id = 79;
@@ -261,7 +261,7 @@ public class RouterControllerRemote2Test {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
+    ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
     assertEquals(Integer.valueOf(50), storeResponse.getTotal());
     assertEquals(50, storeResponse.getRecords().size());
     for (Row row : storeResponse.getRecords()) {
@@ -303,7 +303,7 @@ public class RouterControllerRemote2Test {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
+    ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>)resp.getResult();
     assertEquals(Integer.valueOf(50), storeResponse.getTotal());
     assertEquals(50, storeResponse.getRecords().size());
     for (Row row : storeResponse.getRecords()) {
@@ -328,7 +328,7 @@ public class RouterControllerRemote2Test {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    List<Row> rows = (List<Row>) resp.getResult();
+    List<Row> rows = (List<Row>)resp.getResult();
     assertEquals(100, rows.size());
 
     Map<String, Object> readRequest = new HashMap<String, Object>();
@@ -349,7 +349,7 @@ public class RouterControllerRemote2Test {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    rows = (List<Row>) resp.getResult();
+    rows = (List<Row>)resp.getResult();
     assertEquals(100, rows.size());
   }
 

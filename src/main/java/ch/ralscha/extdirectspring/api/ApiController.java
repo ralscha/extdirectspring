@@ -54,14 +54,21 @@ public class ApiController implements ApplicationContextAware {
   }
 
   /**
-   * Method that handles api.js calls. Generates a Javascript with the necessary code for Ext.Direct
+   * Method that handles api.js calls. Generates a Javascript with the necessary
+   * code for Ext.Direct
    * 
-   * @param apiNs Name of the namespace the variable remotingApiVar will live in. Defaults to Ext.app
-   * @param actionNs Name of the namespace the action will live in. 
-   * @param remotingApiVar Name of the remoting api variable. Defaults to REMOTING_API
-   * @param pollingUrlsVar Name of the polling urls object. Defaults to POLLING_URLS
-   * @param group Name of the api group 
-   * @param request 
+   * @param apiNs
+   *          Name of the namespace the variable remotingApiVar will live in.
+   *          Defaults to Ext.app
+   * @param actionNs
+   *          Name of the namespace the action will live in.
+   * @param remotingApiVar
+   *          Name of the remoting api variable. Defaults to REMOTING_API
+   * @param pollingUrlsVar
+   *          Name of the polling urls object. Defaults to POLLING_URLS
+   * @param group
+   *          Name of the api group
+   * @param request
    * @param response
    * @throws IOException
    */
@@ -200,14 +207,19 @@ public class ApiController implements ApplicationContextAware {
             case STORE_READ:
             case STORE_MODIFY:
               remotingApi.addAction(beanName, method.getName(), 1);
-              break;            
+              break;
             case FORM_POST:
               if (isValidFormPostMethod(method)) {
                 remotingApi.addAction(beanName, method.getName(), 0, true);
               } else {
-                LogFactory.getLog(getClass())
+                LogFactory
+                    .getLog(getClass())
                     .warn(
-                        "Method '"+beanName+"."+method.getName()+"' is annotated as a form post method but is not valid. "
+                        "Method '"
+                            + beanName
+                            + "."
+                            + method.getName()
+                            + "' is annotated as a form post method but is not valid. "
                             + "A form post method must be annotated with @RequestMapping and method=RequestMethod.POST. Method ignored.");
               }
               break;

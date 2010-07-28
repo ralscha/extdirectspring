@@ -85,7 +85,7 @@ public class Row implements Comparable<Row> {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    Row other = (Row) obj;
+    Row other = (Row)obj;
     if (id != other.id)
       return false;
     return true;

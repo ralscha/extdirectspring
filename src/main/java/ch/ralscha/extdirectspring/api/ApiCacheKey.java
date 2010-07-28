@@ -49,7 +49,7 @@ class ApiCacheKey {
       return false;
     }
 
-    ApiCacheKey other = (ApiCacheKey) o;
+    ApiCacheKey other = (ApiCacheKey)o;
     return (ExtDirectSpringUtil.equal(apiNs, other.apiNs) && ExtDirectSpringUtil.equal(actionNs, other.actionNs)
         && ExtDirectSpringUtil.equal(remotingApiVar, other.remotingApiVar)
         && ExtDirectSpringUtil.equal(pollingUrlsVar, other.pollingUrlsVar)

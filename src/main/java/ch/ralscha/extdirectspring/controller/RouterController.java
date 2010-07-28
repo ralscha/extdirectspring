@@ -171,7 +171,7 @@ public class RouterController implements ApplicationContextAware {
             }
           } else if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)) {
             if (!ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())) {
-              result = new ExtDirectStoreResponse((Collection) result);
+              result = new ExtDirectStoreResponse((Collection)result);
             }
           }
         }
@@ -223,9 +223,9 @@ public class RouterController implements ApplicationContextAware {
       if (directRequest.getData() != null && directRequest.getData().length > 0) {
         if (methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
           directStoreReadRequest = new ExtDirectStoreReadRequest();
-          remainingParameters = fillObjectFromMap(directStoreReadRequest, (Map) directRequest.getData()[0]);
+          remainingParameters = fillObjectFromMap(directStoreReadRequest, (Map)directRequest.getData()[0]);
         } else {
-          remainingParameters = (Map) directRequest.getData()[0];
+          remainingParameters = (Map)directRequest.getData()[0];
         }
         jsonParamIndex = 1;
       }
@@ -233,9 +233,9 @@ public class RouterController implements ApplicationContextAware {
       directStoreEntryClass = methodInfo.getCollectionType();
 
       if (directRequest.getData() != null && directRequest.getData().length > 0) {
-        Map<String, Object> jsonData = (LinkedHashMap<String, Object>) directRequest.getData()[0];
+        Map<String, Object> jsonData = (LinkedHashMap<String, Object>)directRequest.getData()[0];
 
-        ArrayList<Object> records = (ArrayList<Object>) jsonData.get("records");
+        ArrayList<Object> records = (ArrayList<Object>)jsonData.get("records");
         directStoreModifyRecords = convertObjectEntriesToType(records, directStoreEntryClass);
         jsonParamIndex = 1;
 
@@ -331,15 +331,16 @@ public class RouterController implements ApplicationContextAware {
 
       if (entry.getKey().equals("filter")) {
         List<Filter> filters = new ArrayList<Filter>();
-        
-        List<Map<String, Object>> rawFilters = ExtDirectSpringUtil.deserializeJsonToObject((String) entry.getValue(),
-            new TypeReference<List<Map<String, Object>>>() {/* empty */});
+
+        List<Map<String, Object>> rawFilters = ExtDirectSpringUtil.deserializeJsonToObject((String)entry.getValue(),
+            new TypeReference<List<Map<String, Object>>>() {/* empty */
+            });
 
         for (Map<String, Object> rawFilter : rawFilters) {
           filters.add(Filter.createFilter(rawFilter));
         }
-        
-        to.setFilters(filters);        
+
+        to.setFilters(filters);
         foundParameters.add(entry.getKey());
       } else {
 

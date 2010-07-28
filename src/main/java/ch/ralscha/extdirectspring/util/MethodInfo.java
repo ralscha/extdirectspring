@@ -69,13 +69,13 @@ public class MethodInfo {
     }
 
     this.parameters = buildParameterList(method);
-    
+
     for (ParameterInfo parameter : parameters) {
       if (parameter.getCollectionType() != null) {
         this.collectionType = parameter.getCollectionType();
         break;
       }
-    }  
+    }
 
   }
 
@@ -107,7 +107,7 @@ public class MethodInfo {
 
         for (Annotation paramAnn : parameterAnnotations[paramIndex]) {
           if (RequestParam.class.isInstance(paramAnn)) {
-            RequestParam requestParam = (RequestParam) paramAnn;
+            RequestParam requestParam = (RequestParam)paramAnn;
             if (StringUtils.hasText(requestParam.value())) {
               parameterInfo.setName(requestParam.value());
             }
@@ -122,9 +122,9 @@ public class MethodInfo {
 
       if (Collection.class.isAssignableFrom(parameterTypes[paramIndex])) {
         parameterInfo.setCollectionType(GenericCollectionTypeResolver.getCollectionParameterType(new MethodParameter(m,
-            paramIndex)));        
+            paramIndex)));
       }
-      
+
       params.add(parameterInfo);
     }
 

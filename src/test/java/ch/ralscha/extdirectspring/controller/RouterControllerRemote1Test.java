@@ -279,7 +279,7 @@ public class RouterControllerRemote1Test {
     assertNotNull(resp.getResult());
 
     assertTrue(resp.getResult() instanceof FormInfo);
-    FormInfo info = (FormInfo) resp.getResult();
+    FormInfo info = (FormInfo)resp.getResult();
 
     assertTrue(Double.compare(7.34, info.getBack()) == 0);
     assertEquals(false, info.isAdmin());

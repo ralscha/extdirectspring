@@ -63,7 +63,7 @@ public class RouterControllerPollTest {
     assertNotNull(resp);
     assertEquals("event", resp.getType());
     assertEquals("message1", resp.getName());
-    assertTrue(((String) resp.getData()).startsWith("Successfully polled at: "));
+    assertTrue(((String)resp.getData()).startsWith("Successfully polled at: "));
     assertNull(resp.getWhere());
     assertNull(resp.getMessage());
   }
@@ -75,7 +75,7 @@ public class RouterControllerPollTest {
     assertNotNull(resp);
     assertEquals("event", resp.getType());
     assertEquals("message2", resp.getName());
-    assertTrue(((String) resp.getData()).startsWith("Successfully polled at: "));
+    assertTrue(((String)resp.getData()).startsWith("Successfully polled at: "));
     assertNull(resp.getWhere());
     assertNull(resp.getMessage());
   }
@@ -90,12 +90,13 @@ public class RouterControllerPollTest {
     assertEquals("message3", resp.getName());
     assertEquals("Result: 2", resp.getData());
     assertNull(resp.getWhere());
-    assertNull(resp.getMessage());    
+    assertNull(resp.getMessage());
   }
 
   @Test
   public void pollRequiredArgumentNoRequestParameter() throws Exception {
-    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage3", "message3", request, response, Locale.ENGLISH);
+    ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage3", "message3", request, response,
+        Locale.ENGLISH);
     assertNotNull(resp);
     assertEquals("exception", resp.getType());
     assertEquals("message3", resp.getName());

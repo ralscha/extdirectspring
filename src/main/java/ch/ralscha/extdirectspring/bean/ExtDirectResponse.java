@@ -40,14 +40,14 @@ public class ExtDirectResponse {
     action = directRequest.getAction();
     method = directRequest.getMethod();
     tid = directRequest.getTid();
-    type = directRequest.getType();   
+    type = directRequest.getType();
   }
 
   public ExtDirectResponse(HttpServletRequest request) {
     action = request.getParameter("extAction");
     method = request.getParameter("extMethod");
     tid = Integer.parseInt(request.getParameter("extTID"));
-    type = request.getParameter("extType");    
+    type = request.getParameter("extType");
   }
 
   public String getAction() {

@@ -127,7 +127,7 @@ public class RouterControllerRemote5Test {
     assertNotNull(resp.getResult());
 
     assertTrue(resp.getResult() instanceof ExtDirectFormLoadResult);
-    ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) resp.getResult();
+    ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult)resp.getResult();
     assertTrue(wrapper.isSuccess());
     assertNotNull(wrapper.getData());
     assertTrue(wrapper.getData() instanceof FormInfo);
@@ -150,7 +150,7 @@ public class RouterControllerRemote5Test {
     assertNotNull(resp.getResult());
 
     assertTrue(resp.getResult() instanceof ExtDirectFormLoadResult);
-    ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) resp.getResult();
+    ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult)resp.getResult();
     assertTrue(wrapper.isSuccess());
     assertNull(wrapper.getData());
   }
@@ -172,7 +172,7 @@ public class RouterControllerRemote5Test {
     assertNotNull(resp.getResult());
 
     assertTrue(resp.getResult() instanceof ExtDirectFormLoadResult);
-    ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) resp.getResult();
+    ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult)resp.getResult();
     assertTrue(wrapper.isSuccess());
     assertEquals("TEST", wrapper.getData());
 
@@ -193,7 +193,7 @@ public class RouterControllerRemote5Test {
     assertNotNull(resp.getResult());
 
     assertTrue(resp.getResult() instanceof ExtDirectFormLoadResult);
-    wrapper = (ExtDirectFormLoadResult) resp.getResult();
+    wrapper = (ExtDirectFormLoadResult)resp.getResult();
     assertTrue(wrapper.isSuccess());
     assertEquals("TEST", wrapper.getData());
   }
@@ -208,11 +208,11 @@ public class RouterControllerRemote5Test {
     assertNotNull(resp.getResult());
 
     assertTrue(resp.getResult() instanceof ExtDirectFormLoadResult);
-    ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) resp.getResult();
+    ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult)resp.getResult();
     assertTrue(wrapper.isSuccess());
     assertNotNull(wrapper.getData());
     assertTrue(wrapper.getData() instanceof FormInfo);
-    FormInfo info = (FormInfo) wrapper.getData();
+    FormInfo info = (FormInfo)wrapper.getData();
 
     assertTrue(Double.compare(back, info.getBack()) == 0);
     assertEquals(true, info.isAdmin());

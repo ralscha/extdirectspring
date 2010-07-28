@@ -128,10 +128,10 @@ public class RemoteProvider2 {
           });
         }
       }
-      
+
       if (StringUtils.hasText(request.getGroupBy())) {
         Assert.assertEquals("id", request.getGroupBy());
-        
+
         if (request.isAscendingGroupSort()) {
           Collections.sort(rows);
         } else if (request.isDescendingGroupSort()) {
@@ -142,7 +142,7 @@ public class RemoteProvider2 {
               return o2.getId() - o1.getId();
             }
           });
-        }        
+        }
       }
 
       if (request.getStart() != null && request.getLimit() != null) {
