@@ -164,6 +164,7 @@
           </properties>
           <excludes>
             <exclude>**/*.xml</exclude>
+            <exclude>**/*.txt</exclude>
           </excludes>          
         </configuration>
         <executions>
