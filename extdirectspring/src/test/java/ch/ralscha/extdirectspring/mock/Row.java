@@ -34,7 +34,9 @@ public class Row implements Comparable<Row> {
     this.id = id;
     this.name = name;
     this.admin = admin;
-    this.salary = new BigDecimal(salary);
+    if (salary != null) {
+      this.salary = new BigDecimal(salary);
+    }
   }
 
   public int getId() {
