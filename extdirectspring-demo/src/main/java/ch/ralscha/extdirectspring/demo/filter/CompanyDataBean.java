@@ -117,9 +117,9 @@ public class CompanyDataBean {
           Date d = formatter.parse(dateFilter.getValue());
           predicates.add(new DatePredicate(dateFilter.getComparison(), d));
         } catch (ParseException e) {
-          //nothing to do
+          // nothing to do
         }
-        
+
       }
     }
 
@@ -171,11 +171,10 @@ public class CompanyDataBean {
 
   }
 
-  
   private static class IdPredicate implements Predicate<Company> {
     private ComparisonEnum comparison;
     private Number value;
-    
+
     IdPredicate(ComparisonEnum comparison, Number value) {
       this.comparison = comparison;
       this.value = value;
@@ -183,19 +182,22 @@ public class CompanyDataBean {
 
     @Override
     public boolean apply(Company company) {
-      switch(comparison) {
-        case EQUAL : return company.getId() == value.intValue();
-        case GREATER_THAN : return company.getId() > value.intValue();
-        case LESS_THAN: return company.getId() < value.intValue();
+      switch (comparison) {
+        case EQUAL:
+          return company.getId() == value.intValue();
+        case GREATER_THAN:
+          return company.getId() > value.intValue();
+        case LESS_THAN:
+          return company.getId() < value.intValue();
       }
       return false;
     }
   }
-  
+
   private static class PricePredicate implements Predicate<Company> {
     private ComparisonEnum comparison;
     private Number value;
-    
+
     PricePredicate(ComparisonEnum comparison, Number value) {
       this.comparison = comparison;
       this.value = value;
@@ -203,10 +205,13 @@ public class CompanyDataBean {
 
     @Override
     public boolean apply(Company company) {
-      switch(comparison) {      
-        case EQUAL : return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) == 0;
-        case GREATER_THAN : return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) > 0;
-        case LESS_THAN: return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) < 0;
+      switch (comparison) {
+        case EQUAL:
+          return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) == 0;
+        case GREATER_THAN:
+          return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) > 0;
+        case LESS_THAN:
+          return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) < 0;
       }
       return false;
     }
@@ -215,7 +220,7 @@ public class CompanyDataBean {
   private static class DatePredicate implements Predicate<Company> {
     private ComparisonEnum comparison;
     private Date value;
-    
+
     DatePredicate(ComparisonEnum comparison, Date value) {
       this.comparison = comparison;
       this.value = value;
@@ -223,13 +228,16 @@ public class CompanyDataBean {
 
     @Override
     public boolean apply(Company company) {
-      switch(comparison) {
-        case EQUAL : return company.getDate().compareTo(value) == 0;
-        case GREATER_THAN : return company.getDate().compareTo(value) > 0;
-        case LESS_THAN: return company.getDate().compareTo(value) < 0;
+      switch (comparison) {
+        case EQUAL:
+          return company.getDate().compareTo(value) == 0;
+        case GREATER_THAN:
+          return company.getDate().compareTo(value) > 0;
+        case LESS_THAN:
+          return company.getDate().compareTo(value) < 0;
       }
       return false;
     }
   }
-  
+
 }
