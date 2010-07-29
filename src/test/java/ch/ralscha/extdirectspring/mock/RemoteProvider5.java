@@ -42,7 +42,7 @@ public class RemoteProvider5 {
 
   @ExtDirectMethod(ExtDirectMethodType.STORE_READ)
   public List<Row> method1(@RequestParam("type") int type, ExtDirectStoreReadRequest request) {
-    System.out.println(request.getFilters());
+    
     switch (type) {
       case 1:
         assertEquals(1, request.getFilters().size());
