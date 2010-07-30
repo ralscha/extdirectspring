@@ -25,5 +25,9 @@
   <bean id="randomdata" class="org.springframework.core.io.ClassPathResource">
     <constructor-arg value="/randomdata.csv"/>
   </bean>  
+  
+  <bean id="pivotdata" class="org.springframework.core.io.ClassPathResource">
+    <constructor-arg value="/pivodata.csv"/>
+  </bean>    
      
 </beans>
