@@ -42,7 +42,7 @@ public class RemoteProvider5 {
 
   @ExtDirectMethod(ExtDirectMethodType.STORE_READ)
   public List<Row> method1(@RequestParam("type") int type, ExtDirectStoreReadRequest request) {
-    
+
     switch (type) {
       case 1:
         assertEquals(1, request.getFilters().size());
@@ -122,7 +122,7 @@ public class RemoteProvider5 {
         return createResult(7);
 
       case 8:
-        
+
         assertEquals(2, request.getFilters().size());
         assertTrue(request.getFilters().get(0) instanceof DateFilter);
         assertTrue(request.getFilters().get(1) instanceof DateFilter);
@@ -135,8 +135,8 @@ public class RemoteProvider5 {
         df = (DateFilter)request.getFilters().get(1);
         assertEquals("07/01/2010", df.getValue());
         assertEquals("date", df.getField());
-        assertEquals(ComparisonEnum.GREATER_THAN, df.getComparison());        
-        
+        assertEquals(ComparisonEnum.GREATER_THAN, df.getComparison());
+
         return createResult(8);
 
       case 9:
@@ -147,7 +147,7 @@ public class RemoteProvider5 {
         assertEquals("07/01/2010", df.getValue());
         assertEquals("date", df.getField());
         assertEquals(ComparisonEnum.EQUAL, df.getComparison());
-        
+
         return createResult(9);
 
     }
