@@ -43,7 +43,7 @@ public class PivotDataBean {
   @PostConstruct
   public void readData() throws IOException {
     ImmutableList.Builder<Sale> builder = ImmutableList.builder();
-               
+
     InputStream is = pivotdata.getInputStream();
 
     BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -56,13 +56,12 @@ public class PivotDataBean {
 
     br.close();
     is.close();
-    
+
     sales = builder.build();
   }
-  
+
   public List<Sale> getSalesData() {
     return sales;
   }
-
 
 }
