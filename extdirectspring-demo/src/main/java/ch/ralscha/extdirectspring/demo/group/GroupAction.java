@@ -1,6 +1,7 @@
 package ch.ralscha.extdirectspring.demo.group;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Named;
@@ -58,5 +59,21 @@ public class GroupAction {
   @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "total")
   public List<Task> load(ExtDirectStoreReadRequest request) {
     return tasks;
+  }
+  
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "hybrid")
+  public List<Task> loadHybrid(ExtDirectStoreReadRequest request) {
+    return tasks;
+  }  
+  
+  @ExtDirectMethod(group = "hybrid")
+  public Summary updateSummary(String groupValue) {
+    Summary summary = new Summary();
+    summary.setDescription("22");
+    summary.setEstimate(new BigDecimal(888));
+    summary.setRate(new BigDecimal(999));
+    summary.setDue(new Date());
+    summary.setCost(new BigDecimal(8));
+    return summary;
   }
 }
