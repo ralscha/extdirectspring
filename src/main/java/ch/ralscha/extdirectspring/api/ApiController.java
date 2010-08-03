@@ -209,7 +209,7 @@ public class ApiController implements ApplicationContextAware {
                 remotingApi.addAction(beanName, method.getName(), 1);
                 break;
               case FORM_POST:
-                if (isValidFormPostMethod(bean, method)) {
+                if (isValidFormPostMethod(method)) {
                   remotingApi.addAction(beanName, method.getName(), 0, true);
                 } else {
                   LogFactory.getLog(getClass()).warn("Method '" + beanName + "." + method.getName()
@@ -250,8 +250,8 @@ public class ApiController implements ApplicationContextAware {
     return true;
   }
 
-  private boolean isValidFormPostMethod(final Object bean, final Method method) {
-    if (AnnotationUtils.findAnnotation(bean.getClass(), Controller.class) == null) {
+  private boolean isValidFormPostMethod(final Method method) {
+    if (AnnotationUtils.findAnnotation(method.getDeclaringClass(), Controller.class) == null) {
       return false;
     }
     
@@ -261,7 +261,7 @@ public class ApiController implements ApplicationContextAware {
       return false;
     }
     
-    RequestMapping classAnnotation = AnnotationUtils.findAnnotation(bean.getClass(), RequestMapping.class);
+    RequestMapping classAnnotation = AnnotationUtils.findAnnotation(method.getDeclaringClass(), RequestMapping.class);
     
     boolean hasValue = false;
     
