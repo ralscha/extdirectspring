@@ -54,13 +54,31 @@ public class MethodInfo {
 
     this.method = method;
 
-    RequestMapping requestMappingAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-    if (requestMappingAnnotation != null && StringUtils.hasText(requestMappingAnnotation.value()[0])) {
-      String path = requestMappingAnnotation.value()[0];
-      if (path.charAt(0) == '/' && path.length() > 1) {
-        path = path.substring(1, path.length());
+    RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
+    if (methodAnnotation != null) {
+      
+      RequestMapping classAnnotation = AnnotationUtils.findAnnotation(method.getDeclaringClass(), RequestMapping.class);
+      
+      String path = null;
+      if (hasValue(classAnnotation)) {
+        path = classAnnotation.value()[0];
       }
-      this.forwardPath = "forward:" + path;
+
+      if (hasValue(methodAnnotation)) {
+        String methodPath = methodAnnotation.value()[0];
+        if (path != null) {
+          path = path + methodPath;
+        } else {
+          path = methodPath;
+        }
+      }
+      
+      if (path != null) {
+        if (path.charAt(0) == '/' && path.length() > 1) {
+          path = path.substring(1, path.length());
+        }
+        this.forwardPath = "forward:" + path;
+      }
     }
 
     ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
@@ -77,6 +95,11 @@ public class MethodInfo {
       }
     }
 
+  }
+  
+  private boolean hasValue(RequestMapping requestMapping) {
+    return (requestMapping != null && requestMapping.value() != null && 
+        requestMapping.value().length > 0 && StringUtils.hasText(requestMapping.value()[0]));
   }
 
   private static List<ParameterInfo> buildParameterList(Method m) {
