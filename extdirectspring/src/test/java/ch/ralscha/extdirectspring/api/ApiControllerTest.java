@@ -173,6 +173,8 @@ public class ApiControllerTest {
     remotingApi.addAction("remoteProvider4", "method1", 1, false);
     remotingApi.addAction("remoteProvider4", "method5", 1, false);
     remotingApi.addAction("formInfoController", "updateInfo", 0, true);
+    remotingApi.addAction("formInfoController2", "updateInfo1", 0, true);
+    remotingApi.addAction("formInfoController2", "updateInfo2", 0, true);
     remotingApi.addPollingProvider("pollProvider", "handleMessage5", "message5");
     return remotingApi;
   }
@@ -221,6 +223,10 @@ public class ApiControllerTest {
 
     remotingApi.addAction("formInfoController", "updateInfo", 0, true);
     remotingApi.addAction("formInfoController", "upload", 0, true);
+    
+    remotingApi.addAction("formInfoController2", "updateInfo1", 0, true);
+    remotingApi.addAction("formInfoController2", "updateInfo2", 0, true);
+    
 
     remotingApi.addPollingProvider("pollProvider", "handleMessage1", "message1");
     remotingApi.addPollingProvider("pollProvider", "handleMessage2", "message2");

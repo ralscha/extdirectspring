@@ -209,16 +209,10 @@ public class ApiController implements ApplicationContextAware {
                 remotingApi.addAction(beanName, method.getName(), 1);
                 break;
               case FORM_POST:
-                if (isValidFormPostMethod(method)) {
+                if (isValidFormPostMethod(bean, method)) {
                   remotingApi.addAction(beanName, method.getName(), 0, true);
                 } else {
-                  LogFactory
-                      .getLog(getClass())
-                      .warn(
-                          "Method '"
-                              + beanName
-                              + "."
-                              + method.getName()
+                  LogFactory.getLog(getClass()).warn("Method '" + beanName + "." + method.getName()
                               + "' is annotated as a form post method but is not valid. "
                               + "A form post method must be annotated with @RequestMapping and method=RequestMethod.POST. Method ignored.");
                 }
@@ -256,16 +250,49 @@ public class ApiController implements ApplicationContextAware {
     return true;
   }
 
-  private boolean isValidFormPostMethod(final Method method) {
-    RequestMapping annotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-    if (annotation != null) {
-      RequestMethod[] requestMethods = annotation.method();
-      if (requestMethods != null && requestMethods.length > 0) {
-        if (requestMethods[0].equals(RequestMethod.POST)) {
+  private boolean isValidFormPostMethod(final Object bean, final Method method) {
+    if (AnnotationUtils.findAnnotation(bean.getClass(), Controller.class) == null) {
+      return false;
+    }
+    
+    RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
+
+    if (methodAnnotation == null) {
+      return false;
+    }
+    
+    RequestMapping classAnnotation = AnnotationUtils.findAnnotation(bean.getClass(), RequestMapping.class);
+    
+    boolean hasValue = false;
+    boolean hasMethod = false;
+    
+    if (classAnnotation != null) {
+      hasValue = (classAnnotation.value() != null && classAnnotation.value().length > 0);
+      hasMethod = hasPostMethod(classAnnotation.method());
+    }
+    
+
+    if (!hasValue) {
+      hasValue = (methodAnnotation.value() != null && methodAnnotation.value().length > 0);
+    }
+    
+    if (!hasMethod) {
+      hasMethod = hasPostMethod(methodAnnotation.method());
+    }
+    
+    return hasValue && hasMethod;
+  }
+
+ 
+  private boolean hasPostMethod(RequestMethod[] methods) {
+    if (methods != null) {
+      for (RequestMethod method : methods) {
+        if (method.equals(RequestMethod.POST)) {
           return true;
         }
       }
     }
+    
     return false;
   }
 
