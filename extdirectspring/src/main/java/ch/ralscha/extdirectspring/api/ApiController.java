@@ -264,23 +264,16 @@ public class ApiController implements ApplicationContextAware {
     RequestMapping classAnnotation = AnnotationUtils.findAnnotation(bean.getClass(), RequestMapping.class);
     
     boolean hasValue = false;
-    boolean hasMethod = false;
     
     if (classAnnotation != null) {
       hasValue = (classAnnotation.value() != null && classAnnotation.value().length > 0);
-      hasMethod = hasPostMethod(classAnnotation.method());
     }
     
-
     if (!hasValue) {
       hasValue = (methodAnnotation.value() != null && methodAnnotation.value().length > 0);
     }
     
-    if (!hasMethod) {
-      hasMethod = hasPostMethod(methodAnnotation.method());
-    }
-    
-    return hasValue && hasMethod;
+    return hasValue && hasPostMethod(methodAnnotation.method());
   }
 
  

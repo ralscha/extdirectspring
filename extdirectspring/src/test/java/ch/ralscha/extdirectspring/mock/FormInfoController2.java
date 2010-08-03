@@ -32,7 +32,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 @SuppressWarnings("unused")
 @Controller
-@RequestMapping(value = "/base", method = RequestMethod.POST)
+@RequestMapping(value = "/base")
 public class FormInfoController2 {
   
   @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
@@ -46,7 +46,7 @@ public class FormInfoController2 {
   
   @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
   @ResponseBody
-  @RequestMapping
+  @RequestMapping(method = RequestMethod.POST)
   public ExtDirectResponse updateInfo2(Locale locale, HttpServletRequest request, FormInfo formInfo, BindingResult result) {
     ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
     builder.addErrors(locale, result);
