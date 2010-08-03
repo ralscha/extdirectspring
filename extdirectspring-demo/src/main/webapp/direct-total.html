@@ -1,0 +1,42 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="extjs/resources/css/ext-all.css" />
+  <link rel="stylesheet" type="text/css" href="extjs/examples/ux/css/GroupSummary.css" />
+  <link rel="stylesheet" type="text/css" href="examples.css" />
+    
+  <script type="text/javascript" src="extjs/adapter/ext/ext-base.js"></script>
+  <script type="text/javascript" src="extjs/ext-all.js"></script>
+  <script type="text/javascript" src="extjs/examples/ux/GroupSummary.js"></script>
+  
+  <script type="text/javascript">
+    Ext.BLANK_IMAGE_URL = Ext.isIE6 || Ext.isIE7 || Ext.isAir ?
+                          '/extjs/resources/images/default/s.gif' :
+                          'data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+
+  </script>
+  
+  <script type="text/javascript" src="controller/api-debug.js?group=total"></script>
+  <script type="text/javascript" src="direct-total.js"></script>
+  <style type="text/css">
+  
+    .x-grid3-body .x-grid3-td-rate {
+      text-align: right;
+    }
+  
+    .x-grid3-body .x-grid3-td-cost {
+        background-color:#f1f2f4;
+        text-align: right;
+    }
+      
+    .x-grid3-summary-row .x-grid3-td-cost {
+        background-color:#e1e2e4;
+    }
+  </style>  
+</head>
+<body>
+<h1>Ext.Direct GridPanel with dynamic Grouping</h1>
+
+<p>The js is not minified so it is readable. See <a href="direct-total.js">direct-total.js</a>.</p>
+
+</body>
+</html>
