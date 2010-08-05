@@ -37,7 +37,7 @@ Ext.onReady(function() {
     fields: storeFields,
     remoteSort: true,
     idProperty: 'id',
-    writer: writer,
+    writer: writer,    
     baseParams: {
       no: 1,
       name: 'Ralph'
