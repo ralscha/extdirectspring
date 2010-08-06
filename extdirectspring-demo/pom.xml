@@ -179,7 +179,7 @@
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>7.1.5.v20100705</version>
+        <version>7.1.6.v20100715</version>
         <configuration>
           <stopPort>8005</stopPort>
           <stopKey>STOP</stopKey>
