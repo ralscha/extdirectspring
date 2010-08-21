@@ -68,17 +68,6 @@ public class ExtDirectResponseBuilder {
    * bindingResult Sets the success flag to false if there are errors
    * 
    * @param locale
-   * @param bindingResult
-   */
-  public void addErrors(final Locale locale, final BindingResult bindingResult) {
-    addErrors(locale, null, bindingResult);
-  }
-
-  /**
-   * Creates a errors property in the response if there are any errors in the
-   * bindingResult Sets the success flag to false if there are errors
-   * 
-   * @param locale
    * @param messageSource
    * @param bindingResult
    */

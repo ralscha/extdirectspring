@@ -35,15 +35,24 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.Before;
 import org.junit.Test;
 
 
 public class UserControllerTest {
+  
+  private HttpClient client;
+  private HttpPost post;
+
+  @Before
+  public void beforeTest() {
+    client = new DefaultHttpClient();
+    post = new HttpPost("http://localhost:9998/controller/router");
+  }
+  
   @Test
-  @SuppressWarnings("unchecked")
-  public void testPost() throws ClientProtocolException, IOException {
-    HttpClient client = new DefaultHttpClient();
-    HttpPost post = new HttpPost("http://localhost:9998/controller/router");
+  @SuppressWarnings("unchecked")  
+  public void testPostWithErrors() throws ClientProtocolException, IOException {
     
     List<NameValuePair> formparams = new ArrayList<NameValuePair>();
     formparams.add(new BasicNameValuePair("extTID", "2"));
@@ -70,13 +79,51 @@ public class UserControllerTest {
     assertEquals("userController", rootAsMap.get("action"));
     assertEquals(2, rootAsMap.get("tid"));
     
-
     Map<String, Object> result = (Map<String, Object>)rootAsMap.get("result");
-    assertEquals(3, result.size());
+    assertEquals(4, result.size());
     assertEquals("Joe", result.get("name"));
     assertEquals(30, result.get("age"));
-    assertEquals(true, result.get("success"));
+    assertEquals(false, result.get("success"));
     
-
+    Map<String, Object> errors = (Map<String, Object>)result.get("errors");
+    assertEquals(1, errors.size());
+    assertEquals("may not be empty", errors.get("email"));
   }
+  
+  @Test
+  @SuppressWarnings("unchecked")  
+  public void testPostWithoutErrors() throws ClientProtocolException, IOException {
+    
+    List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+    formparams.add(new BasicNameValuePair("extTID", "3"));
+    formparams.add(new BasicNameValuePair("extAction", "userController"));
+    formparams.add(new BasicNameValuePair("extMethod", "updateUser"));
+    formparams.add(new BasicNameValuePair("extType", "rpc"));
+    formparams.add(new BasicNameValuePair("extUpload", "false"));
+    formparams.add(new BasicNameValuePair("name", "Jim"));
+    formparams.add(new BasicNameValuePair("age", "25"));
+    formparams.add(new BasicNameValuePair("email", "test@test.ch"));
+    UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
+
+    post.setEntity(postEntity);
+    
+    HttpResponse response = client.execute(post);
+    HttpEntity entity = response.getEntity();
+    assertNotNull(entity);
+    String responseString = IOUtils.toString(entity.getContent());
+
+    ObjectMapper mapper = new ObjectMapper();
+    Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+    assertEquals(5, rootAsMap.size());
+    assertEquals("updateUser", rootAsMap.get("method"));
+    assertEquals("rpc", rootAsMap.get("type"));
+    assertEquals("userController", rootAsMap.get("action"));
+    assertEquals(3, rootAsMap.get("tid"));
+    
+    Map<String, Object> result = (Map<String, Object>)rootAsMap.get("result");
+    assertEquals(3, result.size());
+    assertEquals("Jim", result.get("name"));
+    assertEquals(25, result.get("age"));
+    assertEquals(true, result.get("success"));
+  }  
 }

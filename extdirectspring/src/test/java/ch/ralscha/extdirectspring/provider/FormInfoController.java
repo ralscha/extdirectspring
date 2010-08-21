@@ -39,7 +39,7 @@ public class FormInfoController {
   @RequestMapping(value = "/updateInfo", method = RequestMethod.POST)
   public ExtDirectResponse updateInfo(Locale locale, HttpServletRequest request, FormInfo formInfo, BindingResult result) {
     ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-    builder.addErrors(locale, result);
+    builder.addErrors(result);
     return builder.build();
   }
 
@@ -48,7 +48,7 @@ public class FormInfoController {
   public void upload(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
       BindingResult result) throws IOException {
     ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-    builder.addErrors(locale, result);
+    builder.addErrors(result);
     builder.buildAndWriteUploadResponse(response);
   }
 

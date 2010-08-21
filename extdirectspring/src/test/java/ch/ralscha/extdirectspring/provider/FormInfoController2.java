@@ -40,7 +40,7 @@ public class FormInfoController2 {
   @RequestMapping(value = "/updateInfo1", method = RequestMethod.POST)
   public ExtDirectResponse updateInfo1(Locale locale, HttpServletRequest request, FormInfo formInfo, BindingResult result) {
     ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-    builder.addErrors(locale, result);
+    builder.addErrors(result);
     return builder.build();
   }
   
@@ -49,7 +49,7 @@ public class FormInfoController2 {
   @RequestMapping(method = RequestMethod.POST)
   public ExtDirectResponse updateInfo2(Locale locale, HttpServletRequest request, FormInfo formInfo, BindingResult result) {
     ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-    builder.addErrors(locale, result);
+    builder.addErrors(result);
     return builder.build();
   }  
 
