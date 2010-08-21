@@ -17,8 +17,10 @@
 package ch.ralscha.extdirectspring.itest;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,8 +37,11 @@ public class UserController {
   @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_user")
   @ResponseBody
   @RequestMapping(method = RequestMethod.POST)
-  public ExtDirectResponse updateUser(HttpServletRequest request, User user) {
+  public ExtDirectResponse updateUser(HttpServletRequest request, @Valid User user, BindingResult result) {
     ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
+    
+    builder.addErrors(result);
+    
     builder.addResultProperty("name", user.getName());
     builder.addResultProperty("age", user.getAge());
     return builder.build();
