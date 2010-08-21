@@ -100,7 +100,7 @@ public class ApiControllerTest {
     apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", request, response);
     compare(response, group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS");
   }
-  
+
   @Test
   public void testGroup1Again() throws IOException {
     testGroup1();
@@ -118,11 +118,11 @@ public class ApiControllerTest {
     apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "group2", request, response);
     compare(response, group2Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
   }
-  
+
   @Test
   public void testGroup2Again() throws IOException {
     testGroup2();
-  }  
+  }
 
   @Test
   public void testGroup3() throws IOException {
@@ -136,11 +136,11 @@ public class ApiControllerTest {
     apiController.api("Extns", "ns", "RAPI", "PURLS", "group3", request, response);
     compare(response, group3Apis("ns"), "Extns", "RAPI", "PURLS");
   }
-  
+
   @Test
   public void testGroup3Again() throws IOException {
     testGroup3();
-  }    
+  }
 
   @Test
   public void testGroup4() throws IOException {
@@ -154,11 +154,11 @@ public class ApiControllerTest {
     apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "group4", request, response);
     compare(response, group4Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
   }
-  
+
   @Test
   public void testGroup4Again() throws IOException {
     testGroup4();
-  }    
+  }
 
   private RemotingApi noApis(String namespace) {
     RemotingApi remotingApi = new RemotingApi("http://localhost:80/action/router", namespace);
@@ -243,10 +243,9 @@ public class ApiControllerTest {
 
     remotingApi.addAction("formInfoController", "updateInfo", 0, true);
     remotingApi.addAction("formInfoController", "upload", 0, true);
-    
+
     remotingApi.addAction("formInfoController2", "updateInfo1", 0, true);
     remotingApi.addAction("formInfoController2", "updateInfo2", 0, true);
-    
 
     remotingApi.addPollingProvider("pollProvider", "handleMessage1", "message1");
     remotingApi.addPollingProvider("pollProvider", "handleMessage2", "message2");
