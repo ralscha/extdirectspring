@@ -16,19 +16,24 @@
 
 package ch.ralscha.extdirectspring.itest;
 
-import javax.inject.Named;
+public class User {
+  private String name;
+  private int age;
 
-import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
-
-@Named
-public class SimpleService {
-
-  @ExtDirectMethod(group="itest_simple")
-  public String toUpperCase(String in) {
-    if (in != null) {
-      return in.toUpperCase();
-    }
-    return null;
+  public String getName() {
+    return name;
   }
-  
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public int getAge() {
+    return age;
+  }
+
+  public void setAge(int age) {
+    this.age = age;
+  }
+
 }
