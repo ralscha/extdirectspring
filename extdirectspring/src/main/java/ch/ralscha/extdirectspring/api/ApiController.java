@@ -195,35 +195,33 @@ public class ApiController implements ApplicationContextAware {
 
       for (Method method : methods) {
         ExtDirectMethod annotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
-        if (annotation != null) {
-          if (isSameGroup(group, annotation.group())) {
-            ExtDirectMethodType type = annotation.value();
+        if (annotation != null && isSameGroup(group, annotation.group())) {
+          ExtDirectMethodType type = annotation.value();
 
-            switch (type) {
-              case SIMPLE:
-                remotingApi.addAction(beanName, method.getName(), numberOfParameters(method));
-                break;
-              case FORM_LOAD:
-              case STORE_READ:
-              case STORE_MODIFY:
-                remotingApi.addAction(beanName, method.getName(), 1);
-                break;
-              case FORM_POST:
-                if (isValidFormPostMethod(method)) {
-                  remotingApi.addAction(beanName, method.getName(), 0, true);
-                } else {
-                  LogFactory.getLog(getClass()).warn("Method '" + beanName + "." + method.getName()
-                              + "' is annotated as a form post method but is not valid. "
-                              + "A form post method must be annotated with @RequestMapping and method=RequestMethod.POST. Method ignored.");
-                }
-                break;
-              case POLL:
-                remotingApi.addPollingProvider(beanName, method.getName(), annotation.event());
-                break;
-
-            }
+          switch (type) {
+            case SIMPLE:
+              remotingApi.addAction(beanName, method.getName(), numberOfParameters(method));
+              break;
+            case FORM_LOAD:
+            case STORE_READ:
+            case STORE_MODIFY:
+              remotingApi.addAction(beanName, method.getName(), 1);
+              break;
+            case FORM_POST:
+              if (isValidFormPostMethod(method)) {
+                remotingApi.addAction(beanName, method.getName(), 0, true);
+              } else {
+                LogFactory.getLog(getClass()).warn("Method '" + beanName + "." + method.getName()
+                            + "' is annotated as a form post method but is not valid. "
+                            + "A form post method must be annotated with @RequestMapping and method=RequestMethod.POST. Method ignored.");
+              }
+              break;
+            case POLL:
+              remotingApi.addPollingProvider(beanName, method.getName(), annotation.event());
+              break;
 
           }
+
         }
 
       }
