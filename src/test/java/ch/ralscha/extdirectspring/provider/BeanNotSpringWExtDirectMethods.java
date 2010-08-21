@@ -14,20 +14,34 @@
  * limitations under the License.
  */
 
-package ch.ralscha.extdirectspring.mock;
+package ch.ralscha.extdirectspring.provider;
 
-import javax.inject.Named;
+import java.util.List;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
-@Named
-public class BeanSpringWOExtDirectMethods {
+@SuppressWarnings("all")
+public class BeanNotSpringWExtDirectMethods {
 
+  @ExtDirectMethod
   public void methodA() {
     // a dummy method
   }
 
-  public boolean methodB() {
+  @ExtDirectMethod(value = ExtDirectMethodType.POLL)
+  public void methodB() {
     // a dummy method
-    return false;
   }
 
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
+  public List<Integer> methodC(List<Integer> ids) {
+    // a dummy method
+    return null;
+  }
+
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
+  public List<Integer> methodD() {
+    // a dummy method
+    return null;
+  }
 }

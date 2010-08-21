@@ -36,7 +36,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
-import ch.ralscha.extdirectspring.mock.Row;
+import ch.ralscha.extdirectspring.provider.Row;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
