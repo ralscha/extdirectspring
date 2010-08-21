@@ -46,25 +46,6 @@ public class SimpleServiceTest {
     
     String[] lines = responseString.split("\n");
     assertEquals(12, lines.length);
-
-    String[] expected = { 
-        "Ext.ns('Ext.app');", 
-        "",
-        "Ext.app.REMOTING_API = {", 
-        "\"actions\" : {", 
-        "\"simpleService\" : [ {", 
-        "\"name\" : \"toUpperCase\",",
-        "\"len\" : 1", 
-        "} ]", 
-        "},", 
-        "\"type\" : \"remoting\",",
-        "\"url\" : \"http://localhost:9998/controller/router\"", 
-        "};" };
-
-    for (int i = 0; i < lines.length; i++) {
-      assertEquals(expected[i], lines[i].trim());
-    }
-
   }
   
   @Test
