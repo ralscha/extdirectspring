@@ -167,30 +167,9 @@
       </plugin>
 
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.6</version>
-        <configuration>
-          <excludes>
-            <exclude>**/itest/**</exclude>
-          </excludes>
-        </configuration>
-        <executions>
-          <execution>
-            <id>surefire-itest</id>
-            <phase>integration-test</phase>
-            <goals>
-              <goal>test</goal>
-            </goals>
-            <configuration>
-              <excludes>
-                <exclude>none</exclude>
-              </excludes>
-              <includes>
-                <include>**/itest/**/*Test*</include>
-              </includes>
-            </configuration>
-          </execution>
-        </executions>
       </plugin> 
       
       <plugin>
@@ -286,7 +265,7 @@
         <executions>
           <execution>
             <id>start-jetty</id>
-            <phase>pre-integration-test</phase>
+            <phase>test-compile</phase>
             <goals>
               <goal>stop</goal>
               <goal>run</goal>
@@ -297,7 +276,7 @@
           </execution>
           <execution>
             <id>stop-jetty</id>
-            <phase>post-integration-test</phase>
+            <phase>test</phase>
             <goals>
               <goal>stop</goal>
             </goals>

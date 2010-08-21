@@ -18,8 +18,10 @@ package ch.ralscha.extdirectspring.itest;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -29,6 +31,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 public class SimpleServiceTest {
@@ -48,6 +51,7 @@ public class SimpleServiceTest {
     assertEquals(12, lines.length);
   }
   
+  @SuppressWarnings("unchecked")
   @Test
   public void testSimpleCall() throws IllegalStateException, IOException {
     HttpClient client = new DefaultHttpClient();
@@ -61,8 +65,17 @@ public class SimpleServiceTest {
     HttpEntity entity = response.getEntity();
     assertNotNull(entity);
     String responseString = IOUtils.toString(entity.getContent());
-    String expected = "[{\"method\":\"toUpperCase\",\"type\":\"rpc\",\"result\":\"RALPH\",\"action\":\"simpleService\",\"tid\":1}]";
-    assertEquals(expected, responseString);
+    
+    assertNotNull(responseString);
+    assertTrue(responseString.startsWith("[") && responseString.endsWith("]"));
+    ObjectMapper mapper = new ObjectMapper();
+    Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length()-1), Map.class);
+    assertEquals(5, rootAsMap.size());
+    assertEquals("RALPH", rootAsMap.get("result"));
+    assertEquals("toUpperCase", rootAsMap.get("method"));
+    assertEquals("rpc", rootAsMap.get("type"));
+    assertEquals("simpleService", rootAsMap.get("action"));
+    assertEquals(1, rootAsMap.get("tid"));
     
   }
 
