@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.ralscha.extdirectspring.mock;
+package ch.ralscha.extdirectspring.provider;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -30,38 +30,33 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
+@SuppressWarnings("unused")
 @Controller
-@SuppressWarnings("all")
-public class FormInfoController {
-
+@RequestMapping(value = "/base")
+public class FormInfoController2 {
+  
   @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
   @ResponseBody
-  @RequestMapping(value = "/updateInfo", method = RequestMethod.POST)
-  public ExtDirectResponse updateInfo(Locale locale, HttpServletRequest request, FormInfo formInfo, BindingResult result) {
+  @RequestMapping(value = "/updateInfo1", method = RequestMethod.POST)
+  public ExtDirectResponse updateInfo1(Locale locale, HttpServletRequest request, FormInfo formInfo, BindingResult result) {
     ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
     builder.addErrors(locale, result);
     return builder.build();
   }
-
-  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2")
-  @RequestMapping(value = "/upload", method = RequestMethod.POST)
-  public void upload(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
-      BindingResult result) throws IOException {
+  
+  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
+  @ResponseBody
+  @RequestMapping(method = RequestMethod.POST)
+  public ExtDirectResponse updateInfo2(Locale locale, HttpServletRequest request, FormInfo formInfo, BindingResult result) {
     ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
     builder.addErrors(locale, result);
-    builder.buildAndWriteUploadResponse(response);
-  }
+    return builder.build();
+  }  
 
-  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2")
-  public void invalidMethod1(Locale locale, HttpServletRequest request, HttpServletResponse response,
-      FormInfo formInfo, BindingResult result) {
+  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
+  public void invalidMethod(Locale locale, HttpServletRequest request, HttpServletResponse response,
+    FormInfo formInfo, BindingResult result) {
     // dummy test method
   }
 
-  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2")
-  @RequestMapping(value = "/upload", method = RequestMethod.GET)
-  public void invalidMethod2(Locale locale, HttpServletRequest request, HttpServletResponse response,
-      FormInfo formInfo, BindingResult result) {
-    // dummy test method
-  }
 }

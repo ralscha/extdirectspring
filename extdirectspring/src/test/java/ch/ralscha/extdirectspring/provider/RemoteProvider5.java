@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ch.ralscha.extdirectspring.mock;
+package ch.ralscha.extdirectspring.provider;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

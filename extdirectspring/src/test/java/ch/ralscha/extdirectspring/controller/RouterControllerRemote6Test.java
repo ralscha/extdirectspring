@@ -40,7 +40,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
-import ch.ralscha.extdirectspring.mock.Row;
+import ch.ralscha.extdirectspring.provider.Row;
 
 /**
  * Tests for {@link RouterController}.
