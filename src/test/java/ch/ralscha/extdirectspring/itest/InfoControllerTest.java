@@ -18,64 +18,65 @@ package ch.ralscha.extdirectspring.itest;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
-public class SimpleServiceTest {
+
+public class InfoControllerTest {
 
   @Test
-  public void testSimpleApi() throws IllegalStateException, IOException {
-
-    HttpClient client = new DefaultHttpClient();
-    HttpGet get = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_simple");
-    HttpResponse response = client.execute(get);
-    HttpEntity entity = response.getEntity();
-    assertNotNull(entity);
-    String responseString = IOUtils.toString(entity.getContent());    
-    entity.consumeContent();
-    
-    assertTrue(responseString.contains("\"name\" : \"toUpperCase\","));
-  }
-  
   @SuppressWarnings("unchecked")
-  @Test
-  public void testSimpleCall() throws IllegalStateException, IOException {
+  public void testPost() throws ClientProtocolException, IOException {
     HttpClient client = new DefaultHttpClient();
     HttpPost post = new HttpPost("http://localhost:9998/controller/router");
     
-    StringEntity postEntity = new StringEntity("{\"action\":\"simpleService\",\"method\":\"toUpperCase\",\"data\":[\"ralph\"],\"type\":\"rpc\",\"tid\":1}", 
-        "UTF-8");
+    List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+    formparams.add(new BasicNameValuePair("extTID", "1"));
+    formparams.add(new BasicNameValuePair("extAction", "infoController"));
+    formparams.add(new BasicNameValuePair("extMethod", "updateInfo"));
+    formparams.add(new BasicNameValuePair("extType", "rpc"));
+    formparams.add(new BasicNameValuePair("extUpload", "false"));
+    formparams.add(new BasicNameValuePair("userName", "RALPH"));
+    UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
+
     post.setEntity(postEntity);
     
     HttpResponse response = client.execute(post);
     HttpEntity entity = response.getEntity();
     assertNotNull(entity);
     String responseString = IOUtils.toString(entity.getContent());
-    
-    assertNotNull(responseString);
-    assertTrue(responseString.startsWith("[") && responseString.endsWith("]"));
+
     ObjectMapper mapper = new ObjectMapper();
-    Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length()-1), Map.class);
+    Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
     assertEquals(5, rootAsMap.size());
-    assertEquals("RALPH", rootAsMap.get("result"));
-    assertEquals("toUpperCase", rootAsMap.get("method"));
+    assertEquals("updateInfo", rootAsMap.get("method"));
     assertEquals("rpc", rootAsMap.get("type"));
-    assertEquals("simpleService", rootAsMap.get("action"));
+    assertEquals("infoController", rootAsMap.get("action"));
     assertEquals(1, rootAsMap.get("tid"));
     
-  }
 
+    Map<String, Object> result = (Map<String, Object>)rootAsMap.get("result");
+    assertEquals(2, result.size());
+    assertEquals("ralph", result.get("userNameLowerCase"));
+    assertEquals(true, result.get("success"));
+    
+
+  }
+  
 }
