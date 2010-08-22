@@ -17,6 +17,7 @@
 package ch.ralscha.extdirectspring.provider;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -86,7 +87,7 @@ public class RemoteProvider1 {
   }
 
   @ExtDirectMethod(group = "group3")
-  public long method9(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {
+  public long method9(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale, Principal principal) {
     Assert.assertNotNull(response);
     Assert.assertNotNull(request);
     Assert.assertNotNull(session);

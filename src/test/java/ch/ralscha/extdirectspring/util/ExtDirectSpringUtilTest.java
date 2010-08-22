@@ -71,6 +71,24 @@ public class ExtDirectSpringUtilTest {
     assertTrue(ExtDirectSpringUtil.equal(null, null));
   }
 
+  @Test(expected=IllegalArgumentException.class)
+  public void testFindMethodInfoWithEmptyContext() {
+    ExtDirectSpringUtil.findMethodInfo(null, "springManagedBean", "methodB");
+  }
+  
+  @Test(expected=IllegalArgumentException.class)
+  public void testFindMethodInfoWithEmptyBeanName() {
+    ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
+    ExtDirectSpringUtil.findMethodInfo(context, null, "methodB");
+  }  
+
+  @Test(expected=IllegalArgumentException.class)
+  public void testFindMethodInfoWithEmptyMethodName() {
+    ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
+    ExtDirectSpringUtil.findMethodInfo(context, "springManagedBean", null);
+  }  
+
+  
   @Test
   public void testFindMethodWithAnnotation() {
     ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");

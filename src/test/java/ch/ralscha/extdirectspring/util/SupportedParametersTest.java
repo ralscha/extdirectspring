@@ -42,7 +42,7 @@ public class SupportedParametersTest {
     assertFalse(SupportedParameterTypes.isSupported(null));
     assertTrue(SupportedParameterTypes.isSupported(MockHttpServletResponse.class));
     assertTrue(SupportedParameterTypes.isSupported(MockHttpServletRequest.class));
-    assertTrue(SupportedParameterTypes.isSupported(MockHttpSession.class));
+    assertTrue(SupportedParameterTypes.isSupported(MockHttpSession.class));    
     assertTrue(SupportedParameterTypes.isSupported(Locale.class));
     assertTrue(SupportedParameterTypes.isSupported(Principal.class));
   }

@@ -16,10 +16,14 @@
 
 package ch.ralscha.extdirectspring.util;
 
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+
 import java.lang.reflect.Method;
+
 import org.junit.Test;
 
 /**
@@ -49,7 +53,22 @@ public class MethodInfoCacheTest {
     assertNull(MethodInfoCache.INSTANCE.get("methodCacheTest", "testPu"));
     assertNull(MethodInfoCache.INSTANCE.get("methodCacheTes", "testPut"));
     assertEquals(thisMethod, MethodInfoCache.INSTANCE.get("methodCacheTest", "testPut").getMethod());
-
+  }
+  
+  @Test
+  public void testKey() {
+    MethodInfoCache.Key key1 = new MethodInfoCache.Key("bean", "method");
+    MethodInfoCache.Key key2 = new MethodInfoCache.Key("bean", "otherMethod");
+    MethodInfoCache.Key key3 = new MethodInfoCache.Key("otherBean", "otherMethod");
+    
+    assertTrue(key1.equals(key1));
+    assertTrue(key2.equals(key2));
+    assertTrue(key3.equals(key3));
+    
+    assertFalse(key1.equals(key2));
+    assertFalse(key1.equals(key3));
+    
+    assertFalse(key1.equals("test"));
   }
 
 }
