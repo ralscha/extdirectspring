@@ -92,7 +92,7 @@ public class Profile {
     }
 
     ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-    builder.addErrors(locale, result);
+    builder.addErrors(result);
     return builder.build();
 
   }
