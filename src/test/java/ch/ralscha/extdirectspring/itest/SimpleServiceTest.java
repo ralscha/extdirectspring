@@ -46,7 +46,7 @@ public class SimpleServiceTest {
     assertNotNull(entity);
     String responseString = IOUtils.toString(entity.getContent());    
     entity.consumeContent();
-    
+    System.out.println(responseString);
     assertTrue(responseString.contains("\"name\" : \"toUpperCase\","));
   }
   
