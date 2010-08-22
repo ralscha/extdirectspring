@@ -47,7 +47,7 @@ public class SimpleServiceTest {
     String responseString = IOUtils.toString(entity.getContent());    
     entity.consumeContent();
     System.out.println(responseString);
-    assertTrue(responseString.contains("\"name\" : \"toUpperCase\","));
+    assertTrue(responseString.contains("\"name\" : \"toUpperCase\""));
   }
   
   @SuppressWarnings("unchecked")
