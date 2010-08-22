@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -34,6 +33,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
@@ -60,7 +60,7 @@ public class InfoControllerTest {
     HttpResponse response = client.execute(post);
     HttpEntity entity = response.getEntity();
     assertNotNull(entity);
-    String responseString = IOUtils.toString(entity.getContent());
+    String responseString = EntityUtils.toString(entity);
 
     ObjectMapper mapper = new ObjectMapper();
     Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
