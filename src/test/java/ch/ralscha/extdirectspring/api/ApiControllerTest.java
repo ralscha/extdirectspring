@@ -16,15 +16,14 @@
 
 package ch.ralscha.extdirectspring.api;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
 import javax.inject.Inject;
+
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
