@@ -16,7 +16,7 @@
 
 package ch.ralscha.extdirectspring.filter;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.List;
