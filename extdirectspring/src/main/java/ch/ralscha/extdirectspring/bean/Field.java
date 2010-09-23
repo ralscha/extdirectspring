@@ -16,51 +16,35 @@
 
 package ch.ralscha.extdirectspring.bean;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class Field {
-  private final String name;
-  private DataType type;
-  private Boolean allowBlank;
-  private String dateFormat;
-  private String header;
+  private Map<String, Object> fieldData;
 
-  public Field(String name) {
-    this.name = name;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public DataType getType() {
-    return type;
+  public Field(final String name) {
+    fieldData = new LinkedHashMap<String, Object>();
+    fieldData.put("name", name);
   }
 
   public void setType(DataType type) {
-    this.type = type;
-  }
-
-  public Boolean getAllowBlank() {
-    return allowBlank;
+    fieldData.put("type", type.getValue());
   }
 
   public void setAllowBlank(Boolean allowBlank) {
-    this.allowBlank = allowBlank;
-  }
-
-  public String getDateFormat() {
-    return dateFormat;
+    fieldData.put("allowBlank", allowBlank);
   }
 
   public void setDateFormat(String dateFormat) {
-    this.dateFormat = dateFormat;
+    fieldData.put("dateFormat", dateFormat);
   }
 
-  public String getHeader() {
-    return header;
+  public void addCustomProperty(String key, Object value) {
+    fieldData.put(key, value);
   }
 
-  public void setHeader(String header) {
-    this.header = header;
+  public Map<String,Object> getFieldData() {
+    return Collections.unmodifiableMap(fieldData);
   }
-
 }

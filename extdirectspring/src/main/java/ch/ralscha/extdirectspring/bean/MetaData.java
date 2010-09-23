@@ -22,6 +22,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+
+@JsonSerialize(include=Inclusion.NON_NULL)
 public class MetaData {
 
   private Map<String,Object> metaData;
@@ -60,13 +64,13 @@ public class MetaData {
   @SuppressWarnings("unchecked")
   public void addField(Field field) {
     
-    List<Field> fields = (List<Field>)metaData.get("fields");
+    List<Map<String,Object>> fields = (List<Map<String,Object>>)metaData.get("fields");
     if (fields == null) {
-      fields = new ArrayList<Field>();
+      fields = new ArrayList<Map<String,Object>>();
       metaData.put("fields", fields);
     }
     
-    fields.add(field);
+    fields.add(field.getFieldData());
   }
   
   public void addCustomProperty(String key, Object value) {
