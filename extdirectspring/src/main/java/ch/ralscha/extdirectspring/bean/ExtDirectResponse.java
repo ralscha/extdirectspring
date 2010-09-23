@@ -18,7 +18,8 @@ package ch.ralscha.extdirectspring.bean;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.codehaus.jackson.annotate.JsonWriteNullProperties;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 /**
  * Class representing the response of a Ext.Direct call
@@ -26,6 +27,7 @@ import org.codehaus.jackson.annotate.JsonWriteNullProperties;
  * @author mansari
  * @author Ralph Schaer
  */
+@JsonSerialize(include = Inclusion.NON_NULL)
 public class ExtDirectResponse {
 
   private String type;
@@ -90,7 +92,6 @@ public class ExtDirectResponse {
     this.type = type;
   }
 
-  @JsonWriteNullProperties(false)
   public String getMessage() {
     return message;
   }
@@ -99,7 +100,6 @@ public class ExtDirectResponse {
     this.message = message;
   }
 
-  @JsonWriteNullProperties(false)
   public String getWhere() {
     return where;
   }
