@@ -16,13 +16,15 @@
 
 package ch.ralscha.extdirectspring.bean;
 
-import org.codehaus.jackson.annotate.JsonWriteNullProperties;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 /**
  * Class representing the response of a poll request
  * 
  * @author Ralph Schaer
  */
+@JsonSerialize(include=Inclusion.NON_NULL)
 public class ExtDirectPollResponse {
 
   private String type;
@@ -59,7 +61,6 @@ public class ExtDirectPollResponse {
     this.data = data;
   }
 
-  @JsonWriteNullProperties(false)
   public String getMessage() {
     return message;
   }
@@ -68,7 +69,6 @@ public class ExtDirectPollResponse {
     this.message = message;
   }
 
-  @JsonWriteNullProperties(false)
   public String getWhere() {
     return where;
   }
