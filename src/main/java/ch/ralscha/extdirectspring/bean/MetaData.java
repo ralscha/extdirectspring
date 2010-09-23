@@ -16,26 +16,18 @@
 
 package ch.ralscha.extdirectspring.bean;
 
-import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import org.springframework.beans.BeanUtils;
 
 public class MetaData {
 
   private Map<String,Object> metaData;
   
   public MetaData() {
-    metaData = new LinkedHashMap<String,Object>();
-    
-    
+    metaData = new LinkedHashMap<String,Object>();        
     metaData.put("root", "records");
     metaData.put("totalProperty", "total");
     metaData.put("successProperty", "success");
@@ -56,32 +48,21 @@ public class MetaData {
     sortInfo.put("direction", direction.name());
     metaData.put("sortInfo", sortInfo);
   }  
-  
-  public void addFields(Class<?> clazz, String... excludeProperties) {
-    Set<String> exclude = new HashSet<String>();
     
-    if (excludeProperties != null) {
-      exclude.addAll(Arrays.asList(excludeProperties));
-    }
-    
-    PropertyDescriptor[] descriptors = BeanUtils.getPropertyDescriptors(clazz);
-    if (descriptors != null) {
-      for (PropertyDescriptor descriptor : descriptors) {
-        if (!exclude.contains(descriptor.getName())) {
-          addField(descriptor.getName());
-        }
+  public void addFields(List<Field> fields) {
+    if (fields != null) {
+      for (Field field : fields) {
+        addField(field);
       }
     }
   }
   
   @SuppressWarnings("unchecked")
-  public void addField(String name) {
-    Map<String,Object> field = new LinkedHashMap<String,Object>();
-    field.put("name", name); 
+  public void addField(Field field) {
     
-    List<Map<String,Object>> fields = (List<Map<String,Object>>)metaData.get("fields");
+    List<Field> fields = (List<Field>)metaData.get("fields");
     if (fields == null) {
-      fields = new ArrayList<Map<String,Object>>();
+      fields = new ArrayList<Field>();
       metaData.put("fields", fields);
     }
     
