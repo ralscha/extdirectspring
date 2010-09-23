@@ -78,12 +78,12 @@ public class ExtDirectStoreReadRequest {
 
   @JsonIgnore
   public boolean isAscendingSort() {
-    return ("ASC".equals(getDir()));
+    return (SortDirection.ASC.name().equals(getDir()));
   }
 
   @JsonIgnore
   public boolean isDescendingSort() {
-    return ("DESC".equals(getDir()));
+    return (SortDirection.DESC.name().equals(getDir()));
   }
 
   public String getSort() {
@@ -112,12 +112,12 @@ public class ExtDirectStoreReadRequest {
 
   @JsonIgnore
   public boolean isAscendingGroupSort() {
-    return ("ASC".equals(getGroupDir()));
+    return (SortDirection.ASC.name().equals(getGroupDir()));
   }
 
   @JsonIgnore
-  public boolean isDescendingGroupSort() {
-    return ("DESC".equals(getGroupDir()));
+  public boolean isDescendingGroupSort() {    
+    return (SortDirection.DESC.name().equals(getGroupDir()));    
   }
 
   public List<Filter> getFilters() {
