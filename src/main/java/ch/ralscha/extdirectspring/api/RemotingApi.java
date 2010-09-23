@@ -20,14 +20,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonWriteNullProperties;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.springframework.util.StringUtils;
 
 /**
  * @author Ralph Schaer
  */
-@JsonWriteNullProperties(false)
+@JsonSerialize(include=Inclusion.NON_NULL)
 class RemotingApi {
 
   private final String url;
