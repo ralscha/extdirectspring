@@ -17,7 +17,11 @@
 package ch.ralscha.extdirectspring.bean;
 
 import java.util.Collection;
-import org.codehaus.jackson.annotate.JsonWriteNullProperties;
+import java.util.Map;
+
+import org.codehaus.jackson.annotate.JsonPropertyOrder;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 /**
  * Class representing the response of a DirectStore request
@@ -26,12 +30,14 @@ import org.codehaus.jackson.annotate.JsonWriteNullProperties;
  * @param <T>
  *          Type of the entry inside the collection
  */
-@JsonWriteNullProperties(false)
+@JsonSerialize(include=Inclusion.NON_NULL)
+@JsonPropertyOrder(value={"metaData","success","total", "records"})
 public class ExtDirectStoreResponse<T> {
 
   private Integer total;
   private Collection<T> records;
   private Boolean success;
+  private MetaData metaData;
 
   public ExtDirectStoreResponse() {
     // default constructor
@@ -73,6 +79,14 @@ public class ExtDirectStoreResponse<T> {
 
   public void setSuccess(final Boolean success) {
     this.success = success;
+  }
+
+  public Map<String,Object> getMetaData() {
+    return metaData.getMetaData();
+  }
+  
+  public void setMetaData(MetaData metaData) {
+    this.metaData = metaData;
   }
 
   @Override
