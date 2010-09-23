@@ -103,7 +103,7 @@
     <dependency>
       <groupId>ch.ralscha</groupId>
       <artifactId>extdirectspring</artifactId>
-      <version>1.0.2</version>
+      <version>1.0.3-SNAPSHOT</version>
     </dependency>
 
     <dependency>
@@ -167,7 +167,7 @@
       <name>JBoss Public Maven Repository Group</name>
       <url>https://repository.jboss.org/nexus/content/groups/public</url>
     </repository>
-    <!-- 
+
     <repository>
       <id>sonatype</id>
       <name>sonatype</name>
@@ -176,7 +176,7 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
-     -->
+
   </repositories>
 
   <build>

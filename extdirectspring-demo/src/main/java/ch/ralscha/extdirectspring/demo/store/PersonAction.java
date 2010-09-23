@@ -19,14 +19,23 @@ package ch.ralscha.extdirectspring.demo.store;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.bean.DataType;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
+import ch.ralscha.extdirectspring.bean.Field;
+import ch.ralscha.extdirectspring.bean.MetaData;
+import ch.ralscha.extdirectspring.bean.SortDirection;
+
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
@@ -42,6 +51,12 @@ public class PersonAction {
 
   public PersonAction() {
     orderingMap = Maps.newHashMap();
+    orderingMap.put("fullName", new Ordering<Person>() {
+
+      public int compare(Person left, Person right) {
+        return left.getFullName().compareTo(right.getFullName());
+      }
+    });    
     orderingMap.put("lastName", new Ordering<Person>() {
 
       public int compare(Person left, Person right) {
@@ -189,5 +204,105 @@ public class PersonAction {
 
     return states;
   }
+
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "metadata")
+  public ExtDirectStoreResponse<PersonFullName> loadPersonFullName(ExtDirectStoreReadRequest request) {
+
+    List<Person> persons = dataBean.findPersons(null);
+    int totalSize = persons.size();
+    
+    Ordering<Person> ordering = orderingMap.get("fullName");
+    persons = ordering.reverse().sortedCopy(persons);
+    
+    if (request.getStart() != null && request.getLimit() != null) {
+      persons = persons.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
+    } else {
+      persons = persons.subList(0, 100);
+    }
+
+    List<PersonFullName> personFullNameList = Lists.transform(persons, new Function<Person, PersonFullName>() {
+      @Override
+      public PersonFullName apply(Person person) {
+        return new PersonFullName(person);
+      }
+    });
+
+    ExtDirectStoreResponse<PersonFullName> response = new ExtDirectStoreResponse<PersonFullName>(totalSize,
+        personFullNameList);
+    
+    //Send metadata only the first time
+    if (request.getStart() == null) {
+      MetaData metaData = new MetaData();
+    
+      metaData.setPagingParameter(0, 100);
+      metaData.setSortInfo("fullName", SortDirection.DESC);
+    
+      Field field = new Field("fullName");
+      field.setType(DataType.STRING);
+      field.addCustomProperty("header", "Full Name");
+      field.addCustomProperty("width", 60);
+      field.addCustomProperty("sortable", false);
+      field.addCustomProperty("resizable", true);
+      field.addCustomProperty("hideable", false);
+      metaData.addField(field);
+  
+      response.setMetaData(metaData);
+    }
+    return response;
+  }
+  
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "metadata")
+  public ExtDirectStoreResponse<PersonFullNameCity> loadPersonFullNameCity(ExtDirectStoreReadRequest request) {
+
+    List<Person> persons = dataBean.findPersons(null);
+    int totalSize = persons.size();
+    
+    Ordering<Person> ordering = orderingMap.get("city");
+    persons = ordering.sortedCopy(persons);
+    
+    if (request.getStart() != null && request.getLimit() != null) {
+      persons = persons.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
+    } else {
+      persons = persons.subList(0, 50);
+    }
+
+    List<PersonFullNameCity> personFullNameCityList = Lists.transform(persons, new Function<Person, PersonFullNameCity>() {
+      @Override
+      public PersonFullNameCity apply(Person person) {
+        return new PersonFullNameCity(person);
+      }
+    });
+
+    ExtDirectStoreResponse<PersonFullNameCity> response = new ExtDirectStoreResponse<PersonFullNameCity>(totalSize, personFullNameCityList);
+    
+    //Send metadata only the first time
+    if (request.getStart() == null) {
+      MetaData metaData = new MetaData();
+    
+      metaData.setPagingParameter(0, 50);
+      metaData.setSortInfo("fullName", SortDirection.DESC);
+    
+      Field field = new Field("fullName");
+      field.setType(DataType.STRING);
+      field.addCustomProperty("header", "Full Name");
+      field.addCustomProperty("width", 120);
+      field.addCustomProperty("sortable", false);
+      field.addCustomProperty("resizable", true);
+      field.addCustomProperty("hideable", false);
+      metaData.addField(field);
+      
+      field = new Field("city");
+      field.setType(DataType.STRING);
+      field.addCustomProperty("header", "City");
+      field.addCustomProperty("width", 60);
+      field.addCustomProperty("sortable", false);
+      field.addCustomProperty("resizable", true);
+      field.addCustomProperty("hideable", true);
+      metaData.addField(field);      
+  
+      response.setMetaData(metaData);
+    }
+    return response;
+  }  
 
 }
