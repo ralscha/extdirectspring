@@ -82,7 +82,10 @@ public class ExtDirectStoreResponse<T> {
   }
 
   public Map<String,Object> getMetaData() {
-    return metaData.getMetaData();
+    if (metaData != null) {
+      return metaData.getMetaData();
+    }
+    return null;
   }
   
   public void setMetaData(MetaData metaData) {
