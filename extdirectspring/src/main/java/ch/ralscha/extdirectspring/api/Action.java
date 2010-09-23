@@ -16,13 +16,15 @@
 
 package ch.ralscha.extdirectspring.api;
 
-import org.codehaus.jackson.annotate.JsonWriteNullProperties;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 /**
  * 
  * 
  * @author Ralph Schaer
  */
+@JsonSerialize(include=Inclusion.NON_NULL)
 class Action {
 
   private final String name;
@@ -35,7 +37,6 @@ class Action {
     this.formHandler = formHandler;
   }
 
-  @JsonWriteNullProperties(false)
   public Boolean isFormHandler() {
     return formHandler;
   }
