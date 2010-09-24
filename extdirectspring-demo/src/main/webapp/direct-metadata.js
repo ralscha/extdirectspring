@@ -11,7 +11,7 @@ Ext.onReady(function() {
   var directStore = new Ext.data.DirectStore( {
     id: 'directStore',
     paramsAsHash: true,    
-    autoLoad: false,
+    autoLoad: true,
     fields: [],
     directFn: personAction.loadPersonFullName  
   });
@@ -37,7 +37,18 @@ Ext.onReady(function() {
     valueField: 'list',
     listeners: {
       select: function(combo, record, index) {
-        console.log(index);
+        if (index === 0) {
+          directStore.remoteSort = false;
+          directStore.proxy.setApi(Ext.data.Api.actions.read, personAction.loadPersonFullName);
+        } else if (index === 1) {
+          directStore.remoteSort = false;
+          directStore.proxy.setApi(Ext.data.Api.actions.read, personAction.loadPersonFullNameCity);
+        } else if (index === 2) {
+          directStore.remoteSort = true;
+          directStore.proxy.setApi(Ext.data.Api.actions.read, personAction.loadPersonEverything);
+        }
+        directStore.sortInfo = null;
+        directStore.load();
       }
     }
   };
@@ -79,7 +90,6 @@ Ext.onReady(function() {
     }
   });  
   
-  directStore.load();
-  Ext.getCmp('listcombo').select(0);
+  Ext.getCmp('listcombo').setValue('Persons with FullName');
   
 });

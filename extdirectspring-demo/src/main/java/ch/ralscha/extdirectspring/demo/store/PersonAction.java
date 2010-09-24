@@ -280,7 +280,7 @@ public class PersonAction {
       MetaData metaData = new MetaData();
     
       metaData.setPagingParameter(0, 50);
-      metaData.setSortInfo("fullName", SortDirection.DESC);
+      metaData.setSortInfo("city", SortDirection.ASC);
     
       Field field = new Field("fullName");
       field.setType(DataType.STRING);
@@ -305,4 +305,95 @@ public class PersonAction {
     return response;
   }  
 
+  
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "metadata")
+  public ExtDirectStoreResponse<Person> loadPersonEverything(ExtDirectStoreReadRequest request) {
+
+    List<Person> persons = dataBean.findPersons(request.getQuery());
+    int totalSize = persons.size();
+
+    Ordering<Person> ordering = null;
+
+    if (StringUtils.hasText(request.getSort())) {
+      ordering = orderingMap.get(request.getSort());
+      if (ordering != null) {
+        if (request.isDescendingSort()) {
+          ordering = ordering.reverse();
+        }
+      }
+    } else {
+      ordering = orderingMap.get("lastName");
+    }
+
+    if (ordering != null) {
+      persons = ordering.sortedCopy(persons);
+    } 
+    
+    if (request.getStart() != null && request.getLimit() != null) {
+      persons = persons.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
+    } else {
+      persons = persons.subList(0, 60);
+    }
+
+    ExtDirectStoreResponse<Person> response = new ExtDirectStoreResponse<Person>(totalSize, persons);
+    
+    //Send metadata only the first time
+    if (request.getStart() == null && request.getSort() == null) {
+      MetaData metaData = new MetaData();
+
+      metaData.setPagingParameter(0, 60);
+      metaData.setSortInfo("lastName", SortDirection.ASC);      
+    
+      Field field = new Field("lastName");
+      field.setType(DataType.STRING);
+      field.addCustomProperty("header", "Last Name");
+      field.addCustomProperty("width", 60);
+      field.addCustomProperty("sortable", true);
+      field.addCustomProperty("resizable", true);
+      field.addCustomProperty("hideable", false);
+      metaData.addField(field);
+      
+      field = new Field("firstName");
+      field.setType(DataType.STRING);
+      field.addCustomProperty("header", "First Name");
+      field.addCustomProperty("width", 60);
+      field.addCustomProperty("sortable", true);
+      field.addCustomProperty("resizable", true);
+      field.addCustomProperty("hideable", false);
+      metaData.addField(field);      
+      
+      field = new Field("street");
+      field.setType(DataType.STRING);
+      field.addCustomProperty("header", "Street");
+      field.addCustomProperty("width", 60);
+      field.addCustomProperty("sortable", true);
+      field.addCustomProperty("resizable", true);
+      field.addCustomProperty("hideable", true);
+      metaData.addField(field);   
+                  
+      field = new Field("city");
+      field.setType(DataType.STRING);
+      field.addCustomProperty("header", "City");
+      field.addCustomProperty("width", 60);
+      field.addCustomProperty("sortable", false);
+      field.addCustomProperty("resizable", true);
+      field.addCustomProperty("hideable", true);
+      metaData.addField(field);    
+      
+      field = new Field("country");
+      field.setType(DataType.STRING);
+      field.addCustomProperty("header", "Country");
+      field.addCustomProperty("width", 60);
+      field.addCustomProperty("sortable", false);
+      field.addCustomProperty("resizable", true);
+      field.addCustomProperty("hideable", true);
+      metaData.addField(field);        
+  
+      response.setMetaData(metaData);
+    }
+    
+    return response;
+    
+  }
+  
 }
