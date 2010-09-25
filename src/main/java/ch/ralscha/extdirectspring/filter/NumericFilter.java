@@ -19,9 +19,9 @@ package ch.ralscha.extdirectspring.filter;
 public class NumericFilter extends Filter {
 
   private Number value;
-  private ComparisonEnum comparison;
+  private Comparison comparison;
 
-  public NumericFilter(String field, Number value, ComparisonEnum comparison) {
+  public NumericFilter(String field, Number value, Comparison comparison) {
     super(field);
     this.value = value;
     this.comparison = comparison;
@@ -31,7 +31,7 @@ public class NumericFilter extends Filter {
     return value;
   }
 
-  public ComparisonEnum getComparison() {
+  public Comparison getComparison() {
     return comparison;
   }
 

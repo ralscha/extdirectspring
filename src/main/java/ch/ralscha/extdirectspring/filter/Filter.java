@@ -37,14 +37,14 @@ public class Filter {
     if (type.equals("numeric")) {
       String comparison = (String)jsonData.get("comparison");
       Number value = (Number)jsonData.get("value");
-      return new NumericFilter(field, value, ComparisonEnum.find(comparison));
+      return new NumericFilter(field, value, Comparison.fromString(comparison));
     } else if (type.equals("string")) {
       String value = (String)jsonData.get("value");
       return new StringFilter(field, value);
     } else if (type.equals("date")) {
       String comparison = (String)jsonData.get("comparison");
       String value = (String)jsonData.get("value");
-      return new DateFilter(field, value, ComparisonEnum.find(comparison));
+      return new DateFilter(field, value, Comparison.fromString(comparison));
     } else if (type.equals("list")) {
       String value = (String)jsonData.get("value");
       String[] values = value.split(",");
