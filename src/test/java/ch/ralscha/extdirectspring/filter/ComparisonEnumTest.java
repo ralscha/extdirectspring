@@ -18,16 +18,22 @@ package ch.ralscha.extdirectspring.filter;
 
 import static org.junit.Assert.*;
 
+import java.util.NoSuchElementException;
+
 import org.junit.Test;
 
 
 public class ComparisonEnumTest {
   
   @Test
-  public void testFind() {    
-    assertSame(ComparisonEnum.LESS_THAN, ComparisonEnum.find("lt"));
-    assertSame(ComparisonEnum.GREATER_THAN, ComparisonEnum.find("gt"));
-    assertSame(ComparisonEnum.EQUAL, ComparisonEnum.find("eq"));
-    assertNull(ComparisonEnum.find("xy"));
+  public void testFromString() {    
+    assertSame(Comparison.LESS_THAN, Comparison.fromString("lt"));
+    assertSame(Comparison.GREATER_THAN, Comparison.fromString("gt"));
+    assertSame(Comparison.EQUAL, Comparison.fromString("eq"));
+  }
+  
+  @Test(expected=NoSuchElementException.class)
+  public void testFromStringException() {
+    Comparison.fromString("xy");
   }
 }

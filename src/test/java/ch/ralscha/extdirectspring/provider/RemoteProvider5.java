@@ -31,7 +31,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.filter.BooleanFilter;
-import ch.ralscha.extdirectspring.filter.ComparisonEnum;
+import ch.ralscha.extdirectspring.filter.Comparison;
 import ch.ralscha.extdirectspring.filter.DateFilter;
 import ch.ralscha.extdirectspring.filter.ListFilter;
 import ch.ralscha.extdirectspring.filter.NumericFilter;
@@ -51,7 +51,7 @@ public class RemoteProvider5 {
         NumericFilter nf = (NumericFilter)request.getFilters().get(0);
         assertEquals(2, nf.getValue());
         assertEquals("id", nf.getField());
-        assertEquals(ComparisonEnum.EQUAL, nf.getComparison());
+        assertEquals(Comparison.EQUAL, nf.getComparison());
 
         return createResult(1);
       case 2:
@@ -62,12 +62,12 @@ public class RemoteProvider5 {
         nf = (NumericFilter)request.getFilters().get(0);
         assertEquals(100, nf.getValue());
         assertEquals("id", nf.getField());
-        assertEquals(ComparisonEnum.LESS_THAN, nf.getComparison());
+        assertEquals(Comparison.LESS_THAN, nf.getComparison());
 
         nf = (NumericFilter)request.getFilters().get(1);
         assertEquals(90, nf.getValue());
         assertEquals("id", nf.getField());
-        assertEquals(ComparisonEnum.GREATER_THAN, nf.getComparison());
+        assertEquals(Comparison.GREATER_THAN, nf.getComparison());
         return createResult(2);
       case 3:
         assertEquals(1, request.getFilters().size());
@@ -130,12 +130,12 @@ public class RemoteProvider5 {
         DateFilter df = (DateFilter)request.getFilters().get(0);
         assertEquals("07/31/2010", df.getValue());
         assertEquals("date", df.getField());
-        assertEquals(ComparisonEnum.LESS_THAN, df.getComparison());
+        assertEquals(Comparison.LESS_THAN, df.getComparison());
 
         df = (DateFilter)request.getFilters().get(1);
         assertEquals("07/01/2010", df.getValue());
         assertEquals("date", df.getField());
-        assertEquals(ComparisonEnum.GREATER_THAN, df.getComparison());
+        assertEquals(Comparison.GREATER_THAN, df.getComparison());
 
         return createResult(8);
 
@@ -146,7 +146,7 @@ public class RemoteProvider5 {
         df = (DateFilter)request.getFilters().get(0);
         assertEquals("07/01/2010", df.getValue());
         assertEquals("date", df.getField());
-        assertEquals(ComparisonEnum.EQUAL, df.getComparison());
+        assertEquals(Comparison.EQUAL, df.getComparison());
 
         return createResult(9);
 
