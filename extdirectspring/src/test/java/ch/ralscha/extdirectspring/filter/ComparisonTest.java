@@ -23,13 +23,17 @@ import java.util.NoSuchElementException;
 import org.junit.Test;
 
 
-public class ComparisonEnumTest {
+public class ComparisonTest {
   
   @Test
   public void testFromString() {    
     assertSame(Comparison.LESS_THAN, Comparison.fromString("lt"));
     assertSame(Comparison.GREATER_THAN, Comparison.fromString("gt"));
     assertSame(Comparison.EQUAL, Comparison.fromString("eq"));
+    
+    assertSame(Comparison.LESS_THAN, Comparison.fromString("LT"));
+    assertSame(Comparison.GREATER_THAN, Comparison.fromString("GT"));
+    assertSame(Comparison.EQUAL, Comparison.fromString("EQ"));    
   }
   
   @Test(expected=NoSuchElementException.class)
