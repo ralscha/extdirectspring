@@ -98,7 +98,7 @@ public class ExtDirectStoreReadRequest {
     return groupBy;
   }
 
-  public void setGroupBy(String groupBy) {
+  public void setGroupBy(final String groupBy) {
     this.groupBy = groupBy;
   }
 
@@ -106,7 +106,7 @@ public class ExtDirectStoreReadRequest {
     return groupDir;
   }
 
-  public void setGroupDir(String groupDir) {
+  public void setGroupDir(final String groupDir) {
     this.groupDir = groupDir;
   }
 
@@ -124,7 +124,7 @@ public class ExtDirectStoreReadRequest {
     return filters;
   }
 
-  public void setFilters(List<Filter> filters) {
+  public void setFilters(final List<Filter> filters) {
     this.filters = filters;
   }
 

@@ -20,9 +20,9 @@ import java.util.Arrays;
 import java.util.Map;
 
 public class Filter {
-  private String field;
+  private final String field;
 
-  public Filter(String field) {
+  public Filter(final String field) {
     this.field = field;
   }
 
@@ -30,7 +30,7 @@ public class Filter {
     return field;
   }
 
-  public static Filter createFilter(Map<String, Object> jsonData) {
+  public static Filter createFilter(final Map<String, Object> jsonData) {
     String field = (String)jsonData.get("field");
     String type = (String)jsonData.get("type");
 

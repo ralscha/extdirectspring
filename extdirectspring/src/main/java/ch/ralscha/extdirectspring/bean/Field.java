@@ -21,26 +21,26 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Field {
-  private Map<String, Object> fieldData;
+  private final Map<String, Object> fieldData;
 
   public Field(final String name) {
     fieldData = new LinkedHashMap<String, Object>();
     fieldData.put("name", name);
   }
 
-  public void setType(DataType type) {
+  public void setType(final DataType type) {
     fieldData.put("type", type.getName());
   }
 
-  public void setAllowBlank(Boolean allowBlank) {
+  public void setAllowBlank(final boolean allowBlank) {
     fieldData.put("allowBlank", allowBlank);
   }
 
-  public void setDateFormat(String dateFormat) {
+  public void setDateFormat(final String dateFormat) {
     fieldData.put("dateFormat", dateFormat);
   }
 
-  public void addCustomProperty(String key, Object value) {
+  public void addCustomProperty(final String key, final Object value) {
     fieldData.put(key, value);
   }
 

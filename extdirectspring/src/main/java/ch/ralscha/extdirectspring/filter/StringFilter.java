@@ -18,9 +18,9 @@ package ch.ralscha.extdirectspring.filter;
 
 public class StringFilter extends Filter {
 
-  private String value;
+  private final String value;
 
-  public StringFilter(String field, String value) {
+  public StringFilter(final String field, final String value) {
     super(field);
     this.value = value;
   }

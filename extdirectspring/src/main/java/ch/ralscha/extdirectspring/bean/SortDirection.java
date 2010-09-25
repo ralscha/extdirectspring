@@ -30,7 +30,7 @@ public enum SortDirection {
     return name;
   }
 
-  public static SortDirection fromString(String name) {
+  public static SortDirection fromString(final String name) {
     if (ASCENDING.getName().equalsIgnoreCase(name)) {
       return ASCENDING;
     } else if (DESCENDING.getName().equalsIgnoreCase(name)) {
@@ -40,30 +40,3 @@ public enum SortDirection {
     return null;
   }
 }
-
-// private final String name;
-//
-// private static final Map<String, BloodType> map =
-// new HashMap<String, BloodType>();
-//
-// static {
-// for (BloodType type : BloodType.values()) {
-// map.put(type.name, type);
-// }
-// }
-//
-// private BloodType(String name) {
-// this.name = name;
-// }
-//
-// public String getName() {
-// return name;
-// }
-//
-// public static BloodType fromString(String name) {
-// if (map.containsKey(name)) {
-// return map.get(name);
-// }
-// throw new NoSuchElementException(name + "not found");
-// }
-// }
