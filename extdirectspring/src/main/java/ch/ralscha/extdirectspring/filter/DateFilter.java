@@ -19,9 +19,9 @@ package ch.ralscha.extdirectspring.filter;
 public class DateFilter extends Filter {
 
   private String value;
-  private ComparisonEnum comparison;
+  private Comparison comparison;
 
-  public DateFilter(String field, String value, ComparisonEnum comparison) {
+  public DateFilter(String field, String value, Comparison comparison) {
     super(field);
     this.value = value;
     this.comparison = comparison;
@@ -31,7 +31,7 @@ public class DateFilter extends Filter {
     return value;
   }
 
-  public ComparisonEnum getComparison() {
+  public Comparison getComparison() {
     return comparison;
   }
 
