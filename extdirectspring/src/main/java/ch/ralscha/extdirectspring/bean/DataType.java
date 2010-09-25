@@ -19,14 +19,14 @@ package ch.ralscha.extdirectspring.bean;
 public enum DataType {
   STRING("string"), INTEGER("int"), FLOAT("float"), BOOLEAN("boolean"), DATE("data");
   
-  private String value;
+  private String name;
   
-  private DataType(String value) {
-    this.value = value;
+  private DataType(String name) {
+    this.name = name;
   }
   
-  public String getValue() {
-    return value;
+  public String getName() {
+    return name;
   }
   
 }

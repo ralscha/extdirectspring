@@ -29,7 +29,7 @@ public class Field {
   }
 
   public void setType(DataType type) {
-    fieldData.put("type", type.getValue());
+    fieldData.put("type", type.getName());
   }
 
   public void setAllowBlank(Boolean allowBlank) {
