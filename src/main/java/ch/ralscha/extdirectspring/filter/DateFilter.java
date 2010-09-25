@@ -18,10 +18,10 @@ package ch.ralscha.extdirectspring.filter;
 
 public class DateFilter extends Filter {
 
-  private String value;
-  private Comparison comparison;
+  private final String value;
+  private final Comparison comparison;
 
-  public DateFilter(String field, String value, Comparison comparison) {
+  public DateFilter(final String field, final String value, final Comparison comparison) {
     super(field);
     this.value = value;
     this.comparison = comparison;

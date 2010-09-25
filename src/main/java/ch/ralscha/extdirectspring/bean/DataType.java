@@ -17,11 +17,11 @@
 package ch.ralscha.extdirectspring.bean;
 
 public enum DataType {
-  STRING("string"), INTEGER("int"), FLOAT("float"), BOOLEAN("boolean"), DATE("data");
+  STRING("string"), INTEGER("int"), FLOAT("float"), BOOLEAN("boolean"), DATE("date");
   
-  private String name;
+  private final String name;
   
-  private DataType(String name) {
+  private DataType(final String name) {
     this.name = name;
   }
   

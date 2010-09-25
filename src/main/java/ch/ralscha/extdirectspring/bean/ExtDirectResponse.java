@@ -45,7 +45,7 @@ public class ExtDirectResponse {
     type = directRequest.getType();
   }
 
-  public ExtDirectResponse(HttpServletRequest request) {
+  public ExtDirectResponse(final HttpServletRequest request) {
     action = request.getParameter("extAction");
     method = request.getParameter("extMethod");
     tid = Integer.parseInt(request.getParameter("extTID"));

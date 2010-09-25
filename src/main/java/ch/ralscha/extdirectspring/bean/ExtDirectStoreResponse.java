@@ -88,7 +88,7 @@ public class ExtDirectStoreResponse<T> {
     return null;
   }
   
-  public void setMetaData(MetaData metaData) {
+  public void setMetaData(final MetaData metaData) {
     this.metaData = metaData;
   }
 
