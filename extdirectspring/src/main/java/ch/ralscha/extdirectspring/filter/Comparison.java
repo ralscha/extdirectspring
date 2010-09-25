@@ -16,26 +16,28 @@
 
 package ch.ralscha.extdirectspring.filter;
 
-public enum ComparisonEnum {
+import java.util.NoSuchElementException;
+
+public enum Comparison {
   LESS_THAN("lt"), GREATER_THAN("gt"), EQUAL("eq");
 
-  private String raw;
+  private final String name;
 
-  private ComparisonEnum(String raw) {
-    this.raw = raw;
+  private Comparison(final String name) {
+    this.name = name;
   }
 
-  public String getRaw() {
-    return raw;
+  public String getName() {
+    return name;
   }
 
-  public static ComparisonEnum find(String raw) {
-    for (ComparisonEnum comparisonEnum : ComparisonEnum.values()) {
-      if (comparisonEnum.getRaw().equals(raw)) {
-        return comparisonEnum;
+  public static Comparison fromString(String name) {
+    for (Comparison comparison : Comparison.values()) {
+      if (comparison.getName().equalsIgnoreCase(name)) {
+        return comparison;
       }
     }
-    return null;
+    throw new NoSuchElementException(name + " not found");
   }
 
 }
