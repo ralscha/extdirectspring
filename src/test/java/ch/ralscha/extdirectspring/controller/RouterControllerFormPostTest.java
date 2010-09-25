@@ -37,7 +37,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SuppressWarnings("all")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
-public class RouterControllerRemote4Test {
+public class RouterControllerFormPostTest {
 
   @Inject
   private RouterController controller;
@@ -45,19 +45,19 @@ public class RouterControllerRemote4Test {
   @Test
   public void testFormPostRouter() {
     try {
-      controller.router("remoteProvider1", "method1");
+      controller.router("remoteProviderSimple", "method1");
       fail("has to throw a IllegalArgumentException");
     } catch (Exception e) {
       assertTrue(e instanceof IllegalArgumentException);
-      assertEquals("Invalid remoting form method: remoteProvider1.method1", e.getMessage());
+      assertEquals("Invalid remoting form method: remoteProviderSimple.method1", e.getMessage());
     }
 
     try {
-      controller.router("RemoteProvider1", "method1");
+      controller.router("RemoteProviderSimple", "method1");
       fail("has to throw a NoSuchBeanDefinitionException");
     } catch (Exception e) {
       assertTrue(e instanceof NoSuchBeanDefinitionException);
-      assertEquals("No bean named 'RemoteProvider1' is defined", e.getMessage());
+      assertEquals("No bean named 'RemoteProviderSimple' is defined", e.getMessage());
     }
 
     String redirect = controller.router("formInfoController", "updateInfo");

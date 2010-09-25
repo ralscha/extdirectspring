@@ -33,7 +33,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 
 @Named
 @SuppressWarnings("unused")
-public class RemoteProvider1 {
+public class RemoteProviderSimple {
 
   @ExtDirectMethod(group = "group1")
   public String method1() {

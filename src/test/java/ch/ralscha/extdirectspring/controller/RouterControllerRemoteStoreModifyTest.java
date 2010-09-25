@@ -48,7 +48,7 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 @SuppressWarnings("all")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
-public class RouterControllerRemote3Test {
+public class RouterControllerRemoteStoreModifyTest {
 
   @Inject
   private RouterController controller;
@@ -66,12 +66,12 @@ public class RouterControllerRemote3Test {
   public void testCreateNoData() {
     Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
     storeRequest.put("records", new ArrayList<Row>());
-    String json = createRequestJson("remoteProvider3", "create1", 1, storeRequest);
+    String json = createRequestJson("remoteProviderStoreModify", "create1", 1, storeRequest);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
     ExtDirectResponse resp = responses.get(0);
-    assertEquals("remoteProvider3", resp.getAction());
+    assertEquals("remoteProviderStoreModify", resp.getAction());
     assertEquals("create1", resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(1, resp.getTid());
@@ -93,12 +93,12 @@ public class RouterControllerRemote3Test {
     rowsToUpdate.add(new Row(23, "John", false, "23.12"));
 
     storeRequest.put("records", rowsToUpdate);
-    String json = createRequestJson("remoteProvider3", "create1", 1, storeRequest);
+    String json = createRequestJson("remoteProviderStoreModify", "create1", 1, storeRequest);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
     ExtDirectResponse resp = responses.get(0);
-    assertEquals("remoteProvider3", resp.getAction());
+    assertEquals("remoteProviderStoreModify", resp.getAction());
     assertEquals("create1", resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(1, resp.getTid());
@@ -123,12 +123,12 @@ public class RouterControllerRemote3Test {
     rowsToUpdate.add(new Row(10, "Ralph", false, "109.55"));
 
     storeRequest.put("records", rowsToUpdate);
-    String json = createRequestJson("remoteProvider3", "create2", 1, storeRequest);
+    String json = createRequestJson("remoteProviderStoreModify", "create2", 1, storeRequest);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
     ExtDirectResponse resp = responses.get(0);
-    assertEquals("remoteProvider3", resp.getAction());
+    assertEquals("remoteProviderStoreModify", resp.getAction());
     assertEquals("create2", resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(1, resp.getTid());
@@ -189,12 +189,12 @@ public class RouterControllerRemote3Test {
   }
 
   private void executeUpdate(Map<String, Object> storeRequest, String method) {
-    String json = createRequestJson("remoteProvider3", method, 1, storeRequest);
+    String json = createRequestJson("remoteProviderStoreModify", method, 1, storeRequest);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
     ExtDirectResponse resp = responses.get(0);
-    assertEquals("remoteProvider3", resp.getAction());
+    assertEquals("remoteProviderStoreModify", resp.getAction());
     assertEquals(method, resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(1, resp.getTid());
@@ -217,12 +217,12 @@ public class RouterControllerRemote3Test {
     rowsToUpdate.add(10);
 
     storeRequest.put("records", rowsToUpdate);
-    String json = createRequestJson("remoteProvider3", "destroy", 1, storeRequest);
+    String json = createRequestJson("remoteProviderStoreModify", "destroy", 1, storeRequest);
     List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
     assertEquals(1, responses.size());
     ExtDirectResponse resp = responses.get(0);
-    assertEquals("remoteProvider3", resp.getAction());
+    assertEquals("remoteProviderStoreModify", resp.getAction());
     assertEquals("destroy", resp.getMethod());
     assertEquals("rpc", resp.getType());
     assertEquals(1, resp.getTid());
