@@ -39,7 +39,7 @@ import org.springframework.core.io.Resource;
 
 import au.com.bytecode.opencsv.CSVReader;
 import ch.ralscha.extdirectspring.filter.BooleanFilter;
-import ch.ralscha.extdirectspring.filter.ComparisonEnum;
+import ch.ralscha.extdirectspring.filter.Comparison;
 import ch.ralscha.extdirectspring.filter.DateFilter;
 import ch.ralscha.extdirectspring.filter.Filter;
 import ch.ralscha.extdirectspring.filter.ListFilter;
@@ -172,10 +172,10 @@ public class CompanyDataBean {
   }
 
   private static class IdPredicate implements Predicate<Company> {
-    private ComparisonEnum comparison;
+    private Comparison comparison;
     private Number value;
 
-    IdPredicate(ComparisonEnum comparison, Number value) {
+    IdPredicate(Comparison comparison, Number value) {
       this.comparison = comparison;
       this.value = value;
     }
@@ -195,10 +195,10 @@ public class CompanyDataBean {
   }
 
   private static class PricePredicate implements Predicate<Company> {
-    private ComparisonEnum comparison;
+    private Comparison comparison;
     private Number value;
 
-    PricePredicate(ComparisonEnum comparison, Number value) {
+    PricePredicate(Comparison comparison, Number value) {
       this.comparison = comparison;
       this.value = value;
     }
@@ -218,10 +218,10 @@ public class CompanyDataBean {
   }
 
   private static class DatePredicate implements Predicate<Company> {
-    private ComparisonEnum comparison;
+    private Comparison comparison;
     private Date value;
 
-    DatePredicate(ComparisonEnum comparison, Date value) {
+    DatePredicate(Comparison comparison, Date value) {
       this.comparison = comparison;
       this.value = value;
     }

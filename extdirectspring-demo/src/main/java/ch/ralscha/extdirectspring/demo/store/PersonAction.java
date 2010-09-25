@@ -235,7 +235,7 @@ public class PersonAction {
       MetaData metaData = new MetaData();
     
       metaData.setPagingParameter(0, 100);
-      metaData.setSortInfo("fullName", SortDirection.DESC);
+      metaData.setSortInfo("fullName", SortDirection.DESCENDING);
     
       Field field = new Field("fullName");
       field.setType(DataType.STRING);
@@ -280,7 +280,7 @@ public class PersonAction {
       MetaData metaData = new MetaData();
     
       metaData.setPagingParameter(0, 50);
-      metaData.setSortInfo("city", SortDirection.ASC);
+      metaData.setSortInfo("city", SortDirection.ASCENDING);
     
       Field field = new Field("fullName");
       field.setType(DataType.STRING);
@@ -342,7 +342,7 @@ public class PersonAction {
       MetaData metaData = new MetaData();
 
       metaData.setPagingParameter(0, 60);
-      metaData.setSortInfo("lastName", SortDirection.ASC);      
+      metaData.setSortInfo("lastName", SortDirection.ASCENDING);      
     
       Field field = new Field("lastName");
       field.setType(DataType.STRING);
