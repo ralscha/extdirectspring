@@ -25,12 +25,12 @@ public class DateFilterTest {
   
   @Test
   public void testDate() {
-    DateFilter filter = new DateFilter("field", "12.12.2010", ComparisonEnum.LESS_THAN);
+    DateFilter filter = new DateFilter("field", "12.12.2010", Comparison.LESS_THAN);
     assertEquals("12.12.2010", filter.getValue());
     assertEquals("field", filter.getField());
     assertEquals("DateFilter [value=12.12.2010, comparison=LESS_THAN, getField()=field]", filter.toString());
     
-    filter = new DateFilter("xy", "01.01.2000", ComparisonEnum.EQUAL);
+    filter = new DateFilter("xy", "01.01.2000", Comparison.EQUAL);
     assertEquals("01.01.2000", filter.getValue());
     assertEquals("xy", filter.getField());
     assertEquals("DateFilter [value=01.01.2000, comparison=EQUAL, getField()=xy]", filter.toString());    

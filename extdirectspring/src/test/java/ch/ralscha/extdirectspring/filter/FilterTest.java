@@ -40,7 +40,7 @@ public class FilterTest {
     NumericFilter numericFilter = (NumericFilter)filter;
     assertEquals("aField", numericFilter.getField());
     assertEquals(12, numericFilter.getValue());
-    assertSame(ComparisonEnum.LESS_THAN, numericFilter.getComparison());    
+    assertSame(Comparison.LESS_THAN, numericFilter.getComparison());    
   }
   
   
@@ -71,7 +71,7 @@ public class FilterTest {
     DateFilter dateFilter = (DateFilter)filter;
     assertEquals("aField", dateFilter.getField());
     assertEquals("12.12.2010", dateFilter.getValue());   
-    assertSame(ComparisonEnum.GREATER_THAN, dateFilter.getComparison()); 
+    assertSame(Comparison.GREATER_THAN, dateFilter.getComparison()); 
   }  
   
   @Test

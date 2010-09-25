@@ -24,12 +24,12 @@ public class NumericFilterTest {
   
   @Test
   public void testNumeric() {
-    NumericFilter filter = new NumericFilter("field", 42, ComparisonEnum.GREATER_THAN);
+    NumericFilter filter = new NumericFilter("field", 42, Comparison.GREATER_THAN);
     assertEquals(42, filter.getValue());
     assertEquals("field", filter.getField());
     assertEquals("NumericFilter [value=42, comparison=GREATER_THAN, getField()=field]", filter.toString());
 
-    filter = new NumericFilter("xy", 23, ComparisonEnum.EQUAL);
+    filter = new NumericFilter("xy", 23, Comparison.EQUAL);
     assertEquals(23, filter.getValue());
     assertEquals("xy", filter.getField());
     assertEquals("NumericFilter [value=23, comparison=EQUAL, getField()=xy]", filter.toString());
