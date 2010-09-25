@@ -49,7 +49,7 @@ public class MetaData {
   public void setSortInfo(String field, SortDirection direction) {
     Map<String,String> sortInfo = new LinkedHashMap<String,String>();
     sortInfo.put("field", field);
-    sortInfo.put("direction", direction.name());
+    sortInfo.put("direction", direction.getName());
     metaData.put("sortInfo", sortInfo);
   }  
     
