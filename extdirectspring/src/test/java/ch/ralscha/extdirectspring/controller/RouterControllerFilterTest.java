@@ -50,7 +50,7 @@ import ch.ralscha.extdirectspring.provider.Row;
 @SuppressWarnings("all")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
-public class RouterControllerRemote6Test {
+public class RouterControllerFilterTest {
 
   @Inject
   private RouterController controller;
@@ -63,7 +63,7 @@ public class RouterControllerRemote6Test {
   @BeforeClass
   public static void readJson() throws IOException {
     jsonList = new ArrayList<String>();
-    InputStream is = RouterControllerRemote6Test.class.getResourceAsStream("/filterjson.txt");
+    InputStream is = RouterControllerFilterTest.class.getResourceAsStream("/filterjson.txt");
     BufferedReader br = new BufferedReader(new InputStreamReader(is));
     String line = null;
     while ((line = br.readLine()) != null) {
@@ -89,8 +89,8 @@ public class RouterControllerRemote6Test {
 
       assertEquals(1, responses.size());
       ExtDirectResponse resp = responses.get(0);
-      assertEquals("remoteProvider5", resp.getAction());
-      assertEquals("method1", resp.getMethod());
+      assertEquals("remoteProviderStoreRead", resp.getAction());
+      assertEquals("methodFilter", resp.getMethod());
       assertEquals("rpc", resp.getType());
       assertEquals(index, resp.getTid());
       assertNull(resp.getMessage());

@@ -16,9 +16,6 @@
 
 package ch.ralscha.extdirectspring.provider;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import javax.inject.Named;
@@ -29,62 +26,59 @@ import org.junit.Assert;
 import org.springframework.web.bind.annotation.RequestParam;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 
 @Named
-@SuppressWarnings("unused")
-public class RemoteProvider4 {
+public class RemoteProviderStoreModify {
 
-  @ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3")
-  public FormInfo method1(@RequestParam(value = "d") double d) {
-    FormInfo info = new FormInfo();
-    info.setBack(d);
-    info.setAdmin(true);
-    info.setAge(31);
-    info.setBirthday(new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime());
-    info.setName("Bob");
-    info.setSalary(new BigDecimal("10000.55"));
-    return info;
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
+  public List<Row> create1(List<Row> rows) {
+    return rows;
   }
 
-  @ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-  public FormInfo method2() {
-    return null;
-  }
-
-  @ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-  public FormInfo method3(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
+  public List<Row> create2(List<Row> rows, HttpServletResponse response, HttpServletRequest request,
+      HttpSession session, Locale locale) {
     Assert.assertNotNull(response);
     Assert.assertNotNull(request);
     Assert.assertNotNull(session);
     Assert.assertEquals(Locale.ENGLISH, locale);
 
-    return null;
+    return rows;
   }
 
-  @ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-  public FormInfo method4(Locale locale, @RequestParam(value = "id") int id) {
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
+  public List<Row> update1(List<Row> rows) {
+    return rows;
+  }
+
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
+  public List<Row> update2(Locale locale, @RequestParam(value = "id") int id, List<Row> rows) {
     Assert.assertEquals(10, id);
     Assert.assertEquals(Locale.ENGLISH, locale);
-    return new FormInfo();
+    return rows;
   }
 
-  @ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3")
-  public ExtDirectFormLoadResult method5(@RequestParam(value = "id", defaultValue = "1") int id,
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
+  public List<Row> update3(List<Row> rows, @RequestParam(value = "id", defaultValue = "1") int id,
       HttpServletRequest servletRequest) {
     Assert.assertEquals(1, id);
     Assert.assertNotNull(servletRequest);
-    return new ExtDirectFormLoadResult();
+    return rows;
   }
 
-  @ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-  public ExtDirectFormLoadResult method6(@RequestParam(value = "id", required = false) Integer id) {
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group2")
+  public List<Row> update4(@RequestParam(value = "id", required = false) Integer id, List<Row> rows) {
     if (id == null) {
       Assert.assertNull(id);
     } else {
       Assert.assertEquals(Integer.valueOf(11), id);
     }
-    return new ExtDirectFormLoadResult("TEST");
+    return rows;
+  }
+
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group3")
+  public List<Integer> destroy(List<Integer> rows) {
+    return rows;
   }
 
 }
