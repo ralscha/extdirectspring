@@ -223,6 +223,7 @@ public class ApiControllerTest {
     remotingApi.addAction("remoteProviderStoreRead", "method6", 1, false);
     remotingApi.addAction("remoteProviderStoreRead", "method7", 1, false);
     remotingApi.addAction("remoteProviderStoreRead", "methodFilter", 1, false);
+    remotingApi.addAction("remoteProviderStoreRead", "methodMetadata", 1, false);
 
     remotingApi.addAction("remoteProviderStoreModify", "create1", 1, false);
     remotingApi.addAction("remoteProviderStoreModify", "create2", 1, false);

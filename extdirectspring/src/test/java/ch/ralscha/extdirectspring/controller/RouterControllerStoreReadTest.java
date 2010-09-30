@@ -16,6 +16,8 @@
 
 package ch.ralscha.extdirectspring.controller;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -351,6 +353,81 @@ public class RouterControllerStoreReadTest {
 
     rows = (List<Row>)resp.getResult();
     assertEquals(100, rows.size());
+  }
+
+  @Test
+  public void testMetadata() {
+
+    String json = createRequestJson("remoteProviderStoreRead", "methodMetadata", 1, new HashMap<String, Object>());
+    List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+
+    assertEquals(1, responses.size());
+    ExtDirectResponse resp = responses.get(0);
+
+    assertEquals("remoteProviderStoreRead", resp.getAction());
+    assertEquals("methodMetadata", resp.getMethod());
+    assertEquals("rpc", resp.getType());
+    assertEquals(1, resp.getTid());
+    assertNull(resp.getMessage());
+    assertNull(resp.getWhere());
+    assertNotNull(resp.getResult());
+
+    ExtDirectStoreResponse<Row> response = (ExtDirectStoreResponse<Row>)resp.getResult();
+    assertEquals(50, response.getRecords().size());
+    assertEquals(100, response.getTotal().intValue());
+    Map<String, Object> metadata = response.getMetaData();
+    assertNotNull(metadata);
+
+    assertThat(metadata, hasEntry("root", (Object)"records"));
+    assertThat(metadata, hasEntry("totalProperty", (Object)"total"));
+    assertThat(metadata, hasEntry("successProperty", (Object)"success"));
+    assertThat(metadata, hasEntry("start", (Object)0));
+    assertThat(metadata, hasEntry("limit", (Object)50));
+
+    Map<String, String> sortInfo = (Map<String, String>)metadata.get("sortInfo");
+    assertEquals(2, sortInfo.size());
+    assertThat(sortInfo, hasEntry("field", "name"));
+    assertThat(sortInfo, hasEntry("direction", "ASC"));
+
+    List<Map<String, Object>> fields = (List<Map<String, Object>>)metadata.get("fields");
+    assertEquals(4, fields.size());
+
+    Map<String, Object> field1 = fields.get(0);
+    assertThat(field1, hasEntry("name", (Object)"id"));
+    assertThat(field1, hasEntry("type", (Object)"int"));
+    assertThat(field1, hasEntry("header", (Object)"ID"));
+    assertThat(field1, hasEntry("width", (Object)20));
+    assertThat(field1, hasEntry("sortable", (Object)true));
+    assertThat(field1, hasEntry("resizable", (Object)true));
+    assertThat(field1, hasEntry("hideable", (Object)false));
+
+    Map<String, Object> field2 = fields.get(1);
+    assertThat(field2, hasEntry("name", (Object)"name"));
+    assertThat(field2, hasEntry("type", (Object)"string"));
+    assertThat(field2, hasEntry("header", (Object)"Name"));
+    assertThat(field2, hasEntry("width", (Object)70));
+    assertThat(field2, hasEntry("sortable", (Object)true));
+    assertThat(field2, hasEntry("resizable", (Object)true));
+    assertThat(field2, hasEntry("hideable", (Object)false));
+    
+    Map<String, Object> field3 = fields.get(2);
+    assertThat(field3, hasEntry("name", (Object)"admin"));
+    assertThat(field3, hasEntry("type", (Object)"boolean"));
+    assertThat(field3, hasEntry("header", (Object)"Administrator"));
+    assertThat(field3, hasEntry("width", (Object)30));
+    assertThat(field3, hasEntry("sortable", (Object)true));
+    assertThat(field3, hasEntry("resizable", (Object)true));
+    assertThat(field3, hasEntry("hideable", (Object)true));    
+
+    Map<String, Object> field4 = fields.get(3);
+    assertThat(field4, hasEntry("name", (Object)"salary"));
+    assertThat(field4, hasEntry("type", (Object)"float"));
+    assertThat(field4, hasEntry("header", (Object)"Salary"));
+    assertThat(field4, hasEntry("width", (Object)50));
+    assertThat(field4, hasEntry("sortable", (Object)false));
+    assertThat(field4, hasEntry("resizable", (Object)true));
+    assertThat(field4, hasEntry("hideable", (Object)true));       
+
   }
 
   private String createRequestJson(String action, String method, int tid, Object... data) {
