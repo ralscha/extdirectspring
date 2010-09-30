@@ -33,8 +33,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestParam;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.bean.DataType;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
+import ch.ralscha.extdirectspring.bean.Field;
+import ch.ralscha.extdirectspring.bean.MetaData;
+import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.filter.BooleanFilter;
 import ch.ralscha.extdirectspring.filter.Comparison;
 import ch.ralscha.extdirectspring.filter.DateFilter;
@@ -155,6 +159,8 @@ public class RemoteProviderStoreRead {
 
       if (request.getStart() != null && request.getLimit() != null) {
         rows = rows.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
+      } else {
+        rows = rows.subList(0, 50);
       }
 
     }
@@ -171,6 +177,61 @@ public class RemoteProviderStoreRead {
     }
     return rows;
   }
+  
+
+  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
+  public ExtDirectStoreResponse<Row> methodMetadata(ExtDirectStoreReadRequest request) {    
+    ExtDirectStoreResponse<Row> response = createExtDirectStoreResponse(request);
+    
+    if (request.getStart() == null && request.getSort() == null) {
+      MetaData metaData = new MetaData();
+
+      metaData.setPagingParameter(0, 50);
+      metaData.setSortInfo("name", SortDirection.ASCENDING);      
+    
+      Field field = new Field("id");
+      field.setType(DataType.INTEGER);
+      field.addCustomProperty("header", "ID");
+      field.addCustomProperty("width", 20);
+      field.addCustomProperty("sortable", true);
+      field.addCustomProperty("resizable", true);
+      field.addCustomProperty("hideable", false);
+      metaData.addField(field);
+      
+      field = new Field("name");
+      field.setType(DataType.STRING);
+      field.addCustomProperty("header", "Name");
+      field.addCustomProperty("width", 70);
+      field.addCustomProperty("sortable", true);
+      field.addCustomProperty("resizable", true);
+      field.addCustomProperty("hideable", false);
+      metaData.addField(field);      
+      
+      field = new Field("admin");
+      field.setType(DataType.BOOLEAN);
+      field.addCustomProperty("header", "Administrator");
+      field.addCustomProperty("width", 30);
+      field.addCustomProperty("sortable", true);
+      field.addCustomProperty("resizable", true);
+      field.addCustomProperty("hideable", true);
+      metaData.addField(field);   
+                  
+      field = new Field("salary");
+      field.setType(DataType.FLOAT);
+      field.addCustomProperty("header", "Salary");
+      field.addCustomProperty("width", 50);
+      field.addCustomProperty("sortable", false);
+      field.addCustomProperty("resizable", true);
+      field.addCustomProperty("hideable", true);
+      metaData.addField(field);    
+  
+      response.setMetaData(metaData);
+    }
+
+    
+    return response;
+  }
+
   
   
   @ExtDirectMethod(ExtDirectMethodType.STORE_READ)
