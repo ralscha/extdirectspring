@@ -68,6 +68,9 @@ public class ApiController implements ApplicationContextAware {
    *          Name of the polling urls object. Defaults to POLLING_URLS
    * @param group
    *          Name of the api group
+   * @param fullRouterUrl 
+   *          If true the router property contains the full request URL with method, server and port. Defaults to false
+   *          returns only the url without method, server and port           
    * @param request
    * @param response
    * @throws IOException
@@ -78,12 +81,24 @@ public class ApiController implements ApplicationContextAware {
       @RequestParam(value = "actionNs", required = false) final String actionNs,
       @RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API") final String remotingApiVar,
       @RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS") final String pollingUrlsVar,
-      @RequestParam(value = "group", required = false) final String group, final HttpServletRequest request,
+      @RequestParam(value = "group", required = false) final String group, 
+      @RequestParam(value = "fullRouterUrl", required = false, defaultValue="false") final boolean fullRouterUrl,
+      final HttpServletRequest request,
       final HttpServletResponse response) throws IOException {
 
     response.setContentType("application/x-javascript");
-
-    String requestUrlString = request.getRequestURL().toString();
+    
+    String requestUrlString;
+    
+    if (fullRouterUrl) {
+      requestUrlString = request.getRequestURL().toString();
+    } else {
+      requestUrlString = request.getRequestURI();
+      if (requestUrlString.startsWith("/")) {
+        requestUrlString = requestUrlString.substring(1);
+      }
+    }
+    
     boolean debug = requestUrlString.contains("api-debug.js");
 
     ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group, debug);
