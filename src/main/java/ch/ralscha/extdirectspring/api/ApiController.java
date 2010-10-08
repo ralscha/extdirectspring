@@ -30,6 +30,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -93,9 +94,13 @@ public class ApiController implements ApplicationContextAware {
     if (fullRouterUrl) {
       requestUrlString = request.getRequestURL().toString();
     } else {
+      String contextPath = request.getContextPath();      
       requestUrlString = request.getRequestURI();
-      if (requestUrlString.startsWith("/")) {
+                  
+      if (!StringUtils.hasText(contextPath) && requestUrlString.startsWith("/")) {
         requestUrlString = requestUrlString.substring(1);
+      } else if (StringUtils.hasText(contextPath)) {
+        requestUrlString = requestUrlString.substring(contextPath.length()+1);
       }
     }
     
