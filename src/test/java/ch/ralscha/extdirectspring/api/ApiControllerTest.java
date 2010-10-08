@@ -160,18 +160,18 @@ public class ApiControllerTest {
   }
 
   private RemotingApi noApis(String namespace) {
-    RemotingApi remotingApi = new RemotingApi("action/router", namespace);
+    RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
     return remotingApi;
   }
 
   private RemotingApi group1Apis(String namespace) {
-    RemotingApi remotingApi = new RemotingApi("action/router", namespace);
+    RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
     remotingApi.addAction("remoteProviderSimple", "method1", 0, false);
     return remotingApi;
   }
 
   private RemotingApi group2Apis(String namespace) {
-    RemotingApi remotingApi = new RemotingApi("action/router", namespace);
+    RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
     remotingApi.addAction("remoteProviderSimple", "method3", 3, false);
     remotingApi.addAction("remoteProviderSimple", "method5", 1, false);
     remotingApi.addAction("remoteProviderStoreRead", "method6", 1, false);
@@ -185,7 +185,7 @@ public class ApiControllerTest {
   }
 
   private RemotingApi group3Apis(String namespace) {
-    RemotingApi remotingApi = new RemotingApi("action/router", namespace);
+    RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
     remotingApi.addAction("remoteProviderSimple", "method9", 0, false);
     remotingApi.addAction("remoteProviderStoreRead", "method5", 1, false);
     remotingApi.addAction("remoteProviderStoreModify", "destroy", 1, false);
@@ -199,13 +199,13 @@ public class ApiControllerTest {
   }
 
   private RemotingApi group4Apis(String namespace) {
-    RemotingApi remotingApi = new RemotingApi("action/router", namespace);
+    RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
     remotingApi.addPollingProvider("pollProvider", "handleMessage3", "message3");
     return remotingApi;
   }
 
   private RemotingApi allApis(String namespace) {
-    RemotingApi remotingApi = new RemotingApi("action/router", namespace);
+    RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
     remotingApi.addAction("remoteProviderSimple", "method1", 0, false);
     remotingApi.addAction("remoteProviderSimple", "method2", 0, false);
     remotingApi.addAction("remoteProviderSimple", "method3", 3, false);

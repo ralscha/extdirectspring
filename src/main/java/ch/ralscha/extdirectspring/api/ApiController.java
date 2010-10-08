@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,10 +31,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
@@ -94,14 +95,7 @@ public class ApiController implements ApplicationContextAware {
     if (fullRouterUrl) {
       requestUrlString = request.getRequestURL().toString();
     } else {
-      String contextPath = request.getContextPath();      
       requestUrlString = request.getRequestURI();
-                  
-      if (!StringUtils.hasText(contextPath) && requestUrlString.startsWith("/")) {
-        requestUrlString = requestUrlString.substring(1);
-      } else if (StringUtils.hasText(contextPath)) {
-        requestUrlString = requestUrlString.substring(contextPath.length()+1);
-      }
     }
     
     boolean debug = requestUrlString.contains("api-debug.js");
