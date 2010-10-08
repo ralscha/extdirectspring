@@ -95,19 +95,15 @@ public class ApiController implements ApplicationContextAware {
 
     if (format == null) {
       response.setContentType("application/x-javascript");
-    } else {
-      response.setContentType("application/json");
-    }
-    
-    String requestUrlString;
-    
-    if (fullRouterUrl) {
-      requestUrlString = request.getRequestURL().toString();
-    } else {
-      requestUrlString = request.getRequestURI();
-    }
-    
-    if (format == null) {
+      
+      String requestUrlString;
+      
+      if (fullRouterUrl) {
+        requestUrlString = request.getRequestURL().toString();
+      } else {
+        requestUrlString = request.getRequestURI();
+      }
+      
       boolean debug = requestUrlString.contains("api-debug.js");
   
       ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group, debug);
@@ -130,7 +126,16 @@ public class ApiController implements ApplicationContextAware {
   
       response.getOutputStream().write(apiString.getBytes());
     } else {
-      String routerUrl = requestUrlString.replace("api.js", "router");
+      response.setContentType("application/json");
+      String requestUrlString = request.getRequestURL().toString();
+      
+      String routerUrl;
+      if (!requestUrlString.contains("api-debug.js")) {
+        routerUrl = requestUrlString.replace("api.js", "router");
+      } else {
+        routerUrl = requestUrlString.replace("api-debug.js", "router");
+      }
+      
       String apiString = buildApiJson(apiNs, actionNs, remotingApiVar, routerUrl, group);      
       response.getOutputStream().write(apiString.getBytes());
     }
