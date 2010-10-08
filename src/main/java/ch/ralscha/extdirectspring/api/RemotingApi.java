@@ -29,9 +29,10 @@ import org.springframework.util.StringUtils;
 /**
  * @author Ralph Schaer
  */
-@JsonSerialize(include=Inclusion.NON_NULL)
+@JsonSerialize(include = Inclusion.NON_NULL)
 class RemotingApi {
 
+  private String descriptor;
   private final String url;
   private final String namespace;
   private final String type = "remoting";
@@ -40,6 +41,7 @@ class RemotingApi {
   private final List<PollingProvider> pollingProviders;
 
   public RemotingApi(final String url, final String namespace) {
+    this.descriptor = null;
     this.actions = new HashMap<String, List<Action>>();
     this.pollingProviders = new ArrayList<PollingProvider>();
 
@@ -66,6 +68,14 @@ class RemotingApi {
 
   public String getNamespace() {
     return namespace;
+  }
+
+  public String getDescriptor() {
+    return descriptor;
+  }
+
+  public void setDescriptor(String descriptor) {
+    this.descriptor = descriptor;
   }
 
   @JsonIgnore

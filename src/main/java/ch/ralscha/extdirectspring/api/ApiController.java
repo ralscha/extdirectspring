@@ -31,6 +31,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -73,6 +74,9 @@ public class ApiController implements ApplicationContextAware {
    * @param fullRouterUrl 
    *          If true the router property contains the full request URL with method, server and port. Defaults to false
    *          returns only the url without method, server and port           
+   * @param format 
+   *          Only valid value is "json2. Ext Designer sends this parameter and the response is a valid JSON.
+   *          Defaults to null and response is standard Javascript.
    * @param request
    * @param response
    * @throws IOException
@@ -85,10 +89,15 @@ public class ApiController implements ApplicationContextAware {
       @RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS") final String pollingUrlsVar,
       @RequestParam(value = "group", required = false) final String group, 
       @RequestParam(value = "fullRouterUrl", required = false, defaultValue="false") final boolean fullRouterUrl,
+      @RequestParam(value = "format", required = false) final String format,
       final HttpServletRequest request,
       final HttpServletResponse response) throws IOException {
 
-    response.setContentType("application/x-javascript");
+    if (format == null) {
+      response.setContentType("application/x-javascript");
+    } else {
+      response.setContentType("application/json");
+    }
     
     String requestUrlString;
     
@@ -98,28 +107,33 @@ public class ApiController implements ApplicationContextAware {
       requestUrlString = request.getRequestURI();
     }
     
-    boolean debug = requestUrlString.contains("api-debug.js");
-
-    ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group, debug);
-    String apiString = ApiCache.INSTANCE.get(apiKey);
-    if (apiString == null) {
-
-      String routerUrl;
-      String basePollUrl;
-
-      if (!debug) {
-        routerUrl = requestUrlString.replace("api.js", "router");
-        basePollUrl = requestUrlString.replace("api.js", "poll");
-      } else {
-        routerUrl = requestUrlString.replace("api-debug.js", "router");
-        basePollUrl = requestUrlString.replace("api-debug.js", "poll");
+    if (format == null) {
+      boolean debug = requestUrlString.contains("api-debug.js");
+  
+      ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group, debug);
+      String apiString = ApiCache.INSTANCE.get(apiKey);
+      if (apiString == null) {
+  
+        String routerUrl;
+        String basePollUrl;
+  
+        if (!debug) {
+          routerUrl = requestUrlString.replace("api.js", "router");
+          basePollUrl = requestUrlString.replace("api.js", "poll");
+        } else {
+          routerUrl = requestUrlString.replace("api-debug.js", "router");
+          basePollUrl = requestUrlString.replace("api-debug.js", "poll");
+        }
+        apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, basePollUrl, group, debug);
+        ApiCache.INSTANCE.put(apiKey, apiString);
       }
-      apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, basePollUrl, group, debug);
-      ApiCache.INSTANCE.put(apiKey, apiString);
+  
+      response.getOutputStream().write(apiString.getBytes());
+    } else {
+      String routerUrl = requestUrlString.replace("api.js", "router");
+      String apiString = buildApiJson(apiNs, actionNs, remotingApiVar, routerUrl, group);      
+      response.getOutputStream().write(apiString.getBytes());
     }
-
-    response.getOutputStream().write(apiString.getBytes());
-
   }
 
   private String buildApiString(final String apiNs, final String actionNs, final String remotingApiVar,
@@ -131,15 +145,17 @@ public class ApiController implements ApplicationContextAware {
 
     StringBuilder sb = new StringBuilder();
 
-    sb.append("Ext.ns('");
-    sb.append(apiNs);
-    sb.append("');");
-
+    if (StringUtils.hasText(apiNs)) {
+      sb.append("Ext.ns('");
+      sb.append(apiNs);
+      sb.append("');");
+    }
+    
     if (debug) {
       sb.append("\n\n");
     }
 
-    if (actionNs != null && !actionNs.trim().isEmpty()) {
+    if (StringUtils.hasText(actionNs)) {
       sb.append("Ext.ns('");
       sb.append(actionNs);
       sb.append("');");
@@ -151,7 +167,10 @@ public class ApiController implements ApplicationContextAware {
 
     String jsonConfig = ExtDirectSpringUtil.serializeObjectToJson(remotingApi, debug);
 
-    sb.append(apiNs).append(".").append(remotingApiVar).append(" = ");
+    if (StringUtils.hasText(apiNs)) {
+      sb.append(apiNs).append(".");
+    }
+    sb.append(remotingApiVar).append(" = ");
     sb.append(jsonConfig);
     sb.append(";");
 
@@ -162,7 +181,10 @@ public class ApiController implements ApplicationContextAware {
     List<PollingProvider> pollingProviders = remotingApi.getPollingProviders();
     if (!pollingProviders.isEmpty()) {
 
-      sb.append(apiNs).append(".").append(pollingUrlsVar).append(" = {");
+      if (StringUtils.hasText(apiNs)) {
+        sb.append(apiNs).append(".");
+      }
+      sb.append(pollingUrlsVar).append(" = {");
       if (debug) {
         sb.append("\n");
       }
@@ -198,6 +220,23 @@ public class ApiController implements ApplicationContextAware {
     return sb.toString();
   }
 
+  private String buildApiJson(String apiNs, String actionNs, String remotingApiVar, String routerUrl, String group) {
+
+    RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
+    
+    if (StringUtils.hasText(apiNs)) {
+      remotingApi.setDescriptor(apiNs + "." + remotingApiVar);
+    } else {
+      remotingApi.setDescriptor(remotingApiVar);
+    }
+    
+    scanForExtDirectMethods(remotingApi, group);
+    
+    return ExtDirectSpringUtil.serializeObjectToJson(remotingApi);
+    
+  }
+  
+  
   private void scanForExtDirectMethods(final RemotingApi remotingApi, final String group) {
     Map<String, Object> beanDefinitions = getAllBeanDefinitions();
 
