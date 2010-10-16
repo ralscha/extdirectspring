@@ -163,10 +163,10 @@
 
   <repositories>
     <repository>
-      <id>jboss-public-repository-group</id>
-      <name>JBoss Public Maven Repository Group</name>
-      <url>http://repository.jboss.org/nexus/content/groups/public-jboss</url>
-    </repository>
+      <id>JBoss</id>
+      <name>JBoss repository</name>
+      <url>https://repository.jboss.org/nexus/content/groups/public-jboss</url>
+    </repository> 
 
     <repository>
       <id>sonatype</id>
