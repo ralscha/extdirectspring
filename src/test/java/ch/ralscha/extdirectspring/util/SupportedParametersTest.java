@@ -16,9 +16,7 @@
 
 package ch.ralscha.extdirectspring.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.security.Principal;
 import java.util.Locale;
@@ -45,6 +43,20 @@ public class SupportedParametersTest {
     assertTrue(SupportedParameterTypes.isSupported(MockHttpSession.class));    
     assertTrue(SupportedParameterTypes.isSupported(Locale.class));
     assertTrue(SupportedParameterTypes.isSupported(Principal.class));
+  }
+  
+  @Test
+  public void  testResolveParameter() {
+    MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    Locale en = Locale.ENGLISH;
+    
+    assertNull(SupportedParameterTypes.resolveParameter(String.class, request, response, en));
+    assertSame(request, SupportedParameterTypes.resolveParameter(MockHttpServletRequest.class, request, response, en));
+    assertSame(request.getSession(), SupportedParameterTypes.resolveParameter(MockHttpSession.class, request, response, en));
+    assertSame(request.getUserPrincipal(), SupportedParameterTypes.resolveParameter(Principal.class, request, response, en));
+    assertSame(response, SupportedParameterTypes.resolveParameter(MockHttpServletResponse.class, request, response, en));
+    assertSame(en, SupportedParameterTypes.resolveParameter(Locale.class, request, response, en));
   }
 
 }
