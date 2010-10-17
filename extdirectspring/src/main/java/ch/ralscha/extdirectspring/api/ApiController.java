@@ -129,14 +129,16 @@ public class ApiController implements ApplicationContextAware {
       response.setContentType("application/json");
       String requestUrlString = request.getRequestURL().toString();
       
+      boolean debug = requestUrlString.contains("api-debug.js");
+      
       String routerUrl;
-      if (!requestUrlString.contains("api-debug.js")) {
+      if (!debug) {
         routerUrl = requestUrlString.replace("api.js", "router");
       } else {
         routerUrl = requestUrlString.replace("api-debug.js", "router");
       }
       
-      String apiString = buildApiJson(apiNs, actionNs, remotingApiVar, routerUrl, group);      
+      String apiString = buildApiJson(apiNs, actionNs, remotingApiVar, routerUrl, group, debug);      
       response.getOutputStream().write(apiString.getBytes());
     }
   }
@@ -225,7 +227,7 @@ public class ApiController implements ApplicationContextAware {
     return sb.toString();
   }
 
-  private String buildApiJson(String apiNs, String actionNs, String remotingApiVar, String routerUrl, String group) {
+  private String buildApiJson(final String apiNs, final String actionNs, final String remotingApiVar, final String routerUrl, final String group, final boolean debug) {
 
     RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
     
@@ -237,7 +239,7 @@ public class ApiController implements ApplicationContextAware {
     
     scanForExtDirectMethods(remotingApi, group);
     
-    return ExtDirectSpringUtil.serializeObjectToJson(remotingApi);
+    return ExtDirectSpringUtil.serializeObjectToJson(remotingApi, debug);
     
   }
   
