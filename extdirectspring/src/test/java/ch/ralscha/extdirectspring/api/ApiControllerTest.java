@@ -195,8 +195,8 @@ public class ApiControllerTest {
     
     request = new MockHttpServletRequest("POST", "/action/api.js");
     response = new MockHttpServletResponse();
-    apiController.api("apiNs2", "ns", "TEST_RMT_API", "TEST_POLL_URLS", "group2", true, "json", request, response);
-    compareJson(response, group2Apis("ns", "http://localhost:80/action/router"), "apiNs2", "TEST_RMT_API");
+    apiController.api("", "ns", "TEST_RMT_API", "TEST_POLL_URLS", "group2", true, "json", request, response);
+    compareJson(response, group2Apis("ns", "http://localhost:80/action/router"), "", "TEST_RMT_API");
 
   }
 
