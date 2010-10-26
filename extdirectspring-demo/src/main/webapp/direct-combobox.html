@@ -6,10 +6,9 @@
   <script type="text/javascript" src="extjs/adapter/ext/ext-base.js"></script>
   <script type="text/javascript" src="extjs/ext-all.js"></script>
   <script type="text/javascript">
-    Ext.BLANK_IMAGE_URL = Ext.isIE6 || Ext.isIE7 || Ext.isAir ?
-                          '/extjs/resources/images/default/s.gif' :
-                          'data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
-
+    if (Ext.BLANK_IMAGE_URL.substr(0, 5) != 'data:') {
+      Ext.BLANK_IMAGE_URL = '/extjs/resources/images/default/s.gif';
+    }                                                    
   </script>
   
   <script type="text/javascript" src="controller/api-debug.js?group=store"></script>
