@@ -235,21 +235,12 @@ public class RouterController implements ApplicationContextAware {
       if (directRequest.getData() != null && directRequest.getData().length > 0) {
         Map<String, Object> jsonData = (LinkedHashMap<String, Object>)directRequest.getData()[0];
 
-        String recordsKey = null;
-        for (Map.Entry<String,Object> entry : jsonData.entrySet()) {
-          if (entry.getValue() instanceof ArrayList) {
-            recordsKey = entry.getKey();
-            break;
-          }
-        }
-        if (recordsKey != null) {
-          ArrayList<Object> records = (ArrayList<Object>)jsonData.get(recordsKey);
-          directStoreModifyRecords = convertObjectEntriesToType(records, directStoreEntryClass);
-          jsonParamIndex = 1;
-  
-          remainingParameters = new HashMap<String, Object>(jsonData);
-          remainingParameters.remove(recordsKey);
-        }
+        ArrayList<Object> records = (ArrayList<Object>)jsonData.get("records");
+        directStoreModifyRecords = convertObjectEntriesToType(records, directStoreEntryClass);
+        jsonParamIndex = 1;
+    
+        remainingParameters = new HashMap<String, Object>(jsonData);
+        remainingParameters.remove("records");
 
       }
     } else if (methodInfo.isType(ExtDirectMethodType.POLL)) {
