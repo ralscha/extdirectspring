@@ -169,7 +169,7 @@ public class RouterController implements ApplicationContextAware {
             if (!ExtDirectFormLoadResult.class.isAssignableFrom(result.getClass())) {
               result = new ExtDirectFormLoadResult(result);
             }
-          } else if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)) {
+          } else if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
             if (!ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())) {
               result = new ExtDirectStoreResponse((Collection)result);
             }

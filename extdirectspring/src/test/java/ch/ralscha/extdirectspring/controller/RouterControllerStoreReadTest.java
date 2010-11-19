@@ -78,7 +78,8 @@ public class RouterControllerStoreReadTest {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    List<Row> rows = (List<Row>)resp.getResult();
+    ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse)resp.getResult();      
+    List<Row> rows = (List<Row>)storeResponse.getRecords();
     assertEquals(100, rows.size());
   }
 
@@ -100,7 +101,8 @@ public class RouterControllerStoreReadTest {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    List<Row> rows = (List<Row>)resp.getResult();
+    ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse)resp.getResult(); 
+    List<Row> rows = (List<Row>)storeResponse.getRecords();
     assertEquals(100, rows.size());
   }
 
@@ -135,7 +137,8 @@ public class RouterControllerStoreReadTest {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    List<Row> rows = (List<Row>)resp.getResult();
+    ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse)resp.getResult(); 
+    List<Row> rows = (List<Row>)storeResponse.getRecords();
     assertEquals(100, rows.size());
   }
 
@@ -330,7 +333,8 @@ public class RouterControllerStoreReadTest {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    List<Row> rows = (List<Row>)resp.getResult();
+    ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse)resp.getResult(); 
+    List<Row> rows = (List<Row>)storeResponse.getRecords();
     assertEquals(100, rows.size());
 
     Map<String, Object> readRequest = new HashMap<String, Object>();
@@ -351,7 +355,8 @@ public class RouterControllerStoreReadTest {
     assertNull(resp.getWhere());
     assertNotNull(resp.getResult());
 
-    rows = (List<Row>)resp.getResult();
+    storeResponse = (ExtDirectStoreResponse)resp.getResult(); 
+    rows = (List<Row>)storeResponse.getRecords();
     assertEquals(100, rows.size());
   }
 
