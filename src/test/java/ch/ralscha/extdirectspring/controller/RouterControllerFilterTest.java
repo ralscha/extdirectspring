@@ -40,6 +40,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 import ch.ralscha.extdirectspring.provider.Row;
 
 /**
@@ -96,7 +97,9 @@ public class RouterControllerFilterTest {
       assertNull(resp.getMessage());
       assertNull(resp.getWhere());
       assertNotNull(resp.getResult());
-      List<Row> rows = (List<Row>)resp.getResult();
+      
+      ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse)resp.getResult();      
+      List<Row> rows = (List<Row>)storeResponse.getRecords();
       assertEquals(1, rows.size());
       assertEquals(index, rows.get(0).getId());
 
