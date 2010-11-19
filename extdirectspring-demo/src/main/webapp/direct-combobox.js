@@ -19,7 +19,7 @@ Ext.onReady(function() {
 
   var directStoreWOPaging = new Ext.data.DirectStore( {
     paramsAsHash: true,
-    root: '',
+    root: 'records',
     directFn: personAction.load,
     fields: storeFields
   });

@@ -30,7 +30,7 @@ Ext.onReady(function() {
 
       var directStore = new Ext.data.DirectStore({
             paramsAsHash: true,
-            root: '',
+            root: 'records',
             autoLoad: true,
             directFn: salesAction.load,
             fields: saleFields

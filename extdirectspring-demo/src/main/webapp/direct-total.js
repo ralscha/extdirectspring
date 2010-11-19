@@ -4,7 +4,7 @@ Ext.onReady(function() {
 
   var reader = new Ext.data.JsonReader( {
     idProperty: 'taskId',
-    root: '',
+    root: 'records',
     fields: [ {
       name: 'projectId',
       type: 'int'

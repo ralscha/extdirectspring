@@ -5,7 +5,7 @@ Ext.onReady(function() {
   var directStore = new Ext.data.DirectStore( {
     paramsAsHash: true,
     autoLoad: true,
-    root: '',
+    root: 'records',
     directFn: reportService.getSeasonData,
     fields: [ 'season', 'total' ]
   });
