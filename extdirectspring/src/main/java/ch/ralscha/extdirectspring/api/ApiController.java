@@ -245,13 +245,13 @@ public class ApiController implements ApplicationContextAware {
 	}
 
 	private void scanForExtDirectMethods(final RemotingApi remotingApi, final String group) {
-		Map<String, Object> beanDefinitions = getAllBeanDefinitions();
+		Map<String, Class<?>> beanDefinitions = getAllBeanClasses();
 
-		for (Entry<String, Object> entry : beanDefinitions.entrySet()) {
-			Object bean = entry.getValue();
+		for (Entry<String, Class<?>> entry : beanDefinitions.entrySet()) {
+			Class<?> beanClass = entry.getValue();
 			String beanName = entry.getKey();
 
-			Method[] methods = bean.getClass().getMethods();
+			Method[] methods = beanClass.getMethods();
 
 			for (Method method : methods) {
 				ExtDirectMethod annotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
@@ -352,20 +352,18 @@ public class ApiController implements ApplicationContextAware {
 		return false;
 	}
 
-	private Map<String, Object> getAllBeanDefinitions() {
-		Map<String, Object> beanDefinitions = new HashMap<String, Object>();
+	private Map<String, Class<?>> getAllBeanClasses() {
+		Map<String, Class<?>> beanClasses = new HashMap<String, Class<?>>();
 
 		ApplicationContext currentCtx = context;
 		do {
-
 			for (String beanName : currentCtx.getBeanDefinitionNames()) {
-				beanDefinitions.put(beanName, currentCtx.getBean(beanName));
+				beanClasses.put(beanName, currentCtx.getType(beanName));
 			}
 			currentCtx = currentCtx.getParent();
-
 		} while (currentCtx != null);
 
-		return beanDefinitions;
+		return beanClasses;
 	}
 
 }
