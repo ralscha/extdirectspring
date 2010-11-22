@@ -22,14 +22,14 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 @Named
 public class TestAction {
 
-  @ExtDirectMethod(group = "example")
-  public long multiply(long num) {
-    return num * 8;
-  }
+	@ExtDirectMethod(group = "example")
+	public long multiply(long num) {
+		return num * 8;
+	}
 
-  @ExtDirectMethod(group = "example")
-  public String doEcho(String message) {
-    return message;
-  }
+	@ExtDirectMethod(group = "example")
+	public String doEcho(String message) {
+		return message;
+	}
 
 }

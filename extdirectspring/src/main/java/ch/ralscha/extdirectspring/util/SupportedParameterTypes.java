@@ -33,56 +33,56 @@ import javax.servlet.http.HttpSession;
  */
 public enum SupportedParameterTypes {
 
-  SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class), SESSION(HttpSession.class), LOCALE(
-      Locale.class), PRINCIPAL(Principal.class);
+	SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class), SESSION(HttpSession.class), LOCALE(
+			Locale.class), PRINCIPAL(Principal.class);
 
-  private final Class<?> clazz;
+	private final Class<?> clazz;
 
-  private SupportedParameterTypes(Class<?> clazz) {
-    this.clazz = clazz;
-  }
+	private SupportedParameterTypes(Class<?> clazz) {
+		this.clazz = clazz;
+	}
 
-  /**
-   * @return the enclosing Class
-   */
-  public Class<?> getSupportedClass() {
-    return clazz;
-  }
+	/**
+	 * @return the enclosing Class
+	 */
+	public Class<?> getSupportedClass() {
+		return clazz;
+	}
 
-  /**
-   * Checks if the class is a supported parameter type
-   * 
-   * @param clazz
-   * @return true if is supported, else false
-   */
-  public static boolean isSupported(final Class<?> clazz) {
-    if (clazz != null) {
-      for (SupportedParameterTypes supportedParameter : SupportedParameterTypes.values()) {
-        if (supportedParameter.clazz.isAssignableFrom(clazz)) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
+	/**
+	 * Checks if the class is a supported parameter type
+	 * 
+	 * @param clazz
+	 * @return true if is supported, else false
+	 */
+	public static boolean isSupported(final Class<?> clazz) {
+		if (clazz != null) {
+			for (SupportedParameterTypes supportedParameter : SupportedParameterTypes.values()) {
+				if (supportedParameter.clazz.isAssignableFrom(clazz)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
-  public static Object resolveParameter(Class<?> parameterType, HttpServletRequest request,
-      HttpServletResponse response, Locale locale) {
+	public static Object resolveParameter(Class<?> parameterType, HttpServletRequest request,
+			HttpServletResponse response, Locale locale) {
 
-    if (SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
-      return request;
-    } else if (SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
-      return response;
-    } else if (SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
-      return request.getSession();
-    } else if (PRINCIPAL.getSupportedClass().isAssignableFrom(parameterType)) {
-      return request.getUserPrincipal();
-    } else if (LOCALE.getSupportedClass().equals(parameterType)) {
-      return locale;
-    }
+		if (SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
+			return request;
+		} else if (SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
+			return response;
+		} else if (SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
+			return request.getSession();
+		} else if (PRINCIPAL.getSupportedClass().isAssignableFrom(parameterType)) {
+			return request.getUserPrincipal();
+		} else if (LOCALE.getSupportedClass().equals(parameterType)) {
+			return locale;
+		}
 
-    return null;
+		return null;
 
-  }
+	}
 
 }

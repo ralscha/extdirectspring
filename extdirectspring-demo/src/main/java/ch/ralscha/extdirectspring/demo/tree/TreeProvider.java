@@ -24,35 +24,35 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 @Named
 public class TreeProvider {
 
-  public static class Node {
+	public static class Node {
 
-    public String id;
-    public String text;
-    public boolean leaf;
-  }
+		public String id;
+		public String text;
+		public boolean leaf;
+	}
 
-  @ExtDirectMethod(group = "tree")
-  public List<Node> getTree(String id) {
-    List<Node> result = new ArrayList<Node>();
-    if (id.equals("root")) {
-      for (int i = 1; i <= 5; ++i) {
-        Node node = new Node();
-        node.id = "n" + i;
-        node.text = "Node " + i;
-        node.leaf = false;
-        result.add(node);
-      }
-    } else if (id.length() == 2) {
-      String num = id.substring(1);
-      for (int i = 1; i <= 5; ++i) {
-        Node node = new Node();
-        node.id = "id" + i;
-        node.text = "Node " + num + "." + i;
-        node.leaf = true;
-        result.add(node);
-      }
-    }
-    return result;
-  }
+	@ExtDirectMethod(group = "tree")
+	public List<Node> getTree(String id) {
+		List<Node> result = new ArrayList<Node>();
+		if (id.equals("root")) {
+			for (int i = 1; i <= 5; ++i) {
+				Node node = new Node();
+				node.id = "n" + i;
+				node.text = "Node " + i;
+				node.leaf = false;
+				result.add(node);
+			}
+		} else if (id.length() == 2) {
+			String num = id.substring(1);
+			for (int i = 1; i <= 5; ++i) {
+				Node node = new Node();
+				node.id = "id" + i;
+				node.text = "Node " + num + "." + i;
+				node.leaf = true;
+				result.add(node);
+			}
+		}
+		return result;
+	}
 
 }

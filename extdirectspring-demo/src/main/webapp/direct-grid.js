@@ -134,7 +134,8 @@ Ext.onReady(function() {
     xtype: 'paging',
     store: directStore,
     pageSize: 50,
-    displayInfo: true
+    displayInfo: true,
+    id: 'pagingToolbar'
   };
 
   var grid = {
@@ -162,12 +163,14 @@ Ext.onReady(function() {
     layout: 'fit',
     items: grid
   });
+  
+  Ext.getCmp('pagingToolbar').changePage(1);
 
-  Ext.StoreMgr.get('directStore').load( {
-    params: {
-      start: 0,
-      limit: 50
-    }
-  });
+//  Ext.StoreMgr.get('directStore').load( {
+//    params: {
+//      start: 0,
+//      limit: 50
+//    }
+//  });
 
 });

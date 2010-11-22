@@ -32,73 +32,73 @@ import org.springframework.util.StringUtils;
 @JsonSerialize(include = Inclusion.NON_NULL)
 class RemotingApi {
 
-  private String descriptor;
-  private final String url;
-  private final String namespace;
-  private final String type = "remoting";
-  private final Map<String, List<Action>> actions;
+	private String descriptor;
+	private final String url;
+	private final String namespace;
+	private final String type = "remoting";
+	private final Map<String, List<Action>> actions;
 
-  private final List<PollingProvider> pollingProviders;
+	private final List<PollingProvider> pollingProviders;
 
-  public RemotingApi(final String url, final String namespace) {
-    this.descriptor = null;
-    this.actions = new HashMap<String, List<Action>>();
-    this.pollingProviders = new ArrayList<PollingProvider>();
+	public RemotingApi(final String url, final String namespace) {
+		this.descriptor = null;
+		this.actions = new HashMap<String, List<Action>>();
+		this.pollingProviders = new ArrayList<PollingProvider>();
 
-    this.url = url;
+		this.url = url;
 
-    if (StringUtils.hasText(namespace)) {
-      this.namespace = namespace.trim();
-    } else {
-      this.namespace = null;
-    }
-  }
+		if (StringUtils.hasText(namespace)) {
+			this.namespace = namespace.trim();
+		} else {
+			this.namespace = null;
+		}
+	}
 
-  public Map<String, List<Action>> getActions() {
-    return actions;
-  }
+	public Map<String, List<Action>> getActions() {
+		return actions;
+	}
 
-  public String getType() {
-    return type;
-  }
+	public String getType() {
+		return type;
+	}
 
-  public String getUrl() {
-    return url;
-  }
+	public String getUrl() {
+		return url;
+	}
 
-  public String getNamespace() {
-    return namespace;
-  }
+	public String getNamespace() {
+		return namespace;
+	}
 
-  public String getDescriptor() {
-    return descriptor;
-  }
+	public String getDescriptor() {
+		return descriptor;
+	}
 
-  public void setDescriptor(String descriptor) {
-    this.descriptor = descriptor;
-  }
+	public void setDescriptor(String descriptor) {
+		this.descriptor = descriptor;
+	}
 
-  @JsonIgnore
-  public List<PollingProvider> getPollingProviders() {
-    return pollingProviders;
-  }
+	@JsonIgnore
+	public List<PollingProvider> getPollingProviders() {
+		return pollingProviders;
+	}
 
-  public void addAction(final String beanName, final String methodName, final int len) {
-    addAction(beanName, methodName, len, null);
-  }
+	public void addAction(final String beanName, final String methodName, final int len) {
+		addAction(beanName, methodName, len, null);
+	}
 
-  public void addAction(final String beanName, final String methodName, final int len, final Boolean formHandler) {
-    List<Action> beanActions = actions.get(beanName);
-    if (beanActions == null) {
-      beanActions = new ArrayList<Action>();
-      actions.put(beanName, beanActions);
-    }
+	public void addAction(final String beanName, final String methodName, final int len, final Boolean formHandler) {
+		List<Action> beanActions = actions.get(beanName);
+		if (beanActions == null) {
+			beanActions = new ArrayList<Action>();
+			actions.put(beanName, beanActions);
+		}
 
-    beanActions.add(new Action(methodName, len, formHandler));
-  }
+		beanActions.add(new Action(methodName, len, formHandler));
+	}
 
-  public void addPollingProvider(final String beanName, final String method, final String event) {
-    pollingProviders.add(new PollingProvider(beanName, method, event));
-  }
+	public void addPollingProvider(final String beanName, final String method, final String event) {
+		pollingProviders.add(new PollingProvider(beanName, method, event));
+	}
 
 }

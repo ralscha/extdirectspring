@@ -27,11 +27,11 @@ import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
 
 public class MyDateSerializer extends JsonSerializer<Date> {
-  @Override
-  public void serialize(Date value, JsonGenerator jgen, SerializerProvider provider) throws IOException,
-      JsonProcessingException {
+	@Override
+	public void serialize(Date value, JsonGenerator jgen, SerializerProvider provider) throws IOException,
+			JsonProcessingException {
 
-    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    jgen.writeString(formatter.format(value.getTime()));
-  }
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		jgen.writeString(formatter.format(value.getTime()));
+	}
 }

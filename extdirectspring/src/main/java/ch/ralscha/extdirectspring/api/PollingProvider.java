@@ -23,31 +23,31 @@ import org.springframework.util.StringUtils;
  */
 class PollingProvider {
 
-  private final String beanName;
-  private final String method;
-  private final String event;
+	private final String beanName;
+	private final String method;
+	private final String event;
 
-  public PollingProvider(final String beanName, final String method, final String event) {
-    this.beanName = beanName;
-    this.method = method;
+	public PollingProvider(final String beanName, final String method, final String event) {
+		this.beanName = beanName;
+		this.method = method;
 
-    if (StringUtils.hasText(event)) {
-      this.event = event.trim();
-    } else {
-      this.event = method;
-    }
-  }
+		if (StringUtils.hasText(event)) {
+			this.event = event.trim();
+		} else {
+			this.event = method;
+		}
+	}
 
-  public String getBeanName() {
-    return beanName;
-  }
+	public String getBeanName() {
+		return beanName;
+	}
 
-  public String getMethod() {
-    return method;
-  }
+	public String getMethod() {
+		return method;
+	}
 
-  public String getEvent() {
-    return event;
-  }
+	public String getEvent() {
+		return event;
+	}
 
 }

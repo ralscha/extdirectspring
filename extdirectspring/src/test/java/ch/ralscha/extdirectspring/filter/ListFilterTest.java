@@ -23,22 +23,21 @@ import java.util.List;
 
 import org.junit.Test;
 
-
 public class ListFilterTest {
 
-  @Test
-  public void testList() {
-    String[] values = {"one", "two", "three"};
-    ListFilter filter = new ListFilter("field", Arrays.asList(values));
-    
-    List<String> list = filter.getValue();
-    assertEquals(3, list.size());
-    assertTrue(list.contains("one"));
-    assertTrue(list.contains("two"));
-    assertTrue(list.contains("three"));
-    assertFalse(list.contains("four"));
-    assertEquals("field", filter.getField());
-    assertEquals("ListFilter [value=[one, two, three], getField()=field]", filter.toString());
-  }
-  
+	@Test
+	public void testList() {
+		String[] values = { "one", "two", "three" };
+		ListFilter filter = new ListFilter("field", Arrays.asList(values));
+
+		List<String> list = filter.getValue();
+		assertEquals(3, list.size());
+		assertTrue(list.contains("one"));
+		assertTrue(list.contains("two"));
+		assertTrue(list.contains("three"));
+		assertFalse(list.contains("four"));
+		assertEquals("field", filter.getField());
+		assertEquals("ListFilter [value=[one, two, three], getField()=field]", filter.toString());
+	}
+
 }

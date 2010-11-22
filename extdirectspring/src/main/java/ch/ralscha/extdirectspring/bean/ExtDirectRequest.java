@@ -26,56 +26,56 @@ import java.util.Arrays;
  */
 public class ExtDirectRequest {
 
-  private String action;
-  private String method;
-  private String type;
-  private int tid;
-  private Object[] data;
+	private String action;
+	private String method;
+	private String type;
+	private int tid;
+	private Object[] data;
 
-  public String getAction() {
-    return action;
-  }
+	public String getAction() {
+		return action;
+	}
 
-  public void setAction(final String action) {
-    this.action = action;
-  }
+	public void setAction(final String action) {
+		this.action = action;
+	}
 
-  public Object[] getData() {
-    return data;
-  }
+	public Object[] getData() {
+		return data;
+	}
 
-  public void setData(final Object[] data) {
-    this.data = data;
-  }
+	public void setData(final Object[] data) {
+		this.data = data;
+	}
 
-  public String getMethod() {
-    return method;
-  }
+	public String getMethod() {
+		return method;
+	}
 
-  public void setMethod(final String method) {
-    this.method = method;
-  }
+	public void setMethod(final String method) {
+		this.method = method;
+	}
 
-  public int getTid() {
-    return tid;
-  }
+	public int getTid() {
+		return tid;
+	}
 
-  public void setTid(final int tid) {
-    this.tid = tid;
-  }
+	public void setTid(final int tid) {
+		this.tid = tid;
+	}
 
-  public String getType() {
-    return type;
-  }
+	public String getType() {
+		return type;
+	}
 
-  public void setType(final String type) {
-    this.type = type;
-  }
+	public void setType(final String type) {
+		this.type = type;
+	}
 
-  @Override
-  public String toString() {
-    return "ExtDirectRequest [action=" + action + ", data=" + Arrays.toString(data) + ", method=" + method + ", tid="
-        + tid + ", type=" + type + "]";
-  }
+	@Override
+	public String toString() {
+		return "ExtDirectRequest [action=" + action + ", data=" + Arrays.toString(data) + ", method=" + method
+				+ ", tid=" + tid + ", type=" + type + "]";
+	}
 
 }

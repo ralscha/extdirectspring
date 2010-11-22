@@ -18,20 +18,20 @@ package ch.ralscha.extdirectspring.demo.chart;
 
 public class SeasonData {
 
-  private final String season;
-  private final int total;
+	private final String season;
+	private final int total;
 
-  public SeasonData(String season, int total) {
-    this.season = season;
-    this.total = total;
-  }
+	public SeasonData(String season, int total) {
+		this.season = season;
+		this.total = total;
+	}
 
-  public String getSeason() {
-    return season;
-  }
+	public String getSeason() {
+		return season;
+	}
 
-  public int getTotal() {
-    return total;
-  }
+	public int getTotal() {
+		return total;
+	}
 
 }

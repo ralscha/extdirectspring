@@ -56,188 +56,192 @@ import com.google.common.collect.Maps;
 @Named
 public class CompanyDataBean {
 
-  @Inject
-  private Resource randomdata;
+	@Inject
+	private Resource randomdata;
 
-  private Map<Integer, Company> companies;
+	private Map<Integer, Company> companies;
 
-  @PostConstruct
-  public void readData() throws IOException {
-    Random rand = new Random();
+	@PostConstruct
+	public void readData() throws IOException {
+		Random rand = new Random();
 
-    companies = Maps.newHashMap();
-    InputStream is = randomdata.getInputStream();
+		companies = Maps.newHashMap();
+		InputStream is = randomdata.getInputStream();
 
-    BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-    CSVReader reader = new CSVReader(br, '|');
-    String[] nextLine;
-    while ((nextLine = reader.readNext()) != null) {
-      Company company = new Company();
-      company.setId(Integer.parseInt(nextLine[0]));
-      company.setCompany(nextLine[2]);
+		CSVReader reader = new CSVReader(br, '|');
+		String[] nextLine;
+		while ((nextLine = reader.readNext()) != null) {
+			Company company = new Company();
+			company.setId(Integer.parseInt(nextLine[0]));
+			company.setCompany(nextLine[2]);
 
-      company.setDate(new GregorianCalendar(rand.nextInt(50) + 1950, rand.nextInt(12), rand.nextInt(28)).getTime());
-      company.setPrice(new BigDecimal(rand.nextFloat() * 100).setScale(2, RoundingMode.HALF_EVEN));
-      company.setSize(SizeEnum.values()[rand.nextInt(4)]);
-      company.setVisible(rand.nextBoolean());
+			company.setDate(new GregorianCalendar(rand.nextInt(50) + 1950, rand.nextInt(12), rand.nextInt(28))
+					.getTime());
+			company.setPrice(new BigDecimal(rand.nextFloat() * 100).setScale(2, RoundingMode.HALF_EVEN));
+			company.setSize(SizeEnum.values()[rand.nextInt(4)]);
+			company.setVisible(rand.nextBoolean());
 
-      companies.put(company.getId(), company);
-    }
+			companies.put(company.getId(), company);
+		}
 
-    br.close();
-    is.close();
-  }
+		br.close();
+		is.close();
+	}
 
-  public List<Company> findAllCompanies() {
-    return ImmutableList.copyOf(companies.values());
-  }
+	public List<Company> findAllCompanies() {
+		return ImmutableList.copyOf(companies.values());
+	}
 
-  public List<Company> findCompanies(List<Filter> filters) {
+	public List<Company> findCompanies(List<Filter> filters) {
 
-    List<Predicate<Company>> predicates = Lists.newArrayList();
-    for (Filter filter : filters) {
-      if (filter.getField().equals("company")) {
-        predicates.add(new CompanyPredicate(((StringFilter)filter).getValue()));
-      } else if (filter.getField().equals("visible")) {
-        predicates.add(new VisiblePredicate(((BooleanFilter)filter).getValue()));
-      } else if (filter.getField().equals("id")) {
-        NumericFilter numericFilter = (NumericFilter)filter;
-        predicates.add(new IdPredicate(numericFilter.getComparison(), numericFilter.getValue()));
-      } else if (filter.getField().equals("price")) {
-        NumericFilter numericFilter = (NumericFilter)filter;
-        predicates.add(new PricePredicate(numericFilter.getComparison(), numericFilter.getValue()));
-      } else if (filter.getField().equals("size")) {
-        ListFilter listFilter = (ListFilter)filter;
-        predicates.add(new SizePredicate(listFilter.getValue()));
-      } else if (filter.getField().equals("date")) {
-        DateFilter dateFilter = (DateFilter)filter;
-        DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-        try {
-          Date d = formatter.parse(dateFilter.getValue());
-          predicates.add(new DatePredicate(dateFilter.getComparison(), d));
-        } catch (ParseException e) {
-          // nothing to do
-        }
+		List<Predicate<Company>> predicates = Lists.newArrayList();
+		for (Filter filter : filters) {
+			if (filter.getField().equals("company")) {
+				predicates.add(new CompanyPredicate(((StringFilter) filter).getValue()));
+			} else if (filter.getField().equals("visible")) {
+				predicates.add(new VisiblePredicate(((BooleanFilter) filter).getValue()));
+			} else if (filter.getField().equals("id")) {
+				NumericFilter numericFilter = (NumericFilter) filter;
+				predicates.add(new IdPredicate(numericFilter.getComparison(), numericFilter.getValue()));
+			} else if (filter.getField().equals("price")) {
+				NumericFilter numericFilter = (NumericFilter) filter;
+				predicates.add(new PricePredicate(numericFilter.getComparison(), numericFilter.getValue()));
+			} else if (filter.getField().equals("size")) {
+				ListFilter listFilter = (ListFilter) filter;
+				predicates.add(new SizePredicate(listFilter.getValue()));
+			} else if (filter.getField().equals("date")) {
+				DateFilter dateFilter = (DateFilter) filter;
+				DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+				try {
+					Date d = formatter.parse(dateFilter.getValue());
+					predicates.add(new DatePredicate(dateFilter.getComparison(), d));
+				} catch (ParseException e) {
+					// nothing to do
+				}
 
-      }
-    }
+			}
+		}
 
-    Iterable<Company> filtered = Iterables.filter(companies.values(), Predicates.and(predicates));
-    return ImmutableList.copyOf(filtered);
+		Iterable<Company> filtered = Iterables.filter(companies.values(), Predicates.and(predicates));
+		return ImmutableList.copyOf(filtered);
 
-  }
+	}
 
-  private static class CompanyPredicate implements Predicate<Company> {
+	private static class CompanyPredicate implements Predicate<Company> {
 
-    private String value;
+		private String value;
 
-    CompanyPredicate(String value) {
-      this.value = value;
-    }
+		CompanyPredicate(String value) {
+			this.value = value;
+		}
 
-    @Override
-    public boolean apply(Company company) {
-      return company.getCompany().toLowerCase().startsWith(value.trim().toLowerCase());
-    }
+		@Override
+		public boolean apply(Company company) {
+			return company.getCompany().toLowerCase().startsWith(value.trim().toLowerCase());
+		}
 
-  }
+	}
 
-  private static class VisiblePredicate implements Predicate<Company> {
-    private boolean flag;
+	private static class VisiblePredicate implements Predicate<Company> {
+		private boolean flag;
 
-    VisiblePredicate(boolean flag) {
-      this.flag = flag;
-    }
+		VisiblePredicate(boolean flag) {
+			this.flag = flag;
+		}
 
-    @Override
-    public boolean apply(Company company) {
-      return company.isVisible() == flag;
-    }
+		@Override
+		public boolean apply(Company company) {
+			return company.isVisible() == flag;
+		}
 
-  }
+	}
 
-  private static class SizePredicate implements Predicate<Company> {
-    private List<String> values;
+	private static class SizePredicate implements Predicate<Company> {
+		private List<String> values;
 
-    SizePredicate(List<String> values) {
-      this.values = values;
-    }
+		SizePredicate(List<String> values) {
+			this.values = values;
+		}
 
-    @Override
-    public boolean apply(Company company) {
-      return values.contains(company.getSize().getLabel());
-    }
+		@Override
+		public boolean apply(Company company) {
+			return values.contains(company.getSize().getLabel());
+		}
 
-  }
+	}
 
-  private static class IdPredicate implements Predicate<Company> {
-    private Comparison comparison;
-    private Number value;
+	private static class IdPredicate implements Predicate<Company> {
+		private Comparison comparison;
+		private Number value;
 
-    IdPredicate(Comparison comparison, Number value) {
-      this.comparison = comparison;
-      this.value = value;
-    }
+		IdPredicate(Comparison comparison, Number value) {
+			this.comparison = comparison;
+			this.value = value;
+		}
 
-    @Override
-    public boolean apply(Company company) {
-      switch (comparison) {
-        case EQUAL:
-          return company.getId() == value.intValue();
-        case GREATER_THAN:
-          return company.getId() > value.intValue();
-        case LESS_THAN:
-          return company.getId() < value.intValue();
-      }
-      return false;
-    }
-  }
+		@Override
+		public boolean apply(Company company) {
+			switch (comparison) {
+			case EQUAL:
+				return company.getId() == value.intValue();
+			case GREATER_THAN:
+				return company.getId() > value.intValue();
+			case LESS_THAN:
+				return company.getId() < value.intValue();
+			}
+			return false;
+		}
+	}
 
-  private static class PricePredicate implements Predicate<Company> {
-    private Comparison comparison;
-    private Number value;
+	private static class PricePredicate implements Predicate<Company> {
+		private Comparison comparison;
+		private Number value;
 
-    PricePredicate(Comparison comparison, Number value) {
-      this.comparison = comparison;
-      this.value = value;
-    }
+		PricePredicate(Comparison comparison, Number value) {
+			this.comparison = comparison;
+			this.value = value;
+		}
 
-    @Override
-    public boolean apply(Company company) {
-      switch (comparison) {
-        case EQUAL:
-          return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) == 0;
-        case GREATER_THAN:
-          return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) > 0;
-        case LESS_THAN:
-          return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) < 0;
-      }
-      return false;
-    }
-  }
+		@Override
+		public boolean apply(Company company) {
+			switch (comparison) {
+			case EQUAL:
+				return company.getPrice().compareTo(
+						new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) == 0;
+			case GREATER_THAN:
+				return company.getPrice().compareTo(
+						new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) > 0;
+			case LESS_THAN:
+				return company.getPrice().compareTo(
+						new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) < 0;
+			}
+			return false;
+		}
+	}
 
-  private static class DatePredicate implements Predicate<Company> {
-    private Comparison comparison;
-    private Date value;
+	private static class DatePredicate implements Predicate<Company> {
+		private Comparison comparison;
+		private Date value;
 
-    DatePredicate(Comparison comparison, Date value) {
-      this.comparison = comparison;
-      this.value = value;
-    }
+		DatePredicate(Comparison comparison, Date value) {
+			this.comparison = comparison;
+			this.value = value;
+		}
 
-    @Override
-    public boolean apply(Company company) {
-      switch (comparison) {
-        case EQUAL:
-          return company.getDate().compareTo(value) == 0;
-        case GREATER_THAN:
-          return company.getDate().compareTo(value) > 0;
-        case LESS_THAN:
-          return company.getDate().compareTo(value) < 0;
-      }
-      return false;
-    }
-  }
+		@Override
+		public boolean apply(Company company) {
+			switch (comparison) {
+			case EQUAL:
+				return company.getDate().compareTo(value) == 0;
+			case GREATER_THAN:
+				return company.getDate().compareTo(value) > 0;
+			case LESS_THAN:
+				return company.getDate().compareTo(value) < 0;
+			}
+			return false;
+		}
+	}
 
 }

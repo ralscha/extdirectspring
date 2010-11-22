@@ -20,22 +20,21 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-
 public class BooleanFilterTest {
-  
-  @Test
-  public void testFalseFilter() {
-    BooleanFilter filter = new BooleanFilter("field", false);
-    assertEquals(false, filter.getValue());
-    assertEquals("field", filter.getField());
-    assertEquals("BooleanFilter [value=false, getField()=field]", filter.toString());
-  }
-  
-  @Test
-  public void testTrueFilter() {
-    BooleanFilter filter = new BooleanFilter("xy", true);
-    assertEquals(true, filter.getValue());
-    assertEquals("xy", filter.getField());
-    assertEquals("BooleanFilter [value=true, getField()=xy]", filter.toString());
-  }  
+
+	@Test
+	public void testFalseFilter() {
+		BooleanFilter filter = new BooleanFilter("field", false);
+		assertEquals(false, filter.getValue());
+		assertEquals("field", filter.getField());
+		assertEquals("BooleanFilter [value=false, getField()=field]", filter.toString());
+	}
+
+	@Test
+	public void testTrueFilter() {
+		BooleanFilter filter = new BooleanFilter("xy", true);
+		assertEquals(true, filter.getValue());
+		assertEquals("xy", filter.getField());
+		assertEquals("BooleanFilter [value=true, getField()=xy]", filter.toString());
+	}
 }

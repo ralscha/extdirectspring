@@ -25,24 +25,24 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 @Named("simple")
 public class SimpleMethodProvider {
 
-  @ExtDirectMethod(group = "simple")
-  public String method1() {
-    return SimpleDateFormat.getDateTimeInstance().format(new Date());
-  }
+	@ExtDirectMethod(group = "simple")
+	public String method1() {
+		return SimpleDateFormat.getDateTimeInstance().format(new Date());
+	}
 
-  @ExtDirectMethod(group = "simple")
-  public String method2(String ping) {
-    return ping.toUpperCase();
-  }
+	@ExtDirectMethod(group = "simple")
+	public String method2(String ping) {
+		return ping.toUpperCase();
+	}
 
-  @ExtDirectMethod(group = "simple")
-  public String method3(String ping, HttpServletRequest request) {
-    return ping + " request uri: " + request.getRequestURI();
-  }
+	@ExtDirectMethod(group = "simple")
+	public String method3(String ping, HttpServletRequest request) {
+		return ping + " request uri: " + request.getRequestURI();
+	}
 
-  @ExtDirectMethod(group = "simple")
-  public String method4() {
-    throw new IllegalArgumentException("shit happens");
-  }
+	@ExtDirectMethod(group = "simple")
+	public String method4() {
+		throw new IllegalArgumentException("shit happens");
+	}
 
 }

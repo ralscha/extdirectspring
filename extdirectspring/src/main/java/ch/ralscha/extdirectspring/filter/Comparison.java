@@ -19,25 +19,25 @@ package ch.ralscha.extdirectspring.filter;
 import java.util.NoSuchElementException;
 
 public enum Comparison {
-  LESS_THAN("lt"), GREATER_THAN("gt"), EQUAL("eq");
+	LESS_THAN("lt"), GREATER_THAN("gt"), EQUAL("eq");
 
-  private final String name;
+	private final String name;
 
-  private Comparison(final String name) {
-    this.name = name;
-  }
+	private Comparison(final String name) {
+		this.name = name;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public static Comparison fromString(final String name) {
-    for (Comparison comparison : Comparison.values()) {
-      if (comparison.getName().equalsIgnoreCase(name)) {
-        return comparison;
-      }
-    }
-    throw new NoSuchElementException(name + " not found");
-  }
+	public static Comparison fromString(final String name) {
+		for (Comparison comparison : Comparison.values()) {
+			if (comparison.getName().equalsIgnoreCase(name)) {
+				return comparison;
+			}
+		}
+		throw new NoSuchElementException(name + " not found");
+	}
 
 }

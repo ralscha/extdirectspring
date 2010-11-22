@@ -24,41 +24,41 @@ package ch.ralscha.extdirectspring.bean;
  */
 public class ExtDirectFormLoadResult {
 
-  private Object data;
-  private boolean success;
+	private Object data;
+	private boolean success;
 
-  public ExtDirectFormLoadResult() {
-    this(null, true);
-  }
+	public ExtDirectFormLoadResult() {
+		this(null, true);
+	}
 
-  public ExtDirectFormLoadResult(final Object data) {
-    this(data, true);
-  }
+	public ExtDirectFormLoadResult(final Object data) {
+		this(data, true);
+	}
 
-  public ExtDirectFormLoadResult(final Object data, final boolean success) {
-    this.data = data;
-    this.success = success;
-  }
+	public ExtDirectFormLoadResult(final Object data, final boolean success) {
+		this.data = data;
+		this.success = success;
+	}
 
-  public Object getData() {
-    return data;
-  }
+	public Object getData() {
+		return data;
+	}
 
-  public void setData(final Object data) {
-    this.data = data;
-  }
+	public void setData(final Object data) {
+		this.data = data;
+	}
 
-  public boolean isSuccess() {
-    return success;
-  }
+	public boolean isSuccess() {
+		return success;
+	}
 
-  public void setSuccess(final boolean success) {
-    this.success = success;
-  }
+	public void setSuccess(final boolean success) {
+		this.success = success;
+	}
 
-  @Override
-  public String toString() {
-    return "ExtDirectFormResultWrapper [data=" + data + ", success=" + success + "]";
-  }
+	@Override
+	public String toString() {
+		return "ExtDirectFormResultWrapper [data=" + data + ", success=" + success + "]";
+	}
 
 }

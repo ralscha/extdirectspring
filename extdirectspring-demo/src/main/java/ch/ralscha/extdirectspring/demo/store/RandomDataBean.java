@@ -39,59 +39,59 @@ import com.google.common.collect.Maps;
 @Named
 public class RandomDataBean {
 
-  @Inject
-  private Resource randomdata;
+	@Inject
+	private Resource randomdata;
 
-  private int maxId;
+	private int maxId;
 
-  private Map<Integer, Person> persons;
+	private Map<Integer, Person> persons;
 
-  @PostConstruct
-  public void readData() throws IOException {
-    persons = Maps.newHashMap();
-    InputStream is = randomdata.getInputStream();
+	@PostConstruct
+	public void readData() throws IOException {
+		persons = Maps.newHashMap();
+		InputStream is = randomdata.getInputStream();
 
-    BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-    CSVReader reader = new CSVReader(br, '|');
-    String[] nextLine;
-    while ((nextLine = reader.readNext()) != null) {
-      Person p = new Person(nextLine);
-      persons.put(Integer.valueOf(p.getId()), p);
-      maxId = Math.max(maxId, Integer.valueOf(p.getId()));
-    }
+		CSVReader reader = new CSVReader(br, '|');
+		String[] nextLine;
+		while ((nextLine = reader.readNext()) != null) {
+			Person p = new Person(nextLine);
+			persons.put(Integer.valueOf(p.getId()), p);
+			maxId = Math.max(maxId, Integer.valueOf(p.getId()));
+		}
 
-    br.close();
-    is.close();
-  }
+		br.close();
+		is.close();
+	}
 
-  public List<Person> findPersons(final String query) {
-    if (query != null && !query.trim().isEmpty()) {
-      Iterable<Person> filtered = Iterables.filter(persons.values(), new Predicate<Person>() {
+	public List<Person> findPersons(final String query) {
+		if (query != null && !query.trim().isEmpty()) {
+			Iterable<Person> filtered = Iterables.filter(persons.values(), new Predicate<Person>() {
 
-        public boolean apply(Person input) {
-          return input.getLastName().toLowerCase().startsWith(query.toLowerCase());
-        }
-      });
-      return ImmutableList.copyOf(filtered);
-    }
+				public boolean apply(Person input) {
+					return input.getLastName().toLowerCase().startsWith(query.toLowerCase());
+				}
+			});
+			return ImmutableList.copyOf(filtered);
+		}
 
-    return ImmutableList.copyOf(persons.values());
-  }
+		return ImmutableList.copyOf(persons.values());
+	}
 
-  public Person findPerson(final String id) {
-    return persons.get(Integer.valueOf(id));
-  }
+	public Person findPerson(final String id) {
+		return persons.get(Integer.valueOf(id));
+	}
 
-  public void deletePerson(int personId) {
-    persons.remove(personId);
-  }
+	public void deletePerson(int personId) {
+		persons.remove(personId);
+	}
 
-  public Person insert(Person p) {
-    maxId = maxId + 1;
-    p.setId(String.valueOf(maxId));
-    persons.put(maxId, p);
-    return p;
-  }
+	public Person insert(Person p) {
+		maxId = maxId + 1;
+		p.setId(String.valueOf(maxId));
+		persons.put(maxId, p);
+		return p;
+	}
 
 }

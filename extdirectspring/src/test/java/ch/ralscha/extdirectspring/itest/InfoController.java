@@ -31,13 +31,13 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 @Controller
 public class InfoController {
 
-  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_info")
-  @ResponseBody
-  @RequestMapping(value = "/info", method = RequestMethod.POST)
-  public ExtDirectResponse updateInfo(HttpServletRequest request, Info info) {
-    ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-    builder.addResultProperty("userNameLowerCase", info.getUserName().toLowerCase());
-    return builder.build();
-  }
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_info")
+	@ResponseBody
+	@RequestMapping(value = "/info", method = RequestMethod.POST)
+	public ExtDirectResponse updateInfo(HttpServletRequest request, Info info) {
+		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
+		builder.addResultProperty("userNameLowerCase", info.getUserName().toLowerCase());
+		return builder.build();
+	}
 
 }

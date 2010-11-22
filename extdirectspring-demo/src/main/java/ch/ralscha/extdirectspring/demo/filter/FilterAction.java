@@ -33,34 +33,35 @@ import com.google.common.collect.Ordering;
 @Named
 public class FilterAction {
 
-  @Inject
-  private CompanyDataBean dataBean;
+	@Inject
+	private CompanyDataBean dataBean;
 
-  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "filter")
-  public ExtDirectStoreResponse<Company> load(ExtDirectStoreReadRequest request) {
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "filter")
+	public ExtDirectStoreResponse<Company> load(ExtDirectStoreReadRequest request) {
 
-    List<Company> companies;
-    if (!request.getFilters().isEmpty()) {
-      companies = dataBean.findCompanies(request.getFilters());
-    } else {
-      companies = dataBean.findAllCompanies();
-    }
+		List<Company> companies;
+		if (!request.getFilters().isEmpty()) {
+			companies = dataBean.findCompanies(request.getFilters());
+		} else {
+			companies = dataBean.findAllCompanies();
+		}
 
-    int totalSize = companies.size();
+		int totalSize = companies.size();
 
-    if (StringUtils.hasText(request.getSort())) {
-      Ordering<Object> ordering = new PropertyOrdering(Company.class, request.getSort());
-      if (request.isDescendingSort()) {
-        ordering = ordering.reverse();
-      }
-      companies = ordering.sortedCopy(companies);
-    }
+		if (StringUtils.hasText(request.getSort())) {
+			Ordering<Object> ordering = new PropertyOrdering(Company.class, request.getSort());
+			if (request.isDescendingSort()) {
+				ordering = ordering.reverse();
+			}
+			companies = ordering.sortedCopy(companies);
+		}
 
-    if (request.getStart() != null && request.getLimit() != null) {
-      companies = companies.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
-    }
+		if (request.getStart() != null && request.getLimit() != null) {
+			companies = companies.subList(request.getStart(),
+					Math.min(totalSize, request.getStart() + request.getLimit()));
+		}
 
-    return new ExtDirectStoreResponse<Company>(totalSize, companies);
-  }
+		return new ExtDirectStoreResponse<Company>(totalSize, companies);
+	}
 
 }

@@ -34,29 +34,31 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 @Controller
 @RequestMapping(value = "/base")
 public class FormInfoController2 {
-  
-  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
-  @ResponseBody
-  @RequestMapping(value = "/updateInfo1", method = RequestMethod.POST)
-  public ExtDirectResponse updateInfo1(Locale locale, HttpServletRequest request, FormInfo formInfo, BindingResult result) {
-    ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-    builder.addErrors(result);
-    return builder.build();
-  }
-  
-  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
-  @ResponseBody
-  @RequestMapping(method = RequestMethod.POST)
-  public ExtDirectResponse updateInfo2(Locale locale, HttpServletRequest request, FormInfo formInfo, BindingResult result) {
-    ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-    builder.addErrors(result);
-    return builder.build();
-  }  
 
-  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
-  public void invalidMethod(Locale locale, HttpServletRequest request, HttpServletResponse response,
-    FormInfo formInfo, BindingResult result) {
-    // dummy test method
-  }
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
+	@ResponseBody
+	@RequestMapping(value = "/updateInfo1", method = RequestMethod.POST)
+	public ExtDirectResponse updateInfo1(Locale locale, HttpServletRequest request, FormInfo formInfo,
+			BindingResult result) {
+		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
+		builder.addErrors(result);
+		return builder.build();
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.POST)
+	public ExtDirectResponse updateInfo2(Locale locale, HttpServletRequest request, FormInfo formInfo,
+			BindingResult result) {
+		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
+		builder.addErrors(result);
+		return builder.build();
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
+	public void invalidMethod(Locale locale, HttpServletRequest request, HttpServletResponse response,
+			FormInfo formInfo, BindingResult result) {
+		// dummy test method
+	}
 
 }

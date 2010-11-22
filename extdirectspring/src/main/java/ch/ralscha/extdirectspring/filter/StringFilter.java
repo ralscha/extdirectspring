@@ -18,20 +18,20 @@ package ch.ralscha.extdirectspring.filter;
 
 public class StringFilter extends Filter {
 
-  private final String value;
+	private final String value;
 
-  public StringFilter(final String field, final String value) {
-    super(field);
-    this.value = value;
-  }
+	public StringFilter(final String field, final String value) {
+		super(field);
+		this.value = value;
+	}
 
-  public String getValue() {
-    return value;
-  }
+	public String getValue() {
+		return value;
+	}
 
-  @Override
-  public String toString() {
-    return "StringFilter [value=" + value + ", getField()=" + getField() + "]";
-  }
+	@Override
+	public String toString() {
+		return "StringFilter [value=" + value + ", getField()=" + getField() + "]";
+	}
 
 }

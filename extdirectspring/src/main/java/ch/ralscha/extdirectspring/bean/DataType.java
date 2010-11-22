@@ -17,16 +17,16 @@
 package ch.ralscha.extdirectspring.bean;
 
 public enum DataType {
-  STRING("string"), INTEGER("int"), FLOAT("float"), BOOLEAN("boolean"), DATE("date");
-  
-  private final String name;
-  
-  private DataType(final String name) {
-    this.name = name;
-  }
-  
-  public String getName() {
-    return name;
-  }
-  
+	STRING("string"), INTEGER("int"), FLOAT("float"), BOOLEAN("boolean"), DATE("date");
+
+	private final String name;
+
+	private DataType(final String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
 }

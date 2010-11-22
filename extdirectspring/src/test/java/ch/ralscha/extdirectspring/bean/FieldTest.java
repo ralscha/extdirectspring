@@ -23,34 +23,33 @@ import java.util.Map;
 
 import org.junit.Test;
 
-
 public class FieldTest {
-  
-  @Test
-  public void testSimpleField() {
-    Field aField = new Field("fieldName");
-    Map<String,Object> fieldData = aField.getFieldData();
-    assertEquals(1, fieldData.size()); 
-    assertThat(fieldData, hasEntry("name", (Object)"fieldName"));
-  }
-  
-  @Test
-  public void testComplexField() {
-    Field aField = new Field("fieldName");
-    aField.setAllowBlank(true);
-    aField.setDateFormat("Y-m-d");
-    aField.setType(DataType.DATE);
-    aField.addCustomProperty("customProperty1", 10);
-    aField.addCustomProperty("customProperty2", "aValue");
-        
-    Map<String,Object> fieldData = aField.getFieldData();
-    assertEquals(6, fieldData.size()); 
-    assertThat(fieldData, hasEntry("name", (Object)"fieldName"));
-    assertThat(fieldData, hasEntry("allowBlank", (Object)true));
-    assertThat(fieldData, hasEntry("dateFormat", (Object)"Y-m-d"));
-    assertThat(fieldData, hasEntry("type", (Object)"date"));
-    assertThat(fieldData, hasEntry("customProperty1", (Object)10));
-    assertThat(fieldData, hasEntry("customProperty2", (Object)"aValue"));
 
-  }
+	@Test
+	public void testSimpleField() {
+		Field aField = new Field("fieldName");
+		Map<String, Object> fieldData = aField.getFieldData();
+		assertEquals(1, fieldData.size());
+		assertThat(fieldData, hasEntry("name", (Object) "fieldName"));
+	}
+
+	@Test
+	public void testComplexField() {
+		Field aField = new Field("fieldName");
+		aField.setAllowBlank(true);
+		aField.setDateFormat("Y-m-d");
+		aField.setType(DataType.DATE);
+		aField.addCustomProperty("customProperty1", 10);
+		aField.addCustomProperty("customProperty2", "aValue");
+
+		Map<String, Object> fieldData = aField.getFieldData();
+		assertEquals(6, fieldData.size());
+		assertThat(fieldData, hasEntry("name", (Object) "fieldName"));
+		assertThat(fieldData, hasEntry("allowBlank", (Object) true));
+		assertThat(fieldData, hasEntry("dateFormat", (Object) "Y-m-d"));
+		assertThat(fieldData, hasEntry("type", (Object) "date"));
+		assertThat(fieldData, hasEntry("customProperty1", (Object) 10));
+		assertThat(fieldData, hasEntry("customProperty2", (Object) "aValue"));
+
+	}
 }

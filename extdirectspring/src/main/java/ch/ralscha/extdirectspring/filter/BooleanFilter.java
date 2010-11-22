@@ -18,20 +18,20 @@ package ch.ralscha.extdirectspring.filter;
 
 public class BooleanFilter extends Filter {
 
-  private final boolean value;
+	private final boolean value;
 
-  public BooleanFilter(final String field, final boolean value) {
-    super(field);
-    this.value = value;
-  }
+	public BooleanFilter(final String field, final boolean value) {
+		super(field);
+		this.value = value;
+	}
 
-  public boolean getValue() {
-    return value;
-  }
+	public boolean getValue() {
+		return value;
+	}
 
-  @Override
-  public String toString() {
-    return "BooleanFilter [value=" + value + ", getField()=" + getField() + "]";
-  }
+	@Override
+	public String toString() {
+		return "BooleanFilter [value=" + value + ", getField()=" + getField() + "]";
+	}
 
 }

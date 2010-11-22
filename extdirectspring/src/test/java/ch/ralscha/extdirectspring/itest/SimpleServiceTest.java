@@ -34,45 +34,47 @@ import org.junit.Test;
 
 public class SimpleServiceTest {
 
-  @Test
-  public void testSimpleApi() throws IllegalStateException, IOException {
+	@Test
+	public void testSimpleApi() throws IllegalStateException, IOException {
 
-    HttpClient client = new DefaultHttpClient();
-    HttpGet get = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_simple");
-    HttpResponse response = client.execute(get);
-    HttpEntity entity = response.getEntity();
-    assertNotNull(entity);
-    String responseString = EntityUtils.toString(entity);    
-    entity.consumeContent();
-    assertTrue(responseString.contains("\"name\" : \"toUpperCase\""));
-  }
-  
-  @SuppressWarnings("unchecked")
-  @Test
-  public void testSimpleCall() throws IllegalStateException, IOException {
-    HttpClient client = new DefaultHttpClient();
-    HttpPost post = new HttpPost("http://localhost:9998/controller/router");
-    
-    StringEntity postEntity = new StringEntity("{\"action\":\"simpleService\",\"method\":\"toUpperCase\",\"data\":[\"ralph\"],\"type\":\"rpc\",\"tid\":1}", 
-        "UTF-8");
-    post.setEntity(postEntity);
-    
-    HttpResponse response = client.execute(post);
-    HttpEntity entity = response.getEntity();
-    assertNotNull(entity);
-    String responseString = EntityUtils.toString(entity);
-    
-    assertNotNull(responseString);
-    assertTrue(responseString.startsWith("[") && responseString.endsWith("]"));
-    ObjectMapper mapper = new ObjectMapper();
-    Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length()-1), Map.class);
-    assertEquals(5, rootAsMap.size());
-    assertEquals("RALPH", rootAsMap.get("result"));
-    assertEquals("toUpperCase", rootAsMap.get("method"));
-    assertEquals("rpc", rootAsMap.get("type"));
-    assertEquals("simpleService", rootAsMap.get("action"));
-    assertEquals(1, rootAsMap.get("tid"));
-    
-  }
+		HttpClient client = new DefaultHttpClient();
+		HttpGet get = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_simple");
+		HttpResponse response = client.execute(get);
+		HttpEntity entity = response.getEntity();
+		assertNotNull(entity);
+		String responseString = EntityUtils.toString(entity);
+		entity.consumeContent();
+		assertTrue(responseString.contains("\"name\" : \"toUpperCase\""));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testSimpleCall() throws IllegalStateException, IOException {
+		HttpClient client = new DefaultHttpClient();
+		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
+
+		StringEntity postEntity = new StringEntity(
+				"{\"action\":\"simpleService\",\"method\":\"toUpperCase\",\"data\":[\"ralph\"],\"type\":\"rpc\",\"tid\":1}",
+				"UTF-8");
+		post.setEntity(postEntity);
+
+		HttpResponse response = client.execute(post);
+		HttpEntity entity = response.getEntity();
+		assertNotNull(entity);
+		String responseString = EntityUtils.toString(entity);
+
+		assertNotNull(responseString);
+		assertTrue(responseString.startsWith("[") && responseString.endsWith("]"));
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
+				Map.class);
+		assertEquals(5, rootAsMap.size());
+		assertEquals("RALPH", rootAsMap.get("result"));
+		assertEquals("toUpperCase", rootAsMap.get("method"));
+		assertEquals("rpc", rootAsMap.get("type"));
+		assertEquals("simpleService", rootAsMap.get("action"));
+		assertEquals(1, rootAsMap.get("tid"));
+
+	}
 
 }

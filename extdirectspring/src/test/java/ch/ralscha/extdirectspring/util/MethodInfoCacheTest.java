@@ -30,41 +30,41 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class MethodInfoCacheTest {
 
-  @Test
-  public void testPutAndGet() throws SecurityException, NoSuchMethodException {
-    assertNotNull(MethodInfoCache.INSTANCE);
-    Method thisMethod = getClass().getMethod("testPutAndGet", null);
+	@Test
+	public void testPutAndGet() throws SecurityException, NoSuchMethodException {
+		assertNotNull(MethodInfoCache.INSTANCE);
+		Method thisMethod = getClass().getMethod("testPutAndGet", null);
 
-    MethodInfoCache.INSTANCE.put(null, null, null);
-    assertNull(MethodInfoCache.INSTANCE.get(null, null));
+		MethodInfoCache.INSTANCE.put(null, null, null);
+		assertNull(MethodInfoCache.INSTANCE.get(null, null));
 
-    MethodInfoCache.INSTANCE.put(null, null, thisMethod);
-    assertEquals(thisMethod, MethodInfoCache.INSTANCE.get(null, null).getMethod());
+		MethodInfoCache.INSTANCE.put(null, null, thisMethod);
+		assertEquals(thisMethod, MethodInfoCache.INSTANCE.get(null, null).getMethod());
 
-    MethodInfoCache.INSTANCE.put(null, "testPut", thisMethod);
-    assertNull(MethodInfoCache.INSTANCE.get(null, "testPu"));
-    assertEquals(thisMethod, MethodInfoCache.INSTANCE.get(null, "testPut").getMethod());
+		MethodInfoCache.INSTANCE.put(null, "testPut", thisMethod);
+		assertNull(MethodInfoCache.INSTANCE.get(null, "testPu"));
+		assertEquals(thisMethod, MethodInfoCache.INSTANCE.get(null, "testPut").getMethod());
 
-    MethodInfoCache.INSTANCE.put("methodCacheTest", "testPut", thisMethod);
-    assertNull(MethodInfoCache.INSTANCE.get("methodCacheTest", "testPu"));
-    assertNull(MethodInfoCache.INSTANCE.get("methodCacheTes", "testPut"));
-    assertEquals(thisMethod, MethodInfoCache.INSTANCE.get("methodCacheTest", "testPut").getMethod());
-  }
-  
-  @Test
-  public void testKey() {
-    MethodInfoCache.Key key1 = new MethodInfoCache.Key("bean", "method");
-    MethodInfoCache.Key key2 = new MethodInfoCache.Key("bean", "otherMethod");
-    MethodInfoCache.Key key3 = new MethodInfoCache.Key("otherBean", "otherMethod");
-    
-    assertTrue(key1.equals(key1));
-    assertTrue(key2.equals(key2));
-    assertTrue(key3.equals(key3));
-    
-    assertFalse(key1.equals(key2));
-    assertFalse(key1.equals(key3));
-    
-    assertFalse(key1.equals("test"));
-  }
+		MethodInfoCache.INSTANCE.put("methodCacheTest", "testPut", thisMethod);
+		assertNull(MethodInfoCache.INSTANCE.get("methodCacheTest", "testPu"));
+		assertNull(MethodInfoCache.INSTANCE.get("methodCacheTes", "testPut"));
+		assertEquals(thisMethod, MethodInfoCache.INSTANCE.get("methodCacheTest", "testPut").getMethod());
+	}
+
+	@Test
+	public void testKey() {
+		MethodInfoCache.Key key1 = new MethodInfoCache.Key("bean", "method");
+		MethodInfoCache.Key key2 = new MethodInfoCache.Key("bean", "otherMethod");
+		MethodInfoCache.Key key3 = new MethodInfoCache.Key("otherBean", "otherMethod");
+
+		assertTrue(key1.equals(key1));
+		assertTrue(key2.equals(key2));
+		assertTrue(key3.equals(key3));
+
+		assertFalse(key1.equals(key2));
+		assertFalse(key1.equals(key3));
+
+		assertFalse(key1.equals("test"));
+	}
 
 }

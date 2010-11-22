@@ -27,20 +27,20 @@ import com.google.common.collect.ImmutableList;
 @Named
 public class ReportService {
 
-  private Random randomGenerator = new Random();
+	private Random randomGenerator = new Random();
 
-  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "pie")
-  public List<SeasonData> getSeasonData(@RequestParam(defaultValue = "50") int minRandomValue,
-      @RequestParam(value = "maxRandomValue", defaultValue = "250") int maxRandomValue) {
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "pie")
+	public List<SeasonData> getSeasonData(@RequestParam(defaultValue = "50") int minRandomValue,
+			@RequestParam(value = "maxRandomValue", defaultValue = "250") int maxRandomValue) {
 
-    System.out.println("min=" + minRandomValue);
-    System.out.println("max=" + maxRandomValue);
+		System.out.println("min=" + minRandomValue);
+		System.out.println("max=" + maxRandomValue);
 
-    return new ImmutableList.Builder<SeasonData>()
-        .add(new SeasonData("Summer", randomGenerator.nextInt(maxRandomValue - minRandomValue) + minRandomValue))
-        .add(new SeasonData("Fall", randomGenerator.nextInt(maxRandomValue - minRandomValue) + minRandomValue))
-        .add(new SeasonData("Winter", randomGenerator.nextInt(maxRandomValue - minRandomValue) + minRandomValue))
-        .add(new SeasonData("Spring", randomGenerator.nextInt(maxRandomValue - minRandomValue) + minRandomValue))
-        .build();
-  }
+		return new ImmutableList.Builder<SeasonData>()
+				.add(new SeasonData("Summer", randomGenerator.nextInt(maxRandomValue - minRandomValue) + minRandomValue))
+				.add(new SeasonData("Fall", randomGenerator.nextInt(maxRandomValue - minRandomValue) + minRandomValue))
+				.add(new SeasonData("Winter", randomGenerator.nextInt(maxRandomValue - minRandomValue) + minRandomValue))
+				.add(new SeasonData("Spring", randomGenerator.nextInt(maxRandomValue - minRandomValue) + minRandomValue))
+				.build();
+	}
 }

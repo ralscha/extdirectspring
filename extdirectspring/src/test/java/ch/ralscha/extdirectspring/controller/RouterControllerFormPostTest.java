@@ -39,29 +39,29 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerFormPostTest {
 
-  @Inject
-  private RouterController controller;
+	@Inject
+	private RouterController controller;
 
-  @Test
-  public void testFormPostRouter() {
-    try {
-      controller.router("remoteProviderSimple", "method1");
-      fail("has to throw a IllegalArgumentException");
-    } catch (Exception e) {
-      assertTrue(e instanceof IllegalArgumentException);
-      assertEquals("Invalid remoting form method: remoteProviderSimple.method1", e.getMessage());
-    }
+	@Test
+	public void testFormPostRouter() {
+		try {
+			controller.router("remoteProviderSimple", "method1");
+			fail("has to throw a IllegalArgumentException");
+		} catch (Exception e) {
+			assertTrue(e instanceof IllegalArgumentException);
+			assertEquals("Invalid remoting form method: remoteProviderSimple.method1", e.getMessage());
+		}
 
-    try {
-      controller.router("RemoteProviderSimple", "method1");
-      fail("has to throw a NoSuchBeanDefinitionException");
-    } catch (Exception e) {
-      assertTrue(e instanceof NoSuchBeanDefinitionException);
-      assertEquals("No bean named 'RemoteProviderSimple' is defined", e.getMessage());
-    }
+		try {
+			controller.router("RemoteProviderSimple", "method1");
+			fail("has to throw a NoSuchBeanDefinitionException");
+		} catch (Exception e) {
+			assertTrue(e instanceof NoSuchBeanDefinitionException);
+			assertEquals("No bean named 'RemoteProviderSimple' is defined", e.getMessage());
+		}
 
-    String redirect = controller.router("formInfoController", "updateInfo");
-    assertEquals("forward:updateInfo", redirect);
-  }
+		String redirect = controller.router("formInfoController", "updateInfo");
+		assertEquals("forward:updateInfo", redirect);
+	}
 
 }

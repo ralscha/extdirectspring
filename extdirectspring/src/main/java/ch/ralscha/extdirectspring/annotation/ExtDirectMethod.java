@@ -34,21 +34,21 @@ import java.lang.annotation.Target;
 @Documented
 public @interface ExtDirectMethod {
 
-  /**
-   * Specifies the type of the remote method. Defaults to simple method call.
-   */
-  ExtDirectMethodType value() default ExtDirectMethodType.SIMPLE;
+	/**
+	 * Specifies the type of the remote method. Defaults to simple method call.
+	 */
+	ExtDirectMethodType value() default ExtDirectMethodType.SIMPLE;
 
-  /**
-   * The name of an api group this method is part of.
-   */
-  String group() default "";
+	/**
+	 * The name of an api group this method is part of.
+	 */
+	String group() default "";
 
-  /**
-   * Optional parameter if the method is a POLL method. The name of the event
-   * this method is sending messages to If parameter is empty the name of the
-   * method will be used as event name
-   */
-  String event() default "";
+	/**
+	 * Optional parameter if the method is a POLL method. The name of the event
+	 * this method is sending messages to If parameter is empty the name of the
+	 * method will be used as event name
+	 */
+	String event() default "";
 
 }

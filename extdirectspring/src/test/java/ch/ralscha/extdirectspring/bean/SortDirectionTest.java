@@ -20,17 +20,16 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-
 public class SortDirectionTest {
 
-  @Test
-  public void testFromString() {    
-    assertSame(SortDirection.ASCENDING, SortDirection.fromString("asc"));
-    assertSame(SortDirection.ASCENDING, SortDirection.fromString("ASC"));
+	@Test
+	public void testFromString() {
+		assertSame(SortDirection.ASCENDING, SortDirection.fromString("asc"));
+		assertSame(SortDirection.ASCENDING, SortDirection.fromString("ASC"));
 
-    assertSame(SortDirection.DESCENDING, SortDirection.fromString("desc"));
-    assertSame(SortDirection.DESCENDING, SortDirection.fromString("DESC"));
-    
-    assertNull(SortDirection.fromString("xy"));
-  }
+		assertSame(SortDirection.DESCENDING, SortDirection.fromString("desc"));
+		assertSame(SortDirection.DESCENDING, SortDirection.fromString("DESC"));
+
+		assertNull(SortDirection.fromString("xy"));
+	}
 }

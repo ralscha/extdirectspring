@@ -24,63 +24,63 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
  * 
  * @author Ralph Schaer
  */
-@JsonSerialize(include=Inclusion.NON_NULL)
+@JsonSerialize(include = Inclusion.NON_NULL)
 public class ExtDirectPollResponse {
 
-  private String type;
-  private String name;
-  private Object data;
-  private String message;
-  private String where;
+	private String type;
+	private String name;
+	private Object data;
+	private String message;
+	private String where;
 
-  public ExtDirectPollResponse() {
-    type = "event";
-  }
+	public ExtDirectPollResponse() {
+		type = "event";
+	}
 
-  public String getType() {
-    return type;
-  }
+	public String getType() {
+		return type;
+	}
 
-  public void setType(String type) {
-    this.type = type;
-  }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public void setName(final String name) {
-    this.name = name;
-  }
+	public void setName(final String name) {
+		this.name = name;
+	}
 
-  public Object getData() {
-    return data;
-  }
+	public Object getData() {
+		return data;
+	}
 
-  public void setData(final Object data) {
-    this.data = data;
-  }
+	public void setData(final Object data) {
+		this.data = data;
+	}
 
-  public String getMessage() {
-    return message;
-  }
+	public String getMessage() {
+		return message;
+	}
 
-  public void setMessage(String message) {
-    this.message = message;
-  }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-  public String getWhere() {
-    return where;
-  }
+	public String getWhere() {
+		return where;
+	}
 
-  public void setWhere(String where) {
-    this.where = where;
-  }
+	public void setWhere(String where) {
+		this.where = where;
+	}
 
-  @Override
-  public String toString() {
-    return "ExtDirectPollResponse [type=" + type + ", name=" + name + ", data=" + data + ", message=" + message
-        + ", where=" + where + "]";
-  }
+	@Override
+	public String toString() {
+		return "ExtDirectPollResponse [type=" + type + ", name=" + name + ", data=" + data + ", message=" + message
+				+ ", where=" + where + "]";
+	}
 
 }

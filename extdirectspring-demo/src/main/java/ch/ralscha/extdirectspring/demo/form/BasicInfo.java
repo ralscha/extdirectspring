@@ -21,50 +21,50 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class BasicInfo {
 
-  private String foo;
+	private String foo;
 
-  @NotEmpty
-  private String name;
-  private String company;
+	@NotEmpty
+	private String name;
+	private String company;
 
-  @Email
-  private String email;
+	@Email
+	private String email;
 
-  public String getFoo() {
-    return foo;
-  }
+	public String getFoo() {
+		return foo;
+	}
 
-  public void setFoo(String foo) {
-    this.foo = foo;
-  }
+	public void setFoo(String foo) {
+		this.foo = foo;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public String getCompany() {
-    return company;
-  }
+	public String getCompany() {
+		return company;
+	}
 
-  public void setCompany(String company) {
-    this.company = company;
-  }
+	public void setCompany(String company) {
+		this.company = company;
+	}
 
-  public String getEmail() {
-    return email;
-  }
+	public String getEmail() {
+		return email;
+	}
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-  @Override
-  public String toString() {
-    return "BasicInfo [company=" + company + ", email=" + email + ", foo=" + foo + ", name=" + name + "]";
-  }
+	@Override
+	public String toString() {
+		return "BasicInfo [company=" + company + ", email=" + email + ", foo=" + foo + ", name=" + name + "]";
+	}
 
 }

@@ -18,26 +18,26 @@ package ch.ralscha.extdirectspring.filter;
 
 public class DateFilter extends Filter {
 
-  private final String value;
-  private final Comparison comparison;
+	private final String value;
+	private final Comparison comparison;
 
-  public DateFilter(final String field, final String value, final Comparison comparison) {
-    super(field);
-    this.value = value;
-    this.comparison = comparison;
-  }
+	public DateFilter(final String field, final String value, final Comparison comparison) {
+		super(field);
+		this.value = value;
+		this.comparison = comparison;
+	}
 
-  public String getValue() {
-    return value;
-  }
+	public String getValue() {
+		return value;
+	}
 
-  public Comparison getComparison() {
-    return comparison;
-  }
+	public Comparison getComparison() {
+		return comparison;
+	}
 
-  @Override
-  public String toString() {
-    return "DateFilter [value=" + value + ", comparison=" + comparison + ", getField()=" + getField() + "]";
-  }
+	@Override
+	public String toString() {
+		return "DateFilter [value=" + value + ", comparison=" + comparison + ", getField()=" + getField() + "]";
+	}
 
 }

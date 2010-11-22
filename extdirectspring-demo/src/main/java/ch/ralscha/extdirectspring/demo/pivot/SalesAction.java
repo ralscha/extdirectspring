@@ -28,12 +28,12 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 @Named
 public class SalesAction {
 
-  @Inject
-  private PivotDataBean dataBean;
+	@Inject
+	private PivotDataBean dataBean;
 
-  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "pivot")
-  public List<Sale> load(ExtDirectStoreReadRequest request) {
-    return dataBean.getSalesData();
-  }
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "pivot")
+	public List<Sale> load(ExtDirectStoreReadRequest request) {
+		return dataBean.getSalesData();
+	}
 
 }

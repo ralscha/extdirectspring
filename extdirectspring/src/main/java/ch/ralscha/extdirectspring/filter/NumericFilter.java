@@ -18,26 +18,26 @@ package ch.ralscha.extdirectspring.filter;
 
 public class NumericFilter extends Filter {
 
-  private final Number value;
-  private final Comparison comparison;
+	private final Number value;
+	private final Comparison comparison;
 
-  public NumericFilter(final String field, final Number value, final Comparison comparison) {
-    super(field);
-    this.value = value;
-    this.comparison = comparison;
-  }
+	public NumericFilter(final String field, final Number value, final Comparison comparison) {
+		super(field);
+		this.value = value;
+		this.comparison = comparison;
+	}
 
-  public Number getValue() {
-    return value;
-  }
+	public Number getValue() {
+		return value;
+	}
 
-  public Comparison getComparison() {
-    return comparison;
-  }
+	public Comparison getComparison() {
+		return comparison;
+	}
 
-  @Override
-  public String toString() {
-    return "NumericFilter [value=" + value + ", comparison=" + comparison + ", getField()=" + getField() + "]";
-  }
+	@Override
+	public String toString() {
+		return "NumericFilter [value=" + value + ", comparison=" + comparison + ", getField()=" + getField() + "]";
+	}
 
 }

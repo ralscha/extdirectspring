@@ -41,137 +41,139 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
  * @author Ralph Schaer
  */
 public class MethodInfo {
-  private static final LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
+	private static final LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
 
-  private List<ParameterInfo> parameters;
-  private Method method;
-  private String forwardPath;
+	private List<ParameterInfo> parameters;
+	private Method method;
+	private String forwardPath;
 
-  private ExtDirectMethodType type;
-  private Class<?> collectionType;
+	private ExtDirectMethodType type;
+	private Class<?> collectionType;
 
-  public MethodInfo(final Method method) {
+	public MethodInfo(final Method method) {
 
-    this.method = method;
+		this.method = method;
 
-    RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-    if (methodAnnotation != null) {
-      
-      RequestMapping classAnnotation = AnnotationUtils.findAnnotation(method.getDeclaringClass(), RequestMapping.class);
-      
-      String path = null;
-      if (hasValue(classAnnotation)) {
-        path = classAnnotation.value()[0];
-      }
+		RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
+		if (methodAnnotation != null) {
 
-      if (hasValue(methodAnnotation)) {
-        String methodPath = methodAnnotation.value()[0];
-        if (path != null) {
-          path = path + methodPath;
-        } else {
-          path = methodPath;
-        }
-      }
-      
-      if (path != null) {
-        if (path.charAt(0) == '/' && path.length() > 1) {
-          path = path.substring(1, path.length());
-        }
-        this.forwardPath = "forward:" + path;
-      }
-    }
+			RequestMapping classAnnotation = AnnotationUtils.findAnnotation(method.getDeclaringClass(),
+					RequestMapping.class);
 
-    ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
-    if (extDirectMethodAnnotation != null) {
-      this.type = extDirectMethodAnnotation.value();
-    }
+			String path = null;
+			if (hasValue(classAnnotation)) {
+				path = classAnnotation.value()[0];
+			}
 
-    this.parameters = buildParameterList(method);
+			if (hasValue(methodAnnotation)) {
+				String methodPath = methodAnnotation.value()[0];
+				if (path != null) {
+					path = path + methodPath;
+				} else {
+					path = methodPath;
+				}
+			}
 
-    for (ParameterInfo parameter : parameters) {
-      if (parameter.getCollectionType() != null) {
-        this.collectionType = parameter.getCollectionType();
-        break;
-      }
-    }
+			if (path != null) {
+				if (path.charAt(0) == '/' && path.length() > 1) {
+					path = path.substring(1, path.length());
+				}
+				this.forwardPath = "forward:" + path;
+			}
+		}
 
-  }
-  
-  private boolean hasValue(RequestMapping requestMapping) {
-    return (requestMapping != null && requestMapping.value() != null && 
-        requestMapping.value().length > 0 && StringUtils.hasText(requestMapping.value()[0]));
-  }
+		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+		if (extDirectMethodAnnotation != null) {
+			this.type = extDirectMethodAnnotation.value();
+		}
 
-  private static List<ParameterInfo> buildParameterList(Method m) {
-    List<ParameterInfo> params = new ArrayList<ParameterInfo>();
+		this.parameters = buildParameterList(method);
 
-    Class<?>[] parameterTypes = m.getParameterTypes();
-    Annotation[][] parameterAnnotations = null;
-    String[] parameterNames = null;
+		for (ParameterInfo parameter : parameters) {
+			if (parameter.getCollectionType() != null) {
+				this.collectionType = parameter.getCollectionType();
+				break;
+			}
+		}
 
-    Method methodWithAnnotation = ExtDirectSpringUtil.findMethodWithAnnotation(m, ExtDirectMethod.class);
-    if (methodWithAnnotation != null) {
-      parameterAnnotations = methodWithAnnotation.getParameterAnnotations();
-      parameterNames = discoverer.getParameterNames(methodWithAnnotation);
-    }
+	}
 
-    for (int paramIndex = 0; paramIndex < parameterTypes.length; paramIndex++) {
+	private boolean hasValue(RequestMapping requestMapping) {
+		return (requestMapping != null && requestMapping.value() != null && requestMapping.value().length > 0 && StringUtils
+				.hasText(requestMapping.value()[0]));
+	}
 
-      ParameterInfo parameterInfo = new ParameterInfo();
-      parameterInfo.setType(parameterTypes[paramIndex]);
+	private static List<ParameterInfo> buildParameterList(Method m) {
+		List<ParameterInfo> params = new ArrayList<ParameterInfo>();
 
-      parameterInfo.setSupportedParameter(SupportedParameterTypes.isSupported(parameterTypes[paramIndex]));
+		Class<?>[] parameterTypes = m.getParameterTypes();
+		Annotation[][] parameterAnnotations = null;
+		String[] parameterNames = null;
 
-      if (parameterNames != null) {
-        parameterInfo.setName(parameterNames[paramIndex]);
-      }
+		Method methodWithAnnotation = ExtDirectSpringUtil.findMethodWithAnnotation(m, ExtDirectMethod.class);
+		if (methodWithAnnotation != null) {
+			parameterAnnotations = methodWithAnnotation.getParameterAnnotations();
+			parameterNames = discoverer.getParameterNames(methodWithAnnotation);
+		}
 
-      if (parameterAnnotations != null) {
+		for (int paramIndex = 0; paramIndex < parameterTypes.length; paramIndex++) {
 
-        for (Annotation paramAnn : parameterAnnotations[paramIndex]) {
-          if (RequestParam.class.isInstance(paramAnn)) {
-            RequestParam requestParam = (RequestParam)paramAnn;
-            if (StringUtils.hasText(requestParam.value())) {
-              parameterInfo.setName(requestParam.value());
-            }
-            parameterInfo.setRequired(requestParam.required());
-            parameterInfo.setDefaultValue(ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()) ? null
-                : requestParam.defaultValue());
-            parameterInfo.setHasRequestParamAnnotation(true);
-            break;
-          }
-        }
-      }
+			ParameterInfo parameterInfo = new ParameterInfo();
+			parameterInfo.setType(parameterTypes[paramIndex]);
 
-      if (Collection.class.isAssignableFrom(parameterTypes[paramIndex])) {
-        parameterInfo.setCollectionType(GenericCollectionTypeResolver.getCollectionParameterType(new MethodParameter(m,
-            paramIndex)));
-      }
+			parameterInfo.setSupportedParameter(SupportedParameterTypes.isSupported(parameterTypes[paramIndex]));
 
-      params.add(parameterInfo);
-    }
+			if (parameterNames != null) {
+				parameterInfo.setName(parameterNames[paramIndex]);
+			}
 
-    return params;
-  }
+			if (parameterAnnotations != null) {
 
-  public Method getMethod() {
-    return method;
-  }
+				for (Annotation paramAnn : parameterAnnotations[paramIndex]) {
+					if (RequestParam.class.isInstance(paramAnn)) {
+						RequestParam requestParam = (RequestParam) paramAnn;
+						if (StringUtils.hasText(requestParam.value())) {
+							parameterInfo.setName(requestParam.value());
+						}
+						parameterInfo.setRequired(requestParam.required());
+						parameterInfo
+								.setDefaultValue(ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()) ? null
+										: requestParam.defaultValue());
+						parameterInfo.setHasRequestParamAnnotation(true);
+						break;
+					}
+				}
+			}
 
-  public String getForwardPath() {
-    return forwardPath;
-  }
+			if (Collection.class.isAssignableFrom(parameterTypes[paramIndex])) {
+				parameterInfo.setCollectionType(GenericCollectionTypeResolver
+						.getCollectionParameterType(new MethodParameter(m, paramIndex)));
+			}
 
-  public List<ParameterInfo> getParameters() {
-    return parameters;
-  }
+			params.add(parameterInfo);
+		}
 
-  public Class<?> getCollectionType() {
-    return collectionType;
-  }
+		return params;
+	}
 
-  public boolean isType(ExtDirectMethodType methodType) {
-    return this.type == methodType;
-  }
+	public Method getMethod() {
+		return method;
+	}
+
+	public String getForwardPath() {
+		return forwardPath;
+	}
+
+	public List<ParameterInfo> getParameters() {
+		return parameters;
+	}
+
+	public Class<?> getCollectionType() {
+		return collectionType;
+	}
+
+	public boolean isType(ExtDirectMethodType methodType) {
+		return this.type == methodType;
+	}
 
 }

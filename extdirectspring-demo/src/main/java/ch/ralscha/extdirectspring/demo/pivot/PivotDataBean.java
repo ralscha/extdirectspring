@@ -35,33 +35,33 @@ import com.google.common.collect.ImmutableList;
 @Named
 public class PivotDataBean {
 
-  @Inject
-  private Resource pivotdata;
+	@Inject
+	private Resource pivotdata;
 
-  private List<Sale> sales;
+	private List<Sale> sales;
 
-  @PostConstruct
-  public void readData() throws IOException {
-    ImmutableList.Builder<Sale> builder = ImmutableList.builder();
+	@PostConstruct
+	public void readData() throws IOException {
+		ImmutableList.Builder<Sale> builder = ImmutableList.builder();
 
-    InputStream is = pivotdata.getInputStream();
+		InputStream is = pivotdata.getInputStream();
 
-    BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-    CSVReader reader = new CSVReader(br, '|');
-    String[] nextLine;
-    while ((nextLine = reader.readNext()) != null) {
-      builder.add(new Sale(nextLine));
-    }
+		CSVReader reader = new CSVReader(br, '|');
+		String[] nextLine;
+		while ((nextLine = reader.readNext()) != null) {
+			builder.add(new Sale(nextLine));
+		}
 
-    br.close();
-    is.close();
+		br.close();
+		is.close();
 
-    sales = builder.build();
-  }
+		sales = builder.build();
+	}
 
-  public List<Sale> getSalesData() {
-    return sales;
-  }
+	public List<Sale> getSalesData() {
+		return sales;
+	}
 
 }

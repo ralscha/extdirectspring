@@ -20,37 +20,37 @@ import com.google.common.base.Objects;
 
 public class State implements Comparable<State> {
 
-  private String state;
+	private String state;
 
-  public State(String state) {
-    this.state = state;
-  }
+	public State(String state) {
+		this.state = state;
+	}
 
-  public String getState() {
-    return state;
-  }
+	public String getState() {
+		return state;
+	}
 
-  public void setState(String state) {
-    this.state = state;
-  }
+	public void setState(String state) {
+		this.state = state;
+	}
 
-  @Override
-  public int hashCode() {
-    return state.hashCode();
-  }
+	@Override
+	public int hashCode() {
+		return state.hashCode();
+	}
 
-  @Override
-  public boolean equals(Object o) {
-    if (!(o instanceof State)) {
-      return false;
-    }
-    State other = (State)o;
-    return Objects.equal(state, other.getState());
-  }
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof State)) {
+			return false;
+		}
+		State other = (State) o;
+		return Objects.equal(state, other.getState());
+	}
 
-  @Override
-  public int compareTo(State o) {
-    return state.compareTo(o.state);
-  }
+	@Override
+	public int compareTo(State o) {
+		return state.compareTo(o.state);
+	}
 
 }

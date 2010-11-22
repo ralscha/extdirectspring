@@ -18,62 +18,62 @@ package ch.ralscha.extdirectspring.util;
 
 public class JsonTestBean {
 
-  private Integer a;
-  private String b;
-  private String c;
-  private Boolean d;
-  private Integer[] e;
+	private Integer a;
+	private String b;
+	private String c;
+	private Boolean d;
+	private Integer[] e;
 
-  public JsonTestBean() {
-    // no action here
-  }
+	public JsonTestBean() {
+		// no action here
+	}
 
-  public JsonTestBean(Integer a, String b, String c, Boolean d, Integer[] e) {
-    this.a = a;
-    this.b = b;
-    this.c = c;
-    this.d = d;
-    this.e = e;
-  }
+	public JsonTestBean(Integer a, String b, String c, Boolean d, Integer[] e) {
+		this.a = a;
+		this.b = b;
+		this.c = c;
+		this.d = d;
+		this.e = e;
+	}
 
-  public Integer getA() {
-    return a;
-  }
+	public Integer getA() {
+		return a;
+	}
 
-  public void setA(Integer a) {
-    this.a = a;
-  }
+	public void setA(Integer a) {
+		this.a = a;
+	}
 
-  public String getB() {
-    return b;
-  }
+	public String getB() {
+		return b;
+	}
 
-  public void setB(String b) {
-    this.b = b;
-  }
+	public void setB(String b) {
+		this.b = b;
+	}
 
-  public String getC() {
-    return c;
-  }
+	public String getC() {
+		return c;
+	}
 
-  public void setC(String c) {
-    this.c = c;
-  }
+	public void setC(String c) {
+		this.c = c;
+	}
 
-  public Boolean getD() {
-    return d;
-  }
+	public Boolean getD() {
+		return d;
+	}
 
-  public void setD(Boolean d) {
-    this.d = d;
-  }
+	public void setD(Boolean d) {
+		this.d = d;
+	}
 
-  public Integer[] getE() {
-    return e;
-  }
+	public Integer[] getE() {
+		return e;
+	}
 
-  public void setE(Integer[] e) {
-    this.e = e;
-  }
+	public void setE(Integer[] e) {
+		this.e = e;
+	}
 
 }

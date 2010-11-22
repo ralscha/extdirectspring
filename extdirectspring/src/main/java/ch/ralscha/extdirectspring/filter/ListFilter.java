@@ -20,20 +20,20 @@ import java.util.List;
 
 public class ListFilter extends Filter {
 
-  private final List<String> value;
+	private final List<String> value;
 
-  public ListFilter(final String field, final List<String> value) {
-    super(field);
-    this.value = value;
-  }
+	public ListFilter(final String field, final List<String> value) {
+		super(field);
+		this.value = value;
+	}
 
-  public List<String> getValue() {
-    return value;
-  }
+	public List<String> getValue() {
+		return value;
+	}
 
-  @Override
-  public String toString() {
-    return "ListFilter [value=" + value + ", getField()=" + getField() + "]";
-  }
+	@Override
+	public String toString() {
+		return "ListFilter [value=" + value + ", getField()=" + getField() + "]";
+	}
 
 }

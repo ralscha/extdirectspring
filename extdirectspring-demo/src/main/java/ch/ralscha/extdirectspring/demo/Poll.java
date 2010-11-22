@@ -27,16 +27,16 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 @Named
 public class Poll {
 
-  @ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message", group = "example")
-  public String handleMessagePoll() {
-    Date now = new Date();
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd 'at' hh:mm:ss");
-    return "Successfully polled at: " + formatter.format(now);
-  }
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message", group = "example")
+	public String handleMessagePoll() {
+		Date now = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd 'at' hh:mm:ss");
+		return "Successfully polled at: " + formatter.format(now);
+	}
 
-  @ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "pollWithParams", group = "example")
-  public String pollingWithParams(@RequestParam(value = "no") int no, @RequestParam(value = "name") String name,
-      @RequestParam(value = "dummy", defaultValue = "CH") String dummy, HttpServletRequest request) {
-    return request.getRequestURI() + ":  POST PARAMETERS: no=" + no + ", name=" + name + ", dummy=" + dummy;
-  }
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "pollWithParams", group = "example")
+	public String pollingWithParams(@RequestParam(value = "no") int no, @RequestParam(value = "name") String name,
+			@RequestParam(value = "dummy", defaultValue = "CH") String dummy, HttpServletRequest request) {
+		return request.getRequestURI() + ":  POST PARAMETERS: no=" + no + ", name=" + name + ", dummy=" + dummy;
+	}
 }

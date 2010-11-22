@@ -35,64 +35,65 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 @SuppressWarnings("unused")
 public class RemoteProviderSimple {
 
-  @ExtDirectMethod(group = "group1")
-  public String method1() {
-    return "method1() called";
-  }
+	@ExtDirectMethod(group = "group1")
+	public String method1() {
+		return "method1() called";
+	}
 
-  @ExtDirectMethod
-  public String method2() {
-    return "method2() called";
-  }
+	@ExtDirectMethod
+	public String method2() {
+		return "method2() called";
+	}
 
-  @ExtDirectMethod(group = "group2")
-  public String method3(long i, Double d, String s) {
-    return String.format("method3() called-%d-%.1f-%s", i, d, s);
-  }
+	@ExtDirectMethod(group = "group2")
+	public String method3(long i, Double d, String s) {
+		return String.format("method3() called-%d-%.1f-%s", i, d, s);
+	}
 
-  public String method4(long i, Double d, String s) {
-    return "method4() called";
-  }
+	public String method4(long i, Double d, String s) {
+		return "method4() called";
+	}
 
-  @ExtDirectMethod(group = "group2")
-  public Boolean method5(String userName) {
-    if ("ralph".equals(userName)) {
-      return true;
-    } else if ("joe".equals(userName)) {
-      return false;
-    }
-    return null;
-  }
+	@ExtDirectMethod(group = "group2")
+	public Boolean method5(String userName) {
+		if ("ralph".equals(userName)) {
+			return true;
+		} else if ("joe".equals(userName)) {
+			return false;
+		}
+		return null;
+	}
 
-  @ExtDirectMethod
-  public int method6(int a, int b) {
-    return a + b;
-  }
+	@ExtDirectMethod
+	public int method6(int a, int b) {
+		return a + b;
+	}
 
-  @ExtDirectMethod
-  public String method7() {
-    return null;
-  }
+	@ExtDirectMethod
+	public String method7() {
+		return null;
+	}
 
-  @ExtDirectMethod
-  public FormInfo method8(double d) {
-    FormInfo info = new FormInfo();
-    info.setBack(d);
-    info.setAdmin(false);
-    info.setAge(32);
-    info.setBirthday(new GregorianCalendar(1986, Calendar.JULY, 22).getTime());
-    info.setName("John");
-    info.setSalary(new BigDecimal("8720.20"));
-    return info;
-  }
+	@ExtDirectMethod
+	public FormInfo method8(double d) {
+		FormInfo info = new FormInfo();
+		info.setBack(d);
+		info.setAdmin(false);
+		info.setAge(32);
+		info.setBirthday(new GregorianCalendar(1986, Calendar.JULY, 22).getTime());
+		info.setName("John");
+		info.setSalary(new BigDecimal("8720.20"));
+		return info;
+	}
 
-  @ExtDirectMethod(group = "group3")
-  public long method9(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale, Principal principal) {
-    Assert.assertNotNull(response);
-    Assert.assertNotNull(request);
-    Assert.assertNotNull(session);
-    Assert.assertEquals(Locale.ENGLISH, locale);
+	@ExtDirectMethod(group = "group3")
+	public long method9(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale,
+			Principal principal) {
+		Assert.assertNotNull(response);
+		Assert.assertNotNull(request);
+		Assert.assertNotNull(session);
+		Assert.assertEquals(Locale.ENGLISH, locale);
 
-    return 42;
-  }
+		return 42;
+	}
 }

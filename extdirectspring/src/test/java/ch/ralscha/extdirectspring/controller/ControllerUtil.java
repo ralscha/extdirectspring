@@ -20,13 +20,13 @@ import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 public class ControllerUtil {
-  public static String createRequestJson(String action, String method, int tid, Object... data) {
-    ExtDirectRequest dr = new ExtDirectRequest();
-    dr.setAction(action);
-    dr.setMethod(method);
-    dr.setTid(tid);
-    dr.setType("rpc");
-    dr.setData(data);
-    return ExtDirectSpringUtil.serializeObjectToJson(dr);
-  }
+	public static String createRequestJson(String action, String method, int tid, Object... data) {
+		ExtDirectRequest dr = new ExtDirectRequest();
+		dr.setAction(action);
+		dr.setMethod(method);
+		dr.setTid(tid);
+		dr.setType("rpc");
+		dr.setData(data);
+		return ExtDirectSpringUtil.serializeObjectToJson(dr);
+	}
 }

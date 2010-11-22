@@ -32,17 +32,17 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 @Controller
 public class UploadController {
 
-  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "upload")
-  @RequestMapping(value = "/uploadTest", method = RequestMethod.POST)
-  public void uploadTest(Locale locale, HttpServletRequest request, @RequestParam("fileUpload") MultipartFile file,
-      HttpServletResponse response) throws IOException {
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "upload")
+	@RequestMapping(value = "/uploadTest", method = RequestMethod.POST)
+	public void uploadTest(Locale locale, HttpServletRequest request, @RequestParam("fileUpload") MultipartFile file,
+			HttpServletResponse response) throws IOException {
 
-    ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
+		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
 
-    if (file != null && !file.isEmpty()) {
-      builder.addResultProperty("fileContents", new String(file.getBytes()));
-    }
-    builder.successful();
-    builder.buildAndWriteUploadResponse(response);
-  }
+		if (file != null && !file.isEmpty()) {
+			builder.addResultProperty("fileContents", new String(file.getBytes()));
+		}
+		builder.successful();
+		builder.buildAndWriteUploadResponse(response);
+	}
 }

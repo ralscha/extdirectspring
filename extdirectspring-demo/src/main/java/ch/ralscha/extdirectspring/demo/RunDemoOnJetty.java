@@ -48,10 +48,9 @@ public class RunDemoOnJetty {
 	 */
 	private static final String WEBAPP_CONTEXT_PATH = "/";
 
-
 	public static void main(String[] args) throws Exception {
 		start();
-		
+
 	}
 
 	private static Server start() throws Exception {
@@ -67,12 +66,11 @@ public class RunDemoOnJetty {
 
 		// Starts server
 		server.setStopAtShutdown(true);
-		
+
 		System.out.println("Jetty running on " + JETTY_PORT);
-		
+
 		server.start();
 
 		return server;
 	}
 }
-

@@ -27,28 +27,28 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 enum ApiCache {
 
-  /**
-   * Singleton enum pattern
-   */
-  INSTANCE;
+	/**
+	 * Singleton enum pattern
+	 */
+	INSTANCE;
 
-  private final Map<ApiCacheKey, SoftReference<String>> cache;
+	private final Map<ApiCacheKey, SoftReference<String>> cache;
 
-  private ApiCache() {
-    cache = new ConcurrentHashMap<ApiCacheKey, SoftReference<String>>();
-  }
+	private ApiCache() {
+		cache = new ConcurrentHashMap<ApiCacheKey, SoftReference<String>>();
+	}
 
-  public void put(final ApiCacheKey key, final String apiString) {
-    cache.put(key, new SoftReference<String>(apiString));
-  }
+	public void put(final ApiCacheKey key, final String apiString) {
+		cache.put(key, new SoftReference<String>(apiString));
+	}
 
-  public String get(final ApiCacheKey key) {
-    if (key != null) {
-      SoftReference<String> apiStringReference = cache.get(key);
-      if (apiStringReference != null && apiStringReference.get() != null) {
-        return apiStringReference.get();
-      }
-    }
-    return null;
-  }
+	public String get(final ApiCacheKey key) {
+		if (key != null) {
+			SoftReference<String> apiStringReference = cache.get(key);
+			if (apiStringReference != null && apiStringReference.get() != null) {
+				return apiStringReference.get();
+			}
+		}
+		return null;
+	}
 }
