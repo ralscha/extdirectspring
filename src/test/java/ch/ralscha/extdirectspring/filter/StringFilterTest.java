@@ -22,11 +22,11 @@ import org.junit.Test;
 
 public class StringFilterTest {
 
-  @Test
-  public void testString() {
-    StringFilter filter = new StringFilter("field", "value");
-    assertEquals("value", filter.getValue());
-    assertEquals("field", filter.getField());
-    assertEquals("StringFilter [value=value, getField()=field]", filter.toString());
-  }
+	@Test
+	public void testString() {
+		StringFilter filter = new StringFilter("field", "value");
+		assertEquals("value", filter.getValue());
+		assertEquals("field", filter.getField());
+		assertEquals("StringFilter [value=value, getField()=field]", filter.toString());
+	}
 }

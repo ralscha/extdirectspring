@@ -24,29 +24,29 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
  * 
  * @author Ralph Schaer
  */
-@JsonSerialize(include=Inclusion.NON_NULL)
+@JsonSerialize(include = Inclusion.NON_NULL)
 class Action {
 
-  private final String name;
-  private final int len;
-  private final Boolean formHandler;
+	private final String name;
+	private final int len;
+	private final Boolean formHandler;
 
-  public Action(final String name, final int len, final Boolean formHandler) {
-    this.name = name;
-    this.len = len;
-    this.formHandler = formHandler;
-  }
+	public Action(final String name, final int len, final Boolean formHandler) {
+		this.name = name;
+		this.len = len;
+		this.formHandler = formHandler;
+	}
 
-  public Boolean isFormHandler() {
-    return formHandler;
-  }
+	public Boolean isFormHandler() {
+		return formHandler;
+	}
 
-  public int getLen() {
-    return len;
-  }
+	public int getLen() {
+		return len;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 
 }

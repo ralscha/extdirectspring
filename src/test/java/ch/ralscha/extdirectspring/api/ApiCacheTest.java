@@ -28,52 +28,52 @@ import org.junit.Test;
  */
 public class ApiCacheTest {
 
-  @Test
-  public void testPutAndGet() {
-    assertNotNull(ApiCache.INSTANCE);
+	@Test
+	public void testPutAndGet() {
+		assertNotNull(ApiCache.INSTANCE);
 
-    ApiCacheKey key1 = new ApiCacheKey(null, null, null, null, null, false);
-    ApiCacheKey key2 = new ApiCacheKey(null, null, null, null, null, true);
-    ApiCacheKey key3 = new ApiCacheKey(null, null, null, null, "group", true);
-    ApiCacheKey key4 = new ApiCacheKey(null, null, null, "polling", "group", true);
-    ApiCacheKey key5 = new ApiCacheKey(null, null, "remoting", "polling", "group", true);
-    ApiCacheKey key6 = new ApiCacheKey(null, "action", "remoting", "polling", "group", true);
-    ApiCacheKey key7 = new ApiCacheKey("api", "action", "remoting", "polling", "group", true);
-    ApiCache.INSTANCE.put(key1, "one");
-    ApiCache.INSTANCE.put(key3, "three");
-    ApiCache.INSTANCE.put(key4, "four");
-    ApiCache.INSTANCE.put(key5, "five");
-    ApiCache.INSTANCE.put(key6, "six");
-    ApiCache.INSTANCE.put(key7, "seven");
+		ApiCacheKey key1 = new ApiCacheKey(null, null, null, null, null, false);
+		ApiCacheKey key2 = new ApiCacheKey(null, null, null, null, null, true);
+		ApiCacheKey key3 = new ApiCacheKey(null, null, null, null, "group", true);
+		ApiCacheKey key4 = new ApiCacheKey(null, null, null, "polling", "group", true);
+		ApiCacheKey key5 = new ApiCacheKey(null, null, "remoting", "polling", "group", true);
+		ApiCacheKey key6 = new ApiCacheKey(null, "action", "remoting", "polling", "group", true);
+		ApiCacheKey key7 = new ApiCacheKey("api", "action", "remoting", "polling", "group", true);
+		ApiCache.INSTANCE.put(key1, "one");
+		ApiCache.INSTANCE.put(key3, "three");
+		ApiCache.INSTANCE.put(key4, "four");
+		ApiCache.INSTANCE.put(key5, "five");
+		ApiCache.INSTANCE.put(key6, "six");
+		ApiCache.INSTANCE.put(key7, "seven");
 
-    assertNull(ApiCache.INSTANCE.get(null));
-    assertNull(ApiCache.INSTANCE.get(key2));
-    assertNotNull(ApiCache.INSTANCE.get(key1));
-    assertEquals("one", ApiCache.INSTANCE.get(key1));
-    assertEquals("three", ApiCache.INSTANCE.get(key3));
-    assertEquals("four", ApiCache.INSTANCE.get(key4));
-    assertEquals("five", ApiCache.INSTANCE.get(key5));
-    assertEquals("six", ApiCache.INSTANCE.get(key6));
-    assertEquals("seven", ApiCache.INSTANCE.get(key7));
+		assertNull(ApiCache.INSTANCE.get(null));
+		assertNull(ApiCache.INSTANCE.get(key2));
+		assertNotNull(ApiCache.INSTANCE.get(key1));
+		assertEquals("one", ApiCache.INSTANCE.get(key1));
+		assertEquals("three", ApiCache.INSTANCE.get(key3));
+		assertEquals("four", ApiCache.INSTANCE.get(key4));
+		assertEquals("five", ApiCache.INSTANCE.get(key5));
+		assertEquals("six", ApiCache.INSTANCE.get(key6));
+		assertEquals("seven", ApiCache.INSTANCE.get(key7));
 
-    assertFalse(key1.equals("test"));
-    assertFalse(key1.equals(null));
+		assertFalse(key1.equals("test"));
+		assertFalse(key1.equals(null));
 
-    assertTrue(key1.equals(key1));
-    assertTrue(key2.equals(key2));
-    assertTrue(key3.equals(key3));
-    assertTrue(key4.equals(key4));
-    assertTrue(key5.equals(key5));
-    assertTrue(key6.equals(key6));
-    assertTrue(key7.equals(key7));
+		assertTrue(key1.equals(key1));
+		assertTrue(key2.equals(key2));
+		assertTrue(key3.equals(key3));
+		assertTrue(key4.equals(key4));
+		assertTrue(key5.equals(key5));
+		assertTrue(key6.equals(key6));
+		assertTrue(key7.equals(key7));
 
-    assertFalse(key2.equals(key1));
-    assertFalse(key3.equals(key1));
-    assertFalse(key4.equals(key1));
-    assertFalse(key5.equals(key1));
-    assertFalse(key6.equals(key1));
-    assertFalse(key7.equals(key1));
+		assertFalse(key2.equals(key1));
+		assertFalse(key3.equals(key1));
+		assertFalse(key4.equals(key1));
+		assertFalse(key5.equals(key1));
+		assertFalse(key6.equals(key1));
+		assertFalse(key7.equals(key1));
 
-  }
+	}
 
 }

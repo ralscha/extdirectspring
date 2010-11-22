@@ -23,25 +23,25 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 @SuppressWarnings("all")
 public class BeanNotSpringWExtDirectMethods {
 
-  @ExtDirectMethod
-  public void methodA() {
-    // a dummy method
-  }
+	@ExtDirectMethod
+	public void methodA() {
+		// a dummy method
+	}
 
-  @ExtDirectMethod(value = ExtDirectMethodType.POLL)
-  public void methodB() {
-    // a dummy method
-  }
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL)
+	public void methodB() {
+		// a dummy method
+	}
 
-  @ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-  public List<Integer> methodC(List<Integer> ids) {
-    // a dummy method
-    return null;
-  }
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
+	public List<Integer> methodC(List<Integer> ids) {
+		// a dummy method
+		return null;
+	}
 
-  @ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
-  public List<Integer> methodD() {
-    // a dummy method
-    return null;
-  }
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
+	public List<Integer> methodD() {
+		// a dummy method
+		return null;
+	}
 }

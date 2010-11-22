@@ -24,98 +24,96 @@ import java.util.Map;
 
 import org.junit.Test;
 
-
 public class FilterTest {
 
-  @Test
-  public void testNumericFilter() {
-    Map<String,Object> json = new HashMap<String,Object>();
-    json.put("field", "aField");
-    json.put("type", "numeric");
-    json.put("comparison", "lt");
-    json.put("value", 12);
-    
-    Filter filter = Filter.createFilter(json);    
-    assertTrue(filter instanceof NumericFilter);
-    NumericFilter numericFilter = (NumericFilter)filter;
-    assertEquals("aField", numericFilter.getField());
-    assertEquals(12, numericFilter.getValue());
-    assertSame(Comparison.LESS_THAN, numericFilter.getComparison());    
-  }
-  
-  
-  @Test
-  public void testStringFilter() {
-    Map<String,Object> json = new HashMap<String,Object>();
-    json.put("field", "aField");
-    json.put("type", "string");
-    json.put("value", "aString");
-    
-    Filter filter = Filter.createFilter(json);    
-    assertTrue(filter instanceof StringFilter);
-    StringFilter stringFilter = (StringFilter)filter;
-    assertEquals("aField", stringFilter.getField());
-    assertEquals("aString", stringFilter.getValue());    
-  }
-  
-  @Test
-  public void testDateFilter() {
-    Map<String,Object> json = new HashMap<String,Object>();
-    json.put("field", "aField");
-    json.put("type", "date");
-    json.put("value", "12.12.2010");
-    json.put("comparison", "gt");
-    
-    Filter filter = Filter.createFilter(json);    
-    assertTrue(filter instanceof DateFilter);
-    DateFilter dateFilter = (DateFilter)filter;
-    assertEquals("aField", dateFilter.getField());
-    assertEquals("12.12.2010", dateFilter.getValue());   
-    assertSame(Comparison.GREATER_THAN, dateFilter.getComparison()); 
-  }  
-  
-  @Test
-  public void testListFilter() {
-    Map<String,Object> json = new HashMap<String,Object>();
-    json.put("field", "aField");
-    json.put("type", "list");
-    json.put("value", "one,two,three");
-    
-    Filter filter = Filter.createFilter(json);    
-    assertTrue(filter instanceof ListFilter);
-    ListFilter listFilter = (ListFilter)filter;
-    assertEquals("aField", listFilter.getField());
-    
-    List<String> list = listFilter.getValue();
-    assertEquals(3, list.size());
-    assertTrue(list.contains("one"));
-    assertTrue(list.contains("two"));
-    assertTrue(list.contains("three"));
-    assertFalse(list.contains("four"));       
-  }
-  
-  @Test
-  public void testBooleanFilter() {
-    Map<String,Object> json = new HashMap<String,Object>();
-    json.put("field", "aField");
-    json.put("type", "boolean");
-    json.put("value", false);
-    
-    Filter filter = Filter.createFilter(json);    
-    assertTrue(filter instanceof BooleanFilter);
-    BooleanFilter booleanFilter = (BooleanFilter)filter;
-    assertEquals("aField", booleanFilter.getField());
-    assertEquals(false, booleanFilter.getValue());    
-  }
-  
-  @Test
-  public void testNotExistsFilter() {
-    Map<String,Object> json = new HashMap<String,Object>();
-    json.put("field", "aField");
-    json.put("type", "xy");
-    json.put("value", "aValue");
-    
-    Filter filter = Filter.createFilter(json);    
-    assertNull(filter);
-  }
+	@Test
+	public void testNumericFilter() {
+		Map<String, Object> json = new HashMap<String, Object>();
+		json.put("field", "aField");
+		json.put("type", "numeric");
+		json.put("comparison", "lt");
+		json.put("value", 12);
+
+		Filter filter = Filter.createFilter(json);
+		assertTrue(filter instanceof NumericFilter);
+		NumericFilter numericFilter = (NumericFilter) filter;
+		assertEquals("aField", numericFilter.getField());
+		assertEquals(12, numericFilter.getValue());
+		assertSame(Comparison.LESS_THAN, numericFilter.getComparison());
+	}
+
+	@Test
+	public void testStringFilter() {
+		Map<String, Object> json = new HashMap<String, Object>();
+		json.put("field", "aField");
+		json.put("type", "string");
+		json.put("value", "aString");
+
+		Filter filter = Filter.createFilter(json);
+		assertTrue(filter instanceof StringFilter);
+		StringFilter stringFilter = (StringFilter) filter;
+		assertEquals("aField", stringFilter.getField());
+		assertEquals("aString", stringFilter.getValue());
+	}
+
+	@Test
+	public void testDateFilter() {
+		Map<String, Object> json = new HashMap<String, Object>();
+		json.put("field", "aField");
+		json.put("type", "date");
+		json.put("value", "12.12.2010");
+		json.put("comparison", "gt");
+
+		Filter filter = Filter.createFilter(json);
+		assertTrue(filter instanceof DateFilter);
+		DateFilter dateFilter = (DateFilter) filter;
+		assertEquals("aField", dateFilter.getField());
+		assertEquals("12.12.2010", dateFilter.getValue());
+		assertSame(Comparison.GREATER_THAN, dateFilter.getComparison());
+	}
+
+	@Test
+	public void testListFilter() {
+		Map<String, Object> json = new HashMap<String, Object>();
+		json.put("field", "aField");
+		json.put("type", "list");
+		json.put("value", "one,two,three");
+
+		Filter filter = Filter.createFilter(json);
+		assertTrue(filter instanceof ListFilter);
+		ListFilter listFilter = (ListFilter) filter;
+		assertEquals("aField", listFilter.getField());
+
+		List<String> list = listFilter.getValue();
+		assertEquals(3, list.size());
+		assertTrue(list.contains("one"));
+		assertTrue(list.contains("two"));
+		assertTrue(list.contains("three"));
+		assertFalse(list.contains("four"));
+	}
+
+	@Test
+	public void testBooleanFilter() {
+		Map<String, Object> json = new HashMap<String, Object>();
+		json.put("field", "aField");
+		json.put("type", "boolean");
+		json.put("value", false);
+
+		Filter filter = Filter.createFilter(json);
+		assertTrue(filter instanceof BooleanFilter);
+		BooleanFilter booleanFilter = (BooleanFilter) filter;
+		assertEquals("aField", booleanFilter.getField());
+		assertEquals(false, booleanFilter.getValue());
+	}
+
+	@Test
+	public void testNotExistsFilter() {
+		Map<String, Object> json = new HashMap<String, Object>();
+		json.put("field", "aField");
+		json.put("type", "xy");
+		json.put("value", "aValue");
+
+		Filter filter = Filter.createFilter(json);
+		assertNull(filter);
+	}
 }

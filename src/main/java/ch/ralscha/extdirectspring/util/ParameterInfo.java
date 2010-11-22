@@ -23,70 +23,70 @@ package ch.ralscha.extdirectspring.util;
  * @author Ralph Schaer
  */
 public class ParameterInfo {
-  private Class<?> type;
-  private Class<?> collectionType;
-  private String name;
+	private Class<?> type;
+	private Class<?> collectionType;
+	private String name;
 
-  private boolean hasRequestParamAnnotation;
-  private boolean required;
-  private String defaultValue;
+	private boolean hasRequestParamAnnotation;
+	private boolean required;
+	private String defaultValue;
 
-  private boolean supportedParameter;
+	private boolean supportedParameter;
 
-  public Class<?> getType() {
-    return type;
-  }
+	public Class<?> getType() {
+		return type;
+	}
 
-  public void setType(Class<?> type) {
-    this.type = type;
-  }
+	public void setType(Class<?> type) {
+		this.type = type;
+	}
 
-  public Class<?> getCollectionType() {
-    return collectionType;
-  }
+	public Class<?> getCollectionType() {
+		return collectionType;
+	}
 
-  public void setCollectionType(Class<?> collectionType) {
-    this.collectionType = collectionType;
-  }
+	public void setCollectionType(Class<?> collectionType) {
+		this.collectionType = collectionType;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public boolean isHasRequestParamAnnotation() {
-    return hasRequestParamAnnotation;
-  }
+	public boolean isHasRequestParamAnnotation() {
+		return hasRequestParamAnnotation;
+	}
 
-  public void setHasRequestParamAnnotation(boolean hasRequestParamAnnotation) {
-    this.hasRequestParamAnnotation = hasRequestParamAnnotation;
-  }
+	public void setHasRequestParamAnnotation(boolean hasRequestParamAnnotation) {
+		this.hasRequestParamAnnotation = hasRequestParamAnnotation;
+	}
 
-  public boolean isRequired() {
-    return required;
-  }
+	public boolean isRequired() {
+		return required;
+	}
 
-  public void setRequired(boolean required) {
-    this.required = required;
-  }
+	public void setRequired(boolean required) {
+		this.required = required;
+	}
 
-  public String getDefaultValue() {
-    return defaultValue;
-  }
+	public String getDefaultValue() {
+		return defaultValue;
+	}
 
-  public void setDefaultValue(String defaultValue) {
-    this.defaultValue = defaultValue;
-  }
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
 
-  public boolean isSupportedParameter() {
-    return supportedParameter;
-  }
+	public boolean isSupportedParameter() {
+		return supportedParameter;
+	}
 
-  public void setSupportedParameter(boolean supportedParameter) {
-    this.supportedParameter = supportedParameter;
-  }
+	public void setSupportedParameter(boolean supportedParameter) {
+		this.supportedParameter = supportedParameter;
+	}
 
 }

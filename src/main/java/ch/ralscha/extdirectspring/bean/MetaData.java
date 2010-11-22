@@ -25,60 +25,60 @@ import java.util.Map;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
-@JsonSerialize(include=Inclusion.NON_NULL)
+@JsonSerialize(include = Inclusion.NON_NULL)
 public class MetaData {
 
-  private final Map<String,Object> metaData;
-  
-  public MetaData() {
-    metaData = new LinkedHashMap<String,Object>();        
-    metaData.put("root", "records");
-    metaData.put("totalProperty", "total");
-    metaData.put("successProperty", "success");
-  }
-  
-  public void setPagingParameter(final int start, final int limit) {
-    metaData.put("start", start);
-    metaData.put("limit", limit);
-  }
-  
-  public void setIdProperty(final String idProperty) {
-    metaData.put("idProperty", idProperty);
-  }
+	private final Map<String, Object> metaData;
 
-  public void setSortInfo(final String field, final SortDirection direction) {
-    Map<String,String> sortInfo = new LinkedHashMap<String,String>();
-    sortInfo.put("field", field);
-    sortInfo.put("direction", direction.getName());
-    metaData.put("sortInfo", sortInfo);
-  }  
-    
-  public void addFields(final List<Field> fields) {
-    if (fields != null) {
-      for (Field field : fields) {
-        addField(field);
-      }
-    }
-  }
-  
-  @SuppressWarnings("unchecked")
-  public void addField(final Field field) {
-    
-    List<Map<String,Object>> fields = (List<Map<String,Object>>)metaData.get("fields");
-    if (fields == null) {
-      fields = new ArrayList<Map<String,Object>>();
-      metaData.put("fields", fields);
-    }
-    
-    fields.add(field.getFieldData());
-  }
-  
-  public void addCustomProperty(final String key, final Object value) {
-    metaData.put(key, value);
-  }
-  
-  public Map<String,Object> getMetaData() {
-    return Collections.unmodifiableMap(metaData);
-  }
-  
+	public MetaData() {
+		metaData = new LinkedHashMap<String, Object>();
+		metaData.put("root", "records");
+		metaData.put("totalProperty", "total");
+		metaData.put("successProperty", "success");
+	}
+
+	public void setPagingParameter(final int start, final int limit) {
+		metaData.put("start", start);
+		metaData.put("limit", limit);
+	}
+
+	public void setIdProperty(final String idProperty) {
+		metaData.put("idProperty", idProperty);
+	}
+
+	public void setSortInfo(final String field, final SortDirection direction) {
+		Map<String, String> sortInfo = new LinkedHashMap<String, String>();
+		sortInfo.put("field", field);
+		sortInfo.put("direction", direction.getName());
+		metaData.put("sortInfo", sortInfo);
+	}
+
+	public void addFields(final List<Field> fields) {
+		if (fields != null) {
+			for (Field field : fields) {
+				addField(field);
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public void addField(final Field field) {
+
+		List<Map<String, Object>> fields = (List<Map<String, Object>>) metaData.get("fields");
+		if (fields == null) {
+			fields = new ArrayList<Map<String, Object>>();
+			metaData.put("fields", fields);
+		}
+
+		fields.add(field.getFieldData());
+	}
+
+	public void addCustomProperty(final String key, final Object value) {
+		metaData.put(key, value);
+	}
+
+	public Map<String, Object> getMetaData() {
+		return Collections.unmodifiableMap(metaData);
+	}
+
 }

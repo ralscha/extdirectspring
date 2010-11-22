@@ -30,71 +30,71 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
  * @param <T>
  *          Type of the entry inside the collection
  */
-@JsonSerialize(include=Inclusion.NON_NULL)
-@JsonPropertyOrder(value={"metaData","success","total", "records"})
+@JsonSerialize(include = Inclusion.NON_NULL)
+@JsonPropertyOrder(value = { "metaData", "success", "total", "records" })
 public class ExtDirectStoreResponse<T> {
 
-  private Integer total;
-  private Collection<T> records;
-  private Boolean success;
-  private MetaData metaData;
+	private Integer total;
+	private Collection<T> records;
+	private Boolean success;
+	private MetaData metaData;
 
-  public ExtDirectStoreResponse() {
-    // default constructor
-  }
+	public ExtDirectStoreResponse() {
+		// default constructor
+	}
 
-  public ExtDirectStoreResponse(final Collection<T> records) {
-    this(null, records, true);
-  }
+	public ExtDirectStoreResponse(final Collection<T> records) {
+		this(null, records, true);
+	}
 
-  public ExtDirectStoreResponse(final Integer total, final Collection<T> records) {
-    this(total, records, true);
-  }
+	public ExtDirectStoreResponse(final Integer total, final Collection<T> records) {
+		this(total, records, true);
+	}
 
-  public ExtDirectStoreResponse(final Integer total, final Collection<T> records, final Boolean success) {
-    this.total = total;
-    this.records = records;
-    this.success = success;
-  }
+	public ExtDirectStoreResponse(final Integer total, final Collection<T> records, final Boolean success) {
+		this.total = total;
+		this.records = records;
+		this.success = success;
+	}
 
-  public Integer getTotal() {
-    return total;
-  }
+	public Integer getTotal() {
+		return total;
+	}
 
-  public void setTotal(final Integer total) {
-    this.total = total;
-  }
+	public void setTotal(final Integer total) {
+		this.total = total;
+	}
 
-  public Collection<T> getRecords() {
-    return records;
-  }
+	public Collection<T> getRecords() {
+		return records;
+	}
 
-  public void setRecords(final Collection<T> records) {
-    this.records = records;
-  }
+	public void setRecords(final Collection<T> records) {
+		this.records = records;
+	}
 
-  public Boolean isSuccess() {
-    return success;
-  }
+	public Boolean isSuccess() {
+		return success;
+	}
 
-  public void setSuccess(final Boolean success) {
-    this.success = success;
-  }
+	public void setSuccess(final Boolean success) {
+		this.success = success;
+	}
 
-  public Map<String,Object> getMetaData() {
-    if (metaData != null) {
-      return metaData.getMetaData();
-    }
-    return null;
-  }
-  
-  public void setMetaData(final MetaData metaData) {
-    this.metaData = metaData;
-  }
+	public Map<String, Object> getMetaData() {
+		if (metaData != null) {
+			return metaData.getMetaData();
+		}
+		return null;
+	}
 
-  @Override
-  public String toString() {
-    return "ExtDirectStoreResponse [records=" + records + ", success=" + success + ", total=" + total + "]";
-  }
+	public void setMetaData(final MetaData metaData) {
+		this.metaData = metaData;
+	}
+
+	@Override
+	public String toString() {
+		return "ExtDirectStoreResponse [records=" + records + ", success=" + success + ", total=" + total + "]";
+	}
 
 }

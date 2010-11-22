@@ -73,329 +73,330 @@ import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
 @Controller
 public class RouterController implements ApplicationContextAware {
 
-  private static final GenericConversionService genericConversionService = ConversionServiceFactory
-      .createDefaultConversionService();
-
-  private static final Log log = LogFactory.getLog(RouterController.class);
+	private static final GenericConversionService genericConversionService = ConversionServiceFactory
+			.createDefaultConversionService();
+
+	private static final Log log = LogFactory.getLog(RouterController.class);
 
-  private ApplicationContext context;
-
-  @Override
-  public void setApplicationContext(ApplicationContext context) {
-    this.context = context;
-  }
+	private ApplicationContext context;
+
+	@Override
+	public void setApplicationContext(ApplicationContext context) {
+		this.context = context;
+	}
 
-  @RequestMapping(value = "/poll/{beanName}/{method}/{event}")
-  @ResponseBody
-  public ExtDirectPollResponse poll(@PathVariable("beanName") String beanName, @PathVariable("method") String method,
-      @PathVariable("event") String event, HttpServletRequest request, HttpServletResponse response, Locale locale)
-      throws Exception {
-
-    ExtDirectPollResponse directPollResponse = new ExtDirectPollResponse();
-    directPollResponse.setName(event);
-
-    try {
-      MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, beanName, method);
+	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
+	@ResponseBody
+	public ExtDirectPollResponse poll(@PathVariable("beanName") String beanName, @PathVariable("method") String method,
+			@PathVariable("event") String event, HttpServletRequest request, HttpServletResponse response, Locale locale)
+			throws Exception {
+
+		ExtDirectPollResponse directPollResponse = new ExtDirectPollResponse();
+		directPollResponse.setName(event);
+
+		try {
+			MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, beanName, method);
+
+			List<ParameterInfo> methodParameters = methodInfo.getParameters();
+			Object[] parameters = null;
+			if (!methodParameters.isEmpty()) {
+				parameters = new Object[methodParameters.size()];
 
-      List<ParameterInfo> methodParameters = methodInfo.getParameters();
-      Object[] parameters = null;
-      if (!methodParameters.isEmpty()) {
-        parameters = new Object[methodParameters.size()];
-
-        for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
-          ParameterInfo methodParameter = methodParameters.get(paramIndex);
-
-          if (methodParameter.isSupportedParameter()) {
-            parameters[paramIndex] = SupportedParameterTypes.resolveParameter(methodParameter.getType(), request,
-                response, locale);
-          } else {
-            parameters[paramIndex] = handleRequestParam(request, null, methodParameter);
-          }
-
-        }
-      }
-
-      directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
-    } catch (Exception e) {
-      log.error("Error on polling method '" + beanName + "." + method + "'", e);
-
-      directPollResponse.setType("exception");
-
-      if (log.isDebugEnabled()) {
-        directPollResponse.setMessage(e.getMessage());
-        directPollResponse.setWhere(getStackTrace(e));
-      } else {
-        directPollResponse.setMessage("Server Error");
-        directPollResponse.setWhere(null);
-      }
-    }
-    return directPollResponse;
-
-  }
-
-  @RequestMapping(value = "/router", method = RequestMethod.POST, params = "extAction")
-  public String router(@RequestParam("extAction") String extAction, @RequestParam("extMethod") String extMethod) {
-
-    MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, extAction, extMethod);
-    if (methodInfo.getForwardPath() != null) {
-      return methodInfo.getForwardPath();
-    }
-    throw new IllegalArgumentException("Invalid remoting form method: " + extAction + "." + extMethod);
-
-  }
-
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  @RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction")
-  @ResponseBody
-  public List<ExtDirectResponse> router(HttpServletRequest request, HttpServletResponse response, Locale locale,
-      @RequestBody String rawRequestString) {
-
-    List<ExtDirectRequest> directRequests = getExtDirectRequests(rawRequestString);
-    List<ExtDirectResponse> directResponses = new ArrayList<ExtDirectResponse>();
-
-    for (ExtDirectRequest directRequest : directRequests) {
-
-      ExtDirectResponse directResponse = new ExtDirectResponse(directRequest);
-
-      try {
-        MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, directRequest.getAction(),
-            directRequest.getMethod());
-
-        Object result = processRemotingRequest(request, response, locale, directRequest, methodInfo);
-
-        if (result != null) {
-
-          if (methodInfo.isType(ExtDirectMethodType.FORM_LOAD)) {
-            if (!ExtDirectFormLoadResult.class.isAssignableFrom(result.getClass())) {
-              result = new ExtDirectFormLoadResult(result);
-            }
-          } else if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
-            if (!ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())) {
-              result = new ExtDirectStoreResponse((Collection)result);
-            }
-          }
-        }
-
-        directResponse.setResult(result);
-      } catch (Exception e) {
-        log.error("Error on method: " + directRequest.getMethod(), e);
-
-        directResponse.setType("exception");
-
-        if (log.isDebugEnabled()) {
-          directResponse.setMessage(e.getMessage());
-          directResponse.setWhere(getStackTrace(e));
-        } else {
-          directResponse.setMessage("Server Error");
-          directResponse.setWhere(null);
-        }
-      }
-
-      directResponses.add(directResponse);
-    }
-
-    return directResponses;
-
-  }
-
-  private String getStackTrace(final Throwable t) {
-    StringWriter sw = new StringWriter();
-    PrintWriter pw = new PrintWriter(sw, true);
-    t.printStackTrace(pw);
-    pw.flush();
-    sw.flush();
-    return sw.toString();
-  }
-
-  @SuppressWarnings({ "unchecked", "rawtypes" })
-  private Object processRemotingRequest(final HttpServletRequest request, final HttpServletResponse response,
-      final Locale locale, final ExtDirectRequest directRequest, final MethodInfo methodInfo) throws Exception {
-
-    int jsonParamIndex = 0;
-    Map<String, Object> remainingParameters = null;
-    ExtDirectStoreReadRequest directStoreReadRequest = null;
-
-    List<Object> directStoreModifyRecords = null;
-    Class<?> directStoreEntryClass;
-
-    if (methodInfo.isType(ExtDirectMethodType.STORE_READ) || methodInfo.isType(ExtDirectMethodType.FORM_LOAD)) {
-
-      if (directRequest.getData() != null && directRequest.getData().length > 0) {
-        if (methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
-          directStoreReadRequest = new ExtDirectStoreReadRequest();
-          remainingParameters = fillObjectFromMap(directStoreReadRequest, (Map)directRequest.getData()[0]);
-        } else {
-          remainingParameters = (Map)directRequest.getData()[0];
-        }
-        jsonParamIndex = 1;
-      }
-    } else if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)) {
-      directStoreEntryClass = methodInfo.getCollectionType();
-
-      if (directRequest.getData() != null && directRequest.getData().length > 0) {
-        Map<String, Object> jsonData = (LinkedHashMap<String, Object>)directRequest.getData()[0];
-
-        ArrayList<Object> records = (ArrayList<Object>)jsonData.get("records");
-        directStoreModifyRecords = convertObjectEntriesToType(records, directStoreEntryClass);
-        jsonParamIndex = 1;
-    
-        remainingParameters = new HashMap<String, Object>(jsonData);
-        remainingParameters.remove("records");
-
-      }
-    } else if (methodInfo.isType(ExtDirectMethodType.POLL)) {
-      throw new IllegalStateException("this controller does not handle poll calls");
-    } else if (methodInfo.isType(ExtDirectMethodType.FORM_POST)) {
-      throw new IllegalStateException("this controller does not handle form posts");
-    }
-
-    List<ParameterInfo> methodParameters = methodInfo.getParameters();
-    Object[] parameters = null;
-
-    if (!methodParameters.isEmpty()) {
-      parameters = new Object[methodParameters.size()];
-
-      for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
-        ParameterInfo methodParameter = methodParameters.get(paramIndex);
-
-        if (methodParameter.isSupportedParameter()) {
-          parameters[paramIndex] = SupportedParameterTypes.resolveParameter(methodParameter.getType(), request,
-              response, locale);
-        } else if (ExtDirectStoreReadRequest.class.isAssignableFrom(methodParameter.getType())) {
-          parameters[paramIndex] = directStoreReadRequest;
-        } else if (directStoreModifyRecords != null && methodParameter.getCollectionType() != null) {
-          parameters[paramIndex] = directStoreModifyRecords;
-        } else if (methodParameter.isHasRequestParamAnnotation()) {
-          parameters[paramIndex] = handleRequestParam(null, remainingParameters, methodParameter);
-        } else if (directRequest.getData() != null && directRequest.getData().length > jsonParamIndex) {
-
-          Object jsonParam = directRequest.getData()[jsonParamIndex];
-
-          if (methodParameter.getType().getClass().equals(String.class)) {
-            parameters[paramIndex] = ExtDirectSpringUtil.serializeObjectToJson(jsonParam);
-          } else if (methodParameter.getType().isPrimitive()) {
-            parameters[paramIndex] = jsonParam;
-          } else {
-            parameters[paramIndex] = ExtDirectSpringUtil.deserializeJsonToObject(
-                ExtDirectSpringUtil.serializeObjectToJson(jsonParam), methodParameter.getType());
-          }
-
-          jsonParamIndex++;
-        } else {
-          throw new IllegalArgumentException(
-              "Error, parameter mismatch. Please check your remoting method signature to ensure all supported parameters types are used.");
-        }
-
-      }
-    }
-
-    return ExtDirectSpringUtil.invoke(context, directRequest.getAction(), methodInfo, parameters);
-  }
-
-  private Object handleRequestParam(final HttpServletRequest request, final Map<String, Object> valueContainer,
-      final ParameterInfo parameterInfo) {
-
-    if (parameterInfo.getName() != null) {
-      Object value;
-      if (request != null) {
-        value = request.getParameter(parameterInfo.getName());
-      } else if (valueContainer != null) {
-        value = valueContainer.get(parameterInfo.getName());
-      } else {
-        value = null;
-      }
-
-      if (value == null) {
-        value = parameterInfo.getDefaultValue();
-      }
-
-      if (value != null) {
-        return genericConversionService.convert(value, parameterInfo.getType());
-      }
-
-      if (parameterInfo.isRequired()) {
-        throw new IllegalArgumentException("Missing request parameter: " + parameterInfo.getName());
-      }
-    }
-
-    return null;
-  }
-
-  private Map<String, Object> fillObjectFromMap(final ExtDirectStoreReadRequest to, final Map<String, Object> from) {
-    Set<String> foundParameters = new HashSet<String>();
-
-    for (Entry<String, Object> entry : from.entrySet()) {
-
-      if (entry.getKey().equals("filter")) {
-        List<Filter> filters = new ArrayList<Filter>();
-
-        List<Map<String, Object>> rawFilters = ExtDirectSpringUtil.deserializeJsonToObject((String)entry.getValue(),
-            new TypeReference<List<Map<String, Object>>>() {/* empty */
-            });
-
-        for (Map<String, Object> rawFilter : rawFilters) {
-          filters.add(Filter.createFilter(rawFilter));
-        }
-
-        to.setFilters(filters);
-        foundParameters.add(entry.getKey());
-      } else {
-
-        PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(to.getClass(), entry.getKey());
-        if (descriptor != null && descriptor.getWriteMethod() != null) {
-          try {
-
-            descriptor.getWriteMethod().invoke(to,
-                genericConversionService.convert(entry.getValue(), descriptor.getPropertyType()));
-
-            foundParameters.add(entry.getKey());
-          } catch (IllegalArgumentException e) {
-            log.error("fillObjectFromMap", e);
-          } catch (IllegalAccessException e) {
-            log.error("fillObjectFromMap", e);
-          } catch (InvocationTargetException e) {
-            log.error("fillObjectFromMap", e);
-          }
-        }
-      }
-    }
-
-    Map<String, Object> remainingParameters = new HashMap<String, Object>();
-    for (Entry<String, Object> entry : from.entrySet()) {
-      if (!foundParameters.contains(entry.getKey())) {
-        remainingParameters.put(entry.getKey(), entry.getValue());
-      }
-    }
-    return remainingParameters;
-  }
-
-  private List<Object> convertObjectEntriesToType(final ArrayList<Object> records, final Class<?> directStoreType) {
-    if (records != null) {
-      List<Object> convertedList = new ArrayList<Object>();
-      for (Object record : records) {
-        Object convertedObject = ExtDirectSpringUtil.deserializeJsonToObject(
-            ExtDirectSpringUtil.serializeObjectToJson(record), directStoreType);
-        convertedList.add(convertedObject);
-      }
-      return convertedList;
-    }
-    return null;
-  }
-
-  private List<ExtDirectRequest> getExtDirectRequests(final String rawRequestString) {
-    List<ExtDirectRequest> directRequests = new ArrayList<ExtDirectRequest>();
-
-    if (rawRequestString.length() > 0 && rawRequestString.charAt(0) == '[') {
-      directRequests.addAll(ExtDirectSpringUtil.deserializeJsonToObject(rawRequestString,
-          new TypeReference<List<ExtDirectRequest>>() {/* empty */
-          }));
-    } else {
-      ExtDirectRequest directRequest = ExtDirectSpringUtil.deserializeJsonToObject(rawRequestString,
-          ExtDirectRequest.class);
-      directRequests.add(directRequest);
-    }
-
-    return directRequests;
-  }
+				for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
+					ParameterInfo methodParameter = methodParameters.get(paramIndex);
+
+					if (methodParameter.isSupportedParameter()) {
+						parameters[paramIndex] = SupportedParameterTypes.resolveParameter(methodParameter.getType(),
+								request, response, locale);
+					} else {
+						parameters[paramIndex] = handleRequestParam(request, null, methodParameter);
+					}
+
+				}
+			}
+
+			directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
+		} catch (Exception e) {
+			log.error("Error on polling method '" + beanName + "." + method + "'", e);
+
+			directPollResponse.setType("exception");
+
+			if (log.isDebugEnabled()) {
+				directPollResponse.setMessage(e.getMessage());
+				directPollResponse.setWhere(getStackTrace(e));
+			} else {
+				directPollResponse.setMessage("Server Error");
+				directPollResponse.setWhere(null);
+			}
+		}
+		return directPollResponse;
+
+	}
+
+	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "extAction")
+	public String router(@RequestParam("extAction") String extAction, @RequestParam("extMethod") String extMethod) {
+
+		MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, extAction, extMethod);
+		if (methodInfo.getForwardPath() != null) {
+			return methodInfo.getForwardPath();
+		}
+		throw new IllegalArgumentException("Invalid remoting form method: " + extAction + "." + extMethod);
+
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction")
+	@ResponseBody
+	public List<ExtDirectResponse> router(HttpServletRequest request, HttpServletResponse response, Locale locale,
+			@RequestBody String rawRequestString) {
+
+		List<ExtDirectRequest> directRequests = getExtDirectRequests(rawRequestString);
+		List<ExtDirectResponse> directResponses = new ArrayList<ExtDirectResponse>();
+
+		for (ExtDirectRequest directRequest : directRequests) {
+
+			ExtDirectResponse directResponse = new ExtDirectResponse(directRequest);
+
+			try {
+				MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, directRequest.getAction(),
+						directRequest.getMethod());
+
+				Object result = processRemotingRequest(request, response, locale, directRequest, methodInfo);
+
+				if (result != null) {
+
+					if (methodInfo.isType(ExtDirectMethodType.FORM_LOAD)) {
+						if (!ExtDirectFormLoadResult.class.isAssignableFrom(result.getClass())) {
+							result = new ExtDirectFormLoadResult(result);
+						}
+					} else if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)
+							|| methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
+						if (!ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())) {
+							result = new ExtDirectStoreResponse((Collection) result);
+						}
+					}
+				}
+
+				directResponse.setResult(result);
+			} catch (Exception e) {
+				log.error("Error on method: " + directRequest.getMethod(), e);
+
+				directResponse.setType("exception");
+
+				if (log.isDebugEnabled()) {
+					directResponse.setMessage(e.getMessage());
+					directResponse.setWhere(getStackTrace(e));
+				} else {
+					directResponse.setMessage("Server Error");
+					directResponse.setWhere(null);
+				}
+			}
+
+			directResponses.add(directResponse);
+		}
+
+		return directResponses;
+
+	}
+
+	private String getStackTrace(final Throwable t) {
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw, true);
+		t.printStackTrace(pw);
+		pw.flush();
+		sw.flush();
+		return sw.toString();
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private Object processRemotingRequest(final HttpServletRequest request, final HttpServletResponse response,
+			final Locale locale, final ExtDirectRequest directRequest, final MethodInfo methodInfo) throws Exception {
+
+		int jsonParamIndex = 0;
+		Map<String, Object> remainingParameters = null;
+		ExtDirectStoreReadRequest directStoreReadRequest = null;
+
+		List<Object> directStoreModifyRecords = null;
+		Class<?> directStoreEntryClass;
+
+		if (methodInfo.isType(ExtDirectMethodType.STORE_READ) || methodInfo.isType(ExtDirectMethodType.FORM_LOAD)) {
+
+			if (directRequest.getData() != null && directRequest.getData().length > 0) {
+				if (methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
+					directStoreReadRequest = new ExtDirectStoreReadRequest();
+					remainingParameters = fillObjectFromMap(directStoreReadRequest, (Map) directRequest.getData()[0]);
+				} else {
+					remainingParameters = (Map) directRequest.getData()[0];
+				}
+				jsonParamIndex = 1;
+			}
+		} else if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)) {
+			directStoreEntryClass = methodInfo.getCollectionType();
+
+			if (directRequest.getData() != null && directRequest.getData().length > 0) {
+				Map<String, Object> jsonData = (LinkedHashMap<String, Object>) directRequest.getData()[0];
+
+				ArrayList<Object> records = (ArrayList<Object>) jsonData.get("records");
+				directStoreModifyRecords = convertObjectEntriesToType(records, directStoreEntryClass);
+				jsonParamIndex = 1;
+
+				remainingParameters = new HashMap<String, Object>(jsonData);
+				remainingParameters.remove("records");
+
+			}
+		} else if (methodInfo.isType(ExtDirectMethodType.POLL)) {
+			throw new IllegalStateException("this controller does not handle poll calls");
+		} else if (methodInfo.isType(ExtDirectMethodType.FORM_POST)) {
+			throw new IllegalStateException("this controller does not handle form posts");
+		}
+
+		List<ParameterInfo> methodParameters = methodInfo.getParameters();
+		Object[] parameters = null;
+
+		if (!methodParameters.isEmpty()) {
+			parameters = new Object[methodParameters.size()];
+
+			for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
+				ParameterInfo methodParameter = methodParameters.get(paramIndex);
+
+				if (methodParameter.isSupportedParameter()) {
+					parameters[paramIndex] = SupportedParameterTypes.resolveParameter(methodParameter.getType(),
+							request, response, locale);
+				} else if (ExtDirectStoreReadRequest.class.isAssignableFrom(methodParameter.getType())) {
+					parameters[paramIndex] = directStoreReadRequest;
+				} else if (directStoreModifyRecords != null && methodParameter.getCollectionType() != null) {
+					parameters[paramIndex] = directStoreModifyRecords;
+				} else if (methodParameter.isHasRequestParamAnnotation()) {
+					parameters[paramIndex] = handleRequestParam(null, remainingParameters, methodParameter);
+				} else if (directRequest.getData() != null && directRequest.getData().length > jsonParamIndex) {
+
+					Object jsonParam = directRequest.getData()[jsonParamIndex];
+
+					if (methodParameter.getType().getClass().equals(String.class)) {
+						parameters[paramIndex] = ExtDirectSpringUtil.serializeObjectToJson(jsonParam);
+					} else if (methodParameter.getType().isPrimitive()) {
+						parameters[paramIndex] = jsonParam;
+					} else {
+						parameters[paramIndex] = ExtDirectSpringUtil.deserializeJsonToObject(
+								ExtDirectSpringUtil.serializeObjectToJson(jsonParam), methodParameter.getType());
+					}
+
+					jsonParamIndex++;
+				} else {
+					throw new IllegalArgumentException(
+							"Error, parameter mismatch. Please check your remoting method signature to ensure all supported parameters types are used.");
+				}
+
+			}
+		}
+
+		return ExtDirectSpringUtil.invoke(context, directRequest.getAction(), methodInfo, parameters);
+	}
+
+	private Object handleRequestParam(final HttpServletRequest request, final Map<String, Object> valueContainer,
+			final ParameterInfo parameterInfo) {
+
+		if (parameterInfo.getName() != null) {
+			Object value;
+			if (request != null) {
+				value = request.getParameter(parameterInfo.getName());
+			} else if (valueContainer != null) {
+				value = valueContainer.get(parameterInfo.getName());
+			} else {
+				value = null;
+			}
+
+			if (value == null) {
+				value = parameterInfo.getDefaultValue();
+			}
+
+			if (value != null) {
+				return genericConversionService.convert(value, parameterInfo.getType());
+			}
+
+			if (parameterInfo.isRequired()) {
+				throw new IllegalArgumentException("Missing request parameter: " + parameterInfo.getName());
+			}
+		}
+
+		return null;
+	}
+
+	private Map<String, Object> fillObjectFromMap(final ExtDirectStoreReadRequest to, final Map<String, Object> from) {
+		Set<String> foundParameters = new HashSet<String>();
+
+		for (Entry<String, Object> entry : from.entrySet()) {
+
+			if (entry.getKey().equals("filter")) {
+				List<Filter> filters = new ArrayList<Filter>();
+
+				List<Map<String, Object>> rawFilters = ExtDirectSpringUtil.deserializeJsonToObject(
+						(String) entry.getValue(), new TypeReference<List<Map<String, Object>>>() {/* empty */
+						});
+
+				for (Map<String, Object> rawFilter : rawFilters) {
+					filters.add(Filter.createFilter(rawFilter));
+				}
+
+				to.setFilters(filters);
+				foundParameters.add(entry.getKey());
+			} else {
+
+				PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(to.getClass(), entry.getKey());
+				if (descriptor != null && descriptor.getWriteMethod() != null) {
+					try {
+
+						descriptor.getWriteMethod().invoke(to,
+								genericConversionService.convert(entry.getValue(), descriptor.getPropertyType()));
+
+						foundParameters.add(entry.getKey());
+					} catch (IllegalArgumentException e) {
+						log.error("fillObjectFromMap", e);
+					} catch (IllegalAccessException e) {
+						log.error("fillObjectFromMap", e);
+					} catch (InvocationTargetException e) {
+						log.error("fillObjectFromMap", e);
+					}
+				}
+			}
+		}
+
+		Map<String, Object> remainingParameters = new HashMap<String, Object>();
+		for (Entry<String, Object> entry : from.entrySet()) {
+			if (!foundParameters.contains(entry.getKey())) {
+				remainingParameters.put(entry.getKey(), entry.getValue());
+			}
+		}
+		return remainingParameters;
+	}
+
+	private List<Object> convertObjectEntriesToType(final ArrayList<Object> records, final Class<?> directStoreType) {
+		if (records != null) {
+			List<Object> convertedList = new ArrayList<Object>();
+			for (Object record : records) {
+				Object convertedObject = ExtDirectSpringUtil.deserializeJsonToObject(
+						ExtDirectSpringUtil.serializeObjectToJson(record), directStoreType);
+				convertedList.add(convertedObject);
+			}
+			return convertedList;
+		}
+		return null;
+	}
+
+	private List<ExtDirectRequest> getExtDirectRequests(final String rawRequestString) {
+		List<ExtDirectRequest> directRequests = new ArrayList<ExtDirectRequest>();
+
+		if (rawRequestString.length() > 0 && rawRequestString.charAt(0) == '[') {
+			directRequests.addAll(ExtDirectSpringUtil.deserializeJsonToObject(rawRequestString,
+					new TypeReference<List<ExtDirectRequest>>() {/* empty */
+					}));
+		} else {
+			ExtDirectRequest directRequest = ExtDirectSpringUtil.deserializeJsonToObject(rawRequestString,
+					ExtDirectRequest.class);
+			directRequests.add(directRequest);
+		}
+
+		return directRequests;
+	}
 
 }

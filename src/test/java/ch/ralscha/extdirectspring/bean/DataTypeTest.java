@@ -20,15 +20,14 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-
 public class DataTypeTest {
-  
-  @Test
-  public void testFromString() {  
-    assertEquals("boolean", DataType.BOOLEAN.getName());
-    assertEquals("date", DataType.DATE.getName());
-    assertEquals("float", DataType.FLOAT.getName());
-    assertEquals("int", DataType.INTEGER.getName());
-    assertEquals("string", DataType.STRING.getName());
-  }
+
+	@Test
+	public void testFromString() {
+		assertEquals("boolean", DataType.BOOLEAN.getName());
+		assertEquals("date", DataType.DATE.getName());
+		assertEquals("float", DataType.FLOAT.getName());
+		assertEquals("int", DataType.INTEGER.getName());
+		assertEquals("string", DataType.STRING.getName());
+	}
 }

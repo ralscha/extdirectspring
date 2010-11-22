@@ -20,82 +20,82 @@ import java.math.BigDecimal;
 
 public class Row implements Comparable<Row> {
 
-  private int id;
-  private String name;
-  private boolean admin;
-  private BigDecimal salary;
+	private int id;
+	private String name;
+	private boolean admin;
+	private BigDecimal salary;
 
-  public Row() {
-    // no action
-  }
+	public Row() {
+		// no action
+	}
 
-  public Row(int id, String name, boolean admin, String salary) {
-    super();
-    this.id = id;
-    this.name = name;
-    this.admin = admin;
-    if (salary != null) {
-      this.salary = new BigDecimal(salary);
-    }
-  }
+	public Row(int id, String name, boolean admin, String salary) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.admin = admin;
+		if (salary != null) {
+			this.salary = new BigDecimal(salary);
+		}
+	}
 
-  public int getId() {
-    return id;
-  }
+	public int getId() {
+		return id;
+	}
 
-  public void setId(int id) {
-    this.id = id;
-  }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public boolean isAdmin() {
-    return admin;
-  }
+	public boolean isAdmin() {
+		return admin;
+	}
 
-  public void setAdmin(boolean admin) {
-    this.admin = admin;
-  }
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
 
-  public BigDecimal getSalary() {
-    return salary;
-  }
+	public BigDecimal getSalary() {
+		return salary;
+	}
 
-  public void setSalary(BigDecimal salary) {
-    this.salary = salary;
-  }
+	public void setSalary(BigDecimal salary) {
+		this.salary = salary;
+	}
 
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + id;
-    return result;
-  }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Row other = (Row)obj;
-    if (id != other.id)
-      return false;
-    return true;
-  }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Row other = (Row) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
 
-  @Override
-  public int compareTo(Row o) {
-    return id - o.id;
-  }
+	@Override
+	public int compareTo(Row o) {
+		return id - o.id;
+	}
 
 }

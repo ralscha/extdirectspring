@@ -31,107 +31,107 @@ import ch.ralscha.extdirectspring.filter.Filter;
  */
 public class ExtDirectStoreReadRequest {
 
-  private String query;
-  private Integer limit;
-  private Integer start;
-  private String dir;
-  private String sort;
-  private String groupBy;
-  private String groupDir;
-  private List<Filter> filters;
+	private String query;
+	private Integer limit;
+	private Integer start;
+	private String dir;
+	private String sort;
+	private String groupBy;
+	private String groupDir;
+	private List<Filter> filters;
 
-  public ExtDirectStoreReadRequest() {
-    this.filters = Collections.emptyList();
-  }
+	public ExtDirectStoreReadRequest() {
+		this.filters = Collections.emptyList();
+	}
 
-  public String getQuery() {
-    return query;
-  }
+	public String getQuery() {
+		return query;
+	}
 
-  public void setQuery(final String query) {
-    this.query = query;
-  }
+	public void setQuery(final String query) {
+		this.query = query;
+	}
 
-  public Integer getLimit() {
-    return limit;
-  }
+	public Integer getLimit() {
+		return limit;
+	}
 
-  public void setLimit(final Integer limit) {
-    this.limit = limit;
-  }
+	public void setLimit(final Integer limit) {
+		this.limit = limit;
+	}
 
-  public Integer getStart() {
-    return start;
-  }
+	public Integer getStart() {
+		return start;
+	}
 
-  public void setStart(final Integer start) {
-    this.start = start;
-  }
+	public void setStart(final Integer start) {
+		this.start = start;
+	}
 
-  public String getDir() {
-    return dir;
-  }
+	public String getDir() {
+		return dir;
+	}
 
-  public void setDir(final String dir) {
-    this.dir = dir;
-  }
+	public void setDir(final String dir) {
+		this.dir = dir;
+	}
 
-  @JsonIgnore
-  public boolean isAscendingSort() {
-    return (SortDirection.fromString(getDir()) == SortDirection.ASCENDING);
-  }
+	@JsonIgnore
+	public boolean isAscendingSort() {
+		return (SortDirection.fromString(getDir()) == SortDirection.ASCENDING);
+	}
 
-  @JsonIgnore
-  public boolean isDescendingSort() {
-    return (SortDirection.fromString(getDir()) == SortDirection.DESCENDING);
-  }
+	@JsonIgnore
+	public boolean isDescendingSort() {
+		return (SortDirection.fromString(getDir()) == SortDirection.DESCENDING);
+	}
 
-  public String getSort() {
-    return sort;
-  }
+	public String getSort() {
+		return sort;
+	}
 
-  public void setSort(final String sort) {
-    this.sort = sort;
-  }
+	public void setSort(final String sort) {
+		this.sort = sort;
+	}
 
-  public String getGroupBy() {
-    return groupBy;
-  }
+	public String getGroupBy() {
+		return groupBy;
+	}
 
-  public void setGroupBy(final String groupBy) {
-    this.groupBy = groupBy;
-  }
+	public void setGroupBy(final String groupBy) {
+		this.groupBy = groupBy;
+	}
 
-  public String getGroupDir() {
-    return groupDir;
-  }
+	public String getGroupDir() {
+		return groupDir;
+	}
 
-  public void setGroupDir(final String groupDir) {
-    this.groupDir = groupDir;
-  }
+	public void setGroupDir(final String groupDir) {
+		this.groupDir = groupDir;
+	}
 
-  @JsonIgnore
-  public boolean isAscendingGroupSort() {
-    return (SortDirection.fromString(getGroupDir()) == SortDirection.ASCENDING);
-  }
+	@JsonIgnore
+	public boolean isAscendingGroupSort() {
+		return (SortDirection.fromString(getGroupDir()) == SortDirection.ASCENDING);
+	}
 
-  @JsonIgnore
-  public boolean isDescendingGroupSort() {    
-    return (SortDirection.fromString(getGroupDir()) == SortDirection.DESCENDING);    
-  }
+	@JsonIgnore
+	public boolean isDescendingGroupSort() {
+		return (SortDirection.fromString(getGroupDir()) == SortDirection.DESCENDING);
+	}
 
-  public List<Filter> getFilters() {
-    return filters;
-  }
+	public List<Filter> getFilters() {
+		return filters;
+	}
 
-  public void setFilters(final List<Filter> filters) {
-    this.filters = filters;
-  }
+	public void setFilters(final List<Filter> filters) {
+		this.filters = filters;
+	}
 
-  @Override
-  public String toString() {
-    return "ExtDirectStoreReadRequest [query=" + query + ", limit=" + limit + ", start=" + start + ", dir=" + dir
-        + ", sort=" + sort + ", groupBy=" + groupBy + ", groupDir=" + groupDir + ", filters=" + filters + "]";
-  }
+	@Override
+	public String toString() {
+		return "ExtDirectStoreReadRequest [query=" + query + ", limit=" + limit + ", start=" + start + ", dir=" + dir
+				+ ", sort=" + sort + ", groupBy=" + groupBy + ", groupDir=" + groupDir + ", filters=" + filters + "]";
+	}
 
 }

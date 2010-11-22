@@ -18,9 +18,9 @@ package ch.ralscha.extdirectspring.util;
 
 public class SpringManagedSubBean extends SpringManagedBean {
 
-  @Override
-  public boolean methodB() {
-    return true;
-  }
+	@Override
+	public boolean methodB() {
+		return true;
+	}
 
 }

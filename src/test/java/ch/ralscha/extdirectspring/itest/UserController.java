@@ -34,17 +34,17 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 @RequestMapping("/user")
 public class UserController {
 
-  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_user")
-  @ResponseBody
-  @RequestMapping(method = RequestMethod.POST)
-  public ExtDirectResponse updateUser(HttpServletRequest request, @Valid User user, BindingResult result) {
-    ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-    
-    builder.addErrors(result);
-    
-    builder.addResultProperty("name", user.getName());
-    builder.addResultProperty("age", user.getAge());
-    return builder.build();
-  }
-  
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_user")
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.POST)
+	public ExtDirectResponse updateUser(HttpServletRequest request, @Valid User user, BindingResult result) {
+		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
+
+		builder.addErrors(result);
+
+		builder.addResultProperty("name", user.getName());
+		builder.addResultProperty("age", user.getAge());
+		return builder.build();
+	}
+
 }

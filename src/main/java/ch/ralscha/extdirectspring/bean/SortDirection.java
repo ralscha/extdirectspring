@@ -16,27 +16,26 @@
 
 package ch.ralscha.extdirectspring.bean;
 
-
 public enum SortDirection {
-  ASCENDING("ASC"), DESCENDING("DESC");
+	ASCENDING("ASC"), DESCENDING("DESC");
 
-  private final String name;
+	private final String name;
 
-  private SortDirection(final String name) {
-    this.name = name;
-  }
+	private SortDirection(final String name) {
+		this.name = name;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public static SortDirection fromString(final String name) {
-    if (ASCENDING.getName().equalsIgnoreCase(name)) {
-      return ASCENDING;
-    } else if (DESCENDING.getName().equalsIgnoreCase(name)) {
-      return DESCENDING;
-    }
+	public static SortDirection fromString(final String name) {
+		if (ASCENDING.getName().equalsIgnoreCase(name)) {
+			return ASCENDING;
+		} else if (DESCENDING.getName().equalsIgnoreCase(name)) {
+			return DESCENDING;
+		}
 
-    return null;
-  }
+		return null;
+	}
 }

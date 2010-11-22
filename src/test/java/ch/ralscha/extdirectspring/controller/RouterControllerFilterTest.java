@@ -53,61 +53,61 @@ import ch.ralscha.extdirectspring.provider.Row;
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerFilterTest {
 
-  @Inject
-  private RouterController controller;
+	@Inject
+	private RouterController controller;
 
-  private MockHttpServletResponse response;
-  private MockHttpServletRequest request;
+	private MockHttpServletResponse response;
+	private MockHttpServletRequest request;
 
-  private static List<String> jsonList;
+	private static List<String> jsonList;
 
-  @BeforeClass
-  public static void readJson() throws IOException {
-    jsonList = new ArrayList<String>();
-    InputStream is = RouterControllerFilterTest.class.getResourceAsStream("/filterjson.txt");
-    BufferedReader br = new BufferedReader(new InputStreamReader(is));
-    String line = null;
-    while ((line = br.readLine()) != null) {
-      jsonList.add(line);
-    }
-    br.close();
-    is.close();
-  }
+	@BeforeClass
+	public static void readJson() throws IOException {
+		jsonList = new ArrayList<String>();
+		InputStream is = RouterControllerFilterTest.class.getResourceAsStream("/filterjson.txt");
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		String line = null;
+		while ((line = br.readLine()) != null) {
+			jsonList.add(line);
+		}
+		br.close();
+		is.close();
+	}
 
-  @Before
-  public void beforeTest() {
-    response = new MockHttpServletResponse();
-    request = new MockHttpServletRequest();
-  }
+	@Before
+	public void beforeTest() {
+		response = new MockHttpServletResponse();
+		request = new MockHttpServletRequest();
+	}
 
-  @Test
-  public void testFilters() {
+	@Test
+	public void testFilters() {
 
-    int index = 1;
-    for (String json : jsonList) {
+		int index = 1;
+		for (String json : jsonList) {
 
-      List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+			List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
-      assertEquals(1, responses.size());
-      ExtDirectResponse resp = responses.get(0);
-      assertEquals("remoteProviderStoreRead", resp.getAction());
-      assertEquals("methodFilter", resp.getMethod());
-      assertEquals("rpc", resp.getType());
-      assertEquals(index, resp.getTid());
-      assertNull(resp.getMessage());
-      assertNull(resp.getWhere());
-      assertNotNull(resp.getResult());
-      
-      ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse)resp.getResult();      
-      List<Row> rows = (List<Row>)storeResponse.getRecords();
-      assertEquals(1, rows.size());
-      assertEquals(index, rows.get(0).getId());
+			assertEquals(1, responses.size());
+			ExtDirectResponse resp = responses.get(0);
+			assertEquals("remoteProviderStoreRead", resp.getAction());
+			assertEquals("methodFilter", resp.getMethod());
+			assertEquals("rpc", resp.getType());
+			assertEquals(index, resp.getTid());
+			assertNull(resp.getMessage());
+			assertNull(resp.getWhere());
+			assertNotNull(resp.getResult());
 
-      index++;
-    }
+			ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse) resp.getResult();
+			List<Row> rows = (List<Row>) storeResponse.getRecords();
+			assertEquals(1, rows.size());
+			assertEquals(index, rows.get(0).getId());
 
-    assertEquals(10, index);
+			index++;
+		}
 
-  }
+		assertEquals(10, index);
+
+	}
 
 }

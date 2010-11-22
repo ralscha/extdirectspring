@@ -23,12 +23,12 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 @Named
 public class SimpleService {
 
-  @ExtDirectMethod(group="itest_simple")
-  public String toUpperCase(String in) {
-    if (in != null) {
-      return in.toUpperCase();
-    }
-    return null;
-  }
-  
+	@ExtDirectMethod(group = "itest_simple")
+	public String toUpperCase(String in) {
+		if (in != null) {
+			return in.toUpperCase();
+		}
+		return null;
+	}
+
 }

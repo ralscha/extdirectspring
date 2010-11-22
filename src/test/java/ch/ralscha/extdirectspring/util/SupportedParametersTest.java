@@ -33,30 +33,34 @@ import org.springframework.mock.web.MockHttpSession;
  */
 public class SupportedParametersTest {
 
-  @Test
-  public void testIsSupported() {
-    assertEquals(5, SupportedParameterTypes.values().length);
-    assertFalse(SupportedParameterTypes.isSupported(String.class));
-    assertFalse(SupportedParameterTypes.isSupported(null));
-    assertTrue(SupportedParameterTypes.isSupported(MockHttpServletResponse.class));
-    assertTrue(SupportedParameterTypes.isSupported(MockHttpServletRequest.class));
-    assertTrue(SupportedParameterTypes.isSupported(MockHttpSession.class));    
-    assertTrue(SupportedParameterTypes.isSupported(Locale.class));
-    assertTrue(SupportedParameterTypes.isSupported(Principal.class));
-  }
-  
-  @Test
-  public void  testResolveParameter() {
-    MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
-    MockHttpServletResponse response = new MockHttpServletResponse();
-    Locale en = Locale.ENGLISH;
-    
-    assertNull(SupportedParameterTypes.resolveParameter(String.class, request, response, en));
-    assertSame(request, SupportedParameterTypes.resolveParameter(MockHttpServletRequest.class, request, response, en));
-    assertSame(request.getSession(), SupportedParameterTypes.resolveParameter(MockHttpSession.class, request, response, en));
-    assertSame(request.getUserPrincipal(), SupportedParameterTypes.resolveParameter(Principal.class, request, response, en));
-    assertSame(response, SupportedParameterTypes.resolveParameter(MockHttpServletResponse.class, request, response, en));
-    assertSame(en, SupportedParameterTypes.resolveParameter(Locale.class, request, response, en));
-  }
+	@Test
+	public void testIsSupported() {
+		assertEquals(5, SupportedParameterTypes.values().length);
+		assertFalse(SupportedParameterTypes.isSupported(String.class));
+		assertFalse(SupportedParameterTypes.isSupported(null));
+		assertTrue(SupportedParameterTypes.isSupported(MockHttpServletResponse.class));
+		assertTrue(SupportedParameterTypes.isSupported(MockHttpServletRequest.class));
+		assertTrue(SupportedParameterTypes.isSupported(MockHttpSession.class));
+		assertTrue(SupportedParameterTypes.isSupported(Locale.class));
+		assertTrue(SupportedParameterTypes.isSupported(Principal.class));
+	}
+
+	@Test
+	public void testResolveParameter() {
+		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		Locale en = Locale.ENGLISH;
+
+		assertNull(SupportedParameterTypes.resolveParameter(String.class, request, response, en));
+		assertSame(request,
+				SupportedParameterTypes.resolveParameter(MockHttpServletRequest.class, request, response, en));
+		assertSame(request.getSession(),
+				SupportedParameterTypes.resolveParameter(MockHttpSession.class, request, response, en));
+		assertSame(request.getUserPrincipal(),
+				SupportedParameterTypes.resolveParameter(Principal.class, request, response, en));
+		assertSame(response,
+				SupportedParameterTypes.resolveParameter(MockHttpServletResponse.class, request, response, en));
+		assertSame(en, SupportedParameterTypes.resolveParameter(Locale.class, request, response, en));
+	}
 
 }

@@ -30,88 +30,88 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class ExtDirectResponse {
 
-  private String type;
-  private int tid;
-  private String action;
-  private String method;
-  private Object result;
-  private String message;
-  private String where;
+	private String type;
+	private int tid;
+	private String action;
+	private String method;
+	private Object result;
+	private String message;
+	private String where;
 
-  public ExtDirectResponse(final ExtDirectRequest directRequest) {
-    action = directRequest.getAction();
-    method = directRequest.getMethod();
-    tid = directRequest.getTid();
-    type = directRequest.getType();
-  }
+	public ExtDirectResponse(final ExtDirectRequest directRequest) {
+		action = directRequest.getAction();
+		method = directRequest.getMethod();
+		tid = directRequest.getTid();
+		type = directRequest.getType();
+	}
 
-  public ExtDirectResponse(final HttpServletRequest request) {
-    action = request.getParameter("extAction");
-    method = request.getParameter("extMethod");
-    tid = Integer.parseInt(request.getParameter("extTID"));
-    type = request.getParameter("extType");
-  }
+	public ExtDirectResponse(final HttpServletRequest request) {
+		action = request.getParameter("extAction");
+		method = request.getParameter("extMethod");
+		tid = Integer.parseInt(request.getParameter("extTID"));
+		type = request.getParameter("extType");
+	}
 
-  public String getAction() {
-    return action;
-  }
+	public String getAction() {
+		return action;
+	}
 
-  public void setAction(final String action) {
-    this.action = action;
-  }
+	public void setAction(final String action) {
+		this.action = action;
+	}
 
-  public String getMethod() {
-    return method;
-  }
+	public String getMethod() {
+		return method;
+	}
 
-  public void setMethod(final String method) {
-    this.method = method;
-  }
+	public void setMethod(final String method) {
+		this.method = method;
+	}
 
-  public Object getResult() {
-    return result;
-  }
+	public Object getResult() {
+		return result;
+	}
 
-  public void setResult(final Object result) {
-    this.result = result;
-  }
+	public void setResult(final Object result) {
+		this.result = result;
+	}
 
-  public int getTid() {
-    return tid;
-  }
+	public int getTid() {
+		return tid;
+	}
 
-  public void setTid(final int tid) {
-    this.tid = tid;
-  }
+	public void setTid(final int tid) {
+		this.tid = tid;
+	}
 
-  public String getType() {
-    return type;
-  }
+	public String getType() {
+		return type;
+	}
 
-  public void setType(final String type) {
-    this.type = type;
-  }
+	public void setType(final String type) {
+		this.type = type;
+	}
 
-  public String getMessage() {
-    return message;
-  }
+	public String getMessage() {
+		return message;
+	}
 
-  public void setMessage(final String message) {
-    this.message = message;
-  }
+	public void setMessage(final String message) {
+		this.message = message;
+	}
 
-  public String getWhere() {
-    return where;
-  }
+	public String getWhere() {
+		return where;
+	}
 
-  public void setWhere(final String where) {
-    this.where = where;
-  }
+	public void setWhere(final String where) {
+		this.where = where;
+	}
 
-  @Override
-  public String toString() {
-    return "ExtDirectResponse [action=" + action + ", message=" + message + ", method=" + method + ", result=" + result
-        + ", tid=" + tid + ", type=" + type + ", where=" + where + "]";
-  }
+	@Override
+	public String toString() {
+		return "ExtDirectResponse [action=" + action + ", message=" + message + ", method=" + method + ", result="
+				+ result + ", tid=" + tid + ", type=" + type + ", where=" + where + "]";
+	}
 
 }

@@ -37,24 +37,24 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 @RequestMapping("/upload")
 public class UploadController {
 
-  @ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_upload")
-  @RequestMapping(value = "/test", method = RequestMethod.POST)
-  public void uploadTest(HttpServletRequest request, @RequestParam("fileUpload") MultipartFile file,
-      HttpServletResponse response, @Valid User user, BindingResult result) throws IOException {
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_upload")
+	@RequestMapping(value = "/test", method = RequestMethod.POST)
+	public void uploadTest(HttpServletRequest request, @RequestParam("fileUpload") MultipartFile file,
+			HttpServletResponse response, @Valid User user, BindingResult result) throws IOException {
 
-    ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
+		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
 
-    if (file != null && !file.isEmpty()) {
-      builder.addResultProperty("fileContents", new String(file.getBytes()));
-      builder.addResultProperty("fileName", file.getOriginalFilename());
-    }
-    builder.addErrors(result);
-    builder.addResultProperty("name", user.getName());
-    builder.addResultProperty("age", user.getAge());
-    builder.addResultProperty("email", user.getEmail());
-    
-    builder.successful();
-    builder.buildAndWriteUploadResponse(response);
-  }
-  
+		if (file != null && !file.isEmpty()) {
+			builder.addResultProperty("fileContents", new String(file.getBytes()));
+			builder.addResultProperty("fileName", file.getOriginalFilename());
+		}
+		builder.addErrors(result);
+		builder.addResultProperty("name", user.getName());
+		builder.addResultProperty("age", user.getAge());
+		builder.addResultProperty("email", user.getEmail());
+
+		builder.successful();
+		builder.buildAndWriteUploadResponse(response);
+	}
+
 }

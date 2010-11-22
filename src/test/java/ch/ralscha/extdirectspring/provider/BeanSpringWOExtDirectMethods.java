@@ -21,13 +21,13 @@ import javax.inject.Named;
 @Named
 public class BeanSpringWOExtDirectMethods {
 
-  public void methodA() {
-    // a dummy method
-  }
+	public void methodA() {
+		// a dummy method
+	}
 
-  public boolean methodB() {
-    // a dummy method
-    return false;
-  }
+	public boolean methodB() {
+		// a dummy method
+		return false;
+	}
 
 }

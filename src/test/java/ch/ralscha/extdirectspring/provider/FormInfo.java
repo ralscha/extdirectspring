@@ -21,59 +21,59 @@ import java.util.Date;
 
 public class FormInfo {
 
-  private String name;
-  private int age;
-  private boolean admin;
-  private Date birthday;
-  private BigDecimal salary;
-  private double back;
+	private String name;
+	private int age;
+	private boolean admin;
+	private Date birthday;
+	private BigDecimal salary;
+	private double back;
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public int getAge() {
-    return age;
-  }
+	public int getAge() {
+		return age;
+	}
 
-  public void setAge(int age) {
-    this.age = age;
-  }
+	public void setAge(int age) {
+		this.age = age;
+	}
 
-  public boolean isAdmin() {
-    return admin;
-  }
+	public boolean isAdmin() {
+		return admin;
+	}
 
-  public void setAdmin(boolean admin) {
-    this.admin = admin;
-  }
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
 
-  public Date getBirthday() {
-    return birthday;
-  }
+	public Date getBirthday() {
+		return birthday;
+	}
 
-  public void setBirthday(Date birthday) {
-    this.birthday = birthday;
-  }
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
 
-  public BigDecimal getSalary() {
-    return salary;
-  }
+	public BigDecimal getSalary() {
+		return salary;
+	}
 
-  public void setSalary(BigDecimal salary) {
-    this.salary = salary;
-  }
+	public void setSalary(BigDecimal salary) {
+		this.salary = salary;
+	}
 
-  public double getBack() {
-    return back;
-  }
+	public double getBack() {
+		return back;
+	}
 
-  public void setBack(double back) {
-    this.back = back;
-  }
+	public void setBack(double back) {
+		this.back = back;
+	}
 
 }
