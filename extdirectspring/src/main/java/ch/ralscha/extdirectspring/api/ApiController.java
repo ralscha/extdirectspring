@@ -45,6 +45,7 @@ import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
  * Spring managed controller that handles /api.jsp and /api-debug.js requests
  * 
  * @author Ralph Schaer
+ * @author jeffreiffers
  */
 @Controller
 public class ApiController implements ApplicationContextAware {

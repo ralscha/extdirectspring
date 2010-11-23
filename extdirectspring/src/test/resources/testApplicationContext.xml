@@ -16,5 +16,7 @@
   </context:component-scan>
 
 	<mvc:annotation-driven />
+
+  <bean abstract="true" class="ch.ralscha.extdirectspring.util.TestInterface" />
   
 </beans>
