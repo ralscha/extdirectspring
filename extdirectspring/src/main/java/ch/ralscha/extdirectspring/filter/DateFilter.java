@@ -16,6 +16,9 @@
 
 package ch.ralscha.extdirectspring.filter;
 
+/**
+ * @author Ralph Schaer
+ */
 public class DateFilter extends Filter {
 
 	private final String value;

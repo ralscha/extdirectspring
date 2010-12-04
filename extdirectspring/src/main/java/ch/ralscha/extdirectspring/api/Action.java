@@ -20,8 +20,6 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 /**
- * 
- * 
  * @author Ralph Schaer
  */
 @JsonSerialize(include = Inclusion.NON_NULL)

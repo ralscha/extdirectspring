@@ -20,8 +20,6 @@ import java.util.Arrays;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
- * 
- * 
  * @author Ralph Schaer
  */
 class ApiCacheKey {

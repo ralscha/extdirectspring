@@ -16,6 +16,9 @@
 
 package ch.ralscha.extdirectspring.bean;
 
+/**
+ * @author Ralph Schaer
+ */
 public enum SortDirection {
 	ASCENDING("ASC"), DESCENDING("DESC");
 

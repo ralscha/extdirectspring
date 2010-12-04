@@ -74,7 +74,6 @@ public class SimpleServiceTest {
 		assertEquals("rpc", rootAsMap.get("type"));
 		assertEquals("simpleService", rootAsMap.get("action"));
 		assertEquals(1, rootAsMap.get("tid"));
-
 	}
 
 }

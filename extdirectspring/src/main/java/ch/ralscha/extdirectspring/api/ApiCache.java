@@ -21,8 +21,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 
- * 
  * @author Ralph Schaer
  */
 enum ApiCache {
