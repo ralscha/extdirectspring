@@ -165,19 +165,18 @@ public class RouterController implements ApplicationContextAware {
 
 				if (result != null) {
 
-					if (methodInfo.isType(ExtDirectMethodType.FORM_LOAD)) {
-						if (!ExtDirectFormLoadResult.class.isAssignableFrom(result.getClass())) {
-							result = new ExtDirectFormLoadResult(result);
-						}
-					} else if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)
-							|| methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
-						if (!ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())) {
-							result = new ExtDirectStoreResponse((Collection) result);
-						}
+					if (methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
+							&& !ExtDirectFormLoadResult.class.isAssignableFrom(result.getClass())) {
+						result = new ExtDirectFormLoadResult(result);
+					} else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo
+							.isType(ExtDirectMethodType.STORE_READ))
+							&& !ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())) {
+						result = new ExtDirectStoreResponse((Collection) result);
 					}
+					
+					directResponse.setResult(result);
 				}
-
-				directResponse.setResult(result);
+				
 			} catch (Exception e) {
 				log.error("Error on method: " + directRequest.getMethod(), e);
 
