@@ -18,6 +18,9 @@ package ch.ralscha.extdirectspring.filter;
 
 import java.util.NoSuchElementException;
 
+/**
+ * @author Ralph Schaer
+ */
 public enum Comparison {
 	LESS_THAN("lt"), GREATER_THAN("gt"), EQUAL("eq");
 

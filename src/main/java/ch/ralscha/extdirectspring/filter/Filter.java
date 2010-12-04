@@ -19,6 +19,9 @@ package ch.ralscha.extdirectspring.filter;
 import java.util.Arrays;
 import java.util.Map;
 
+/**
+ * @author Ralph Schaer
+ */
 public class Filter {
 	private final String field;
 

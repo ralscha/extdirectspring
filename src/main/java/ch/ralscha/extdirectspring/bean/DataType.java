@@ -16,6 +16,9 @@
 
 package ch.ralscha.extdirectspring.bean;
 
+/**
+ * @author Ralph Schaer
+ */
 public enum DataType {
 	STRING("string"), INTEGER("int"), FLOAT("float"), BOOLEAN("boolean"), DATE("date");
 

@@ -16,6 +16,9 @@
 
 package ch.ralscha.extdirectspring.filter;
 
+/**
+ * @author Ralph Schaer
+ */
 public class NumericFilter extends Filter {
 
 	private final Number value;
