@@ -147,7 +147,7 @@ public class MethodInfo {
 
 			if (Collection.class.isAssignableFrom(parameterTypes[paramIndex])) {
 				parameterInfo.setCollectionType(GenericCollectionTypeResolver
-						.getCollectionParameterType(new MethodParameter(m, paramIndex)));
+						.getCollectionParameterType(new MethodParameter(methodWithAnnotation, paramIndex)));
 			}
 
 			params.add(parameterInfo);
