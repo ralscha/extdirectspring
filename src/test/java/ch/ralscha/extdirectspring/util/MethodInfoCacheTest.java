@@ -35,17 +35,17 @@ public class MethodInfoCacheTest {
 		assertNotNull(MethodInfoCache.INSTANCE);
 		Method thisMethod = getClass().getMethod("testPutAndGet", null);
 
-		MethodInfoCache.INSTANCE.put(null, null, null);
+		MethodInfoCache.INSTANCE.put(null, null, null, null);
 		assertNull(MethodInfoCache.INSTANCE.get(null, null));
 
-		MethodInfoCache.INSTANCE.put(null, null, thisMethod);
+		MethodInfoCache.INSTANCE.put(null, null,  getClass(), thisMethod);
 		assertEquals(thisMethod, MethodInfoCache.INSTANCE.get(null, null).getMethod());
 
-		MethodInfoCache.INSTANCE.put(null, "testPut", thisMethod);
+		MethodInfoCache.INSTANCE.put(null, "testPut", getClass(), thisMethod);
 		assertNull(MethodInfoCache.INSTANCE.get(null, "testPu"));
 		assertEquals(thisMethod, MethodInfoCache.INSTANCE.get(null, "testPut").getMethod());
 
-		MethodInfoCache.INSTANCE.put("methodCacheTest", "testPut", thisMethod);
+		MethodInfoCache.INSTANCE.put("methodCacheTest", "testPut", getClass(), thisMethod);
 		assertNull(MethodInfoCache.INSTANCE.get("methodCacheTest", "testPu"));
 		assertNull(MethodInfoCache.INSTANCE.get("methodCacheTes", "testPut"));
 		assertEquals(thisMethod, MethodInfoCache.INSTANCE.get("methodCacheTest", "testPut").getMethod());
