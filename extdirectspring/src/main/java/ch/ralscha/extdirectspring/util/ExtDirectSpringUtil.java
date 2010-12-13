@@ -100,7 +100,7 @@ public class ExtDirectSpringUtil {
 						+ "'. Missing ExtDirectMethod annotation");
 			}
 
-			return MethodInfoCache.INSTANCE.put(beanName, methodName, method);
+			return MethodInfoCache.INSTANCE.put(beanName, methodName, bean.getClass(), method);
 		}
 
 		throw new IllegalArgumentException("Method '" + beanName + "." + methodName + "' not found");

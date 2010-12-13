@@ -46,13 +46,15 @@ public enum MethodInfoCache {
 	 *          the name of the bean
 	 * @param methodName
 	 *          the name of the method
+	 * @param clazz 
+	 * 			the class of the bean
 	 * @param method
 	 *          the method
 	 * @return the methodInfo object of the method
 	 */
-	public MethodInfo put(final String beanName, final String methodName, final Method method) {
+	public MethodInfo put(final String beanName, final String methodName, final Class<?> clazz, final Method method) {
 		if (method != null) {
-			MethodInfo info = new MethodInfo(method);
+			MethodInfo info = new MethodInfo(clazz, method);
 			cache.put(new Key(beanName, methodName), info);
 			return info;
 		}

@@ -58,15 +58,14 @@ public class MethodInfo {
 	private ExtDirectMethodType type;
 	private Class<?> collectionType;
 
-	public MethodInfo(final Method method) {
+	public MethodInfo(final Class<?> clazz, final Method method) {
 
 		this.method = method;
 
 		RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
 		if (methodAnnotation != null) {
 
-			RequestMapping classAnnotation = AnnotationUtils.findAnnotation(method.getDeclaringClass(),
-					RequestMapping.class);
+			RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
 
 			String path = null;
 			if (hasValue(classAnnotation)) {
@@ -95,7 +94,7 @@ public class MethodInfo {
 			this.type = extDirectMethodAnnotation.value();
 		}
 
-		this.parameters = buildParameterList(method);
+		this.parameters = buildParameterList(clazz, method);
 
 		for (ParameterInfo parameter : parameters) {
 			if (parameter.getCollectionType() != null) {
@@ -111,14 +110,14 @@ public class MethodInfo {
 				.hasText(requestMapping.value()[0]));
 	}
 
-	private static List<ParameterInfo> buildParameterList(Method m) {
+	private static List<ParameterInfo> buildParameterList(Class<?> clazz, Method method) {
 		List<ParameterInfo> params = new ArrayList<ParameterInfo>();
 
-		Class<?>[] parameterTypes = m.getParameterTypes();
+		Class<?>[] parameterTypes = method.getParameterTypes();
 		Annotation[][] parameterAnnotations = null;
 		String[] parameterNames = null;
 
-		Method methodWithAnnotation = ExtDirectSpringUtil.findMethodWithAnnotation(m, ExtDirectMethod.class);
+		Method methodWithAnnotation = ExtDirectSpringUtil.findMethodWithAnnotation(method, ExtDirectMethod.class);
 		if (methodWithAnnotation != null) {
 			parameterAnnotations = methodWithAnnotation.getParameterAnnotations();
 			parameterNames = discoverer.getParameterNames(methodWithAnnotation);
@@ -156,7 +155,7 @@ public class MethodInfo {
 			if (Collection.class.isAssignableFrom(parameterTypes[paramIndex])) {
 //				parameterInfo.setCollectionType(GenericCollectionTypeResolver
 //						.getCollectionParameterType(new MethodParameter(methodWithAnnotation, paramIndex)));
-				parameterInfo.setCollectionType(getCollectionParameterType(m, paramIndex));
+				parameterInfo.setCollectionType(getCollectionParameterType(clazz, method, paramIndex));
 			}
 
 			params.add(parameterInfo);
@@ -185,17 +184,17 @@ public class MethodInfo {
 		return this.type == methodType;
 	}
 
-	private static Class<?> getCollectionParameterType(final Method method, final int paramIndex) {
+	private static Class<?> getCollectionParameterType(Class<?> clazz, final Method method, final int paramIndex) {
 		MethodParameter methodParameter = new MethodParameter(method, paramIndex);
 		Class<?> paramType = GenericCollectionTypeResolver.getCollectionParameterType(methodParameter);
 
 		if (paramType == null) {
 			
-			Map<TypeVariable<?>, Class<?>> typeVarMap = getTypeVariableMap(method.getDeclaringClass());
+			Map<TypeVariable<?>, Class<?>> typeVarMap = getTypeVariableMap(clazz);
 			
 			paramType = getGenericCollectionParameterType(typeVarMap, method, paramIndex);
 			
-			Class<?> superClass = method.getDeclaringClass().getSuperclass();
+			Class<?> superClass = clazz.getSuperclass();
 
 			while (superClass != null && paramType == null) {
 				try {
