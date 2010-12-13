@@ -153,8 +153,6 @@ public class MethodInfo {
 			}
 
 			if (Collection.class.isAssignableFrom(parameterTypes[paramIndex])) {
-//				parameterInfo.setCollectionType(GenericCollectionTypeResolver
-//						.getCollectionParameterType(new MethodParameter(methodWithAnnotation, paramIndex)));
 				parameterInfo.setCollectionType(getCollectionParameterType(clazz, method, paramIndex));
 			}
 
