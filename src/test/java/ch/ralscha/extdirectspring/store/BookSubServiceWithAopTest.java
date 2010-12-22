@@ -41,8 +41,6 @@ import ch.ralscha.extdirectspring.controller.ControllerUtil;
 import ch.ralscha.extdirectspring.controller.RouterController;
 import ch.ralscha.extdirectspring.provider.Row;
 
-//todo remote this ignore
-@Ignore
 @SuppressWarnings("all")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/teststorewithaop.xml")
@@ -62,21 +60,21 @@ public class BookSubServiceWithAopTest {
 
 	@Test
 	public void testCreate() {
-		new CrudTestMethods("bookSubService").testCreate(controller, response, request);
+		new CrudTestMethods("bookSubAopService").testCreate(controller, response, request);
 	}
 	
 	@Test
 	public void testRead() {
-		new CrudTestMethods("bookSubService").testRead(controller, response, request);		
+		new CrudTestMethods("bookSubAopService").testRead(controller, response, request);		
 	}
 	
 	@Test
 	public void testUpdate() {
-		new CrudTestMethods("bookSubService").testUpdate(controller, response, request);		
+		new CrudTestMethods("bookSubAopService").testUpdate(controller, response, request);		
 	}
 	
 	@Test
 	public void testDelete() {
-		new CrudTestMethods("bookSubService").testDelete(controller, response, request);		
+		new CrudTestMethods("bookSubAopService").testDelete(controller, response, request);		
 	}
 }
