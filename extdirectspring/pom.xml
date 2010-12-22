@@ -46,7 +46,7 @@
 
   <properties>
     <spring.version>3.0.5.RELEASE</spring.version>
-    <jackson.version>1.6.2</jackson.version>
+    <jackson.version>1.6.4</jackson.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -357,7 +357,7 @@
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
-        <version>7.2.1.v20101111</version>
+        <version>7.2.2.v20101205</version>
         <configuration>
 
           <connectors>
