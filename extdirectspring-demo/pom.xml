@@ -42,8 +42,8 @@
     <slf4j.version>1.6.1</slf4j.version>
     <logback.version>0.9.26</logback.version>
     <hibernatevalidator.version>4.1.0.Final</hibernatevalidator.version>
-    <jetty.version>7.2.1.v20101111</jetty.version>
-    <eds.version>1.0.5-SNAPSHOT</eds.version>
+    <jetty.version>7.2.2.v20101205</jetty.version>
+    <eds.version>1.0.5</eds.version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.debug>true</maven.compiler.debug>
@@ -163,12 +163,7 @@
   </dependencies>
 
   <repositories>
-    <repository>
-      <id>JBoss</id>
-      <name>JBoss repository</name>
-      <url>https://repository.jboss.org/nexus/content/groups/public-jboss</url>
-    </repository> 
-
+  
     <repository>
       <id>sonatype</id>
       <name>sonatype</name>
@@ -176,7 +171,16 @@
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
     </repository>
+  
+    <repository>
+      <id>JBoss</id>
+      <name>JBoss repository</name>
+      <url>https://repository.jboss.org/nexus/content/groups/public-jboss</url>
+    </repository> 
 
   </repositories>
 
