@@ -134,7 +134,7 @@ public class RemoteProviderStoreRead {
 				} else if (request.isDescendingSort()) {
 					Collections.sort(rows, new Comparator<Row>() {
 
-						@Override
+						//@Override
 						public int compare(Row o1, Row o2) {
 							return o2.getId() - o1.getId();
 						}
@@ -150,7 +150,7 @@ public class RemoteProviderStoreRead {
 				} else if (request.isDescendingGroupSort()) {
 					Collections.sort(rows, new Comparator<Row>() {
 
-						@Override
+						//@Override
 						public int compare(Row o1, Row o2) {
 							return o2.getId() - o1.getId();
 						}

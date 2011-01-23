@@ -52,7 +52,7 @@ public class ApiController implements ApplicationContextAware {
 
 	private ApplicationContext context;
 
-	@Override
+	//@Override
 	public void setApplicationContext(ApplicationContext context) {
 		this.context = context;
 	}
