@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ch.ralscha</groupId>
   <artifactId>extdirectspring-demo</artifactId>
-  <version>1.0.5</version>
+  <version>1.0.6</version>
   <packaging>war</packaging>
 
   <inceptionYear>2010</inceptionYear>
@@ -43,7 +43,7 @@
     <logback.version>0.9.28</logback.version>
     <hibernatevalidator.version>4.1.0.Final</hibernatevalidator.version>
     <jetty.version>7.2.2.v20101205</jetty.version>
-    <eds.version>1.0.6-SNAPSHOT</eds.version>
+    <eds.version>1.0.6</eds.version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.debug>true</maven.compiler.debug>
