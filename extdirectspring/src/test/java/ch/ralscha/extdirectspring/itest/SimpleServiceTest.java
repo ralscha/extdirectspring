@@ -43,7 +43,7 @@ public class SimpleServiceTest {
 		HttpEntity entity = response.getEntity();
 		assertNotNull(entity);
 		String responseString = EntityUtils.toString(entity);
-		entity.consumeContent();
+		EntityUtils.consume(entity);
 		assertTrue(responseString.contains("\"name\" : \"toUpperCase\""));
 	}
 
