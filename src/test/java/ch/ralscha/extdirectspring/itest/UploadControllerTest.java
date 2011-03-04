@@ -90,7 +90,7 @@ public class UploadControllerTest {
 		assertEquals("contents of upload file", result.get("fileContents"));
 		assertEquals(true, result.get("success"));
 
-		resEntity.consumeContent();
+		EntityUtils.consume(resEntity);
 		client.getConnectionManager().shutdown();
 		is.close();
 	}
