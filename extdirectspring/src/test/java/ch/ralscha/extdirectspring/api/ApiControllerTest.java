@@ -44,7 +44,8 @@ import org.springframework.util.StringUtils;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ApiControllerTest {
-
+	private ObjectMapper mapper = new ObjectMapper();
+	
 	@Inject
 	private ApiController apiController;
 
@@ -317,7 +318,7 @@ public class ApiControllerTest {
 		assertEquals("application/json", response.getContentType());
 		assertTrue(StringUtils.hasText(content));
 
-		ObjectMapper mapper = new ObjectMapper();
+		
 		Map<String, Object> rootAsMap = mapper.readValue(content, Map.class);
 
 		if (remotingApi.getNamespace() == null) {
@@ -401,7 +402,6 @@ public class ApiControllerTest {
 			}
 		}
 
-		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> rootAsMap = mapper.readValue(remotingJson, Map.class);
 		if (remotingApi.getNamespace() == null) {
 			assertEquals(3, rootAsMap.size());
@@ -427,7 +427,6 @@ public class ApiControllerTest {
 		}
 
 		if (!remotingApi.getPollingProviders().isEmpty()) {
-			mapper = new ObjectMapper();
 			Map<String, Object> pollingMap = mapper.readValue(pollingJson, Map.class);
 			assertEquals(remotingApi.getPollingProviders().size(), pollingMap.size());
 			for (PollingProvider pp : remotingApi.getPollingProviders()) {
