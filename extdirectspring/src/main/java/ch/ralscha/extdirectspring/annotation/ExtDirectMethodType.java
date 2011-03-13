@@ -47,6 +47,11 @@ public enum ExtDirectMethodType {
 	 * Specifies a method that handles a form post (with or without upload)
 	 */
 	FORM_POST,
+	
+	/**
+	 * Specifies a method that handles a read call from a TreeLoader
+	 */	
+	TREE_LOADER,
 
 	/**
 	 * Specifies a method that handles polling
