@@ -18,27 +18,33 @@ package ch.ralscha.extdirectspring.demo.tree;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Named;
+
+import org.springframework.web.bind.annotation.RequestParam;
+
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
 @Named
 public class TreeProvider {
 
 	public static class Node {
-
 		public String id;
 		public String text;
 		public boolean leaf;
 	}
 
-	@ExtDirectMethod(group = "tree")
-	public List<Node> getTree(String id) {
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOADER, group = "tree")
+	public List<Node> getTree(@RequestParam("id") String id,
+			@RequestParam(value = "foo", required = false, defaultValue = "defaultValue") String foo) {
+		
 		List<Node> result = new ArrayList<Node>();
 		if (id.equals("root")) {
 			for (int i = 1; i <= 5; ++i) {
 				Node node = new Node();
 				node.id = "n" + i;
-				node.text = "Node " + i;
+				node.text = "Node " + foo + ": " + i;
 				node.leaf = false;
 				result.add(node);
 			}
@@ -47,7 +53,7 @@ public class TreeProvider {
 			for (int i = 1; i <= 5; ++i) {
 				Node node = new Node();
 				node.id = "id" + i;
-				node.text = "Node " + num + "." + i;
+				node.text = "Node " + foo + ": " + num + "." + i;
 				node.leaf = true;
 				result.add(node);
 			}
