@@ -53,48 +53,56 @@ public class PersonAction {
 		orderingMap = Maps.newHashMap();
 		orderingMap.put("fullName", new Ordering<Person>() {
 
+			@Override
 			public int compare(Person left, Person right) {
 				return left.getFullName().compareTo(right.getFullName());
 			}
 		});
 		orderingMap.put("lastName", new Ordering<Person>() {
 
+			@Override
 			public int compare(Person left, Person right) {
 				return left.getLastName().compareTo(right.getLastName());
 			}
 		});
 		orderingMap.put("firstName", new Ordering<Person>() {
 
+			@Override
 			public int compare(Person left, Person right) {
 				return left.getFirstName().compareTo(right.getFirstName());
 			}
 		});
 		orderingMap.put("street", new Ordering<Person>() {
 
+			@Override
 			public int compare(Person left, Person right) {
 				return left.getStreet().compareTo(right.getStreet());
 			}
 		});
 		orderingMap.put("city", new Ordering<Person>() {
 
+			@Override
 			public int compare(Person left, Person right) {
 				return left.getCity().compareTo(right.getCity());
 			}
 		});
 		orderingMap.put("state", new Ordering<Person>() {
 
+			@Override
 			public int compare(Person left, Person right) {
 				return left.getState().compareTo(right.getState());
 			}
 		});
 		orderingMap.put("zip", new Ordering<Person>() {
 
+			@Override
 			public int compare(Person left, Person right) {
 				return left.getZip().compareTo(right.getZip());
 			}
 		});
 		orderingMap.put("country", new Ordering<Person>() {
 
+			@Override
 			public int compare(Person left, Person right) {
 				return left.getCountry().compareTo(right.getCountry());
 			}

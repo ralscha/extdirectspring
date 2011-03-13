@@ -69,6 +69,7 @@ public class RandomDataBean {
 		if (query != null && !query.trim().isEmpty()) {
 			Iterable<Person> filtered = Iterables.filter(persons.values(), new Predicate<Person>() {
 
+				@Override
 				public boolean apply(Person input) {
 					return input.getLastName().toLowerCase().startsWith(query.toLowerCase());
 				}
