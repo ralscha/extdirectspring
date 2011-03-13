@@ -41,7 +41,8 @@ public class UserControllerTest {
 
 	private HttpClient client;
 	private HttpPost post;
-
+	private ObjectMapper mapper = new ObjectMapper();
+	
 	@Before
 	public void beforeTest() {
 		client = new DefaultHttpClient();
@@ -69,7 +70,7 @@ public class UserControllerTest {
 		assertNotNull(entity);
 		String responseString = EntityUtils.toString(entity);
 
-		ObjectMapper mapper = new ObjectMapper();
+		
 		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
 		assertEquals(5, rootAsMap.size());
 		assertEquals("updateUser", rootAsMap.get("method"));
@@ -110,7 +111,6 @@ public class UserControllerTest {
 		assertNotNull(entity);
 		String responseString = EntityUtils.toString(entity);
 
-		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
 		assertEquals(5, rootAsMap.size());
 		assertEquals("updateUser", rootAsMap.get("method"));
