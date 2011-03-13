@@ -48,7 +48,7 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 @SuppressWarnings("all")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
-public class RouterControllerRemoteStoreModifyTest {
+public class RouterControllerStoreModifyTest {
 
 	@Inject
 	private RouterController controller;
