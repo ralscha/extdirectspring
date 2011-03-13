@@ -266,6 +266,7 @@ public class ApiController implements ApplicationContextAware {
 					case FORM_LOAD:
 					case STORE_READ:
 					case STORE_MODIFY:
+					case TREE_LOADER:
 						remotingApi.addAction(beanName, method.getName(), 1);
 						break;
 					case FORM_POST:

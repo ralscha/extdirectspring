@@ -258,7 +258,8 @@ public class RouterController implements ApplicationContextAware {
 		List<Object> directStoreModifyRecords = null;
 		Class<?> directStoreEntryClass;
 
-		if (methodInfo.isType(ExtDirectMethodType.STORE_READ) || methodInfo.isType(ExtDirectMethodType.FORM_LOAD)) {
+		if (methodInfo.isType(ExtDirectMethodType.STORE_READ) || methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
+				|| methodInfo.isType(ExtDirectMethodType.TREE_LOADER)) {
 
 			if (directRequest.getData() != null && directRequest.getData().length > 0) {
 				if (methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
