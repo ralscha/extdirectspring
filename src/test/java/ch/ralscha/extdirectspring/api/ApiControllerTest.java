@@ -219,6 +219,7 @@ public class ApiControllerTest {
 	private RemotingApi group1Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", "method1", 0, false);
+		remotingApi.addAction("remoteProviderTreeLoader", "method1", 1, false);
 		return remotingApi;
 	}
 
@@ -250,6 +251,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("formInfoController", "updateInfo", 0, true);
 		remotingApi.addAction("formInfoController2", "updateInfo1", 0, true);
 		remotingApi.addAction("formInfoController2", "updateInfo2", 0, true);
+		remotingApi.addAction("remoteProviderTreeLoader", "method3", 1, false);
 		remotingApi.addPollingProvider("pollProvider", "handleMessage5", "message5");
 		return remotingApi;
 	}
@@ -302,6 +304,10 @@ public class ApiControllerTest {
 		remotingApi.addAction("formInfoController2", "updateInfo1", 0, true);
 		remotingApi.addAction("formInfoController2", "updateInfo2", 0, true);
 
+		remotingApi.addAction("remoteProviderTreeLoader", "method1", 1, false);
+		remotingApi.addAction("remoteProviderTreeLoader", "method2", 1, false);
+		remotingApi.addAction("remoteProviderTreeLoader", "method3", 1, false);
+		
 		remotingApi.addPollingProvider("pollProvider", "handleMessage1", "message1");
 		remotingApi.addPollingProvider("pollProvider", "handleMessage2", "message2");
 		remotingApi.addPollingProvider("pollProvider", "handleMessage3", "message3");
