@@ -37,8 +37,17 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
  */
 public class ExtDirectSpringUtil {
 
+	private static ObjectMapper mapper;
+	private static ObjectMapper indentMapper;
+	
+	static {
+		mapper = new ObjectMapper();
+		indentMapper = new ObjectMapper();
+		indentMapper.getSerializationConfig().enable(Feature.INDENT_OUTPUT);
+	}
+	
 	private ExtDirectSpringUtil() {
-		// singleton
+		//singleton
 	}
 
 	/**
@@ -185,12 +194,9 @@ public class ExtDirectSpringUtil {
 	 */
 	public static String serializeObjectToJson(final Object obj, final boolean indent) {
 		try {
-			ObjectMapper mapper = new ObjectMapper();
-
 			if (indent) {
-				mapper.getSerializationConfig().enable(Feature.INDENT_OUTPUT);
+				return indentMapper.writeValueAsString(obj);
 			}
-
 			return mapper.writeValueAsString(obj);
 		} catch (Exception e) {
 			LogFactory.getLog(ExtDirectSpringUtil.class).info("serialize object to json", e);
@@ -214,7 +220,6 @@ public class ExtDirectSpringUtil {
 	@SuppressWarnings("unchecked")
 	public static <T> T deserializeJsonToObject(final String json, final TypeReference<T> typeReference) {
 		try {
-			ObjectMapper mapper = new ObjectMapper();
 			return (T) mapper.readValue(json, typeReference);
 		} catch (Exception e) {
 			LogFactory.getLog(ExtDirectSpringUtil.class).info("deserialize json to object", e);
@@ -236,7 +241,6 @@ public class ExtDirectSpringUtil {
 	 */
 	public static <T> T deserializeJsonToObject(final String json, final Class<T> clazz) {
 		try {
-			ObjectMapper mapper = new ObjectMapper();
 			return mapper.readValue(json, clazz);
 		} catch (Exception e) {
 			LogFactory.getLog(ExtDirectSpringUtil.class).info("deserialize json to object", e);
