@@ -3,7 +3,6 @@ body {
 	padding: 20px;
 	padding-top: 32px;
 	font-size: 13px;
-	background-color: #fff !important;
 }
 
 p {
@@ -51,7 +50,7 @@ pre.code {
 	position: absolute;
 	left: 35%;
 	top: 10px;
-	width: 250px;
+	width: 300px;
 	z-index: 20000;
 }
 
@@ -91,4 +90,30 @@ pre.code {
 .combo-full-address {
 	font-size: 11px;
 	color: #666666;
+}
+
+#msg-div .msg {
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	background: #F6F6F6;
+	border: 2px solid #ccc;
+	margin-top: 2px;
+	padding: 10px 15px;
+	color: #555;
+}
+
+#msg-div .msg h3 {
+	margin: 0 0 8px;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+#msg-div .msg p {
+	margin: 0;
+}
+
+.feature-list li {
+	list-style: circle;
+	margin-left: 17px;
+	padding-bottom: 5px;
 }
