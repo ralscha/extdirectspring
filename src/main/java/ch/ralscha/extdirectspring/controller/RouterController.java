@@ -315,7 +315,9 @@ public class RouterController implements ApplicationContextAware {
 					if (methodParameter.getType().getClass().equals(String.class)) {
 						parameters[paramIndex] = ExtDirectSpringUtil.serializeObjectToJson(jsonParam);
 					} else if (methodParameter.getType().isPrimitive()) {
-						parameters[paramIndex] = jsonParam;
+						//todo: add some testcases for this
+						//parameters[paramIndex] = jsonParam;
+						parameters[paramIndex] = genericConversionService.convert(jsonParam, methodParameter.getType());
 					} else {
 						parameters[paramIndex] = ExtDirectSpringUtil.deserializeJsonToObject(
 								ExtDirectSpringUtil.serializeObjectToJson(jsonParam), methodParameter.getType());
