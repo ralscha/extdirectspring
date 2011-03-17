@@ -272,6 +272,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", "method7", 0, false);
 		remotingApi.addAction("remoteProviderSimple", "method8", 1, false);
 		remotingApi.addAction("remoteProviderSimple", "method9", 0, false);
+		remotingApi.addAction("remoteProviderSimple", "method10", 9, false);
 
 		remotingApi.addAction("remoteProviderStoreRead", "method1", 1, false);
 		remotingApi.addAction("remoteProviderStoreRead", "method2", 1, false);
