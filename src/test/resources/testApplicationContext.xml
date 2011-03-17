@@ -16,7 +16,7 @@
     <context:exclude-filter type="regex" expression="ch\.ralscha\.extdirectspring\.store\..*"/>
   </context:component-scan>
 
-	<mvc:annotation-driven />
+  <mvc:annotation-driven />
 
   <bean abstract="true" class="ch.ralscha.extdirectspring.util.TestInterface" />
   
