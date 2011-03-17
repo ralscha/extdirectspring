@@ -164,6 +164,22 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
+	public void testWithParametersWithTypeConversion() {
+		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method3", 10, "10", "4.2", 20);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+
+		assertEquals(1, responses.size());
+		ExtDirectResponse resp = responses.get(0);
+		assertEquals("remoteProviderSimple", resp.getAction());
+		assertEquals("method3", resp.getMethod());
+		assertEquals(10, resp.getTid());
+		assertEquals("rpc", resp.getType());
+		assertNull(resp.getWhere());
+		assertNull(resp.getMessage());
+		assertEquals("method3() called-10-4.2-20", resp.getResult());
+	}
+
+	@Test
 	public void testWithParametersNoRequestParameter() {
 		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method3", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
@@ -234,17 +250,27 @@ public class RouterControllerSimpleTest {
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
-		checkIntParameterResult(resp, 3);
+		checkIntParameterResult(resp, 3, 30);
 	}
 
-	static void checkIntParameterResult(ExtDirectResponse resp, int tid) {
+	@Test
+	public void testIntParameterAndResultWithTypeConversion() {
+		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method6", 3, "30", "40");
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+
+		assertEquals(1, responses.size());
+		ExtDirectResponse resp = responses.get(0);
+		checkIntParameterResult(resp, 3, 70);
+	}
+
+	static void checkIntParameterResult(ExtDirectResponse resp, int tid, int result) {
 		assertEquals("remoteProviderSimple", resp.getAction());
 		assertEquals("method6", resp.getMethod());
 		assertEquals(tid, resp.getTid());
 		assertEquals("rpc", resp.getType());
 		assertNull(resp.getWhere());
 		assertNull(resp.getMessage());
-		assertEquals(30, resp.getResult());
+		assertEquals(result, resp.getResult());
 	}
 
 	@Test
@@ -306,6 +332,24 @@ public class RouterControllerSimpleTest {
 		assertNull(resp.getWhere());
 		assertNull(resp.getMessage());
 		assertEquals(42l, resp.getResult());
+	}
+
+	@Test
+	public void testTypeConversion() {
+		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method10", 3, "true", "c", "ACTIVE",
+				"14", "21", "3.14", "10.01", "1", "2");
+
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+
+		assertEquals(1, responses.size());
+		ExtDirectResponse resp = responses.get(0);
+		assertEquals("remoteProviderSimple", resp.getAction());
+		assertEquals("method10", resp.getMethod());
+		assertEquals(3, resp.getTid());
+		assertEquals("rpc", resp.getType());
+		assertNull(resp.getWhere());
+		assertNull(resp.getMessage());
+		assertEquals("method10() called-true-c-ACTIVE-14-21-3.14-10.01-1-2", resp.getResult());
 	}
 
 }
