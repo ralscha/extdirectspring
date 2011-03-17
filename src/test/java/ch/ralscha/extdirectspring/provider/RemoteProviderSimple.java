@@ -16,6 +16,10 @@
 
 package ch.ralscha.extdirectspring.provider;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.Calendar;
@@ -27,14 +31,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.junit.Assert;
-
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 
 @Named
 @SuppressWarnings("unused")
 public class RemoteProviderSimple {
 
+	private enum StatusEnum {
+		ACTIVE,
+		INACTIVE
+	}
+	
 	@ExtDirectMethod(group = "group1")
 	public String method1() {
 		return "method1() called";
@@ -89,11 +96,27 @@ public class RemoteProviderSimple {
 	@ExtDirectMethod(group = "group3")
 	public long method9(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale,
 			Principal principal) {
-		Assert.assertNotNull(response);
-		Assert.assertNotNull(request);
-		Assert.assertNotNull(session);
-		Assert.assertEquals(Locale.ENGLISH, locale);
+		assertNotNull(response);
+		assertNotNull(request);
+		assertNotNull(session);
+		assertEquals(Locale.ENGLISH, locale);
 
 		return 42;
 	}
+	
+	@ExtDirectMethod
+	public String method10(boolean flag, char aCharacter, StatusEnum status, int aInt, long aLong, double aDouble, float aFloat,
+			short aShort, byte aByte) {
+		assertTrue(flag);
+		assertEquals('c', aCharacter);
+		assertEquals(StatusEnum.ACTIVE, status);
+		assertEquals(14, aInt);
+		assertEquals(21, aLong);
+		assertEquals(3.14, aDouble);
+		assertEquals(10.01, aFloat, 0.01);
+		assertEquals(1, aShort);
+		assertEquals(2, aByte);
+		return String.format("method10() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, status, aInt, aLong, aDouble, aFloat, aShort, aByte);
+	}
+	
 }

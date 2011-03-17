@@ -236,7 +236,7 @@ public class RouterControllerFormLoadTest {
 		data.put("d", 2.2);
 		String json5 = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method1", 5, data);
 
-		String json6 = ControllerUtil.createRequestJson("remoteProviderSimple", "method6", 6, 10, 20);
+		String json6 = ControllerUtil.createRequestJson("remoteProviderSimple", "method6", 6, 20, 20);
 
 		String requestBody = String.format("[%s,%s,%s,%s,%s,%s]", json1, json2, json3, json4, json5, json6);
 
@@ -250,6 +250,6 @@ public class RouterControllerFormLoadTest {
 		checkFormLoadResult(responses.get(3), 1.1, 4);
 		checkFormLoadResult(responses.get(4), 2.2, 5);
 
-		RouterControllerSimpleTest.checkIntParameterResult(responses.get(5), 6);
+		RouterControllerSimpleTest.checkIntParameterResult(responses.get(5), 6, 40);
 	}
 }
