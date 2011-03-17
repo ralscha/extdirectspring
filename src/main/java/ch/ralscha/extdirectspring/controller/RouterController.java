@@ -41,9 +41,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.core.convert.support.ConversionServiceFactory;
-import org.springframework.core.convert.support.GenericConversionService;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -73,22 +71,29 @@ import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
  * @author Ralph Schaer
  */
 @Controller
-public class RouterController implements ApplicationContextAware {
-
-	private static final GenericConversionService genericConversionService = ConversionServiceFactory
-			.createDefaultConversionService();
+public class RouterController {
 
 	private static final Log log = LogFactory.getLog(RouterController.class);
 
-	@Autowired(required = false)
-	@Qualifier("extDirectSpringExceptionToMessage")
+	private ConversionService conversionService;
+	private ApplicationContext context;
 	private Map<String, Map<Class<?>, String>> exceptionToMessage;
 
-	private ApplicationContext context;
+	@Autowired(required = false)
+	public RouterController(ApplicationContext context, ConversionService conversionService) {
+		this(context, conversionService, null);
+	}
 
-	//@Override
-	public void setApplicationContext(ApplicationContext context) {
+	@Autowired(required = false)
+	public RouterController(ApplicationContext context, ConversionService conversionService,
+			@Qualifier("extDirectSpringExceptionToMessage") Map<String, Map<Class<?>, String>> exceptionToMessage) {
+//		System.out.println(context);
+//		System.out.println(conversionService);
+//		System.out.println(exceptionToMessage);
 		this.context = context;
+		this.conversionService = conversionService;
+		//todo add a testcase for this
+		this.exceptionToMessage = exceptionToMessage;
 	}
 
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
@@ -315,9 +320,7 @@ public class RouterController implements ApplicationContextAware {
 					if (methodParameter.getType().getClass().equals(String.class)) {
 						parameters[paramIndex] = ExtDirectSpringUtil.serializeObjectToJson(jsonParam);
 					} else if (methodParameter.getType().isPrimitive()) {
-						//todo: add some testcases for this
-						//parameters[paramIndex] = jsonParam;
-						parameters[paramIndex] = genericConversionService.convert(jsonParam, methodParameter.getType());
+						parameters[paramIndex] = conversionService.convert(jsonParam, methodParameter.getType());
 					} else {
 						parameters[paramIndex] = ExtDirectSpringUtil.deserializeJsonToObject(
 								ExtDirectSpringUtil.serializeObjectToJson(jsonParam), methodParameter.getType());
@@ -353,7 +356,7 @@ public class RouterController implements ApplicationContextAware {
 			}
 
 			if (value != null) {
-				return genericConversionService.convert(value, parameterInfo.getType());
+				return conversionService.convert(value, parameterInfo.getType());
 			}
 
 			if (parameterInfo.isRequired()) {
@@ -389,7 +392,7 @@ public class RouterController implements ApplicationContextAware {
 					try {
 
 						descriptor.getWriteMethod().invoke(to,
-								genericConversionService.convert(entry.getValue(), descriptor.getPropertyType()));
+								conversionService.convert(entry.getValue(), descriptor.getPropertyType()));
 
 						foundParameters.add(entry.getKey());
 					} catch (IllegalArgumentException e) {
