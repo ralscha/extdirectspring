@@ -11,7 +11,7 @@
      
   <context:component-scan base-package="ch.ralscha.extdirectspring"/>
   
-	<mvc:annotation-driven />
+  <mvc:annotation-driven />
   
   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
     <property name="maxUploadSize" value="100000"/>
