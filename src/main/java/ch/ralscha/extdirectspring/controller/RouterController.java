@@ -77,23 +77,16 @@ public class RouterController {
 
 	private ConversionService conversionService;
 	private ApplicationContext context;
+
+	//todo add a testcase for this
+	@Autowired(required = false)
+	@Qualifier("extDirectSpringExceptionToMessage")
 	private Map<String, Map<Class<?>, String>> exceptionToMessage;
-
-	@Autowired(required = false)
+	
+	@Autowired
 	public RouterController(ApplicationContext context, ConversionService conversionService) {
-		this(context, conversionService, null);
-	}
-
-	@Autowired(required = false)
-	public RouterController(ApplicationContext context, ConversionService conversionService,
-			@Qualifier("extDirectSpringExceptionToMessage") Map<String, Map<Class<?>, String>> exceptionToMessage) {
-//		System.out.println(context);
-//		System.out.println(conversionService);
-//		System.out.println(exceptionToMessage);
 		this.context = context;
 		this.conversionService = conversionService;
-		//todo add a testcase for this
-		this.exceptionToMessage = exceptionToMessage;
 	}
 
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
