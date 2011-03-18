@@ -12,7 +12,7 @@
 	<bean id="extDirectSpringConfiguration" 
 	      class="ch.ralscha.extdirectspring.controller.Configuration" 
 	      p:defaultExceptionMessage="Panic!!!"
-	      p:exceptionNameAsMessage="false"
+	      p:sendExceptionMessage="false"
 		  p:sendStacktrace="true">
 
 		<property name="exceptionToMessage">

@@ -416,7 +416,7 @@ public class RouterController implements InitializingBean {
 		}
 		
 		response.setType("exception");
-		response.setMessage(configuration.getMessage(cause.getClass()));
+		response.setMessage(configuration.getMessage(cause));
 
 		if (configuration.isSendStacktrace()) {
 			response.setWhere(getStackTrace(cause));

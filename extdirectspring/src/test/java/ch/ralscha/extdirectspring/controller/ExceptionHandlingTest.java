@@ -85,9 +85,9 @@ public class ExceptionHandlingTest {
 	@Test
 	public void testExceptionNameAsMessage() throws Exception {
 		Configuration configuration = new Configuration();
-		configuration.setExceptionNameAsMessage(true);
+		configuration.setSendExceptionMessage(true);
 		ExtDirectResponse resp = runTest(configuration);
-		assertEquals("java.lang.IllegalArgumentException", resp.getMessage());
+		assertEquals("Invalid remoting method 'remoteProviderSimple.method4'. Missing ExtDirectMethod annotation", resp.getMessage());
 		assertNull(resp.getWhere());
 	}
 
@@ -120,9 +120,9 @@ public class ExceptionHandlingTest {
 	public void testExceptionNameAsMessageWithStacktrace() throws Exception {
 		Configuration configuration = new Configuration();
 		configuration.setSendStacktrace(true);
-		configuration.setExceptionNameAsMessage(true);
+		configuration.setSendExceptionMessage(true);
 		ExtDirectResponse resp = runTest(configuration);
-		assertEquals("java.lang.IllegalArgumentException", resp.getMessage());
+		assertEquals("Invalid remoting method 'remoteProviderSimple.method4'. Missing ExtDirectMethod annotation", resp.getMessage());
 		assertNotNull(resp.getWhere());
 		assertTrue(resp
 				.getWhere()
