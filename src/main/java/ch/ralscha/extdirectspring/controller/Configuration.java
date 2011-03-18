@@ -17,6 +17,17 @@ package ch.ralscha.extdirectspring.controller;
 
 import java.util.Map;
 
+/**
+ * Configuration class to change the way exception messages get sent back to the client 
+ * 
+ * If there is a mapping in exceptionToMessage send this message back.
+ * If exceptionNameAsMessage is true send the name of the exception back, only if there is no mapping in exceptionToMessage.
+ * Send defaultExceptionMessage back if exceptionNameAsMessage is false and there is no mapping in exceptionToMessage.
+ * 
+ * If sendStacktrace is true, send the full stacktrace in the json field 'where' back  
+ * 
+ * @author Ralph Schaer
+ */
 public class Configuration {
 	private String defaultExceptionMessage = "Server Error";
 	private boolean exceptionNameAsMessage = false;
