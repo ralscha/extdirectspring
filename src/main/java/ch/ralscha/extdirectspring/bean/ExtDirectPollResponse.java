@@ -25,24 +25,13 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
  * @author Ralph Schaer
  */
 @JsonSerialize(include = Inclusion.NON_NULL)
-public class ExtDirectPollResponse {
+public class ExtDirectPollResponse extends BaseResponse {
 
-	private String type;
 	private String name;
 	private Object data;
-	private String message;
-	private String where;
 
 	public ExtDirectPollResponse() {
 		type = "event";
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public String getName() {
@@ -59,22 +48,6 @@ public class ExtDirectPollResponse {
 
 	public void setData(final Object data) {
 		this.data = data;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public String getWhere() {
-		return where;
-	}
-
-	public void setWhere(String where) {
-		this.where = where;
 	}
 
 	@Override

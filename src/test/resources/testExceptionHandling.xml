@@ -11,14 +11,13 @@
     http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
   
-  <context:component-scan base-package="ch.ralscha.extdirectspring" use-default-filters="false">
-    <context:include-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
+  <context:component-scan base-package="ch.ralscha.extdirectspring">
+    <context:exclude-filter type="regex" expression="ch\.ralscha\.extdirectspring\.itest\..*"/>
+    <context:exclude-filter type="regex" expression="ch\.ralscha\.extdirectspring\.store\..*"/>
   </context:component-scan>
-  
-  <context:component-scan base-package="ch.ralscha.extdirectspring.store"/>
-  
-  <bean id="extDirectSpringConfiguration" class="ch.ralscha.extdirectspring.controller.Configuration" />  
-  
+
   <mvc:annotation-driven />
+
+  <bean abstract="true" class="ch.ralscha.extdirectspring.util.TestInterface" />
   
 </beans>
