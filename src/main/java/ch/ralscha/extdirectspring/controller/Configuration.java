@@ -21,8 +21,8 @@ import java.util.Map;
  * Configuration class to change the way exception messages get sent back to the client 
  * 
  * If there is a mapping in exceptionToMessage send this message back.
- * If exceptionNameAsMessage is true send the name of the exception back, only if there is no mapping in exceptionToMessage.
- * Send defaultExceptionMessage back if exceptionNameAsMessage is false and there is no mapping in exceptionToMessage.
+ * If sendExceptionMessage is true send the message of the exception back, only if there is no mapping in exceptionToMessage.
+ * Send defaultExceptionMessage back if sendExceptionMessage is false and there is no mapping in exceptionToMessage.
  * 
  * If sendStacktrace is true, send the full stacktrace in the json field 'where' back  
  * 
@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public class Configuration {
 	private String defaultExceptionMessage = "Server Error";
-	private boolean exceptionNameAsMessage = false;
+	private boolean sendExceptionMessage = false;
 	private boolean sendStacktrace = false;
 	private Map<Class<?>, String> exceptionToMessage;
 
@@ -42,12 +42,12 @@ public class Configuration {
 		this.defaultExceptionMessage = defaultExceptionMessage;
 	}
 
-	public boolean isExceptionNameAsMessage() {
-		return exceptionNameAsMessage;
+	public boolean isSendExceptionMessage() {
+		return sendExceptionMessage;
 	}
 
-	public void setExceptionNameAsMessage(boolean exceptionNameAsMessage) {
-		this.exceptionNameAsMessage = exceptionNameAsMessage;
+	public void setSendExceptionMessage(boolean sendExceptionMessage) {
+		this.sendExceptionMessage = sendExceptionMessage;
 	}
 
 	public boolean isSendStacktrace() {
@@ -66,15 +66,15 @@ public class Configuration {
 		this.exceptionToMessage = exceptionToMessage;
 	}
 
-	public String getMessage(Class<?> exceptionClass) {
+	public String getMessage(Throwable exception) {
 		String message = null;
 		if (getExceptionToMessage() != null) {
-			message = getExceptionToMessage().get(exceptionClass);
+			message = getExceptionToMessage().get(exception.getClass());
 		}
 
 		if (message == null) {
-			if (isExceptionNameAsMessage()) {
-				return exceptionClass.getName();
+			if (isSendExceptionMessage()) {
+				return exception.getMessage();
 			}
 			return getDefaultExceptionMessage();
 		}
