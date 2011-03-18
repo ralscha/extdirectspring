@@ -38,6 +38,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -51,6 +52,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.bean.BaseResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
@@ -71,17 +73,20 @@ import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
  * @author Ralph Schaer
  */
 @Controller
-public class RouterController {
+public class RouterController implements InitializingBean {
 
 	private static final Log log = LogFactory.getLog(RouterController.class);
 
 	private ConversionService conversionService;
 	private ApplicationContext context;
 
-	//todo add a testcase for this
+	@Deprecated
 	@Autowired(required = false)
 	@Qualifier("extDirectSpringExceptionToMessage")
 	private Map<String, Map<Class<?>, String>> exceptionToMessage;
+	
+	@Autowired(required = false) 
+	private Configuration configuration;
 	
 	@Autowired
 	public RouterController(ApplicationContext context, ConversionService conversionService) {
@@ -89,6 +94,23 @@ public class RouterController {
 		this.conversionService = conversionService;
 	}
 
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
+
+	public void afterPropertiesSet() throws Exception {
+		
+		if (configuration == null) {
+			configuration = new Configuration();
+		}
+		
+		if (exceptionToMessage != null && configuration.getExceptionToMessage() == null) {
+			configuration.setExceptionToMessage(exceptionToMessage.get("extDirectSpringExceptionToMessage"));
+		}
+	}
+
+	
+	
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
 	@ResponseBody
 	public ExtDirectPollResponse poll(@PathVariable("beanName") String beanName, @PathVariable("method") String method,
@@ -121,34 +143,8 @@ public class RouterController {
 
 			directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
 		} catch (Exception e) {
-			Throwable cause;
-			if (e.getCause() != null) {
-				cause = e.getCause();
-			} else {
-				cause = e;
-			}
-
-			log.error("Error polling method '" + beanName + "." + method + "'", e);
-
-			directPollResponse.setType("exception");
-
-			if (exceptionToMessage != null) {
-				String message = exceptionToMessage.get("extDirectSpringExceptionToMessage").get(cause.getClass());
-				if (message != null) {
-					directPollResponse.setMessage(message);
-				} else {
-					directPollResponse.setMessage("Server Error");
-				}
-			} else {
-				directPollResponse.setMessage("Server Error");
-			}
-
-			if (log.isDebugEnabled()) {
-				directPollResponse.setWhere(getStackTrace(e));
-			} else {
-				directPollResponse.setWhere(null);
-			}
-
+			log.error("Error polling method '" + beanName + "." + method + "'", e.getCause() != null ? e.getCause() : e);
+			handleException(directPollResponse, e);
 		}
 		return directPollResponse;
 
@@ -199,34 +195,8 @@ public class RouterController {
 				}
 
 			} catch (Exception e) {
-				Throwable cause;
-				if (e.getCause() != null) {
-					cause = e.getCause();
-				} else {
-					cause = e;
-				}
-
-				log.error("Error calling method: " + directRequest.getMethod(), cause);
-
-				directResponse.setType("exception");
-
-				if (exceptionToMessage != null) {
-					String message = exceptionToMessage.get("extDirectSpringExceptionToMessage").get(cause.getClass());
-					if (message != null) {
-						directResponse.setMessage(message);
-					} else {
-						directResponse.setMessage("Server Error");
-					}
-				} else {
-					directResponse.setMessage("Server Error");
-				}
-
-				if (log.isDebugEnabled()) {
-					directResponse.setWhere(getStackTrace(cause));
-				} else {
-					directResponse.setWhere(null);
-				}
-
+				log.error("Error calling method: " + directRequest.getMethod(), e.getCause() != null ? e.getCause() : e);
+				handleException(directResponse, e);
 			}
 
 			directResponses.add(directResponse);
@@ -436,5 +406,25 @@ public class RouterController {
 
 		return directRequests;
 	}
+
+	private void handleException(BaseResponse response, Exception e) {
+		Throwable cause;
+		if (e.getCause() != null) {
+			cause = e.getCause();
+		} else {
+			cause = e;
+		}
+		
+		response.setType("exception");
+		response.setMessage(configuration.getMessage(cause.getClass()));
+
+		if (configuration.isSendStacktrace()) {
+			response.setWhere(getStackTrace(cause));
+		} else {
+			response.setWhere(null);
+		}
+	}
+
+
 
 }

@@ -28,15 +28,12 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
  * @author Ralph Schaer
  */
 @JsonSerialize(include = Inclusion.NON_NULL)
-public class ExtDirectResponse {
+public class ExtDirectResponse extends BaseResponse {
 
-	private String type;
 	private int tid;
 	private String action;
 	private String method;
 	private Object result;
-	private String message;
-	private String where;
 
 	public ExtDirectResponse(final ExtDirectRequest directRequest) {
 		action = directRequest.getAction();
@@ -82,30 +79,6 @@ public class ExtDirectResponse {
 
 	public void setTid(final int tid) {
 		this.tid = tid;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(final String type) {
-		this.type = type;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(final String message) {
-		this.message = message;
-	}
-
-	public String getWhere() {
-		return where;
-	}
-
-	public void setWhere(final String where) {
-		this.where = where;
 	}
 
 	@Override

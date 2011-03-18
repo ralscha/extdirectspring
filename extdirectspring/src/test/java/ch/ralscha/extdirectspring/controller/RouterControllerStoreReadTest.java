@@ -65,7 +65,7 @@ public class RouterControllerStoreReadTest {
 
 	@Test
 	public void testNoArgumentsNoRequestParameters() {
-		String json = createRequestJson("remoteProviderStoreRead", "method1", 1, null);
+		String json = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method1", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
 		assertEquals(1, responses.size());
@@ -88,7 +88,7 @@ public class RouterControllerStoreReadTest {
 		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
 		storeRead.setQuery("ralph");
 
-		String json = createRequestJson("remoteProviderStoreRead", "method1", 1, storeRead);
+		String json = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method1", 1, storeRead);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
 		assertEquals(1, responses.size());
@@ -108,7 +108,7 @@ public class RouterControllerStoreReadTest {
 
 	@Test
 	public void testReturnsNull() {
-		String json = createRequestJson("remoteProviderStoreRead", "method2", 1, null);
+		String json = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method2", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
 		assertEquals(1, responses.size());
@@ -124,7 +124,7 @@ public class RouterControllerStoreReadTest {
 
 	@Test
 	public void testSupportedArguments() {
-		String json = createRequestJson("remoteProviderStoreRead", "method3", 1, null);
+		String json = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method3", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
 		assertEquals(1, responses.size());
@@ -230,7 +230,7 @@ public class RouterControllerStoreReadTest {
 	}
 
 	private ExtDirectResponse executeWithExtDirectStoreReadRequest(ExtDirectStoreReadRequest storeRead) {
-		String json = createRequestJson("remoteProviderStoreRead", "method4", 1, storeRead);
+		String json = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method4", 1, storeRead);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
 		assertEquals(1, responses.size());
@@ -252,7 +252,7 @@ public class RouterControllerStoreReadTest {
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
-		String json = createRequestJson("remoteProviderStoreRead", "method5", 1, readRequest);
+		String json = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method5", 1, readRequest);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
 		assertEquals(1, responses.size());
@@ -276,7 +276,7 @@ public class RouterControllerStoreReadTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		json = createRequestJson("remoteProviderStoreRead", "method5", 1, readRequest);
+		json = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method5", 1, readRequest);
 		responses = controller.router(request, response, Locale.ENGLISH, json);
 
 		assertEquals(1, responses.size());
@@ -294,7 +294,7 @@ public class RouterControllerStoreReadTest {
 		Map<String, Object> readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "firstname");
 
-		String json = createRequestJson("remoteProviderStoreRead", "method6", 1, readRequest);
+		String json = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method6", 1, readRequest);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
 		assertEquals(1, responses.size());
@@ -319,7 +319,7 @@ public class RouterControllerStoreReadTest {
 	@Test
 	public void testWithAdditionalParametersOptional() {
 
-		String json = createRequestJson("remoteProviderStoreRead", "method7", 1, null);
+		String json = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method7", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
 		assertEquals(1, responses.size());
@@ -341,7 +341,7 @@ public class RouterControllerStoreReadTest {
 		readRequest.put("id", 11);
 		readRequest.put("query", "");
 
-		json = createRequestJson("remoteProviderStoreRead", "method7", 1, readRequest);
+		json = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method7", 1, readRequest);
 		responses = controller.router(request, response, Locale.ENGLISH, json);
 
 		assertEquals(1, responses.size());
@@ -363,7 +363,7 @@ public class RouterControllerStoreReadTest {
 	@Test
 	public void testMetadata() {
 
-		String json = createRequestJson("remoteProviderStoreRead", "methodMetadata", 1, new HashMap<String, Object>());
+		String json = ControllerUtil.createRequestJson("remoteProviderStoreRead", "methodMetadata", 1, new HashMap<String, Object>());
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
 		assertEquals(1, responses.size());
@@ -435,14 +435,5 @@ public class RouterControllerStoreReadTest {
 
 	}
 
-	private String createRequestJson(String action, String method, int tid, Object... data) {
-		ExtDirectRequest dr = new ExtDirectRequest();
-		dr.setAction(action);
-		dr.setMethod(method);
-		dr.setTid(tid);
-		dr.setType("rpc");
-		dr.setData(data);
-		return ExtDirectSpringUtil.serializeObjectToJson(dr);
-	}
 
 }
