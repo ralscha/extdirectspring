@@ -54,6 +54,14 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 @ContextConfiguration(locations = "classpath:/testExceptionHandling.xml")
 public class ExceptionHandlingTest {
 
+	private static final String STACK_TRACE = "java.lang.IllegalArgumentException: Invalid remoting method 'remoteProviderSimple.method4'. Missing ExtDirectMethod annotation";
+
+	private static final String ILLEGAL_ARGUMENT = "illegal argument";
+
+	private static final String AN_ERROR_OCCURED = "an error occured";
+
+	private static final String EXCEPTION_MESSAGE = "Invalid remoting method 'remoteProviderSimple.method4'. Missing ExtDirectMethod annotation";
+
 	@Inject
 	private RouterController controller;
 
@@ -65,7 +73,7 @@ public class ExceptionHandlingTest {
 		response = new MockHttpServletResponse();
 		request = new MockHttpServletRequest();
 	}
-	
+
 	@Test
 	public void testDefault() throws Exception {
 		ExtDirectResponse resp = runTest(null);
@@ -76,9 +84,9 @@ public class ExceptionHandlingTest {
 	@Test
 	public void testDefaultExceptionMessage() throws Exception {
 		Configuration configuration = new Configuration();
-		configuration.setDefaultExceptionMessage("an error occured");
+		configuration.setDefaultExceptionMessage(AN_ERROR_OCCURED);
 		ExtDirectResponse resp = runTest(configuration);
-		assertEquals("an error occured", resp.getMessage());
+		assertEquals(AN_ERROR_OCCURED, resp.getMessage());
 		assertNull(resp.getWhere());
 	}
 
@@ -87,7 +95,7 @@ public class ExceptionHandlingTest {
 		Configuration configuration = new Configuration();
 		configuration.setSendExceptionMessage(true);
 		ExtDirectResponse resp = runTest(configuration);
-		assertEquals("Invalid remoting method 'remoteProviderSimple.method4'. Missing ExtDirectMethod annotation", resp.getMessage());
+		assertEquals(EXCEPTION_MESSAGE, resp.getMessage());
 		assertNull(resp.getWhere());
 	}
 
@@ -95,10 +103,22 @@ public class ExceptionHandlingTest {
 	public void testExceptionToMessage() throws Exception {
 		Configuration configuration = new Configuration();
 		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
-		exceptionMessageMapping.put(IllegalArgumentException.class, "illegal argument");
+		exceptionMessageMapping.put(IllegalArgumentException.class, ILLEGAL_ARGUMENT);
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest(configuration);
-		assertEquals("illegal argument", resp.getMessage());
+		assertEquals(ILLEGAL_ARGUMENT, resp.getMessage());
+		assertNull(resp.getWhere());
+	}
+
+	@Test
+	public void testExceptionToMessageNullValue() throws Exception {
+		Configuration configuration = new Configuration();
+		configuration.setSendExceptionMessage(false);
+		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
+		exceptionMessageMapping.put(IllegalArgumentException.class, null);
+		configuration.setExceptionToMessage(exceptionMessageMapping);
+		ExtDirectResponse resp = runTest(configuration);
+		assertEquals(EXCEPTION_MESSAGE, resp.getMessage());
 		assertNull(resp.getWhere());
 	}
 
@@ -106,14 +126,11 @@ public class ExceptionHandlingTest {
 	public void testDefaultExceptionMessageWithStacktrace() throws Exception {
 		Configuration configuration = new Configuration();
 		configuration.setSendStacktrace(true);
-		configuration.setDefaultExceptionMessage("an error occured");
+		configuration.setDefaultExceptionMessage(AN_ERROR_OCCURED);
 		ExtDirectResponse resp = runTest(configuration);
-		assertEquals("an error occured", resp.getMessage());
+		assertEquals(AN_ERROR_OCCURED, resp.getMessage());
 		assertNotNull(resp.getWhere());
-		assertTrue(resp
-				.getWhere()
-				.startsWith(
-						"java.lang.IllegalArgumentException: Invalid remoting method 'remoteProviderSimple.method4'. Missing ExtDirectMethod annotation"));
+		assertTrue(resp.getWhere().startsWith(STACK_TRACE));
 	}
 
 	@Test
@@ -122,12 +139,9 @@ public class ExceptionHandlingTest {
 		configuration.setSendStacktrace(true);
 		configuration.setSendExceptionMessage(true);
 		ExtDirectResponse resp = runTest(configuration);
-		assertEquals("Invalid remoting method 'remoteProviderSimple.method4'. Missing ExtDirectMethod annotation", resp.getMessage());
+		assertEquals(EXCEPTION_MESSAGE, resp.getMessage());
 		assertNotNull(resp.getWhere());
-		assertTrue(resp
-				.getWhere()
-				.startsWith(
-						"java.lang.IllegalArgumentException: Invalid remoting method 'remoteProviderSimple.method4'. Missing ExtDirectMethod annotation"));
+		assertTrue(resp.getWhere().startsWith(STACK_TRACE));
 
 	}
 
@@ -136,15 +150,25 @@ public class ExceptionHandlingTest {
 		Configuration configuration = new Configuration();
 		configuration.setSendStacktrace(true);
 		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
-		exceptionMessageMapping.put(IllegalArgumentException.class, "illegal argument");
+		exceptionMessageMapping.put(IllegalArgumentException.class, ILLEGAL_ARGUMENT);
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest(configuration);
-		assertEquals("illegal argument", resp.getMessage());
+		assertEquals(ILLEGAL_ARGUMENT, resp.getMessage());
 		assertNotNull(resp.getWhere());
-		assertTrue(resp
-				.getWhere()
-				.startsWith(
-						"java.lang.IllegalArgumentException: Invalid remoting method 'remoteProviderSimple.method4'. Missing ExtDirectMethod annotation"));
+		assertTrue(resp.getWhere().startsWith(STACK_TRACE));
+	}
+
+	@Test
+	public void testExceptionToMessageNullValueWithStacktrace() throws Exception {
+		Configuration configuration = new Configuration();
+		configuration.setSendExceptionMessage(false);
+		configuration.setSendStacktrace(true);
+		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
+		exceptionMessageMapping.put(IllegalArgumentException.class, null);
+		configuration.setExceptionToMessage(exceptionMessageMapping);
+		ExtDirectResponse resp = runTest(configuration);
+		assertEquals(EXCEPTION_MESSAGE, resp.getMessage());
+		assertTrue(resp.getWhere().startsWith(STACK_TRACE));
 	}
 
 	private ExtDirectResponse runTest(Configuration configuration) throws Exception {
@@ -153,7 +177,7 @@ public class ExceptionHandlingTest {
 
 		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5, "string.param");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
-
+		System.out.println(ExtDirectSpringUtil.serializeObjectToJson(responses));
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
 		assertEquals("remoteProviderSimple", resp.getAction());

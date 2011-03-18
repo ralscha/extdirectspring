@@ -17,14 +17,17 @@ package ch.ralscha.extdirectspring.controller;
 
 import java.util.Map;
 
+import org.springframework.util.StringUtils;
+
 /**
- * Configuration class to change the way exception messages get sent back to the client 
+ * Configuration class to configure the way exception messages get sent back to the client 
  * 
- * If there is a mapping in exceptionToMessage send this message back.
- * If sendExceptionMessage is true send the message of the exception back, only if there is no mapping in exceptionToMessage.
- * Send defaultExceptionMessage back if sendExceptionMessage is false and there is no mapping in exceptionToMessage.
+ * If there is a mapping for the exception in exceptionToMessage and the value is not null send this value.
+ * If there is a mapping for the exception in exceptionToMessage and the value is null send exception.getMessage().
+ * If there is no mapping and sendExceptionMessage is true send exception.getMessage().
+ * If there is no mapping and sendExceptionMessage is false send defaultExceptionMessage.
  * 
- * If sendStacktrace is true, send the full stacktrace in the json field 'where' back  
+ * If sendStacktrace is true, send the full stacktrace in the json field 'where'.
  * 
  * @author Ralph Schaer
  */
@@ -70,15 +73,20 @@ public class Configuration {
 		String message = null;
 		if (getExceptionToMessage() != null) {
 			message = getExceptionToMessage().get(exception.getClass());
-		}
-
-		if (message == null) {
-			if (isSendExceptionMessage()) {
+			if (StringUtils.hasText(message)) {
+				return message;
+			}
+			
+			//map entry with a null value
+			if (getExceptionToMessage().containsKey(exception.getClass())) {
 				return exception.getMessage();
 			}
-			return getDefaultExceptionMessage();
 		}
 
-		return message;
+		if (isSendExceptionMessage()) {
+			return exception.getMessage();
+		}
+		return getDefaultExceptionMessage();
+
 	}
 }

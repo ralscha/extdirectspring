@@ -18,6 +18,7 @@
 		<property name="exceptionToMessage">
 			<map>
               <entry key="java.lang.IllegalArgumentException" value="illegal argument"/>
+              <entry key="org.springframework.beans.factory.NoSuchBeanDefinitionException"><null/></entry>
             </map>
 		</property>
 

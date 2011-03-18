@@ -119,4 +119,9 @@ public class RemoteProviderSimple {
 		return String.format("method10() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, status, aInt, aLong, aDouble, aFloat, aShort, aByte);
 	}
 	
+	@ExtDirectMethod
+	public String method11() {
+		throw new NullPointerException();
+	}
+	
 }
