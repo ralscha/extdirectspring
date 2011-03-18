@@ -177,7 +177,7 @@ public class ExceptionHandlingTest {
 
 		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5, "string.param");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
-		System.out.println(ExtDirectSpringUtil.serializeObjectToJson(responses));
+		
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
 		assertEquals("remoteProviderSimple", resp.getAction());
