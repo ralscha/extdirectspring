@@ -20,13 +20,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -59,8 +60,8 @@ public class ExceptionHandlingConfigInXmlTest {
 	}
 
 	@Test
-	public void testMapping() throws Exception {
-		
+	public void testExceptionInMapping() throws Exception {
+
 		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5, "string.param");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
@@ -76,13 +77,12 @@ public class ExceptionHandlingConfigInXmlTest {
 				.getWhere()
 				.startsWith(
 						"java.lang.IllegalArgumentException: Invalid remoting method 'remoteProviderSimple.method4'. Missing ExtDirectMethod annotation"));
-		
-		
+
 	}
-	
+
 	@Test
-	public void testExceptionNotInMapping() throws Exception {
-		
+	public void testExceptionInMappingWithNullValue() throws Exception {
+
 		String json = ControllerUtil.createRequestJson("remoteProviderSimple2", "method4", 2, 3, 2.5, "string.param");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
 
@@ -92,13 +92,29 @@ public class ExceptionHandlingConfigInXmlTest {
 		assertEquals("method4", resp.getMethod());
 		assertEquals("exception", resp.getType());
 		assertEquals(2, resp.getTid());
-		assertEquals("Panic!!!", resp.getMessage());
+		assertEquals("No bean named 'remoteProviderSimple2' is defined", resp.getMessage());
 		assertNull(resp.getResult());
 		assertTrue(resp
 				.getWhere()
 				.startsWith(
 						"org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'remoteProviderSimple2' is defined"));
-		
-		
-	}	
+
+	}
+
+	@Test
+	public void testExceptionNotInMapping() {
+		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method11", 3);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+
+		assertEquals(1, responses.size());
+		ExtDirectResponse resp = responses.get(0);
+		assertEquals("remoteProviderSimple", resp.getAction());
+		assertEquals("method11", resp.getMethod());
+		assertEquals("exception", resp.getType());
+		assertEquals(3, resp.getTid());
+		assertEquals("Panic!!!", resp.getMessage());
+		assertNull(resp.getResult());
+		assertTrue(resp.getWhere().startsWith("java.lang.NullPointerException"));
+
+	}
 }
