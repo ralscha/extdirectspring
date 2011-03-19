@@ -16,7 +16,9 @@
 
 package ch.ralscha.extdirectspring.itest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Map;
@@ -30,11 +32,19 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.databene.contiperf.PerfTest;
+import org.databene.contiperf.junit.ContiPerfRule;
+import org.databene.contiperf.log.ConsoleExecutionLogger;
+import org.junit.Rule;
 import org.junit.Test;
 
 public class SimpleServiceTest {
 
+	@Rule
+    public ContiPerfRule i = new ContiPerfRule(new ConsoleExecutionLogger());
+	
 	@Test
+	@PerfTest(invocations = 300, threads = 10)
 	public void testSimpleApi() throws IllegalStateException, IOException {
 
 		HttpClient client = new DefaultHttpClient();
@@ -49,6 +59,7 @@ public class SimpleServiceTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
+	@PerfTest(invocations = 300, threads = 10)
 	public void testSimpleCall() throws IllegalStateException, IOException {
 		HttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
