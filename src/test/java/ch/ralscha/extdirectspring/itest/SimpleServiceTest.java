@@ -44,7 +44,7 @@ public class SimpleServiceTest {
     public ContiPerfRule i = new ContiPerfRule(new ConsoleExecutionLogger());
 	
 	@Test
-	@PerfTest(invocations = 300, threads = 10)
+	@PerfTest(invocations = 200, threads = 10)
 	public void testSimpleApi() throws IllegalStateException, IOException {
 
 		HttpClient client = new DefaultHttpClient();
@@ -59,7 +59,7 @@ public class SimpleServiceTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	@PerfTest(invocations = 300, threads = 10)
+	@PerfTest(invocations = 200, threads = 10)
 	public void testSimpleCall() throws IllegalStateException, IOException {
 		HttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
