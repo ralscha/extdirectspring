@@ -196,6 +196,13 @@
 			</exclusions>
 		</dependency>
 
+		<dependency>
+			<groupId>org.databene</groupId>
+			<artifactId>contiperf</artifactId>
+			<version>1.07</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
