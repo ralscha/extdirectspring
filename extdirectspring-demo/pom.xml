@@ -43,7 +43,7 @@
 		<logback.version>0.9.28</logback.version>
 		<hibernatevalidator.version>4.2.0.Beta1</hibernatevalidator.version>
 		<jetty.version>7.3.1.v20110307</jetty.version>
-		<eds.version>1.0.7-SNAPSHOT</eds.version>
+		<eds.version>1.0.7</eds.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.debug>true</maven.compiler.debug>
@@ -167,7 +167,7 @@
 		<repository>
 			<id>sonatype</id>
 			<name>sonatype</name>
-			<url>https://oss.sonatype.org/content/groups/public</url>
+			<url>https://oss.sonatype.org/content/repositories/chralscha-044/</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
