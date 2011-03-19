@@ -33,9 +33,6 @@ public class ReportService {
 	public List<SeasonData> getSeasonData(@RequestParam(defaultValue = "50") int minRandomValue,
 			@RequestParam(value = "maxRandomValue", defaultValue = "250") int maxRandomValue) {
 
-		System.out.println("min=" + minRandomValue);
-		System.out.println("max=" + maxRandomValue);
-
 		return new ImmutableList.Builder<SeasonData>()
 				.add(new SeasonData("Summer", randomGenerator.nextInt(maxRandomValue - minRandomValue) + minRandomValue))
 				.add(new SeasonData("Fall", randomGenerator.nextInt(maxRandomValue - minRandomValue) + minRandomValue))
