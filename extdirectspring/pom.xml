@@ -154,6 +154,12 @@
 			<artifactId>httpclient</artifactId>
 			<version>4.1</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -161,6 +167,12 @@
 			<artifactId>httpmime</artifactId>
 			<version>4.1</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- jaxb-api and jaxb-impl are not needed for Java 1.6 -->
