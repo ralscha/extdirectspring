@@ -167,7 +167,7 @@
 		<repository>
 			<id>sonatype</id>
 			<name>sonatype</name>
-			<url>https://oss.sonatype.org/content/repositories/chralscha-044/</url>
+			<url>https://oss.sonatype.org/content/groups/public</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
@@ -228,6 +228,7 @@
 					<properties>
 						<owner>Ralph Schaer</owner>
 						<year>${project.inceptionYear}</year>
+						<currentYear>2011</currentYear>
 						<email>ralphschaer@gmail.com</email>
 					</properties>
 					<excludes>
