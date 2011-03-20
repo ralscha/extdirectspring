@@ -222,7 +222,7 @@
 			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
-				<version>1.8.0</version>
+				<version>1.9.0</version>
 				<configuration>
 					<header>${basedir}/src/main/config/header.txt</header>
 					<properties>
