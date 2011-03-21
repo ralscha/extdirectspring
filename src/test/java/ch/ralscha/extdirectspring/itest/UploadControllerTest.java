@@ -15,7 +15,9 @@
  */
 package ch.ralscha.extdirectspring.itest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +37,7 @@ import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
-public class UploadControllerTest {
+public class UploadControllerTest extends JettyTest {
 
 	@SuppressWarnings("unchecked")
 	@Test

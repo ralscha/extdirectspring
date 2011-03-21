@@ -15,7 +15,8 @@
  */
 package ch.ralscha.extdirectspring.itest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,12 +37,12 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
-public class UserControllerTest {
+public class UserControllerTest extends JettyTest {
 
 	private HttpClient client;
 	private HttpPost post;
 	private ObjectMapper mapper = new ObjectMapper();
-	
+
 	@Before
 	public void beforeTest() {
 		client = new DefaultHttpClient();
@@ -69,7 +70,6 @@ public class UserControllerTest {
 		assertNotNull(entity);
 		String responseString = EntityUtils.toString(entity);
 
-		
 		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
 		assertEquals(5, rootAsMap.size());
 		assertEquals("updateUser", rootAsMap.get("method"));

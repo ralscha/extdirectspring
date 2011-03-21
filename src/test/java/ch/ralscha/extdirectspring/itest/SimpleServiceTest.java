@@ -37,7 +37,7 @@ import org.databene.contiperf.log.ConsoleExecutionLogger;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class SimpleServiceTest {
+public class SimpleServiceTest extends JettyTest {
 
 	@Rule
     public ContiPerfRule i = new ContiPerfRule(new ConsoleExecutionLogger());
