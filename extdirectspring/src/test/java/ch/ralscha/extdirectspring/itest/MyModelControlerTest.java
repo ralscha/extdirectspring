@@ -15,7 +15,8 @@
  */
 package ch.ralscha.extdirectspring.itest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,18 +37,16 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MyModelControlerTest {
+public class MyModelControlerTest extends JettyTest {
 
 	private HttpClient client;
 	private HttpPost post;
-
+		
 	@Before
 	public void beforeTest() {
 		client = new DefaultHttpClient();
 		post = new HttpPost("http://localhost:9998/controller/router");
 	}
-
-	
 
 	@Test
 	@SuppressWarnings("unchecked")
