@@ -34,7 +34,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 @Controller
 @RequestMapping("/upload")
-public class UploadController {
+public class FileUploadController {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_upload")
 	@RequestMapping(value = "/test", method = RequestMethod.POST)
