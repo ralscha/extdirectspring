@@ -58,6 +58,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
+import ch.ralscha.extdirectspring.bean.SortInfo;
 import ch.ralscha.extdirectspring.filter.Filter;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.MethodInfo;
@@ -346,6 +347,18 @@ public class RouterController implements InitializingBean {
 				}
 
 				to.setFilters(filters);
+				foundParameters.add(entry.getKey());
+			} else if (entry.getKey().equals("sort") && entry.getValue() != null && entry.getValue() instanceof List) {
+				
+				List<SortInfo> sorters = new ArrayList<SortInfo>();
+				@SuppressWarnings("unchecked")
+				List<Map<String, Object>> rawSorters = (List<Map<String, Object>>)entry.getValue();
+				
+				for (Map<String, Object> aRawSorter : rawSorters) {
+					sorters.add(SortInfo.createSortInfo(aRawSorter));
+				}
+				
+				to.setSorters(sorters);
 				foundParameters.add(entry.getKey());
 			} else {
 
