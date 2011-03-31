@@ -6,7 +6,7 @@ Ext.onReady(function() {
     paramsAsHash: true,
     autoLoad: true,
     root: 'records',
-    directFn: bookService.getBooks,
+    directFn: extJsBookService.getBooks,
     fields: [ {
       name: 'id'
     }, {
