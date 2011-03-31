@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ch.ralscha</groupId>
 	<artifactId>extdirectspring-demo</artifactId>
-	<version>1.0.7</version>
+	<version>1.0.8</version>
 	<packaging>war</packaging>
 
 	<inceptionYear>2010</inceptionYear>
@@ -41,7 +41,7 @@
 		<spring.version>3.1.0.M1</spring.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<logback.version>0.9.28</logback.version>
-		<hibernatevalidator.version>4.2.0.Beta1</hibernatevalidator.version>
+		<hibernatevalidator.version>4.2.0.Beta2</hibernatevalidator.version>
 		<jetty.version>7.3.1.v20110307</jetty.version>
 		<eds.version>1.0.8-SNAPSHOT</eds.version>
 
