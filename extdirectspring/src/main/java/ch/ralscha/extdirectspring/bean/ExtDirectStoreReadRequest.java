@@ -33,10 +33,12 @@ public class ExtDirectStoreReadRequest {
 	private String query;
 	private Integer limit;
 	private Integer start;
+	private Integer page;
 	private String dir;
 	private String sort;
 	private String groupBy;
 	private String groupDir;
+	private List<SortInfo> sorters;
 	private List<Filter> filters;
 
 	public ExtDirectStoreReadRequest() {
@@ -127,10 +129,27 @@ public class ExtDirectStoreReadRequest {
 		this.filters = filters;
 	}
 
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}
+	
+	public List<SortInfo> getSorters() {
+		return sorters;
+	}
+
+	public void setSorters(List<SortInfo> sorters) {
+		this.sorters = sorters;
+	}
+
 	@Override
 	public String toString() {
-		return "ExtDirectStoreReadRequest [query=" + query + ", limit=" + limit + ", start=" + start + ", dir=" + dir
-				+ ", sort=" + sort + ", groupBy=" + groupBy + ", groupDir=" + groupDir + ", filters=" + filters + "]";
-	}
+		return "ExtDirectStoreReadRequest [query=" + query + ", limit=" + limit + ", start=" + start + ", page=" + page
+				+ ", dir=" + dir + ", sort=" + sort + ", groupBy=" + groupBy + ", groupDir=" + groupDir + ", sorters="
+				+ sorters + ", filters=" + filters + "]";
+	}	
 
 }
