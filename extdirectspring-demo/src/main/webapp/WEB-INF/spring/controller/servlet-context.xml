@@ -8,10 +8,14 @@
 
 	<mvc:annotation-driven />
 
+	<context:component-scan base-package="ch.ralscha.extdirectspring" />
+
+	<context:component-scan base-package="ch.ralscha.extdirectspring.demo" use-default-filters="false">
+		<context:include-filter expression="org.springframework.stereotype.Controller" type="annotation" />
+	</context:component-scan>
+
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize" value="100000" />
 	</bean>
-
-	<import resource="controllers.xml" />
 
 </beans>
