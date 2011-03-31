@@ -22,7 +22,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import com.google.common.collect.ImmutableList;
 
 @Named
-public class BookService {
+public class ExtJsBookService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "book")
 	public List<Book> getBooks() {
