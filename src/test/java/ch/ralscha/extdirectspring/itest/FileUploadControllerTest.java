@@ -37,7 +37,7 @@ import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
-public class UploadControllerTest extends JettyTest {
+public class FileUploadControllerTest extends JettyTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
@@ -51,7 +51,7 @@ public class UploadControllerTest extends JettyTest {
 		ContentBody cbFile = new InputStreamBody(is, "text/plain", "UploadTestFile.txt");
 		mpEntity.addPart("fileUpload", cbFile);
 		mpEntity.addPart("extTID", new StringBody("2"));
-		mpEntity.addPart("extAction", new StringBody("uploadController"));
+		mpEntity.addPart("extAction", new StringBody("fileUploadController"));
 		mpEntity.addPart("extMethod", new StringBody("uploadTest"));
 		mpEntity.addPart("extType", new StringBody("rpc"));
 		mpEntity.addPart("extUpload", new StringBody("true"));
@@ -79,7 +79,7 @@ public class UploadControllerTest extends JettyTest {
 		assertEquals(5, rootAsMap.size());
 		assertEquals("uploadTest", rootAsMap.get("method"));
 		assertEquals("rpc", rootAsMap.get("type"));
-		assertEquals("uploadController", rootAsMap.get("action"));
+		assertEquals("fileUploadController", rootAsMap.get("action"));
 		assertEquals(2, rootAsMap.get("tid"));
 
 		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
