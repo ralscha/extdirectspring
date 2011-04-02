@@ -41,6 +41,7 @@ import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.filter.BooleanFilter;
 import ch.ralscha.extdirectspring.filter.Comparison;
 import ch.ralscha.extdirectspring.filter.DateFilter;
+import ch.ralscha.extdirectspring.filter.Filter;
 import ch.ralscha.extdirectspring.filter.ListFilter;
 import ch.ralscha.extdirectspring.filter.NumericFilter;
 import ch.ralscha.extdirectspring.filter.StringFilter;
@@ -233,12 +234,13 @@ public class RemoteProviderStoreRead {
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public List<Row> methodFilter(@RequestParam("type") int type, ExtDirectStoreReadRequest request) {
 
+		List<Filter> filters = new ArrayList<Filter>(request.getFilters());
 		switch (type) {
 		case 1:
 			assertEquals(1, request.getFilters().size());
-			assertTrue(request.getFilters().get(0) instanceof NumericFilter);
+			assertTrue(filters.get(0) instanceof NumericFilter);
 
-			NumericFilter nf = (NumericFilter) request.getFilters().get(0);
+			NumericFilter nf = (NumericFilter) filters.get(0);
 			assertEquals(2, nf.getValue());
 			assertEquals("id", nf.getField());
 			assertEquals(Comparison.EQUAL, nf.getComparison());
@@ -246,52 +248,52 @@ public class RemoteProviderStoreRead {
 			return createResult(1);
 		case 2:
 			assertEquals(2, request.getFilters().size());
-			assertTrue(request.getFilters().get(0) instanceof NumericFilter);
-			assertTrue(request.getFilters().get(1) instanceof NumericFilter);
+			assertTrue(filters.get(0) instanceof NumericFilter);
+			assertTrue(filters.get(1) instanceof NumericFilter);
 
-			nf = (NumericFilter) request.getFilters().get(0);
+			nf = (NumericFilter) filters.get(0);
 			assertEquals(100, nf.getValue());
 			assertEquals("id", nf.getField());
 			assertEquals(Comparison.LESS_THAN, nf.getComparison());
 
-			nf = (NumericFilter) request.getFilters().get(1);
+			nf = (NumericFilter) filters.get(1);
 			assertEquals(90, nf.getValue());
 			assertEquals("id", nf.getField());
 			assertEquals(Comparison.GREATER_THAN, nf.getComparison());
 			return createResult(2);
 		case 3:
-			assertEquals(1, request.getFilters().size());
-			assertTrue(request.getFilters().get(0) instanceof BooleanFilter);
+			assertEquals(1, filters.size());
+			assertTrue(filters.get(0) instanceof BooleanFilter);
 
-			BooleanFilter bf = (BooleanFilter) request.getFilters().get(0);
+			BooleanFilter bf = (BooleanFilter) filters.get(0);
 			assertEquals(true, bf.getValue());
 			assertEquals("visible", bf.getField());
 
 			return createResult(3);
 		case 4:
-			assertEquals(1, request.getFilters().size());
-			assertTrue(request.getFilters().get(0) instanceof BooleanFilter);
+			assertEquals(1, filters.size());
+			assertTrue(filters.get(0) instanceof BooleanFilter);
 
-			bf = (BooleanFilter) request.getFilters().get(0);
+			bf = (BooleanFilter) filters.get(0);
 			assertEquals(false, bf.getValue());
 			assertEquals("visible", bf.getField());
 
 			return createResult(4);
 		case 5:
-			assertEquals(1, request.getFilters().size());
-			assertTrue(request.getFilters().get(0) instanceof StringFilter);
+			assertEquals(1, filters.size());
+			assertTrue(filters.get(0) instanceof StringFilter);
 
-			StringFilter sf = (StringFilter) request.getFilters().get(0);
+			StringFilter sf = (StringFilter) filters.get(0);
 			assertEquals("abb", sf.getValue());
 			assertEquals("company", sf.getField());
 
 			return createResult(5);
 
 		case 6:
-			assertEquals(1, request.getFilters().size());
-			assertTrue(request.getFilters().get(0) instanceof ListFilter);
+			assertEquals(1, filters.size());
+			assertTrue(filters.get(0) instanceof ListFilter);
 
-			ListFilter lf = (ListFilter) request.getFilters().get(0);
+			ListFilter lf = (ListFilter) filters.get(0);
 			assertEquals(1, lf.getValue().size());
 			assertEquals("small", lf.getValue().get(0));
 			assertEquals("size", lf.getField());
@@ -299,10 +301,10 @@ public class RemoteProviderStoreRead {
 			return createResult(6);
 
 		case 7:
-			assertEquals(1, request.getFilters().size());
-			assertTrue(request.getFilters().get(0) instanceof ListFilter);
+			assertEquals(1, filters.size());
+			assertTrue(filters.get(0) instanceof ListFilter);
 
-			lf = (ListFilter) request.getFilters().get(0);
+			lf = (ListFilter) filters.get(0);
 			assertEquals(2, lf.getValue().size());
 			assertEquals("small", lf.getValue().get(0));
 			assertEquals("medium", lf.getValue().get(1));
@@ -312,16 +314,16 @@ public class RemoteProviderStoreRead {
 
 		case 8:
 
-			assertEquals(2, request.getFilters().size());
-			assertTrue(request.getFilters().get(0) instanceof DateFilter);
-			assertTrue(request.getFilters().get(1) instanceof DateFilter);
+			assertEquals(2, filters.size());
+			assertTrue(filters.get(0) instanceof DateFilter);
+			assertTrue(filters.get(1) instanceof DateFilter);
 
-			DateFilter df = (DateFilter) request.getFilters().get(0);
+			DateFilter df = (DateFilter) filters.get(0);
 			assertEquals("07/31/2010", df.getValue());
 			assertEquals("date", df.getField());
 			assertEquals(Comparison.LESS_THAN, df.getComparison());
 
-			df = (DateFilter) request.getFilters().get(1);
+			df = (DateFilter) filters.get(1);
 			assertEquals("07/01/2010", df.getValue());
 			assertEquals("date", df.getField());
 			assertEquals(Comparison.GREATER_THAN, df.getComparison());
@@ -329,10 +331,10 @@ public class RemoteProviderStoreRead {
 			return createResult(8);
 
 		case 9:
-			assertEquals(1, request.getFilters().size());
-			assertTrue(request.getFilters().get(0) instanceof DateFilter);
+			assertEquals(1, filters.size());
+			assertTrue(filters.get(0) instanceof DateFilter);
 
-			df = (DateFilter) request.getFilters().get(0);
+			df = (DateFilter) filters.get(0);
 			assertEquals("07/01/2010", df.getValue());
 			assertEquals("date", df.getField());
 			assertEquals(Comparison.EQUAL, df.getComparison());
