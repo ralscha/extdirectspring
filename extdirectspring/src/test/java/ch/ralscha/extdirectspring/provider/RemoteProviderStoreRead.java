@@ -15,21 +15,26 @@
  */
 package ch.ralscha.extdirectspring.provider;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.junit.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.DataType;
@@ -38,6 +43,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 import ch.ralscha.extdirectspring.bean.Field;
 import ch.ralscha.extdirectspring.bean.MetaData;
 import ch.ralscha.extdirectspring.bean.SortDirection;
+import ch.ralscha.extdirectspring.bean.SortInfo;
 import ch.ralscha.extdirectspring.filter.BooleanFilter;
 import ch.ralscha.extdirectspring.filter.Comparison;
 import ch.ralscha.extdirectspring.filter.DateFilter;
@@ -132,6 +138,25 @@ public class RemoteProviderStoreRead {
 				if (request.isAscendingSort()) {
 					Collections.sort(rows);
 				} else if (request.isDescendingSort()) {
+					Collections.sort(rows, new Comparator<Row>() {
+
+						//@Override
+						public int compare(Row o1, Row o2) {
+							return o2.getId() - o1.getId();
+						}
+					});
+				}
+			}
+			
+			Collection<SortInfo> sorters = request.getSorters();
+			
+			if (!sorters.isEmpty()) {
+				SortInfo sortInfo = sorters.iterator().next();
+				Assert.assertEquals("id", sortInfo.getProperty());
+				
+				if (sortInfo.getDirection() == SortDirection.ASCENDING) {
+					Collections.sort(rows);
+				} else {
 					Collections.sort(rows, new Comparator<Row>() {
 
 						//@Override

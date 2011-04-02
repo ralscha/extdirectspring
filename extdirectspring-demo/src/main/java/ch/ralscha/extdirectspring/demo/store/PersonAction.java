@@ -15,6 +15,7 @@
  */
 package ch.ralscha.extdirectspring.demo.store;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,6 +34,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 import ch.ralscha.extdirectspring.bean.Field;
 import ch.ralscha.extdirectspring.bean.MetaData;
 import ch.ralscha.extdirectspring.bean.SortDirection;
+import ch.ralscha.extdirectspring.bean.SortInfo;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -132,20 +134,25 @@ public class PersonAction {
 			}
 		}
 
-		if (StringUtils.hasText(request.getSort())) {
-			Ordering<Person> sortOrdering = orderingMap.get(request.getSort());
-			if (sortOrdering != null) {
-				if (request.isDescendingSort()) {
-					sortOrdering = sortOrdering.reverse();
+		Collection<SortInfo> sorters = request.getSorters();
+		if (!sorters.isEmpty()) {
+			for (SortInfo sortInfo : sorters) {
+				
+				Ordering<Person> colOrder = orderingMap.get(sortInfo.getProperty());
+				if (colOrder != null) {
+					if (sortInfo.getDirection() == SortDirection.DESCENDING) {
+						colOrder = colOrder.reverse();
+					}
+					if (ordering == null) {
+						ordering = colOrder;
+					} else {
+						ordering = ordering.compound(colOrder);
+					}
 				}
+				
 			}
-			if (ordering == null) {
-				ordering = sortOrdering;
-			} else {
-				ordering = ordering.compound(sortOrdering);
-			}
-		}
-
+		} 
+		
 		if (ordering != null) {
 			persons = ordering.sortedCopy(persons);
 		}
@@ -319,12 +326,22 @@ public class PersonAction {
 
 		Ordering<Person> ordering = null;
 
-		if (StringUtils.hasText(request.getSort())) {
-			ordering = orderingMap.get(request.getSort());
-			if (ordering != null) {
-				if (request.isDescendingSort()) {
-					ordering = ordering.reverse();
+		Collection<SortInfo> sorters = request.getSorters();
+		if (!sorters.isEmpty()) {
+			for (SortInfo sortInfo : sorters) {
+				
+				Ordering<Person> colOrder = orderingMap.get(sortInfo.getProperty());
+				if (colOrder != null) {
+					if (sortInfo.getDirection() == SortDirection.DESCENDING) {
+						colOrder = colOrder.reverse();
+					}
+					if (ordering == null) {
+						ordering = colOrder;
+					} else {
+						ordering = ordering.compound(colOrder);
+					}
 				}
+				
 			}
 		} else {
 			ordering = orderingMap.get("lastName");

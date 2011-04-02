@@ -15,6 +15,7 @@
  */
 package ch.ralscha.extdirectspring.demo.filter;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,6 +27,8 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
+import ch.ralscha.extdirectspring.bean.SortDirection;
+import ch.ralscha.extdirectspring.bean.SortInfo;
 
 import com.google.common.collect.Ordering;
 
@@ -47,9 +50,12 @@ public class FilterAction {
 
 		int totalSize = companies.size();
 
-		if (StringUtils.hasText(request.getSort())) {
-			Ordering<Object> ordering = new PropertyOrdering(Company.class, request.getSort());
-			if (request.isDescendingSort()) {
+		Collection<SortInfo> sorters = request.getSorters();
+		
+		if (!sorters.isEmpty()) {
+			SortInfo sortInfo = sorters.iterator().next();
+			Ordering<Object> ordering = new PropertyOrdering(Company.class, sortInfo.getProperty());
+			if (sortInfo.getDirection() == SortDirection.DESCENDING) {
 				ordering = ordering.reverse();
 			}
 			companies = ordering.sortedCopy(companies);
