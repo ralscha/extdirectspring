@@ -24,6 +24,7 @@ import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -93,7 +94,7 @@ public class CompanyDataBean {
 		return ImmutableList.copyOf(companies.values());
 	}
 
-	public List<Company> findCompanies(List<Filter> filters) {
+	public List<Company> findCompanies(Collection<Filter> filters) {
 
 		List<Predicate<Company>> predicates = Lists.newArrayList();
 		for (Filter filter : filters) {
