@@ -12,8 +12,7 @@ Ext.define('Company', {
 
 Ext.onReady(function() {    
     Ext.direct.Manager.addProvider(Ext.app.REMOTING_API);
-    
-    
+        
     // create the Tree
     Ext.create('Ext.grid.GridPanel', {
         store: {
