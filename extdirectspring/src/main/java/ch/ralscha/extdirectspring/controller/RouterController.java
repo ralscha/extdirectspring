@@ -58,6 +58,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
+import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.bean.SortInfo;
 import ch.ralscha.extdirectspring.filter.Filter;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
@@ -232,7 +233,7 @@ public class RouterController implements InitializingBean {
 			if (directRequest.getData() != null && directRequest.getData().length > 0) {
 				if (methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
 					directStoreReadRequest = new ExtDirectStoreReadRequest();
-					remainingParameters = fillObjectFromMap(directStoreReadRequest, (Map) directRequest.getData()[0]);
+					remainingParameters = fillReadRequestFromMap(directStoreReadRequest, (Map) directRequest.getData()[0]);
 				} else {
 					remainingParameters = (Map) directRequest.getData()[0];
 				}
@@ -330,7 +331,7 @@ public class RouterController implements InitializingBean {
 		return null;
 	}
 
-	private Map<String, Object> fillObjectFromMap(final ExtDirectStoreReadRequest to, final Map<String, Object> from) {
+	private Map<String, Object> fillReadRequestFromMap(final ExtDirectStoreReadRequest to, final Map<String, Object> from) {
 		Set<String> foundParameters = new HashSet<String>();
 
 		for (Entry<String, Object> entry : from.entrySet()) {
@@ -381,6 +382,20 @@ public class RouterController implements InitializingBean {
 			}
 		}
 
+		if (to.getLimit() != null) {
+			if (to.getPage() != null) {
+				to.setStart(to.getLimit() * (to.getPage()-1));
+			} else if (to.getStart() != null) {
+			    to.setPage(to.getStart() / to.getLimit() + 1);
+			}
+		}
+		
+		if (to.getSort() != null && to.getDir() != null) {
+			List<SortInfo> sorters = new ArrayList<SortInfo>();
+			sorters.add(new SortInfo(to.getSort(), SortDirection.fromString(to.getDir())));
+			to.setSorters(sorters);
+		}
+		
 		Map<String, Object> remainingParameters = new HashMap<String, Object>();
 		for (Entry<String, Object> entry : from.entrySet()) {
 			if (!foundParameters.contains(entry.getKey())) {
