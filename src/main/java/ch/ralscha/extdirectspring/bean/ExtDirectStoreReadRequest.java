@@ -15,6 +15,7 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class ExtDirectStoreReadRequest {
 
 	public ExtDirectStoreReadRequest() {
 		this.filters = Collections.emptyList();
+		this.sorters = Collections.emptyList();
 	}
 
 	public String getQuery() {
@@ -121,8 +123,8 @@ public class ExtDirectStoreReadRequest {
 		return (SortDirection.fromString(getGroupDir()) == SortDirection.DESCENDING);
 	}
 
-	public List<Filter> getFilters() {
-		return filters;
+	public Collection<Filter> getFilters() {
+		return Collections.unmodifiableCollection(filters);
 	}
 
 	public void setFilters(final List<Filter> filters) {
@@ -137,11 +139,11 @@ public class ExtDirectStoreReadRequest {
 		this.page = page;
 	}
 	
-	public List<SortInfo> getSorters() {
-		return sorters;
+	public Collection<SortInfo> getSorters() {
+		return Collections.unmodifiableCollection(sorters);
 	}
 
-	public void setSorters(List<SortInfo> sorters) {
+	public void setSorters(final List<SortInfo> sorters) {
 		this.sorters = sorters;
 	}
 
