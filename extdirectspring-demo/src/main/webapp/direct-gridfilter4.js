@@ -1,7 +1,7 @@
 Ext.Loader.setConfig({
 	enabled : true
 });
-Ext.Loader.setPath('Ext.ux', 'http://www.ralscha.ch/ext-4.0-beta1/examples/ux');
+Ext.Loader.setPath('Ext.ux', 'http://www.ralscha.ch/ext-4.0-beta2/examples/ux');
 Ext.require([ 'Ext.grid.*', 
               'Ext.data.*', 
               'Ext.ux.grid.FiltersFeature',
@@ -11,18 +11,13 @@ Ext.onReady(function() {
 	Ext.direct.Manager.addProvider(Ext.app.REMOTING_API);
 	Ext.QuickTips.init();
 
-	var store = Ext.create('Ext.data.Store', {
+	var store = Ext.create('Ext.data.DirectStore', {
 		autoDestroy : true,
 
-		proxy : {
-			type : 'direct',
-			directFn: filterAction.load,
-			reader : {
-				root : 'records',
-				idProperty : 'id',
-				totalProperty : 'total'
-			}
-		},
+		directFn: filterAction.load,
+		root : 'records',
+		idProperty : 'id',
+		totalProperty : 'total',
 
 		remoteSort : true,
 		sortInfo : {
@@ -82,7 +77,7 @@ Ext.onReady(function() {
 	// that the GridFilter plugin may be configured with or without
 	// the filter types (the filters may be specified on the column
 	// model
-	var createHeaders = function() {
+	var createColumns = function() {
 
 		var columns = [ {
 			dataIndex : 'id',
@@ -144,7 +139,7 @@ Ext.onReady(function() {
 	var grid = Ext.create('Ext.grid.GridPanel', {
 		border : false,
 		store : store,
-		headers : createHeaders(),
+		columns : createColumns(),
 		loadMask : true,
 		features : [ filters ],
 		bbar : Ext.create('Ext.toolbar.PagingToolbar', {

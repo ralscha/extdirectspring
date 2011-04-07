@@ -35,7 +35,7 @@ Ext.onReady(function() {
                 }
             }
         },
-        headers: [{
+        columns: [{
             dataIndex: 'name',
             flex: 1,
             text: 'Name'

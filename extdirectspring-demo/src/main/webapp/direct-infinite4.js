@@ -51,7 +51,7 @@ Ext.onReady(function() {
 			trackOver : false
 		},
 		// grid columns
-		headers : [ {
+		columns : [ {
 			xtype : 'rownumberer',
 			width : 40,
 			sortable : false
