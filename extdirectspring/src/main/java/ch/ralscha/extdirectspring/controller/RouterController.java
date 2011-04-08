@@ -109,9 +109,7 @@ public class RouterController implements InitializingBean {
 			configuration.setExceptionToMessage(exceptionToMessage.get("extDirectSpringExceptionToMessage"));
 		}
 	}
-
-	
-	
+		
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
 	@ResponseBody
 	public ExtDirectPollResponse poll(@PathVariable("beanName") String beanName, @PathVariable("method") String method,
@@ -278,16 +276,15 @@ public class RouterController implements InitializingBean {
 				} else if (methodParameter.isHasRequestParamAnnotation()) {
 					parameters[paramIndex] = handleRequestParam(null, remainingParameters, methodParameter);
 				} else if (directRequest.getData() != null && directRequest.getData().length > jsonParamIndex) {
-
+					
 					Object jsonParam = directRequest.getData()[jsonParamIndex];
-
-					if (methodParameter.getType().getClass().equals(String.class)) {
-						parameters[paramIndex] = ExtDirectSpringUtil.serializeObjectToJson(jsonParam);
-					} else if (methodParameter.getType().isPrimitive()) {
-						parameters[paramIndex] = conversionService.convert(jsonParam, methodParameter.getType());
+				
+					if (methodParameter.getType().equals(jsonParam.getClass())) {
+						parameters[paramIndex] = jsonParam;
+					} else if (conversionService.canConvert(jsonParam.getClass(), methodParameter.getType())) {
+						parameters[paramIndex] = conversionService.convert(jsonParam, methodParameter.getType());		
 					} else {
-						parameters[paramIndex] = ExtDirectSpringUtil.deserializeJsonToObject(
-								ExtDirectSpringUtil.serializeObjectToJson(jsonParam), methodParameter.getType());
+						parameters[paramIndex] = ExtDirectSpringUtil.convertObject(jsonParam, methodParameter.getType());
 					}
 
 					jsonParamIndex++;

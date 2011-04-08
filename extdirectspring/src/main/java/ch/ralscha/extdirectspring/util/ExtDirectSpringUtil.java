@@ -246,5 +246,9 @@ public class ExtDirectSpringUtil {
 			return null;
 		}
 	}
+	
+	public static <T> T convertObject(final Object object, final Class<T> clazz) {
+		return mapper.convertValue(object, clazz);
+	}
 
 }
