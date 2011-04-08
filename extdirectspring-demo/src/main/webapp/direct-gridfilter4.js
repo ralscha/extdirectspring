@@ -139,6 +139,7 @@ Ext.onReady(function() {
 	var grid = Ext.create('Ext.grid.GridPanel', {
 		border : false,
 		store : store,
+		height: '100%',
 		columns : createColumns(),
 		loadMask : true,
 		features : [ filters ],
