@@ -123,4 +123,13 @@ public class RemoteProviderSimple {
 		throw new NullPointerException();
 	}
 	
+	@ExtDirectMethod
+	public String method12(Row aRow) {
+		assertNotNull(aRow);
+		assertEquals(104, aRow.getId());
+		assertEquals("myRow", aRow.getName());
+		assertEquals(true, aRow.isAdmin());
+		assertEquals("100.45", aRow.getSalary().toPlainString());
+		return aRow.toString();
+	}
 }
