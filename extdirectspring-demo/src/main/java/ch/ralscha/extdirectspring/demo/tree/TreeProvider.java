@@ -35,11 +35,11 @@ public class TreeProvider {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOADER, group = "tree")
-	public List<Node> getTree(@RequestParam("id") String id,
+	public List<Node> getTree(@RequestParam(value = "id", required = false) String id,
 			@RequestParam(value = "foo", required = false, defaultValue = "defaultValue") String foo) {
-		
+
 		List<Node> result = new ArrayList<Node>();
-		if (id.equals("root")) {
+		if (id == null || id.equals("root")) {
 			for (int i = 1; i <= 5; ++i) {
 				Node node = new Node();
 				node.id = "n" + i;
@@ -51,7 +51,7 @@ public class TreeProvider {
 			String num = id.substring(1);
 			for (int i = 1; i <= 5; ++i) {
 				Node node = new Node();
-				node.id = "id" + i;
+				node.id = id + "_id" + i;
 				node.text = "Node " + foo + ": " + num + "." + i;
 				node.leaf = true;
 				result.add(node);

@@ -31,7 +31,7 @@ Ext.onReady(function() {
   
   
   myTreeLoader.on("beforeload", function(treeLoader, node) {
-	        treeLoader.baseParams.foo = new Date().getSeconds();
+	        treeLoader.baseParams.foo = new Date();
   }, this);
 
 });
