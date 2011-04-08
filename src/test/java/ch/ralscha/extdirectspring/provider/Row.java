@@ -97,4 +97,9 @@ public class Row implements Comparable<Row> {
 		return id - o.id;
 	}
 
+	@Override
+	public String toString() {
+		return "Row [id=" + id + ", name=" + name + ", admin=" + admin + ", salary=" + salary + "]";
+	}
+
 }

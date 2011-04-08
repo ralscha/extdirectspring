@@ -19,14 +19,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+
 import javax.inject.Inject;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,11 +35,10 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
-import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
+
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.FormInfo;
-import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
+import ch.ralscha.extdirectspring.provider.Row;
 
 /**
  * Tests for {@link RouterController}.
@@ -349,6 +349,25 @@ public class RouterControllerSimpleTest {
 		assertNull(resp.getWhere());
 		assertNull(resp.getMessage());
 		assertEquals("method10() called-true-c-ACTIVE-14-21-3.14-10.01-1-2", resp.getResult());
+	}
+	
+	@Test
+	public void testTypeConversionWithObjects() {
+		Row aRow = new Row(104, "myRow", true, "100.45");
+		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method12", 5, aRow);
+
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+
+		assertEquals(1, responses.size());
+		ExtDirectResponse resp = responses.get(0);
+		assertEquals("remoteProviderSimple", resp.getAction());
+		assertEquals("method12", resp.getMethod());
+		assertEquals(5, resp.getTid());
+		assertEquals("rpc", resp.getType());
+		assertNull(resp.getWhere());
+		assertNull(resp.getMessage());
+
+		assertEquals("Row [id=104, name=myRow, admin=true, salary=100.45]", resp.getResult());
 	}
 
 }
