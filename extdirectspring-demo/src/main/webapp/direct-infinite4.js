@@ -19,7 +19,7 @@ Ext.onReady(function() {
 	});
 
 	// create the Data Store
-	var store = new Ext.data.BufferStore({
+	var store = Ext.create('Ext.data.BufferStore', {
 		id : 'store',
 		pageSize : 200,
 		model : 'Address',
@@ -38,7 +38,7 @@ Ext.onReady(function() {
 		} ]
 	});
 
-	var grid = new Ext.grid.GridPanel({
+	var grid = Ext.create('Ext.grid.Panel', {
 		width : 700,
 		height : 500,
 		title : 'Some random data',

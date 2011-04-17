@@ -1,7 +1,7 @@
 Ext.require([
     'Ext.direct.*',
     'Ext.form.*',
-    'Ext.tip.QuickTips',
+    'Ext.tip.QuickTipManager',
     'Ext.layout.container.Accordion'
 ]);
 
@@ -15,9 +15,9 @@ Ext.onReady(function(){
     Ext.direct.Manager.addProvider(Ext.app.REMOTING_API);
     
     // provide feedback for any errors
-    Ext.tip.QuickTips.init();
+    Ext.tip.QuickTipManager.init();
     
-    var basicInfo = Ext.create('Ext.form.FormPanel', {
+    var basicInfo = Ext.create('Ext.form.Panel', {
         // configs for FormPanel
         title: 'Basic Information',
         border: false,
@@ -64,7 +64,7 @@ Ext.onReady(function(){
         }]
     });
     
-    var phoneInfo = Ext.create('Ext.form.FormPanel', {
+    var phoneInfo = Ext.create('Ext.form.Panel', {
         title: 'Phone Numbers',
         border: false,
         api: {
@@ -88,7 +88,7 @@ Ext.onReady(function(){
         }]
     });
     
-    var locationInfo = Ext.create('Ext.form.FormPanel', {
+    var locationInfo = Ext.create('Ext.form.Panel', {
         title: 'Location Information',
         border: false,
         bodyPadding: 10,

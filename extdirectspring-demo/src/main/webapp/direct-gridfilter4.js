@@ -1,11 +1,11 @@
 Ext.Loader.setConfig({
 	enabled : true
 });
-Ext.Loader.setPath('Ext.ux', 'http://www.ralscha.ch/ext-4.0-beta2/examples/ux');
+Ext.Loader.setPath('Ext.ux', 'http://www.ralscha.ch/ext-4.0-beta3/examples/ux');
 Ext.require([ 'Ext.grid.*', 
               'Ext.data.*', 
               'Ext.ux.grid.FiltersFeature',
-		      'Ext.toolbar.PagingToolbar' ]);
+		      'Ext.toolbar.Paging' ]);
 
 Ext.onReady(function() {
 	Ext.direct.Manager.addProvider(Ext.app.REMOTING_API);
@@ -136,14 +136,13 @@ Ext.onReady(function() {
 		return columns;
 	};
 
-	var grid = Ext.create('Ext.grid.GridPanel', {
+	var grid = Ext.create('Ext.grid.Panel', {
 		border : false,
 		store : store,
-		height: '100%',
 		columns : createColumns(),
 		loadMask : true,
 		features : [ filters ],
-		bbar : Ext.create('Ext.toolbar.PagingToolbar', {
+		bbar : Ext.create('Ext.toolbar.Paging', {
 			store : store
 		})
 	});

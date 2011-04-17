@@ -1,7 +1,7 @@
 Ext.require([
     'Ext.direct.*',
     'Ext.panel.Panel',
-    'Ext.form.TextField',
+    'Ext.form.field.Text',
     'Ext.toolbar.TextItem'
 ]);
 
@@ -84,7 +84,7 @@ Ext.onReady(function(){
                 handler: function(){
                     doEcho(main.down('#echoText'));
                 }
-            }, '|', {
+            }, '-', {
                 hideLabel: true,
                 itemId: 'multiplyText',
                 xtype: 'numberfield',
