@@ -231,6 +231,12 @@ public class MethodInfo {
 
 	}
 
+	/**
+	 * Copy of Spring's {@link org.springframework.core.GenericTypeResolver}. Needed
+	 * until {@link #getTypeVariableMap(Class)} gets public.
+	 * 
+	 * TODO: remove that method, as soon as Spring 3.0.6 gets released.
+	 */
 	private static Map<TypeVariable<?>, Class<?>> getTypeVariableMap(final Class<?> c) {
 		Map<TypeVariable<?>, Class<?>> varMap = new HashMap<TypeVariable<?>, Class<?>>();
 		
