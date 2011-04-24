@@ -270,7 +270,7 @@ public class ExtDirectSpringUtilTest {
 		assertNotNull(desReq);
 
 		assertEquals(req.getAction(), desReq.getAction());
-		assertArrayEquals(req.getData(), desReq.getData());
+		assertArrayEquals((Object[])req.getData(), ((List<Object>)desReq.getData()).toArray());
 		assertEquals(req.getMethod(), desReq.getMethod());
 		assertEquals(req.getTid(), desReq.getTid());
 		assertEquals(req.getType(), desReq.getType());
@@ -309,7 +309,7 @@ public class ExtDirectSpringUtilTest {
 			ExtDirectRequest desReq = desRequests.get(i);
 
 			assertEquals(req.getAction(), desReq.getAction());
-			assertArrayEquals(req.getData(), desReq.getData());
+			assertArrayEquals((Object[])req.getData(), ((List<Object>)desReq.getData()).toArray());
 			assertEquals(req.getMethod(), desReq.getMethod());
 			assertEquals(req.getTid(), desReq.getTid());
 			assertEquals(req.getType(), desReq.getType());

@@ -82,18 +82,32 @@ class RemotingApi {
 		return pollingProviders;
 	}
 
-	public void addAction(final String beanName, final String methodName, final int len) {
-		addAction(beanName, methodName, len, null);
+	public void addAction(final String beanName, final String methodName, final Integer len) {
+		addAction(beanName, methodName, len, null, null);
+	}
+	
+	public void addAction(final String beanName, final String methodName, final List<String> parameterNames) {
+		addAction(beanName, methodName, null, null, parameterNames);
 	}
 
-	public void addAction(final String beanName, final String methodName, final int len, final Boolean formHandler) {
+	public void addAction(final String beanName, final String methodName, final Integer len, final Boolean formHandler) {
+		addAction(beanName, methodName, len, formHandler, null);
+	}
+
+	
+	public void addAction(final String beanName, final String methodName, final Integer len, final Boolean formHandler,
+			final List<String> parameterNames) {
 		List<Action> beanActions = actions.get(beanName);
 		if (beanActions == null) {
 			beanActions = new ArrayList<Action>();
 			actions.put(beanName, beanActions);
 		}
 
-		beanActions.add(new Action(methodName, len, formHandler));
+		if (parameterNames == null) { 
+			beanActions.add(new Action(methodName, len, formHandler));
+		} else {
+			beanActions.add(new Action(methodName, parameterNames));
+		}
 	}
 
 	public void addPollingProvider(final String beanName, final String method, final String event) {
