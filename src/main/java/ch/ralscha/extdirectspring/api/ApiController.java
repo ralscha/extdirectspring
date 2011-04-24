@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.api;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -38,6 +39,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
+import ch.ralscha.extdirectspring.util.MethodInfo;
+import ch.ralscha.extdirectspring.util.ParameterInfo;
 import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
 
 /**
@@ -47,15 +50,15 @@ import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
  * @author jeffreiffers
  */
 @Controller
-public class ApiController implements ApplicationContextAware {
+public class ApiController {
 
 	private ApplicationContext context;
 
-	//@Override
-	public void setApplicationContext(ApplicationContext context) {
+	@Autowired
+	public ApiController(ApplicationContext context) {
 		this.context = context;
 	}
-
+	
 	/**
 	 * Method that handles api.js calls. Generates a Javascript with the necessary
 	 * code for Ext.Direct
@@ -259,8 +262,11 @@ public class ApiController implements ApplicationContextAware {
 					ExtDirectMethodType type = annotation.value();
 
 					switch (type) {
-					case SIMPLE:
+					case SIMPLE:					
 						remotingApi.addAction(beanName, method.getName(), numberOfParameters(method));
+						break;
+					case SIMPLE_NAMED:
+						remotingApi.addAction(beanName, method.getName(), parameterNames(beanClass, method));
 						break;
 					case FORM_LOAD:
 					case STORE_READ:
@@ -304,6 +310,20 @@ public class ApiController implements ApplicationContextAware {
 			}
 		}
 		return paramLength;
+	}
+	
+	private List<String> parameterNames(final Class<?> beanClass, final Method method) {
+		MethodInfo methodInfo = new MethodInfo(beanClass, method);
+		
+		List<String> result = new ArrayList<String>();
+		List<ParameterInfo> parameters = methodInfo.getParameters();
+		for (ParameterInfo parameter : parameters) {
+			if (!parameter.isSupportedParameter()) {
+				result.add(parameter.getName());
+			}
+		}
+
+		return result;
 	}
 
 	private boolean isSameGroup(final String requestedGroup, final String annotationGroup) {

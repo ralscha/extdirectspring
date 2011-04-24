@@ -228,20 +228,23 @@ public class RouterController implements InitializingBean {
 		if (methodInfo.isType(ExtDirectMethodType.STORE_READ) || methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
 				|| methodInfo.isType(ExtDirectMethodType.TREE_LOADER)) {
 
-			if (directRequest.getData() != null && directRequest.getData().length > 0) {
+			List<Object> data = (List<Object>)directRequest.getData();
+			
+			if (data != null && data.size() > 0) {
 				if (methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
 					directStoreReadRequest = new ExtDirectStoreReadRequest();
-					remainingParameters = fillReadRequestFromMap(directStoreReadRequest, (Map) directRequest.getData()[0]);
+					remainingParameters = fillReadRequestFromMap(directStoreReadRequest, (Map) data.get(0));
 				} else {
-					remainingParameters = (Map) directRequest.getData()[0];
+					remainingParameters = (Map) data.get(0);
 				}
 				jsonParamIndex = 1;
 			}
 		} else if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)) {
 			directStoreEntryClass = methodInfo.getCollectionType();
-
-			if (directRequest.getData() != null && directRequest.getData().length > 0) {
-				Map<String, Object> jsonData = (LinkedHashMap<String, Object>) directRequest.getData()[0];
+			List<Object> data = (List<Object>)directRequest.getData();
+			
+			if (data != null && data.size() > 0) {
+				Map<String, Object> jsonData = (Map<String, Object>) data.get(0);
 
 				ArrayList<Object> records = (ArrayList<Object>) jsonData.get("records");
 				directStoreModifyRecords = convertObjectEntriesToType(records, directStoreEntryClass);
@@ -251,6 +254,12 @@ public class RouterController implements InitializingBean {
 				remainingParameters.remove("records");
 
 			}
+		} else if (methodInfo.isType(ExtDirectMethodType.SIMPLE_NAMED)) {
+			Map<String, Object> data = (Map<String, Object>)directRequest.getData();
+			if (data != null && data.size() > 0) {
+				remainingParameters = new HashMap<String, Object>(data);				
+			}
+			
 		} else if (methodInfo.isType(ExtDirectMethodType.POLL)) {
 			throw new IllegalStateException("this controller does not handle poll calls");
 		} else if (methodInfo.isType(ExtDirectMethodType.FORM_POST)) {
@@ -275,16 +284,27 @@ public class RouterController implements InitializingBean {
 					parameters[paramIndex] = directStoreModifyRecords;
 				} else if (methodParameter.isHasRequestParamAnnotation()) {
 					parameters[paramIndex] = handleRequestParam(null, remainingParameters, methodParameter);
-				} else if (directRequest.getData() != null && directRequest.getData().length > jsonParamIndex) {
+				} else if (remainingParameters != null && remainingParameters.containsKey(methodParameter.getName())) {
 					
-					Object jsonParam = directRequest.getData()[jsonParamIndex];
-				
-					if (methodParameter.getType().equals(jsonParam.getClass())) {
-						parameters[paramIndex] = jsonParam;
-					} else if (conversionService.canConvert(jsonParam.getClass(), methodParameter.getType())) {
-						parameters[paramIndex] = conversionService.convert(jsonParam, methodParameter.getType());		
+					Object jsonValue = remainingParameters.get(methodParameter.getName());					
+					if (methodParameter.getType().equals(jsonValue.getClass())) {
+						parameters[paramIndex] = jsonValue;
+					} else if (conversionService.canConvert(jsonValue.getClass(), methodParameter.getType())) {
+						parameters[paramIndex] = conversionService.convert(jsonValue, methodParameter.getType());		
 					} else {
-						parameters[paramIndex] = ExtDirectSpringUtil.convertObject(jsonParam, methodParameter.getType());
+						parameters[paramIndex] = ExtDirectSpringUtil.convertObject(jsonValue, methodParameter.getType());
+					}
+
+				} else if (directRequest.getData() != null && directRequest.getData() instanceof List && ((List<Object>)directRequest.getData()).size() > jsonParamIndex) {
+					
+					Object jsonValue = ((List<Object>)directRequest.getData()).get(jsonParamIndex);
+				
+					if (methodParameter.getType().equals(jsonValue.getClass())) {
+						parameters[paramIndex] = jsonValue;
+					} else if (conversionService.canConvert(jsonValue.getClass(), methodParameter.getType())) {
+						parameters[paramIndex] = conversionService.convert(jsonValue, methodParameter.getType());		
+					} else {
+						parameters[paramIndex] = ExtDirectSpringUtil.convertObject(jsonValue, methodParameter.getType());
 					}
 
 					jsonParamIndex++;

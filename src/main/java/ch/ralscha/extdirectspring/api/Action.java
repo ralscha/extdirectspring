@@ -15,6 +15,10 @@
  */
 package ch.ralscha.extdirectspring.api;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
@@ -25,25 +29,41 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 class Action {
 
 	private final String name;
-	private final int len;
+	private final Integer len;
+	private final List<String> params;
 	private final Boolean formHandler;
 
-	public Action(final String name, final int len, final Boolean formHandler) {
+	public Action(final String name, final Integer len, final Boolean formHandler) {
 		this.name = name;
 		this.len = len;
 		this.formHandler = formHandler;
+		this.params = null;
+	}
+	
+	public Action(final String name, List<String> params) {
+		this.name = name;
+		this.len = null;
+		this.formHandler = null;
+		this.params = new ArrayList<String>(params);
 	}
 
 	public Boolean isFormHandler() {
 		return formHandler;
 	}
 
-	public int getLen() {
+	public Integer getLen() {
 		return len;
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public List<String> getParams() {
+		if (params != null) {
+			return Collections.unmodifiableList(params);
+		}
+		return null;
 	}
 
 }

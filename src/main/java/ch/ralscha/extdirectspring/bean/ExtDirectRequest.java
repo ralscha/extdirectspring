@@ -15,7 +15,6 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import java.util.Arrays;
 
 /**
  * Class representing the request of a Ext.Direct call
@@ -29,7 +28,7 @@ public class ExtDirectRequest {
 	private String method;
 	private String type;
 	private int tid;
-	private Object[] data;
+	private Object data;
 
 	public String getAction() {
 		return action;
@@ -39,11 +38,11 @@ public class ExtDirectRequest {
 		this.action = action;
 	}
 
-	public Object[] getData() {
+	public Object getData() {
 		return data;
 	}
 
-	public void setData(final Object[] data) {
+	public void setData(final Object data) {
 		this.data = data;
 	}
 
@@ -73,7 +72,7 @@ public class ExtDirectRequest {
 
 	@Override
 	public String toString() {
-		return "ExtDirectRequest [action=" + action + ", data=" + Arrays.toString(data) + ", method=" + method
+		return "ExtDirectRequest [action=" + action + ", data=" + data + ", method=" + method
 				+ ", tid=" + tid + ", type=" + type + "]";
 	}
 

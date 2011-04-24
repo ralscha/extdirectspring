@@ -27,6 +27,11 @@ public enum ExtDirectMethodType {
 	SIMPLE,
 
 	/**
+	 * Specifies a simple remote method with named parameters
+	 */	
+	SIMPLE_NAMED,
+	
+	/**
 	 * Specifies a method that handles a form load
 	 */
 	FORM_LOAD,

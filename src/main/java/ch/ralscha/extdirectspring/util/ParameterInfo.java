@@ -16,7 +16,7 @@
 package ch.ralscha.extdirectspring.util;
 
 /**
- * Object holds information about a parameter like the name, type and the
+ * Object holds information about a parameter as the name, type and the
  * attributes of a RequestParam annotation
  * 
  * @author Ralph Schaer
