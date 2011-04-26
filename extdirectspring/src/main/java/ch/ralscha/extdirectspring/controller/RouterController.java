@@ -302,13 +302,16 @@ public class RouterController implements InitializingBean {
 	}
 
 	private Object convertValue(Object jsonValue, ParameterInfo methodParameter) {
-		if (methodParameter.getType().equals(jsonValue.getClass())) {
-			return jsonValue;
-		} else if (conversionService.canConvert(jsonValue.getClass(), methodParameter.getType())) {
-			return conversionService.convert(jsonValue, methodParameter.getType());		
-		} else {
-			return ExtDirectSpringUtil.convertObject(jsonValue, methodParameter.getType());
+		if (jsonValue != null) {
+			if (methodParameter.getType().equals(jsonValue.getClass())) {
+				return jsonValue;
+			} else if (conversionService.canConvert(jsonValue.getClass(), methodParameter.getType())) {
+				return conversionService.convert(jsonValue, methodParameter.getType());		
+			} else {
+				return ExtDirectSpringUtil.convertObject(jsonValue, methodParameter.getType());
+			}
 		}
+		return jsonValue;
 	}
 
 	private Object handleRequestParam(final HttpServletRequest request, final Map<String, Object> valueContainer,
