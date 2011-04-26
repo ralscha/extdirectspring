@@ -272,6 +272,7 @@ public class ApiController {
 					case STORE_READ:
 					case STORE_MODIFY:
 					case TREE_LOADER:
+					case TREE_LOAD:	
 						remotingApi.addAction(beanName, method.getName(), 1);
 						break;
 					case FORM_POST:

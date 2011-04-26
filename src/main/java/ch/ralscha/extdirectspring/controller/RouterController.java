@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -214,7 +213,7 @@ public class RouterController implements InitializingBean {
 		return sw.toString();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked" })
 	private Object processRemotingRequest(final HttpServletRequest request, final HttpServletResponse response,
 			final Locale locale, final ExtDirectRequest directRequest, final MethodInfo methodInfo) throws Exception {
 
@@ -226,16 +225,16 @@ public class RouterController implements InitializingBean {
 		Class<?> directStoreEntryClass;
 
 		if (methodInfo.isType(ExtDirectMethodType.STORE_READ) || methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
-				|| methodInfo.isType(ExtDirectMethodType.TREE_LOADER)) {
+				|| methodInfo.isType(ExtDirectMethodType.TREE_LOADER) || methodInfo.isType(ExtDirectMethodType.TREE_LOAD)) {
 
 			List<Object> data = (List<Object>)directRequest.getData();
 			
 			if (data != null && data.size() > 0) {
 				if (methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
 					directStoreReadRequest = new ExtDirectStoreReadRequest();
-					remainingParameters = fillReadRequestFromMap(directStoreReadRequest, (Map) data.get(0));
+					remainingParameters = fillReadRequestFromMap(directStoreReadRequest, (Map<String, Object>) data.get(0));
 				} else {
-					remainingParameters = (Map) data.get(0);
+					remainingParameters = (Map<String, Object>) data.get(0);
 				}
 				jsonParamIndex = 1;
 			}
@@ -285,28 +284,11 @@ public class RouterController implements InitializingBean {
 				} else if (methodParameter.isHasRequestParamAnnotation()) {
 					parameters[paramIndex] = handleRequestParam(null, remainingParameters, methodParameter);
 				} else if (remainingParameters != null && remainingParameters.containsKey(methodParameter.getName())) {
-					
-					Object jsonValue = remainingParameters.get(methodParameter.getName());					
-					if (methodParameter.getType().equals(jsonValue.getClass())) {
-						parameters[paramIndex] = jsonValue;
-					} else if (conversionService.canConvert(jsonValue.getClass(), methodParameter.getType())) {
-						parameters[paramIndex] = conversionService.convert(jsonValue, methodParameter.getType());		
-					} else {
-						parameters[paramIndex] = ExtDirectSpringUtil.convertObject(jsonValue, methodParameter.getType());
-					}
-
+					Object jsonValue = remainingParameters.get(methodParameter.getName());
+					parameters[paramIndex] = convertValue(jsonValue, methodParameter);
 				} else if (directRequest.getData() != null && directRequest.getData() instanceof List && ((List<Object>)directRequest.getData()).size() > jsonParamIndex) {
-					
 					Object jsonValue = ((List<Object>)directRequest.getData()).get(jsonParamIndex);
-				
-					if (methodParameter.getType().equals(jsonValue.getClass())) {
-						parameters[paramIndex] = jsonValue;
-					} else if (conversionService.canConvert(jsonValue.getClass(), methodParameter.getType())) {
-						parameters[paramIndex] = conversionService.convert(jsonValue, methodParameter.getType());		
-					} else {
-						parameters[paramIndex] = ExtDirectSpringUtil.convertObject(jsonValue, methodParameter.getType());
-					}
-
+					parameters[paramIndex] = convertValue(jsonValue, methodParameter);
 					jsonParamIndex++;
 				} else {
 					throw new IllegalArgumentException(
@@ -317,6 +299,16 @@ public class RouterController implements InitializingBean {
 		}
 
 		return ExtDirectSpringUtil.invoke(context, directRequest.getAction(), methodInfo, parameters);
+	}
+
+	private Object convertValue(Object jsonValue, ParameterInfo methodParameter) {
+		if (methodParameter.getType().equals(jsonValue.getClass())) {
+			return jsonValue;
+		} else if (conversionService.canConvert(jsonValue.getClass(), methodParameter.getType())) {
+			return conversionService.convert(jsonValue, methodParameter.getType());		
+		} else {
+			return ExtDirectSpringUtil.convertObject(jsonValue, methodParameter.getType());
+		}
 	}
 
 	private Object handleRequestParam(final HttpServletRequest request, final Map<String, Object> valueContainer,

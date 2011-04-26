@@ -55,8 +55,10 @@ public enum ExtDirectMethodType {
 	/**
 	 * Specifies a method that handles a read call from a TreeLoader
 	 */	
-	TREE_LOADER,
+	TREE_LOAD,
 
+	@Deprecated
+	TREE_LOADER,
 	/**
 	 * Specifies a method that handles polling
 	 */

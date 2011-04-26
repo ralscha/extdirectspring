@@ -43,18 +43,18 @@ public class RemoteProviderTreeLoader {
 		public boolean leaf;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOADER, group = "group1")
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "group1")
 	public List<Node> method1(@RequestParam("node") String node) {
 		return createTreeList(node);
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOADER)
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD)
 	public List<Node> method2(@RequestParam("node") String node, @RequestParam(defaultValue = "defaultValue") String foo) {
 		assertEquals("foo", foo);
 		return createTreeList(node);
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOADER, group = "group3")
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "group3")
 	public List<Node> method3(@RequestParam("node") String node, HttpServletResponse response, HttpServletRequest request,
 			@RequestParam(defaultValue = "defaultValue") String foo, HttpSession session, Locale locale,
 			Principal principal) {
