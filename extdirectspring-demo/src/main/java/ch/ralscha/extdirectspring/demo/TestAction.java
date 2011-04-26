@@ -22,8 +22,11 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 public class TestAction {
 
 	@ExtDirectMethod(group = "example")
-	public long multiply(long num) {
-		return num * 8;
+	public long multiply(Long num) {
+		if (num != null) {
+			return num * 8;
+		} 
+		return 0;
 	}
 
 	@ExtDirectMethod(group = "example")

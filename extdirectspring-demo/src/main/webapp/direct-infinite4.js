@@ -5,7 +5,6 @@ Ext.Loader.setConfig({
 Ext.Loader.setPath('Ext.ux', '../ux/');
 Ext.require([ 'Ext.grid.*', 
               'Ext.data.*', 
-              'Ext.data.BufferStore', 
               'Ext.util.*',
 		      'Ext.grid.PagingScroller' ]);
 
@@ -19,11 +18,13 @@ Ext.onReady(function() {
 	});
 
 	// create the Data Store
-	var store = Ext.create('Ext.data.BufferStore', {
+	var store = Ext.create('Ext.data.Store', {
 		id : 'store',
 		pageSize : 200,
 		model : 'Address',
 		remoteSort : true,
+        // allow the grid to interact with the paging scroller by buffering
+        buffered: true,
 		proxy : {
 			type : 'direct',
 			directFn : personAction.loadWithPaging,
@@ -53,7 +54,7 @@ Ext.onReady(function() {
 		// grid columns
 		columns : [ {
 			xtype : 'rownumberer',
-			width : 40,
+			width : 50,
 			sortable : false
 		}, {
 			text : "Last Name",

@@ -1,7 +1,7 @@
 Ext.Loader.setConfig({
 	enabled : true
 });
-Ext.Loader.setPath('Ext.ux', 'http://www.ralscha.ch/ext-4.0-beta3/examples/ux');
+Ext.Loader.setPath('Ext.ux', 'http://www.ralscha.ch/ext-4.0.0/examples/ux');
 Ext.require([ 'Ext.grid.*', 
               'Ext.data.*', 
               'Ext.ux.grid.FiltersFeature',
@@ -37,7 +37,7 @@ Ext.onReady(function() {
 		}, {
 			name : 'date',
 			type : 'date',
-			dateFormat : 'Y-m-d H:i:s'
+			dateFormat : 'Y-m-d'
 		}, {
 			name : 'visible',
 			type : 'boolean'

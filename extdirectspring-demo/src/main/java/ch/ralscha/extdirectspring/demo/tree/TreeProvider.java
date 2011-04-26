@@ -34,7 +34,7 @@ public class TreeProvider {
 		public boolean leaf;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOADER, group = "tree")
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "tree")
 	public List<Node> getTree(@RequestParam(value = "id", required = false) String id,
 			@RequestParam(value = "foo", required = false, defaultValue = "defaultValue") String foo) {
 
