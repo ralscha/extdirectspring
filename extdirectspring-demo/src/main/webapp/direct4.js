@@ -11,7 +11,7 @@ Ext.onReady(function(){
     	testAction.doEcho(field.getValue(), function(result, event){
             var transaction = event.getTransaction(),
                 content = Ext.String.format('<b>Successful call to {0}.{1} with response:</b><pre>{2}</pre>',
-                    transaction.action, transaction.method, Ext.encode(result));
+                    transaction.action, transaction.method, result);
             
             updateMain(content);
             field.reset();
