@@ -16,7 +16,10 @@
 package ch.ralscha.extdirectspring.demo;
 
 import javax.inject.Named;
+
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+
+import com.google.common.base.Charsets;
 
 @Named
 public class TestAction {
@@ -34,4 +37,10 @@ public class TestAction {
 		return message;
 	}
 
+	@ExtDirectMethod(group = "example")
+	public String doEchoEncoded(String message) {
+		return (new String(message.getBytes(Charsets.ISO_8859_1)));
+	}
+	
+	
 }
