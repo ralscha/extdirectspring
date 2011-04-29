@@ -34,7 +34,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
-import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoader.Node;
+import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad.Node;
 
 /**
  * Tests for {@link RouterController}.
@@ -64,13 +64,13 @@ public class RouterControllerTreeLoaderTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 		
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoader", "method1", 1, requestParameters);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoad", "method1", 1, requestParameters);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderTreeLoader", resp.getAction());
+		assertEquals("remoteProviderTreeLoad", resp.getAction());
 		assertEquals("method1", resp.getMethod());
 		assertEquals(1, resp.getTid());
 		assertEquals("rpc", resp.getType());
@@ -88,13 +88,13 @@ public class RouterControllerTreeLoaderTest {
 		requestParameters.put("node", "root");
 		requestParameters.put("foo", "foo");
 		
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoader", "method2", 2, requestParameters);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoad", "method2", 2, requestParameters);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderTreeLoader", resp.getAction());
+		assertEquals("remoteProviderTreeLoad", resp.getAction());
 		assertEquals("method2", resp.getMethod());
 		assertEquals(2, resp.getTid());
 		assertEquals("rpc", resp.getType());
@@ -110,13 +110,13 @@ public class RouterControllerTreeLoaderTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 		
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoader", "method3", 3, requestParameters);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoad", "method3", 3, requestParameters);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderTreeLoader", resp.getAction());
+		assertEquals("remoteProviderTreeLoad", resp.getAction());
 		assertEquals("method3", resp.getMethod());
 		assertEquals(3, resp.getTid());
 		assertEquals("rpc", resp.getType());

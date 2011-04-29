@@ -22,6 +22,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 public class ControllerUtil {
+	
 	@SuppressWarnings("unchecked")
 	public static Map<String,Object> createRequestJson(String action, String method, int tid, Object... data) {
 		ExtDirectRequest dr = new ExtDirectRequest();
@@ -32,4 +33,16 @@ public class ControllerUtil {
 		dr.setData(data);
 		return ExtDirectSpringUtil.convertObject(dr, LinkedHashMap.class);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static Map<String,Object> createRequestJsonNamedParam(String action, String method, int tid, Map<String,Object> data) {
+		ExtDirectRequest dr = new ExtDirectRequest();
+		dr.setAction(action);
+		dr.setMethod(method);
+		dr.setTid(tid);
+		dr.setType("rpc");
+        dr.setData(data);		
+		return ExtDirectSpringUtil.convertObject(dr, LinkedHashMap.class);
+	}
+
 }

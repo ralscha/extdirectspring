@@ -35,7 +35,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
 @Named
 @SuppressWarnings("unused")
-public class RemoteProviderTreeLoader {
+public class RemoteProviderTreeLoad {
 
 	public static class Node {
 		public String id;

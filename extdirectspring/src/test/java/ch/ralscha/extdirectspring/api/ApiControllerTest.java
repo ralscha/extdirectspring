@@ -22,6 +22,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -222,7 +225,7 @@ public class ApiControllerTest {
 	private RemotingApi group1Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", "method1", 0, false);
-		remotingApi.addAction("remoteProviderTreeLoader", "method1", 1, false);
+		remotingApi.addAction("remoteProviderTreeLoad", "method1", 1, false);
 		return remotingApi;
 	}
 
@@ -254,7 +257,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("formInfoController", "updateInfo", 0, true);
 		remotingApi.addAction("formInfoController2", "updateInfo1", 0, true);
 		remotingApi.addAction("formInfoController2", "updateInfo2", 0, true);
-		remotingApi.addAction("remoteProviderTreeLoader", "method3", 1, false);
+		remotingApi.addAction("remoteProviderTreeLoad", "method3", 1, false);
 		remotingApi.addPollingProvider("pollProvider", "handleMessage5", "message5");
 		return remotingApi;
 	}
@@ -278,7 +281,8 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", "method10", 9, false);
 		remotingApi.addAction("remoteProviderSimple", "method11", 0, false);
 		remotingApi.addAction("remoteProviderSimple", "method12", 1, false);
-
+		remotingApi.addAction("remoteProviderSimple", "method13", 9, false);
+		
 		remotingApi.addAction("remoteProviderStoreRead", "method1", 1, false);
 		remotingApi.addAction("remoteProviderStoreRead", "method2", 1, false);
 		remotingApi.addAction("remoteProviderStoreRead", "method3", 1, false);
@@ -310,9 +314,19 @@ public class ApiControllerTest {
 		remotingApi.addAction("formInfoController2", "updateInfo1", 0, true);
 		remotingApi.addAction("formInfoController2", "updateInfo2", 0, true);
 
-		remotingApi.addAction("remoteProviderTreeLoader", "method1", 1, false);
-		remotingApi.addAction("remoteProviderTreeLoader", "method2", 1, false);
-		remotingApi.addAction("remoteProviderTreeLoader", "method3", 1, false);
+		remotingApi.addAction("remoteProviderTreeLoad", "method1", 1, false);
+		remotingApi.addAction("remoteProviderTreeLoad", "method2", 1, false);
+		remotingApi.addAction("remoteProviderTreeLoad", "method3", 1, false);
+		
+		remotingApi.addAction("remoteProviderSimpleNamed", "method1", new ArrayList());
+		remotingApi.addAction("remoteProviderSimpleNamed", "method2", Arrays.asList("i", "d", "s"));
+		remotingApi.addAction("remoteProviderSimpleNamed", "method3", Arrays.asList("userName"));
+		remotingApi.addAction("remoteProviderSimpleNamed", "method4", Arrays.asList("a", "b"));
+		remotingApi.addAction("remoteProviderSimpleNamed", "method5", Arrays.asList("d"));
+		remotingApi.addAction("remoteProviderSimpleNamed", "method6", new ArrayList());
+		remotingApi.addAction("remoteProviderSimpleNamed", "method7", Arrays.asList("flag", "aCharacter", "workflow", "aInt", "aLong", "aDouble", "aFloat", "aShort", "aByte"));
+		remotingApi.addAction("remoteProviderSimpleNamed", "method9", Arrays.asList("aRow"));
+		remotingApi.addAction("remoteProviderSimpleNamed", "method10", Arrays.asList("flag", "aCharacter", "workflow", "aInt", "aLong", "aDouble", "aFloat", "aShort", "aByte"));
 		
 		remotingApi.addPollingProvider("pollProvider", "handleMessage1", "message1");
 		remotingApi.addPollingProvider("pollProvider", "handleMessage2", "message2");
@@ -450,7 +464,7 @@ public class ApiControllerTest {
 		}
 	}
 
-	private void compare(List<Action> expectedActions, List<Map<String, Object>> actions) {
+	private void compare(List<Action> expectedActions, List<Map<String, Object>> actions) {		
 		assertEquals(expectedActions.size(), actions.size());
 		for (Action expectedAction : expectedActions) {
 			Map<String, Object> action = null;
@@ -463,10 +477,21 @@ public class ApiControllerTest {
 			assertNotNull(action);
 			assertEquals(expectedAction.getName(), action.get("name"));
 			assertEquals(expectedAction.getLen(), action.get("len"));
-			if (expectedAction.isFormHandler()) {
+			if (expectedAction.isFormHandler() != null && expectedAction.isFormHandler()) {
 				assertEquals(expectedAction.isFormHandler(), action.get("formHandler"));
 			} else {
 				assertFalse(action.containsKey("formHandler"));
+			}
+			
+			List<String> params = (List<String>)action.get("params");
+			assertTrue((params != null && expectedAction.getParams() != null) ||
+					   (params == null && expectedAction.getParams() == null)); 
+			
+		    if (expectedAction.getParams() != null) {
+				assertEquals(expectedAction.getParams().size(), params.size());
+				for (String param : expectedAction.getParams()) {
+					assertTrue(params.contains(param));
+				}
 			}
 		}
 	}

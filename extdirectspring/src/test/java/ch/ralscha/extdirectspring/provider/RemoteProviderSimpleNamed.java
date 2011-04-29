@@ -31,37 +31,29 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
 @Named
 @SuppressWarnings("unused")
-public class RemoteProviderSimple {
+public class RemoteProviderSimpleNamed {
 
-	private enum StatusEnum {
-		ACTIVE,
-		INACTIVE
+	private enum Workflow {
+		WAITING, PENDING, STARTED, FINISHED
 	}
-	
-	@ExtDirectMethod(group = "group1")
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public String method1() {
 		return "method1() called";
 	}
 
-	@ExtDirectMethod
-	public String method2() {
-		return "method2() called";
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public String method2(long i, Double d, String s) {
+		return String.format("method2() called-%d-%.3f-%s", i, d, s);
 	}
 
-	@ExtDirectMethod(group = "group2")
-	public String method3(long i, Double d, String s) {
-		return String.format("method3() called-%d-%.1f-%s", i, d, s);
-	}
-
-	public String method4(long i, Double d, String s) {
-		return "method4() called";
-	}
-
-	@ExtDirectMethod(group = "group2")
-	public Boolean method5(String userName) {
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public Boolean method3(String userName) {
 		if ("ralph".equals(userName)) {
 			return true;
 		} else if ("joe".equals(userName)) {
@@ -70,18 +62,13 @@ public class RemoteProviderSimple {
 		return null;
 	}
 
-	@ExtDirectMethod
-	public int method6(int a, int b) {
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public int method4(int a, int b) {
 		return a + b;
 	}
 
-	@ExtDirectMethod
-	public String method7() {
-		return null;
-	}
-
-	@ExtDirectMethod
-	public FormInfo method8(double d) {
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public FormInfo method5(double d) {
 		FormInfo info = new FormInfo();
 		info.setBack(d);
 		info.setAdmin(false);
@@ -92,8 +79,8 @@ public class RemoteProviderSimple {
 		return info;
 	}
 
-	@ExtDirectMethod(group = "group3")
-	public long method9(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale,
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public long method6(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale,
 			Principal principal) {
 		assertNotNull(response);
 		assertNotNull(request);
@@ -102,29 +89,25 @@ public class RemoteProviderSimple {
 
 		return 42;
 	}
-	
-	@ExtDirectMethod
-	public String method10(boolean flag, char aCharacter, StatusEnum status, int aInt, long aLong, double aDouble, float aFloat,
-			short aShort, byte aByte) {
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public String method7(boolean flag, char aCharacter, Workflow workflow, int aInt, long aLong, double aDouble,
+			float aFloat, short aShort, byte aByte) {
 		assertTrue(flag);
 		assertEquals('c', aCharacter);
-		assertEquals(StatusEnum.ACTIVE, status);
+		assertEquals(Workflow.PENDING, workflow);
 		assertEquals(14, aInt);
 		assertEquals(21, aLong);
 		assertEquals(3.14, aDouble);
 		assertEquals(10.01, aFloat, 0.01);
 		assertEquals(1, aShort);
 		assertEquals(2, aByte);
-		return String.format("method10() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, status, aInt, aLong, aDouble, aFloat, aShort, aByte);
+		return String.format("method7() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, workflow, aInt, aLong,
+				aDouble, aFloat, aShort, aByte);
 	}
-	
-	@ExtDirectMethod
-	public String method11() {
-		throw new NullPointerException();
-	}
-	
-	@ExtDirectMethod
-	public String method12(Row aRow) {
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public String method9(Row aRow) {
 		assertNotNull(aRow);
 		assertEquals(104, aRow.getId());
 		assertEquals("myRow", aRow.getName());
@@ -133,11 +116,11 @@ public class RemoteProviderSimple {
 		return aRow.toString();
 	}
 	
-	@ExtDirectMethod	
-	public String method13(boolean flag, HttpServletResponse response, char aCharacter, HttpServletRequest request,
-			StatusEnum status, HttpSession session, int aInt, long aLong,  Locale locale,
-			double aDouble, float aFloat, Principal principal,
-			short aShort, byte aByte) {
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")	
+	public String method10(boolean flag, HttpServletResponse response, char aCharacter, HttpServletRequest request,
+			short aShort, byte aByte,
+			Workflow workflow, HttpSession session, int aInt, long aLong,  Locale locale,
+			double aDouble, float aFloat, Principal principal) {
 
 		assertNotNull(response);
 		assertNotNull(request);
@@ -146,14 +129,15 @@ public class RemoteProviderSimple {
 		
 		assertTrue(flag);
 		assertEquals('c', aCharacter);
-		assertEquals(StatusEnum.ACTIVE, status);
+		assertEquals(Workflow.PENDING, workflow);
 		assertEquals(14, aInt);
 		assertEquals(21, aLong);
 		assertEquals(3.14, aDouble);
 		assertEquals(10.01, aFloat, 0.01);
 		assertEquals(1, aShort);
 		assertEquals(2, aByte);
-		return String.format("method13() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, status, aInt, aLong, aDouble, aFloat, aShort, aByte);
+		return String.format("method10() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, workflow, aInt, aLong, aDouble, aFloat, aShort, aByte);
 	
 	}
+	
 }
