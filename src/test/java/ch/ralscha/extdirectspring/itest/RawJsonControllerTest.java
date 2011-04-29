@@ -47,6 +47,7 @@ public class RawJsonControllerTest extends JettyTest {
 				"{\"action\":\"rawJsonController\",\"method\":\"listUsers\",\"data\":[],\"type\":\"rpc\",\"tid\":1}",
 				"UTF-8");
 		post.setEntity(postEntity);
+		post.setHeader("Content-Type", "application/json; charset=UTF-8");
 
 		HttpResponse response = client.execute(post);
 		HttpEntity entity = response.getEntity();

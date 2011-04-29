@@ -15,7 +15,10 @@
  */
 package ch.ralscha.extdirectspring.store;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -23,7 +26,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -47,8 +49,8 @@ public class CrudTestMethods {
 		newBooks.add(new Book(-1, "Ext JS 3.0 Cookbook", "1847198708"));
 
 		storeRequest.put("records", newBooks);
-		String json = ControllerUtil.createRequestJson(serviceName, "create", 1, storeRequest);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson(serviceName, "create", 1, storeRequest);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -71,8 +73,8 @@ public class CrudTestMethods {
 	}
 	
 	public void testRead(RouterController controller, MockHttpServletResponse response, MockHttpServletRequest request) {
-		String json = ControllerUtil.createRequestJson(serviceName, "read", 1);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson(serviceName, "read", 1);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -97,8 +99,8 @@ public class CrudTestMethods {
 		newBooks.add(new Book(1, "an update", "9999999"));
 
 		storeRequest.put("records", newBooks);
-		String json = ControllerUtil.createRequestJson(serviceName, "update", 1, storeRequest);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson(serviceName, "update", 1, storeRequest);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -126,8 +128,8 @@ public class CrudTestMethods {
 		booksToDelete.add(1);
 
 		storeRequest.put("records", booksToDelete);
-		String json = ControllerUtil.createRequestJson(serviceName, "delete", 1, storeRequest);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson(serviceName, "delete", 1, storeRequest);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 		
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);

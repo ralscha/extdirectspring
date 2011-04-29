@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -41,6 +42,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 import ch.ralscha.extdirectspring.provider.Row;
+import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
  * Tests for {@link RouterController}.
@@ -84,8 +86,8 @@ public class RouterControllerFilterTest {
 
 		int index = 1;
 		for (String json : jsonList) {
-
-			List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+			Map<String,Object> edRequest = ExtDirectSpringUtil.deserializeJsonToObject(json, Map.class);
+			List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 			assertEquals(1, responses.size());
 			ExtDirectResponse resp = responses.get(0);

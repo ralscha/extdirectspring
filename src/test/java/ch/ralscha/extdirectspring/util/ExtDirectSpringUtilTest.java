@@ -253,6 +253,7 @@ public class ExtDirectSpringUtilTest {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testJsonUtilObject() {
 		ExtDirectRequest req = new ExtDirectRequest();
@@ -276,6 +277,7 @@ public class ExtDirectSpringUtilTest {
 		assertEquals(req.getType(), desReq.getType());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testJsonList() throws JsonGenerationException, JsonMappingException, IOException {
 		List<ExtDirectRequest> requests = new ArrayList<ExtDirectRequest>();
