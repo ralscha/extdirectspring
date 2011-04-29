@@ -32,7 +32,7 @@ public class TestAction {
 
 	@ExtDirectMethod(group = "example")
 	public String doEcho(String message) {
-		return message;
+		return message + " DEFAULT ENCODING: " + System.getProperty("file.encoding");
 	}
 
 	
