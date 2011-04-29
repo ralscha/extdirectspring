@@ -27,11 +27,13 @@ import org.springframework.util.FileCopyUtils;
 
 public class MyStringHttpMessageConverter extends StringHttpMessageConverter {
 	
+	 private static final Charset UTF_8 = Charset.forName("UTF-8");
+	
 	@Override
 	protected String readInternal(Class clazz, HttpInputMessage inputMessage) throws IOException {
 		Charset charset = getContentTypeCharset(inputMessage.getHeaders().getContentType());
 		String s = FileCopyUtils.copyToString(new InputStreamReader(inputMessage.getBody(), charset));
-		return new String(s.getBytes(charset));
+		return new String(s.getBytes(charset), UTF_8);
 	}
 
 	private Charset getContentTypeCharset(MediaType contentType) {
