@@ -17,12 +17,15 @@ package ch.ralscha.extdirectspring.provider;
 
 import java.util.List;
 import java.util.Locale;
+
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.junit.Assert;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 

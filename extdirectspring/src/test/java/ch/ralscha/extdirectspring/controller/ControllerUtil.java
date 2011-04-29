@@ -15,17 +15,21 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 public class ControllerUtil {
-	public static String createRequestJson(String action, String method, int tid, Object... data) {
+	@SuppressWarnings("unchecked")
+	public static Map<String,Object> createRequestJson(String action, String method, int tid, Object... data) {
 		ExtDirectRequest dr = new ExtDirectRequest();
 		dr.setAction(action);
 		dr.setMethod(method);
 		dr.setTid(tid);
 		dr.setType("rpc");
 		dr.setData(data);
-		return ExtDirectSpringUtil.serializeObjectToJson(dr);
+		return ExtDirectSpringUtil.convertObject(dr, LinkedHashMap.class);
 	}
 }

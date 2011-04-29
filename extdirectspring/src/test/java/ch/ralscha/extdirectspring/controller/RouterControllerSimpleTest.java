@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -64,8 +65,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testBeanNotFound() {
-		String json = ControllerUtil.createRequestJson("remoteProvider", "method1", 1, 3, 2.5, "string.param");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProvider", "method1", 1, 3, 2.5, "string.param");
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 		assertEquals(1, responses.size());
 		checkBeanNotFoundResponse(responses.get(0));
 	}
@@ -82,8 +83,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testMethodNotFound() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5, "string.param");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5, "string.param");
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		checkMethodNotFoundResponse(responses.get(0));
@@ -102,8 +103,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testNoParameters() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method1", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method1", 1, null);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		checkNoParametersResponse(responses.get(0), 1);
@@ -121,8 +122,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testNoParametersWithRequestParameter() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method1", 1, "requestparameter");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method1", 1, "requestparameter");
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -131,8 +132,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testNoParameters2() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method2", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method2", 1, null);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -147,9 +148,9 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testWithParameters() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method3", 10, 1, 3.1,
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method3", 10, 1, 3.1,
 				"requestParameter");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -164,8 +165,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testWithParametersWithTypeConversion() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method3", 10, "10", "4.2", 20);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method3", 10, "10", "4.2", 20);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -180,8 +181,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testWithParametersNoRequestParameter() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method3", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method3", 1, null);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -196,8 +197,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testResultTrue() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method5", 1, "ralph");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method5", 1, "ralph");
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -212,8 +213,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testResultFalse() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method5", 1, "joe");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method5", 1, "joe");
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -228,8 +229,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testResultNull() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method5", 1, "martin");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method5", 1, "martin");
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -244,8 +245,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testIntParameterAndResult() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method6", 3, 10, 20);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method6", 3, 10, 20);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -254,8 +255,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testIntParameterAndResultWithTypeConversion() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method6", 3, "30", "40");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method6", 3, "30", "40");
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -274,8 +275,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testResultStringNull() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method7", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method7", 1, null);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -290,8 +291,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testReturnsObject() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method8", 1, 7.34);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method8", 1, 7.34);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -317,9 +318,9 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testSupportedArguments() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method9", 1, null);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method9", 1, null);
 
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -335,10 +336,10 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testTypeConversion() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method10", 3, "true", "c", "ACTIVE",
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method10", 3, "true", "c", "ACTIVE",
 				"14", "21", "3.14", "10.01", "1", "2");
 
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -354,9 +355,9 @@ public class RouterControllerSimpleTest {
 	@Test
 	public void testTypeConversionWithObjects() {
 		Row aRow = new Row(104, "myRow", true, "100.45");
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method12", 5, aRow);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method12", 5, aRow);
 
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);

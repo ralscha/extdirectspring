@@ -19,7 +19,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -61,8 +60,8 @@ public class ExceptionHandlingConfigInXmlTest {
 	@Test
 	public void testExceptionInMapping() throws Exception {
 
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5, "string.param");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5, "string.param");
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -82,8 +81,8 @@ public class ExceptionHandlingConfigInXmlTest {
 	@Test
 	public void testExceptionInMappingWithNullValue() throws Exception {
 
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple2", "method4", 2, 3, 2.5, "string.param");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple2", "method4", 2, 3, 2.5, "string.param");
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -102,8 +101,8 @@ public class ExceptionHandlingConfigInXmlTest {
 
 	@Test
 	public void testExceptionNotInMapping() {
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method11", 3);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method11", 3);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);

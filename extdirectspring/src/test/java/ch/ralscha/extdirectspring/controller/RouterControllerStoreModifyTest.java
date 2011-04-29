@@ -19,13 +19,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.inject.Inject;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,11 +36,10 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
+
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 import ch.ralscha.extdirectspring.provider.Row;
-import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
  * Tests for {@link RouterController}.
@@ -65,8 +67,8 @@ public class RouterControllerStoreModifyTest {
 	public void testCreateNoData() {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		storeRequest.put("records", new ArrayList<Row>());
-		String json = ControllerUtil.createRequestJson("remoteProviderStoreModify", "create1", 1, storeRequest);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", "create1", 1, storeRequest);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -92,8 +94,8 @@ public class RouterControllerStoreModifyTest {
 		rowsToUpdate.add(new Row(23, "John", false, "23.12"));
 
 		storeRequest.put("records", rowsToUpdate);
-		String json = ControllerUtil.createRequestJson("remoteProviderStoreModify", "create1", 1, storeRequest);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", "create1", 1, storeRequest);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -122,8 +124,8 @@ public class RouterControllerStoreModifyTest {
 		rowsToUpdate.add(new Row(10, "Ralph", false, "109.55"));
 
 		storeRequest.put("records", rowsToUpdate);
-		String json = ControllerUtil.createRequestJson("remoteProviderStoreModify", "create2", 1, storeRequest);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", "create2", 1, storeRequest);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -188,8 +190,8 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	private void executeUpdate(Map<String, Object> storeRequest, String method) {
-		String json = ControllerUtil.createRequestJson("remoteProviderStoreModify", method, 1, storeRequest);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", method, 1, storeRequest);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -216,8 +218,8 @@ public class RouterControllerStoreModifyTest {
 		rowsToUpdate.add(10);
 
 		storeRequest.put("records", rowsToUpdate);
-		String json = ControllerUtil.createRequestJson("remoteProviderStoreModify", "destroy", 1, storeRequest);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", "destroy", 1, storeRequest);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);

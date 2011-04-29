@@ -162,10 +162,18 @@ public class RouterController implements InitializingBean {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction")
 	@ResponseBody
-	public List<ExtDirectResponse> router(HttpServletRequest request, HttpServletResponse response, Locale locale,
-			@RequestBody String rawRequestString) {
+	public List<ExtDirectResponse> router(HttpServletRequest request, HttpServletResponse response, Locale locale,			
+			@RequestBody Object requestData) {
 
-		List<ExtDirectRequest> directRequests = getExtDirectRequests(rawRequestString);
+		List<ExtDirectRequest> directRequests = new ArrayList<ExtDirectRequest>();
+		if (requestData instanceof Map) {
+			directRequests.add(ExtDirectSpringUtil.convertObject(requestData, ExtDirectRequest.class));
+		} else if (requestData instanceof List) {
+			for (Object oneRequest : (List)requestData) {
+				directRequests.add(ExtDirectSpringUtil.convertObject(oneRequest, ExtDirectRequest.class));
+			}
+		}
+		
 		List<ExtDirectResponse> directResponses = new ArrayList<ExtDirectResponse>();
 
 		for (ExtDirectRequest directRequest : directRequests) {
@@ -428,22 +436,6 @@ public class RouterController implements InitializingBean {
 			return convertedList;
 		}
 		return null;
-	}
-
-	private List<ExtDirectRequest> getExtDirectRequests(final String rawRequestString) {
-		List<ExtDirectRequest> directRequests = new ArrayList<ExtDirectRequest>();
-
-		if (rawRequestString.length() > 0 && rawRequestString.charAt(0) == '[') {
-			directRequests.addAll(ExtDirectSpringUtil.deserializeJsonToObject(rawRequestString,
-					new TypeReference<List<ExtDirectRequest>>() {/* empty */
-					}));
-		} else {
-			ExtDirectRequest directRequest = ExtDirectSpringUtil.deserializeJsonToObject(rawRequestString,
-					ExtDirectRequest.class);
-			directRequests.add(directRequest);
-		}
-
-		return directRequests;
 	}
 
 	private void handleException(BaseResponse response, Exception e) {

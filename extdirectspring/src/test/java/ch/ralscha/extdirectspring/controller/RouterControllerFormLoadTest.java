@@ -19,14 +19,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.inject.Inject;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +38,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.FormInfo;
@@ -64,8 +69,8 @@ public class RouterControllerFormLoadTest {
 	public void testFormLoad() {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("d", 3.141);
-		String json = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method1", 1, data);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method1", 1, data);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -75,8 +80,8 @@ public class RouterControllerFormLoadTest {
 
 	@Test
 	public void testFormLoadReturnsNull() {
-		String json = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method2", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method2", 1, null);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -92,8 +97,8 @@ public class RouterControllerFormLoadTest {
 
 	@Test
 	public void testWithSupportedArguments() {
-		String json = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method3", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method3", 1, null);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -111,8 +116,8 @@ public class RouterControllerFormLoadTest {
 	public void testWithRequestParam() {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("id", 10);
-		String json = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method4", 1, data);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method4", 1, data);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -134,8 +139,8 @@ public class RouterControllerFormLoadTest {
 
 	@Test
 	public void testWithRequestParamDefaultValue() {
-		String json = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method5", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method5", 1, null);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -156,8 +161,8 @@ public class RouterControllerFormLoadTest {
 
 	@Test
 	public void testWithRequestParamOptional() {
-		String json = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method6", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method6", 1, null);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
@@ -177,8 +182,8 @@ public class RouterControllerFormLoadTest {
 
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("id", 11);
-		json = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method6", 1, data);
-		responses = controller.router(request, response, Locale.ENGLISH, json);
+		edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method6", 1, data);
+		responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		resp = responses.get(0);
@@ -223,23 +228,22 @@ public class RouterControllerFormLoadTest {
 
 	@Test
 	public void testMultipleRequests() {
-		String json1 = ControllerUtil.createRequestJson("remoteProvider", "method1", 1, 3, 2.5, "string.param");
-		String json2 = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5, "string.param");
-		String json3 = ControllerUtil.createRequestJson("remoteProviderSimple", "method1", 3, null);
+		List<Map<String,Object>> edRequests = new ArrayList<Map<String,Object>>();
+		edRequests.add(ControllerUtil.createRequestJson("remoteProvider", "method1", 1, 3, 2.5, "string.param"));
+		edRequests.add(ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5, "string.param"));
+		edRequests.add(ControllerUtil.createRequestJson("remoteProviderSimple", "method1", 3, null));
 
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("d", 1.1);
-		String json4 = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method1", 4, data);
+		edRequests.add(ControllerUtil.createRequestJson("remoteProviderFormLoad", "method1", 4, data));
 
 		data = new HashMap<String, Object>();
 		data.put("d", 2.2);
-		String json5 = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method1", 5, data);
+		edRequests.add(ControllerUtil.createRequestJson("remoteProviderFormLoad", "method1", 5, data));
 
-		String json6 = ControllerUtil.createRequestJson("remoteProviderSimple", "method6", 6, 20, 20);
+		edRequests.add(ControllerUtil.createRequestJson("remoteProviderSimple", "method6", 6, 20, 20));
 
-		String requestBody = String.format("[%s,%s,%s,%s,%s,%s]", json1, json2, json3, json4, json5, json6);
-
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, requestBody);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequests);
 
 		assertEquals(6, responses.size());
 		RouterControllerSimpleTest.checkBeanNotFoundResponse(responses.get(0));

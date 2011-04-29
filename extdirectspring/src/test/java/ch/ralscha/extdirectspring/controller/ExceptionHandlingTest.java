@@ -15,33 +15,27 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.inject.Inject;
 
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
+
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
-import ch.ralscha.extdirectspring.provider.Row;
-import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
  * Tests for {@link RouterController}.
@@ -174,8 +168,8 @@ public class ExceptionHandlingTest {
 		controller.setConfiguration(configuration);
 		controller.afterPropertiesSet();
 
-		String json = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5, "string.param");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5, "string.param");
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 		
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);

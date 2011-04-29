@@ -62,12 +62,13 @@ public class SimpleServiceTest extends JettyTest {
 	public void testSimpleCall() throws IllegalStateException, IOException {
 		HttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
-
+		
 		StringEntity postEntity = new StringEntity(
 				"{\"action\":\"simpleService\",\"method\":\"toUpperCase\",\"data\":[\"ralph\"],\"type\":\"rpc\",\"tid\":1}",
 				"UTF-8");
 		post.setEntity(postEntity);
-
+		post.setHeader("Content-Type", "application/json; charset=UTF-8");
+		
 		HttpResponse response = client.execute(post);
 		HttpEntity entity = response.getEntity();
 		assertNotNull(entity);

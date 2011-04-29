@@ -18,7 +18,6 @@ package ch.ralscha.extdirectspring.controller;
 import static junit.framework.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -35,7 +34,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
-import ch.ralscha.extdirectspring.provider.Row;
 import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoader.Node;
 
 /**
@@ -66,8 +64,8 @@ public class RouterControllerTreeLoaderTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 		
-		String json = ControllerUtil.createRequestJson("remoteProviderTreeLoader", "method1", 1, requestParameters);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoader", "method1", 1, requestParameters);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 
@@ -90,8 +88,8 @@ public class RouterControllerTreeLoaderTest {
 		requestParameters.put("node", "root");
 		requestParameters.put("foo", "foo");
 		
-		String json = ControllerUtil.createRequestJson("remoteProviderTreeLoader", "method2", 2, requestParameters);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoader", "method2", 2, requestParameters);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 
@@ -112,8 +110,8 @@ public class RouterControllerTreeLoaderTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 		
-		String json = ControllerUtil.createRequestJson("remoteProviderTreeLoader", "method3", 3, requestParameters);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, json);
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoader", "method3", 3, requestParameters);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 
