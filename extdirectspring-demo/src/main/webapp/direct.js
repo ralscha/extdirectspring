@@ -27,7 +27,7 @@ Ext.onReady(function() {
   var call = new Ext.Button( {
     text: 'Echo',
     handler: function() {
-      testAction.doEchoEncoded(text.getValue(), function(result, e) {
+      testAction.doEcho(text.getValue(), function(result, e) {
         var t = e.getTransaction();
         out.append(String.format('<p><b>Successful call to {0}.{1} with response:</b><xmp>{2}</xmp></p>', t.action,
             t.method, Ext.encode(result)));

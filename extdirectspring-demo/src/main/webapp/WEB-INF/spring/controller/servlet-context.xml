@@ -6,7 +6,11 @@
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd    
     http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
 
-	<mvc:annotation-driven />
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+		  <bean class="ch.ralscha.extdirectspring.demo.MyStringHttpMessageConverter"/>		  	
+		</mvc:message-converters>
+	</mvc:annotation-driven>
 
 	<context:component-scan base-package="ch.ralscha.extdirectspring" />
 
