@@ -1,4 +1,5 @@
 Ext.onReady(function() {
+	
   Ext.Direct.addProvider(Ext.app.REMOTING_API, {
     id: 'messageProvider',
     type: 'polling',
