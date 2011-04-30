@@ -26,9 +26,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.springframework.core.convert.support.ConversionServiceFactory;
+import org.springframework.core.convert.support.GenericConversionService;
 
 public class FilterTest {
 
+	private static final GenericConversionService genericConversionService = ConversionServiceFactory
+	.createDefaultConversionService();
+	
 	@Test
 	public void testNumericFilter() {
 		Map<String, Object> json = new HashMap<String, Object>();
@@ -37,12 +42,26 @@ public class FilterTest {
 		json.put("comparison", "lt");
 		json.put("value", 12);
 
-		Filter filter = Filter.createFilter(json);
+		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertTrue(filter instanceof NumericFilter);
 		NumericFilter numericFilter = (NumericFilter) filter;
 		assertEquals("aField", numericFilter.getField());
 		assertEquals(12, numericFilter.getValue());
 		assertSame(Comparison.LESS_THAN, numericFilter.getComparison());
+		
+		
+		json = new HashMap<String, Object>();
+		json.put("field", "aField");
+		json.put("type", "numeric");
+		json.put("comparison", "eq");
+		json.put("value", "0");
+
+		filter = Filter.createFilter(json, genericConversionService);
+		assertTrue(filter instanceof NumericFilter);
+		numericFilter = (NumericFilter) filter;
+		assertEquals("aField", numericFilter.getField());
+		assertEquals(0, numericFilter.getValue().intValue());
+		assertSame(Comparison.EQUAL, numericFilter.getComparison());
 	}
 
 	@Test
@@ -52,7 +71,7 @@ public class FilterTest {
 		json.put("type", "string");
 		json.put("value", "aString");
 
-		Filter filter = Filter.createFilter(json);
+		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertTrue(filter instanceof StringFilter);
 		StringFilter stringFilter = (StringFilter) filter;
 		assertEquals("aField", stringFilter.getField());
@@ -67,7 +86,7 @@ public class FilterTest {
 		json.put("value", "12.12.2010");
 		json.put("comparison", "gt");
 
-		Filter filter = Filter.createFilter(json);
+		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertTrue(filter instanceof DateFilter);
 		DateFilter dateFilter = (DateFilter) filter;
 		assertEquals("aField", dateFilter.getField());
@@ -82,7 +101,7 @@ public class FilterTest {
 		json.put("type", "list");
 		json.put("value", "one,two,three");
 
-		Filter filter = Filter.createFilter(json);
+		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertTrue(filter instanceof ListFilter);
 		ListFilter listFilter = (ListFilter) filter;
 		assertEquals("aField", listFilter.getField());
@@ -102,7 +121,7 @@ public class FilterTest {
 		json.put("type", "boolean");
 		json.put("value", false);
 
-		Filter filter = Filter.createFilter(json);
+		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertTrue(filter instanceof BooleanFilter);
 		BooleanFilter booleanFilter = (BooleanFilter) filter;
 		assertEquals("aField", booleanFilter.getField());
@@ -116,7 +135,7 @@ public class FilterTest {
 		json.put("type", "xy");
 		json.put("value", "aValue");
 
-		Filter filter = Filter.createFilter(json);
+		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertNull(filter);
 	}
 }

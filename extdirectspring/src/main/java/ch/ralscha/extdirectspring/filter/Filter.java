@@ -18,6 +18,8 @@ package ch.ralscha.extdirectspring.filter;
 import java.util.Arrays;
 import java.util.Map;
 
+import org.springframework.core.convert.ConversionService;
+
 /**
  * @author Ralph Schaer
  */
@@ -32,13 +34,13 @@ public class Filter {
 		return field;
 	}
 
-	public static Filter createFilter(final Map<String, Object> jsonData) {
+	public static Filter createFilter(final Map<String, Object> jsonData, ConversionService conversionService) {
 		String field = (String) jsonData.get("field");
 		String type = (String) jsonData.get("type");
 
 		if (type.equals("numeric")) {
 			String comparison = (String) jsonData.get("comparison");
-			Number value = (Number) jsonData.get("value");
+			Number value = conversionService.convert(jsonData.get("value"), Number.class);
 			return new NumericFilter(field, value, Comparison.fromString(comparison));
 		} else if (type.equals("string")) {
 			String value = (String) jsonData.get("value");
