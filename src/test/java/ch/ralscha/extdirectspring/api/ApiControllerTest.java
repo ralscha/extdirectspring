@@ -328,6 +328,10 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimpleNamed", "method9", Arrays.asList("aRow"));
 		remotingApi.addAction("remoteProviderSimpleNamed", "method10", Arrays.asList("flag", "aCharacter", "workflow", "aInt", "aLong", "aDouble", "aFloat", "aShort", "aByte"));
 		
+		remotingApi.addAction("remoteProviderSimpleNamed", "methodRP1", Arrays.asList("lastName", "theAge", "active"));
+		remotingApi.addAction("remoteProviderSimpleNamed", "methodRP2", Arrays.asList("lastName", "theAge", "active"));
+		remotingApi.addAction("remoteProviderSimpleNamed", "methodRP3", Arrays.asList("lastName", "theAge", "active"));
+		
 		remotingApi.addPollingProvider("pollProvider", "handleMessage1", "message1");
 		remotingApi.addPollingProvider("pollProvider", "handleMessage2", "message2");
 		remotingApi.addPollingProvider("pollProvider", "handleMessage3", "message3");
