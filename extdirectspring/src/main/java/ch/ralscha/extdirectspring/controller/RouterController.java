@@ -340,7 +340,7 @@ public class RouterController implements InitializingBean {
 			}
 
 			if (value != null) {
-				return conversionService.convert(value, parameterInfo.getType());
+				return convertValue(value, parameterInfo);
 			}
 
 			if (parameterInfo.isRequired()) {
