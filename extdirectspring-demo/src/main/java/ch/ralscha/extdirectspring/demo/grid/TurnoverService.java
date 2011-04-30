@@ -21,8 +21,11 @@ import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
+import ch.ralscha.extdirectspring.demo.util.PropertyOrderingFactory;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Ordering;
 
 @Service
 public class TurnoverService {
@@ -43,7 +46,13 @@ public class TurnoverService {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "turnover")
-	public List<Company> getTurnovers() {
+	public List<Company> getTurnovers(ExtDirectStoreReadRequest request) {
+		
+		Ordering<Company> ordering = PropertyOrderingFactory.INSTANCE.createOrdering(request.getSorters());
+		if (ordering != null) {
+			return ordering.sortedCopy(companies);
+		}
+		
 		return companies;
 	}
 

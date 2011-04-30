@@ -26,7 +26,7 @@ Ext.onReady(function() {
     }, {
       name: 'date',
       type: 'date',
-      dateFormat: 'Y-m-d H:i:s'
+      dateFormat: 'Y-m-d'
     }, {
       name: 'visible',
       type: 'boolean'
