@@ -30,6 +30,7 @@ import org.springframework.core.io.Resource;
 
 import au.com.bytecode.opencsv.CSVReader;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -50,12 +51,15 @@ public class RandomDataBean {
 		persons = Maps.newHashMap();
 		InputStream is = randomdata.getInputStream();
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		BufferedReader br = new BufferedReader(new InputStreamReader(is, Charsets.UTF_8.name()));
 
 		CSVReader reader = new CSVReader(br, '|');
 		String[] nextLine;
 		while ((nextLine = reader.readNext()) != null) {
 			Person p = new Person(nextLine);
+			if (p.getFirstName().equals("Ezra")) {
+				System.out.println(p);
+			}
 			persons.put(Integer.valueOf(p.getId()), p);
 			maxId = Math.max(maxId, Integer.valueOf(p.getId()));
 		}
