@@ -364,7 +364,7 @@ public class RouterController implements InitializingBean {
 						});
 
 				for (Map<String, Object> rawFilter : rawFilters) {
-					filters.add(Filter.createFilter(rawFilter));
+					filters.add(Filter.createFilter(rawFilter, conversionService));
 				}
 
 				to.setFilters(filters);
