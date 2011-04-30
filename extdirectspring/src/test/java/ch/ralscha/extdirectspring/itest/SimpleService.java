@@ -17,7 +17,10 @@ package ch.ralscha.extdirectspring.itest;
 
 import javax.inject.Named;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
 @Named
 public class SimpleService {
@@ -29,5 +32,10 @@ public class SimpleService {
 		}
 		return null;
 	}
-
+	
+	
+	@ExtDirectMethod(value=ExtDirectMethodType.SIMPLE_NAMED, group = "itest_simple")
+	public String echo(String userId, @RequestParam(defaultValue="10") int logLevel) {
+		return String.format("UserId: %s LogLevel: %d", userId, logLevel);
+	}
 }

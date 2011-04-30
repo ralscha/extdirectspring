@@ -20,27 +20,30 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.junit.ContiPerfRule;
-import org.databene.contiperf.log.ConsoleExecutionLogger;
 import org.junit.Rule;
 import org.junit.Test;
 
 public class SimpleServiceTest extends JettyTest {
 
 	@Rule
-    public ContiPerfRule i = new ContiPerfRule(new ConsoleExecutionLogger());
+    public ContiPerfRule i = new ContiPerfRule();
 	
 	@Test
 	@PerfTest(invocations = 200, threads = 10)
@@ -54,17 +57,24 @@ public class SimpleServiceTest extends JettyTest {
 		String responseString = EntityUtils.toString(entity);
 		EntityUtils.consume(entity);
 		assertTrue(responseString.contains("\"name\" : \"toUpperCase\""));
+		assertTrue(responseString.contains("\"name\" : \"echo\""));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	@PerfTest(invocations = 200, threads = 10)
 	public void testSimpleCall() throws IllegalStateException, IOException {
 		HttpClient client = new DefaultHttpClient();
+		postToUpperCase("ralph", client);
+		postToUpperCase("renee", client);
+		postToUpperCase("andrea", client);
+	}
+
+	private void postToUpperCase(String text, HttpClient client) throws UnsupportedEncodingException, IOException,
+			ClientProtocolException, JsonParseException, JsonMappingException {
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 		
 		StringEntity postEntity = new StringEntity(
-				"{\"action\":\"simpleService\",\"method\":\"toUpperCase\",\"data\":[\"ralph\"],\"type\":\"rpc\",\"tid\":1}",
+				"{\"action\":\"simpleService\",\"method\":\"toUpperCase\",\"data\":[\""+text+"\"],\"type\":\"rpc\",\"tid\":1}",
 				"UTF-8");
 		post.setEntity(postEntity);
 		post.setHeader("Content-Type", "application/json; charset=UTF-8");
@@ -77,11 +87,54 @@ public class SimpleServiceTest extends JettyTest {
 		assertNotNull(responseString);
 		assertTrue(responseString.startsWith("[") && responseString.endsWith("]"));
 		ObjectMapper mapper = new ObjectMapper();
+		@SuppressWarnings("unchecked")
 		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
 				Map.class);
 		assertEquals(5, rootAsMap.size());
-		assertEquals("RALPH", rootAsMap.get("result"));
+		assertEquals(text.toUpperCase(), rootAsMap.get("result"));
 		assertEquals("toUpperCase", rootAsMap.get("method"));
+		assertEquals("rpc", rootAsMap.get("type"));
+		assertEquals("simpleService", rootAsMap.get("action"));
+		assertEquals(1, rootAsMap.get("tid"));
+	}
+	
+	@Test
+	@PerfTest(invocations = 200, threads = 10)
+	public void testSimpleNamedCall() throws IllegalStateException, IOException {
+		HttpClient client = new DefaultHttpClient();				
+		postToEcho("\"userId\":\"ralph\", \"logLevel\": 100", "UserId: ralph LogLevel: 100" , client);
+		postToEcho("\"userId\":\"tom\"", "UserId: tom LogLevel: 10", client);
+		postToEcho("\"userId\":\"renee\", \"logLevel\": 1", "UserId: renee LogLevel: 1", client);
+		postToEcho("\"userId\":\"andrea\"", "UserId: andrea LogLevel: 10", client);
+	}
+
+	private void postToEcho(String data, String expectedResult, HttpClient client) throws UnsupportedEncodingException, IOException,
+			ClientProtocolException, JsonParseException, JsonMappingException {
+		
+		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
+		
+		StringEntity postEntity = new StringEntity(				
+				"{\"action\":\"simpleService\",\"method\":\"echo\",\"data\":{"+data+"},\"type\":\"rpc\",\"tid\":1}",
+				"UTF-8");
+		
+		post.setEntity(postEntity);
+		post.setHeader("Content-Type", "application/json; charset=UTF-8");
+		
+		HttpResponse response = client.execute(post);
+		HttpEntity entity = response.getEntity();
+		assertNotNull(entity);
+		String responseString = EntityUtils.toString(entity);
+
+		assertNotNull(responseString);
+
+		assertTrue(responseString.startsWith("[") && responseString.endsWith("]"));
+		ObjectMapper mapper = new ObjectMapper();
+		@SuppressWarnings("unchecked")
+		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
+				Map.class);
+		assertEquals(5, rootAsMap.size());		
+		assertEquals(expectedResult, rootAsMap.get("result"));
+		assertEquals("echo", rootAsMap.get("method"));
 		assertEquals("rpc", rootAsMap.get("type"));
 		assertEquals("simpleService", rootAsMap.get("action"));
 		assertEquals(1, rootAsMap.get("tid"));
