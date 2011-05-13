@@ -15,11 +15,10 @@
  */
 package ch.ralscha.extdirectspring.store;
 
-import javax.inject.Inject;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
@@ -32,7 +31,7 @@ import ch.ralscha.extdirectspring.controller.RouterController;
 @ContextConfiguration(locations = "classpath:/teststore.xml")
 public class BookSubServiceTest {
 	
-	@Inject
+	@Autowired
 	private RouterController controller;
 
 	private MockHttpServletResponse response;

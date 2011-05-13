@@ -18,10 +18,13 @@ package ch.ralscha.extdirectspring.controller;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
-import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 public class ControllerUtil {
+	
+	private static ObjectMapper mapper = new ObjectMapper();
 	
 	@SuppressWarnings("unchecked")
 	public static Map<String,Object> createRequestJson(String action, String method, int tid, Object... data) {
@@ -31,7 +34,7 @@ public class ControllerUtil {
 		dr.setTid(tid);
 		dr.setType("rpc");
 		dr.setData(data);
-		return ExtDirectSpringUtil.convertObject(dr, LinkedHashMap.class);
+		return mapper.convertValue(dr, LinkedHashMap.class);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -42,7 +45,7 @@ public class ControllerUtil {
 		dr.setTid(tid);
 		dr.setType("rpc");
         dr.setData(data);		
-		return ExtDirectSpringUtil.convertObject(dr, LinkedHashMap.class);
+		return mapper.convertValue(dr, LinkedHashMap.class);
 	}
 
 }

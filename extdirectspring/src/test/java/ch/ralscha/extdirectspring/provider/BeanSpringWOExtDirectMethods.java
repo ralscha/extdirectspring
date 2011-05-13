@@ -15,9 +15,9 @@
  */
 package ch.ralscha.extdirectspring.provider;
 
-import javax.inject.Named;
+import org.springframework.stereotype.Component;
 
-@Named
+@Component
 public class BeanSpringWOExtDirectMethods {
 
 	public void methodA() {

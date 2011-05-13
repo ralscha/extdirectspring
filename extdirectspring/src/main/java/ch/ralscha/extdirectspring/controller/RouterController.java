@@ -61,6 +61,7 @@ import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.bean.SortInfo;
 import ch.ralscha.extdirectspring.filter.Filter;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
+import ch.ralscha.extdirectspring.util.JsonHandler;
 import ch.ralscha.extdirectspring.util.MethodInfo;
 import ch.ralscha.extdirectspring.util.ParameterInfo;
 import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
@@ -79,6 +80,7 @@ public class RouterController implements InitializingBean {
 
 	private ConversionService conversionService;
 	private ApplicationContext context;
+	private JsonHandler jsonHandler;
 
 	@Deprecated
 	@Autowired(required = false)
@@ -89,9 +91,10 @@ public class RouterController implements InitializingBean {
 	private Configuration configuration;
 	
 	@Autowired
-	public RouterController(ApplicationContext context, ConversionService conversionService) {
+	public RouterController(ApplicationContext context, ConversionService conversionService, JsonHandler jsonHandler) {
 		this.context = context;
 		this.conversionService = conversionService;
+		this.jsonHandler = jsonHandler;
 	}
 
 	public void setConfiguration(Configuration configuration) {
@@ -167,10 +170,10 @@ public class RouterController implements InitializingBean {
 
 		List<ExtDirectRequest> directRequests = new ArrayList<ExtDirectRequest>();
 		if (requestData instanceof Map) {
-			directRequests.add(ExtDirectSpringUtil.convertObject(requestData, ExtDirectRequest.class));
+			directRequests.add(jsonHandler.convertValue(requestData, ExtDirectRequest.class));
 		} else if (requestData instanceof List) {
 			for (Object oneRequest : (List)requestData) {
-				directRequests.add(ExtDirectSpringUtil.convertObject(oneRequest, ExtDirectRequest.class));
+				directRequests.add(jsonHandler.convertValue(oneRequest, ExtDirectRequest.class));
 			}
 		}
 		
@@ -316,7 +319,7 @@ public class RouterController implements InitializingBean {
 			} else if (conversionService.canConvert(jsonValue.getClass(), methodParameter.getType())) {
 				return conversionService.convert(jsonValue, methodParameter.getType());		
 			} else {
-				return ExtDirectSpringUtil.convertObject(jsonValue, methodParameter.getType());
+				return jsonHandler.convertValue(jsonValue, methodParameter.getType());
 			}
 		}
 		return jsonValue;
@@ -359,7 +362,7 @@ public class RouterController implements InitializingBean {
 			if (entry.getKey().equals("filter")) {
 				List<Filter> filters = new ArrayList<Filter>();
 
-				List<Map<String, Object>> rawFilters = ExtDirectSpringUtil.deserializeJsonToObject(
+				List<Map<String, Object>> rawFilters = jsonHandler.readValue(
 						(String) entry.getValue(), new TypeReference<List<Map<String, Object>>>() {/* empty */
 						});
 
@@ -429,8 +432,7 @@ public class RouterController implements InitializingBean {
 		if (records != null) {
 			List<Object> convertedList = new ArrayList<Object>();
 			for (Object record : records) {
-				Object convertedObject = ExtDirectSpringUtil.deserializeJsonToObject(
-						ExtDirectSpringUtil.serializeObjectToJson(record), directStoreType);
+				Object convertedObject = jsonHandler.convertValue(record, directStoreType);				
 				convertedList.add(convertedObject);
 			}
 			return convertedList;

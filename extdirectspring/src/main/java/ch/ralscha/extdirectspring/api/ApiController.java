@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
+import ch.ralscha.extdirectspring.util.JsonHandler;
 import ch.ralscha.extdirectspring.util.MethodInfo;
 import ch.ralscha.extdirectspring.util.ParameterInfo;
 import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
@@ -53,10 +54,12 @@ import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
 public class ApiController {
 
 	private ApplicationContext context;
+	private JsonHandler jsonHandler;
 
 	@Autowired
-	public ApiController(ApplicationContext context) {
+	public ApiController(ApplicationContext context, JsonHandler jsonHandler) {
 		this.context = context;
+		this.jsonHandler = jsonHandler;
 	}
 	
 	/**
@@ -175,7 +178,7 @@ public class ApiController {
 			}
 		}
 
-		String jsonConfig = ExtDirectSpringUtil.serializeObjectToJson(remotingApi, debug);
+		String jsonConfig = jsonHandler.writeValueAsString(remotingApi, debug);
 
 		if (StringUtils.hasText(apiNs)) {
 			sb.append(apiNs).append(".");
@@ -243,7 +246,7 @@ public class ApiController {
 
 		scanForExtDirectMethods(remotingApi, group);
 
-		return ExtDirectSpringUtil.serializeObjectToJson(remotingApi, debug);
+		return jsonHandler.writeValueAsString(remotingApi, debug);
 
 	}
 

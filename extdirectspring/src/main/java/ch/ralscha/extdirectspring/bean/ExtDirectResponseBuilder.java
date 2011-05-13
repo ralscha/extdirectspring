@@ -19,12 +19,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
  * An utility class that helps building a {@link ExtDirectResponse}. A form
@@ -138,7 +140,12 @@ public class ExtDirectResponseBuilder {
 		servletResponse.setContentType("text/html");
 
 		servletResponse.getOutputStream().write("<html><body><textarea>".getBytes());
-		String responseJson = ExtDirectSpringUtil.serializeObjectToJson(response);
+
+		//todo look for a better solution with JsonHandler
+		//old Code: String responseJson = ExtDirectSpringUtil.serializeObjectToJson(response);
+		ObjectMapper mapper = new ObjectMapper();
+		String responseJson = mapper.writeValueAsString(response);
+		
 		responseJson = responseJson.replace("&quot;", "\\&quot;");
 		servletResponse.getOutputStream().write(responseJson.getBytes());
 		servletResponse.getOutputStream().write("</textarea></body></html>".getBytes());

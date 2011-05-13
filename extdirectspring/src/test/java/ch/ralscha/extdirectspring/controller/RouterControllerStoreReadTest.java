@@ -27,11 +27,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
@@ -52,7 +51,7 @@ import ch.ralscha.extdirectspring.provider.Row;
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerStoreReadTest {
 
-	@Inject
+	@Autowired
 	private RouterController controller;
 
 	private MockHttpServletResponse response;
