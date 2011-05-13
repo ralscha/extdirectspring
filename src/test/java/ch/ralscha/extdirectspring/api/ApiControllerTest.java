@@ -24,22 +24,21 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.StringUtils;
+
+import ch.ralscha.extdirectspring.util.JsonHandler;
 
 /**
  * Tests for {@link ApiController}.
@@ -50,9 +49,11 @@ import org.springframework.util.StringUtils;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ApiControllerTest {
-	private ObjectMapper mapper = new ObjectMapper();
 	
-	@Inject
+	@Autowired
+	private JsonHandler jsonHandler;
+
+	@Autowired
 	private ApiController apiController;
 
 	@Test
@@ -282,7 +283,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", "method11", 0, false);
 		remotingApi.addAction("remoteProviderSimple", "method12", 1, false);
 		remotingApi.addAction("remoteProviderSimple", "method13", 9, false);
-		
+
 		remotingApi.addAction("remoteProviderStoreRead", "method1", 1, false);
 		remotingApi.addAction("remoteProviderStoreRead", "method2", 1, false);
 		remotingApi.addAction("remoteProviderStoreRead", "method3", 1, false);
@@ -317,21 +318,23 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderTreeLoad", "method1", 1, false);
 		remotingApi.addAction("remoteProviderTreeLoad", "method2", 1, false);
 		remotingApi.addAction("remoteProviderTreeLoad", "method3", 1, false);
-		
+
 		remotingApi.addAction("remoteProviderSimpleNamed", "method1", new ArrayList());
 		remotingApi.addAction("remoteProviderSimpleNamed", "method2", Arrays.asList("i", "d", "s"));
 		remotingApi.addAction("remoteProviderSimpleNamed", "method3", Arrays.asList("userName"));
 		remotingApi.addAction("remoteProviderSimpleNamed", "method4", Arrays.asList("a", "b"));
 		remotingApi.addAction("remoteProviderSimpleNamed", "method5", Arrays.asList("d"));
 		remotingApi.addAction("remoteProviderSimpleNamed", "method6", new ArrayList());
-		remotingApi.addAction("remoteProviderSimpleNamed", "method7", Arrays.asList("flag", "aCharacter", "workflow", "aInt", "aLong", "aDouble", "aFloat", "aShort", "aByte"));
+		remotingApi.addAction("remoteProviderSimpleNamed", "method7", Arrays.asList("flag", "aCharacter", "workflow",
+				"aInt", "aLong", "aDouble", "aFloat", "aShort", "aByte"));
 		remotingApi.addAction("remoteProviderSimpleNamed", "method9", Arrays.asList("aRow"));
-		remotingApi.addAction("remoteProviderSimpleNamed", "method10", Arrays.asList("flag", "aCharacter", "workflow", "aInt", "aLong", "aDouble", "aFloat", "aShort", "aByte"));
-		
+		remotingApi.addAction("remoteProviderSimpleNamed", "method10", Arrays.asList("flag", "aCharacter", "workflow",
+				"aInt", "aLong", "aDouble", "aFloat", "aShort", "aByte"));
+
 		remotingApi.addAction("remoteProviderSimpleNamed", "methodRP1", Arrays.asList("lastName", "theAge", "active"));
 		remotingApi.addAction("remoteProviderSimpleNamed", "methodRP2", Arrays.asList("lastName", "theAge", "active"));
 		remotingApi.addAction("remoteProviderSimpleNamed", "methodRP3", Arrays.asList("lastName", "theAge", "active"));
-		
+
 		remotingApi.addPollingProvider("pollProvider", "handleMessage1", "message1");
 		remotingApi.addPollingProvider("pollProvider", "handleMessage2", "message2");
 		remotingApi.addPollingProvider("pollProvider", "handleMessage3", "message3");
@@ -348,8 +351,7 @@ public class ApiControllerTest {
 		assertEquals("application/json", response.getContentType());
 		assertTrue(StringUtils.hasText(content));
 
-		
-		Map<String, Object> rootAsMap = mapper.readValue(content, Map.class);
+		Map<String, Object> rootAsMap = jsonHandler.readValue(content, Map.class);
 
 		if (remotingApi.getNamespace() == null) {
 			assertEquals(4, rootAsMap.size());
@@ -432,7 +434,7 @@ public class ApiControllerTest {
 			}
 		}
 
-		Map<String, Object> rootAsMap = mapper.readValue(remotingJson, Map.class);
+		Map<String, Object> rootAsMap = jsonHandler.readValue(remotingJson, Map.class);
 		if (remotingApi.getNamespace() == null) {
 			assertEquals(3, rootAsMap.size());
 		} else {
@@ -457,7 +459,7 @@ public class ApiControllerTest {
 		}
 
 		if (!remotingApi.getPollingProviders().isEmpty()) {
-			Map<String, Object> pollingMap = mapper.readValue(pollingJson, Map.class);
+			Map<String, Object> pollingMap = jsonHandler.readValue(pollingJson, Map.class);
 			assertEquals(remotingApi.getPollingProviders().size(), pollingMap.size());
 			for (PollingProvider pp : remotingApi.getPollingProviders()) {
 				String url = (String) pollingMap.get(pp.getEvent());
@@ -468,7 +470,7 @@ public class ApiControllerTest {
 		}
 	}
 
-	private void compare(List<Action> expectedActions, List<Map<String, Object>> actions) {		
+	private void compare(List<Action> expectedActions, List<Map<String, Object>> actions) {
 		assertEquals(expectedActions.size(), actions.size());
 		for (Action expectedAction : expectedActions) {
 			Map<String, Object> action = null;
@@ -486,12 +488,12 @@ public class ApiControllerTest {
 			} else {
 				assertFalse(action.containsKey("formHandler"));
 			}
-			
-			List<String> params = (List<String>)action.get("params");
-			assertTrue((params != null && expectedAction.getParams() != null) ||
-					   (params == null && expectedAction.getParams() == null)); 
-			
-		    if (expectedAction.getParams() != null) {
+
+			List<String> params = (List<String>) action.get("params");
+			assertTrue((params != null && expectedAction.getParams() != null)
+					|| (params == null && expectedAction.getParams() == null));
+
+			if (expectedAction.getParams() != null) {
 				assertEquals(expectedAction.getParams().size(), params.size());
 				for (String param : expectedAction.getParams()) {
 					assertTrue(params.contains(param));

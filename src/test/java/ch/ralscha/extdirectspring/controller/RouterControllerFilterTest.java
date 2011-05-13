@@ -28,12 +28,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
@@ -43,6 +42,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 import ch.ralscha.extdirectspring.provider.Row;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
+import ch.ralscha.extdirectspring.util.JsonHandler;
 
 /**
  * Tests for {@link RouterController}.
@@ -54,9 +54,12 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerFilterTest {
 
-	@Inject
+	@Autowired
 	private RouterController controller;
 
+	@Autowired
+	private JsonHandler jsonHandler;
+	
 	private MockHttpServletResponse response;
 	private MockHttpServletRequest request;
 
@@ -86,7 +89,7 @@ public class RouterControllerFilterTest {
 
 		int index = 1;
 		for (String json : jsonList) {
-			Map<String,Object> edRequest = ExtDirectSpringUtil.deserializeJsonToObject(json, Map.class);
+			Map<String,Object> edRequest = jsonHandler.readValue(json, Map.class);
 			List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 			assertEquals(1, responses.size());

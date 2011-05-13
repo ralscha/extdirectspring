@@ -15,34 +15,21 @@
  */
 package ch.ralscha.extdirectspring.util;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.util.StringUtils;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
-import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 
 /**
  * Tests for {@link ExtDirectSpringUtil}.
@@ -155,167 +142,6 @@ public class ExtDirectSpringUtilTest {
 		}
 	}
 
-	@Test
-	public void testSerializeObjectToJsonObject() {
-		assertEquals("null", ExtDirectSpringUtil.serializeObjectToJson(null));
-		assertEquals("\"a\"", ExtDirectSpringUtil.serializeObjectToJson("a"));
-		assertEquals("1", ExtDirectSpringUtil.serializeObjectToJson(1));
-		assertEquals("true", ExtDirectSpringUtil.serializeObjectToJson(true));
-
-		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		map.put("one", 1);
-		map.put("two", "2");
-		map.put("three", null);
-		map.put("four", false);
-		map.put("five", new int[] { 1, 2 });
-
-		String expected = "{\"one\":1,\"two\":\"2\",\"three\":null,\"four\":false,\"five\":[1,2]}";
-		assertEquals(expected, ExtDirectSpringUtil.serializeObjectToJson(map));
-
-		JsonTestBean testBean = new JsonTestBean(1, "2", null, false, new Integer[] { 1, 2 });
-		expected = "{\"a\":1,\"b\":\"2\",\"c\":null,\"d\":false,\"e\":[1,2]}";
-		assertEquals(expected, ExtDirectSpringUtil.serializeObjectToJson(testBean));
-
-	}
-
-	@Test
-	public void testSerializeObjectToJsonObjectBoolean() {
-		assertEquals("null", ExtDirectSpringUtil.serializeObjectToJson(null, true));
-		assertEquals("\"a\"", ExtDirectSpringUtil.serializeObjectToJson("a", true));
-		assertEquals("1", ExtDirectSpringUtil.serializeObjectToJson(1, true));
-		assertEquals("true", ExtDirectSpringUtil.serializeObjectToJson(true, true));
-
-		Map<String, Object> map = new LinkedHashMap<String, Object>();
-		map.put("one", 1);
-		map.put("two", "2");
-		map.put("three", null);
-		map.put("four", false);
-		map.put("five", new int[] { 1, 2 });
-
-		String expected = "{\n  \"one\" : 1,\n  \"two\" : \"2\",\n  \"three\" : null,\n  \"four\" : false,\n  \"five\" : [ 1, 2 ]\n}";
-		assertEquals(expected, ExtDirectSpringUtil.serializeObjectToJson(map, true).replace("\r", ""));
-
-		JsonTestBean testBean = new JsonTestBean(1, "2", null, false, new Integer[] { 1, 2 });
-		expected = "{\n  \"a\" : 1,\n  \"b\" : \"2\",\n  \"c\" : null,\n  \"d\" : false,\n  \"e\" : [ 1, 2 ]\n}";
-		assertEquals(expected, ExtDirectSpringUtil.serializeObjectToJson(testBean, true).replace("\r", ""));
-
-	}
-
-	@Test
-	public void testDeserializeJsonToObjectStringTypeReferenceOfT() {
-		String json = "[\"1\",\"2\",\"3\",\"4\"]";
-		List<String> result = ExtDirectSpringUtil.deserializeJsonToObject(json, new TypeReference<List<String>>() {/* empty */
-		});
-		assertEquals(4, result.size());
-		assertEquals("1", result.get(0));
-		assertEquals("2", result.get(1));
-		assertEquals("3", result.get(2));
-		assertEquals("4", result.get(3));
-
-		Object o = ExtDirectSpringUtil.deserializeJsonToObject("", new TypeReference<String>() {/* empty */
-		});
-		assertNull(o);
-
-		o = ExtDirectSpringUtil.deserializeJsonToObject("xy", new TypeReference<Integer>() {/* empty */
-		});
-		assertNull(o);
-
-	}
-
-	@Test
-	public void testDeserializeJsonToObjectStringClassOfT() {
-		assertNull(ExtDirectSpringUtil.deserializeJsonToObject("null", String.class));
-		assertEquals("a", ExtDirectSpringUtil.deserializeJsonToObject("\"a\"", String.class));
-		assertEquals(Integer.valueOf(1), ExtDirectSpringUtil.deserializeJsonToObject("1", Integer.class));
-		assertTrue(ExtDirectSpringUtil.deserializeJsonToObject("true", Boolean.class));
-
-		String json1 = "{\"a\":1,\"b\":\"2\",\"c\":null,\"d\":false,\"e\":[1,2]}";
-		String json2 = "{\r\n  \"a\" : 1,\r\n  \"b\" : \"2\",\r\n  \"c\" : null,\r\n  \"d\" : false,\r\n  \"e\" : [ 1, 2 ]\r\n}";
-		JsonTestBean testBean = ExtDirectSpringUtil.deserializeJsonToObject(json1, JsonTestBean.class);
-		assertEquals(Integer.valueOf(1), testBean.getA());
-		assertEquals("2", testBean.getB());
-		assertNull(testBean.getC());
-		assertFalse(testBean.getD());
-		assertArrayEquals(new Integer[] { 1, 2 }, testBean.getE());
-
-		testBean = ExtDirectSpringUtil.deserializeJsonToObject(json2, JsonTestBean.class);
-		assertEquals(Integer.valueOf(1), testBean.getA());
-		assertEquals("2", testBean.getB());
-		assertNull(testBean.getC());
-		assertFalse(testBean.getD());
-		assertArrayEquals(new Integer[] { 1, 2 }, testBean.getE());
-
-		Object o = ExtDirectSpringUtil.deserializeJsonToObject("", String.class);
-		assertNull(o);
-
-		o = ExtDirectSpringUtil.deserializeJsonToObject("xy", Integer.class);
-		assertNull(o);
-
-	}
-
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testJsonUtilObject() {
-		ExtDirectRequest req = new ExtDirectRequest();
-		req.setAction("testAction");
-		req.setMethod("testMethod");
-		req.setTid(1);
-		req.setType("testType");
-		req.setData(new Object[] { "one", "two" });
-
-		String json = ExtDirectSpringUtil.serializeObjectToJson(req);
-		assertNotNull(json);
-		assertTrue(StringUtils.hasText(json));
-
-		ExtDirectRequest desReq = ExtDirectSpringUtil.deserializeJsonToObject(json, ExtDirectRequest.class);
-		assertNotNull(desReq);
-
-		assertEquals(req.getAction(), desReq.getAction());
-		assertArrayEquals((Object[])req.getData(), ((List<Object>)desReq.getData()).toArray());
-		assertEquals(req.getMethod(), desReq.getMethod());
-		assertEquals(req.getTid(), desReq.getTid());
-		assertEquals(req.getType(), desReq.getType());
-	}
-
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testJsonList() throws JsonGenerationException, JsonMappingException, IOException {
-		List<ExtDirectRequest> requests = new ArrayList<ExtDirectRequest>();
-
-		ExtDirectRequest req = new ExtDirectRequest();
-		req.setAction("testAction1");
-		req.setMethod("testMethod1");
-		req.setTid(1);
-		req.setType("testType1");
-		req.setData(new Object[] { "one" });
-		requests.add(req);
-
-		req = new ExtDirectRequest();
-		req.setAction("testAction2");
-		req.setMethod("testMethod2");
-		req.setTid(2);
-		req.setType("testType2");
-		req.setData(new Object[] { "two" });
-		requests.add(req);
-
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(requests);
-
-		List<ExtDirectRequest> desRequests = ExtDirectSpringUtil.deserializeJsonToObject(json,
-				new TypeReference<List<ExtDirectRequest>>() {/* empty */
-				});
-
-		assertEquals(requests.size(), desRequests.size());
-		for (int i = 0; i < requests.size(); i++) {
-			req = requests.get(i);
-			ExtDirectRequest desReq = desRequests.get(i);
-
-			assertEquals(req.getAction(), desReq.getAction());
-			assertArrayEquals((Object[])req.getData(), ((List<Object>)desReq.getData()).toArray());
-			assertEquals(req.getMethod(), desReq.getMethod());
-			assertEquals(req.getTid(), desReq.getTid());
-			assertEquals(req.getType(), desReq.getType());
-		}
-	}
+	
 
 }
