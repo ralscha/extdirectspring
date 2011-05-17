@@ -19,6 +19,7 @@ Ext.onReady(function() {
     name: 'zip'
   } ];
 
+ 
   var writer = new Ext.data.JsonWriter( {
     writeAllFields: true,
     listful: true,
