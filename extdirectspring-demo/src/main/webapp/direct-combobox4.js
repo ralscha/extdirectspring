@@ -1,6 +1,5 @@
-Ext.require([ 'Ext.grid.*', 
-              'Ext.data.*', 
-              'Ext.util.*', 
+Ext.require([ 'Ext.data.*', 
+              'Ext.form.*', 
               ]);
 
 Ext.onReady(function() {
