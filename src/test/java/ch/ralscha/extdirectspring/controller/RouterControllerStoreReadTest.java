@@ -65,9 +65,13 @@ public class RouterControllerStoreReadTest {
 
 	@Test
 	public void testNoArgumentsNoRequestParameters() {
+		Configuration config = new Configuration();
+		config.setAlwaysWrapStoreReadResponse(true);
+		controller.setConfiguration(config);
+		
 		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method1", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
-
+		
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
 		assertEquals("remoteProviderStoreRead", resp.getAction());
@@ -81,10 +85,34 @@ public class RouterControllerStoreReadTest {
 		ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse) resp.getResult();
 		List<Row> rows = (List<Row>) storeResponse.getRecords();
 		assertEquals(100, rows.size());
+		
+		controller.setConfiguration(new Configuration());
+				
+		edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method1", 1, null);
+		responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+		
+		assertEquals(1, responses.size());
+		resp = responses.get(0);
+		assertEquals("remoteProviderStoreRead", resp.getAction());
+		assertEquals("method1", resp.getMethod());
+		assertEquals("rpc", resp.getType());
+		assertEquals(1, resp.getTid());
+		assertNull(resp.getMessage());
+		assertNull(resp.getWhere());
+		assertNotNull(resp.getResult());
+
+		rows = (List<Row>) resp.getResult();
+		assertEquals(100, rows.size());		
+		
 	}
 
 	@Test
 	public void testNoArgumentsWithRequestParameters() {
+		
+		Configuration config = new Configuration();
+		config.setAlwaysWrapStoreReadResponse(true);
+		controller.setConfiguration(config);
+		
 		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
 		storeRead.setQuery("ralph");
 
@@ -104,6 +132,24 @@ public class RouterControllerStoreReadTest {
 		ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse) resp.getResult();
 		List<Row> rows = (List<Row>) storeResponse.getRecords();
 		assertEquals(100, rows.size());
+		
+		controller.setConfiguration(new Configuration());
+		
+		edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method1", 1, storeRead);
+		responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		assertEquals(1, responses.size());
+		resp = responses.get(0);
+		assertEquals("remoteProviderStoreRead", resp.getAction());
+		assertEquals("method1", resp.getMethod());
+		assertEquals("rpc", resp.getType());
+		assertEquals(1, resp.getTid());
+		assertNull(resp.getMessage());
+		assertNull(resp.getWhere());
+		assertNotNull(resp.getResult());
+
+		rows = (List<Row>)  resp.getResult();
+		assertEquals(100, rows.size());
 	}
 
 	@Test
@@ -119,11 +165,16 @@ public class RouterControllerStoreReadTest {
 		assertEquals(1, resp.getTid());
 		assertNull(resp.getMessage());
 		assertNull(resp.getWhere());
-		assertNull(resp.getResult());
+		assertNotNull(resp.getResult());
 	}
 
 	@Test
 	public void testSupportedArguments() {
+		
+		Configuration config = new Configuration();
+		config.setAlwaysWrapStoreReadResponse(true);
+		controller.setConfiguration(config);
+		
 		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method3", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
@@ -140,6 +191,8 @@ public class RouterControllerStoreReadTest {
 		ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse) resp.getResult();
 		List<Row> rows = (List<Row>) storeResponse.getRecords();
 		assertEquals(100, rows.size());
+		
+		controller.setConfiguration(new Configuration());
 	}
 
 	@Test
@@ -319,6 +372,10 @@ public class RouterControllerStoreReadTest {
 	@Test
 	public void testWithAdditionalParametersOptional() {
 
+		Configuration config = new Configuration();
+		config.setAlwaysWrapStoreReadResponse(true);
+		controller.setConfiguration(config);
+		
 		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method7", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
@@ -358,6 +415,8 @@ public class RouterControllerStoreReadTest {
 		storeResponse = (ExtDirectStoreResponse) resp.getResult();
 		rows = (List<Row>) storeResponse.getRecords();
 		assertEquals(100, rows.size());
+		
+		controller.setConfiguration(new Configuration());
 	}
 
 	@Test

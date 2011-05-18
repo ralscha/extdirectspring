@@ -36,6 +36,7 @@ public class Configuration {
 	private boolean sendExceptionMessage = false;
 	private boolean sendStacktrace = false;
 	private Map<Class<?>, String> exceptionToMessage;
+	private boolean alwaysWrapStoreReadResponse = false;
 
 	public String getDefaultExceptionMessage() {
 		return defaultExceptionMessage;
@@ -67,6 +68,14 @@ public class Configuration {
 
 	public void setExceptionToMessage(Map<Class<?>, String> exceptionToMessage) {
 		this.exceptionToMessage = exceptionToMessage;
+	}
+
+	public boolean isAlwaysWrapStoreReadResponse() {
+		return alwaysWrapStoreReadResponse;
+	}
+
+	public void setAlwaysWrapStoreReadResponse(boolean alwaysWrapStoreReadResponse) {
+		this.alwaysWrapStoreReadResponse = alwaysWrapStoreReadResponse;
 	}
 
 	public String getMessage(Throwable exception) {

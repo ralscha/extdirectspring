@@ -102,8 +102,7 @@ public class RouterControllerFilterTest {
 			assertNull(resp.getWhere());
 			assertNotNull(resp.getResult());
 
-			ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse) resp.getResult();
-			List<Row> rows = (List<Row>) storeResponse.getRecords();
+			List<Row> rows = (List<Row>) resp.getResult();
 			assertEquals(1, rows.size());
 			assertEquals(index, rows.get(0).getId());
 

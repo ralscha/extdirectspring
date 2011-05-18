@@ -79,10 +79,8 @@ public class RouterControllerStoreModifyTest {
 		assertNull(resp.getWhere());
 		assertNotNull(resp.getResult());
 
-		ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
-		assertTrue(storeResponse.getRecords().isEmpty());
-		assertNull(storeResponse.getTotal());
-		assertTrue(storeResponse.isSuccess());
+		List<Row> rows = (List<Row>) resp.getResult();
+		assertTrue(rows.isEmpty());
 	}
 
 	@Test
@@ -106,14 +104,12 @@ public class RouterControllerStoreModifyTest {
 		assertNull(resp.getWhere());
 		assertNotNull(resp.getResult());
 
-		ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
-		assertNull(storeResponse.getTotal());
-		assertTrue(storeResponse.isSuccess());
-		assertEquals(2, storeResponse.getRecords().size());
-		List<Row> returnedRows = new ArrayList<Row>(storeResponse.getRecords());
-		Collections.sort(returnedRows);
-		assertEquals(10, returnedRows.get(0).getId());
-		assertEquals(23, returnedRows.get(1).getId());
+		List<Row> storeResponse = (List<Row>) resp.getResult();
+		assertEquals(2, storeResponse.size());
+
+		Collections.sort(storeResponse);
+		assertEquals(10, storeResponse.get(0).getId());
+		assertEquals(23, storeResponse.get(1).getId());
 	}
 
 	@Test
@@ -136,12 +132,9 @@ public class RouterControllerStoreModifyTest {
 		assertNull(resp.getWhere());
 		assertNotNull(resp.getResult());
 
-		ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
-		assertNull(storeResponse.getTotal());
-		assertTrue(storeResponse.isSuccess());
-		assertEquals(1, storeResponse.getRecords().size());
-		List<Row> returnedRows = new ArrayList<Row>(storeResponse.getRecords());
-		assertEquals(10, returnedRows.get(0).getId());
+		List<Row> storeResponse = (List<Row>) resp.getResult();
+		assertEquals(1, storeResponse.size());
+		assertEquals(10, storeResponse.get(0).getId());
 	}
 
 	@Test
@@ -202,12 +195,9 @@ public class RouterControllerStoreModifyTest {
 		assertNull(resp.getWhere());
 		assertNotNull(resp.getResult());
 
-		ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
-		assertNull(storeResponse.getTotal());
-		assertTrue(storeResponse.isSuccess());
-		assertEquals(1, storeResponse.getRecords().size());
-		List<Row> returnedRows = new ArrayList<Row>(storeResponse.getRecords());
-		assertEquals(10, returnedRows.get(0).getId());
+		List<Row> storeResponse = (List<Row>) resp.getResult();
+		assertEquals(1, storeResponse.size());
+		assertEquals(10, storeResponse.get(0).getId());
 	}
 
 	@Test
@@ -230,12 +220,9 @@ public class RouterControllerStoreModifyTest {
 		assertNull(resp.getWhere());
 		assertNotNull(resp.getResult());
 
-		ExtDirectStoreResponse<Integer> storeResponse = (ExtDirectStoreResponse<Integer>) resp.getResult();
-		assertNull(storeResponse.getTotal());
-		assertTrue(storeResponse.isSuccess());
-		assertEquals(1, storeResponse.getRecords().size());
-		List<Integer> returnedRows = new ArrayList<Integer>(storeResponse.getRecords());
-		assertEquals(Integer.valueOf(10), returnedRows.get(0));
+		List<Integer> storeResponse = (List<Integer>) resp.getResult();
+		assertEquals(1, storeResponse.size());
+		assertEquals(Integer.valueOf(10), storeResponse.get(0));
 	}
 
 
