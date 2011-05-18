@@ -5,7 +5,6 @@ Ext.onReady(function() {
   var directStore = new Ext.data.DirectStore( {
     paramsAsHash: true,
     autoLoad: true,
-    root: 'records',
     directFn: extJsBookService.getBooks,
     fields: [ {
       name: 'id'

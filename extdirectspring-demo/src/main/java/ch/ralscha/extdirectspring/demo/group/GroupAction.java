@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Named;
+import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
@@ -27,7 +27,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 
 import com.google.common.collect.ImmutableList;
 
-@Named
+@Service
 public class GroupAction {
 
 	private static List<Task> tasks;

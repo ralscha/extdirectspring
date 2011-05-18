@@ -17,13 +17,16 @@ package ch.ralscha.extdirectspring.demo.chart;
 
 import java.util.List;
 import java.util.Random;
-import javax.inject.Named;
+
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+
 import com.google.common.collect.ImmutableList;
 
-@Named
+@Service
 public class ReportService {
 
 	private Random randomGenerator = new Random();

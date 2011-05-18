@@ -16,12 +16,15 @@
 package ch.ralscha.extdirectspring.demo.book;
 
 import java.util.List;
-import javax.inject.Named;
+
+import org.springframework.stereotype.Service;
+
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+
 import com.google.common.collect.ImmutableList;
 
-@Named
+@Service
 public class ExtJsBookService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "book")

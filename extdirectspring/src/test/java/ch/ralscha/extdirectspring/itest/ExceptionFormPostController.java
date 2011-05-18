@@ -47,7 +47,7 @@ public class ExceptionFormPostController {
 		//return builder.build();
 	}
 
-	
+	//todo this only works with the new spring 3.1
 //	@ExceptionHandler(Exception.class)
 //	@ResponseBody
 //	public ExtDirectResponse handleException(HttpServletRequest request) {

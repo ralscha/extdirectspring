@@ -18,14 +18,13 @@ package ch.ralscha.extdirectspring.demo.tree;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Named;
-
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
-@Named
+@Service
 public class TreeProvider {
 
 	public static class Node {

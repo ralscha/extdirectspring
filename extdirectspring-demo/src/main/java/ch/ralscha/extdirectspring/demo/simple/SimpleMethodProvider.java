@@ -17,11 +17,14 @@ package ch.ralscha.extdirectspring.demo.simple;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.inject.Named;
+
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Service;
+
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 
-@Named("simple")
+@Service("simple")
 public class SimpleMethodProvider {
 
 	@ExtDirectMethod(group = "simple")

@@ -20,14 +20,14 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import javax.inject.Named;
+import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
 import com.google.common.collect.Lists;
 
-@Named
+@Service
 public class ChartService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "area")

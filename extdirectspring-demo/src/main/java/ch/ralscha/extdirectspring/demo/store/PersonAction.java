@@ -20,9 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -42,10 +41,10 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 
-@Named
+@Service
 public class PersonAction {
 
-	@Inject
+	@Autowired
 	private RandomDataBean dataBean;
 
 	private Map<String, Ordering<Person>> orderingMap;
@@ -165,7 +164,7 @@ public class PersonAction {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
-	public List<Person> create(List<Person> newPersons) {
+	public ExtDirectStoreResponse<Person> create(List<Person> newPersons) {
 		List<Person> insertedPersons = Lists.newArrayList();
 
 		for (Person newPerson : newPersons) {
@@ -173,11 +172,11 @@ public class PersonAction {
 			insertedPersons.add(newPerson);
 		}
 
-		return insertedPersons;
+		return new ExtDirectStoreResponse<Person>(insertedPersons);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
-	public List<Person> update(@RequestParam(value = "no", defaultValue = "0") int no,
+	public ExtDirectStoreResponse<Person> update(@RequestParam(value = "no", defaultValue = "0") int no,
 			@RequestParam(value = "name", required = false) String name, List<Person> modifiedPersons) {
 
 		List<Person> updatedRecords = Lists.newArrayList();
@@ -190,11 +189,11 @@ public class PersonAction {
 			}
 		}
 
-		return updatedRecords;
+		return new ExtDirectStoreResponse<Person>(updatedRecords);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
-	public List<Integer> destroy(List<Integer> destroyIds) {
+	public ExtDirectStoreResponse<Integer> destroy(List<Integer> destroyIds) {
 		List<Integer> deletedPersonsId = Lists.newArrayList();
 
 		for (Integer id : destroyIds) {
@@ -202,7 +201,7 @@ public class PersonAction {
 			deletedPersonsId.add(id);
 		}
 
-		return deletedPersonsId;
+		return new ExtDirectStoreResponse<Integer>(deletedPersonsId);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")

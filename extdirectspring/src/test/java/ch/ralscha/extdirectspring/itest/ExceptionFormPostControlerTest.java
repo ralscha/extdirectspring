@@ -63,6 +63,7 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 		HttpEntity entity = response.getEntity();
 		assertNotNull(entity);
 		String responseString = EntityUtils.toString(entity);
+		//todo finish this
 System.out.println(responseString);
 //		ObjectMapper mapper = new ObjectMapper();
 //		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);

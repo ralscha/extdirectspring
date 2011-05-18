@@ -10,10 +10,7 @@ Ext.onReady(function() {
 		fields : [ 'label', 'value' ],
 		proxy : {
 			type: 'direct',
-			directFn: deliveryTimeService.getDeliveryTimes,
-			reader : {
-				root: 'records'
-			}
+			directFn: deliveryTimeService.getDeliveryTimes
 		}
 	});
 

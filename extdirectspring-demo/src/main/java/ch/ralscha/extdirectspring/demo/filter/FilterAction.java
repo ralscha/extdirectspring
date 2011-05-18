@@ -17,8 +17,8 @@ package ch.ralscha.extdirectspring.demo.filter;
 
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
@@ -28,10 +28,10 @@ import ch.ralscha.extdirectspring.demo.util.PropertyOrderingFactory;
 
 import com.google.common.collect.Ordering;
 
-@Named
+@Service
 public class FilterAction {
 
-	@Inject
+	@Autowired
 	private CompanyDataBean dataBean;
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "filter")

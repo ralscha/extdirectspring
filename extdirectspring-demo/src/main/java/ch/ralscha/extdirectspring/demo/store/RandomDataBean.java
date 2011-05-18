@@ -23,10 +23,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Named;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -36,10 +36,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 
-@Named
+@Service
 public class RandomDataBean {
 
-	@Inject
+	@Autowired
 	private Resource randomdata;
 
 	private int maxId;
@@ -89,6 +89,10 @@ public class RandomDataBean {
 
 	public void deletePerson(int personId) {
 		persons.remove(personId);
+	}
+	
+	public void deletePerson(Person person) {
+		persons.remove(Integer.valueOf(person.getId()));
 	}
 
 	public Person insert(Person p) {

@@ -15,11 +15,11 @@
  */
 package ch.ralscha.extdirectspring.demo;
 
-import javax.inject.Named;
+import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 
-@Named
+@Service
 public class TestAction {
 
 	@ExtDirectMethod(group = "example")

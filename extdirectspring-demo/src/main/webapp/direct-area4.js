@@ -15,10 +15,7 @@ Ext.onReady(function() {
         model: 'AreaData',
         proxy: {
             type: 'direct',
-			directFn : chartService.getAreaData,
-			reader : {
-				root : 'records'
-			}
+			directFn : chartService.getAreaData			
         }
     });	
 	

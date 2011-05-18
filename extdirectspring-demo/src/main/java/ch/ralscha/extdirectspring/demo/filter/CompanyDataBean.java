@@ -32,10 +32,10 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Named;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 
 import au.com.bytecode.opencsv.CSVReader;
 import ch.ralscha.extdirectspring.filter.BooleanFilter;
@@ -53,10 +53,10 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-@Named
+@Service
 public class CompanyDataBean {
 
-	@Inject
+	@Autowired
 	private Resource randomdata;
 
 	private Map<Integer, Company> companies;

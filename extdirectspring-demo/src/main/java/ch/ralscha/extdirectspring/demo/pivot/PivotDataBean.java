@@ -22,19 +22,19 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Named;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.google.common.collect.ImmutableList;
 
-@Named
+@Service
 public class PivotDataBean {
 
-	@Inject
+	@Autowired
 	private Resource pivotdata;
 
 	private List<Sale> sales;

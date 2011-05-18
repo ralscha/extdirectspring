@@ -12,8 +12,10 @@
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
   
   <context:component-scan base-package="ch.ralscha.extdirectspring" />
-  
-  <bean id="extDirectSpringConfiguration" class="ch.ralscha.extdirectspring.controller.Configuration" />  
+  <bean id="extDirectSpringConfiguration" 
+	    class="ch.ralscha.extdirectspring.controller.Configuration" 
+	    p:alwaysWrapStoreReadResponse="true"/>
+	      
   
   <mvc:annotation-driven />
   

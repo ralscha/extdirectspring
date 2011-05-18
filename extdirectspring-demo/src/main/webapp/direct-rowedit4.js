@@ -20,39 +20,23 @@ Ext.onReady(function() {
 		proxy: {
 			type: 'direct',
 			api : {
-				read : personAction.loadWithPaging,
-				create : personAction.create,
-				update : personAction.update,
-				destroy : personAction.destroy
+				read : person4Action.loadWithPaging,
+				create : person4Action.create,
+				update : person4Action.update,
+				destroy : person4Action.destroy
 			},
 			reader : {
 				root : 'records'
-			},
-			writer : {
-				root : 'records',
-				allowSingle : false
 			}
 		}
 	});
-
-	var store2 = Ext.create('Ext.data.DirectStore', {
-		autoDestroy : true,
-		model : 'Person',
-		root : 'records',
-		idProperty : 'id',
-		totalProperty : 'total',
-		remoteSort : true,
-		pageSize : 50,
-		autoLoad : {
-			start : 0,
-			limit : 50
-		},
-		autoSync : false,
-		api : {
-			read : personAction.loadWithPaging,
-			create : personAction.create,
-			update : personAction.update,
-			destroy : personAction.destroy
+	
+	Ext.define('State', {
+		extend: 'Ext.data.Model',
+		fields : ['state'],
+		proxy: {
+			type: 'direct',
+			directFn: person4Action.getStates
 		}
 	});
 
@@ -60,29 +44,12 @@ Ext.onReady(function() {
 		autoDestroy : true,
 		model : 'Person',
 		pageSize : 50,
+		remoteSort: true,
 		autoLoad : {
 			start : 0,
 			limit : 50
-		}/*,
-		proxy : {
-			type : 'direct',
-			api : {
-				read : personAction.loadWithPaging,
-				create : personAction.create,
-				update : personAction.update,
-				destroy : personAction.destroy
-			},
-			reader : {
-				root : 'records'
-			},
-			writer : {
-				root : 'records',
-				allowSingle : false
-			}
-		}*/
+		}
 	});
-	console.dir(store2);
-	console.dir(store);
 
 	var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
 		clicksToMoveEditor : 1,
@@ -96,6 +63,11 @@ Ext.onReady(function() {
 		emptyMsg : "No persons to display"
 	});
 
+	var stateStore = Ext.create('Ext.data.Store', {
+		autoLoad: true,
+		model : 'State'	
+	});
+	
 	// create the grid and specify what field you want
 	// to use for the editor at each column.
 	var grid = Ext.create('Ext.grid.Panel', {
@@ -129,7 +101,11 @@ Ext.onReady(function() {
 			header : 'State',
 			dataIndex : 'state',
 			editor : {
-				allowBlank : true
+				allowBlank : false,
+				xtype: 'combobox',
+				displayField: 'state',
+			    valueField: 'state',
+			    store: stateStore
 			}
 		}, {
 			header : 'Zip Code',
@@ -178,6 +154,7 @@ Ext.onReady(function() {
 			text : 'Sync',
 			handler : function() {
 				store.sync();
+				pagingToolbar.doRefresh();
 			}
 		} ],
 		plugins : [ rowEditing ],

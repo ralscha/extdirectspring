@@ -17,13 +17,16 @@ package ch.ralscha.extdirectspring.demo;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.inject.Named;
+
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
-@Named
+@Service
 public class Poll {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message", group = "example")

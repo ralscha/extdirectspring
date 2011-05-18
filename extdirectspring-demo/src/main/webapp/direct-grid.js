@@ -60,7 +60,7 @@ Ext.onReady(function() {
     valueField: 'state',
     store: {
       xtype: 'directstore',
-      root: 'records',
+      root: '',
       directFn: personAction.getStates,
       fields: [ 'state' ]
     }

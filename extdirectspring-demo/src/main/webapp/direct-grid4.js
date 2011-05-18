@@ -29,10 +29,7 @@ Ext.onReady(function() {
             }],
             proxy: {
                 type: 'direct',
-                directFn: turnoverService.getTurnovers,
-                reader: {
-                    root: 'records'
-                }
+                directFn: turnoverService.getTurnovers                
             }
         },
         columns: [{

@@ -17,17 +17,17 @@ package ch.ralscha.extdirectspring.demo.pivot;
 
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 
-@Named
+@Service
 public class SalesAction {
 
-	@Inject
+	@Autowired
 	private PivotDataBean dataBean;
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "pivot")

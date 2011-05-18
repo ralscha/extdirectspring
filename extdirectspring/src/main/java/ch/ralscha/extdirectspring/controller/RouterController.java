@@ -21,6 +21,7 @@ import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -196,11 +197,17 @@ public class RouterController implements InitializingBean {
 						result = new ExtDirectFormLoadResult(result);
 					} else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo
 							.isType(ExtDirectMethodType.STORE_READ))
-							&& !ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())) {
+							&& !ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())
+							&& configuration.isAlwaysWrapStoreReadResponse()) {
 						result = new ExtDirectStoreResponse((Collection) result);
 					}
 
 					directResponse.setResult(result);
+				} else {
+					if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) ||
+					    methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
+						directResponse.setResult(Collections.emptyList());
+					}
 				}
 
 			} catch (Exception e) {
@@ -254,14 +261,23 @@ public class RouterController implements InitializingBean {
 			List<Object> data = (List<Object>)directRequest.getData();
 			
 			if (data != null && data.size() > 0) {
-				Map<String, Object> jsonData = (Map<String, Object>) data.get(0);
-
-				ArrayList<Object> records = (ArrayList<Object>) jsonData.get("records");
-				directStoreModifyRecords = convertObjectEntriesToType(records, directStoreEntryClass);
+				
+				if (data.get(0) instanceof List) {
+					directStoreModifyRecords = convertObjectEntriesToType((List<Object>)data.get(0), directStoreEntryClass);
+				} else {
+					Map<String, Object> jsonData = (Map<String, Object>) data.get(0);
+	
+					ArrayList<Object> records = (ArrayList<Object>) jsonData.get("records");
+					if (records != null) {
+						directStoreModifyRecords = convertObjectEntriesToType(records, directStoreEntryClass);
+						remainingParameters = new HashMap<String, Object>(jsonData);
+						remainingParameters.remove("records");
+					} else {
+						directStoreModifyRecords = new ArrayList<Object>();
+						directStoreModifyRecords.add(jsonHandler.convertValue(jsonData, directStoreEntryClass));
+					}					
+				}
 				jsonParamIndex = 1;
-
-				remainingParameters = new HashMap<String, Object>(jsonData);
-				remainingParameters.remove("records");
 
 			}
 		} else if (methodInfo.isType(ExtDirectMethodType.SIMPLE_NAMED)) {
@@ -428,7 +444,7 @@ public class RouterController implements InitializingBean {
 		return remainingParameters;
 	}
 
-	private List<Object> convertObjectEntriesToType(final ArrayList<Object> records, final Class<?> directStoreType) {
+	private List<Object> convertObjectEntriesToType(final List<Object> records, final Class<?> directStoreType) {
 		if (records != null) {
 			List<Object> convertedList = new ArrayList<Object>();
 			for (Object record : records) {
