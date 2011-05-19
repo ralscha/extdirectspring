@@ -40,7 +40,8 @@ public class Person4Action {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store4")
 	public List<Person> load(ExtDirectStoreReadRequest request) {
-		return dataBean.findPersons(request.getQuery());
+		List<Person> persons = dataBean.findPersons(request.getQuery());
+		return persons.subList(0, Math.min(50, persons.size()));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store4")

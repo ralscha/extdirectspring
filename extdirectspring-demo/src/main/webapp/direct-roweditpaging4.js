@@ -2,7 +2,8 @@ Ext.Loader.setConfig({
 	enabled : true
 });
 
-Ext.require([ 'Ext.grid.*', 'Ext.data.*' ]);
+Ext.require([ 'Ext.grid.*', 
+              'Ext.data.*' ]);
 
 Ext.onReady(function() {
 	Ext.direct.Manager.addProvider(Ext.app.REMOTING_API);
@@ -10,35 +11,50 @@ Ext.onReady(function() {
 	Ext.define('Person', {
 		extend : 'Ext.data.Model',
 		fields : [ 'lastName', 'firstName', 'id', 'street', 'city', 'state', 'zip' ],
-		proxy : {
-			type : 'direct',
+		proxy: {
+			type: 'direct',
 			api : {
-				read : person4Action.load,
+				read : person4Action.loadWithPaging,
 				create : person4Action.create,
 				update : person4Action.update,
 				destroy : person4Action.destroy
+			},
+			reader : {
+				root : 'records'
 			}
 		}
 	});
-
+	
 	Ext.define('State', {
-		extend : 'Ext.data.Model',
-		fields : [ 'state' ],
-		proxy : {
-			type : 'direct',
-			directFn : person4Action.getStates
+		extend: 'Ext.data.Model',
+		fields : ['state'],
+		proxy: {
+			type: 'direct',
+			directFn: person4Action.getStates
 		}
 	});
 
 	var store = Ext.create('Ext.data.Store', {
 		autoDestroy : true,
 		model : 'Person',
-		autoLoad : true
+		pageSize : 50,
+		remoteSort: true,
+		autoLoad : {
+			start : 0,
+			limit : 50
+		}
 	});
-
+	
 	var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
 		clicksToMoveEditor : 1,
 		autoCancel : false
+	});
+
+	var pagingToolbar = Ext.create('Ext.toolbar.Paging', {
+		store : store,
+		displayInfo : true,
+		displayMsg : 'Displaying persons {0} - {1} of {2}',
+		emptyMsg : "No persons to display"
 	});
 
 	var grid = Ext.create('Ext.grid.Panel', {
@@ -73,10 +89,10 @@ Ext.onReady(function() {
 			dataIndex : 'state',
 			editor : {
 				allowBlank : false,
-				xtype : 'combobox',
-				displayField : 'state',
-				valueField : 'state',
-				store : Ext.create('Ext.data.Store', {
+				xtype: 'combobox',
+				displayField: 'state',
+			    valueField: 'state',
+			    store: Ext.create('Ext.data.Store', {
 					autoLoad : true,
 					model : 'State'
 				})
@@ -93,6 +109,7 @@ Ext.onReady(function() {
 		height : 400,
 		title : 'Persons',
 		frame : true,
+		bbar : pagingToolbar,
 		tbar : [ {
 			text : 'Add Person',
 			iconCls : 'employee-add',
@@ -137,5 +154,5 @@ Ext.onReady(function() {
 			}
 		}
 	});
-	
+		
 });
