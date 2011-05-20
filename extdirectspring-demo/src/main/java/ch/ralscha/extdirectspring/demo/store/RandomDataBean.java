@@ -57,9 +57,6 @@ public class RandomDataBean {
 		String[] nextLine;
 		while ((nextLine = reader.readNext()) != null) {
 			Person p = new Person(nextLine);
-			if (p.getFirstName().equals("Ezra")) {
-				System.out.println(p);
-			}
 			persons.put(Integer.valueOf(p.getId()), p);
 			maxId = Math.max(maxId, Integer.valueOf(p.getId()));
 		}
