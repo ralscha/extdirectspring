@@ -19,22 +19,48 @@ import java.util.List;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 
 public class BaseService<T extends BaseModel> {
 	
 	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
-	public List<T> create(List<T> inserts) {
-		inserts.iterator().next().setId(3);
-		return inserts;
+	public ExtDirectStoreResponse<Book> update3(List<Book> updates) {
+		return new ExtDirectStoreResponse<Book>(update4(updates));
 	}
 	
 	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
-	public List<T> update(List<T> updates) {
+	public List<Book> update4(List<Book> updates) {
+		for (Book book : updates) {
+			book.setIsbn("UPDATED_"+book.getIsbn());
+		}
 		return updates;
+	}	
+	
+	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
+	public ExtDirectStoreResponse<Integer> delete3(List<Integer> deletes) {		
+		return new ExtDirectStoreResponse<Integer>(deletes);
 	}
 	
 	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
-	public List<Integer> delete(List<Integer> deletes) {		
+	public List<Book> delete4(List<Book> deletes) {		
+		for (Book book : deletes) {
+			book.setTitle(null);
+			book.setIsbn("DELETED_"+book.getIsbn());
+		}
 		return deletes;
+	}	
+	
+	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
+	public ExtDirectStoreResponse<Book> create3(List<Book> inserts) {
+		return new ExtDirectStoreResponse<Book>(create4(inserts));
+	}
+	
+	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
+	public List<Book> create4(List<Book> inserts) {
+		int id = 3;
+		for (Book book : inserts) {
+			book.setId(id++);
+		}
+		return inserts;
 	}
 }
