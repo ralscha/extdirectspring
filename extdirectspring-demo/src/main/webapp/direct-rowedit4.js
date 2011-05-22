@@ -127,7 +127,6 @@ Ext.onReady(function() {
 			text : 'Sync',
 			handler : function() {
 				store.sync();
-				pagingToolbar.doRefresh();
 			}
 		} ],
 		plugins : [ rowEditing ],
