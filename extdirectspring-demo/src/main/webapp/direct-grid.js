@@ -22,7 +22,6 @@ Ext.onReady(function() {
  
   var writer = new Ext.data.JsonWriter( {
     writeAllFields: true,
-    listful: true,
     encode: false
   });
 
