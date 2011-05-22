@@ -426,9 +426,9 @@ public class RouterController implements InitializingBean {
 		}
 
 		if (to.getLimit() != null) {
-			if (to.getPage() != null) {
+			if (to.getPage() != null && to.getStart() == null) {
 				to.setStart(to.getLimit() * (to.getPage()-1));
-			} else if (to.getStart() != null) {
+			} else if (to.getPage() == null && to.getStart() != null) {
 			    to.setPage(to.getStart() / to.getLimit() + 1);
 			}
 		}
