@@ -15,11 +15,13 @@
  */
 package ch.ralscha.extdirectspring.itest;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -31,6 +33,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -63,17 +66,19 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 		HttpEntity entity = response.getEntity();
 		assertNotNull(entity);
 		String responseString = EntityUtils.toString(entity);
-		//todo finish this
-System.out.println(responseString);
-//		ObjectMapper mapper = new ObjectMapper();
-//		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-//		assertEquals(5, rootAsMap.size());
-//		assertEquals("throwAException", rootAsMap.get("method"));
-//		assertEquals("rpc", rootAsMap.get("type"));
-//		assertEquals("exceptionFormPostController", rootAsMap.get("action"));
-//		assertEquals(3, rootAsMap.get("tid"));
-//
-//		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-//		assertEquals(true, result.get("success"));
+		
+		ObjectMapper mapper = new ObjectMapper();
+		@SuppressWarnings("unchecked")
+		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+		assertEquals(7, rootAsMap.size());
+		assertEquals("throwAException", rootAsMap.get("method"));
+		assertEquals("exception", rootAsMap.get("type"));
+		assertEquals("exceptionFormPostController", rootAsMap.get("action"));
+		assertEquals(3, rootAsMap.get("tid"));
+		assertEquals("server error", rootAsMap.get("message"));
+		assertEquals("java.lang.NullPointerException: a null pointer", rootAsMap.get("where"));
+		@SuppressWarnings("unchecked")
+		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
+		assertEquals(false, result.get("success"));
 	}
 }

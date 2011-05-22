@@ -40,7 +40,7 @@ public class MyExceptionHandler implements HandlerExceptionResolver {
 		
 		ExtDirectResponse response = builder.build();
 		response.setType("exception");
-		response.setMessage("Server Error");
+		response.setMessage("server error");
 		response.setWhere(ex.toString());
 		try {
 			res.getOutputStream().print(mapper.writeValueAsString(response));
