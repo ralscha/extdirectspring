@@ -266,10 +266,14 @@ public class RouterController implements InitializingBean {
 					directStoreModifyRecords = convertObjectEntriesToType((List<Object>)data.get(0), directStoreEntryClass);
 				} else {
 					Map<String, Object> jsonData = (Map<String, Object>) data.get(0);
-	
-					ArrayList<Object> records = (ArrayList<Object>) jsonData.get("records");
-					if (records != null) {
-						directStoreModifyRecords = convertObjectEntriesToType(records, directStoreEntryClass);
+					Object records = jsonData.get("records");
+					if (records != null) {						
+						if (records instanceof List) {
+							directStoreModifyRecords = convertObjectEntriesToType((List<Object>)records, directStoreEntryClass);
+						} else {
+							directStoreModifyRecords = new ArrayList<Object>();
+							directStoreModifyRecords.add(jsonHandler.convertValue(records, directStoreEntryClass));	
+						}
 						remainingParameters = new HashMap<String, Object>(jsonData);
 						remainingParameters.remove("records");
 					} else {
