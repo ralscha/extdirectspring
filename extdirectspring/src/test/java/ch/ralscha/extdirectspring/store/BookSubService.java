@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 
 @Service
 public class BookSubService extends BaseService<Book> {
@@ -32,5 +34,12 @@ public class BookSubService extends BaseService<Book> {
 		books.add(new Book(1, "Ext JS in Action", "1935182110"));
 		books.add(new Book(2, "Learning Ext JS 3.2", "1849511209"));
 		return books;
+	}
+	
+	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
+	public ExtDirectStoreResponse<Book> readWithPaging(ExtDirectStoreReadRequest request) {
+		ExtDirectStoreResponse<Book> response = new ExtDirectStoreResponse<Book>(read());
+		response.setTotal(request.getPage() + request.getLimit() + request.getStart());
+		return response;
 	}
 }

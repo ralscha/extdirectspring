@@ -20,10 +20,5 @@
   <mvc:annotation-driven />
 	
   <aop:aspectj-autoproxy />
-	
-  <bean id="extDirectSpringConfiguration" 
-	    class="ch.ralscha.extdirectspring.controller.Configuration" 
-	    p:alwaysWrapStoreReadResponse="true"/>	
-	
   
 </beans>

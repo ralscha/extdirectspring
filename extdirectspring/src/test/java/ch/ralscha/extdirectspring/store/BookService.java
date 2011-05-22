@@ -22,15 +22,11 @@ import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 
 @Service
 public class BookService {
-	
-	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
-	public List<Book> create(List<Book> inserts) {
-		inserts.iterator().next().setId(3);
-		return inserts;
-	}
 	
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public List<Book> read() {
@@ -40,13 +36,51 @@ public class BookService {
 		return books;
 	}
 	
-	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
-	public List<Book> update(List<Book> updates) {
-		return updates;
+	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
+	public ExtDirectStoreResponse<Book> readWithPaging(ExtDirectStoreReadRequest request) {
+		ExtDirectStoreResponse<Book> response = new ExtDirectStoreResponse<Book>(read());
+		response.setTotal(request.getPage() + request.getLimit() + request.getStart());
+		return response;
 	}
 	
 	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
-	public List<Integer> delete(List<Integer> deletes) {		
-		return deletes;
+	public ExtDirectStoreResponse<Book> update3(List<Book> updates) {
+		return new ExtDirectStoreResponse<Book>(update4(updates));
 	}
+	
+	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
+	public List<Book> update4(List<Book> updates) {
+		for (Book book : updates) {
+			book.setIsbn("UPDATED_"+book.getIsbn());
+		}
+		return updates;
+	}	
+	
+	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
+	public ExtDirectStoreResponse<Integer> delete3(List<Integer> deletes) {		
+		return new ExtDirectStoreResponse<Integer>(deletes);
+	}
+	
+	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
+	public List<Book> delete4(List<Book> deletes) {		
+		for (Book book : deletes) {
+			book.setTitle(null);
+			book.setIsbn("DELETED_"+book.getIsbn());
+		}
+		return deletes;
+	}	
+	
+	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
+	public ExtDirectStoreResponse<Book> create3(List<Book> inserts) {
+		return new ExtDirectStoreResponse<Book>(create4(inserts));
+	}
+	
+	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
+	public List<Book> create4(List<Book> inserts) {
+		int id = 3;
+		for (Book book : inserts) {
+			book.setId(id++);
+		}
+		return inserts;
+	}	
 }
