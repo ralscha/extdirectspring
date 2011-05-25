@@ -58,6 +58,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
+import ch.ralscha.extdirectspring.bean.GroupInfo;
 import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.bean.SortInfo;
 import ch.ralscha.extdirectspring.filter.Filter;
@@ -399,10 +400,21 @@ public class RouterController implements InitializingBean {
 				List<Map<String, Object>> rawSorters = (List<Map<String, Object>>)entry.getValue();
 				
 				for (Map<String, Object> aRawSorter : rawSorters) {
-					sorters.add(SortInfo.createSortInfo(aRawSorter));
+					sorters.add(SortInfo.create(aRawSorter));
 				}
 				
 				to.setSorters(sorters);
+				foundParameters.add(entry.getKey());
+			} else if (entry.getKey().equals("group") && entry.getValue() != null && entry.getValue() instanceof List) {
+				List<GroupInfo> groups = new ArrayList<GroupInfo>();
+				@SuppressWarnings("unchecked")
+				List<Map<String, Object>> rawGroups = (List<Map<String, Object>>)entry.getValue();
+				
+				for (Map<String, Object> aRawGroupInfo : rawGroups) {
+					groups.add(GroupInfo.create(aRawGroupInfo));
+				}
+				
+				to.setGroups(groups);
 				foundParameters.add(entry.getKey());
 			} else {
 
@@ -437,6 +449,12 @@ public class RouterController implements InitializingBean {
 			List<SortInfo> sorters = new ArrayList<SortInfo>();
 			sorters.add(new SortInfo(to.getSort(), SortDirection.fromString(to.getDir())));
 			to.setSorters(sorters);
+		}
+		
+		if (to.getGroupBy() != null && to.getGroupDir() != null) {
+			List<GroupInfo> groups = new ArrayList<GroupInfo>();
+			groups.add(new GroupInfo(to.getGroupBy(), SortDirection.fromString(to.getGroupDir())));
+			to.setGroups(groups);
 		}
 		
 		Map<String, Object> remainingParameters = new HashMap<String, Object>();

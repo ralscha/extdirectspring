@@ -40,11 +40,13 @@ public class ExtDirectStoreReadRequest {
 	private String groupBy;
 	private String groupDir;
 	private List<SortInfo> sorters;
+	private List<GroupInfo> groups;
 	private List<Filter> filters;
 
 	public ExtDirectStoreReadRequest() {
 		this.filters = Collections.emptyList();
 		this.sorters = Collections.emptyList();
+		this.groups = Collections.emptyList();
 	}
 
 	public String getQuery() {
@@ -147,11 +149,19 @@ public class ExtDirectStoreReadRequest {
 		this.sorters = sorters;
 	}
 
+	public List<GroupInfo> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(List<GroupInfo> groups) {
+		this.groups = groups;
+	}
+
 	@Override
 	public String toString() {
 		return "ExtDirectStoreReadRequest [query=" + query + ", limit=" + limit + ", start=" + start + ", page=" + page
 				+ ", dir=" + dir + ", sort=" + sort + ", groupBy=" + groupBy + ", groupDir=" + groupDir + ", sorters="
-				+ sorters + ", filters=" + filters + "]";
-	}	
+				+ sorters + ", groups=" + groups + ", filters=" + filters + "]";
+	}
 
 }
