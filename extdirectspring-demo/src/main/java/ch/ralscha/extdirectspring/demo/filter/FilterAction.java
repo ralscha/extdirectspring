@@ -46,7 +46,7 @@ public class FilterAction {
 
 		int totalSize = companies.size();
 
-		Ordering<Company> ordering = PropertyOrderingFactory.INSTANCE.createOrdering(request.getSorters());
+		Ordering<Company> ordering = PropertyOrderingFactory.INSTANCE.createOrderingFromSorters(request.getSorters());
 		if (ordering != null) {
 			companies = ordering.sortedCopy(companies);
 		}

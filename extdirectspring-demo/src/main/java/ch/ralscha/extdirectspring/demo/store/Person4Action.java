@@ -50,7 +50,7 @@ public class Person4Action {
 		List<Person> persons = dataBean.findPersons(request.getQuery());
 		int totalSize = persons.size();
 
-		Ordering<Person> ordering = PropertyOrderingFactory.INSTANCE.createOrdering(request.getSorters());
+		Ordering<Person> ordering = PropertyOrderingFactory.INSTANCE.createOrderingFromSorters(request.getSorters());
 		if (ordering != null) {
 			persons = ordering.sortedCopy(persons);
 		}

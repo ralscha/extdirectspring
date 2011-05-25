@@ -20,6 +20,7 @@ import java.util.Collection;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import ch.ralscha.extdirectspring.bean.GroupInfo;
 import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.bean.SortInfo;
 
@@ -42,7 +43,7 @@ public enum PropertyOrderingFactory {
 	}
 	
 	
-	public <T> Ordering<T> createOrdering(Collection<SortInfo> sortInfos) {
+	public <T> Ordering<T> createOrderingFromSorters(Collection<SortInfo> sortInfos) {
 		Ordering<T> ordering = null;
 		
 		if (sortInfos != null) {
@@ -59,5 +60,21 @@ public enum PropertyOrderingFactory {
 		return ordering;
 	}
 
+	public <T> Ordering<T> createOrderingFromGroups(Collection<GroupInfo> groupInfos) {
+		Ordering<T> ordering = null;
+		
+		if (groupInfos != null) {
+			for (GroupInfo group : groupInfos) {
+				Ordering<T> propertyOrdering = createOrdering(group.getProperty(), group.getDirection());
+				if (ordering == null) {
+					ordering = propertyOrdering;
+				} else {
+					ordering = ordering.compound(propertyOrdering);
+				}			
+			}	
+		}
+		
+		return ordering;
+	}
 	
 }
