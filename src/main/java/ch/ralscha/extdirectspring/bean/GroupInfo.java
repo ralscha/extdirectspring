@@ -17,11 +17,11 @@ package ch.ralscha.extdirectspring.bean;
 
 import java.util.Map;
 
-public class SortInfo {
+public class GroupInfo {
 	private String property;
 	private SortDirection direction;
 
-	public SortInfo(String property, SortDirection direction) {
+	public GroupInfo(String property, SortDirection direction) {
 		this.property = property;
 		this.direction = direction;
 	}
@@ -42,18 +42,18 @@ public class SortInfo {
 		this.direction = direction;
 	}
 
-	public static SortInfo create(final Map<String, Object> jsonData) {
+	public static GroupInfo create(final Map<String, Object> jsonData) {
 		String property = (String) jsonData.get("property");
 		String direction = (String) jsonData.get("direction");
 
-		SortInfo sortInfo = new SortInfo(property, SortDirection.fromString(direction));
+		GroupInfo sortInfo = new GroupInfo(property, SortDirection.fromString(direction));
 		
 		return sortInfo;
 	}
 
 	@Override
 	public String toString() {
-		return "SortInfo [property=" + property + ", direction=" + direction + "]";
+		return "GroupInfo [property=" + property + ", direction=" + direction + "]";
 	}
 	
 }
