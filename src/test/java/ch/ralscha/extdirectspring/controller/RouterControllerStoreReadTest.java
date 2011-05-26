@@ -40,6 +40,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
+import ch.ralscha.extdirectspring.bean.GroupInfo;
 import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.bean.SortInfo;
 import ch.ralscha.extdirectspring.provider.Row;
@@ -267,6 +268,43 @@ public class RouterControllerStoreReadTest {
 	}
 
 	@Test
+	public void testWithExtDirectStoreReadRequestMultipeGroups() {
+		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
+		storeRead.setQuery("");		
+		List<GroupInfo> groups = new ArrayList<GroupInfo>();
+		groups.add(new GroupInfo("id", SortDirection.ASCENDING));
+		storeRead.setGroups(groups);		
+		storeRead.setLimit(10);
+		storeRead.setStart(10);
+		ExtDirectResponse resp = executeWithExtDirectStoreReadRequest(storeRead);
+		ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
+		assertEquals(Integer.valueOf(100), storeResponse.getTotal());
+		assertEquals(10, storeResponse.getRecords().size());
+		int id = 10;
+		for (Row row : storeResponse.getRecords()) {
+			assertEquals(id, row.getId());
+			id++;
+		}
+
+		storeRead = new ExtDirectStoreReadRequest();
+		storeRead.setQuery("");
+		groups = new ArrayList<GroupInfo>();
+		groups.add(new GroupInfo("id", SortDirection.DESCENDING));
+		storeRead.setGroups(groups);
+		storeRead.setLimit(10);
+		storeRead.setStart(20);
+		resp = executeWithExtDirectStoreReadRequest(storeRead);
+		storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
+		assertEquals(Integer.valueOf(100), storeResponse.getTotal());
+		assertEquals(10, storeResponse.getRecords().size());
+		id = 79;
+		for (Row row : storeResponse.getRecords()) {
+			assertEquals(id, row.getId());
+			id--;
+		}	
+	}
+	
+	@Test
 	public void testWithExtDirectStoreReadRequestMultipleSorters() {
 		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
 		storeRead.setQuery("");
@@ -389,6 +427,19 @@ public class RouterControllerStoreReadTest {
 			}
 			data.remove("sorters");
 			data.put("sort", sorters);
+		}
+		
+		List<Map<String,Object>> groups = (List<Map<String,Object>>)data.get("groups");
+		if (groups != null && !groups.isEmpty()) {
+			for (Map<String, Object> map : groups) {
+				if ("DESCENDING".equals(map.get("direction"))) {
+					map.put("direction", "DESC");
+				} else {
+					map.put("direction", "ASC");
+				}
+			}
+			data.remove("groups");
+			data.put("group", groups);
 		}
 
 		

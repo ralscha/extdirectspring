@@ -41,6 +41,7 @@ import ch.ralscha.extdirectspring.bean.DataType;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 import ch.ralscha.extdirectspring.bean.Field;
+import ch.ralscha.extdirectspring.bean.GroupInfo;
 import ch.ralscha.extdirectspring.bean.MetaData;
 import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.bean.SortInfo;
@@ -132,22 +133,6 @@ public class RemoteProviderStoreRead {
 
 			totalSize = rows.size();
 
-			if (StringUtils.hasText(request.getSort())) {
-				Assert.assertEquals("id", request.getSort());
-
-				if (request.isAscendingSort()) {
-					Collections.sort(rows);
-				} else if (request.isDescendingSort()) {
-					Collections.sort(rows, new Comparator<Row>() {
-
-						//@Override
-						public int compare(Row o1, Row o2) {
-							return o2.getId() - o1.getId();
-						}
-					});
-				}
-			}
-			
 			Collection<SortInfo> sorters = request.getSorters();
 			
 			if (!sorters.isEmpty()) {
@@ -165,9 +150,41 @@ public class RemoteProviderStoreRead {
 						}
 					});
 				}
-			}
+			} else if (StringUtils.hasText(request.getSort())) {
+				Assert.assertEquals("id", request.getSort());
 
-			if (StringUtils.hasText(request.getGroupBy())) {
+				if (request.isAscendingSort()) {
+					Collections.sort(rows);
+				} else if (request.isDescendingSort()) {
+					Collections.sort(rows, new Comparator<Row>() {
+
+						//@Override
+						public int compare(Row o1, Row o2) {
+							return o2.getId() - o1.getId();
+						}
+					});
+				}
+			}
+			
+
+			Collection<GroupInfo> groups = request.getGroups();
+			if (!groups.isEmpty()) {
+				GroupInfo groupInfo = groups.iterator().next();
+
+				Assert.assertEquals("id", groupInfo.getProperty());
+				if (groupInfo.getDirection() == SortDirection.ASCENDING) {
+					Collections.sort(rows);
+				} else {
+					Collections.sort(rows, new Comparator<Row>() {
+
+						//@Override
+						public int compare(Row o1, Row o2) {
+							return o2.getId() - o1.getId();
+						}
+					});
+				}
+				 
+			} else if (StringUtils.hasText(request.getGroupBy())) {
 				Assert.assertEquals("id", request.getGroupBy());
 
 				if (request.isAscendingGroupSort()) {
@@ -182,7 +199,7 @@ public class RemoteProviderStoreRead {
 					});
 				}
 			}
-
+			
 			if (request.getStart() != null && request.getLimit() != null) {
 				rows = rows.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
 			} else {
