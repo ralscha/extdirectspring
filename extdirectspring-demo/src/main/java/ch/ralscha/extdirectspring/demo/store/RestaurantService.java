@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
+import ch.ralscha.extdirectspring.bean.GroupInfo;
+import ch.ralscha.extdirectspring.bean.SortInfo;
 import ch.ralscha.extdirectspring.demo.util.PropertyOrderingFactory;
 
 import com.google.common.collect.ImmutableList;
@@ -96,6 +98,17 @@ public class RestaurantService {
 	public List<Restaurant> getRestaurants(ExtDirectStoreReadRequest request) {
 		
 		if (!request.getGroups().isEmpty()) {
+			
+			GroupInfo groupInfo = request.getGroups().iterator().next();
+			
+			if (!request.getSorters().isEmpty()) {
+				for (SortInfo sortInfo : request.getSorters()) {
+					if (groupInfo.getProperty().equals(sortInfo.getProperty())) {
+						groupInfo.setDirection(sortInfo.getDirection());
+					}
+				}
+			}
+			
 			Ordering<Restaurant> ordering = PropertyOrderingFactory.INSTANCE.createOrderingFromGroups(request.getGroups());
 			Ordering<Restaurant> sortOrdering = PropertyOrderingFactory.INSTANCE.createOrderingFromSorters(request.getSorters());
 			
@@ -104,7 +117,6 @@ public class RestaurantService {
 			}
 			
 			if (ordering != null) {
-				System.out.println("GROUP SORT: " + ordering);
 				return ordering.sortedCopy(restaurants);
 			}
 		}
@@ -112,7 +124,6 @@ public class RestaurantService {
 		if (!request.getSorters().isEmpty()) {
 			Ordering<Restaurant> ordering = PropertyOrderingFactory.INSTANCE.createOrderingFromSorters(request.getSorters());
 			if (ordering != null) {
-				System.out.println("SORTER SORT: " + ordering);
 				return ordering.sortedCopy(restaurants);
 			}
 		}
