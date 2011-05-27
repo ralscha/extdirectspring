@@ -56,6 +56,7 @@ public class MethodInfo {
 
 	private ExtDirectMethodType type;
 	private Class<?> collectionType;
+	private boolean synchronizeOnSession;
 
 	public MethodInfo(final Class<?> clazz, final Method method) {
 
@@ -91,7 +92,8 @@ public class MethodInfo {
 		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 		if (extDirectMethodAnnotation != null) {
 			this.type = extDirectMethodAnnotation.value();
-		}
+			this.synchronizeOnSession = extDirectMethodAnnotation.synchronizeOnSession();
+		} 
 
 		this.parameters = buildParameterList(clazz, method);
 
@@ -179,6 +181,10 @@ public class MethodInfo {
 
 	public boolean isType(final ExtDirectMethodType methodType) {
 		return this.type == methodType;
+	}
+	
+	public boolean isSynchronizeOnSession() {
+		return synchronizeOnSession;
 	}
 
 	private static Class<?> getCollectionParameterType(Class<?> clazz, final Method method, final int paramIndex) {
