@@ -29,6 +29,12 @@ import org.springframework.util.StringUtils;
  * 
  * If sendStacktrace is true, send the full stacktrace in the json field 'where'.
  * 
+ * If alwaysWrapStoreResponse is true, always wrap a response of a STORE_READ and STORE_MODIFY response 
+ * in a ExtDirectStoreResponse object
+ * 
+ * If synchronizeOnSession is true, execution of the methods is synchronized on the session,
+ * to serialize parallel invocations from the same client.
+ * 
  * @author Ralph Schaer
  */
 public class Configuration {
@@ -36,7 +42,8 @@ public class Configuration {
 	private boolean sendExceptionMessage = false;
 	private boolean sendStacktrace = false;
 	private Map<Class<?>, String> exceptionToMessage;
-	private boolean alwaysWrapStoreReadResponse = false;
+	private boolean alwaysWrapStoreResponse = false;
+	private boolean synchronizeOnSession = false;
 
 	public String getDefaultExceptionMessage() {
 		return defaultExceptionMessage;
@@ -70,12 +77,20 @@ public class Configuration {
 		this.exceptionToMessage = exceptionToMessage;
 	}
 
-	public boolean isAlwaysWrapStoreReadResponse() {
-		return alwaysWrapStoreReadResponse;
+	public boolean isAlwaysWrapStoreResponse() {
+		return alwaysWrapStoreResponse;
 	}
 
-	public void setAlwaysWrapStoreReadResponse(boolean alwaysWrapStoreReadResponse) {
-		this.alwaysWrapStoreReadResponse = alwaysWrapStoreReadResponse;
+	public void setAlwaysWrapStoreResponse(boolean alwaysWrapStoreResponse) {
+		this.alwaysWrapStoreResponse = alwaysWrapStoreResponse;
+	}
+
+	public boolean isSynchronizeOnSession() {
+		return synchronizeOnSession;
+	}
+
+	public void setSynchronizeOnSession(boolean synchronizeOnSession) {
+		this.synchronizeOnSession = synchronizeOnSession;
 	}
 
 	public String getMessage(Throwable exception) {
@@ -85,7 +100,7 @@ public class Configuration {
 			if (StringUtils.hasText(message)) {
 				return message;
 			}
-			
+
 			//map entry with a null value
 			if (getExceptionToMessage().containsKey(exception.getClass())) {
 				return exception.getMessage();

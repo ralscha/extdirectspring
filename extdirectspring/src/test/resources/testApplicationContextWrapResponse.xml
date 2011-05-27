@@ -19,7 +19,7 @@
   <mvc:annotation-driven />
   <bean id="extDirectSpringConfiguration" 
 	    class="ch.ralscha.extdirectspring.controller.Configuration" 
-	    p:alwaysWrapStoreReadResponse="true"/>
+	    p:alwaysWrapStoreResponse="true"/>
 	    
   <bean abstract="true" class="ch.ralscha.extdirectspring.util.TestInterface" />
   
