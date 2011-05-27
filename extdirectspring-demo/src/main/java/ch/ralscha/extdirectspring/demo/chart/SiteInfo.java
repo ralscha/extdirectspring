@@ -15,53 +15,38 @@
  */
 package ch.ralscha.extdirectspring.demo.chart;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Random;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.joda.time.LocalDate;
 
 public class SiteInfo {
-	
-	private static final Random rnd = new Random();
-	
-	private long dateInMillis;
+
+	private LocalDate date;
 	private int visits;
 	private int views;
-	private int users;
-	
-	
-	public SiteInfo(long dateInMillis) {
-		Calendar c = new GregorianCalendar();
-		c.setTimeInMillis(dateInMillis);
-		
-		this.dateInMillis = dateInMillis;
-		this.visits = rnd.nextInt();
-		this.views = rnd.nextInt();
-		this.users = rnd.nextInt();
+	private int veins;
+
+	public SiteInfo(LocalDate date, int visits, int views, int veins) {
+		this.date = date;
+		this.visits = visits;
+		this.views = views;
+		this.veins = veins;
 	}
 
-
-	public static Random getRnd() {
-		return rnd;
+	@JsonSerialize(using = MyLocalDateSerializer.class)
+	public LocalDate getDate() {
+		return date;
 	}
-
-
-	public long getDateInMillis() {
-		return dateInMillis;
-	}
-
 
 	public int getVisits() {
 		return visits;
 	}
 
-
 	public int getViews() {
 		return views;
 	}
 
-
-	public int getUsers() {
-		return users;
+	public int getVeins() {
+		return veins;
 	}
-	
+
 }

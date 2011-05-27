@@ -16,10 +16,13 @@
 package ch.ralscha.extdirectspring.demo.chart;
 
 import java.text.DateFormatSymbols;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
+import javax.servlet.http.HttpSession;
+
+import org.joda.time.LocalDate;
 import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
@@ -30,6 +33,8 @@ import com.google.common.collect.Lists;
 @Service
 public class ChartService {
 
+	private static final Random rnd = new Random();
+	
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "area")
 	public List<AreaData> getAreaData() {
 
@@ -46,14 +51,30 @@ public class ChartService {
 	
 	
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "live")
-	public List<SiteInfo> getSiteInfo() {
+	public List<SiteInfo> getSiteInfo(HttpSession session) {
 		
-		List<SiteInfo> siteInfo = Lists.newArrayList();
-		
-		Calendar today = Calendar.getInstance();
-		siteInfo.add(new SiteInfo(today.getTimeInMillis()));
-		
-		return siteInfo;
-		
+		@SuppressWarnings("unchecked")
+		List<SiteInfo> siteInfo = (List<SiteInfo>)session.getAttribute("siteInfos");
+		if (siteInfo == null) {
+			siteInfo = Lists.newArrayList();
+			session.setAttribute("siteInfos", siteInfo);
+			
+			LocalDate ld = new LocalDate(2011, 1, 1);
+			siteInfo.add(new SiteInfo(ld, rnd.nextInt(100)+1, rnd.nextInt(100)+1, rnd.nextInt(100)+1));			
+		} else {
+			SiteInfo lastSiteInfo = siteInfo.get(siteInfo.size()-1);
+			
+			LocalDate nextDate = lastSiteInfo.getDate().plusDays(1);
+			int nextVisits = Math.min(100, Math.max((int)(lastSiteInfo.getVisits() + (rnd.nextDouble() - 0.5) * 20), 0));
+			int nextViews = Math.min(100, Math.max((int)(lastSiteInfo.getViews() + (rnd.nextDouble() - 0.5) * 10), 0));
+			int nextVeins = Math.min(100, Math.max((int)(lastSiteInfo.getVeins() + (rnd.nextDouble() - 0.5) * 20), 0));
+			siteInfo.add(new SiteInfo(nextDate, nextVisits, nextViews, nextVeins));
+
+			if (siteInfo.size() > 7) {
+				siteInfo.remove(0);
+			}
+		}
+
+		return siteInfo;		
 	}
 }
