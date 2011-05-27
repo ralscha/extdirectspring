@@ -50,7 +50,7 @@ public class ChartService {
 	}
 	
 	
-	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "live")
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "live", synchronizeOnSession=true)
 	public List<SiteInfo> getSiteInfo(HttpSession session) {
 		
 		@SuppressWarnings("unchecked")
