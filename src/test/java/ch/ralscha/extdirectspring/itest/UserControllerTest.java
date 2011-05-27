@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotNull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.http.HttpEntity;
@@ -52,7 +53,7 @@ public class UserControllerTest extends JettyTest {
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testPostWithErrors() throws ClientProtocolException, IOException {
-
+		Locale.setDefault(Locale.ENGLISH);
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "2"));
 		formparams.add(new BasicNameValuePair("extAction", "userController"));
