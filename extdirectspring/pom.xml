@@ -9,7 +9,7 @@
 
 	<groupId>ch.ralscha</groupId>
 	<artifactId>extdirectspring</artifactId>
-	<version>1.0.10-SNAPSHOT</version>
+	<version>1.0.9-SNAPSHOT</version>
 
 	<inceptionYear>2010</inceptionYear>
 
@@ -210,14 +210,14 @@
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
-			<version>7.4.0.v20110414</version>
+			<version>7.4.2.v20110526</version>
 			<scope>test</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-webapp</artifactId>
-			<version>7.4.1.v20110513</version>
+			<version>7.4.2.v20110526</version>
 			<scope>test</scope>
 		</dependency>		
 
