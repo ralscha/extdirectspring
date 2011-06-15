@@ -38,10 +38,10 @@
 	</scm>
 
 	<properties>
-		<spring.version>3.1.0.M1</spring.version>
+		<spring.version>3.1.0.M2</spring.version>
 		<slf4j.version>1.6.1</slf4j.version>
-		<logback.version>0.9.28</logback.version>
-		<hibernatevalidator.version>4.2.0.Beta2</hibernatevalidator.version>
+		<logback.version>0.9.29</logback.version>
+		<hibernatevalidator.version>4.2.0.CR1</hibernatevalidator.version>
 		<jetty.version>7.4.2.v20110526</jetty.version>
 		<eds.version>1.0.10-SNAPSHOT</eds.version>
 
@@ -279,7 +279,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.7.2</version>
+				<version>2.8.1</version>
 			</plugin>
 
 			<plugin>
@@ -291,7 +291,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.5</version>
+				<version>2.6</version>
 			</plugin>
 
 			<plugin>
