@@ -16,6 +16,7 @@
 package ch.ralscha.extdirectspring.filter;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.core.convert.ConversionService;
@@ -34,6 +35,8 @@ public class Filter {
 		return field;
 	}
 
+	
+	@SuppressWarnings("unchecked")
 	public static Filter createFilter(final Map<String, Object> jsonData, ConversionService conversionService) {
 		String field = (String) jsonData.get("field");
 		String type = (String) jsonData.get("type");
@@ -50,9 +53,13 @@ public class Filter {
 			String value = (String) jsonData.get("value");
 			return new DateFilter(field, value, Comparison.fromString(comparison));
 		} else if (type.equals("list")) {
-			String value = (String) jsonData.get("value");
-			String[] values = value.split(",");
-			return new ListFilter(field, Arrays.asList(values));
+			Object value = jsonData.get("value");
+			if (value instanceof String) {
+				String[] values = ((String)value).split(",");
+				return new ListFilter(field, Arrays.asList(values));
+			}			
+			return new ListFilter(field, (List<String>)value);
+			
 		} else if (type.equals("boolean")) {
 			boolean value = (Boolean) jsonData.get("value");
 			return new BooleanFilter(field, value);
