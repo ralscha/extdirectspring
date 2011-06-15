@@ -38,7 +38,7 @@
 	</scm>
 
 	<properties>
-		<spring.version>3.1.0.M2</spring.version>
+		<spring.version>3.1.0.M1</spring.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<logback.version>0.9.29</logback.version>
 		<hibernatevalidator.version>4.2.0.CR1</hibernatevalidator.version>
