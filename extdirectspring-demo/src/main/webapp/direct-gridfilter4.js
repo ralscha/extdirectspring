@@ -1,7 +1,7 @@
 Ext.Loader.setConfig({
 	enabled : true
 });
-Ext.Loader.setPath('Ext.ux', 'http://www.ralscha.ch/ext-4.0.2/examples/ux');
+Ext.Loader.setPath('Ext.ux', 'http://www.ralscha.ch/ext-4.0.2a/examples/ux');
 Ext.require([ 'Ext.grid.*', 
               'Ext.data.*', 
               'Ext.ux.grid.FiltersFeature', 
