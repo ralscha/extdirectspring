@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -31,6 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.junit.Assert;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -107,6 +110,14 @@ public class RemoteProviderStoreRead {
 		}
 		return createRows();
 	}
+	
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
+	public ExtDirectStoreResponse<Row> method8(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
+			HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
+		Assert.assertNotNull(endDate);
+		Assert.assertNotNull(servletRequest);
+		return createExtDirectStoreResponse(request);
+	}	
 
 	private ExtDirectStoreResponse<Row> createExtDirectStoreResponse(ExtDirectStoreReadRequest request) {
 		List<Row> rows = createRows();

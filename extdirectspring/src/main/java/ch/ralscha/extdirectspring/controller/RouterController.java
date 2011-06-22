@@ -43,6 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -367,8 +368,8 @@ public class RouterController implements InitializingBean {
 		if (jsonValue != null) {
 			if (methodParameter.getType().equals(jsonValue.getClass())) {
 				return jsonValue;
-			} else if (conversionService.canConvert(jsonValue.getClass(), methodParameter.getType())) {
-				return conversionService.convert(jsonValue, methodParameter.getType());
+			} else if (conversionService.canConvert(TypeDescriptor.forObject(jsonValue), methodParameter.getTypeDescriptor())) {
+				return conversionService.convert(jsonValue, TypeDescriptor.forObject(jsonValue),  methodParameter.getTypeDescriptor());
 			} else {
 				return jsonHandler.convertValue(jsonValue, methodParameter.getType());
 			}
