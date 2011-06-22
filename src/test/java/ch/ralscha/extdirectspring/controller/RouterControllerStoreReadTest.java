@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -571,6 +573,30 @@ public class RouterControllerStoreReadTest {
 		assertEquals(100, rows.size());
 		
 	}
+	
+	@Test
+	public void testWithAdditionalParametersAndConversion() {
+		DateTime today = new DateTime();
+		Map<String, Object> readRequest = new HashMap<String, Object>();
+		readRequest.put("endDate", ISODateTimeFormat.dateTime().print(today));
+		
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method8", 1, readRequest);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		assertEquals(1, responses.size());
+		ExtDirectResponse resp = responses.get(0);
+
+		assertEquals("remoteProviderStoreRead", resp.getAction());
+		assertEquals("method8", resp.getMethod());
+		assertEquals("rpc", resp.getType());
+		assertEquals(1, resp.getTid());
+		assertNull(resp.getMessage());
+		assertNull(resp.getWhere());
+		assertNotNull(resp.getResult());
+		ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
+		assertEquals(50, storeResponse.getRecords().size());
+		
+	}	
 
 	@Test
 	public void testMetadata() {

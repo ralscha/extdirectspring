@@ -22,6 +22,7 @@ import static junit.framework.Assert.assertTrue;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
@@ -29,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
@@ -156,5 +159,10 @@ public class RemoteProviderSimple {
 		assertEquals(2, aByte);
 		return String.format("method13() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, status, aInt, aLong, aDouble, aFloat, aShort, aByte);
 	
+	}
+	
+	@ExtDirectMethod
+	public Date method14(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate) {
+		return endDate;
 	}
 }

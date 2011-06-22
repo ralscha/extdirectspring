@@ -27,6 +27,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -370,6 +373,26 @@ public class RouterControllerSimpleTest {
 		assertEquals("method13() called-true-c-ACTIVE-14-21-3.14-10.01-1-2", resp.getResult());		
 	}
 
+	@Test
+	public void testWithConversion() {
+		
+		DateTime today = new DateTime();
+		
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method14", 1, ISODateTimeFormat.dateTime().print(today));
+
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		assertEquals(1, responses.size());
+		ExtDirectResponse resp = responses.get(0);
+		assertEquals("remoteProviderSimple", resp.getAction());
+		assertEquals("method14", resp.getMethod());
+		assertEquals(1, resp.getTid());
+		assertEquals("rpc", resp.getType());
+		assertNull(resp.getWhere());
+		assertNull(resp.getMessage());
+		assertEquals(today.toDate(), resp.getResult());		
+	}
+	
 	
 	@Test
 	public void testTypeConversionWithObjects() {
