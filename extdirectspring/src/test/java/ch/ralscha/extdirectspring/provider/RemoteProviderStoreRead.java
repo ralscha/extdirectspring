@@ -16,6 +16,8 @@
 package ch.ralscha.extdirectspring.provider;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -31,7 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.junit.Assert;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Service;
@@ -72,10 +73,10 @@ public class RemoteProviderStoreRead {
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public List<Row> method3(HttpServletResponse response, HttpServletRequest request, HttpSession session,
 			Locale locale) {
-		Assert.assertNotNull(response);
-		Assert.assertNotNull(request);
-		Assert.assertNotNull(session);
-		Assert.assertEquals(Locale.ENGLISH, locale);
+		assertNotNull(response);
+		assertNotNull(request);
+		assertNotNull(session);
+		assertEquals(Locale.ENGLISH, locale);
 
 		return createRows();
 	}
@@ -88,25 +89,25 @@ public class RemoteProviderStoreRead {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group3")
 	public ExtDirectStoreResponse<Row> method5(ExtDirectStoreReadRequest request, Locale locale,
 			@RequestParam(value = "id") int id) {
-		Assert.assertEquals(10, id);
-		Assert.assertEquals(Locale.ENGLISH, locale);
+		assertEquals(10, id);
+		assertEquals(Locale.ENGLISH, locale);
 		return createExtDirectStoreResponse(request);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
 	public ExtDirectStoreResponse<Row> method6(@RequestParam(value = "id", defaultValue = "1") int id,
 			HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
-		Assert.assertEquals(1, id);
-		Assert.assertNotNull(servletRequest);
+		assertEquals(1, id);
+		assertNotNull(servletRequest);
 		return createExtDirectStoreResponse(request);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
 	public List<Row> method7(@RequestParam(value = "id", required = false) Integer id) {
 		if (id == null) {
-			Assert.assertNull(id);
+			assertNull(id);
 		} else {
-			Assert.assertEquals(Integer.valueOf(11), id);
+			assertEquals(Integer.valueOf(11), id);
 		}
 		return createRows();
 	}
@@ -114,8 +115,8 @@ public class RemoteProviderStoreRead {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
 	public ExtDirectStoreResponse<Row> method8(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
 			HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
-		Assert.assertNotNull(endDate);
-		Assert.assertNotNull(servletRequest);
+		assertNotNull(endDate);
+		assertNotNull(servletRequest);
 		return createExtDirectStoreResponse(request);
 	}	
 
@@ -148,7 +149,7 @@ public class RemoteProviderStoreRead {
 			
 			if (!sorters.isEmpty()) {
 				SortInfo sortInfo = sorters.iterator().next();
-				Assert.assertEquals("id", sortInfo.getProperty());
+				assertEquals("id", sortInfo.getProperty());
 				
 				if (sortInfo.getDirection() == SortDirection.ASCENDING) {
 					Collections.sort(rows);
@@ -162,7 +163,7 @@ public class RemoteProviderStoreRead {
 					});
 				}
 			} else if (StringUtils.hasText(request.getSort())) {
-				Assert.assertEquals("id", request.getSort());
+				assertEquals("id", request.getSort());
 
 				if (request.isAscendingSort()) {
 					Collections.sort(rows);
@@ -182,7 +183,7 @@ public class RemoteProviderStoreRead {
 			if (!groups.isEmpty()) {
 				GroupInfo groupInfo = groups.iterator().next();
 
-				Assert.assertEquals("id", groupInfo.getProperty());
+				assertEquals("id", groupInfo.getProperty());
 				if (groupInfo.getDirection() == SortDirection.ASCENDING) {
 					Collections.sort(rows);
 				} else {
@@ -196,7 +197,7 @@ public class RemoteProviderStoreRead {
 				}
 				 
 			} else if (StringUtils.hasText(request.getGroupBy())) {
-				Assert.assertEquals("id", request.getGroupBy());
+				assertEquals("id", request.getGroupBy());
 
 				if (request.isAscendingGroupSort()) {
 					Collections.sort(rows);

@@ -283,7 +283,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", "method11", 0, false);
 		remotingApi.addAction("remoteProviderSimple", "method12", 1, false);
 		remotingApi.addAction("remoteProviderSimple", "method13", 9, false);
-		remotingApi.addAction("remoteProviderSimple", "method14", 1, false);
+		remotingApi.addAction("remoteProviderSimple", "method14", 4, false);
 
 		remotingApi.addAction("remoteProviderStoreRead", "method1", 1, false);
 		remotingApi.addAction("remoteProviderStoreRead", "method2", 1, false);
@@ -333,6 +333,8 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimpleNamed", "method10", Arrays.asList("flag", "aCharacter", "workflow",
 				"aInt", "aLong", "aDouble", "aFloat", "aShort", "aByte"));
 
+		remotingApi.addAction("remoteProviderSimpleNamed", "method11", Arrays.asList("endDate", "normalParameter", "aDate", "percent"));
+		
 		remotingApi.addAction("remoteProviderSimpleNamed", "methodRP1", Arrays.asList("lastName", "theAge", "active"));
 		remotingApi.addAction("remoteProviderSimpleNamed", "methodRP2", Arrays.asList("lastName", "theAge", "active"));
 		remotingApi.addAction("remoteProviderSimpleNamed", "methodRP3", Arrays.asList("lastName", "theAge", "active"));

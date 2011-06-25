@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -404,6 +406,39 @@ public class RouterControllerSimpleNamedTest {
 
 		assertEquals("Row [id=104, name=myRow, admin=true, salary=100.45]", resp.getResult());
 	}
+	
+	@Test
+	public void testWithConversion() {
+		
+		DateTime today = new DateTime();
+		
+		Map<String,Object> params = new LinkedHashMap<String,Object>();
+		params.put("endDate", ISODateTimeFormat.dateTime().print(today));
+		params.put("aDate", ISODateTimeFormat.date().print(today));
+		params.put("normalParameter", "normalParameter");
+		params.put("percent", "99.9%");
+		
+		Map<String,Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed", "method11", 1, 
+				params);
+
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		assertEquals(1, responses.size());
+		ExtDirectResponse resp = responses.get(0);
+		assertEquals("remoteProviderSimpleNamed", resp.getAction());
+		assertEquals("method11", resp.getMethod());
+		assertEquals(1, resp.getTid());
+		assertEquals("rpc", resp.getType());
+		assertNull(resp.getWhere());
+		assertNull(resp.getMessage());
+		
+		Map<String,Object> resultMap = (Map<String,Object>)resp.getResult();
+		assertEquals(today.toDate(), resultMap.get("endDate"));	
+		assertEquals(today.toLocalDate(), resultMap.get("jodaLocalDate"));
+		assertEquals(new BigDecimal("0.999"), resultMap.get("percent"));
+		assertEquals("normalParameter", resultMap.get("normalParameter"));
+		assertEquals("127.0.0.1", resultMap.get("remoteAddr"));
+	}	
 
 	@Test
 	public void testDifferentParameterNames() {

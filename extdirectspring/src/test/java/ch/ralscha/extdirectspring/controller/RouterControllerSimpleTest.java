@@ -378,7 +378,11 @@ public class RouterControllerSimpleTest {
 		
 		DateTime today = new DateTime();
 		
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method14", 1, ISODateTimeFormat.dateTime().print(today));
+		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method14", 1, 
+				ISODateTimeFormat.dateTime().print(today),
+				"normalParameter",
+				ISODateTimeFormat.date().print(today),
+				"99.9%");
 
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
@@ -390,7 +394,13 @@ public class RouterControllerSimpleTest {
 		assertEquals("rpc", resp.getType());
 		assertNull(resp.getWhere());
 		assertNull(resp.getMessage());
-		assertEquals(today.toDate(), resp.getResult());		
+		
+		Map<String,Object> resultMap = (Map<String,Object>)resp.getResult();
+		assertEquals(today.toDate(), resultMap.get("endDate"));	
+		assertEquals(today.toLocalDate(), resultMap.get("jodaLocalDate"));
+		assertEquals(new BigDecimal("0.999"), resultMap.get("percent"));
+		assertEquals("normalParameter", resultMap.get("normalParameter"));
+		assertEquals("127.0.0.1", resultMap.get("remoteAddr"));
 	}
 	
 	

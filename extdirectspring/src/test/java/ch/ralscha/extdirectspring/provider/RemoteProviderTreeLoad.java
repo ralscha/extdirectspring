@@ -16,6 +16,7 @@
 package ch.ralscha.extdirectspring.provider;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -26,7 +27,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.joda.time.LocalDate;
 import org.junit.Assert;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -49,8 +53,11 @@ public class RemoteProviderTreeLoad {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD)
-	public List<Node> method2(@RequestParam("node") String node, @RequestParam(defaultValue = "defaultValue") String foo) {
+	public List<Node> method2(@RequestParam("node") String node, @RequestParam(defaultValue = "defaultValue") String foo,
+			@DateTimeFormat(iso = ISO.DATE) LocalDate today) {
 		assertEquals("foo", foo);
+		assertNotNull(today);
+		assertEquals(new LocalDate(), today);
 		return createTreeList(node);
 	}
 

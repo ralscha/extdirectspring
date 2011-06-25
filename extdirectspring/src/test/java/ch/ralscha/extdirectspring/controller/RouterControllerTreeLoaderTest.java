@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.joda.time.LocalDate;
+import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,11 +61,12 @@ public class RouterControllerTreeLoaderTest {
 
 	@Test
 	public void testNoAdditionalParameters() {
-		
+
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
-		
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoad", "method1", 1, requestParameters);
+
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoad", "method1", 1,
+				requestParameters);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
@@ -75,19 +78,21 @@ public class RouterControllerTreeLoaderTest {
 		assertEquals("rpc", resp.getType());
 		assertNull(resp.getWhere());
 		assertNull(resp.getMessage());
-		
-		assertResult((List<Node>)resp.getResult());
+
+		assertResult((List<Node>) resp.getResult());
 
 	}
 
 	@Test
 	public void testAdditionalParameters() {
-		
+
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 		requestParameters.put("foo", "foo");
-		
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoad", "method2", 2, requestParameters);
+		requestParameters.put("today", ISODateTimeFormat.date().print(new LocalDate()));
+
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoad", "method2", 2,
+				requestParameters);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
@@ -99,17 +104,18 @@ public class RouterControllerTreeLoaderTest {
 		assertEquals("rpc", resp.getType());
 		assertNull(resp.getWhere());
 		assertNull(resp.getMessage());
-		
-		assertResult((List<Node>)resp.getResult());		
-		
+
+		assertResult((List<Node>) resp.getResult());
+
 	}
 
 	@Test
 	public void testSupportedParameters() {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
-		
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoad", "method3", 3, requestParameters);
+
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoad", "method3", 3,
+				requestParameters);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
@@ -121,21 +127,20 @@ public class RouterControllerTreeLoaderTest {
 		assertEquals("rpc", resp.getType());
 		assertNull(resp.getWhere());
 		assertNull(resp.getMessage());
-		
-		assertResult((List<Node>)resp.getResult());			
+
+		assertResult((List<Node>) resp.getResult());
 	}
 
-	
 	private void assertResult(List<Node> nodes) {
 		assertEquals(5, nodes.size());
-		
+
 		for (int i = 1; i <= 5; ++i) {
-			Node node = nodes.get(i-1);
+			Node node = nodes.get(i - 1);
 			assertEquals("n" + i, node.id);
 			assertEquals("Node " + i, node.text);
 			assertEquals(false, node.leaf);
 		}
-		
+
 	}
-	
+
 }

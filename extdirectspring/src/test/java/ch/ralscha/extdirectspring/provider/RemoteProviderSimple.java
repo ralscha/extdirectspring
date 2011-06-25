@@ -24,14 +24,18 @@ import java.security.Principal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
@@ -41,10 +45,9 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 public class RemoteProviderSimple {
 
 	private enum StatusEnum {
-		ACTIVE,
-		INACTIVE
+		ACTIVE, INACTIVE
 	}
-	
+
 	@ExtDirectMethod(group = "group1")
 	public String method1() {
 		return "method1() called";
@@ -106,10 +109,10 @@ public class RemoteProviderSimple {
 
 		return 42;
 	}
-	
+
 	@ExtDirectMethod
-	public String method10(boolean flag, char aCharacter, StatusEnum status, int aInt, long aLong, double aDouble, float aFloat,
-			short aShort, byte aByte) {
+	public String method10(boolean flag, char aCharacter, StatusEnum status, int aInt, long aLong, double aDouble,
+			float aFloat, short aShort, byte aByte) {
 		assertTrue(flag);
 		assertEquals('c', aCharacter);
 		assertEquals(StatusEnum.ACTIVE, status);
@@ -119,14 +122,15 @@ public class RemoteProviderSimple {
 		assertEquals(10.01, aFloat, 0.01);
 		assertEquals(1, aShort);
 		assertEquals(2, aByte);
-		return String.format("method10() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, status, aInt, aLong, aDouble, aFloat, aShort, aByte);
+		return String.format("method10() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, status, aInt, aLong,
+				aDouble, aFloat, aShort, aByte);
 	}
-	
+
 	@ExtDirectMethod
 	public String method11() {
 		throw new NullPointerException();
 	}
-	
+
 	@ExtDirectMethod
 	public String method12(Row aRow) {
 		assertNotNull(aRow);
@@ -136,18 +140,17 @@ public class RemoteProviderSimple {
 		assertEquals("100.45", aRow.getSalary().toPlainString());
 		return aRow.toString();
 	}
-	
-	@ExtDirectMethod	
+
+	@ExtDirectMethod
 	public String method13(boolean flag, HttpServletResponse response, char aCharacter, HttpServletRequest request,
-			StatusEnum status, HttpSession session, int aInt, long aLong,  Locale locale,
-			double aDouble, float aFloat, Principal principal,
-			short aShort, byte aByte) {
+			StatusEnum status, HttpSession session, int aInt, long aLong, Locale locale, double aDouble, float aFloat,
+			Principal principal, short aShort, byte aByte) {
 
 		assertNotNull(response);
 		assertNotNull(request);
 		assertNotNull(session);
 		assertEquals(Locale.ENGLISH, locale);
-		
+
 		assertTrue(flag);
 		assertEquals('c', aCharacter);
 		assertEquals(StatusEnum.ACTIVE, status);
@@ -157,12 +160,23 @@ public class RemoteProviderSimple {
 		assertEquals(10.01, aFloat, 0.01);
 		assertEquals(1, aShort);
 		assertEquals(2, aByte);
-		return String.format("method13() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, status, aInt, aLong, aDouble, aFloat, aShort, aByte);
-	
+		return String.format("method13() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, status, aInt, aLong,
+				aDouble, aFloat, aShort, aByte);
+
 	}
-	
+
 	@ExtDirectMethod
-	public Date method14(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate) {
-		return endDate;
+	public Map<String, Object> method14(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate, String normalParameter,
+			HttpServletRequest request, 
+			@DateTimeFormat(iso=ISO.DATE) LocalDate aDate,
+			@NumberFormat(style = NumberFormat.Style.PERCENT) BigDecimal percent) {
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("endDate", endDate);
+		result.put("jodaLocalDate", aDate);
+		result.put("percent", percent);
+		result.put("normalParameter", normalParameter);
+		result.put("remoteAddr", request.getRemoteAddr());
+		return result;
 	}
 }
