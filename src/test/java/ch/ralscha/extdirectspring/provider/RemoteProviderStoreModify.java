@@ -15,6 +15,10 @@
  */
 package ch.ralscha.extdirectspring.provider;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -22,7 +26,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.junit.Assert;
+import org.joda.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -40,10 +46,10 @@ public class RemoteProviderStoreModify {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
 	public List<Row> create2(List<Row> rows, HttpServletResponse response, HttpServletRequest request,
 			HttpSession session, Locale locale) {
-		Assert.assertNotNull(response);
-		Assert.assertNotNull(request);
-		Assert.assertNotNull(session);
-		Assert.assertEquals(Locale.ENGLISH, locale);
+		assertNotNull(response);
+		assertNotNull(request);
+		assertNotNull(session);
+		assertEquals(Locale.ENGLISH, locale);
 
 		return rows;
 	}
@@ -55,25 +61,31 @@ public class RemoteProviderStoreModify {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
 	public List<Row> update2(Locale locale, @RequestParam(value = "id") int id, List<Row> rows) {
-		Assert.assertEquals(10, id);
-		Assert.assertEquals(Locale.ENGLISH, locale);
+		assertEquals(10, id);
+		assertEquals(Locale.ENGLISH, locale);
 		return rows;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
 	public List<Row> update3(List<Row> rows, @RequestParam(value = "id", defaultValue = "1") int id,
 			HttpServletRequest servletRequest) {
-		Assert.assertEquals(1, id);
-		Assert.assertNotNull(servletRequest);
+		assertEquals(1, id);
+		assertNotNull(servletRequest);
 		return rows;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group2")
-	public List<Row> update4(@RequestParam(value = "id", required = false) Integer id, List<Row> rows) {
+	public List<Row> update4(@RequestParam(value = "id", required = false) Integer id, 
+			@RequestParam(required=false) @DateTimeFormat(iso = ISO.DATE) LocalDate yesterday,
+			List<Row> rows) {
+		
 		if (id == null) {
-			Assert.assertNull(id);
+			assertNull(id);
+			assertNull(yesterday);
 		} else {
-			Assert.assertEquals(Integer.valueOf(11), id);
+			assertNotNull(yesterday);
+			assertEquals(new LocalDate().minusDays(1), yesterday);
+			assertEquals(Integer.valueOf(11), id);
 		}
 		return rows;
 	}

@@ -47,7 +47,6 @@ public class ParameterInfo {
 	private boolean hasRequestParamAnnotation;
 	private boolean required;
 	private String defaultValue;
-	private MethodParameter springMethodParameter;
 	private TypeDescriptor typeDescriptor;
 	private boolean supportedParameter;
 
@@ -55,11 +54,11 @@ public class ParameterInfo {
 		this.type = type;
 		this.supportedParameter = SupportedParameterTypes.isSupported(type);
 		this.name = paramName;
-		this.springMethodParameter = new MethodParameter(method, paramIndex);
-		this.typeDescriptor = new TypeDescriptor(springMethodParameter);
+		MethodParameter methodParameter = new MethodParameter(method, paramIndex);
+		this.typeDescriptor = new TypeDescriptor(methodParameter);
 		
 		if (Collection.class.isAssignableFrom(type)) {
-			this.collectionType = getCollectionParameterType(clazz, method, paramIndex);
+			this.collectionType = getCollectionParameterType(clazz, method, paramIndex, methodParameter);
 		}
 		
 		if (paramAnnotations != null) {
@@ -114,9 +113,9 @@ public class ParameterInfo {
 		return typeDescriptor;
 	}
 
-	private Class<?> getCollectionParameterType(Class<?> clazz, final Method method, final int paramIndex) {
+	private Class<?> getCollectionParameterType(Class<?> clazz, final Method method, final int paramIndex, final MethodParameter methodParameter) {
 		
-		Class<?> paramType = GenericCollectionTypeResolver.getCollectionParameterType(springMethodParameter);
+		Class<?> paramType = GenericCollectionTypeResolver.getCollectionParameterType(methodParameter);
 
 		if (paramType == null) {
 			

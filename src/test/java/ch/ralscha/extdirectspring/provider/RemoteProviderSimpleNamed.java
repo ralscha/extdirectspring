@@ -22,13 +22,20 @@ import static junit.framework.Assert.assertTrue;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.joda.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -139,6 +146,21 @@ public class RemoteProviderSimpleNamed {
 		assertEquals(1, aShort);
 		assertEquals(2, aByte);
 		return String.format("method10() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, workflow, aInt, aLong, aDouble, aFloat, aShort, aByte);
+	}
+	
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")	
+	public Map<String, Object> method11(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate, String normalParameter,
+			HttpServletRequest request, 
+			@DateTimeFormat(iso=ISO.DATE) LocalDate aDate,
+			@NumberFormat(style = NumberFormat.Style.PERCENT) BigDecimal percent) {
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("endDate", endDate);
+		result.put("jodaLocalDate", aDate);
+		result.put("percent", percent);
+		result.put("normalParameter", normalParameter);
+		result.put("remoteAddr", request.getRemoteAddr());
+		return result;
 	}
 	
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")	
