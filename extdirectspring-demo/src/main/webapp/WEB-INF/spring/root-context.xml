@@ -29,5 +29,9 @@
   <bean id="pivotdata" class="org.springframework.core.io.ClassPathResource">
     <constructor-arg value="/pivodata.csv"/>
   </bean>    
+  
+  <bean id="userdata" class="org.springframework.core.io.ClassPathResource">
+    <constructor-arg value="/users.csv"/>
+  </bean>     
      
 </beans>
