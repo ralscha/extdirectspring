@@ -24,6 +24,9 @@ Ext.define('Simple.controller.Users', {
 			'useredit button[action=save]' : {
 				click : this.updateUser
 			},
+			'userlist button[action=add]': {
+				click: this.createUser
+			},			
 			'userlist button[action=delete]' : {
 				click : this.deleteUser
 			}
@@ -34,13 +37,17 @@ Ext.define('Simple.controller.Users', {
 		var view = Ext.widget('useredit');
 		view.down('form').loadRecord(record);
 	},
-
+	
+	createUser : function() {
+		Ext.widget('useredit');
+	},
+	
 	deleteUser : function(button) {
 		var record = this.getUserList().getSelectionModel().getSelection()[0];
 
 		if (record) {
 			this.getUsersStore().remove(record);
-			this.getUserList().down('pagingtoolbar').doRefresh();
+			this.doGridRefresh();
 			this.toggleDeleteButton(false);
 		}
 	},
@@ -59,10 +66,24 @@ Ext.define('Simple.controller.Users', {
 	},
 	
 	updateUser : function(button) {
-		var record = this.getUserEditForm().getRecord(); 
-		var values = this.getUserEditForm().getValues();
+		var form = this.getUserEditForm();
+		var record = form.getRecord(); 
+		var values = form.getValues();
 
-		record.set(values);
-		this.getUserEditWindow().close();
+		if (form.getForm().isValid()) {
+			if (record) {
+				record.set(values);				
+			} else {
+				var newUser = this.getUserModel().create(values);
+				this.getUsersStore().add(newUser);
+				this.doGridRefresh();
+			}
+			this.getUserEditWindow().close();
+		}				
+	},
+	
+	doGridRefresh : function() {
+		this.getUserList().down('pagingtoolbar').doRefresh();
 	}
+	
 });
