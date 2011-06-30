@@ -1,3 +1,7 @@
+//Ext.Loader.setPath('Ext', 'http://www.ralscha.ch/ext-4.0.2a/src');
+
+Ext.Loader.setConfig({enabled : true});
+
 Ext.require('Ext.direct.*', function() {
 	Ext.direct.Manager.addProvider(Ext.app.REMOTING_API);
 });
