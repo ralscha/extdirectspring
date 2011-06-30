@@ -43,41 +43,33 @@ public class ExtDirectStoreResponse<T> {
 	}
 
 	public ExtDirectStoreResponse(final Collection<T> records) {
-		this(null, records, true);
+		init(null, records, true);
 	}
 
 	public ExtDirectStoreResponse(final Integer total, final Collection<T> records) {
-		this(total, records, true);
+		init(total, records, true);
 	}
 
 	public ExtDirectStoreResponse(final Integer total, final Collection<T> records, final Boolean success) {
-		this.total = total;
-		this.records = records;
-		this.success = success;
+		init(total, records, success);
+	}
+
+	protected void init(final Integer _total, final Collection<T> _records, final Boolean _success) {
+		this.total = _total;
+		this.records = _records;
+		this.success = _success;
 	}
 
 	public Integer getTotal() {
 		return total;
 	}
 
-	public void setTotal(final Integer total) {
-		this.total = total;
-	}
-
 	public Collection<T> getRecords() {
 		return records;
 	}
 
-	public void setRecords(final Collection<T> records) {
-		this.records = records;
-	}
-
 	public Boolean isSuccess() {
 		return success;
-	}
-
-	public void setSuccess(final Boolean success) {
-		this.success = success;
 	}
 
 	public Map<String, Object> getMetaData() {
