@@ -15,7 +15,7 @@
  */
 package ch.ralscha.extdirectspring.demo.simple;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +29,7 @@ public class SimpleMethodProvider {
 
 	@ExtDirectMethod(group = "simple")
 	public String method1() {
-		return SimpleDateFormat.getDateTimeInstance().format(new Date());
+		return DateFormat.getDateTimeInstance().format(new Date());
 	}
 
 	@ExtDirectMethod(group = "simple")
