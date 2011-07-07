@@ -11,7 +11,7 @@ Ext.onReady(function() {
     autoLoad: false,
     root: 'records',
     totalProperty: 'total',
-    directFn: filterAction.load,
+    directFn: filterActionImplementation.load,
     sortInfo: {
       field: 'company',
       direction: 'ASC'

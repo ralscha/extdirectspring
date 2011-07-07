@@ -19,9 +19,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
-import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 import ch.ralscha.extdirectspring.demo.util.PropertyOrderingFactory;
@@ -29,13 +28,15 @@ import ch.ralscha.extdirectspring.demo.util.PropertyOrderingFactory;
 import com.google.common.collect.Ordering;
 
 @Service
-public class FilterAction {
+public class FilterActionImplementation implements FilterActionInterface {
 
 	@Autowired
 	private CompanyDataBean dataBean;
 
-	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "filter")
-	public ExtDirectStoreResponse<Company> load(ExtDirectStoreReadRequest request) {
+	@Override
+	public ExtDirectStoreResponse<Company> load(ExtDirectStoreReadRequest request, @RequestParam(required=false) String dRif) {
+
+		System.out.println(dRif);
 
 		List<Company> companies;
 		if (!request.getFilters().isEmpty()) {

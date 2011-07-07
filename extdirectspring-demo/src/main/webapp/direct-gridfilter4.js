@@ -2,10 +2,7 @@ Ext.Loader.setConfig({
 	enabled : true
 });
 Ext.Loader.setPath('Ext.ux', 'http://www.ralscha.ch/ext-4.0.2a/examples/ux');
-Ext.require([ 'Ext.grid.*', 
-              'Ext.data.*', 
-              'Ext.ux.grid.FiltersFeature', 
-              'Ext.toolbar.Paging' ]);
+Ext.require([ 'Ext.grid.*', 'Ext.data.*', 'Ext.ux.grid.FiltersFeature', 'Ext.toolbar.Paging' ]);
 
 Ext.direct.Manager.addProvider(Ext.app.REMOTING_API);
 
@@ -31,7 +28,7 @@ Ext.define('Product', {
 	} ],
 	proxy : {
 		type : 'direct',
-		directFn : filterAction.load,
+		directFn : filterActionImplementation.load,
 		reader : {
 			root : 'records'
 		}
@@ -39,21 +36,13 @@ Ext.define('Product', {
 });
 
 Ext.onReady(function() {
-	
+
 	Ext.QuickTips.init();
 
 	var store = Ext.create('Ext.data.Store', {
 		autoDestroy : true,
 		model : 'Product',
-		remoteSort : true,
-		sorters : [ {
-			property : 'company',
-			direction : 'ASC'
-		} ],
-		autoLoad : {
-			start : 0,
-			limit : 50
-		},
+		autoLoad : false,
 		pageSize : 50
 	});
 
@@ -140,5 +129,13 @@ Ext.onReady(function() {
 		items : grid
 	}).show();
 
-	store.load();
+	store.load({
+		params : {
+			dRif : '01/07/2011'
+		},
+		scope : this,
+		callback : function(records, operation, success) {
+			console.log(records);
+		}
+	});
 });
