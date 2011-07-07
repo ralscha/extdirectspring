@@ -42,7 +42,7 @@
 		<slf4j.version>1.6.1</slf4j.version>
 		<logback.version>0.9.29</logback.version>
 		<hibernatevalidator.version>4.2.0.Final</hibernatevalidator.version>
-		<jetty.version>7.4.2.v20110526</jetty.version>
+		<jetty.version>7.4.3.v20110701</jetty.version>
 		<eds.version>1.0.11-SNAPSHOT</eds.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
