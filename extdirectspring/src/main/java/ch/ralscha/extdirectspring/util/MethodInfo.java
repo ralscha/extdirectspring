@@ -105,10 +105,13 @@ public class MethodInfo {
 		Annotation[][] parameterAnnotations = null;
 		String[] parameterNames = null;
 
-		Method methodWithAnnotation = ExtDirectSpringUtil.findMethodWithAnnotation(method, ExtDirectMethod.class);
+		Method methodWithAnnotation = findMethodWithAnnotation(method, ExtDirectMethod.class);
 		if (methodWithAnnotation != null) {
 			parameterAnnotations = methodWithAnnotation.getParameterAnnotations();
 			parameterNames = discoverer.getParameterNames(methodWithAnnotation);
+		} else {
+			parameterAnnotations = method.getParameterAnnotations();
+			parameterNames = discoverer.getParameterNames(method);		
 		}
 
 		for (int paramIndex = 0; paramIndex < parameterTypes.length; paramIndex++) {
@@ -152,6 +155,36 @@ public class MethodInfo {
 	}
 
 
+	/**
+	 * Find a method that is annotated with a specific annotation. Starts with the
+	 * method and goes up to the superclasses of the class.
+	 * 
+	 * @param method
+	 *          the starting method
+	 * @param annotation
+	 *          the annotation to look for
+	 * @return the method if there is a annotated method, else null
+	 */
+	public static Method findMethodWithAnnotation(final Method method, final Class<? extends Annotation> annotation) {
+		if (method.isAnnotationPresent(annotation)) {
+			return method;
+		}
+
+		Class<?> cl = method.getDeclaringClass();
+		while (cl != null && cl != Object.class) {
+			try {
+				Method equivalentMethod = cl.getDeclaredMethod(method.getName(), method.getParameterTypes());
+				if (equivalentMethod.isAnnotationPresent(annotation)) {
+					return equivalentMethod;
+				}
+			} catch (NoSuchMethodException e) {
+				// do nothing here
+			}
+			cl = cl.getSuperclass();
+		}
+
+		return null;
+	}
 
 
 }
