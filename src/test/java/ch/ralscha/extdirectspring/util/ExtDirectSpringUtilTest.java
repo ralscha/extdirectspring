@@ -78,12 +78,12 @@ public class ExtDirectSpringUtilTest {
 	public void testFindMethodWithAnnotation() {
 		ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 		MethodInfo methodBInfo = ExtDirectSpringUtil.findMethodInfo(context, "springManagedBean", "methodB");
-		Method methodBWithAnnotation = ExtDirectSpringUtil.findMethodWithAnnotation(methodBInfo.getMethod(),
+		Method methodBWithAnnotation = MethodInfo.findMethodWithAnnotation(methodBInfo.getMethod(),
 				ExtDirectMethod.class);
 		assertEquals(methodBInfo.getMethod(), methodBWithAnnotation);
 
 		MethodInfo methodSubBInfo = ExtDirectSpringUtil.findMethodInfo(context, "springManagedSubBean", "methodB");
-		methodBWithAnnotation = ExtDirectSpringUtil.findMethodWithAnnotation(methodSubBInfo.getMethod(),
+		methodBWithAnnotation = MethodInfo.findMethodWithAnnotation(methodSubBInfo.getMethod(),
 				ExtDirectMethod.class);
 		assertFalse(methodSubBInfo.getMethod().equals(methodBWithAnnotation));
 		assertTrue(methodBInfo.getMethod().equals(methodBWithAnnotation));

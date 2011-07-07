@@ -15,13 +15,13 @@
  */
 package ch.ralscha.extdirectspring.util;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.util.ReflectionUtils;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 
@@ -104,37 +104,6 @@ public class ExtDirectSpringUtil {
 	}
 
 	/**
-	 * Find a method that is annotated with a specific annotation. Starts with the
-	 * method and goes up to the superclasses of the class.
-	 * 
-	 * @param method
-	 *          the starting method
-	 * @param annotation
-	 *          the annotation to look for
-	 * @return the method if there is a annotated method, else null
-	 */
-	public static Method findMethodWithAnnotation(final Method method, final Class<? extends Annotation> annotation) {
-		if (method.isAnnotationPresent(annotation)) {
-			return method;
-		}
-
-		Class<?> cl = method.getDeclaringClass();
-		while (cl != null) {
-			try {
-				Method equivalentMethod = cl.getDeclaredMethod(method.getName(), method.getParameterTypes());
-				if (equivalentMethod.isAnnotationPresent(annotation)) {
-					return equivalentMethod;
-				}
-			} catch (NoSuchMethodException e) {
-				// do nothing here
-			}
-			cl = cl.getSuperclass();
-		}
-
-		return null;
-	}
-
-	/**
 	 * Invokes a method on a Spring managed bean.
 	 * 
 	 * @param context
@@ -154,7 +123,10 @@ public class ExtDirectSpringUtil {
 	public static Object invoke(final ApplicationContext context, final String beanName, final MethodInfo methodInfo,
 			final Object[] params) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		Object bean = context.getBean(beanName);
-		return methodInfo.getMethod().invoke(bean, params);
+		
+		Method handlerMethod = methodInfo.getMethod();
+		ReflectionUtils.makeAccessible(handlerMethod);
+		return handlerMethod.invoke(bean, params);
 	}
 
 
