@@ -15,8 +15,6 @@
  */
 package ch.ralscha.extdirectspring.itest;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,7 +35,7 @@ public class ExceptionFormPostController {
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_upload")
 	@RequestMapping(value = "/throwIt", method = RequestMethod.POST)
 	@ResponseBody
-	public ExtDirectResponse throwAException(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public ExtDirectResponse throwAException(HttpServletRequest request, HttpServletResponse response) {
 
 		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
 

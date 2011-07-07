@@ -176,6 +176,21 @@ public class ApiControllerTest {
 	}
 
 	@Test
+	public void testInterfaceGroup() throws IOException {
+		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		apiController.api("test", "", "TEST_REMOTING_API", "TEST_POLLING_URLS", "interface", false, null, request,
+				response);
+		compare(response, interfaceApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
+
+		request = new MockHttpServletRequest("POST", "/action/api.js");
+		response = new MockHttpServletResponse();
+		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "interface", false, null, request,
+				response);
+		compare(response, interfaceApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
+	}
+	
+	@Test
 	public void testNoApiNs() throws IOException {
 		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
@@ -268,6 +283,14 @@ public class ApiControllerTest {
 		remotingApi.addPollingProvider("pollProvider", "handleMessage3", "message3");
 		return remotingApi;
 	}
+	
+	private RemotingApi interfaceApis(String namespace) {
+		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
+		remotingApi.addAction("remoteProviderImplementation", "storeRead", 1, false);
+		remotingApi.addAction("remoteProviderImplementation", "method2", 0, false);
+		remotingApi.addAction("remoteProviderImplementation", "method3", 3, false);
+		return remotingApi;
+	}
 
 	private RemotingApi allApis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
@@ -321,6 +344,10 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderTreeLoad", "method2", 1, false);
 		remotingApi.addAction("remoteProviderTreeLoad", "method3", 1, false);
 
+		remotingApi.addAction("remoteProviderImplementation", "storeRead", 1, false);
+		remotingApi.addAction("remoteProviderImplementation", "method2", 0, false);
+		remotingApi.addAction("remoteProviderImplementation", "method3", 3, false);
+		
 		remotingApi.addAction("remoteProviderSimpleNamed", "method1", new ArrayList());
 		remotingApi.addAction("remoteProviderSimpleNamed", "method2", Arrays.asList("i", "d", "s"));
 		remotingApi.addAction("remoteProviderSimpleNamed", "method3", Arrays.asList("userName"));
