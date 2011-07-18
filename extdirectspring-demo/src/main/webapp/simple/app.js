@@ -1,4 +1,4 @@
-//Ext.Loader.setPath('Ext', 'http://www.ralscha.ch/ext-4.0.2a/src');
+//Ext.Loader.setPath('Ext', 'http://extjs.cachefly.net/ext-4.0.2a/src');
 
 Ext.Loader.setConfig({enabled : true});
 
