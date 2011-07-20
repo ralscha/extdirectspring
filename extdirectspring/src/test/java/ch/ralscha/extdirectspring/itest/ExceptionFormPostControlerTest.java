@@ -66,7 +66,7 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 		HttpEntity entity = response.getEntity();
 		assertNotNull(entity);
 		String responseString = EntityUtils.toString(entity);
-		
+
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
 		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
