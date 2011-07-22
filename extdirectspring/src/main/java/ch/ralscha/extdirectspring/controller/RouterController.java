@@ -415,14 +415,22 @@ public class RouterController implements InitializingBean {
 			if (entry.getKey().equals("filter")) {
 				List<Filter> filters = new ArrayList<Filter>();
 
-				List<Map<String, Object>> rawFilters = jsonHandler.readValue((String) entry.getValue(),
-						new TypeReference<List<Map<String, Object>>>() {/* empty */
-						});
-
-				for (Map<String, Object> rawFilter : rawFilters) {
-					filters.add(Filter.createFilter(rawFilter, conversionService));
+				Object value = entry.getValue();
+				if (value instanceof String) {
+					List<Map<String, Object>> rawFilters = jsonHandler.readValue((String) entry.getValue(),
+							new TypeReference<List<Map<String, Object>>>() {/* empty */
+							});
+	
+					for (Map<String, Object> rawFilter : rawFilters) {
+						filters.add(Filter.createFilter(rawFilter, conversionService));
+					}
+				} else if (value instanceof List) {
+					@SuppressWarnings("unchecked")
+					List<Map<String, Object>> filterList = (List<Map<String, Object>>)value;
+					for (Map<String, Object> filter : filterList) {
+						filters.add(Filter.createFilter(filter, conversionService));
+					}
 				}
-
 				to.setFilters(filters);
 				foundParameters.add(entry.getKey());
 			} else if (entry.getKey().equals("sort") && entry.getValue() != null && entry.getValue() instanceof List) {
