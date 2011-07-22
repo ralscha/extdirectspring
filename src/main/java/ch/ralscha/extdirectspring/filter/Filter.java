@@ -38,9 +38,24 @@ public class Filter {
 	
 	@SuppressWarnings("unchecked")
 	public static Filter createFilter(final Map<String, Object> jsonData, ConversionService conversionService) {
-		String field = (String) jsonData.get("field");
 		String type = (String) jsonData.get("type");
-
+		
+		if (type == null) {
+			if (jsonData.containsKey("property") && jsonData.containsKey("value")) {
+				//a filter from store.filter, create a StringFilter or a NumericFilter depending on the type of the value
+				String property = (String)jsonData.get("property");
+				Object filterValue = jsonData.get("value");
+				
+				if (filterValue instanceof Number) {
+					return new NumericFilter(property, (Number)filterValue, null);
+				} 
+				return new StringFilter(property, filterValue.toString());
+			}
+			
+			return null;			
+		}
+		
+		String field = (String) jsonData.get("field");		
 		if (type.equals("numeric")) {
 			String comparison = (String) jsonData.get("comparison");
 			Number value = conversionService.convert(jsonData.get("value"), Number.class);
@@ -63,9 +78,10 @@ public class Filter {
 		} else if (type.equals("boolean")) {
 			boolean value = (Boolean) jsonData.get("value");
 			return new BooleanFilter(field, value);
-		} else {
-			return null;
+			
 		}
+		
+		return null;		
 	}
 
 }
