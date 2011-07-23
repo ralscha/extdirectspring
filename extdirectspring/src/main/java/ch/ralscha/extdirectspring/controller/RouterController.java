@@ -411,15 +411,15 @@ public class RouterController implements InitializingBean {
 		Set<String> foundParameters = new HashSet<String>();
 
 		for (Entry<String, Object> entry : from.entrySet()) {
-
-			if (entry.getKey().equals("filter")) {
+			String key = entry.getKey();			
+			Object value = entry.getValue();
+			
+			if (key.equals("filter")) {
 				List<Filter> filters = new ArrayList<Filter>();
-
-				Object value = entry.getValue();
+				
 				if (value instanceof String) {
-					List<Map<String, Object>> rawFilters = jsonHandler.readValue((String) entry.getValue(),
-							new TypeReference<List<Map<String, Object>>>() {/* empty */
-							});
+					List<Map<String, Object>> rawFilters = jsonHandler.readValue((String) value,
+							new TypeReference<List<Map<String, Object>>>() {/* empty */});
 	
 					for (Map<String, Object> rawFilter : rawFilters) {
 						filters.add(Filter.createFilter(rawFilter, conversionService));
@@ -432,40 +432,40 @@ public class RouterController implements InitializingBean {
 					}
 				}
 				to.setFilters(filters);
-				foundParameters.add(entry.getKey());
-			} else if (entry.getKey().equals("sort") && entry.getValue() != null && entry.getValue() instanceof List) {
+				foundParameters.add(key);
+			} else if (key.equals("sort") && value != null && value instanceof List) {
 
 				List<SortInfo> sorters = new ArrayList<SortInfo>();
 				@SuppressWarnings("unchecked")
-				List<Map<String, Object>> rawSorters = (List<Map<String, Object>>) entry.getValue();
+				List<Map<String, Object>> rawSorters = (List<Map<String, Object>>) value;
 
 				for (Map<String, Object> aRawSorter : rawSorters) {
 					sorters.add(SortInfo.create(aRawSorter));
 				}
 
 				to.setSorters(sorters);
-				foundParameters.add(entry.getKey());
-			} else if (entry.getKey().equals("group") && entry.getValue() != null && entry.getValue() instanceof List) {
+				foundParameters.add(key);
+			} else if (key.equals("group") && value != null && value instanceof List) {
 				List<GroupInfo> groups = new ArrayList<GroupInfo>();
 				@SuppressWarnings("unchecked")
-				List<Map<String, Object>> rawGroups = (List<Map<String, Object>>) entry.getValue();
+				List<Map<String, Object>> rawGroups = (List<Map<String, Object>>) value;
 
 				for (Map<String, Object> aRawGroupInfo : rawGroups) {
 					groups.add(GroupInfo.create(aRawGroupInfo));
 				}
 
 				to.setGroups(groups);
-				foundParameters.add(entry.getKey());
+				foundParameters.add(key);
 			} else {
 
-				PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(to.getClass(), entry.getKey());
+				PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(to.getClass(), key);
 				if (descriptor != null && descriptor.getWriteMethod() != null) {
 					try {
 
 						descriptor.getWriteMethod().invoke(to,
-								conversionService.convert(entry.getValue(), descriptor.getPropertyType()));
+								conversionService.convert(value, descriptor.getPropertyType()));
 
-						foundParameters.add(entry.getKey());
+						foundParameters.add(key);
 					} catch (IllegalArgumentException e) {
 						log.error("fillObjectFromMap", e);
 					} catch (IllegalAccessException e) {
