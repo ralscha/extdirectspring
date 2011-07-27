@@ -30,16 +30,8 @@ public class SortInfo {
 		return property;
 	}
 
-	public void setProperty(String property) {
-		this.property = property;
-	}
-
 	public SortDirection getDirection() {
 		return direction;
-	}
-
-	public void setDirection(SortDirection direction) {
-		this.direction = direction;
 	}
 
 	public static SortInfo create(final Map<String, Object> jsonData) {
