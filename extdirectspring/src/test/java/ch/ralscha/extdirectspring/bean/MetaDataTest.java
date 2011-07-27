@@ -15,10 +15,10 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasKey;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.MapAssert.entry;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,9 +34,9 @@ public class MetaDataTest {
 		Map<String, Object> meta = metaData.getMetaData();
 		assertEquals(3, meta.size());
 
-		assertThat(meta, hasEntry("root", (Object) "records"));
-		assertThat(meta, hasEntry("totalProperty", (Object) "total"));
-		assertThat(meta, hasEntry("successProperty", (Object) "success"));
+		assertThat(meta).includes(entry("root", "records"));
+		assertThat(meta).includes(entry("totalProperty", "total"));
+		assertThat(meta).includes(entry("successProperty", "success"));
 
 	}
 
@@ -60,35 +60,35 @@ public class MetaDataTest {
 		Map<String, Object> meta = metaData.getMetaData();
 		assertEquals(10, meta.size());
 
-		assertThat(meta, hasEntry("root", (Object) "records"));
-		assertThat(meta, hasEntry("totalProperty", (Object) "total"));
-		assertThat(meta, hasEntry("successProperty", (Object) "success"));
-		assertThat(meta, hasEntry("idProperty", (Object) "id"));
-		assertThat(meta, hasEntry("start", (Object) 0));
-		assertThat(meta, hasEntry("limit", (Object) 50));
-		assertThat(meta, hasEntry("customProperty1", (Object) 10));
-		assertThat(meta, hasEntry("customProperty2", (Object) "aValue"));
-		assertThat(meta, hasKey("sortInfo"));
-		assertThat(meta, hasKey("fields"));
+		assertThat(meta).includes(entry("root", "records"));
+		assertThat(meta).includes(entry("totalProperty", "total"));
+		assertThat(meta).includes(entry("successProperty", "success"));
+		assertThat(meta).includes(entry("idProperty", "id"));
+		assertThat(meta).includes(entry("start", 0));
+		assertThat(meta).includes(entry("limit", 50));
+		assertThat(meta).includes(entry("customProperty1", 10));
+		assertThat(meta).includes(entry("customProperty2", "aValue"));
+		assertTrue(meta.containsKey("sortInfo"));
+		assertTrue(meta.containsKey("fields"));
 
 		@SuppressWarnings("unchecked")
 		Map<String, String> sortInfo = (Map<String, String>) meta.get("sortInfo");
 		assertEquals(2, sortInfo.size());
-		assertThat(sortInfo, hasEntry("field", "name"));
-		assertThat(sortInfo, hasEntry("direction", "ASC"));
+		assertThat(sortInfo).includes(entry("field", "name"));
+		assertThat(sortInfo).includes(entry("direction", "ASC"));
 
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> fields = (List<Map<String, Object>>) meta.get("fields");
 		assertEquals(3, fields.size());
 
 		Map<String, Object> field1 = fields.get(0);
-		assertThat(field1, hasEntry("name", (Object) "name"));
+		assertThat(field1).includes(entry("name", "name"));
 
 		Map<String, Object> field2 = fields.get(1);
-		assertThat(field2, hasEntry("name", (Object) "city"));
+		assertThat(field2).includes(entry("name", "city"));
 
 		Map<String, Object> field3 = fields.get(2);
-		assertThat(field3, hasEntry("name", (Object) "country"));
+		assertThat(field3).includes(entry("name", "country"));
 
 	}
 }
