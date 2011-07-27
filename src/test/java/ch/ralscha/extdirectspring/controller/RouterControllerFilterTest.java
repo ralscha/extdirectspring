@@ -109,7 +109,7 @@ public class RouterControllerFilterTest {
 			index++;
 		}
 
-		assertEquals(13, index);
+		assertEquals(15, index);
 
 	}
 

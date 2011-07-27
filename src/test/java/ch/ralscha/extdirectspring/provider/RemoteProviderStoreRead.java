@@ -423,7 +423,30 @@ public class RemoteProviderStoreRead {
 			assertEquals("level", bf.getField());
 
 			return createResult(12);			
+		case 13:
+			assertEquals(1, filters.size());
+			assertTrue(filters.get(0) instanceof ListFilter);
+
+			lf = (ListFilter) filters.get(0);
+			assertEquals(1, lf.getValue().size());
+			assertEquals("small", lf.getValue().get(0));
+			assertEquals("size", lf.getField());
+
+			return createResult(13);
+
+		case 14:
+			assertEquals(1, filters.size());
+			assertTrue(filters.get(0) instanceof ListFilter);
+
+			lf = (ListFilter) filters.get(0);
+			assertEquals(2, lf.getValue().size());
+			assertEquals("small", lf.getValue().get(0));
+			assertEquals("medium", lf.getValue().get(1));
+			assertEquals("size", lf.getField());
+
+			return createResult(14);			
 		}
+		
 		
 
 		return Collections.emptyList();

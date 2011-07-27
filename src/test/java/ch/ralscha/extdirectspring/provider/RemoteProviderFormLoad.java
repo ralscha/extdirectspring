@@ -86,5 +86,13 @@ public class RemoteProviderFormLoad {
 		}
 		return new ExtDirectFormLoadResult("TEST");
 	}
+	
+	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
+	public ExtDirectFormLoadResult method7(String data, boolean success) {
+		ExtDirectFormLoadResult edflr = new ExtDirectFormLoadResult();
+		edflr.setData(data);
+		edflr.setSuccess(success);
+		return edflr;
+	}	
 
 }
