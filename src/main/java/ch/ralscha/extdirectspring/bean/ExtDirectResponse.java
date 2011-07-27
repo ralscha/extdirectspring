@@ -52,16 +52,8 @@ public class ExtDirectResponse extends BaseResponse {
 		return action;
 	}
 
-	public void setAction(final String action) {
-		this.action = action;
-	}
-
 	public String getMethod() {
 		return method;
-	}
-
-	public void setMethod(final String method) {
-		this.method = method;
 	}
 
 	public Object getResult() {
@@ -74,10 +66,6 @@ public class ExtDirectResponse extends BaseResponse {
 
 	public int getTid() {
 		return tid;
-	}
-
-	public void setTid(final int tid) {
-		this.tid = tid;
 	}
 
 	@Override
