@@ -27,6 +27,7 @@ import ch.ralscha.extdirectspring.bean.SortInfo;
 import ch.ralscha.extdirectspring.demo.util.PropertyOrderingFactory;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 
 @Service
@@ -119,12 +120,12 @@ public class RestaurantService {
 			if (!request.getSorters().isEmpty()) {
 				for (SortInfo sortInfo : request.getSorters()) {
 					if (groupInfo.getProperty().equals(sortInfo.getProperty())) {
-						groupInfo.setDirection(sortInfo.getDirection());
+						groupInfo = new GroupInfo(groupInfo.getProperty(), sortInfo.getDirection());
 					}
 				}
 			}
 			
-			Ordering<Restaurant> ordering = PropertyOrderingFactory.INSTANCE.createOrderingFromGroups(request.getGroups());
+			Ordering<Restaurant> ordering = PropertyOrderingFactory.INSTANCE.createOrderingFromGroups(Lists.newArrayList(groupInfo));
 			Ordering<Restaurant> sortOrdering = PropertyOrderingFactory.INSTANCE.createOrderingFromSorters(request.getSorters());
 			
 			if (sortOrdering != null) {
