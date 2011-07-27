@@ -333,6 +333,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderFormLoad", "method4", 1, false);
 		remotingApi.addAction("remoteProviderFormLoad", "method5", 1, false);
 		remotingApi.addAction("remoteProviderFormLoad", "method6", 1, false);
+		remotingApi.addAction("remoteProviderFormLoad", "method7", 1, false);
 
 		remotingApi.addAction("formInfoController", "updateInfo", 0, true);
 		remotingApi.addAction("formInfoController", "upload", 0, true);

@@ -10,3 +10,5 @@
 {"action":"remoteProviderStoreRead","method":"methodFilter","data":[{"type":10,"page":1,"start":0,"limit":30,"sort":[{"property":"dateTime","direction":"DESC"}],"filter":[{"property":"level","value":"ERROR"}]}],"type":"rpc","tid":10}
 {"action":"remoteProviderStoreRead","method":"methodFilter","data":[{"type":11,"page":1,"start":0,"limit":30,"sort":[{"property":"dateTime","direction":"DESC"}],"filter":[{"property":"level","value":1}]}],"type":"rpc","tid":11}
 {"action":"remoteProviderStoreRead","method":"methodFilter","data":[{"type":12,"page":1,"start":0,"limit":30,"sort":[{"property":"dateTime","direction":"DESC"}],"filter":[{"property":"level","value":true}]}],"type":"rpc","tid":12}
+{"action":"remoteProviderStoreRead","method":"methodFilter","data":[{"type":13,"start":0,"limit":50,"sort":"company","dir":"DESC","filter":"[{\"type\":\"list\",\"value\":[\"small\"],\"field\":\"size\"}]"}],"type":"rpc","tid":13}
+{"action":"remoteProviderStoreRead","method":"methodFilter","data":[{"type":14,"start":0,"limit":50,"sort":"company","dir":"DESC","filter":"[{\"type\":\"list\",\"value\":[\"small\",\"medium\"],\"field\":\"size\"}]"}],"type":"rpc","tid":14}
