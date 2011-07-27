@@ -15,9 +15,9 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import static org.hamcrest.Matchers.hasEntry;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.MapAssert.entry;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 import java.util.Map;
 
@@ -30,7 +30,7 @@ public class FieldTest {
 		Field aField = new Field("fieldName");
 		Map<String, Object> fieldData = aField.getFieldData();
 		assertEquals(1, fieldData.size());
-		assertThat(fieldData, hasEntry("name", (Object) "fieldName"));
+		assertThat(fieldData).includes(entry("name", "fieldName"));
 	}
 
 	@Test
@@ -44,12 +44,12 @@ public class FieldTest {
 
 		Map<String, Object> fieldData = aField.getFieldData();
 		assertEquals(6, fieldData.size());
-		assertThat(fieldData, hasEntry("name", (Object) "fieldName"));
-		assertThat(fieldData, hasEntry("allowBlank", (Object) true));
-		assertThat(fieldData, hasEntry("dateFormat", (Object) "Y-m-d"));
-		assertThat(fieldData, hasEntry("type", (Object) "date"));
-		assertThat(fieldData, hasEntry("customProperty1", (Object) 10));
-		assertThat(fieldData, hasEntry("customProperty2", (Object) "aValue"));
+		assertThat(fieldData).includes(entry("name", "fieldName"));
+		assertThat(fieldData).includes(entry("allowBlank", true));
+		assertThat(fieldData).includes(entry("dateFormat", "Y-m-d"));
+		assertThat(fieldData).includes(entry("type", "date"));
+		assertThat(fieldData).includes(entry("customProperty1", 10));
+		assertThat(fieldData).includes(entry("customProperty2", "aValue"));
 
 	}
 }
