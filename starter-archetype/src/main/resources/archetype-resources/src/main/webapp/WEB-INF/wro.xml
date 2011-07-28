@@ -1,0 +1,46 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<groups xmlns="http://www.isdc.ro/wro">
+
+  <group name="app">
+    <js>http://extjs.cachefly.net/ext-4.0.2a/examples/ux/BoxReorderer.js</js>
+    <js>http://extjs.cachefly.net/ext-4.0.2a/examples/ux/TabCloseMenu.js</js>
+    <js>http://extjs.cachefly.net/ext-4.0.2a/examples/ux/TabReorderer.js</js>
+    <js>/app/component/ClearButton.js</js>
+    <js>/app/component/FilterField.js</js>
+    <js>http://extjs.cachefly.net/ext-4.0.2a/examples/ux/layout/component/form/ItemSelector.js</js>
+    <js>http://extjs.cachefly.net/ext-4.0.2a/examples/ux/layout/component/form/MultiSelect.js</js>    
+    <js>http://extjs.cachefly.net/ext-4.0.2a/examples/ux/form/MultiSelect.js</js>
+    <js>http://extjs.cachefly.net/ext-4.0.2a/examples/ux/form/ItemSelector.js</js>    
+    <js>/app/component/Notification.js</js>
+    <js>/api.js</js>
+    <js>/direct.js</js>
+    <js>/app/model/PollChart.js</js>
+    <js>/app/model/Role.js</js>
+    <js>/app/model/User.js</js>
+    <js>/app/store/Navigation.js</js>
+    <js>/app/store/PollChart.js</js>
+    <js>/app/store/Roles.js</js>
+    <js>/app/store/Users.js</js>
+    <js>/app/view/navigation/Header.js</js>
+    <js>/app/view/navigation/SideBar.js</js>
+    <js>/app/view/poll/PollChart.js</js>
+    <js>/app/view/user/Edit.js</js>
+    <js>/app/view/user/List.js</js>
+    <js>/app/view/Viewport.js</js>
+    <js>/app/controller/Navigation.js</js>
+    <js>/app/controller/PollChart.js</js>
+    <js>/app/controller/Users.js</js>
+    <js>/app.js</js>
+    
+    <css>/css/app.css</css>
+    <css>http://extjs.cachefly.net/ext-4.0.2a/examples/ux/css/ItemSelector.css</css>
+  </group>
+
+  <group name="login">
+    <js>/login.js</js>
+  </group>
+
+</groups>

@@ -1,0 +1,24 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+
+	<New id="datasource" class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg></Arg>
+		<Arg>jdbc/ds</Arg>
+		<Arg>
+			<New class="org.h2.jdbcx.JdbcDataSource">
+				<Set name="URL">jdbc:h2:~/starter</Set>
+				<Set name="user">sa</Set>
+				<!--
+				<Set name="password">sa</Set>
+				-->
+			</New>
+		</Arg>
+	</New>
+
+</Configure>
+   
