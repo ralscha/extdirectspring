@@ -13,21 +13,21 @@
     <title>Starter</title>    
     <link rel="stylesheet" type="text/css" href="http://extjs.cachefly.net/ext-4.0.2a/resources/css/ext-all.css">    
         
-    <script type="text/javascript" src="i18n.js"></script>
+    <script src="i18n.js"></script>
     
     <spring:eval expression="@environment.acceptsProfiles('development')" var="isDevelopment" />    
     <c:if test="${symbol_dollar}{isDevelopment}">
-	    <script type="text/javascript" src="http://extjs.cachefly.net/ext-4.0.2a/ext-all-debug.js"></script>	    
-	    <script type="text/javascript" src="login.js"></script>
+	    <script src="http://extjs.cachefly.net/ext-4.0.2a/ext-all-debug.js"></script>	    
+	    <script src="login.js"></script>
     </c:if>
     <c:if test="${symbol_dollar}{not isDevelopment}">
-	    <script type="text/javascript" src="http://extjs.cachefly.net/ext-4.0.2a/ext-all.js"></script> 
-		<script type="text/javascript" src="wro/login.js?v=<spring:eval expression='@environment["application.version"]'/>"></script>        
+	    <script src="http://extjs.cachefly.net/ext-4.0.2a/ext-all.js"></script> 
+		<script src="wro/login.js?v=<spring:eval expression='@environment["application.version"]'/>"></script>        
 	</c:if>
 	    
 	<% Locale locale = RequestContextUtils.getLocale(request); %>
     <% if (locale != null && locale.getLanguage().toLowerCase().equals("de")) { %>
-      <script type="text/javascript" src="http://extjs.cachefly.net/ext-4.0.2a/locale/ext-lang-de.js"></script>
+      <script src="http://extjs.cachefly.net/ext-4.0.2a/locale/ext-lang-de.js"></script>
     <% } %>	
 	<c:if test="${symbol_dollar}{not empty sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}">
 	   <script type="text/javascript">

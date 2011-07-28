@@ -13,31 +13,31 @@
     <title>Starter</title>
     <link rel="stylesheet" type="text/css" href="http://extjs.cachefly.net/ext-4.0.2a/resources/css/ext-all.css">
     
-    <script type="text/javascript" src="i18n.js"></script>
+    <script src="i18n.js"></script>
     
     <spring:eval expression="@environment.acceptsProfiles('development')" var="isDevelopment" />
     <c:if test="${symbol_dollar}{isDevelopment}">  
 	    <link rel="stylesheet" type="text/css" href="css/app.css">
 	    <link rel="stylesheet" type="text/css" href="http://extjs.cachefly.net/ext-4.0.2a/examples/ux/css/ItemSelector.css">
 	    
-	    <script type="text/javascript" src="http://extjs.cachefly.net/ext-4.0.2a/ext-all-debug.js"></script>
-	    <script type="text/javascript" src="loader.js"></script>
+	    <script src="http://extjs.cachefly.net/ext-4.0.2a/ext-all-debug.js"></script>
+	    <script src="loader.js"></script>
 		
-	    <script type="text/javascript" src="api.js"></script>
-	    <script type="text/javascript" src="direct.js"></script>
+	    <script src="api.js"></script>
+	    <script src="direct.js"></script>
 	    	    
-	    <script type="text/javascript" src="app.js"></script>
+	    <script src="app.js"></script>
     </c:if> 
     
     <c:if test="${symbol_dollar}{not isDevelopment}">
 		<link rel="stylesheet" type="text/css" href="wro/app.css?v=<spring:eval expression='@environment["application.version"]'/>" />
-		<script type="text/javascript" src="http://extjs.cachefly.net/ext-4.0.2a/ext-all.js"></script>
-	    <script type="text/javascript" src="wro/app.js?v=<spring:eval expression='@environment["application.version"]'/>"></script>   
+		<script src="http://extjs.cachefly.net/ext-4.0.2a/ext-all.js"></script>
+	    <script src="wro/app.js?v=<spring:eval expression='@environment["application.version"]'/>"></script>   
     </c:if>
 
 	<% Locale locale = RequestContextUtils.getLocale(request); %>
     <% if (locale != null && locale.getLanguage().toLowerCase().equals("de")) { %>
-      <script type="text/javascript" src="http://extjs.cachefly.net/ext-4.0.2a/locale/ext-lang-de.js"></script>
+      <script src="http://extjs.cachefly.net/ext-4.0.2a/locale/ext-lang-de.js"></script>
     <% } %>	
     
 </head>
