@@ -1,0 +1,15 @@
+{
+	"text":"root",
+	"children":[{
+	    "text":"navigation_business",
+	    "expanded": "true", 
+	    "children":[{
+	        "text": "chart_title", "view": "pollchart", "roles": ["ROLE_USER","ROLE_ADMIN"]
+	    }]},{
+	    "text":"navigation_administration",
+	    "expanded": "true", 
+	    "children":[{
+	    	"text": "user_users", "view": "userlist", "roles": ["ROLE_ADMIN"]
+	    }]
+	}]
+}
