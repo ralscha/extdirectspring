@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ch.ralscha</groupId>
 	<artifactId>extdirectspring-demo</artifactId>
-	<version>1.0.10</version>
+	<version>1.0.11</version>
 	<packaging>war</packaging>
 
 	<inceptionYear>2010</inceptionYear>
@@ -42,8 +42,8 @@
 		<slf4j.version>1.6.1</slf4j.version>
 		<logback.version>0.9.29</logback.version>
 		<hibernatevalidator.version>4.2.0.Final</hibernatevalidator.version>
-		<jetty.version>7.4.4.v20110707</jetty.version>
-		<eds.version>1.0.11-SNAPSHOT</eds.version>
+		<jetty.version>7.4.5.v20110725</jetty.version>
+		<eds.version>1.0.11</eds.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.debug>true</maven.compiler.debug>
@@ -194,6 +194,7 @@
 			<url>http://maven.springframework.org/snapshot</url>
 			<snapshots><enabled>true</enabled></snapshots>
 		</repository>		
+
 
 	</repositories>
 
