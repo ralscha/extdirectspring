@@ -19,7 +19,7 @@
 	    <script src="login.js"></script>
     </c:if>
     <c:if test="${not isDevelopment}">
-        <link rel="stylesheet" type="text/css" href="wro/app.css?v=<spring:eval expression='@environment["application.version"]'/>" />
+        <link rel="stylesheet" type="text/css" href="wro/login.css?v=<spring:eval expression='@environment["application.version"]'/>" />
 	    <script src="http://extjs.cachefly.net/ext-4.0.2a/ext-all.js"></script> 
 		<script src="wro/login.js?v=<spring:eval expression='@environment["application.version"]'/>"></script>        
 	</c:if>
