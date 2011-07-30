@@ -18,9 +18,9 @@
 
 		<slf4j.version>1.6.1</slf4j.version>
 		<logback.version>0.9.29</logback.version>
-		<tomcat.version>7.0.16</tomcat.version>
+		<tomcat.version>7.0.19</tomcat.version>
 
-		<eds.version>1.0.11-SNAPSHOT</eds.version>
+		<eds.version>1.0.11</eds.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.debug>true</maven.compiler.debug>
@@ -386,7 +386,7 @@
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>7.4.4.v20110707</version>
+				<version>7.4.5.v20110725</version>
 				<configuration>
 					<stopPort>8005</stopPort>
 					<stopKey>STOP</stopKey>

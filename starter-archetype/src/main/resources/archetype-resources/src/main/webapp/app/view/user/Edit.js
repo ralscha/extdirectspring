@@ -9,6 +9,8 @@ Ext.define('Starter.view.user.Edit', {
 	width: 400,
 	modal: true,
 
+	iconCls: 'icon-user-edit',
+
 	requires: ['Ext.ux.form.ItemSelector'],
 	
 	initComponent: function() {
@@ -93,11 +95,13 @@ Ext.define('Starter.view.user.Edit', {
 			buttons: [ {
 				xtype: 'button',
 				text: i18n.save,
-				action : 'save'		
+				action : 'save',
+				iconCls: 'icon-save'
 			}, {
 				text: i18n.cancel,
 				scope: this,
-				handler: this.close
+				handler: this.close,
+				iconCls: 'icon-cancel'
 			} ]
 		} ];
 

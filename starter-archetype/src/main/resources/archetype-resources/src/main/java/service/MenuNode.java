@@ -19,6 +19,7 @@ public class MenuNode {
 	private String view;
 	private boolean leaf;
 	private boolean expanded;
+	private String iconCls;
 
 	@JsonIgnore
 	private Set<String> roles = Sets.newHashSet();
@@ -30,9 +31,10 @@ public class MenuNode {
 	}
 
 	public MenuNode(MenuNode source, Collection<? extends GrantedAuthority> authorities) {
-		this.text = source.text;
-		this.view = source.view;
-		this.expanded = source.expanded;
+		this.text = source.getText();
+		this.view = source.getView();
+		this.expanded = source.isExpanded();
+		this.iconCls = source.getIconCls();
 
 		for (MenuNode sourceChild : source.getChildren()) {
 			if (hasRole(sourceChild, authorities)) {
@@ -108,6 +110,14 @@ public class MenuNode {
 
 	public void setExpanded(boolean expanded) {
 		this.expanded = expanded;
+	}
+
+	public String getIconCls() {
+		return iconCls;
+	}
+
+	public void setIconCls(String iconCls) {
+		this.iconCls = iconCls;
 	}
 
 }

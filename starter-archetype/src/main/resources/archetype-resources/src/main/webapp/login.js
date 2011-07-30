@@ -8,6 +8,7 @@ Ext.onReady(function() {
 		width: 320,
 		margin: '60px, 0, 0, 100px',
 		renderTo: Ext.getBody(),
+		iconCls: 'icon-login',
 
 		standardSubmit: true,
 
