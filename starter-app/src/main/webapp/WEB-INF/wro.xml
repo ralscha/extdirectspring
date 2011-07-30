@@ -38,6 +38,7 @@
 
   <group name="login">
     <js>/login.js</js>
+    <css>/css/app.css</css>
   </group>
 
 </groups>

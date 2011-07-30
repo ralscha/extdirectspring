@@ -50,17 +50,17 @@ Ext.define('Starter.view.user.List', {
 				text: i18n.user_new,
 				disabled: false,
 				action: 'add',
-				iconCls: 'icon-add'
+				iconCls: 'icon-user-add'
 			}, {
 				text: i18n.user_edit,
 				disabled: true,
 				action: 'edit',
-				iconCls: 'icon-edit'
+				iconCls: 'icon-user-edit'
 			}, {
 				text: i18n.user_delete,
 				disabled: true,
 				action: 'delete',
-				iconCls: 'icon-delete'
+				iconCls: 'icon-user-delete'
 			}, '->', {
 				fieldLabel: i18n.filter,
 				labelWidth: 40,

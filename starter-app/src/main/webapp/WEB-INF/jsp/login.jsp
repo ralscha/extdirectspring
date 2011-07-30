@@ -14,10 +14,12 @@
     
     <spring:eval expression="@environment.acceptsProfiles('development')" var="isDevelopment" />    
     <c:if test="${isDevelopment}">
+        <link rel="stylesheet" type="text/css" href="css/app.css">
 	    <script src="http://extjs.cachefly.net/ext-4.0.2a/ext-all-debug.js"></script>	    
 	    <script src="login.js"></script>
     </c:if>
     <c:if test="${not isDevelopment}">
+        <link rel="stylesheet" type="text/css" href="wro/app.css?v=<spring:eval expression='@environment["application.version"]'/>" />
 	    <script src="http://extjs.cachefly.net/ext-4.0.2a/ext-all.js"></script> 
 		<script src="wro/login.js?v=<spring:eval expression='@environment["application.version"]'/>"></script>        
 	</c:if>

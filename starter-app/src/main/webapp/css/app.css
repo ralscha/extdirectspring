@@ -12,16 +12,48 @@
 	white-space: nowrap;
 }
 
-.icon-add {
-	background-image: url(add.png) !important;
+.icon-user-add {
+	background-image: url(user_add.png) !important;
 }
 
-.icon-edit {
-	background-image: url(edit.png) !important;
+.icon-user-edit {
+	background-image: url(user_edit.png) !important;
 }
 
-.icon-delete {
-	background-image: url(delete.png) !important;
+.icon-user-delete {
+	background-image: url(user_delete.png) !important;
+}
+
+.icon-users {
+	background-image: url(users.png) !important;
+}
+
+.icon-gear {
+	background-image: url(gear.png) !important;
+}
+
+.icon-administration {
+	background-image: url(administration.png) !important;
+}
+
+.icon-business {
+	background-image: url(business.png) !important;
+}
+
+.icon-save {
+	background-image: url(save.png) !important;
+}
+
+.icon-cancel {
+	background-image: url(cancel.png) !important;
+}
+
+.icon-logout {
+	background-image: url(logout.png) !important;
+}
+
+.icon-login {
+	background-image: url(login.png) !important;
 }
 
 .icon-start {
@@ -46,7 +78,6 @@
 	padding: 1em !important;
 	width: auto !important;
 }
-
 
 /* ClearButton */
 .ext-ux-clearbutton {
