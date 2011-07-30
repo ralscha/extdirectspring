@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.controller;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.MapAssert.entry;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
@@ -177,7 +178,10 @@ public class RouterControllerStoreReadTest {
 		storeRead.setSort("id");
 		storeRead.setDir("ASC");
 		storeRead.setLimit(10);
-		storeRead.setStart(10);
+		storeRead.setStart(10);		
+		assertTrue(storeRead.isAscendingSort());
+		assertFalse(storeRead.isDescendingSort());
+		
 		resp = executeWithExtDirectStoreReadRequest(storeRead);
 		storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
 		assertEquals(Integer.valueOf(100), storeResponse.getTotal());
@@ -193,7 +197,10 @@ public class RouterControllerStoreReadTest {
 		storeRead.setSort("id");
 		storeRead.setDir("DESC");
 		storeRead.setLimit(10);
-		storeRead.setStart(20);
+		storeRead.setStart(20);		
+		assertFalse(storeRead.isAscendingSort());
+		assertTrue(storeRead.isDescendingSort());
+		
 		resp = executeWithExtDirectStoreReadRequest(storeRead);
 		storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
 		assertEquals(Integer.valueOf(100), storeResponse.getTotal());
@@ -209,7 +216,10 @@ public class RouterControllerStoreReadTest {
 		storeRead.setGroupBy("id");
 		storeRead.setGroupDir("ASC");
 		storeRead.setLimit(10);
-		storeRead.setStart(10);
+		storeRead.setStart(10);		
+		assertTrue(storeRead.isAscendingGroupSort());
+		assertFalse(storeRead.isDescendingGroupSort());
+		
 		resp = executeWithExtDirectStoreReadRequest(storeRead);
 		storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
 		assertEquals(Integer.valueOf(100), storeResponse.getTotal());
@@ -226,6 +236,9 @@ public class RouterControllerStoreReadTest {
 		storeRead.setGroupDir("DESC");
 		storeRead.setLimit(10);
 		storeRead.setStart(20);
+		assertFalse(storeRead.isAscendingGroupSort());
+		assertTrue(storeRead.isDescendingGroupSort());
+		
 		resp = executeWithExtDirectStoreReadRequest(storeRead);
 		storeResponse = (ExtDirectStoreResponse<Row>) resp.getResult();
 		assertEquals(Integer.valueOf(100), storeResponse.getTotal());

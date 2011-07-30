@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.itest;
+package ch.ralscha.extdirectspring.provider;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,35 +27,15 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
-@Controller
-@RequestMapping("/exceptionTest")
-public class ExceptionFormPostController {
+@Service
+public class WrongFormPostController {
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_upload")
-	@RequestMapping(value = "/throwIt", method = RequestMethod.POST)
+	@ExtDirectMethod(ExtDirectMethodType.FORM_POST)
 	@ResponseBody
-	public ExtDirectResponse throwAException(HttpServletRequest request) {
-
-		@SuppressWarnings("unused")
+	@RequestMapping(value = "/wrong", method = RequestMethod.POST)
+	public ExtDirectResponse updateInfo1(HttpServletRequest request) {
 		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-
-		throw new NullPointerException("a null pointer");
-
-
-		//return builder.build();
+		return builder.build();
 	}
-
-	//todo this only works with the new spring 3.1
-//	@ExceptionHandler(Exception.class)
-//	@ResponseBody
-//	public ExtDirectResponse handleException(HttpServletRequest request) {
-//		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-//		builder.unsuccessful();
-//	
-//		ExtDirectResponse response = builder.build();
-//		response.setType("exception");
-//		response.setMessage("Server Error");
-//		return response;
-//	}
 	
 }

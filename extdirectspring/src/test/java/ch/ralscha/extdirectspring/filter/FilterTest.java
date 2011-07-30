@@ -63,6 +63,19 @@ public class FilterTest {
 		assertEquals(0, numericFilter.getValue().intValue());
 		assertSame(Comparison.EQUAL, numericFilter.getComparison());
 	}
+	
+	@Test
+	public void testNumericFilterWithoutType() {
+		Map<String, Object> json = new HashMap<String, Object>();
+		json.put("property", "aField");
+		json.put("value", 10);
+
+		Filter filter = Filter.createFilter(json, genericConversionService);
+		assertTrue(filter instanceof NumericFilter);
+		NumericFilter numericFilter = (NumericFilter) filter;
+		assertEquals("aField", numericFilter.getField());
+		assertEquals(10, numericFilter.getValue());
+	}		
 
 	@Test
 	public void testStringFilter() {
@@ -77,6 +90,19 @@ public class FilterTest {
 		assertEquals("aField", stringFilter.getField());
 		assertEquals("aString", stringFilter.getValue());
 	}
+	
+	@Test
+	public void testStringFilterWithoutType() {
+		Map<String, Object> json = new HashMap<String, Object>();
+		json.put("property", "aField");
+		json.put("value", "aString");
+
+		Filter filter = Filter.createFilter(json, genericConversionService);
+		assertTrue(filter instanceof StringFilter);
+		StringFilter stringFilter = (StringFilter) filter;
+		assertEquals("aField", stringFilter.getField());
+		assertEquals("aString", stringFilter.getValue());
+	}	
 
 	@Test
 	public void testDateFilter() {
@@ -127,6 +153,19 @@ public class FilterTest {
 		assertEquals("aField", booleanFilter.getField());
 		assertEquals(false, booleanFilter.getValue());
 	}
+	
+	@Test
+	public void testBooleanFilterWithoutType() {
+		Map<String, Object> json = new HashMap<String, Object>();
+		json.put("property", "aField");
+		json.put("value", false);
+
+		Filter filter = Filter.createFilter(json, genericConversionService);
+		assertTrue(filter instanceof BooleanFilter);
+		BooleanFilter booleanFilter = (BooleanFilter) filter;
+		assertEquals("aField", booleanFilter.getField());
+		assertEquals(false, booleanFilter.getValue());
+	}	
 
 	@Test
 	public void testNotExistsFilter() {
@@ -138,4 +177,13 @@ public class FilterTest {
 		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertNull(filter);
 	}
+	
+	@Test
+	public void testNoValue() {
+		Map<String, Object> json = new HashMap<String, Object>();
+		json.put("property", "aField");
+
+		Filter filter = Filter.createFilter(json, genericConversionService);
+		assertNull(filter);
+	}	
 }
