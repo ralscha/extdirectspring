@@ -280,6 +280,12 @@
 			<version>${tomcat.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.tycho</groupId>
+			<artifactId>org.eclipse.jdt.core</artifactId>
+			<version>3.7.0.v_B61</version>		
+			<scope>provided</scope>				
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
