@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,10 +30,13 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,19 +47,31 @@ public class MyModelControlerTest extends JettyTest {
 	private HttpPost post;
 		
 	@Before
-	public void beforeTest() {
+	public void beforeTest() throws ClientProtocolException, IOException {
 		client = new DefaultHttpClient();
 		post = new HttpPost("http://localhost:9998/controller/router");
+		
+		HttpGet g = new HttpGet("http://localhost:9998/controller/api.js?group=itest_base");
+		HttpResponse response = client.execute(g);
+		
+		String responseString = EntityUtils.toString(response.getEntity());
+		System.out.println(responseString);
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testPost() throws ClientProtocolException, IOException {
+		callMethod("update");
+		callMethod("method1");
+		callMethod("method2");
+	}
 
+	@SuppressWarnings("unchecked")
+	private void callMethod(String method) throws UnsupportedEncodingException, IOException, ClientProtocolException,
+			JsonParseException, JsonMappingException {
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
 		formparams.add(new BasicNameValuePair("extAction", "myModelController"));
-		formparams.add(new BasicNameValuePair("extMethod", "update"));
+		formparams.add(new BasicNameValuePair("extMethod", method));
 		formparams.add(new BasicNameValuePair("extType", "rpc"));
 		formparams.add(new BasicNameValuePair("extUpload", "false"));
 		formparams.add(new BasicNameValuePair("name", "Jim"));
@@ -71,7 +87,7 @@ public class MyModelControlerTest extends JettyTest {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
 		assertEquals(5, rootAsMap.size());
-		assertEquals("update", rootAsMap.get("method"));
+		assertEquals(method, rootAsMap.get("method"));
 		assertEquals("rpc", rootAsMap.get("type"));
 		assertEquals("myModelController", rootAsMap.get("action"));
 		assertEquals(3, rootAsMap.get("tid"));

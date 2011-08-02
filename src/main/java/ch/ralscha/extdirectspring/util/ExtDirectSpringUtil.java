@@ -17,8 +17,9 @@ package ch.ralscha.extdirectspring.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ReflectionUtils;
@@ -88,15 +89,17 @@ public class ExtDirectSpringUtil {
 		}
 
 		Object bean = context.getBean(beanName);
-		Method method = BeanUtils.findMethodWithMinimalParameters(bean.getClass(), methodName);
+		List<Method> methods = findMethodsWithMinimalParameters(bean.getClass(), methodName);
 
-		if (method != null) {
-			if (AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) == null) {
-				throw new IllegalArgumentException("Invalid remoting method '" + beanName + "." + methodName
-						+ "'. Missing ExtDirectMethod annotation");
+		if (methods != null) {			
+			for (Method method : methods) {
+				if (AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) != null) {
+					return MethodInfoCache.INSTANCE.put(beanName, methodName, bean.getClass(), method);
+				}
 			}
 
-			return MethodInfoCache.INSTANCE.put(beanName, methodName, bean.getClass(), method);
+			throw new IllegalArgumentException("Invalid remoting method '" + beanName + "." + methodName
+					+ "'. Missing ExtDirectMethod annotation");
 		}
 
 		throw new IllegalArgumentException("Method '" + beanName + "." + methodName + "' not found");
@@ -130,5 +133,48 @@ public class ExtDirectSpringUtil {
 	}
 
 
+	private static List<Method> findMethodsWithMinimalParameters(Class<?> clazz, String methodName)
+			throws IllegalArgumentException {
+
+		List<Method> targetMethod = findMethodsWithMinimalParameters(clazz.getMethods(), methodName);
+		if (targetMethod == null) {
+			targetMethod = findDeclaredMethodsWithMinimalParameters(clazz, methodName);
+		}
+		return targetMethod;
+	}
+	
+	private static List<Method> findDeclaredMethodsWithMinimalParameters(Class<?> clazz, String methodName)
+			throws IllegalArgumentException {
+
+		List<Method> targetMethod = findMethodsWithMinimalParameters(clazz.getDeclaredMethods(), methodName);
+		if (targetMethod == null && clazz.getSuperclass() != null) {
+			targetMethod = findDeclaredMethodsWithMinimalParameters(clazz.getSuperclass(), methodName);
+		}
+		return targetMethod;
+	}
+
+
+	private static List<Method> findMethodsWithMinimalParameters(Method[] methods, String methodName)
+			throws IllegalArgumentException {
+
+		List<Method> targetMethods = null;
+		for (Method method : methods) {
+			if (method.getName().equals(methodName)) {
+				int numParams = method.getParameterTypes().length;
+				if (targetMethods == null || numParams < targetMethods.get(0).getParameterTypes().length) {
+					targetMethods = new ArrayList<Method>();
+					targetMethods.add(method);
+				}
+				else {
+					if (targetMethods.get(0).getParameterTypes().length == numParams) {
+						targetMethods.add(method);
+					}
+				}
+			}
+		}
+		
+		return targetMethods;		
+	}
+	
 
 }

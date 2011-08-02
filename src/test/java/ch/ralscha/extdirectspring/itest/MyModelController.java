@@ -15,11 +15,37 @@
  */
 package ch.ralscha.extdirectspring.itest;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 @Controller
 @RequestMapping("myModel")
 public class MyModelController extends BaseController<MyModel> {
-	//nothing here
+
+	@Override
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group="itest_base")
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.POST)	
+	public ExtDirectResponse method1(HttpServletRequest request, MyModel model, BindingResult result) {
+		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
+		builder.addErrors(result);
+		return builder.build();
+	}
+
+	@Override
+	public ExtDirectResponse method2(HttpServletRequest request, MyModel model, BindingResult result) {
+		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
+		builder.addErrors(result);
+		return builder.build();
+	}
 }
