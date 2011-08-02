@@ -28,7 +28,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
-public class BaseController<T> {
+public abstract class BaseController<T> {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group="itest_base")
 	@ResponseBody
@@ -38,5 +38,13 @@ public class BaseController<T> {
 		builder.addErrors(result);
 		return builder.build();
 	}
+	
+	public abstract ExtDirectResponse method1(HttpServletRequest request, @Valid T model, BindingResult result);
+	
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group="itest_base")
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.POST)
+	public abstract ExtDirectResponse method2(HttpServletRequest request, @Valid T model, BindingResult result) ;		
+	
 
 }

@@ -103,10 +103,15 @@ class RemotingApi {
 			actions.put(beanName, beanActions);
 		}
 
+		Action action;
 		if (parameterNames == null) { 
-			beanActions.add(new Action(methodName, len, formHandler));
+			action = new Action(methodName, len, formHandler);
 		} else {
-			beanActions.add(new Action(methodName, parameterNames));
+			action = new Action(methodName, parameterNames);
+		}
+		
+		if (!beanActions.contains(action)) {
+			beanActions.add(action);
 		}
 	}
 
