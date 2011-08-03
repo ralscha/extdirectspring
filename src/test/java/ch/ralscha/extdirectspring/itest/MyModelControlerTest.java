@@ -15,8 +15,8 @@
  */
 package ch.ralscha.extdirectspring.itest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.MapAssert.entry;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -40,22 +40,47 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
-
 public class MyModelControlerTest extends JettyTest {
 
 	private HttpClient client;
 	private HttpPost post;
-		
+
 	@Before
-	public void beforeTest() throws ClientProtocolException, IOException {
+	public void beforeTest() {
 		client = new DefaultHttpClient();
 		post = new HttpPost("http://localhost:9998/controller/router");
-		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testApi() throws ClientProtocolException, IOException {
 		HttpGet g = new HttpGet("http://localhost:9998/controller/api.js?group=itest_base");
 		HttpResponse response = client.execute(g);
-		
+
 		String responseString = EntityUtils.toString(response.getEntity());
-		System.out.println(responseString);
+		
+		assertThat(responseString).startsWith("Ext.ns('Ext.app');");
+		
+		int openBracePos = responseString.indexOf("{");
+		int closeBracePos = responseString.lastIndexOf("}");
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> api = mapper.readValue(responseString.substring(openBracePos, closeBracePos+1), Map.class);
+		
+		assertThat(api).hasSize(3);		
+		assertThat(api).includes(entry("type", "remoting"));
+		assertThat(api).includes(entry("url", "/controller/router"));
+		
+		Map<String,Object> actions = (Map<String,Object>)api.get("actions");
+		assertThat(actions).hasSize(1);
+		List<Map<String,Object>> actionList = (List<Map<String,Object>>)actions.get("myModelController");		
+		assertThat(actionList).hasSize(3);
+		
+		for (Map<String, Object> map : actionList) {
+			assertThat((Boolean)map.get("formHandler")).isTrue();
+			assertThat((Integer)map.get("len")).isZero();	
+			assertThat((String)map.get("name")).isIn("method1", "method2", "update");
+		}		
 	}
 
 	@Test
@@ -81,18 +106,18 @@ public class MyModelControlerTest extends JettyTest {
 
 		HttpResponse response = client.execute(post);
 		HttpEntity entity = response.getEntity();
-		assertNotNull(entity);
+		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
 
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-		assertEquals(5, rootAsMap.size());
-		assertEquals(method, rootAsMap.get("method"));
-		assertEquals("rpc", rootAsMap.get("type"));
-		assertEquals("myModelController", rootAsMap.get("action"));
-		assertEquals(3, rootAsMap.get("tid"));
+		assertThat(rootAsMap).hasSize(5);
+		assertThat(rootAsMap.get("method")).isEqualTo(method);
+		assertThat(rootAsMap.get("type")).isEqualTo("rpc");		
+		assertThat(rootAsMap.get("action")).isEqualTo("myModelController");
+		assertThat(rootAsMap.get("tid")).isEqualTo(3);
 
 		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertEquals(true, result.get("success"));
+		assertThat((Boolean)result.get("success")).isTrue();
 	}
 }
