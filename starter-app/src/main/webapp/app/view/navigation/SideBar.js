@@ -1,6 +1,7 @@
 Ext.define('Starter.view.navigation.SideBar', {
 	alias: 'widget.sidebar',
 	extend: 'Ext.panel.Panel',
+	stateId: 'sidebar',
 
 	title: i18n.navigation,
 	collapsible: true,
@@ -9,7 +10,8 @@ Ext.define('Starter.view.navigation.SideBar', {
 	maxWidth: 200,		
 		
 	initComponent: function() {
-		this.items = [ {
+		var me = this;
+		me.items = [ {
 			xtype: 'treepanel',
 			border: 0,
 	        store: 'Navigation',
@@ -17,7 +19,7 @@ Ext.define('Starter.view.navigation.SideBar', {
 	        animate: false
 		} ];
 
-		this.callParent(arguments);
+		me.callParent(arguments);
 
 	}
 });

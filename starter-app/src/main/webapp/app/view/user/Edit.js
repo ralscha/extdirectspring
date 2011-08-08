@@ -1,7 +1,8 @@
 Ext.define('Starter.view.user.Edit', {
 	extend: 'Ext.window.Window',
 	alias: 'widget.useredit',
-
+	stateId: 'userEdit',
+	
 	title: i18n.user_edit,
 	layout: 'fit',
 	autoShow: true,
@@ -14,7 +15,9 @@ Ext.define('Starter.view.user.Edit', {
 	requires: ['Ext.ux.form.ItemSelector'],
 	
 	initComponent: function() {
-		this.items = [ {
+		var me = this;
+		
+		me.items = [ {
 			xtype: 'form',
 			padding: 5,
 			bodyPadding: 10,
@@ -99,12 +102,12 @@ Ext.define('Starter.view.user.Edit', {
 				iconCls: 'icon-save'
 			}, {
 				text: i18n.cancel,
-				scope: this,
-				handler: this.close,
+				scope: me,
+				handler: me.close,
 				iconCls: 'icon-cancel'
 			} ]
 		} ];
 
-		this.callParent(arguments);
+		me.callParent(arguments);
 	}
 });

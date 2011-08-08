@@ -1,49 +1,54 @@
 Ext.define('Starter.view.user.List', {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.userlist',
+	stateId: 'userList',
 	store: 'Users',
 
 	title: i18n.user_users,
 	closable: true,
-	
-	requires: ['Starter.component.FilterField'],
 
-	columns: [ {
-		header: 'ID',
-		dataIndex: 'id',
-		width: 50,
-		sortable: false
-	}, {
-		header: i18n.user_username,
-		dataIndex: 'userName',
-		flex: 1
-	}, {
-		header: i18n.user_firstname,
-		dataIndex: 'firstName',
-		flex: 1
-	}, {
-		header: i18n.user_lastname,
-		dataIndex: 'name',
-		flex: 1
-	}, {
-		header: i18n.user_email,
-		dataIndex: 'email',
-		flex: 1
-	}, {
-		header: i18n.user_enabled,
-		dataIndex: 'enabled',
-		width: 70,
-		renderer: function(value) {
-			if (value === true) {
-				return i18n.yes;
-			}
-			return '';
-		}
-	} ],
+	stateId: 'userList',
+	
+	requires: [ 'Starter.component.FilterField' ],
 
 	initComponent: function() {
 
-		this.dockedItems = [ {
+		var me = this;
+
+		me.columns = [ {
+			header: 'ID',
+			dataIndex: 'id',
+			width: 50,
+			sortable: false
+		}, {
+			header: i18n.user_username,
+			dataIndex: 'userName',
+			flex: 1
+		}, {
+			header: i18n.user_firstname,
+			dataIndex: 'firstName',
+			flex: 1
+		}, {
+			header: i18n.user_lastname,
+			dataIndex: 'name',
+			flex: 1
+		}, {
+			header: i18n.user_email,
+			dataIndex: 'email',
+			flex: 1
+		}, {
+			header: i18n.user_enabled,
+			dataIndex: 'enabled',
+			width: 70,
+			renderer: function(value) {
+				if (value === true) {
+					return i18n.yes;
+				}
+				return '';
+			}
+		} ];
+
+		me.dockedItems = [ {
 			xtype: 'toolbar',
 			dock: 'top',
 			items: [ {
@@ -65,12 +70,12 @@ Ext.define('Starter.view.user.List', {
 				text: i18n.user_excelexport,
 				action: 'export',
 				iconCls: 'icon-excel',
-				href: 'usersExport.xls',				
+				href: 'usersExport.xls',
 				target: '_self',
 			}, '->', {
 				fieldLabel: i18n.filter,
 				labelWidth: 40,
-				xtype: 'filterfield'				
+				xtype: 'filterfield'
 			} ]
 		}, {
 			xtype: 'pagingtoolbar',
@@ -81,7 +86,7 @@ Ext.define('Starter.view.user.List', {
 			emptyMsg: i18n.user_no
 		} ];
 
-		this.callParent(arguments);
+		me.callParent(arguments);
 
 	}
 
