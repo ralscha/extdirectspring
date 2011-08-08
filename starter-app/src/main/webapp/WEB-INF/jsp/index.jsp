@@ -14,7 +14,7 @@
     
     <spring:eval expression="@environment.acceptsProfiles('development')" var="isDevelopment" />
     <c:if test="${isDevelopment}">  
-	    <link rel="stylesheet" type="text/css" href="css/app.css">
+	    <link rel="stylesheet" type="text/css" href="resources/css/app.css">
 	    <link rel="stylesheet" type="text/css" href="http://extjs.cachefly.net/ext-4.0.2a/examples/ux/css/ItemSelector.css">
 	    
 	    <script src="http://extjs.cachefly.net/ext-4.0.2a/ext-all-debug.js"></script>

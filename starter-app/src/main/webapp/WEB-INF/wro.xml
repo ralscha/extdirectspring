@@ -32,13 +32,13 @@
     <js>/app/controller/Users.js</js>
     <js>/app.js</js>
     
-    <css>/css/app.css</css>
+    <css>/resources/css/app.css</css>
     <css>http://extjs.cachefly.net/ext-4.0.2a/examples/ux/css/ItemSelector.css</css>
   </group>
 
   <group name="login">
     <js>/login.js</js>
-    <css>/css/app.css</css>
+    <css>/resources/css/app.css</css>
   </group>
 
 </groups>
