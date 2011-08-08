@@ -6,8 +6,6 @@ Ext.define('Starter.view.user.List', {
 
 	title: i18n.user_users,
 	closable: true,
-
-	stateId: 'userList',
 	
 	requires: [ 'Starter.component.FilterField' ],
 
