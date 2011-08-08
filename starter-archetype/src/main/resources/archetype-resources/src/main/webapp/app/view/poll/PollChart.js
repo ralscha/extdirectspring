@@ -10,6 +10,7 @@ Ext.define('Starter.view.poll.PollChart', {
 	requires: [ 'Ext.chart.*' ],
 
 	initComponent: function() {
+		var me = this;
 
 		var store = Ext.StoreManager.get('PollChart');
 		if (!store.getCount()) {
@@ -21,7 +22,7 @@ Ext.define('Starter.view.poll.PollChart', {
 			}
 		}
 
-		this.dockedItems = [ {
+		me.dockedItems = [ {
 			xtype: 'toolbar',
 			items: [ {
 				text: i18n.chart_stop,
@@ -30,7 +31,7 @@ Ext.define('Starter.view.poll.PollChart', {
 			} ]
 		} ];
 
-		this.items = [ {
+		me.items = [ {
 			xtype: 'chart',
 			animate: true,
 			shadow: true,
@@ -71,7 +72,8 @@ Ext.define('Starter.view.poll.PollChart', {
 				tips: {
 					width: 130,
 					renderer: function(storeItem, item) {
-						this.setTitle(i18n.chart_received + ' ' + storeItem.get('points') + ' '+i18n.chart_pointsat+' ' + storeItem.get('time'));
+						me.setTitle(i18n.chart_received + ' ' + storeItem.get('points') + ' ' + i18n.chart_pointsat
+								+ ' ' + storeItem.get('time'));
 					}
 				},
 				axis: 'left',
@@ -87,6 +89,6 @@ Ext.define('Starter.view.poll.PollChart', {
 			} ]
 		} ];
 
-		this.callParent(arguments);
+		me.callParent(arguments);
 	}
 });

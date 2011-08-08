@@ -7,7 +7,9 @@ Ext.define('Starter.view.navigation.Header', {
 		align: 'stretch'
 	},
 
-	items: [ {
+	initComponent: function() {
+		var me = this;
+		me.items = [ {
 		html: 'Starter',
 		cls: 'appHeader'
 	}, {
@@ -38,5 +40,10 @@ Ext.define('Starter.view.navigation.Header', {
 			bottom: 10,
 			left: 0
 		}
-	} ]
+		} ];
+
+		me.callParent(arguments);
+
+	}
+
 });

@@ -17,7 +17,7 @@
     
     <spring:eval expression="@environment.acceptsProfiles('development')" var="isDevelopment" />    
     <c:if test="${symbol_dollar}{isDevelopment}">
-        <link rel="stylesheet" type="text/css" href="css/app.css">
+        <link rel="stylesheet" type="text/css" href="resources/css/app.css">
 	    <script src="http://extjs.cachefly.net/ext-4.0.2a/ext-all-debug.js"></script>	    
 	    <script src="login.js"></script>
     </c:if>

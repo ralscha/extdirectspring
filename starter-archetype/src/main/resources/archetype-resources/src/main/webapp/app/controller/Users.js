@@ -47,8 +47,13 @@ Ext.define('Starter.controller.Users', {
 			myStore.clearFilter(true);
 			myStore.remoteFilter = true;
 			myStore.filter('filter', newValue);
+			
+			this.getUserList().down('button[action=export]').setParams({
+				filter: newValue
+			});			
 		} else {
 			myStore.clearFilter();
+			this.getUserList().down('button[action=export]').setParams();				
 		}
 	},
 

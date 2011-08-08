@@ -1,6 +1,6 @@
 .appHeader .x-panel-body {
 	background-color: transparent;
-	background-image: url(windup_key.png);
+	background-image: url(../images/windup_key.png);
 	background-repeat: no-repeat;
 	background-position: 2px 2px;
 	padding: 1px 0px 0px 30px;
@@ -13,64 +13,68 @@
 }
 
 .icon-user-add {
-	background-image: url(user_add.png) !important;
+	background-image: url(../images/user_add.png) !important;
 }
 
 .icon-user-edit {
-	background-image: url(user_edit.png) !important;
+	background-image: url(../images/user_edit.png) !important;
 }
 
 .icon-user-delete {
-	background-image: url(user_delete.png) !important;
+	background-image: url(../images/user_delete.png) !important;
 }
 
 .icon-users {
-	background-image: url(users.png) !important;
+	background-image: url(../images/users.png) !important;
 }
 
 .icon-gear {
-	background-image: url(gear.png) !important;
+	background-image: url(../images/gear.png) !important;
 }
 
 .icon-administration {
-	background-image: url(administration.png) !important;
+	background-image: url(../images/administration.png) !important;
 }
 
 .icon-business {
-	background-image: url(business.png) !important;
+	background-image: url(../images/business.png) !important;
 }
 
 .icon-save {
-	background-image: url(save.png) !important;
+	background-image: url(../images/save.png) !important;
 }
 
 .icon-cancel {
-	background-image: url(cancel.png) !important;
+	background-image: url(../images/cancel.png) !important;
 }
 
 .icon-logout {
-	background-image: url(logout.png) !important;
+	background-image: url(../images/logout.png) !important;
 }
 
 .icon-login {
-	background-image: url(login.png) !important;
+	background-image: url(../images/login.png) !important;
 }
 
 .icon-start {
-	background-image: url(start.png) !important;
+	background-image: url(../images/start.png) !important;
 }
 
 .icon-stop {
-	background-image: url(stop.png) !important;
+	background-image: url(../images/stop.png) !important;
+}
+
+.icon-excel {
+	background-image: url(../images/excel.gif) !important;
 }
 
 /* Notification */
 .x-icon-error {
-	background-image: url(exclamation.gif) !important;
+	background-image: url(../images/exclamation.gif) !important;
 }
 
 .x-icon-information {
-	background-image: url(information.gif) !important;
+	background-image: url(../images/information.gif) !important;
 }
 
 .x-notification .x-window-body {
@@ -83,7 +87,7 @@
 .ext-ux-clearbutton {
 	width: 12px;
 	height: 12px;
-	background-image: url(clear-text-icon.gif);
+	background-image: url(../images/clear-text-icon.gif);
 	background-position: 0 0;
 	background-repeat: no-repeat;
 	-moz-user-focus: ignore; /* https://developer.mozilla.org/en/CSS/-moz-user-focus */

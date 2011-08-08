@@ -1,6 +1,7 @@
 Ext.define('Starter.view.user.List', {
 	extend: 'Ext.grid.Panel',
 	alias: 'widget.userlist',
+	stateId: 'userList',
 	store: 'Users',
 
 	title: i18n.user_users,
@@ -8,7 +9,11 @@ Ext.define('Starter.view.user.List', {
 	
 	requires: ['Starter.component.FilterField'],
 
-	columns: [ {
+	initComponent: function() {
+
+		var me = this;
+
+		me.columns = [ {
 		header: 'ID',
 		dataIndex: 'id',
 		width: 50,
@@ -39,11 +44,9 @@ Ext.define('Starter.view.user.List', {
 			}
 			return '';
 		}
-	} ],
+		} ];
 
-	initComponent: function() {
-
-		this.dockedItems = [ {
+		me.dockedItems = [ {
 			xtype: 'toolbar',
 			dock: 'top',
 			items: [ {
@@ -61,6 +64,12 @@ Ext.define('Starter.view.user.List', {
 				disabled: true,
 				action: 'delete',
 				iconCls: 'icon-user-delete'
+			}, '-', {
+				text: i18n.user_excelexport,
+				action: 'export',
+				iconCls: 'icon-excel',
+				href: 'usersExport.xls',
+				target: '_self',
 			}, '->', {
 				fieldLabel: i18n.filter,
 				labelWidth: 40,
@@ -75,7 +84,7 @@ Ext.define('Starter.view.user.List', {
 			emptyMsg: i18n.user_no
 		} ];
 
-		this.callParent(arguments);
+		me.callParent(arguments);
 
 	}
 
