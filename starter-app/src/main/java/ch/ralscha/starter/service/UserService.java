@@ -37,6 +37,7 @@ import ch.ralscha.starter.entity.QUser;
 import ch.ralscha.starter.entity.Role;
 import ch.ralscha.starter.entity.User;
 import ch.ralscha.starter.repository.RoleRepository;
+import ch.ralscha.starter.repository.UserCustomRepository;
 import ch.ralscha.starter.repository.UserRepository;
 import ch.ralscha.starter.util.Util;
 
@@ -55,6 +56,9 @@ public class UserService {
 	private RoleRepository roleRepository;
 
 	@Autowired
+	private UserCustomRepository userCustomRepository;
+	
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
@@ -64,24 +68,13 @@ public class UserService {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ExtDirectStoreResponse<User> load(ExtDirectStoreReadRequest request) {
 
-		Page<User> page;
-		if (request.getFilters().isEmpty()) {
-			page = userRepository.findAll(Util.createPageRequest(request));
-		} else {
+		String filterValue = null;
+		if (!request.getFilters().isEmpty()) {
 			StringFilter filter = (StringFilter) request.getFilters().iterator().next();
-			String filterValue = filter.getValue();
-
-			BooleanBuilder bb = new BooleanBuilder();
-			if (StringUtils.hasText(filterValue)) {
-				String likeValue = "%" + filterValue.toLowerCase() + "%";
-				bb.or(QUser.user.userName.lower().like(likeValue));
-				bb.or(QUser.user.name.lower().like(likeValue));
-				bb.or(QUser.user.firstName.lower().like(likeValue));
-				bb.or(QUser.user.email.lower().like(likeValue));
-			}
-
-			page = userRepository.findAll(bb, Util.createPageRequest(request));
+			filterValue = filter.getValue();
 		}
+		
+		Page<User> page = userCustomRepository.findWithFilter(filterValue, Util.createPageRequest(request));
 		return new ExtDirectStoreResponse<User>((int) page.getTotalElements(), page.getContent());
 	}
 

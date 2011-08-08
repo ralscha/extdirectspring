@@ -61,6 +61,12 @@ Ext.define('Starter.view.user.List', {
 				disabled: true,
 				action: 'delete',
 				iconCls: 'icon-user-delete'
+			}, '-', {
+				text: i18n.user_excelexport,
+				action: 'export',
+				iconCls: 'icon-excel',
+				href: 'usersExport.xls',				
+				target: '_self',
 			}, '->', {
 				fieldLabel: i18n.filter,
 				labelWidth: 40,

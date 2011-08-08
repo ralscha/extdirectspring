@@ -64,6 +64,10 @@
 	background-image: url(stop.png) !important;
 }
 
+.icon-excel {
+	background-image: url(excel.gif) !important;
+}
+
 /* Notification */
 .x-icon-error {
 	background-image: url(exclamation.gif) !important;
