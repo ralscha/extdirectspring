@@ -56,11 +56,11 @@
 		<addPrimaryKey columnNames="userId,roleId" constraintName="PK_UserRoles" tableName="UserRoles" />
 		
 		<addForeignKeyConstraint baseColumnNames="userId" baseTableName="UserRoles" constraintName="FK_UserRoles_User"
-			deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id"
+			referencedColumnNames="id"
 			referencedTableName="User" />		
 		
 		<addForeignKeyConstraint baseColumnNames="roleId" baseTableName="UserRoles" constraintName="FK_UserRoles_Role"
-			deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id"
+			referencedColumnNames="id"
 			referencedTableName="Role" />			
 	</changeSet>
 	
