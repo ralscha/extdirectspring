@@ -15,6 +15,8 @@
  */
 package ch.ralscha.extdirectspring.provider;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.MapAssert.entry;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -91,6 +93,10 @@ public class RemoteProviderStoreRead {
 			@RequestParam(value = "id") int id) {
 		assertEquals(10, id);
 		assertEquals(Locale.ENGLISH, locale);
+		
+		assertEquals(1, request.getParams().size());
+		assertThat(request.getParams()).includes(entry("id", 10));
+		
 		return createExtDirectStoreResponse(request);
 	}
 
