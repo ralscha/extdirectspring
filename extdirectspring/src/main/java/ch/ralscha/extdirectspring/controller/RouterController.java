@@ -152,15 +152,16 @@ public class RouterController implements InitializingBean {
 				if (session != null) {
 					Object mutex = WebUtils.getSessionMutex(session);
 					synchronized (mutex) {
-						directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
+						directPollResponse.setData(ExtDirectSpringUtil
+								.invoke(context, beanName, methodInfo, parameters));
 					}
 				} else {
 					directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
 				}
-			} else {			
+			} else {
 				directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
 			}
-			
+
 		} catch (Exception e) {
 			log.error("Error polling method '" + beanName + "." + method + "'", e.getCause() != null ? e.getCause() : e);
 			handleException(directPollResponse, e);
@@ -368,8 +369,10 @@ public class RouterController implements InitializingBean {
 		if (jsonValue != null) {
 			if (methodParameter.getType().equals(jsonValue.getClass())) {
 				return jsonValue;
-			} else if (conversionService.canConvert(TypeDescriptor.forObject(jsonValue), methodParameter.getTypeDescriptor())) {
-				return conversionService.convert(jsonValue, TypeDescriptor.forObject(jsonValue),  methodParameter.getTypeDescriptor());
+			} else if (conversionService.canConvert(TypeDescriptor.forObject(jsonValue),
+					methodParameter.getTypeDescriptor())) {
+				return conversionService.convert(jsonValue, TypeDescriptor.forObject(jsonValue),
+						methodParameter.getTypeDescriptor());
 			} else {
 				return jsonHandler.convertValue(jsonValue, methodParameter.getType());
 			}
@@ -411,22 +414,23 @@ public class RouterController implements InitializingBean {
 		Set<String> foundParameters = new HashSet<String>();
 
 		for (Entry<String, Object> entry : from.entrySet()) {
-			String key = entry.getKey();			
+			String key = entry.getKey();
 			Object value = entry.getValue();
-			
+
 			if (key.equals("filter")) {
 				List<Filter> filters = new ArrayList<Filter>();
-				
+
 				if (value instanceof String) {
 					List<Map<String, Object>> rawFilters = jsonHandler.readValue((String) value,
-							new TypeReference<List<Map<String, Object>>>() {/* empty */});
-	
+							new TypeReference<List<Map<String, Object>>>() {/* empty */
+							});
+
 					for (Map<String, Object> rawFilter : rawFilters) {
 						filters.add(Filter.createFilter(rawFilter, conversionService));
 					}
 				} else if (value instanceof List) {
 					@SuppressWarnings("unchecked")
-					List<Map<String, Object>> filterList = (List<Map<String, Object>>)value;
+					List<Map<String, Object>> filterList = (List<Map<String, Object>>) value;
 					for (Map<String, Object> filter : filterList) {
 						filters.add(Filter.createFilter(filter, conversionService));
 					}
@@ -503,6 +507,8 @@ public class RouterController implements InitializingBean {
 				remainingParameters.put(entry.getKey(), entry.getValue());
 			}
 		}
+		to.setParams(remainingParameters);
+
 		return remainingParameters;
 	}
 

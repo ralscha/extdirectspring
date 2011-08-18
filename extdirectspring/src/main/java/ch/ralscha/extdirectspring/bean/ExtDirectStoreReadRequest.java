@@ -15,9 +15,9 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -42,11 +42,13 @@ public class ExtDirectStoreReadRequest {
 	private List<SortInfo> sorters;
 	private List<GroupInfo> groups;
 	private List<Filter> filters;
+	private Map<String,Object> params;
 
 	public ExtDirectStoreReadRequest() {
 		this.filters = Collections.emptyList();
 		this.sorters = Collections.emptyList();
 		this.groups = Collections.emptyList();
+		this.params = Collections.emptyMap();
 	}
 
 	public String getQuery() {
@@ -125,8 +127,8 @@ public class ExtDirectStoreReadRequest {
 		return (SortDirection.fromString(getGroupDir()) == SortDirection.DESCENDING);
 	}
 
-	public Collection<Filter> getFilters() {
-		return Collections.unmodifiableCollection(filters);
+	public List<Filter> getFilters() {
+		return Collections.unmodifiableList(filters);
 	}
 
 	public void setFilters(final List<Filter> filters) {
@@ -141,8 +143,8 @@ public class ExtDirectStoreReadRequest {
 		this.page = page;
 	}
 	
-	public Collection<SortInfo> getSorters() {
-		return Collections.unmodifiableCollection(sorters);
+	public List<SortInfo> getSorters() {
+		return Collections.unmodifiableList(sorters);
 	}
 
 	public void setSorters(final List<SortInfo> sorters) {
@@ -150,11 +152,19 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	public List<GroupInfo> getGroups() {
-		return groups;
+		return Collections.unmodifiableList(groups);
 	}
 
 	public void setGroups(List<GroupInfo> groups) {
 		this.groups = groups;
+	}
+	
+	public Map<String, Object> getParams() {
+		return Collections.unmodifiableMap(params);
+	}
+
+	public void setParams(Map<String, Object> params) {
+		this.params = params;
 	}
 
 	@Override

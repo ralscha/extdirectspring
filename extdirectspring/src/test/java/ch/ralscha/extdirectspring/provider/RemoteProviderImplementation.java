@@ -28,6 +28,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.MapAssert.entry;
 
 @Service
 public class RemoteProviderImplementation implements RemoteProviderInterface {
@@ -48,6 +50,10 @@ public class RemoteProviderImplementation implements RemoteProviderInterface {
 		assertNotNull(request);
 		assertEquals("Smith", name);
 		assertTrue(active);
+		
+		assertEquals(2, request.getParams().size());
+		assertThat(request.getParams()).includes(entry("lastName", "Smith"));
+		assertThat(request.getParams()).includes(entry("active", true));
 		
 		List<Row> result = new ArrayList<Row>();
 		result.add(new Row(1, name, active, ""+age));
