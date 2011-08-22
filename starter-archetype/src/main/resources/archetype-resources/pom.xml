@@ -10,15 +10,15 @@
 		<spring.version>3.1.0.BUILD-SNAPSHOT</spring.version>
 		<spring.security.version>3.1.0.CI-SNAPSHOT</spring.security.version>
 
-		<hibernate.version>3.6.6.Final</hibernate.version>
+		<hibernate.version>3.6.7.Final</hibernate.version>
 		<hibernatevalidator.version>4.2.0.Final</hibernatevalidator.version>
 
 		<querydsl.version>2.2.1</querydsl.version>
 		<aspectj.version>1.6.11</aspectj.version>
 
-		<slf4j.version>1.6.1</slf4j.version>
+		<slf4j.version>1.6.2</slf4j.version>
 		<logback.version>0.9.29</logback.version>
-		<tomcat.version>7.0.19</tomcat.version>
+		<tomcat.version>7.0.20</tomcat.version>
 
 		<eds.version>1.0.11</eds.version>
 
@@ -242,11 +242,17 @@
 			</exclusions>
 		</dependency>
 
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-		</dependency>
+<dependency>
+    <groupId>javax.servlet.jsp.jstl</groupId>
+    <artifactId>jstl-api</artifactId>
+    <version>1.2</version>
+</dependency>
+
+<dependency>
+    <groupId>org.glassfish.web</groupId>
+    <artifactId>jstl-impl</artifactId>
+    <version>1.2</version>
+</dependency>
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -455,7 +461,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.8.1</version>
+				<version>2.9</version>
 			</plugin>
 
 			<plugin>
@@ -485,7 +491,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>3.0-beta-3</version>
+				<version>3.0</version>
 			</plugin>
 
 			<plugin>
