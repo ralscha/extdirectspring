@@ -85,7 +85,7 @@ class RemotingApi {
 	public void addAction(final String beanName, final String methodName, final Integer len) {
 		addAction(beanName, methodName, len, null, null);
 	}
-	
+
 	public void addAction(final String beanName, final String methodName, final List<String> parameterNames) {
 		addAction(beanName, methodName, null, null, parameterNames);
 	}
@@ -94,7 +94,6 @@ class RemotingApi {
 		addAction(beanName, methodName, len, formHandler, null);
 	}
 
-	
 	public void addAction(final String beanName, final String methodName, final Integer len, final Boolean formHandler,
 			final List<String> parameterNames) {
 		List<Action> beanActions = actions.get(beanName);
@@ -104,12 +103,12 @@ class RemotingApi {
 		}
 
 		Action action;
-		if (parameterNames == null) { 
+		if (parameterNames == null) {
 			action = new Action(methodName, len, formHandler);
 		} else {
 			action = new Action(methodName, parameterNames);
 		}
-		
+
 		if (!beanActions.contains(action)) {
 			beanActions.add(action);
 		}

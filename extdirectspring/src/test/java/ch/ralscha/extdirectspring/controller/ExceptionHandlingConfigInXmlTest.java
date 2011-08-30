@@ -59,7 +59,8 @@ public class ExceptionHandlingConfigInXmlTest {
 	@Test
 	public void testExceptionInMapping() throws Exception {
 
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5, "string.param");
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5,
+				"string.param");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
@@ -80,7 +81,8 @@ public class ExceptionHandlingConfigInXmlTest {
 	@Test
 	public void testExceptionInMappingWithNullValue() throws Exception {
 
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple2", "method4", 2, 3, 2.5, "string.param");
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple2", "method4", 2, 3, 2.5,
+				"string.param");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
@@ -100,7 +102,7 @@ public class ExceptionHandlingConfigInXmlTest {
 
 	@Test
 	public void testExceptionNotInMapping() {
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method11", 3);
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method11", 3);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());

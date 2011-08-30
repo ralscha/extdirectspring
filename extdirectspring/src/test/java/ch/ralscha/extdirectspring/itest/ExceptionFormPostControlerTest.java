@@ -41,7 +41,7 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 
 	private HttpClient client;
 	private HttpPost post;
-		
+
 	@Before
 	public void beforeTest() {
 		client = new DefaultHttpClient();

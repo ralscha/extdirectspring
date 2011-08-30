@@ -49,7 +49,7 @@ import ch.ralscha.extdirectspring.util.JsonHandler;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ApiControllerTest {
-	
+
 	@Autowired
 	private JsonHandler jsonHandler;
 
@@ -189,7 +189,7 @@ public class ApiControllerTest {
 				response);
 		compare(response, interfaceApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
 	}
-	
+
 	@Test
 	public void testNoApiNs() throws IOException {
 		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
@@ -283,7 +283,7 @@ public class ApiControllerTest {
 		remotingApi.addPollingProvider("pollProvider", "handleMessage3", "message3");
 		return remotingApi;
 	}
-	
+
 	private RemotingApi interfaceApis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		remotingApi.addAction("remoteProviderImplementation", "storeRead", 1, false);
@@ -348,7 +348,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderImplementation", "storeRead", 1, false);
 		remotingApi.addAction("remoteProviderImplementation", "method2", 0, false);
 		remotingApi.addAction("remoteProviderImplementation", "method3", 3, false);
-		
+
 		remotingApi.addAction("remoteProviderSimpleNamed", "method1", new ArrayList());
 		remotingApi.addAction("remoteProviderSimpleNamed", "method2", Arrays.asList("i", "d", "s"));
 		remotingApi.addAction("remoteProviderSimpleNamed", "method3", Arrays.asList("userName"));
@@ -361,8 +361,9 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimpleNamed", "method10", Arrays.asList("flag", "aCharacter", "workflow",
 				"aInt", "aLong", "aDouble", "aFloat", "aShort", "aByte"));
 
-		remotingApi.addAction("remoteProviderSimpleNamed", "method11", Arrays.asList("endDate", "normalParameter", "aDate", "percent"));
-		
+		remotingApi.addAction("remoteProviderSimpleNamed", "method11",
+				Arrays.asList("endDate", "normalParameter", "aDate", "percent"));
+
 		remotingApi.addAction("remoteProviderSimpleNamed", "methodRP1", Arrays.asList("lastName", "theAge", "active"));
 		remotingApi.addAction("remoteProviderSimpleNamed", "methodRP2", Arrays.asList("lastName", "theAge", "active"));
 		remotingApi.addAction("remoteProviderSimpleNamed", "methodRP3", Arrays.asList("lastName", "theAge", "active"));

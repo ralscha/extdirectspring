@@ -15,7 +15,6 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-
 /**
  * Class representing the request of a Ext.Direct call
  * 
@@ -72,8 +71,8 @@ public class ExtDirectRequest {
 
 	@Override
 	public String toString() {
-		return "ExtDirectRequest [action=" + action + ", data=" + data + ", method=" + method
-				+ ", tid=" + tid + ", type=" + type + "]";
+		return "ExtDirectRequest [action=" + action + ", data=" + data + ", method=" + method + ", tid=" + tid
+				+ ", type=" + type + "]";
 	}
 
 }

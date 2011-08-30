@@ -61,7 +61,7 @@ public class ApiController {
 		this.context = context;
 		this.jsonHandler = jsonHandler;
 	}
-	
+
 	/**
 	 * Method that handles api.js calls. Generates a Javascript with the necessary
 	 * code for Ext.Direct
@@ -265,7 +265,7 @@ public class ApiController {
 					ExtDirectMethodType type = annotation.value();
 
 					switch (type) {
-					case SIMPLE:					
+					case SIMPLE:
 						remotingApi.addAction(beanName, method.getName(), numberOfParameters(method));
 						break;
 					case SIMPLE_NAMED:
@@ -275,7 +275,7 @@ public class ApiController {
 					case STORE_READ:
 					case STORE_MODIFY:
 					case TREE_LOADER:
-					case TREE_LOAD:	
+					case TREE_LOAD:
 						remotingApi.addAction(beanName, method.getName(), 1);
 						break;
 					case FORM_POST:
@@ -315,10 +315,10 @@ public class ApiController {
 		}
 		return paramLength;
 	}
-	
+
 	private List<String> parameterNames(final Class<?> beanClass, final Method method) {
 		MethodInfo methodInfo = new MethodInfo(beanClass, method);
-		
+
 		List<String> result = new ArrayList<String>();
 		List<ParameterInfo> parameters = methodInfo.getParameters();
 		for (ParameterInfo parameter : parameters) {

@@ -43,8 +43,8 @@ import org.junit.Test;
 public class SimpleServiceTest extends JettyTest {
 
 	@Rule
-    public ContiPerfRule i = new ContiPerfRule();
-	
+	public ContiPerfRule i = new ContiPerfRule();
+
 	@Test
 	@PerfTest(invocations = 200, threads = 10)
 	public void testSimpleApi() throws IllegalStateException, IOException {
@@ -72,13 +72,13 @@ public class SimpleServiceTest extends JettyTest {
 	private void postToUpperCase(String text, HttpClient client) throws UnsupportedEncodingException, IOException,
 			ClientProtocolException, JsonParseException, JsonMappingException {
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
-		
+
 		StringEntity postEntity = new StringEntity(
-				"{\"action\":\"simpleService\",\"method\":\"toUpperCase\",\"data\":[\""+text+"\"],\"type\":\"rpc\",\"tid\":1}",
-				"UTF-8");
+				"{\"action\":\"simpleService\",\"method\":\"toUpperCase\",\"data\":[\"" + text
+						+ "\"],\"type\":\"rpc\",\"tid\":1}", "UTF-8");
 		post.setEntity(postEntity);
 		post.setHeader("Content-Type", "application/json; charset=UTF-8");
-		
+
 		HttpResponse response = client.execute(post);
 		HttpEntity entity = response.getEntity();
 		assertNotNull(entity);
@@ -97,29 +97,28 @@ public class SimpleServiceTest extends JettyTest {
 		assertEquals("simpleService", rootAsMap.get("action"));
 		assertEquals(1, rootAsMap.get("tid"));
 	}
-	
+
 	@Test
 	@PerfTest(invocations = 200, threads = 10)
 	public void testSimpleNamedCall() throws IllegalStateException, IOException {
-		HttpClient client = new DefaultHttpClient();				
-		postToEcho("\"userId\":\"ralph\", \"logLevel\": 100", "UserId: ralph LogLevel: 100" , client);
+		HttpClient client = new DefaultHttpClient();
+		postToEcho("\"userId\":\"ralph\", \"logLevel\": 100", "UserId: ralph LogLevel: 100", client);
 		postToEcho("\"userId\":\"tom\"", "UserId: tom LogLevel: 10", client);
 		postToEcho("\"userId\":\"renee\", \"logLevel\": 1", "UserId: renee LogLevel: 1", client);
 		postToEcho("\"userId\":\"andrea\"", "UserId: andrea LogLevel: 10", client);
 	}
 
-	private void postToEcho(String data, String expectedResult, HttpClient client) throws UnsupportedEncodingException, IOException,
-			ClientProtocolException, JsonParseException, JsonMappingException {
-		
+	private void postToEcho(String data, String expectedResult, HttpClient client) throws UnsupportedEncodingException,
+			IOException, ClientProtocolException, JsonParseException, JsonMappingException {
+
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
-		
-		StringEntity postEntity = new StringEntity(				
-				"{\"action\":\"simpleService\",\"method\":\"echo\",\"data\":{"+data+"},\"type\":\"rpc\",\"tid\":1}",
-				"UTF-8");
-		
+
+		StringEntity postEntity = new StringEntity("{\"action\":\"simpleService\",\"method\":\"echo\",\"data\":{"
+				+ data + "},\"type\":\"rpc\",\"tid\":1}", "UTF-8");
+
 		post.setEntity(postEntity);
 		post.setHeader("Content-Type", "application/json; charset=UTF-8");
-		
+
 		HttpResponse response = client.execute(post);
 		HttpEntity entity = response.getEntity();
 		assertNotNull(entity);
@@ -132,7 +131,7 @@ public class SimpleServiceTest extends JettyTest {
 		@SuppressWarnings("unchecked")
 		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
 				Map.class);
-		assertEquals(5, rootAsMap.size());		
+		assertEquals(5, rootAsMap.size());
 		assertEquals(expectedResult, rootAsMap.get("result"));
 		assertEquals("echo", rootAsMap.get("method"));
 		assertEquals("rpc", rootAsMap.get("type"));

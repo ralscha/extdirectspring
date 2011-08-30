@@ -32,7 +32,7 @@ public class JettyTest {
 
 		server.setStopAtShutdown(true);
 		server.start();
-		
+
 	}
 
 	@AfterClass

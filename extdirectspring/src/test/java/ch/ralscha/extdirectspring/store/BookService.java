@@ -27,7 +27,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 
 @Service
 public class BookService {
-	
+
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public List<Book> read() {
 		List<Book> books = new ArrayList<Book>();
@@ -35,46 +35,46 @@ public class BookService {
 		books.add(new Book(2, "Learning Ext JS 3.2", "1849511209"));
 		return books;
 	}
-	
+
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public ExtDirectStoreResponse<Book> readWithPaging(ExtDirectStoreReadRequest request) {
 		int total = request.getPage() + request.getLimit() + request.getStart();
 		ExtDirectStoreResponse<Book> response = new ExtDirectStoreResponse<Book>(total, read());
 		return response;
 	}
-	
+
 	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
 	public ExtDirectStoreResponse<Book> update3(List<Book> updates) {
 		return new ExtDirectStoreResponse<Book>(update4(updates));
 	}
-	
+
 	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
 	public List<Book> update4(List<Book> updates) {
 		for (Book book : updates) {
-			book.setIsbn("UPDATED_"+book.getIsbn());
+			book.setIsbn("UPDATED_" + book.getIsbn());
 		}
 		return updates;
-	}	
-	
+	}
+
 	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
-	public ExtDirectStoreResponse<Integer> delete3(List<Integer> deletes) {		
+	public ExtDirectStoreResponse<Integer> delete3(List<Integer> deletes) {
 		return new ExtDirectStoreResponse<Integer>(deletes);
 	}
-	
+
 	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
-	public List<Book> delete4(List<Book> deletes) {		
+	public List<Book> delete4(List<Book> deletes) {
 		for (Book book : deletes) {
 			book.setTitle(null);
-			book.setIsbn("DELETED_"+book.getIsbn());
+			book.setIsbn("DELETED_" + book.getIsbn());
 		}
 		return deletes;
-	}	
-	
+	}
+
 	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
 	public ExtDirectStoreResponse<Book> create3(List<Book> inserts) {
 		return new ExtDirectStoreResponse<Book>(create4(inserts));
 	}
-	
+
 	@ExtDirectMethod(ExtDirectMethodType.STORE_MODIFY)
 	public List<Book> create4(List<Book> inserts) {
 		int id = 3;
@@ -82,5 +82,5 @@ public class BookService {
 			book.setId(id++);
 		}
 		return inserts;
-	}	
+	}
 }

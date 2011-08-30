@@ -34,8 +34,8 @@ import javax.servlet.http.HttpSession;
 
 import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -54,7 +54,6 @@ public class RemoteProviderSimpleNamed {
 	public String method1() {
 		return "method1() called";
 	}
-
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public String method2(long i, Double d, String s) {
@@ -111,8 +110,8 @@ public class RemoteProviderSimpleNamed {
 		assertEquals(10.01, aFloat, 0.01);
 		assertEquals(1, aShort);
 		assertEquals(2, aByte);
-		return String.format("method7() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, workflow, aInt, aLong,
-				aDouble, aFloat, aShort, aByte);
+		return String.format("method7() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, workflow, aInt,
+				aLong, aDouble, aFloat, aShort, aByte);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
@@ -124,18 +123,17 @@ public class RemoteProviderSimpleNamed {
 		assertEquals("100.45", aRow.getSalary().toPlainString());
 		return aRow.toString();
 	}
-	
-	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")	
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public String method10(boolean flag, HttpServletResponse response, char aCharacter, HttpServletRequest request,
-			short aShort, byte aByte,
-			Workflow workflow, HttpSession session, int aInt, long aLong,  Locale locale,
+			short aShort, byte aByte, Workflow workflow, HttpSession session, int aInt, long aLong, Locale locale,
 			double aDouble, float aFloat, Principal principal) {
 
 		assertNotNull(response);
 		assertNotNull(request);
 		assertNotNull(session);
 		assertEquals(Locale.ENGLISH, locale);
-		
+
 		assertTrue(flag);
 		assertEquals('c', aCharacter);
 		assertEquals(Workflow.PENDING, workflow);
@@ -145,13 +143,13 @@ public class RemoteProviderSimpleNamed {
 		assertEquals(10.01, aFloat, 0.01);
 		assertEquals(1, aShort);
 		assertEquals(2, aByte);
-		return String.format("method10() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, workflow, aInt, aLong, aDouble, aFloat, aShort, aByte);
+		return String.format("method10() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, workflow, aInt,
+				aLong, aDouble, aFloat, aShort, aByte);
 	}
-	
-	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")	
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public Map<String, Object> method11(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate, String normalParameter,
-			HttpServletRequest request, 
-			@DateTimeFormat(iso=ISO.DATE) LocalDate aDate,
+			HttpServletRequest request, @DateTimeFormat(iso = ISO.DATE) LocalDate aDate,
 			@NumberFormat(style = NumberFormat.Style.PERCENT) BigDecimal percent) {
 
 		Map<String, Object> result = new HashMap<String, Object>();
@@ -162,53 +160,54 @@ public class RemoteProviderSimpleNamed {
 		result.put("remoteAddr", request.getRemoteAddr());
 		return result;
 	}
-	
-	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")	
-	public ResultObject methodRP1(@RequestParam(value="lastName") String name, 
-			                @RequestParam(value="theAge") Integer age, 
-			                Boolean active, 
-			                HttpServletRequest request) {	
-		assertNotNull(request);		
-		return new ResultObject(name, age, active);		
-	}
-	
-	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")	
-	public ResultObject methodRP2(HttpSession session, 
-			                @RequestParam(value="lastName", required=false, defaultValue="myName") String name, 
-			                @RequestParam(value="theAge", defaultValue="20") Integer age, 
-			                @RequestParam(defaultValue="true") Boolean active) {	
-		assertNotNull(session);		
-		return new ResultObject(name, age, active);		
-	}
-	
-	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")	
-	public ResultObject methodRP3(HttpSession session, 
-			                @RequestParam(value="lastName", required=false) String name, 
-			                @RequestParam(value="theAge", required=false) Integer age, 
-			                @RequestParam(required=false) Boolean active) {	
-		assertNotNull(session);		
-		return new ResultObject(name, age, active);		
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public ResultObject methodRP1(@RequestParam(value = "lastName") String name,
+			@RequestParam(value = "theAge") Integer age, Boolean active, HttpServletRequest request) {
+		assertNotNull(request);
+		return new ResultObject(name, age, active);
 	}
 
-	
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public ResultObject methodRP2(HttpSession session,
+			@RequestParam(value = "lastName", required = false, defaultValue = "myName") String name,
+			@RequestParam(value = "theAge", defaultValue = "20") Integer age,
+			@RequestParam(defaultValue = "true") Boolean active) {
+		assertNotNull(session);
+		return new ResultObject(name, age, active);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public ResultObject methodRP3(HttpSession session, @RequestParam(value = "lastName", required = false) String name,
+			@RequestParam(value = "theAge", required = false) Integer age,
+			@RequestParam(required = false) Boolean active) {
+		assertNotNull(session);
+		return new ResultObject(name, age, active);
+	}
+
 	public static class ResultObject {
 		private String name;
 		private Integer age;
 		private Boolean active;
+
 		public ResultObject(String name, Integer age, Boolean active) {
 			this.name = name;
 			this.age = age;
 			this.active = active;
 		}
+
 		public String getName() {
 			return name;
 		}
+
 		public Integer getAge() {
 			return age;
 		}
+
 		public Boolean getActive() {
 			return active;
 		}
+
 		@Override
 		public int hashCode() {
 			final int prime = 31;
@@ -218,6 +217,7 @@ public class RemoteProviderSimpleNamed {
 			result = prime * result + ((name == null) ? 0 : name.hashCode());
 			return result;
 		}
+
 		@Override
 		public boolean equals(Object obj) {
 			if (this == obj) {
@@ -253,13 +253,12 @@ public class RemoteProviderSimpleNamed {
 			}
 			return true;
 		}
+
 		@Override
 		public String toString() {
 			return "ResultObject [name=" + name + ", age=" + age + ", active=" + active + "]";
 		}
 
-		
-		
 	}
-	
+
 }

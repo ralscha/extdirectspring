@@ -32,8 +32,8 @@ import org.springframework.core.convert.support.GenericConversionService;
 public class FilterTest {
 
 	private static final GenericConversionService genericConversionService = ConversionServiceFactory
-	.createDefaultConversionService();
-	
+			.createDefaultConversionService();
+
 	@Test
 	public void testNumericFilter() {
 		Map<String, Object> json = new HashMap<String, Object>();
@@ -48,8 +48,7 @@ public class FilterTest {
 		assertEquals("aField", numericFilter.getField());
 		assertEquals(12, numericFilter.getValue());
 		assertSame(Comparison.LESS_THAN, numericFilter.getComparison());
-		
-		
+
 		json = new HashMap<String, Object>();
 		json.put("field", "aField");
 		json.put("type", "numeric");
@@ -63,7 +62,7 @@ public class FilterTest {
 		assertEquals(0, numericFilter.getValue().intValue());
 		assertSame(Comparison.EQUAL, numericFilter.getComparison());
 	}
-	
+
 	@Test
 	public void testNumericFilterWithoutType() {
 		Map<String, Object> json = new HashMap<String, Object>();
@@ -75,7 +74,7 @@ public class FilterTest {
 		NumericFilter numericFilter = (NumericFilter) filter;
 		assertEquals("aField", numericFilter.getField());
 		assertEquals(10, numericFilter.getValue());
-	}		
+	}
 
 	@Test
 	public void testStringFilter() {
@@ -90,7 +89,7 @@ public class FilterTest {
 		assertEquals("aField", stringFilter.getField());
 		assertEquals("aString", stringFilter.getValue());
 	}
-	
+
 	@Test
 	public void testStringFilterWithoutType() {
 		Map<String, Object> json = new HashMap<String, Object>();
@@ -102,7 +101,7 @@ public class FilterTest {
 		StringFilter stringFilter = (StringFilter) filter;
 		assertEquals("aField", stringFilter.getField());
 		assertEquals("aString", stringFilter.getValue());
-	}	
+	}
 
 	@Test
 	public void testDateFilter() {
@@ -153,7 +152,7 @@ public class FilterTest {
 		assertEquals("aField", booleanFilter.getField());
 		assertEquals(false, booleanFilter.getValue());
 	}
-	
+
 	@Test
 	public void testBooleanFilterWithoutType() {
 		Map<String, Object> json = new HashMap<String, Object>();
@@ -165,7 +164,7 @@ public class FilterTest {
 		BooleanFilter booleanFilter = (BooleanFilter) filter;
 		assertEquals("aField", booleanFilter.getField());
 		assertEquals(false, booleanFilter.getValue());
-	}	
+	}
 
 	@Test
 	public void testNotExistsFilter() {
@@ -177,7 +176,7 @@ public class FilterTest {
 		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertNull(filter);
 	}
-	
+
 	@Test
 	public void testNoValue() {
 		Map<String, Object> json = new HashMap<String, Object>();
@@ -185,5 +184,5 @@ public class FilterTest {
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertNull(filter);
-	}	
+	}
 }

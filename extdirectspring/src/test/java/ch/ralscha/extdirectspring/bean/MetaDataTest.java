@@ -61,7 +61,7 @@ public class MetaDataTest {
 		assertEquals(10, meta.size());
 		metaData.addFields(null);
 		assertEquals(10, meta.size());
-		
+
 		assertThat(meta).includes(entry("root", "records"));
 		assertThat(meta).includes(entry("totalProperty", "total"));
 		assertThat(meta).includes(entry("successProperty", "success"));

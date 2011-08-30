@@ -22,8 +22,8 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class SimpleAspect {	
-		
+public class SimpleAspect {
+
 	@Before("execution(* ch.ralscha.extdirectspring.store.*.*(..))")
 	public void logSomething(@SuppressWarnings("unused") JoinPoint jp) {
 		//do nothing here	

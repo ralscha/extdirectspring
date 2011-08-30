@@ -50,17 +50,18 @@ public class ParameterInfo {
 	private TypeDescriptor typeDescriptor;
 	private boolean supportedParameter;
 
-	public ParameterInfo(Class<?> clazz, Method method, int paramIndex, Class<?> type, String paramName, Annotation[] paramAnnotations) {
+	public ParameterInfo(Class<?> clazz, Method method, int paramIndex, Class<?> type, String paramName,
+			Annotation[] paramAnnotations) {
 		this.type = type;
 		this.supportedParameter = SupportedParameterTypes.isSupported(type);
 		this.name = paramName;
 		MethodParameter methodParameter = new MethodParameter(method, paramIndex);
 		this.typeDescriptor = new TypeDescriptor(methodParameter);
-		
+
 		if (Collection.class.isAssignableFrom(type)) {
 			this.collectionType = getCollectionParameterType(clazz, method, paramIndex, methodParameter);
 		}
-		
+
 		if (paramAnnotations != null) {
 
 			for (Annotation paramAnn : paramAnnotations) {
@@ -71,13 +72,13 @@ public class ParameterInfo {
 					}
 					this.required = requestParam.required();
 					this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()) ? null
-									: requestParam.defaultValue();
+							: requestParam.defaultValue();
 					this.hasRequestParamAnnotation = true;
 					break;
 				}
 			}
 		}
-		
+
 	}
 
 	public Class<?> getType() {
@@ -104,7 +105,6 @@ public class ParameterInfo {
 		return defaultValue;
 	}
 
-
 	public boolean isSupportedParameter() {
 		return supportedParameter;
 	}
@@ -113,16 +113,17 @@ public class ParameterInfo {
 		return typeDescriptor;
 	}
 
-	private Class<?> getCollectionParameterType(Class<?> clazz, final Method method, final int paramIndex, final MethodParameter methodParameter) {
-		
+	private Class<?> getCollectionParameterType(Class<?> clazz, final Method method, final int paramIndex,
+			final MethodParameter methodParameter) {
+
 		Class<?> paramType = GenericCollectionTypeResolver.getCollectionParameterType(methodParameter);
 
 		if (paramType == null) {
-			
+
 			Map<TypeVariable<?>, Class<?>> typeVarMap = getTypeVariableMap(clazz);
-			
+
 			paramType = getGenericCollectionParameterType(typeVarMap, method, paramIndex);
-			
+
 			Class<?> superClass = clazz.getSuperclass();
 
 			while (superClass != null && paramType == null) {
@@ -145,9 +146,10 @@ public class ParameterInfo {
 
 		return paramType;
 	}
-	
-	private Class<?> getGenericCollectionParameterType(final Map<TypeVariable<?>, Class<?>> typeVarMap, final Method method, final int paramIndex) {
-		
+
+	private Class<?> getGenericCollectionParameterType(final Map<TypeVariable<?>, Class<?>> typeVarMap,
+			final Method method, final int paramIndex) {
+
 		if (!typeVarMap.isEmpty()) {
 			Type genericType = method.getGenericParameterTypes()[paramIndex];
 
@@ -171,14 +173,14 @@ public class ParameterInfo {
 	 */
 	private Map<TypeVariable<?>, Class<?>> getTypeVariableMap(final Class<?> c) {
 		Map<TypeVariable<?>, Class<?>> varMap = new HashMap<TypeVariable<?>, Class<?>>();
-		
-		Class<?> clazz;		
+
+		Class<?> clazz;
 		if (Proxy.isProxyClass(c) || AopUtils.isCglibProxyClass(c)) {
 			clazz = c.getSuperclass();
 		} else {
 			clazz = c;
 		}
-		
+
 		Type genericSuperclassType = clazz.getGenericSuperclass();
 		if (genericSuperclassType instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) genericSuperclassType;
@@ -190,8 +192,8 @@ public class ParameterInfo {
 			for (int i = 0; i < typeVariables.length; i++) {
 				varMap.put(typeVariables[i], typeArguments[i]);
 			}
-		}		
+		}
 
 		return varMap;
-	}	
+	}
 }

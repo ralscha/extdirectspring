@@ -67,7 +67,8 @@ public class RouterControllerStoreModifyTest {
 	public void testCreateNoData() {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		storeRequest.put("records", new ArrayList<Row>());
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", "create1", 1, storeRequest);
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", "create1", 1,
+				storeRequest);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
@@ -92,7 +93,8 @@ public class RouterControllerStoreModifyTest {
 		rowsToUpdate.add(new Row(23, "John", false, "23.12"));
 
 		storeRequest.put("records", rowsToUpdate);
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", "create1", 1, storeRequest);
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", "create1", 1,
+				storeRequest);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
@@ -120,7 +122,8 @@ public class RouterControllerStoreModifyTest {
 		rowsToUpdate.add(new Row(10, "Ralph", false, "109.55"));
 
 		storeRequest.put("records", rowsToUpdate);
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", "create2", 1, storeRequest);
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", "create2", 1,
+				storeRequest);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
@@ -184,7 +187,8 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	private void executeUpdate(Map<String, Object> storeRequest, String method) {
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", method, 1, storeRequest);
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", method, 1,
+				storeRequest);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
@@ -209,7 +213,8 @@ public class RouterControllerStoreModifyTest {
 		rowsToUpdate.add(10);
 
 		storeRequest.put("records", rowsToUpdate);
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", "destroy", 1, storeRequest);
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", "destroy", 1,
+				storeRequest);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
@@ -226,7 +231,5 @@ public class RouterControllerStoreModifyTest {
 		assertEquals(1, storeResponse.size());
 		assertEquals(Integer.valueOf(10), storeResponse.get(0));
 	}
-
-
 
 }

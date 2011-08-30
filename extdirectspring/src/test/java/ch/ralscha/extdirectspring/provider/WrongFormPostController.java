@@ -37,5 +37,5 @@ public class WrongFormPostController {
 		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
 		return builder.build();
 	}
-	
+
 }

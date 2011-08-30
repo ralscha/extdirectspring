@@ -80,7 +80,7 @@ public class MethodInfo {
 		if (extDirectMethodAnnotation != null) {
 			this.type = extDirectMethodAnnotation.value();
 			this.synchronizeOnSession = extDirectMethodAnnotation.synchronizeOnSession();
-		} 
+		}
 
 		this.parameters = buildParameterList(clazz, method);
 
@@ -111,7 +111,7 @@ public class MethodInfo {
 			parameterNames = discoverer.getParameterNames(methodWithAnnotation);
 		} else {
 			parameterAnnotations = method.getParameterAnnotations();
-			parameterNames = discoverer.getParameterNames(method);		
+			parameterNames = discoverer.getParameterNames(method);
 		}
 
 		for (int paramIndex = 0; paramIndex < parameterTypes.length; paramIndex++) {
@@ -123,8 +123,9 @@ public class MethodInfo {
 			if (parameterAnnotations != null) {
 				paramAnnotations = parameterAnnotations[paramIndex];
 			}
-			
-			params.add(new ParameterInfo(clazz, method, paramIndex, parameterTypes[paramIndex], paramName, paramAnnotations));
+
+			params.add(new ParameterInfo(clazz, method, paramIndex, parameterTypes[paramIndex], paramName,
+					paramAnnotations));
 		}
 
 		return params;
@@ -149,11 +150,10 @@ public class MethodInfo {
 	public boolean isType(final ExtDirectMethodType methodType) {
 		return this.type == methodType;
 	}
-	
+
 	public boolean isSynchronizeOnSession() {
 		return synchronizeOnSession;
 	}
-
 
 	/**
 	 * Find a method that is annotated with a specific annotation. Starts with the
@@ -185,6 +185,5 @@ public class MethodInfo {
 
 		return null;
 	}
-
 
 }

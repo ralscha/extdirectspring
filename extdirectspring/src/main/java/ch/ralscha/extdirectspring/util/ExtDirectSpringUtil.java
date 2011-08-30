@@ -91,7 +91,7 @@ public class ExtDirectSpringUtil {
 		Object bean = context.getBean(beanName);
 		List<Method> methods = findMethodsWithMinimalParameters(bean.getClass(), methodName);
 
-		if (methods != null) {			
+		if (methods != null) {
 			for (Method method : methods) {
 				if (AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) != null) {
 					return MethodInfoCache.INSTANCE.put(beanName, methodName, bean.getClass(), method);
@@ -126,12 +126,11 @@ public class ExtDirectSpringUtil {
 	public static Object invoke(final ApplicationContext context, final String beanName, final MethodInfo methodInfo,
 			final Object[] params) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		Object bean = context.getBean(beanName);
-		
+
 		Method handlerMethod = methodInfo.getMethod();
 		ReflectionUtils.makeAccessible(handlerMethod);
 		return handlerMethod.invoke(bean, params);
 	}
-
 
 	private static List<Method> findMethodsWithMinimalParameters(Class<?> clazz, String methodName)
 			throws IllegalArgumentException {
@@ -142,7 +141,7 @@ public class ExtDirectSpringUtil {
 		}
 		return targetMethod;
 	}
-	
+
 	private static List<Method> findDeclaredMethodsWithMinimalParameters(Class<?> clazz, String methodName)
 			throws IllegalArgumentException {
 
@@ -152,7 +151,6 @@ public class ExtDirectSpringUtil {
 		}
 		return targetMethod;
 	}
-
 
 	private static List<Method> findMethodsWithMinimalParameters(Method[] methods, String methodName)
 			throws IllegalArgumentException {
@@ -164,17 +162,15 @@ public class ExtDirectSpringUtil {
 				if (targetMethods == null || numParams < targetMethods.get(0).getParameterTypes().length) {
 					targetMethods = new ArrayList<Method>();
 					targetMethods.add(method);
-				}
-				else {
+				} else {
 					if (targetMethods.get(0).getParameterTypes().length == numParams) {
 						targetMethods.add(method);
 					}
 				}
 			}
 		}
-		
-		return targetMethods;		
+
+		return targetMethods;
 	}
-	
 
 }

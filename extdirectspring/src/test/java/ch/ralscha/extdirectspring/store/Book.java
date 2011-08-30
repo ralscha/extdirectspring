@@ -22,8 +22,8 @@ public class Book extends BaseModel {
 	public Book() {
 		//default constructor
 	}
-	
-	public Book(Integer id, String title, String isbn) {		
+
+	public Book(Integer id, String title, String isbn) {
 		setId(id);
 		this.title = title;
 		this.isbn = isbn;

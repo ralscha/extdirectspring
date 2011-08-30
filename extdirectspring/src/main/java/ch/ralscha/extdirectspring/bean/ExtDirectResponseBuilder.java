@@ -145,7 +145,7 @@ public class ExtDirectResponseBuilder {
 		//old Code: String responseJson = ExtDirectSpringUtil.serializeObjectToJson(response);
 		ObjectMapper mapper = new ObjectMapper();
 		String responseJson = mapper.writeValueAsString(response);
-		
+
 		responseJson = responseJson.replace("&quot;", "\\&quot;");
 		servletResponse.getOutputStream().write(responseJson.getBytes());
 		servletResponse.getOutputStream().write("</textarea></body></html>".getBytes());
