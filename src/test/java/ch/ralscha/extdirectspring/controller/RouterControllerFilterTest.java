@@ -39,9 +39,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 import ch.ralscha.extdirectspring.provider.Row;
-import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.JsonHandler;
 
 /**
@@ -59,7 +57,7 @@ public class RouterControllerFilterTest {
 
 	@Autowired
 	private JsonHandler jsonHandler;
-	
+
 	private MockHttpServletResponse response;
 	private MockHttpServletRequest request;
 
@@ -89,7 +87,7 @@ public class RouterControllerFilterTest {
 
 		int index = 1;
 		for (String json : jsonList) {
-			Map<String,Object> edRequest = jsonHandler.readValue(json, Map.class);
+			Map<String, Object> edRequest = jsonHandler.readValue(json, Map.class);
 			List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 			assertEquals(1, responses.size());

@@ -42,7 +42,7 @@ public class ExtDirectStoreReadRequest {
 	private List<SortInfo> sorters;
 	private List<GroupInfo> groups;
 	private List<Filter> filters;
-	private Map<String,Object> params;
+	private Map<String, Object> params;
 
 	public ExtDirectStoreReadRequest() {
 		this.filters = Collections.emptyList();
@@ -142,7 +142,7 @@ public class ExtDirectStoreReadRequest {
 	public void setPage(Integer page) {
 		this.page = page;
 	}
-	
+
 	public List<SortInfo> getSorters() {
 		return Collections.unmodifiableList(sorters);
 	}
@@ -158,7 +158,7 @@ public class ExtDirectStoreReadRequest {
 	public void setGroups(List<GroupInfo> groups) {
 		this.groups = groups;
 	}
-	
+
 	public Map<String, Object> getParams() {
 		return Collections.unmodifiableMap(params);
 	}

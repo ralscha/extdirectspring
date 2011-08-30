@@ -53,7 +53,7 @@ public class JsonHandlerTest {
 
 	@Autowired
 	private JsonHandler jsonHandler;
-	
+
 	@Test
 	public void testserializeObject() {
 		assertEquals("null", jsonHandler.writeValueAsString(null));
@@ -170,7 +170,7 @@ public class JsonHandlerTest {
 		assertNotNull(desReq);
 
 		assertEquals(req.getAction(), desReq.getAction());
-		assertArrayEquals((Object[])req.getData(), ((List<Object>)desReq.getData()).toArray());
+		assertArrayEquals((Object[]) req.getData(), ((List<Object>) desReq.getData()).toArray());
 		assertEquals(req.getMethod(), desReq.getMethod());
 		assertEquals(req.getTid(), desReq.getTid());
 		assertEquals(req.getType(), desReq.getType());
@@ -200,9 +200,8 @@ public class JsonHandlerTest {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(requests);
 
-		List<ExtDirectRequest> desRequests = jsonHandler.readValue(json,
-				new TypeReference<List<ExtDirectRequest>>() {/* empty */
-				});
+		List<ExtDirectRequest> desRequests = jsonHandler.readValue(json, new TypeReference<List<ExtDirectRequest>>() {/* empty */
+		});
 
 		assertEquals(requests.size(), desRequests.size());
 		for (int i = 0; i < requests.size(); i++) {
@@ -210,7 +209,7 @@ public class JsonHandlerTest {
 			ExtDirectRequest desReq = desRequests.get(i);
 
 			assertEquals(req.getAction(), desReq.getAction());
-			assertArrayEquals((Object[])req.getData(), ((List<Object>)desReq.getData()).toArray());
+			assertArrayEquals((Object[]) req.getData(), ((List<Object>) desReq.getData()).toArray());
 			assertEquals(req.getMethod(), desReq.getMethod());
 			assertEquals(req.getTid(), desReq.getTid());
 			assertEquals(req.getType(), desReq.getType());

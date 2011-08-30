@@ -28,9 +28,9 @@ public enum ExtDirectMethodType {
 
 	/**
 	 * Specifies a simple remote method with named parameters
-	 */	
+	 */
 	SIMPLE_NAMED,
-	
+
 	/**
 	 * Specifies a method that handles a form load
 	 */
@@ -51,10 +51,10 @@ public enum ExtDirectMethodType {
 	 * Specifies a method that handles a form post (with or without upload)
 	 */
 	FORM_POST,
-	
+
 	/**
 	 * Specifies a method that handles a read call from a TreeLoader
-	 */	
+	 */
 	TREE_LOAD,
 
 	@Deprecated

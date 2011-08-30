@@ -15,6 +15,8 @@
  */
 package ch.ralscha.extdirectspring.provider;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.MapAssert.entry;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -28,8 +30,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.MapAssert.entry;
 
 @Service
 public class RemoteProviderImplementation implements RemoteProviderInterface {
@@ -43,20 +43,21 @@ public class RemoteProviderImplementation implements RemoteProviderInterface {
 	}
 
 	public List<Row> storeRead(ExtDirectStoreReadRequest request, @RequestParam(value = "lastName") String name,
-			@RequestParam(value = "theAge", defaultValue="40") Integer age, Boolean active, HttpServletRequest httpRequest) {
+			@RequestParam(value = "theAge", defaultValue = "40") Integer age, Boolean active,
+			HttpServletRequest httpRequest) {
 
 		assertEquals(40, age.intValue());
 		assertNotNull(httpRequest);
 		assertNotNull(request);
 		assertEquals("Smith", name);
 		assertTrue(active);
-		
+
 		assertEquals(2, request.getParams().size());
 		assertThat(request.getParams()).includes(entry("lastName", "Smith"));
 		assertThat(request.getParams()).includes(entry("active", true));
-		
+
 		List<Row> result = new ArrayList<Row>();
-		result.add(new Row(1, name, active, ""+age));
+		result.add(new Row(1, name, active, "" + age));
 		return result;
 	}
 

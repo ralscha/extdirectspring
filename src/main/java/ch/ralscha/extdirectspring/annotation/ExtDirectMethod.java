@@ -49,11 +49,11 @@ public @interface ExtDirectMethod {
 	 * method will be used as event name
 	 */
 	String event() default "";
-	
+
 	/**
 	 * Optional parameter. If true execution of the method is synchronized on the session,
-     * to serialize parallel invocations from the same client. Not feasible for FORM_POST methods
-	 */	
+	 * to serialize parallel invocations from the same client. Not feasible for FORM_POST methods
+	 */
 	boolean synchronizeOnSession() default false;
 
 }

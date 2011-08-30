@@ -167,9 +167,10 @@ public class ExceptionHandlingTest {
 		controller.setConfiguration(configuration);
 		controller.afterPropertiesSet();
 
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5, "string.param");
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5,
+				"string.param");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
-		
+
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
 		assertEquals("remoteProviderSimple", resp.getAction());

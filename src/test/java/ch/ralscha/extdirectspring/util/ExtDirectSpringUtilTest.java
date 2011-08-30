@@ -83,8 +83,7 @@ public class ExtDirectSpringUtilTest {
 		assertEquals(methodBInfo.getMethod(), methodBWithAnnotation);
 
 		MethodInfo methodSubBInfo = ExtDirectSpringUtil.findMethodInfo(context, "springManagedSubBean", "methodB");
-		methodBWithAnnotation = MethodInfo.findMethodWithAnnotation(methodSubBInfo.getMethod(),
-				ExtDirectMethod.class);
+		methodBWithAnnotation = MethodInfo.findMethodWithAnnotation(methodSubBInfo.getMethod(), ExtDirectMethod.class);
 		assertFalse(methodSubBInfo.getMethod().equals(methodBWithAnnotation));
 		assertTrue(methodBInfo.getMethod().equals(methodBWithAnnotation));
 	}
@@ -141,7 +140,5 @@ public class ExtDirectSpringUtilTest {
 			assertEquals("Method 'springManagedBean.methodC' not found", e.getMessage());
 		}
 	}
-
-	
 
 }

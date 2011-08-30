@@ -30,7 +30,7 @@ import ch.ralscha.extdirectspring.controller.RouterController;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/teststorewithaop.xml")
 public class BookSubServiceWithAopTest {
-	
+
 	@Autowired
 	private RouterController controller;
 
@@ -47,19 +47,19 @@ public class BookSubServiceWithAopTest {
 	public void testCreate() {
 		new CrudTestMethods("bookSubAopService").testCreate(controller, response, request);
 	}
-	
+
 	@Test
 	public void testRead() {
-		new CrudTestMethods("bookSubAopService").testRead(controller, response, request);		
+		new CrudTestMethods("bookSubAopService").testRead(controller, response, request);
 	}
-	
+
 	@Test
 	public void testUpdate() {
-		new CrudTestMethods("bookSubAopService").testUpdate(controller, response, request);		
+		new CrudTestMethods("bookSubAopService").testUpdate(controller, response, request);
 	}
-	
+
 	@Test
 	public void testDelete() {
-		new CrudTestMethods("bookSubAopService").testDelete(controller, response, request);		
+		new CrudTestMethods("bookSubAopService").testDelete(controller, response, request);
 	}
 }

@@ -75,7 +75,7 @@ public class RouterControllerInterfaceTest {
 		assertNull(resp.getMessage());
 		assertEquals("method2() called", resp.getResult());
 	}
-	
+
 	@Test
 	public void testNoParameterAnnotation() {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderImplementation", "method3", 1,
@@ -92,15 +92,16 @@ public class RouterControllerInterfaceTest {
 		assertNull(resp.getMessage());
 		assertEquals("method3() called-20-2.1-aString", resp.getResult());
 	}
-	
+
 	@Test
 	public void testWithRequestParamAnnotation() {
-		
+
 		Map<String, Object> readRequest = new HashMap<String, Object>();
 		readRequest.put("lastName", "Smith");
 		readRequest.put("active", true);
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderImplementation", "storeRead", 1, readRequest);
-		
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderImplementation", "storeRead",
+				1, readRequest);
+
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
@@ -113,8 +114,8 @@ public class RouterControllerInterfaceTest {
 		assertNull(resp.getMessage());
 		assertNull(resp.getWhere());
 		assertNotNull(resp.getResult());
-		
-		List<Row> rows = (List<Row>)resp.getResult();
+
+		List<Row> rows = (List<Row>) resp.getResult();
 		assertEquals(1, rows.size());
 		Row theRow = rows.get(0);
 		assertEquals(1, theRow.getId());

@@ -23,11 +23,11 @@ import org.codehaus.jackson.map.ObjectMapper;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 
 public class ControllerUtil {
-	
+
 	private static ObjectMapper mapper = new ObjectMapper();
-	
+
 	@SuppressWarnings("unchecked")
-	public static Map<String,Object> createRequestJson(String action, String method, int tid, Object... data) {
+	public static Map<String, Object> createRequestJson(String action, String method, int tid, Object... data) {
 		ExtDirectRequest dr = new ExtDirectRequest();
 		dr.setAction(action);
 		dr.setMethod(method);
@@ -36,15 +36,16 @@ public class ControllerUtil {
 		dr.setData(data);
 		return mapper.convertValue(dr, LinkedHashMap.class);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public static Map<String,Object> createRequestJsonNamedParam(String action, String method, int tid, Map<String,Object> data) {
+	public static Map<String, Object> createRequestJsonNamedParam(String action, String method, int tid,
+			Map<String, Object> data) {
 		ExtDirectRequest dr = new ExtDirectRequest();
 		dr.setAction(action);
 		dr.setMethod(method);
 		dr.setTid(tid);
 		dr.setType("rpc");
-        dr.setData(data);		
+		dr.setData(data);
 		return mapper.convertValue(dr, LinkedHashMap.class);
 	}
 

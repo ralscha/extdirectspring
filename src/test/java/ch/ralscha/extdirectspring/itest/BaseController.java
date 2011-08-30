@@ -30,21 +30,21 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 public abstract class BaseController<T> {
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group="itest_base")
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_base")
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
-	public ExtDirectResponse update(HttpServletRequest request, @SuppressWarnings("unused") @Valid T model, BindingResult result) {		
+	public ExtDirectResponse update(HttpServletRequest request, @SuppressWarnings("unused") @Valid T model,
+			BindingResult result) {
 		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
 		builder.addErrors(result);
 		return builder.build();
 	}
-	
+
 	public abstract ExtDirectResponse method1(HttpServletRequest request, @Valid T model, BindingResult result);
-	
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group="itest_base")
+
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_base")
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
-	public abstract ExtDirectResponse method2(HttpServletRequest request, @Valid T model, BindingResult result) ;		
-	
+	public abstract ExtDirectResponse method2(HttpServletRequest request, @Valid T model, BindingResult result);
 
 }

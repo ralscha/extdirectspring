@@ -32,12 +32,12 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 public class MyExceptionHandler implements HandlerExceptionResolver {
 
 	private ObjectMapper mapper = new ObjectMapper();
-	
+
 	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse res, Object handler,
 			Exception ex) {
 		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
 		builder.unsuccessful();
-		
+
 		ExtDirectResponse response = builder.build();
 		response.setType("exception");
 		response.setMessage("server error");
@@ -45,12 +45,12 @@ public class MyExceptionHandler implements HandlerExceptionResolver {
 		try {
 			res.getOutputStream().print(mapper.writeValueAsString(response));
 			res.getOutputStream().flush();
-		} catch (IOException e) {			
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-        return null;
-		
+
+		return null;
+
 	}
 
 }

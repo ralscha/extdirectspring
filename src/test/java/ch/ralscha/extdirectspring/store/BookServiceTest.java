@@ -30,7 +30,7 @@ import ch.ralscha.extdirectspring.controller.RouterController;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/teststore.xml")
 public class BookServiceTest {
-	
+
 	@Autowired
 	private RouterController controller;
 
@@ -47,19 +47,19 @@ public class BookServiceTest {
 	public void testCreate() {
 		new CrudTestMethods("bookService").testCreate(controller, response, request);
 	}
-	
+
 	@Test
 	public void testRead() {
-		new CrudTestMethods("bookService").testRead(controller, response, request);		
+		new CrudTestMethods("bookService").testRead(controller, response, request);
 	}
-	
+
 	@Test
 	public void testUpdate() {
-		new CrudTestMethods("bookService").testUpdate(controller, response, request);		
+		new CrudTestMethods("bookService").testUpdate(controller, response, request);
 	}
-	
+
 	@Test
 	public void testDelete() {
-		new CrudTestMethods("bookService").testDelete(controller, response, request);		
+		new CrudTestMethods("bookService").testDelete(controller, response, request);
 	}
 }

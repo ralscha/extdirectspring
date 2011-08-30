@@ -40,6 +40,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
+
 public class MyModelControlerTest extends JettyTest {
 
 	private HttpClient client;
@@ -50,7 +51,7 @@ public class MyModelControlerTest extends JettyTest {
 		client = new DefaultHttpClient();
 		post = new HttpPost("http://localhost:9998/controller/router");
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testApi() throws ClientProtocolException, IOException {
@@ -58,29 +59,30 @@ public class MyModelControlerTest extends JettyTest {
 		HttpResponse response = client.execute(g);
 
 		String responseString = EntityUtils.toString(response.getEntity());
-		
+
 		assertThat(responseString).startsWith("Ext.ns('Ext.app');");
-		
+
 		int openBracePos = responseString.indexOf("{");
 		int closeBracePos = responseString.lastIndexOf("}");
-		
+
 		ObjectMapper mapper = new ObjectMapper();
-		Map<String,Object> api = mapper.readValue(responseString.substring(openBracePos, closeBracePos+1), Map.class);
-		
-		assertThat(api).hasSize(3);		
+		Map<String, Object> api = mapper
+				.readValue(responseString.substring(openBracePos, closeBracePos + 1), Map.class);
+
+		assertThat(api).hasSize(3);
 		assertThat(api).includes(entry("type", "remoting"));
 		assertThat(api).includes(entry("url", "/controller/router"));
-		
-		Map<String,Object> actions = (Map<String,Object>)api.get("actions");
+
+		Map<String, Object> actions = (Map<String, Object>) api.get("actions");
 		assertThat(actions).hasSize(1);
-		List<Map<String,Object>> actionList = (List<Map<String,Object>>)actions.get("myModelController");		
+		List<Map<String, Object>> actionList = (List<Map<String, Object>>) actions.get("myModelController");
 		assertThat(actionList).hasSize(3);
-		
+
 		for (Map<String, Object> map : actionList) {
-			assertThat((Boolean)map.get("formHandler")).isTrue();
-			assertThat((Integer)map.get("len")).isZero();	
-			assertThat((String)map.get("name")).isIn("method1", "method2", "update");
-		}		
+			assertThat((Boolean) map.get("formHandler")).isTrue();
+			assertThat((Integer) map.get("len")).isZero();
+			assertThat((String) map.get("name")).isIn("method1", "method2", "update");
+		}
 	}
 
 	@Test
@@ -113,11 +115,11 @@ public class MyModelControlerTest extends JettyTest {
 		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
 		assertThat(rootAsMap).hasSize(5);
 		assertThat(rootAsMap.get("method")).isEqualTo(method);
-		assertThat(rootAsMap.get("type")).isEqualTo("rpc");		
+		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
 		assertThat(rootAsMap.get("action")).isEqualTo("myModelController");
 		assertThat(rootAsMap.get("tid")).isEqualTo(3);
 
 		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertThat((Boolean)result.get("success")).isTrue();
+		assertThat((Boolean) result.get("success")).isTrue();
 	}
 }

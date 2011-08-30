@@ -39,7 +39,7 @@ class Action {
 		this.formHandler = formHandler;
 		this.params = null;
 	}
-	
+
 	public Action(final String name, List<String> params) {
 		this.name = name;
 		this.len = null;

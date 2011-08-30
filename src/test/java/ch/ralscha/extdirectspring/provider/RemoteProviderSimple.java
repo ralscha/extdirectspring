@@ -167,8 +167,7 @@ public class RemoteProviderSimple {
 
 	@ExtDirectMethod
 	public Map<String, Object> method14(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate, String normalParameter,
-			HttpServletRequest request, 
-			@DateTimeFormat(iso=ISO.DATE) LocalDate aDate,
+			HttpServletRequest request, @DateTimeFormat(iso = ISO.DATE) LocalDate aDate,
 			@NumberFormat(style = NumberFormat.Style.PERCENT) BigDecimal percent) {
 
 		Map<String, Object> result = new HashMap<String, Object>();

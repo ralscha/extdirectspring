@@ -93,10 +93,10 @@ public class RemoteProviderStoreRead {
 			@RequestParam(value = "id") int id) {
 		assertEquals(10, id);
 		assertEquals(Locale.ENGLISH, locale);
-		
+
 		assertEquals(1, request.getParams().size());
 		assertThat(request.getParams()).includes(entry("id", 10));
-		
+
 		return createExtDirectStoreResponse(request);
 	}
 
@@ -117,14 +117,14 @@ public class RemoteProviderStoreRead {
 		}
 		return createRows();
 	}
-	
+
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
 	public ExtDirectStoreResponse<Row> method8(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
 			HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertNotNull(endDate);
 		assertNotNull(servletRequest);
 		return createExtDirectStoreResponse(request);
-	}	
+	}
 
 	private ExtDirectStoreResponse<Row> createExtDirectStoreResponse(ExtDirectStoreReadRequest request) {
 		List<Row> rows = createRows();
@@ -152,11 +152,11 @@ public class RemoteProviderStoreRead {
 			totalSize = rows.size();
 
 			Collection<SortInfo> sorters = request.getSorters();
-			
+
 			if (!sorters.isEmpty()) {
 				SortInfo sortInfo = sorters.iterator().next();
 				assertEquals("id", sortInfo.getProperty());
-				
+
 				if (sortInfo.getDirection() == SortDirection.ASCENDING) {
 					Collections.sort(rows);
 				} else {
@@ -183,7 +183,6 @@ public class RemoteProviderStoreRead {
 					});
 				}
 			}
-			
 
 			Collection<GroupInfo> groups = request.getGroups();
 			if (!groups.isEmpty()) {
@@ -201,7 +200,7 @@ public class RemoteProviderStoreRead {
 						}
 					});
 				}
-				 
+
 			} else if (StringUtils.hasText(request.getGroupBy())) {
 				assertEquals("id", request.getGroupBy());
 
@@ -217,7 +216,7 @@ public class RemoteProviderStoreRead {
 					});
 				}
 			}
-			
+
 			if (request.getStart() != null && request.getLimit() != null) {
 				rows = rows.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
 			} else {
@@ -409,7 +408,7 @@ public class RemoteProviderStoreRead {
 			assertEquals("ERROR", sf.getValue());
 			assertEquals("level", sf.getField());
 
-			return createResult(10);			
+			return createResult(10);
 		case 11:
 			assertEquals(1, request.getFilters().size());
 			assertTrue(filters.get(0) instanceof NumericFilter);
@@ -419,7 +418,7 @@ public class RemoteProviderStoreRead {
 			assertEquals("level", nf.getField());
 			assertNull(nf.getComparison());
 
-			return createResult(11);			
+			return createResult(11);
 		case 12:
 			assertEquals(1, filters.size());
 			assertTrue(filters.get(0) instanceof BooleanFilter);
@@ -428,7 +427,7 @@ public class RemoteProviderStoreRead {
 			assertEquals(true, bf.getValue());
 			assertEquals("level", bf.getField());
 
-			return createResult(12);			
+			return createResult(12);
 		case 13:
 			assertEquals(1, filters.size());
 			assertTrue(filters.get(0) instanceof ListFilter);
@@ -450,10 +449,8 @@ public class RemoteProviderStoreRead {
 			assertEquals("medium", lf.getValue().get(1));
 			assertEquals("size", lf.getField());
 
-			return createResult(14);			
+			return createResult(14);
 		}
-		
-		
 
 		return Collections.emptyList();
 	}

@@ -35,7 +35,7 @@ public class BookSubService extends BaseService<Book> {
 		books.add(new Book(2, "Learning Ext JS 3.2", "1849511209"));
 		return books;
 	}
-	
+
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public ExtDirectStoreResponse<Book> readWithPaging(ExtDirectStoreReadRequest request) {
 		int total = request.getPage() + request.getLimit() + request.getStart();

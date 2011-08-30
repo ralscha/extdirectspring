@@ -33,9 +33,9 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 public class MyModelController extends BaseController<MyModel> {
 
 	@Override
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group="itest_base")
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_base")
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.POST)	
+	@RequestMapping(method = RequestMethod.POST)
 	public ExtDirectResponse method1(HttpServletRequest request, MyModel model, BindingResult result) {
 		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
 		builder.addErrors(result);

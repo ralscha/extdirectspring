@@ -61,10 +61,10 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 	}
 
 	@Test
-	public void testNoArgumentsNoRequestParameters() {		
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method1", 1, null);
+	public void testNoArgumentsNoRequestParameters() {
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method1", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
-		
+
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
 		assertEquals("remoteProviderStoreRead", resp.getAction());
@@ -79,16 +79,16 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		List<Row> rows = (List<Row>) storeResponse.getRecords();
 		assertEquals(100, rows.size());
 
-		
 	}
 
 	@Test
 	public void testNoArgumentsWithRequestParameters() {
-		
+
 		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
 		storeRead.setQuery("ralph");
 
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method1", 1, storeRead);
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method1", 1,
+				storeRead);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
@@ -104,13 +104,13 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse) resp.getResult();
 		List<Row> rows = (List<Row>) storeResponse.getRecords();
 		assertEquals(100, rows.size());
-		
+
 	}
 
 	@Test
 	public void testSupportedArguments() {
-		
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method3", 1, null);
+
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method3", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
@@ -126,15 +126,13 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse) resp.getResult();
 		List<Row> rows = (List<Row>) storeResponse.getRecords();
 		assertEquals(100, rows.size());
-				
-	}
 
-	
+	}
 
 	@Test
 	public void testWithAdditionalParametersOptional() {
 
-		Map<String,Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method7", 1, null);
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method7", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
@@ -173,8 +171,7 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		storeResponse = (ExtDirectStoreResponse) resp.getResult();
 		rows = (List<Row>) storeResponse.getRecords();
 		assertEquals(100, rows.size());
-		
-	}
 
+	}
 
 }

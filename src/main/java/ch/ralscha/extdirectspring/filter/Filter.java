@@ -34,30 +34,30 @@ public class Filter {
 	public String getField() {
 		return field;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static Filter createFilter(final Map<String, Object> jsonData, ConversionService conversionService) {
-		String type = (String) jsonData.get("type");		
+		String type = (String) jsonData.get("type");
 		Object source = jsonData.get("value");
-		
+
 		if (type == null) {
 			if (jsonData.containsKey("property") && jsonData.containsKey("value")) {
 				//a filter from store.filter, create a Filter depending on the type of the value
-				String property = (String)jsonData.get("property");
+				String property = (String) jsonData.get("property");
 				Object filterValue = source;
-				
+
 				if (filterValue instanceof Number) {
-					return new NumericFilter(property, (Number)filterValue, null);
+					return new NumericFilter(property, (Number) filterValue, null);
 				} else if (filterValue instanceof Boolean) {
-					return new BooleanFilter(property, (Boolean)filterValue);
+					return new BooleanFilter(property, (Boolean) filterValue);
 				}
 				return new StringFilter(property, filterValue.toString());
 			}
-			
-			return null;			
+
+			return null;
 		}
-		
-		String field = (String) jsonData.get("field");		
+
+		String field = (String) jsonData.get("field");
 		if (type.equals("numeric")) {
 			String comparison = (String) jsonData.get("comparison");
 			Number value = conversionService.convert(source, Number.class);
@@ -72,16 +72,16 @@ public class Filter {
 		} else if (type.equals("list")) {
 			Object value = source;
 			if (value instanceof String) {
-				String[] values = ((String)value).split(",");
+				String[] values = ((String) value).split(",");
 				return new ListFilter(field, Arrays.asList(values));
-			}			
-			return new ListFilter(field, (List<String>)value);			
+			}
+			return new ListFilter(field, (List<String>) value);
 		} else if (type.equals("boolean")) {
 			boolean value = (Boolean) source;
-			return new BooleanFilter(field, value);			
+			return new BooleanFilter(field, value);
 		}
-		
-		return null;		
+
+		return null;
 	}
 
 }

@@ -25,7 +25,7 @@ public class GroupInfo {
 		this.property = property;
 		this.direction = direction;
 	}
-	
+
 	public String getProperty() {
 		return property;
 	}
@@ -39,7 +39,7 @@ public class GroupInfo {
 		String direction = (String) jsonData.get("direction");
 
 		GroupInfo sortInfo = new GroupInfo(property, SortDirection.fromString(direction));
-		
+
 		return sortInfo;
 	}
 
@@ -47,5 +47,5 @@ public class GroupInfo {
 	public String toString() {
 		return "GroupInfo [property=" + property + ", direction=" + direction + "]";
 	}
-	
+
 }

@@ -53,8 +53,8 @@ public class RemoteProviderTreeLoad {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD)
-	public List<Node> method2(@RequestParam("node") String node, @RequestParam(defaultValue = "defaultValue") String foo,
-			@DateTimeFormat(iso = ISO.DATE) LocalDate today) {
+	public List<Node> method2(@RequestParam("node") String node,
+			@RequestParam(defaultValue = "defaultValue") String foo, @DateTimeFormat(iso = ISO.DATE) LocalDate today) {
 		assertEquals("foo", foo);
 		assertNotNull(today);
 		assertEquals(new LocalDate(), today);
@@ -62,9 +62,9 @@ public class RemoteProviderTreeLoad {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "group3")
-	public List<Node> method3(@RequestParam("node") String node, HttpServletResponse response, HttpServletRequest request,
-			@RequestParam(defaultValue = "defaultValue") String foo, HttpSession session, Locale locale,
-			Principal principal) {
+	public List<Node> method3(@RequestParam("node") String node, HttpServletResponse response,
+			HttpServletRequest request, @RequestParam(defaultValue = "defaultValue") String foo, HttpSession session,
+			Locale locale, Principal principal) {
 		assertEquals("defaultValue", foo);
 		Assert.assertNotNull(response);
 		Assert.assertNotNull(request);
