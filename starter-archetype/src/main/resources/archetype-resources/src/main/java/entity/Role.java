@@ -5,8 +5,7 @@ package ${package}.entity;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Role extends AbstractPersistable<Long> {
@@ -14,7 +13,7 @@ public class Role extends AbstractPersistable<Long> {
 	private static final long serialVersionUID = 1L;
 
 	@NotNull
-	@Length(max = 50)
+	@Size(max = 50)
 	private String name;
 
 	public String getName() {

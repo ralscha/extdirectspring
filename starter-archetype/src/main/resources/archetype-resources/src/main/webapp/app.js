@@ -14,7 +14,6 @@ Ext.application({
 		}
 
 		Ext.direct.Manager.on('event', function(e) {
-			//todo: need a better method to handle session timeouts
 			if (e.code && e.code === 'parse') {
 				window.location.reload();
 			}

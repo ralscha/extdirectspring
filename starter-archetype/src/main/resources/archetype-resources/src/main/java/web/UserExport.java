@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
@@ -51,8 +50,6 @@ public class UserExport {
 
 		Workbook workbook = new XSSFWorkbook();
 
-		CreationHelper createHelper = workbook.getCreationHelper();
-
 		Font font = workbook.createFont();
 		Font titleFont = workbook.createFont();
 
@@ -75,12 +72,12 @@ public class UserExport {
 		Sheet sheet = workbook.createSheet(messageSource.getMessage("user_users", null, locale));
 
 		Row row = sheet.createRow(0);
-		createCell(row, 0, "ID", titleStyle, createHelper);
-		createCell(row, 1, messageSource.getMessage("user_username", null, locale), titleStyle, createHelper);
-		createCell(row, 2, messageSource.getMessage("user_firstname", null, locale), titleStyle, createHelper);
-		createCell(row, 3, messageSource.getMessage("user_lastname", null, locale), titleStyle, createHelper);
-		createCell(row, 4, messageSource.getMessage("user_email", null, locale), titleStyle, createHelper);
-		createCell(row, 5, messageSource.getMessage("user_enabled", null, locale), titleStyle, createHelper);
+		createCell(row, 0, "ID", titleStyle);
+		createCell(row, 1, messageSource.getMessage("user_username", null, locale), titleStyle);
+		createCell(row, 2, messageSource.getMessage("user_firstname", null, locale), titleStyle);
+		createCell(row, 3, messageSource.getMessage("user_lastname", null, locale), titleStyle);
+		createCell(row, 4, messageSource.getMessage("user_email", null, locale), titleStyle);
+		createCell(row, 5, messageSource.getMessage("user_enabled", null, locale), titleStyle);
 
 		Page<User> page = userCustomRepository.findWithFilter(filter, null);
 
@@ -132,9 +129,9 @@ public class UserExport {
 		out.close();
 	}
 
-	private void createCell(Row row, int column, String value, CellStyle style, CreationHelper createHelper) {
+	private void createCell(Row row, int column, String value, CellStyle style) {
 		Cell cell = row.createCell(column);
-		cell.setCellValue(createHelper.createRichTextString(value));
+		cell.setCellValue(value);
 		cell.setCellStyle(style);
 	}
 

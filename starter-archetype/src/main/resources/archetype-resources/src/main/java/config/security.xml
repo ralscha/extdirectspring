@@ -19,6 +19,7 @@
 		<intercept-url pattern="/**" access="isAuthenticated()" />
 		<form-login default-target-url="/index.html" always-use-default-target="true" login-page="/login.html"/>
 		<logout delete-cookies="JSESSIONID"/>
+		<remember-me key="starter"/>
 	</http>
  
 	<authentication-manager>

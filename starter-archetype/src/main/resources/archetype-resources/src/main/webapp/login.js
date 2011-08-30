@@ -6,8 +6,6 @@ Ext.onReady(function() {
 		title: i18n.login_title,
 		url: 'j_spring_security_check',
 		width: 320,
-		margin: '60px, 0, 0, 100px',
-		renderTo: Ext.getBody(),
 		iconCls: 'icon-login',
 
 		standardSubmit: true,
@@ -25,12 +23,30 @@ Ext.onReady(function() {
 		items: [ {
 			fieldLabel: i18n.user_username,
 			name: 'j_username',
-			allowBlank: false
+			allowBlank: false,
+			listeners: {
+				specialkey: function(field, e) {
+					if (e.getKey() == e.ENTER) {
+						submitForm();
+					}
+				}
+			}
 		}, {
 			fieldLabel: i18n.user_password,
 			name: 'j_password',
 			inputType: 'password',
-			allowBlank: false
+			allowBlank: false,
+			listeners: {
+				specialkey: function(field, e) {
+					if (e.getKey() == e.ENTER) {
+						submitForm();
+					}
+				}
+			}
+		}, {
+			fieldLabel: i18n.login_rememberme,
+			name: '_spring_security_remember_me',
+			xtype: 'checkbox'
 		} ],
 
 		buttons: [ {
@@ -56,15 +72,47 @@ Ext.onReady(function() {
 		}, {
 			text: i18n.login,
 			handler: function() {
-				var form = this.up('form').getForm();
-				if (form.isValid()) {
-					form.submit();
-				}
+				submitForm();
 			}
 		} ]
 	});
 
-	login.show();
+	Ext.create('Ext.container.Viewport', {
+		layout: 'border',
+		renderTo: Ext.getBody(),
+
+		items: [ {
+			region: 'north',
+			html: 'Starter',
+			cls: 'appHeader',
+			height: 35,
+			margins: {
+				top: 6,
+				right: 0,
+				bottom: 0,
+				left: 6
+			}
+		}, {
+			xtype: 'container',
+			region: 'center',
+			style: 'background-color: white',
+			layout: {
+				type: 'vbox',
+				align: 'center',
+				pack: 'center'
+			},
+			items: login
+		} ]
+	});
+
+	function submitForm() {
+		var form = login.getForm();
+				if (form.isValid()) {
+					form.submit();
+				}
+			}
+
+	// login.show();
 	login.getForm().findField('j_username').focus();
 
 });

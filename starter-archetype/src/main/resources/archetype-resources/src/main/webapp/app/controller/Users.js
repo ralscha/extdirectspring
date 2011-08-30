@@ -20,7 +20,7 @@ Ext.define('Starter.controller.Users', {
 			'userlist': {
 				itemdblclick: this.editUserFromDblClick,
 				itemclick: this.enableActions,
-				beforeactivate: this.onBeforeActivate,
+				beforerender: this.onBeforeRender
 			},
 			'useredit button[action=save]': {
 				click: this.updateUser
@@ -97,20 +97,17 @@ Ext.define('Starter.controller.Users', {
 				this.getUsersStore().remove(record);
 				this.getUsersStore().sync();
 				this.doGridRefresh();
-				this.toggleDeleteButton(false);
-				this.toggleEditButton(false);
 				Starter.component.Notification.info(i18n.successful, i18n.user_deleted);
 			}
 		}
 	},
 
 	enableActions: function(button, record) {
-		this.toggleDeleteButton(true);
-		this.toggleEditButton(true);
+		this.toggleEditButtons(true);
 	},
 
-	toggleDeleteButton: function(enable) {
-		var button = this.getUserList().down('button[action=delete]');
+	toggleButton: function(enable, buttonId) {
+		var button = this.getUserList().down(buttonId);
 		if (enable) {
 			button.enable();
 		} else {
@@ -118,14 +115,11 @@ Ext.define('Starter.controller.Users', {
 		}
 	},
 
-	toggleEditButton: function(enable) {
-		var button = this.getUserList().down('button[action=edit]');
-		if (enable) {
-			button.enable();
-		} else {
-			button.disable();
-		}
+	toggleEditButtons: function(enable) {
+		this.toggleButton(enable, 'button[action=delete]');
+		this.toggleButton(enable, 'button[action=edit]');
 	},
+
 
 	updateUser: function(button) {
 		var form = this.getUserEditForm(), record = form.getRecord();
@@ -143,14 +137,18 @@ Ext.define('Starter.controller.Users', {
 		});
 	},
 
-	onBeforeActivate: function(cmp, options) {
-		if (options) {
+	onBeforeRender: function() {
+		var myStore = this.getUsersStore();
+		myStore.remoteFilter = false;
+		myStore.clearFilter();
+		myStore.remoteFilter = true;
 			this.doGridRefresh();
-		}
 	},
 
 	doGridRefresh: function() {
 		this.getUserList().down('pagingtoolbar').doRefresh();
+		this.toggleEditButtons(false);
+
 	}
 
 });
