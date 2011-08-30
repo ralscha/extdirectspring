@@ -37,7 +37,6 @@ public class Person4Action {
 	@Autowired
 	private RandomDataBean dataBean;
 
-
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store4")
 	public List<Person> load(ExtDirectStoreReadRequest request) {
 		List<Person> persons = dataBean.findPersons(request.getQuery());

@@ -34,40 +34,40 @@ import com.google.common.collect.Lists;
 public class ChartService {
 
 	private static final Random rnd = new Random();
-	
+
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "area")
 	public List<AreaData> getAreaData() {
 
 		List<AreaData> result = Lists.newArrayList();
-		
+
 		String[] months = DateFormatSymbols.getInstance(Locale.ENGLISH).getMonths();
-		
+
 		for (String month : months) {
 			result.add(new AreaData(month));
 		}
-		
+
 		return result;
 	}
-	
-	
-	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "live", synchronizeOnSession=true)
+
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "live", synchronizeOnSession = true)
 	public List<SiteInfo> getSiteInfo(HttpSession session) {
-		
+
 		@SuppressWarnings("unchecked")
-		List<SiteInfo> siteInfo = (List<SiteInfo>)session.getAttribute("siteInfos");
+		List<SiteInfo> siteInfo = (List<SiteInfo>) session.getAttribute("siteInfos");
 		if (siteInfo == null) {
 			siteInfo = Lists.newArrayList();
 			session.setAttribute("siteInfos", siteInfo);
-			
+
 			LocalDate ld = new LocalDate(2011, 1, 1);
-			siteInfo.add(new SiteInfo(ld, rnd.nextInt(100)+1, rnd.nextInt(100)+1, rnd.nextInt(100)+1));			
+			siteInfo.add(new SiteInfo(ld, rnd.nextInt(100) + 1, rnd.nextInt(100) + 1, rnd.nextInt(100) + 1));
 		} else {
-			SiteInfo lastSiteInfo = siteInfo.get(siteInfo.size()-1);
-			
+			SiteInfo lastSiteInfo = siteInfo.get(siteInfo.size() - 1);
+
 			LocalDate nextDate = lastSiteInfo.getDate().plusDays(1);
-			int nextVisits = Math.min(100, Math.max((int)(lastSiteInfo.getVisits() + (rnd.nextDouble() - 0.5) * 20), 0));
-			int nextViews = Math.min(100, Math.max((int)(lastSiteInfo.getViews() + (rnd.nextDouble() - 0.5) * 10), 0));
-			int nextVeins = Math.min(100, Math.max((int)(lastSiteInfo.getVeins() + (rnd.nextDouble() - 0.5) * 20), 0));
+			int nextVisits = Math.min(100,
+					Math.max((int) (lastSiteInfo.getVisits() + (rnd.nextDouble() - 0.5) * 20), 0));
+			int nextViews = Math.min(100, Math.max((int) (lastSiteInfo.getViews() + (rnd.nextDouble() - 0.5) * 10), 0));
+			int nextVeins = Math.min(100, Math.max((int) (lastSiteInfo.getVeins() + (rnd.nextDouble() - 0.5) * 20), 0));
 			siteInfo.add(new SiteInfo(nextDate, nextVisits, nextViews, nextVeins));
 
 			if (siteInfo.size() > 7) {
@@ -75,6 +75,6 @@ public class ChartService {
 			}
 		}
 
-		return siteInfo;		
+		return siteInfo;
 	}
 }

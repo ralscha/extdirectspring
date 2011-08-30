@@ -33,11 +33,11 @@ import com.google.common.collect.Ordering;
 @Service
 public class RestaurantService {
 	private final static List<Restaurant> restaurants;
-	
+
 	static {
-		
+
 		ImmutableList.Builder<Restaurant> builder = new ImmutableList.Builder<Restaurant>();
-		
+
 		builder.add(new Restaurant("Cheesecake Factory", "American"));
 		builder.add(new Restaurant("University Cafe", "American"));
 		builder.add(new Restaurant("Slider Bar", "American"));
@@ -105,18 +105,18 @@ public class RestaurantService {
 		builder.add(new Restaurant("Loving Hut", "Vegan"));
 		builder.add(new Restaurant("Garden Fresh", "Vegan"));
 		builder.add(new Restaurant("Cafe Epi", "French"));
-		builder.add(new Restaurant("Tai Pan", "Chinese"));     
-		
+		builder.add(new Restaurant("Tai Pan", "Chinese"));
+
 		restaurants = builder.build();
 	}
-	
+
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "grouping")
 	public List<Restaurant> getRestaurants(ExtDirectStoreReadRequest request) {
-		
+
 		if (!request.getGroups().isEmpty()) {
-			
+
 			GroupInfo groupInfo = request.getGroups().iterator().next();
-			
+
 			if (!request.getSorters().isEmpty()) {
 				for (SortInfo sortInfo : request.getSorters()) {
 					if (groupInfo.getProperty().equals(sortInfo.getProperty())) {
@@ -124,27 +124,30 @@ public class RestaurantService {
 					}
 				}
 			}
-			
-			Ordering<Restaurant> ordering = PropertyOrderingFactory.INSTANCE.createOrderingFromGroups(Lists.newArrayList(groupInfo));
-			Ordering<Restaurant> sortOrdering = PropertyOrderingFactory.INSTANCE.createOrderingFromSorters(request.getSorters());
-			
+
+			Ordering<Restaurant> ordering = PropertyOrderingFactory.INSTANCE.createOrderingFromGroups(Lists
+					.newArrayList(groupInfo));
+			Ordering<Restaurant> sortOrdering = PropertyOrderingFactory.INSTANCE.createOrderingFromSorters(request
+					.getSorters());
+
 			if (sortOrdering != null) {
 				ordering = ordering.compound(sortOrdering);
 			}
-			
+
 			if (ordering != null) {
 				return ordering.sortedCopy(restaurants);
 			}
 		}
-		
+
 		if (!request.getSorters().isEmpty()) {
-			Ordering<Restaurant> ordering = PropertyOrderingFactory.INSTANCE.createOrderingFromSorters(request.getSorters());
+			Ordering<Restaurant> ordering = PropertyOrderingFactory.INSTANCE.createOrderingFromSorters(request
+					.getSorters());
 			if (ordering != null) {
 				return ordering.sortedCopy(restaurants);
 			}
 		}
-		
+
 		return restaurants;
-		
+
 	}
 }

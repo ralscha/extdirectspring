@@ -136,7 +136,7 @@ public class PersonAction {
 		Collection<SortInfo> sorters = request.getSorters();
 		if (!sorters.isEmpty()) {
 			for (SortInfo sortInfo : sorters) {
-				
+
 				Ordering<Person> colOrder = orderingMap.get(sortInfo.getProperty());
 				if (colOrder != null) {
 					if (sortInfo.getDirection() == SortDirection.DESCENDING) {
@@ -148,10 +148,10 @@ public class PersonAction {
 						ordering = ordering.compound(colOrder);
 					}
 				}
-				
+
 			}
-		} 
-		
+		}
+
 		if (ordering != null) {
 			persons = ordering.sortedCopy(persons);
 		}
@@ -328,7 +328,7 @@ public class PersonAction {
 		Collection<SortInfo> sorters = request.getSorters();
 		if (!sorters.isEmpty()) {
 			for (SortInfo sortInfo : sorters) {
-				
+
 				Ordering<Person> colOrder = orderingMap.get(sortInfo.getProperty());
 				if (colOrder != null) {
 					if (sortInfo.getDirection() == SortDirection.DESCENDING) {
@@ -340,7 +340,7 @@ public class PersonAction {
 						ordering = ordering.compound(colOrder);
 					}
 				}
-				
+
 			}
 		} else {
 			ordering = orderingMap.get("lastName");

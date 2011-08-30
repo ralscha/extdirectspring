@@ -87,7 +87,7 @@ public class RandomDataBean {
 	public void deletePerson(int personId) {
 		persons.remove(personId);
 	}
-	
+
 	public void deletePerson(Person person) {
 		persons.remove(Integer.valueOf(person.getId()));
 	}

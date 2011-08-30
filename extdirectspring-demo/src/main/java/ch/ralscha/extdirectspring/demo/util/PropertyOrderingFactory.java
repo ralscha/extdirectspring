@@ -30,22 +30,21 @@ public enum PropertyOrderingFactory {
 	INSTANCE;
 
 	private final SpelExpressionParser parser = new SpelExpressionParser();
-	
+
 	public <T> Ordering<T> createOrdering(String propertyName, SortDirection sortDirection) {
 		Expression readPropertyExpression = parser.parseExpression(propertyName);
 		Ordering<T> ordering = new PropertyOrdering<T>(readPropertyExpression);
-		
+
 		if (sortDirection == SortDirection.DESCENDING) {
 			ordering = ordering.reverse();
 		}
-		
+
 		return ordering;
 	}
-	
-	
+
 	public <T> Ordering<T> createOrderingFromSorters(Collection<SortInfo> sortInfos) {
 		Ordering<T> ordering = null;
-		
+
 		if (sortInfos != null) {
 			for (SortInfo sorter : sortInfos) {
 				Ordering<T> propertyOrdering = createOrdering(sorter.getProperty(), sorter.getDirection());
@@ -53,16 +52,16 @@ public enum PropertyOrderingFactory {
 					ordering = propertyOrdering;
 				} else {
 					ordering = ordering.compound(propertyOrdering);
-				}			
-			}	
+				}
+			}
 		}
-		
+
 		return ordering;
 	}
 
 	public <T> Ordering<T> createOrderingFromGroups(Collection<GroupInfo> groupInfos) {
 		Ordering<T> ordering = null;
-		
+
 		if (groupInfos != null) {
 			for (GroupInfo group : groupInfos) {
 				Ordering<T> propertyOrdering = createOrdering(group.getProperty(), group.getDirection());
@@ -70,11 +69,11 @@ public enum PropertyOrderingFactory {
 					ordering = propertyOrdering;
 				} else {
 					ordering = ordering.compound(propertyOrdering);
-				}			
-			}	
+				}
+			}
 		}
-		
+
 		return ordering;
 	}
-	
+
 }

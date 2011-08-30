@@ -26,7 +26,7 @@ public class TestAction {
 	public long multiply(Long num) {
 		if (num != null) {
 			return num * 8;
-		} 
+		}
 		return 0;
 	}
 
@@ -35,6 +35,4 @@ public class TestAction {
 		return message;
 	}
 
-	
-	
 }

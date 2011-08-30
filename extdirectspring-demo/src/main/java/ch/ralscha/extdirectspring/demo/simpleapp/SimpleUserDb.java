@@ -66,7 +66,7 @@ public class SimpleUserDb {
 	public List<User> getAll() {
 		return ImmutableList.copyOf(users.values());
 	}
-	
+
 	public User findUser(final String id) {
 		return users.get(id);
 	}

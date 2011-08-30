@@ -47,12 +47,12 @@ public class TurnoverService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "turnover")
 	public List<Company> getTurnovers(ExtDirectStoreReadRequest request) {
-		
+
 		Ordering<Company> ordering = PropertyOrderingFactory.INSTANCE.createOrderingFromSorters(request.getSorters());
 		if (ordering != null) {
 			return ordering.sortedCopy(companies);
 		}
-		
+
 		return companies;
 	}
 

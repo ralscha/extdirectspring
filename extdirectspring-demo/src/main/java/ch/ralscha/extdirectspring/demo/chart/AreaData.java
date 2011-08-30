@@ -18,9 +18,9 @@ package ch.ralscha.extdirectspring.demo.chart;
 import java.util.Random;
 
 public class AreaData {
-	
+
 	private static Random rnd = new Random();
-	
+
 	private String name;
 	private int data1;
 	private int data2;
@@ -31,10 +31,10 @@ public class AreaData {
 	private int data7;
 	private int data8;
 	private int data9;
-	
+
 	public AreaData(String name) {
 		this.name = name;
-				
+
 		data1 = rnd.nextInt(100) + 1;
 		data2 = rnd.nextInt(100) + 1;
 		data3 = rnd.nextInt(100) + 1;
@@ -43,40 +43,47 @@ public class AreaData {
 		data6 = rnd.nextInt(100) + 1;
 		data7 = rnd.nextInt(100) + 1;
 		data8 = rnd.nextInt(100) + 1;
-		data9 = rnd.nextInt(100) + 1;		
+		data9 = rnd.nextInt(100) + 1;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
+
 	public int getData1() {
 		return data1;
 	}
+
 	public int getData2() {
 		return data2;
 	}
+
 	public int getData3() {
 		return data3;
 	}
+
 	public int getData4() {
 		return data4;
 	}
+
 	public int getData5() {
 		return data5;
 	}
+
 	public int getData6() {
 		return data6;
 	}
+
 	public int getData7() {
 		return data7;
 	}
+
 	public int getData8() {
 		return data8;
 	}
+
 	public int getData9() {
 		return data9;
 	}
-	
-	
-	
+
 }

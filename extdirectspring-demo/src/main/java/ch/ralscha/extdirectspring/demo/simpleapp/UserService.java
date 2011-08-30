@@ -33,14 +33,13 @@ public class UserService {
 
 	@Autowired
 	private SimpleUserDb userDb;
-		
+
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "simpleapp")
 	public ExtDirectStoreResponse<User> load(ExtDirectStoreReadRequest request) {
 		List<User> users = userDb.getAll();
 		return new ExtDirectStorePagingResponse<User>(request, users);
 	}
-	
-	
+
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "simpleapp")
 	public List<User> create(List<User> newUsers) {
 		List<User> insertedUsers = Lists.newArrayList();
@@ -71,5 +70,5 @@ public class UserService {
 		for (User user : destroyUsers) {
 			userDb.deleteUser(user);
 		}
-	}	
+	}
 }

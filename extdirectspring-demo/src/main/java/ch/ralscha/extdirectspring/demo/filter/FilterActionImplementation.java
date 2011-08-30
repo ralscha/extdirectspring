@@ -34,7 +34,8 @@ public class FilterActionImplementation implements FilterActionInterface {
 	private CompanyDataBean dataBean;
 
 	@Override
-	public ExtDirectStoreResponse<Company> load(ExtDirectStoreReadRequest request, @RequestParam(required=false) String dRif) {
+	public ExtDirectStoreResponse<Company> load(ExtDirectStoreReadRequest request,
+			@RequestParam(required = false) String dRif) {
 
 		System.out.println(dRif);
 
