@@ -13,10 +13,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.util.StringUtils;
 
 @Entity
@@ -26,25 +26,25 @@ public class User extends AbstractPersistable<Long> {
 	private static final long serialVersionUID = 1L;
 
 	@NotNull
-	@Length(max = 100)
+	@Size(max = 100)
 	@Column(unique = true)
 	private String userName;
 
-	@Length(max = 254)
+	@Size(max = 254)
 	private String name;
 
-	@Length(max = 254)
+	@Size(max = 254)
 	private String firstName;
 
 	@Email
-	@Length(max = 254)
+	@Size(max = 254)
 	@NotNull
 	private String email;
 
-	@Length(max = 80)
+	@Size(max = 80)
 	private String passwordHash;
 
-	@Length(max = 8)
+	@Size(max = 8)
 	private String locale;
 
 	private boolean enabled;

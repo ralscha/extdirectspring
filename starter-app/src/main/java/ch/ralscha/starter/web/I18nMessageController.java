@@ -1,6 +1,7 @@
 package ch.ralscha.starter.web;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class I18nMessageController {
 		}
 
 		String output = prefix + objectMapper.writeValueAsString(messages) + postfix;
-		response.getOutputStream().write(output.getBytes());
+		response.getOutputStream().write(output.getBytes(Charset.forName("UTF-8")));
 	}
 
 }

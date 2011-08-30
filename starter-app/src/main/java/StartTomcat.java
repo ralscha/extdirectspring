@@ -21,7 +21,6 @@ public class StartTomcat {
 		tomcat.getConnector().setURIEncoding("UTF-8");
 
 		File currentDir = new File(".");
-
 		Context ctx = tomcat.addWebapp("/", currentDir.getAbsolutePath() + "/src/main/webapp");
 
 		tomcat.enableNaming();
