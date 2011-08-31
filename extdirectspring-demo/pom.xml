@@ -43,7 +43,7 @@
 		<logback.version>0.9.29</logback.version>
 		<hibernatevalidator.version>4.2.0.Final</hibernatevalidator.version>
 		<jetty.version>7.4.5.v20110725</jetty.version>
-		<eds.version>1.0.12</eds.version>
+		<eds.version>1.0.13-SNAPSHOT</eds.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.debug>true</maven.compiler.debug>
