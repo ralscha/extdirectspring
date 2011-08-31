@@ -171,7 +171,7 @@ public class ExtDirectStoreReadRequest {
 	public String toString() {
 		return "ExtDirectStoreReadRequest [query=" + query + ", limit=" + limit + ", start=" + start + ", page=" + page
 				+ ", dir=" + dir + ", sort=" + sort + ", groupBy=" + groupBy + ", groupDir=" + groupDir + ", sorters="
-				+ sorters + ", groups=" + groups + ", filters=" + filters + "]";
+				+ sorters + ", groups=" + groups + ", filters=" + filters + ", params=" + params + "]";
 	}
 
 }

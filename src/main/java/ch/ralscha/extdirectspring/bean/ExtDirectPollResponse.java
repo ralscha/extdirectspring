@@ -51,8 +51,7 @@ public class ExtDirectPollResponse extends BaseResponse {
 
 	@Override
 	public String toString() {
-		return "ExtDirectPollResponse [type=" + type + ", name=" + name + ", data=" + data + ", message=" + message
-				+ ", where=" + where + "]";
+		return "ExtDirectPollResponse [name=" + name + ", data=" + data + "]";
 	}
 
 }

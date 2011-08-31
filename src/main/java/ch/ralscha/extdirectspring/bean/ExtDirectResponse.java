@@ -70,8 +70,8 @@ public class ExtDirectResponse extends BaseResponse {
 
 	@Override
 	public String toString() {
-		return "ExtDirectResponse [action=" + action + ", message=" + message + ", method=" + method + ", result="
-				+ result + ", tid=" + tid + ", type=" + type + ", where=" + where + "]";
+		return "ExtDirectResponse [tid=" + tid + ", action=" + action + ", method=" + method + ", result=" + result
+				+ "]";
 	}
 
 }

@@ -85,7 +85,8 @@ public class ExtDirectStoreResponse<T> {
 
 	@Override
 	public String toString() {
-		return "ExtDirectStoreResponse [records=" + records + ", success=" + success + ", total=" + total + "]";
+		return "ExtDirectStoreResponse [total=" + total + ", records=" + records + ", success=" + success
+				+ ", metaData=" + metaData + "]";
 	}
 
 }
