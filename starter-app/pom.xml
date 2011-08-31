@@ -20,7 +20,7 @@
 		<logback.version>0.9.29</logback.version>
 		<tomcat.version>7.0.20</tomcat.version>
 
-		<eds.version>1.0.11</eds.version>
+		<eds.version>1.0.12</eds.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.debug>true</maven.compiler.debug>
@@ -285,6 +285,12 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.8-beta3</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>stax-api</artifactId>
+					<groupId>stax</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>		
 
 		<dependency>
