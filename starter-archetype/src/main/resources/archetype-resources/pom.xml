@@ -285,7 +285,7 @@
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>3.8-beta3</version>
+			<version>3.8-beta4</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>stax-api</artifactId>
