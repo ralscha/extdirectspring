@@ -57,8 +57,8 @@ public class ExtDirectRawJsonStoreResponse extends ExtDirectStoreResponse<String
 
 	@Override
 	public String toString() {
-		return "ExtDirectRawJsonStoreResponse [records=" + getRecords() + ", success=" + isSuccess() + ", total="
-				+ getTotal() + "]";
+		return "ExtDirectRawJsonStoreResponse [getRecords()=" + getRecords() + ", getTotal()=" + getTotal()
+				+ ", isSuccess()=" + isSuccess() + ", getMetaData()=" + getMetaData() + "]";
 	}
 
 	private final static class CollectionStringSerializer extends JsonSerializer<Collection<String>> {
