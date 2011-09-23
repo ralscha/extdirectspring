@@ -97,7 +97,7 @@ Ext.define('Starter.controller.Users', {
 				this.getUsersStore().remove(record);
 				this.getUsersStore().sync();
 				this.doGridRefresh();
-				Starter.component.Notification.info(i18n.successful, i18n.user_deleted);
+				Ext.ux.window.Notification.info(i18n.successful, i18n.user_deleted);
 			}
 		}
 	},
@@ -132,7 +132,7 @@ Ext.define('Starter.controller.Users', {
 			success: function(form, action) {
 				this.doGridRefresh();
 				this.getUserEditWindow().close();
-				Starter.component.Notification.info(i18n.successful, i18n.user_saved);
+				Ext.ux.window.Notification.info(i18n.successful, i18n.user_saved);
 			}
 		});
 	},

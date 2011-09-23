@@ -1,4 +1,4 @@
-Ext.require('Starter.component.Notification');
+Ext.require('Ext.ux.window.Notification');
 
 Ext.application({
 	name: 'Starter',
@@ -21,9 +21,9 @@ Ext.application({
 
 		Ext.direct.Manager.on('exception', function(e) {
 			if (e.message === 'accessdenied') {
-				Starter.component.Notification.error(i18n.error, i18n.error_accessdenied);
+				Ext.ux.window.Notification.error(i18n.error, i18n.error_accessdenied);
 			} else {
-				Starter.component.Notification.error(i18n.error, e.message);
+				Ext.ux.window.Notification.error(i18n.error, e.message);
 			}
 		});
 
