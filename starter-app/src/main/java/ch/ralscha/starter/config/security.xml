@@ -6,6 +6,8 @@
  
     <http pattern="/favicon.ico" security="none" />
     <http pattern="/resources/**" security="none" />
+    <http pattern="/extjs/**" security="none" />
+    <http pattern="/ux/**" security="none" />
     
 	<http use-expressions="true">
 		
