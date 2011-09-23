@@ -99,7 +99,9 @@ Ext.define('Starter.view.user.Edit', {
 				xtype: 'button',
 				text: i18n.save,
 				action : 'save',
-				iconCls: 'icon-save'
+                                iconCls: 'icon-save',
+				disabled: true,
+				formBind: true
 			}, {
 				text: i18n.cancel,
 				scope: me,

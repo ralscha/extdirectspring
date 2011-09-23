@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>${groupId}</groupId>
 	<artifactId>${artifactId}</artifactId>
@@ -14,11 +13,11 @@
 		<hibernate.version>3.6.7.Final</hibernate.version>
 		<hibernatevalidator.version>4.2.0.Final</hibernatevalidator.version>
 
-		<querydsl.version>2.2.1</querydsl.version>
+		<querydsl.version>2.2.2</querydsl.version>
 		<aspectj.version>1.6.11</aspectj.version>
 
 		<slf4j.version>1.6.2</slf4j.version>
-		<logback.version>0.9.29</logback.version>
+		<logback.version>0.9.30</logback.version>
 		<tomcat.version>7.0.21</tomcat.version>
 
 		<eds.version>1.0.12</eds.version>
@@ -28,7 +27,7 @@
 
 		<maven.build.timestamp.format>yyyy-MM-dd'T'hh:mm:ss.SSSZ</maven.build.timestamp.format>
 		<build.timestamp>${maven.build.timestamp}</build.timestamp>
-
+		<extjs.version>4.0.6</extjs.version>
 	</properties>
 
 
@@ -132,13 +131,6 @@
 
 		<dependency>
 			<groupId>com.mysema.querydsl</groupId>
-			<artifactId>querydsl-apt</artifactId>
-			<version>${querydsl.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
 			<version>${querydsl.version}</version>
 			<exclusions>
@@ -152,7 +144,7 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
-			<version>1.0.0.RELEASE</version>
+			<version>1.1.0.M1</version>
 		</dependency>
 
 		<dependency>
@@ -194,7 +186,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>r09</version>
+			<version>10.0-rc2</version>
 		</dependency>
 
 		<dependency>
@@ -230,7 +222,7 @@
 		<dependency>
 			<groupId>ro.isdc.wro4j</groupId>
 			<artifactId>wro4j-core</artifactId>
-			<version>1.4.0</version>
+			<version>1.4.1</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>log4j</artifactId>
@@ -291,13 +283,17 @@
 					<artifactId>stax-api</artifactId>
 					<groupId>stax</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>xml-apis</artifactId>
+					<groupId>xml-apis</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.3.159</version>
+			<version>1.3.160</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -432,7 +428,7 @@
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>7.5.0.v20110901</version>
+				<version>8.0.1.v20110908</version>
 				<configuration>
 					<stopPort>8005</stopPort>
 					<stopKey>STOP</stopKey>
@@ -454,7 +450,7 @@
 					<dependency>
 						<groupId>com.h2database</groupId>
 						<artifactId>h2</artifactId>
-						<version>1.3.158</version>
+						<version>1.3.160</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -469,11 +465,18 @@
 							<goal>process</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>target/generated-sources/java</outputDirectory>
+							<outputDirectory>src/main/java</outputDirectory>
 							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
 						</configuration>
 					</execution>
 				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.mysema.querydsl</groupId>
+						<artifactId>querydsl-apt</artifactId>
+						<version>${querydsl.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 
 			<plugin>
@@ -533,6 +536,35 @@
 
 		</plugins>
 
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.mysema.maven</groupId>
+										<artifactId>maven-apt-plugin</artifactId>
+										<versionRange>[1.0.2,)</versionRange>
+										<goals>
+											<goal>process</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 </project>

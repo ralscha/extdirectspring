@@ -37,11 +37,14 @@
     <fileSet encoding="UTF-8">
       <directory>src/main/webapp</directory>
       <includes>
+        <include>**/*.</include>
         <include>**/*.png</include>
+        <include>**/*.scss</include>
         <include>**/*.js</include>
         <include>**/*.ico</include>
         <include>**/*.gif</include>
         <include>**/*.css</include>
+        <include>**/*.rb</include>
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8">

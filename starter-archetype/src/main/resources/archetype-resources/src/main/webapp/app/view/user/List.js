@@ -7,7 +7,7 @@ Ext.define('Starter.view.user.List', {
 	title: i18n.user_users,
 	closable: true,
 	
-	requires: ['Starter.component.FilterField'],
+	requires: [ 'Ext.ux.form.field.FilterField' ],
 
 	initComponent: function() {
 
