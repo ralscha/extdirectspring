@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">	
-    <title>e4ds-template</title>
+    <title>starter</title>
     <link rel="stylesheet" type="text/css" href="extjs/resources/css/ext-all.css?v=<spring:eval expression='@environment["extjs.version"]'/>">
     
     <spring:eval expression="@environment.acceptsProfiles('development')" var="isDevelopment" />
