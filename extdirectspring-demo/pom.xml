@@ -38,11 +38,11 @@
 	</scm>
 
 	<properties>
-		<spring.version>3.1.0.M1</spring.version>
+		<spring.version>3.1.0.BUILD-SNAPSHOT</spring.version>
 		<slf4j.version>1.6.2</slf4j.version>
-		<logback.version>0.9.29</logback.version>
+		<logback.version>0.9.30</logback.version>
 		<hibernatevalidator.version>4.2.0.Final</hibernatevalidator.version>
-		<jetty.version>7.4.5.v20110725</jetty.version>
+		<jetty.version>8.0.1.v20110908</jetty.version>
 		<eds.version>1.0.13-SNAPSHOT</eds.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -90,7 +90,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.9</version>
+			<version>4.10</version>
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
@@ -120,7 +120,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>r09</version>
+			<version>10.0</version>
 		</dependency>
 
 		<dependency>
@@ -181,6 +181,18 @@
 			<name>JBoss repository</name>
 			<url>https://repository.jboss.org/nexus/content/groups/public-jboss</url>
 		</repository>
+
+		<repository>
+			<id>org.springframework.maven.snapshot</id>
+			<name>Spring Maven Snapshot Repository</name>
+			<url>http://maven.springframework.org/snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>	
 
 		<repository>
 			<id>org.springframework.maven.milestone</id>
