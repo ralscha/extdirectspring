@@ -187,9 +187,7 @@ Ext.define('Ext.ux.form.ItemSelector', {
     
     getSelections: function(list){
         var store = list.getStore(),
-            selections = list.getSelectionModel().getSelection(),
-            i = 0,
-            len = selections.length;
+            selections = list.getSelectionModel().getSelection();
             
         return Ext.Array.sort(selections, function(a, b){
             a = store.indexOf(a);
@@ -208,8 +206,7 @@ Ext.define('Ext.ux.form.ItemSelector', {
         var list = this.toField.boundList,
             store = list.getStore(),
             selected = this.getSelections(list),
-            i = selected.length - 1,
-            selection;
+            i = selected.length - 1;
         
         
         store.suspendEvents();
