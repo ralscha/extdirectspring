@@ -1,8 +1,6 @@
 package ch.ralscha.starter.entity;
 
 
-import java.io.Serializable;
-
 import com.mysema.query.types.*;
 import com.mysema.query.types.path.*;
 
@@ -25,7 +23,7 @@ public class QAbstractPersistable extends EntityPathBase<AbstractPersistable<? e
 
     @SuppressWarnings("unchecked")
     public QAbstractPersistable(PathMetadata<?> metadata) {
-        super((Class<? extends AbstractPersistable<? extends Serializable>>)AbstractPersistable.class, metadata);
+        super((Class)AbstractPersistable.class, metadata);
     }
 
 }
