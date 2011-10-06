@@ -281,7 +281,7 @@ Ext.define('Ext.ux.window.Notification', {
 	slideDown: function () {
 		var me = this;
 
-		var index = Ext.Array.indexOf(me.manager.notifications, me)
+		var index = Ext.Array.indexOf(me.manager.notifications, me);
 
 		// Not animating the element if it already started to destroy itself
 		if (!me.underDestruction && me.el) {
