@@ -21,7 +21,7 @@ public class QAbstractPersistable extends EntityPathBase<AbstractPersistable<? e
         super(entity.getType(), entity.getMetadata());
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public QAbstractPersistable(PathMetadata<?> metadata) {
         super((Class)AbstractPersistable.class, metadata);
     }
