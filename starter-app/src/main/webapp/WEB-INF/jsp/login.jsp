@@ -22,7 +22,8 @@
     </c:if>
     <c:if test="${not isDevelopment}">
         <link rel="stylesheet" type="text/css" href="wro/login.css?v=<spring:eval expression='@environment["application.version"]'/>" />
-      <script src="extjs/ext-all.js?v=<spring:eval expression='@environment["extjs.version"]'/>"></script> 
+        <script src="i18n.js"></script>
+        <script src="extjs/ext-all.js?v=<spring:eval expression='@environment["extjs.version"]'/>"></script> 
 		<script src="wro/login.js?v=<spring:eval expression='@environment["application.version"]'/>"></script>        
 	</c:if>
 	    

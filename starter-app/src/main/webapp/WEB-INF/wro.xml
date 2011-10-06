@@ -2,8 +2,6 @@
 <groups xmlns="http://www.isdc.ro/wro">
 
   <group name="app">
-    <js>/i18n.js</js>
-  
     <js>/ux/RowExpander.js</js>
     <js>/ux/BoxReorderer.js</js>
     <js>/ux/TabCloseMenu.js</js>
@@ -46,7 +44,6 @@
   </group>
 
   <group name="login">
-    <js>/i18n.js</js>
     <js>/ux/window/Notification.js</js>
     <js>/login.js</js>
     
