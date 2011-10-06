@@ -13,7 +13,7 @@
 		<hibernate.version>3.6.7.Final</hibernate.version>
 		<hibernatevalidator.version>4.2.0.Final</hibernatevalidator.version>
 
-		<querydsl.version>2.2.3</querydsl.version>
+		<querydsl.version>2.2.1</querydsl.version>
 		<aspectj.version>1.6.11</aspectj.version>
 
 		<slf4j.version>1.6.2</slf4j.version>
@@ -143,7 +143,7 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
-			<version>1.1.0.M1</version>
+			<version>1.0.1.RELEASE</version>
 		</dependency>
 
 		<dependency>
