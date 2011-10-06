@@ -8,6 +8,15 @@ Ext.application({
 	launch: function() {
 
 		if (this.hasLocalstorage()) {
+						
+//			 for (var i = 0; i < localStorage.length; i++) {  
+//			   var key = localStorage.key(i);
+//			   if (key.match(/ext-.*/)) {
+//			       console.log('remove ' + key);
+//				   localStorage.removeItem(key);
+//			   }
+//			 }
+			
 			Ext.state.Manager.setProvider(Ext.create('Ext.state.LocalStorageProvider'));
 		} else {
 			Ext.state.Manager.setProvider(Ext.create('Ext.state.CookieProvider'));
