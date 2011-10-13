@@ -43,8 +43,6 @@ Ext.define('Starter.view.poll.PollChart', {
 				fields: [ 'points' ],
 				maximum: 2000,
 				minimum: 0,
-				// majorTickSteps: 500,
-				// minorTickSteps: 100,
 				title: i18n.chart_points,
 				label: {
 					renderer: Ext.util.Format.numberRenderer('0')
@@ -72,7 +70,7 @@ Ext.define('Starter.view.poll.PollChart', {
 				tips: {
 					width: 130,
 					renderer: function(storeItem, item) {
-						me.setTitle(i18n.chart_received + ' ' + storeItem.get('points') + ' ' + i18n.chart_pointsat
+						this.setTitle(i18n.chart_received + ' ' + storeItem.get('points') + ' ' + i18n.chart_pointsat
 								+ ' ' + storeItem.get('time'));
 					}
 				},

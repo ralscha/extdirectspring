@@ -7,18 +7,17 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<spring.version>3.1.0.BUILD-SNAPSHOT</spring.version>
-		<spring.security.version>3.1.0.CI-SNAPSHOT</spring.security.version>
+		<spring.version>3.1.0.RC1</spring.version>
+		<spring.security.version>3.1.0.RC3</spring.security.version>
 
 		<hibernate.version>3.6.7.Final</hibernate.version>
 		<hibernatevalidator.version>4.2.0.Final</hibernatevalidator.version>
 
-		<querydsl.version>2.2.2</querydsl.version>
+		<querydsl.version>2.2.1</querydsl.version>
 		<aspectj.version>1.6.11</aspectj.version>
 
 		<slf4j.version>1.6.2</slf4j.version>
 		<logback.version>0.9.30</logback.version>
-		<tomcat.version>7.0.21</tomcat.version>
 
 		<eds.version>1.0.12</eds.version>
 
@@ -144,7 +143,7 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
-			<version>1.1.0.M1</version>
+			<version>1.0.1.RELEASE</version>
 		</dependency>
 
 		<dependency>
@@ -186,7 +185,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>10.0-rc2</version>
+			<version>10.0.1</version>
 		</dependency>
 
 		<dependency>
@@ -204,13 +203,19 @@
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.0.1</version>
+			<version>2.1</version>
 		</dependency>
 
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>resources</groupId>
+			<artifactId>extjs</artifactId>
+			<version>${extjs.version}</version>
 		</dependency>
 
 		<dependency>
@@ -234,39 +239,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet.jsp.jstl</groupId>
-			<artifactId>jstl-api</artifactId>
-			<version>1.2</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>servlet-api</artifactId>
-					<groupId>javax.servlet</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jsp-api</artifactId>
-					<groupId>javax.servlet.jsp</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>org.glassfish.web</groupId>
-			<artifactId>jstl-impl</artifactId>
-			<version>1.2</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>servlet-api</artifactId>
-					<groupId>javax.servlet</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jsp-api</artifactId>
-					<groupId>javax.servlet.jsp</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
 
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -297,103 +269,85 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- To be able to run Tomcat as a simple class for easier debugging -->
 		<dependency>
-			<groupId>org.apache.tomcat.embed</groupId>
-			<artifactId>tomcat-embed-core</artifactId>
-			<version>${tomcat.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tomcat.embed</groupId>
-			<artifactId>tomcat-embed-jasper</artifactId>
-			<version>${tomcat.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tomcat.embed</groupId>
-			<artifactId>tomcat-embed-logging-juli</artifactId>
-			<version>${tomcat.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-dbcp</artifactId>
-			<version>${tomcat.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.tycho</groupId>
-			<artifactId>org.eclipse.jdt.core</artifactId>
-			<version>3.7.0.v_B61</version>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-server</artifactId>
+			<version>8.0.3.v20111011</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<version>8.0.3.v20111011</version>
+			<scope>provided</scope>
+		</dependency>
+				
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-plus</artifactId>
+			<version>8.0.3.v20111011</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>activation</artifactId>
+					<groupId>javax.activation</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jsp-impl</artifactId>
+			<version>2.2.2.b05.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.2.1-b03</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>el-impl</artifactId>
+			<version>2.2.1-b05</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>jstl-impl</artifactId>
+			<version>1.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>servlet-api</artifactId>
+					<groupId>javax.servlet</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.9</version>
+			<version>4.10</version>
 			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
 	<repositories>
 		<repository>
-			<id>org.springframework.maven.snapshot</id>
-			<name>Spring Maven Snapshot Repository</name>
-			<url>http://maven.springframework.org/snapshot</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-			</snapshots>
-		</repository>
-
-		<!-- For Spring releases -->
-		<repository>
-			<id>org.springframework.maven.release</id>
-			<name>Spring Maven Release Repository</name>
-			<url>http://maven.springframework.org/release</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<!-- For developing against latest Spring milestones -->
-		<repository>
-			<id>org.springframework.maven.milestone</id>
-			<name>Spring Maven Milestone Repository</name>
+			<id>org.springframework.maven.milestones</id>
+			<name>Spring Maven Milestones Repository</name>
 			<url>http://maven.springframework.org/milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
+		</repository>	
 
 		<repository>
-			<id>sonatype</id>
-			<name>sonatype</name>
-			<url>https://oss.sonatype.org/content/groups/public</url>
-			<snapshots>
-			</snapshots>
-			<releases>
-			</releases>
-		</repository>
-
-		<repository>
-			<id>JBoss</id>
-			<name>JBoss repository</name>
-			<url>https://repository.jboss.org/nexus/content/groups/public-jboss</url>
-		</repository>
-
-		<repository>
-			<id>Mysema</id>
-			<name>Mysema repository</name>
-			<url>http://source.mysema.com/maven2/releases/</url>
-		</repository>
-
-		<repository>
-			<id>ObjectWEB</id>
-			<name>ObjectWEB repository</name>
-			<url>http://maven.ow2.org/maven2/</url>
+			<id>ralscha</id>
+			<name>My Private Repository</name>
+			<url>http://ralscha.ch/repository</url>
 		</repository>
 
 	</repositories>
@@ -428,14 +382,15 @@
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>8.0.1.v20110908</version>
+				<version>8.0.3.v20111011</version>
 				<configuration>
 					<stopPort>8005</stopPort>
 					<stopKey>STOP</stopKey>
 
 					<webAppConfig>
 						<contextPath>/</contextPath>
-						<jettyEnvXml>${basedir}/jetty.xml</jettyEnvXml>
+						<defaultsDescriptor>${basedir}/src/main/config/webdefault.xml</defaultsDescriptor>
+						<jettyEnvXml>${basedir}/src/main/config/jetty.xml</jettyEnvXml>
 					</webAppConfig>
 
 					<systemProperties>
@@ -492,7 +447,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.9</version>
+				<version>2.10</version>
 			</plugin>
 
 			<plugin>
@@ -530,7 +485,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.1.1</version>
 				<configuration>
-					<packagingExcludes>WEB-INF/classes/StartTomcat,WEB-INF/web.xml</packagingExcludes>
+					<packagingExcludes>WEB-INF/classes/StartJetty,WEB-INF/classes/Artifact,WEB-INF/classes/MavenWebInfConfiguration,WEB-INF/web.xml</packagingExcludes>
 				</configuration>
 			</plugin>
 

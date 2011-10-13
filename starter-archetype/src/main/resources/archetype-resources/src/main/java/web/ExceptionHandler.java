@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,6 +25,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 import ch.ralscha.extdirectspring.controller.Configuration;
 
 @Component
+@Lazy
 public class ExceptionHandler implements HandlerExceptionResolver, InitializingBean {
 	private final static Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
 
