@@ -10,13 +10,17 @@
         <include>**/*.java</include>
       </includes>
       <excludes>
-        <exclude>StartTomcat.java</exclude>
+        <exclude>Artifact.java</exclude>
+        <exclude>MavenWebInfConfiguration.java</exclude>
+        <exclude>StartJetty.java</exclude>
       </excludes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
       <directory>src/main/java</directory>
       <includes>
-        <include>StartTomcat.java</include>
+        <include>Artifact.java</include>
+        <include>MavenWebInfConfiguration.java</include>
+        <include>StartJetty.java</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
@@ -34,6 +38,12 @@
         <include>**/*.properties</include>
       </includes>
     </fileSet>
+    <fileSet filtered="true" encoding="UTF-8">
+      <directory>src/main/config</directory>
+      <includes>
+        <include>**/*.xml</include>
+      </includes>
+    </fileSet>    
     <fileSet encoding="UTF-8">
       <directory>src/main/webapp</directory>
       <includes>
@@ -51,12 +61,6 @@
       <directory>src/main/resources</directory>
       <includes>
         <include>**/*.json</include>
-      </includes>
-    </fileSet>
-    <fileSet filtered="true" encoding="UTF-8">
-      <directory></directory>
-      <includes>
-        <include>jetty.xml</include>
       </includes>
     </fileSet>
   </fileSets>
