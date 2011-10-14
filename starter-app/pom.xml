@@ -485,7 +485,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.1.1</version>
 				<configuration>
-                  <packagingExcludes>WEB-INF/classes/StartJetty.class,WEB-INF/web.xml</packagingExcludes>
+                  <packagingExcludes>WEB-INF/classes/StartJetty*,WEB-INF/web.xml</packagingExcludes>
 				</configuration>
 			</plugin>
 
