@@ -76,7 +76,7 @@ public class ApiController {
 	 * @param pollingUrlsVar
 	 *          Name of the polling urls object. Defaults to POLLING_URLS
 	 * @param group
-	 *          Name of the api group
+	 *          Name of the api group. Multiple groups delimited with comma
 	 * @param fullRouterUrl 
 	 *          If true the router property contains the full request URL with method, server and port. Defaults to false
 	 *          returns only the url without method, server and port           
