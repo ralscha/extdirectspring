@@ -176,6 +176,37 @@ public class ApiControllerTest {
 	}
 
 	@Test
+	public void testGroup1and2() throws IOException {
+		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1,group2", false, null, request,
+				response);
+		compare(response, group1and2Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS");
+
+		request = new MockHttpServletRequest("POST", "/action/api.js");
+		response = new MockHttpServletResponse();
+		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1,group2", false, null, request,
+				response);
+		compare(response, group1and2Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS");
+	}
+	
+	@Test
+	public void testGroup1andUnknown() throws IOException {
+		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1,unknown", false, null, request,
+				response);
+		compare(response, group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS");
+
+		request = new MockHttpServletRequest("POST", "/action/api.js");
+		response = new MockHttpServletResponse();
+		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1,unknown", false, null, request,
+				response);
+		compare(response, group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS");
+	}
+
+	
+	@Test
 	public void testInterfaceGroup() throws IOException {
 		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
@@ -259,6 +290,24 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
+	private RemotingApi group1and2Apis(String namespace) {
+		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
+		remotingApi.addAction("remoteProviderSimple", "method1", 0, false);
+		remotingApi.addAction("remoteProviderTreeLoad", "method1", 1, false);
+
+		remotingApi.addAction("remoteProviderSimple", "method3", 3, false);
+		remotingApi.addAction("remoteProviderSimple", "method5", 1, false);
+		remotingApi.addAction("remoteProviderStoreRead", "method6", 1, false);
+		remotingApi.addAction("remoteProviderStoreRead", "method7", 1, false);
+		remotingApi.addAction("remoteProviderStoreModify", "update4", 1, false);
+		remotingApi.addAction("formInfoController", "upload", 0, true);
+		remotingApi.addPollingProvider("pollProvider", "handleMessage1", "message1");
+		remotingApi.addPollingProvider("pollProvider", "handleMessage2", "message2");
+		remotingApi.addPollingProvider("pollProvider", "message6", "message6");
+		return remotingApi;
+	}
+
+	
 	private RemotingApi group2Apis(String namespace) {
 		return group2Apis(namespace, "/action/router");
 	}
