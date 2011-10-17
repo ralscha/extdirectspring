@@ -330,12 +330,17 @@ public class ApiController {
 		return result;
 	}
 
-	private boolean isSameGroup(final String requestedGroup, final String annotationGroup) {
-		if (requestedGroup != null) {
-			String[] groups = requestedGroup.split(",");
-			for (String group : groups) {
-				if (ExtDirectSpringUtil.equal(group, annotationGroup)) {
-					return true;
+	private boolean isSameGroup(final String requestedGroupString, final String annotationGroupString) {
+		if (requestedGroupString != null) {
+			String[] requestedGroups = requestedGroupString.split(",");
+			for (String requestedGroup : requestedGroups) {
+				if (annotationGroupString != null) {
+					String[] annotationGroups = annotationGroupString.split(",");
+					for (String annotationGroup : annotationGroups) {
+						if (ExtDirectSpringUtil.equal(requestedGroup, annotationGroup)) {
+							return true;
+						}
+					}
 				}
 			}
 			return false;
