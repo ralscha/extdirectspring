@@ -58,7 +58,7 @@ public class RemoteProviderSimple {
 		return "method2() called";
 	}
 
-	@ExtDirectMethod(group = "group2")
+	@ExtDirectMethod(group = "group2,groupX")
 	public String method3(long i, Double d, String s) {
 		return String.format("method3() called-%d-%.1f-%s", i, d, s);
 	}
@@ -67,7 +67,7 @@ public class RemoteProviderSimple {
 		return "method4() called";
 	}
 
-	@ExtDirectMethod(group = "group2")
+	@ExtDirectMethod(group = "group2,group3")
 	public Boolean method5(String userName) {
 		if ("ralph".equals(userName)) {
 			return true;
@@ -99,7 +99,7 @@ public class RemoteProviderSimple {
 		return info;
 	}
 
-	@ExtDirectMethod(group = "group3")
+	@ExtDirectMethod(group = "groupX,group3")
 	public long method9(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale,
 			Principal principal) {
 		assertNotNull(response);

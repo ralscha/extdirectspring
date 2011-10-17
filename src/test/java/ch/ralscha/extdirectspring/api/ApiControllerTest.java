@@ -314,6 +314,7 @@ public class ApiControllerTest {
 
 	private RemotingApi group3Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
+		remotingApi.addAction("remoteProviderSimple", "method5", 1, false);
 		remotingApi.addAction("remoteProviderSimple", "method9", 0, false);
 		remotingApi.addAction("remoteProviderStoreRead", "method5", 1, false);
 		remotingApi.addAction("remoteProviderStoreModify", "destroy", 1, false);
