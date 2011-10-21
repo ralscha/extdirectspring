@@ -16,7 +16,7 @@
 		<querydsl.version>2.2.1</querydsl.version>
 		<aspectj.version>1.6.11</aspectj.version>
 
-		<slf4j.version>1.6.2</slf4j.version>
+		<slf4j.version>1.6.3</slf4j.version>
 		<logback.version>0.9.30</logback.version>
 
 		<eds.version>1.0.12</eds.version>
@@ -26,7 +26,7 @@
 
 		<maven.build.timestamp.format>yyyy-MM-dd'T'hh:mm:ss.SSSZ</maven.build.timestamp.format>
 		<build.timestamp>${maven.build.timestamp}</build.timestamp>
-		<extjs.version>4.0.6</extjs.version>
+		<extjs.version>4.0.7</extjs.version>
 	</properties>
 
 
@@ -211,13 +211,13 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.2.2</version>
 		</dependency>
-
+        <!-- 
 		<dependency>
 			<groupId>resources</groupId>
 			<artifactId>extjs</artifactId>
 			<version>${extjs.version}</version>
 		</dependency>
-
+         -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
