@@ -6,8 +6,8 @@ Copyright (c) 2011 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-Commercial Usage
-Licensees holding valid commercial licenses may use this file in accordance with the Commercial Software License Agreement provided with the Software or, alternatively, in accordance with the terms contained in a written agreement between you and Sencha.
+GNU General Public License Usage
+This file may be used under the terms of the GNU General Public License version 3.0 as published by the Free Software Foundation and appearing in the file LICENSE included in the packaging of this file.  Please review the following information to ensure the GNU General Public License version 3.0 requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 
 If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
 
@@ -46,10 +46,6 @@ Ext.define('Ext.ux.form.ItemSelector', {
      * This can be overridden with a custom Array to change which buttons are displayed or their order.
      */
     buttons: ['top', 'up', 'add', 'remove', 'down', 'bottom'],
-    listTitle: {
-    	from:  'Available',
-    	to: 'Selected'
-    },
 
     buttonsText: {
         top: "Move to Top",
@@ -107,7 +103,7 @@ Ext.define('Ext.ux.form.ItemSelector', {
                 disabled: me.disabled
             },
             fromConfig = Ext.apply({
-                listTitle: me.listTitle.from,
+                listTitle: 'Available',
                 store: Ext.create('Ext.data.Store', {model: me.store.model}), //blank store to begin
                 listeners: {
                     boundList: {
@@ -117,7 +113,7 @@ Ext.define('Ext.ux.form.ItemSelector', {
                 }
             }, me.multiselects[0], commonConfig),
             toConfig = Ext.apply({
-                listTitle: me.listTitle.to,
+                listTitle: 'Selected',
                 store: Ext.create('Ext.data.Store', {model: me.store.model}), //blank store to begin
                 listeners: {
                     boundList: {
@@ -187,7 +183,9 @@ Ext.define('Ext.ux.form.ItemSelector', {
     
     getSelections: function(list){
         var store = list.getStore(),
-            selections = list.getSelectionModel().getSelection();
+            selections = list.getSelectionModel().getSelection(),
+            i = 0,
+            len = selections.length;
             
         return Ext.Array.sort(selections, function(a, b){
             a = store.indexOf(a);
@@ -206,7 +204,8 @@ Ext.define('Ext.ux.form.ItemSelector', {
         var list = this.toField.boundList,
             store = list.getStore(),
             selected = this.getSelections(list),
-            i = selected.length - 1;
+            i = selected.length - 1,
+            selection;
         
         
         store.suspendEvents();
