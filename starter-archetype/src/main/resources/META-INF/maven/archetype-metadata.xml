@@ -10,16 +10,12 @@
         <include>**/*.java</include>
       </includes>
       <excludes>
-        <exclude>Artifact.java</exclude>
-        <exclude>MavenWebInfConfiguration.java</exclude>
         <exclude>StartJetty.java</exclude>
       </excludes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
       <directory>src/main/java</directory>
       <includes>
-        <include>Artifact.java</include>
-        <include>MavenWebInfConfiguration.java</include>
         <include>StartJetty.java</include>
       </includes>
     </fileSet>
@@ -47,14 +43,11 @@
     <fileSet encoding="UTF-8">
       <directory>src/main/webapp</directory>
       <includes>
-        <include>**/*.</include>
         <include>**/*.png</include>
-        <include>**/*.scss</include>
         <include>**/*.js</include>
         <include>**/*.ico</include>
         <include>**/*.gif</include>
         <include>**/*.css</include>
-        <include>**/*.rb</include>
       </includes>
     </fileSet>
     <fileSet encoding="UTF-8">
