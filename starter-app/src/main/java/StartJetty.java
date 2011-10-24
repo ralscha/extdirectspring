@@ -180,5 +180,4 @@ public class StartJetty {
 			return resources;
 		}
 	}
-
 }
