@@ -46,6 +46,10 @@ Ext.define('Ext.ux.form.ItemSelector', {
      * This can be overridden with a custom Array to change which buttons are displayed or their order.
      */
     buttons: ['top', 'up', 'add', 'remove', 'down', 'bottom'],
+    listTitle: {
+    	from:  'Available',
+    	to: 'Selected'
+    },
 
     buttonsText: {
         top: "Move to Top",
@@ -103,7 +107,7 @@ Ext.define('Ext.ux.form.ItemSelector', {
                 disabled: me.disabled
             },
             fromConfig = Ext.apply({
-                listTitle: 'Available',
+                listTitle: me.listTitle.from,
                 store: Ext.create('Ext.data.Store', {model: me.store.model}), //blank store to begin
                 listeners: {
                     boundList: {
@@ -113,7 +117,7 @@ Ext.define('Ext.ux.form.ItemSelector', {
                 }
             }, me.multiselects[0], commonConfig),
             toConfig = Ext.apply({
-                listTitle: 'Selected',
+                listTitle: me.listTitle.to,
                 store: Ext.create('Ext.data.Store', {model: me.store.model}), //blank store to begin
                 listeners: {
                     boundList: {
@@ -183,9 +187,7 @@ Ext.define('Ext.ux.form.ItemSelector', {
     
     getSelections: function(list){
         var store = list.getStore(),
-            selections = list.getSelectionModel().getSelection(),
-            i = 0,
-            len = selections.length;
+            selections = list.getSelectionModel().getSelection();
             
         return Ext.Array.sort(selections, function(a, b){
             a = store.indexOf(a);
@@ -204,8 +206,7 @@ Ext.define('Ext.ux.form.ItemSelector', {
         var list = this.toField.boundList,
             store = list.getStore(),
             selected = this.getSelections(list),
-            i = selected.length - 1,
-            selection;
+            i = selected.length - 1;
         
         
         store.suspendEvents();
