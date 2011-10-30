@@ -31,6 +31,7 @@ public class JsonHandler {
 		mapper = new ObjectMapper();
 		indentMapper = new ObjectMapper();
 		indentMapper.getSerializationConfig().enable(Feature.INDENT_OUTPUT);
+		//jackson 1.9: indentMapper.enable(Feature.INDENT_OUTPUT);
 	}
 
 	public void setMapper(ObjectMapper mapper) {
