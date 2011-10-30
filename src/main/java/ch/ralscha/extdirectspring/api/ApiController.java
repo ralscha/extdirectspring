@@ -393,7 +393,10 @@ public class ApiController {
 		ApplicationContext currentCtx = context;
 		do {
 			for (String beanName : currentCtx.getBeanDefinitionNames()) {
-				beanClasses.put(beanName, currentCtx.getType(beanName));
+				Class<?> type = currentCtx.getType(beanName);
+				if (type != null) {
+					beanClasses.put(beanName, type);
+				}
 			}
 			currentCtx = currentCtx.getParent();
 		} while (currentCtx != null);
