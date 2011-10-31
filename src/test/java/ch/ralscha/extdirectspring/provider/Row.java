@@ -17,6 +17,9 @@ package ch.ralscha.extdirectspring.provider;
 
 import java.math.BigDecimal;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Row implements Comparable<Row> {
 
 	private int id;

@@ -20,6 +20,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -40,6 +41,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.Row;
+import ch.ralscha.extdirectspring.util.JsonHandler;
 
 /**
  * Tests for {@link RouterController}.
@@ -53,6 +55,9 @@ public class RouterControllerStoreModifyTest {
 
 	@Autowired
 	private RouterController controller;
+	
+	@Autowired
+	private JsonHandler jsonHandler;
 
 	private MockHttpServletResponse response;
 	private MockHttpServletRequest request;
@@ -84,7 +89,7 @@ public class RouterControllerStoreModifyTest {
 		List<Row> rows = (List<Row>) resp.getResult();
 		assertTrue(rows.isEmpty());
 	}
-
+	
 	@Test
 	public void testCreateWithData() {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
@@ -116,6 +121,27 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	@Test
+	public void testCreateWithDataSingle() {
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModifySingle", "create1", 1,
+				new Row(10, "Ralph", true, "109.55"));
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		assertEquals(1, responses.size());
+		ExtDirectResponse resp = responses.get(0);
+		assertEquals("remoteProviderStoreModifySingle", resp.getAction());
+		assertEquals("create1", resp.getMethod());
+		assertEquals("rpc", resp.getType());
+		assertEquals(1, resp.getTid());
+		assertNull(resp.getMessage());
+		assertNull(resp.getWhere());
+		assertNotNull(resp.getResult());
+
+		Row storeResponse = (Row) resp.getResult();
+		
+		assertEquals(10, storeResponse.getId());
+	}
+	
+	@Test
 	public void testCreateWithDataAndSupportedArguments() {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Row> rowsToUpdate = new ArrayList<Row>();
@@ -142,12 +168,32 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	@Test
+	public void testCreateWithDataAndSupportedArgumentsSingle() {
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModifySingle", "create2", 1,
+				new Row(10, "Ralph", false, "109.55"));
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		assertEquals(1, responses.size());
+		ExtDirectResponse resp = responses.get(0);
+		assertEquals("remoteProviderStoreModifySingle", resp.getAction());
+		assertEquals("create2", resp.getMethod());
+		assertEquals("rpc", resp.getType());
+		assertEquals(1, resp.getTid());
+		assertNull(resp.getMessage());
+		assertNull(resp.getWhere());
+		assertNotNull(resp.getResult());
+
+		Row storeResponse = (Row) resp.getResult();
+		assertEquals(10, storeResponse.getId());
+	}
+	
+	@Test
 	public void testUpdate() {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
 		storeRequest.put("records", rowsToUpdate);
-		executeUpdate(storeRequest, "update1");
+		executeUpdate("remoteProviderStoreModify", storeRequest, "update1");
 	}
 
 	@Test
@@ -157,7 +203,7 @@ public class RouterControllerStoreModifyTest {
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
 		storeRequest.put("id", 10);
 		storeRequest.put("records", rowsToUpdate);
-		executeUpdate(storeRequest, "update2");
+		executeUpdate("remoteProviderStoreModify", storeRequest, "update2");
 	}
 
 	@Test
@@ -166,7 +212,7 @@ public class RouterControllerStoreModifyTest {
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
 		storeRequest.put("records", rowsToUpdate);
-		executeUpdate(storeRequest, "update3");
+		executeUpdate("remoteProviderStoreModify", storeRequest, "update3");
 	}
 
 	@Test
@@ -175,7 +221,7 @@ public class RouterControllerStoreModifyTest {
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
 		storeRequest.put("records", rowsToUpdate);
-		executeUpdate(storeRequest, "update4");
+		executeUpdate("remoteProviderStoreModify", storeRequest, "update4");
 
 		storeRequest = new LinkedHashMap<String, Object>();
 		rowsToUpdate = new ArrayList<Row>();
@@ -183,17 +229,56 @@ public class RouterControllerStoreModifyTest {
 		storeRequest.put("records", rowsToUpdate);
 		storeRequest.put("id", 11);
 		storeRequest.put("yesterday", ISODateTimeFormat.date().print(new LocalDate().minusDays(1)));
-		executeUpdate(storeRequest, "update4");
+		executeUpdate("remoteProviderStoreModify", storeRequest, "update4");
 	}
 
-	private void executeUpdate(Map<String, Object> storeRequest, String method) {
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", method, 1,
+	@Test
+	public void testUpdateSingle() {
+		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
+		Row row = new Row(10, "Ralph", true, "109.55");
+		storeRequest.putAll(jsonHandler.convertValue(row, Map.class));
+		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update1");
+	}
+
+	@Test
+	public void testUpdateWithRequestParamSingle() {
+		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
+		Row row = new Row(10, "Ralph", true, "109.55");
+		storeRequest.put("aParam", 42);
+		storeRequest.putAll(jsonHandler.convertValue(row, Map.class));
+		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update2");
+	}
+
+	@Test
+	public void testUpdateWithRequestParamDefaultValueSingle() {
+		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
+		Row row = new Row(10, "Ralph", true, "109.55");
+		storeRequest.putAll(jsonHandler.convertValue(row, Map.class));
+		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update3");
+	}
+
+	@Test
+	public void testUpdateWithRequestParamOptionalSingle() {
+		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
+		Row row = new Row(10, "Ralph", true, "109.55");
+		storeRequest.putAll(jsonHandler.convertValue(row, Map.class));
+		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update4");
+
+		storeRequest = new LinkedHashMap<String, Object>();
+		storeRequest.putAll(jsonHandler.convertValue(row, Map.class));
+		storeRequest.put("aParam", 11);
+		storeRequest.put("yesterday", ISODateTimeFormat.date().print(new LocalDate().minusDays(1)));
+		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update4");
+	}
+	
+	private void executeUpdate(String action, Map<String, Object> storeRequest, String method) {
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson(action, method, 1,
 				storeRequest);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		assertEquals(1, responses.size());
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderStoreModify", resp.getAction());
+		assertEquals(action, resp.getAction());
 		assertEquals(method, resp.getMethod());
 		assertEquals("rpc", resp.getType());
 		assertEquals(1, resp.getTid());
@@ -201,9 +286,21 @@ public class RouterControllerStoreModifyTest {
 		assertNull(resp.getWhere());
 		assertNotNull(resp.getResult());
 
-		List<Row> storeResponse = (List<Row>) resp.getResult();
-		assertEquals(1, storeResponse.size());
-		assertEquals(10, storeResponse.get(0).getId());
+		Object result = resp.getResult();
+		if (result instanceof List) {
+			List<Row> storeResponse = (List<Row>) result;
+			assertEquals(1, storeResponse.size());
+			assertEquals(10, storeResponse.get(0).getId());
+			assertEquals("Ralph", storeResponse.get(0).getName());
+			assertTrue(storeResponse.get(0).isAdmin());
+			assertEquals(new BigDecimal("109.55"), storeResponse.get(0).getSalary());
+		} else {
+			Row storeResponse = (Row)result;
+			assertEquals(10, storeResponse.getId());
+			assertEquals("Ralph", storeResponse.getName());
+			assertTrue(storeResponse.isAdmin());
+			assertEquals(new BigDecimal("109.55"), storeResponse.getSalary());
+		}
 	}
 
 	@Test
@@ -232,4 +329,24 @@ public class RouterControllerStoreModifyTest {
 		assertEquals(Integer.valueOf(10), storeResponse.get(0));
 	}
 
+	@Test
+	public void testDestroySingle() {
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModifySingle", "destroy", 1,
+				10);
+		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		assertEquals(1, responses.size());
+		ExtDirectResponse resp = responses.get(0);
+		assertEquals("remoteProviderStoreModifySingle", resp.getAction());
+		assertEquals("destroy", resp.getMethod());
+		assertEquals("rpc", resp.getType());
+		assertEquals(1, resp.getTid());
+		assertNull(resp.getMessage());
+		assertNull(resp.getWhere());
+		assertNotNull(resp.getResult());
+
+		Integer storeResponse = (Integer) resp.getResult();
+		assertEquals(Integer.valueOf(10), storeResponse);
+	}
+	
 }

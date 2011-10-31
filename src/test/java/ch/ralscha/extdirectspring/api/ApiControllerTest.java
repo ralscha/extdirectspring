@@ -283,6 +283,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreRead", "method6", 1, false);
 		remotingApi.addAction("remoteProviderStoreRead", "method7", 1, false);
 		remotingApi.addAction("remoteProviderStoreModify", "update4", 1, false);
+		remotingApi.addAction("remoteProviderStoreModifySingle", "update4", 1, false);
 		remotingApi.addAction("formInfoController", "upload", 0, true);
 		remotingApi.addPollingProvider("pollProvider", "handleMessage1", "message1");
 		remotingApi.addPollingProvider("pollProvider", "handleMessage2", "message2");
@@ -300,6 +301,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreRead", "method6", 1, false);
 		remotingApi.addAction("remoteProviderStoreRead", "method7", 1, false);
 		remotingApi.addAction("remoteProviderStoreModify", "update4", 1, false);
+		remotingApi.addAction("remoteProviderStoreModifySingle", "update4", 1, false);
 		remotingApi.addAction("formInfoController", "upload", 0, true);
 		remotingApi.addPollingProvider("pollProvider", "handleMessage1", "message1");
 		remotingApi.addPollingProvider("pollProvider", "handleMessage2", "message2");
@@ -318,6 +320,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", "method9", 0, false);
 		remotingApi.addAction("remoteProviderStoreRead", "method5", 1, false);
 		remotingApi.addAction("remoteProviderStoreModify", "destroy", 1, false);
+		remotingApi.addAction("remoteProviderStoreModifySingle", "destroy", 1, false);
 		remotingApi.addAction("remoteProviderFormLoad", "method1", 1, false);
 		remotingApi.addAction("remoteProviderFormLoad", "method5", 1, false);
 		remotingApi.addAction("formInfoController", "updateInfo", 0, true);
@@ -377,6 +380,14 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreModify", "update4", 1, false);
 		remotingApi.addAction("remoteProviderStoreModify", "destroy", 1, false);
 
+		remotingApi.addAction("remoteProviderStoreModifySingle", "create1", 1, false);
+		remotingApi.addAction("remoteProviderStoreModifySingle", "create2", 1, false);
+		remotingApi.addAction("remoteProviderStoreModifySingle", "update1", 1, false);
+		remotingApi.addAction("remoteProviderStoreModifySingle", "update2", 1, false);
+		remotingApi.addAction("remoteProviderStoreModifySingle", "update3", 1, false);
+		remotingApi.addAction("remoteProviderStoreModifySingle", "update4", 1, false);
+		remotingApi.addAction("remoteProviderStoreModifySingle", "destroy", 1, false);
+		
 		remotingApi.addAction("remoteProviderFormLoad", "method1", 1, false);
 		remotingApi.addAction("remoteProviderFormLoad", "method2", 1, false);
 		remotingApi.addAction("remoteProviderFormLoad", "method3", 1, false);
