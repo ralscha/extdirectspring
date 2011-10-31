@@ -147,6 +147,18 @@
 			<version>2.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>resources</groupId>
+			<artifactId>senchatouch</artifactId>
+			<version>2.0.0-pr1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.java.dev.rome</groupId>
+			<artifactId>rome</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
 		<!-- To be able to run Jetty as a simple class for easier debugging -->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -180,21 +192,28 @@
 			<id>org.springframework.maven.milestones</id>
 			<name>Spring Maven Milestones Repository</name>
 			<url>http://maven.springframework.org/milestone</url>
-		</repository>	
+		</repository>
 
 		<repository>
 			<id>org.springframework.maven.milestone</id>
 			<name>Spring Maven Milestone Repository</name>
 			<url>http://maven.springframework.org/milestone</url>
 		</repository>
-		
+
 		<repository>
 			<id>org.springframework.maven.snapshot</id>
 			<name>Spring Maven Snapshot Repository</name>
 			<url>http://maven.springframework.org/snapshot</url>
-			<snapshots><enabled>true</enabled></snapshots>
-		</repository>		
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
 
+		<repository>
+			<id>ralscha</id>
+			<name>My Private Repository</name>
+			<url>http://ralscha.ch/repository</url>
+		</repository>
 
 	</repositories>
 
@@ -321,7 +340,7 @@
 					<packagingExcludes>
 						WEB-INF/classes/RunDemoOnJetty,WEB-INF/web.xml
 					</packagingExcludes>
-				</configuration>				
+				</configuration>
 			</plugin>
 
 		</plugins>
