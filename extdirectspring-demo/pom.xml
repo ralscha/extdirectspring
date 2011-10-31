@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ch.ralscha</groupId>
 	<artifactId>extdirectspring-demo</artifactId>
-	<version>1.0.12</version>
+	<version>1.0.13</version>
 	<packaging>war</packaging>
 
 	<inceptionYear>2010</inceptionYear>
@@ -153,15 +153,9 @@
 			<version>1.0.0</version>
 		</dependency>
 
-        <!-- 
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<version>2.11.0</version>
-            <scope>test</scope>
-		</dependency>
-         -->
-         
+		<!-- <dependency> <groupId>org.seleniumhq.selenium</groupId> <artifactId>selenium-java</artifactId> <version>2.11.0</version> <scope>test</scope> 
+			</dependency> -->
+
 		<!-- To be able to run Jetty as a simple class for easier debugging -->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -179,7 +173,7 @@
 
 	<repositories>
 
-        <repository>
+		<repository>
 			<id>sonatype</id>
 			<name>sonatype</name>
 			<url>https://oss.sonatype.org/content/groups/public</url>
