@@ -43,7 +43,7 @@
 		<logback.version>0.9.30</logback.version>
 		<hibernatevalidator.version>4.2.0.Final</hibernatevalidator.version>
 		<jetty.version>8.0.4.v20111024</jetty.version>
-		<eds.version>1.0.13-SNAPSHOT</eds.version>
+		<eds.version>1.0.13</eds.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.debug>true</maven.compiler.debug>
@@ -179,7 +179,7 @@
 
 	<repositories>
 
-		<repository>
+        <repository>
 			<id>sonatype</id>
 			<name>sonatype</name>
 			<url>https://oss.sonatype.org/content/groups/public</url>
