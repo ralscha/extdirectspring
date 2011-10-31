@@ -37,8 +37,6 @@ public class FilterActionImplementation implements FilterActionInterface {
 	public ExtDirectStoreResponse<Company> load(ExtDirectStoreReadRequest request,
 			@RequestParam(required = false) String dRif) {
 
-		System.out.println(dRif);
-
 		List<Company> companies;
 		if (!request.getFilters().isEmpty()) {
 			companies = dataBean.findCompanies(request.getFilters());
