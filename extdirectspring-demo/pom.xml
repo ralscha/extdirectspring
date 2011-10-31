@@ -174,18 +174,6 @@
 	<repositories>
 
 		<repository>
-			<id>sonatype</id>
-			<name>sonatype</name>
-			<url>https://oss.sonatype.org/content/groups/public</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-
-		<repository>
 			<id>org.springframework.maven.milestones</id>
 			<name>Spring Maven Milestones Repository</name>
 			<url>http://maven.springframework.org/milestone</url>
