@@ -217,7 +217,13 @@ public class RouterController implements InitializingBean {
 							.isType(ExtDirectMethodType.STORE_READ))
 							&& !ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())
 							&& configuration.isAlwaysWrapStoreResponse()) {
-						result = new ExtDirectStoreResponse((Collection) result);
+						if (result instanceof Collection) {
+							result = new ExtDirectStoreResponse((Collection) result);
+						} else {
+							List responses = new ArrayList();
+							responses.add(result);
+							result = new ExtDirectStoreResponse(responses);
+						}
 					}
 
 					directResponse.setResult(result);
@@ -280,13 +286,13 @@ public class RouterController implements InitializingBean {
 			directStoreEntryClass = methodInfo.getCollectionType();
 			List<Object> data = (List<Object>) directRequest.getData();
 
-			if (data != null && data.size() > 0) {
-
-				if (data.get(0) instanceof List) {
-					directStoreModifyRecords = convertObjectEntriesToType((List<Object>) data.get(0),
+			if (directStoreEntryClass != null && data != null && data.size() > 0) {
+				Object obj = data.get(0);
+				if (obj instanceof List) {
+					directStoreModifyRecords = convertObjectEntriesToType((List<Object>) obj,
 							directStoreEntryClass);
 				} else {
-					Map<String, Object> jsonData = (Map<String, Object>) data.get(0);
+					Map<String, Object> jsonData = (Map<String, Object>) obj;
 					Object records = jsonData.get("records");
 					if (records != null) {
 						if (records instanceof List) {
@@ -305,6 +311,12 @@ public class RouterController implements InitializingBean {
 				}
 				jsonParamIndex = 1;
 
+			} else if (data != null && data.size() > 0) {
+				Object obj = data.get(0);
+				if (obj instanceof Map) {
+					remainingParameters = new HashMap<String, Object>((Map<String, Object>) obj);
+					remainingParameters.remove("records");
+				}
 			}
 		} else if (methodInfo.isType(ExtDirectMethodType.SIMPLE_NAMED)) {
 			Map<String, Object> data = (Map<String, Object>) directRequest.getData();
