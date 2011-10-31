@@ -148,12 +148,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>resources</groupId>
-			<artifactId>senchatouch</artifactId>
-			<version>2.0.0-pr1</version>
-		</dependency>
-
-		<dependency>
 			<groupId>net.java.dev.rome</groupId>
 			<artifactId>rome</artifactId>
 			<version>1.0.0</version>
@@ -207,12 +201,6 @@
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
-		</repository>
-
-		<repository>
-			<id>ralscha</id>
-			<name>My Private Repository</name>
-			<url>http://ralscha.ch/repository</url>
 		</repository>
 
 	</repositories>
