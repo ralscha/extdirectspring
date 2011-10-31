@@ -5,7 +5,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
-        <dependent-module archiveName="extdirectspring-1.0.13.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/extdirectspring-1.0.13/extdirectspring-1.0.13">
+        <dependent-module archiveName="extdirectspring-1.0.14-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/extdirectspring/extdirectspring">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="extdirectspring-demo"/>
