@@ -21,7 +21,6 @@ public class MenuNode {
 	private boolean expanded;
 	private String iconCls;
 
-	@JsonIgnore
 	private Set<String> roles = Sets.newHashSet();
 
 	private List<MenuNode> children = Lists.newArrayList();

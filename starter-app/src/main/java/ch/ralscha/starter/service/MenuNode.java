@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import com.google.common.collect.Lists;
@@ -17,8 +16,7 @@ public class MenuNode {
 	private boolean leaf;
 	private boolean expanded;
 	private String iconCls;
-
-	@JsonIgnore
+	
 	private Set<String> roles = Sets.newHashSet();
 
 	private List<MenuNode> children = Lists.newArrayList();
@@ -41,6 +39,12 @@ public class MenuNode {
 	}
 
 	private boolean hasRole(MenuNode child, Collection<? extends GrantedAuthority> authorities) {
+		System.out.println("ROLES");
+		for (String role : child.getRoles()) {
+			System.out.println(role);
+		}
+		System.out.println("==========");
+		
 		if (child.getRoles().isEmpty()) {
 			return true;
 		}
