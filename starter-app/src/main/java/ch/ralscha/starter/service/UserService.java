@@ -17,6 +17,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 import ch.ralscha.extdirectspring.filter.StringFilter;
+import ch.ralscha.starter.config.JpaUserDetails;
 import ch.ralscha.starter.entity.QUser;
 import ch.ralscha.starter.entity.Role;
 import ch.ralscha.starter.entity.User;
@@ -96,24 +98,34 @@ public class UserService {
 	@ResponseBody
 	@RequestMapping(value = "/userFormPost", method = RequestMethod.POST)
 	@Transactional
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("isAuthenticated()")
 	public ExtDirectResponse userFormPost(HttpServletRequest request, Locale locale,
-			@RequestParam(required = false) String roleIds, @Valid User modifiedUser, BindingResult result) {
+			@RequestParam(required = false, defaultValue = "false") boolean options,
+			@RequestParam(required = false) String roleIds, @RequestParam(value = "id", required = false) Long userId,
+			@Valid User modifiedUser, BindingResult result) {
 
 		//Check uniqueness of userName and email
 		if (!result.hasErrors()) {
-			BooleanBuilder bb = new BooleanBuilder(QUser.user.userName.equalsIgnoreCase(modifiedUser.getUserName()));
-			if (modifiedUser.getId() != null) {
-				bb.and(QUser.user.id.ne(modifiedUser.getId()));
-			}
-			if (userRepository.count(bb) > 0) {
-				result.rejectValue("userName", null, messageSource.getMessage("user_usernametaken", null, locale));
+			if (!options) {
+				BooleanBuilder bb = new BooleanBuilder(QUser.user.userName.equalsIgnoreCase(modifiedUser.getUserName()));
+				if (userId != null) {
+					bb.and(QUser.user.id.ne(userId));
+				}
+				if (userRepository.count(bb) > 0) {
+					result.rejectValue("userName", null, messageSource.getMessage("user_usernametaken", null, locale));
+				}
 			}
 
-			bb = new BooleanBuilder(QUser.user.email.equalsIgnoreCase(modifiedUser.getEmail()));
-			if (modifiedUser.getId() != null) {
-				bb.and(QUser.user.id.ne(modifiedUser.getId()));
+			BooleanBuilder bb = new BooleanBuilder(QUser.user.email.equalsIgnoreCase(modifiedUser.getEmail()));
+			if (userId != null && !options) {
+				bb.and(QUser.user.id.ne(userId));
+			} else if (options) {
+				Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+				if (principal instanceof JpaUserDetails) {
+					bb.and(QUser.user.userName.ne(((JpaUserDetails) principal).getUsername()));
+				}
 			}
+
 			if (userRepository.count(bb) > 0) {
 				result.rejectValue("email", null, messageSource.getMessage("user_emailtaken", null, locale));
 			}
@@ -125,25 +137,35 @@ public class UserService {
 				modifiedUser.setPasswordHash(passwordEncoder.encode(modifiedUser.getPasswordHash()));
 			}
 
-			Set<Role> roles = Sets.newHashSet();
-			if (StringUtils.hasText(roleIds)) {
-				Iterable<String> roleIdsIt = Splitter.on(",").split(roleIds);
-				for (String roleId : roleIdsIt) {
-					roles.add(roleRepository.findOne(Long.valueOf(roleId)));
+			if (!options) {
+				Set<Role> roles = Sets.newHashSet();
+				if (StringUtils.hasText(roleIds)) {
+					Iterable<String> roleIdsIt = Splitter.on(",").split(roleIds);
+					for (String roleId : roleIdsIt) {
+						roles.add(roleRepository.findOne(Long.valueOf(roleId)));
+					}
 				}
-			}
 
-			if (modifiedUser.getId() != null) {
-				User dbUser = userRepository.findOne(modifiedUser.getId());
-				if (dbUser != null) {
-					dbUser.getRoles().clear();
-					dbUser.getRoles().addAll(roles);
-					dbUser.update(modifiedUser);
+				if (userId != null) {
+					User dbUser = userRepository.findOne(userId);
+					if (dbUser != null) {
+						dbUser.getRoles().clear();
+						dbUser.getRoles().addAll(roles);
+						dbUser.update(modifiedUser, false);
+					}
+				} else {
+					modifiedUser.setCreateDate(new Date());
+					modifiedUser.setRoles(roles);
+					userRepository.save(modifiedUser);
 				}
 			} else {
-				modifiedUser.setCreateDate(new Date());
-				modifiedUser.setRoles(roles);
-				userRepository.save(modifiedUser);
+				Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+				if (principal instanceof JpaUserDetails) {
+					User dbUser = userRepository.findByUserName(((JpaUserDetails) principal).getUsername());
+					if (dbUser != null) {
+						dbUser.update(modifiedUser, true);
+					}
+				}
 			}
 		}
 
@@ -153,4 +175,14 @@ public class UserService {
 
 	}
 
+	@ExtDirectMethod
+	@PreAuthorize("isAuthenticated()")
+	@Transactional(readOnly = true)
+	public User getLoggedOnUserObject() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof JpaUserDetails) {
+			return userRepository.findByUserName(((JpaUserDetails) principal).getUsername());
+		}
+		return null;
+	}
 }

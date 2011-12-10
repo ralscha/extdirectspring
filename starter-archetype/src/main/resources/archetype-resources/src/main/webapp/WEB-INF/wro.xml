@@ -11,10 +11,7 @@
     <js>/ux/TabReorderer.js</js>
     <js>/ux/form/field/ClearButton.js</js>
     <js>/ux/form/field/FilterField.js</js>
-    <js>/ux/layout/component/form/ItemSelector.js</js>
-    <js>/ux/layout/component/form/MultiSelect.js</js>    
-    <js>/ux/form/MultiSelect.js</js>
-    <js>/ux/form/ItemSelector.js</js>    
+    <js>/ux/form/field/BoxSelect.js</js> 
     <js>/ux/window/Notification.js</js>
     <js>/api.js</js>
     <js>/direct.js</js>
@@ -30,6 +27,7 @@
 
     <js>/app/view/navigation/Header.js</js>
     <js>/app/view/navigation/SideBar.js</js>
+    <js>/app/view/navigation/UserOptions.js</js>
     <js>/app/view/poll/PollChart.js</js>
     <js>/app/view/user/Edit.js</js>
     <js>/app/view/user/List.js</js>
@@ -41,9 +39,9 @@
     <js>/app.js</js>
     
     <css>/resources/css/app.css</css>
-    <css>/resources/css/ClearButton.css</css>
-    <css>/resources/css/ItemSelector.css</css>
-    <css>/resources/css/Notification.css</css>
+    <css>/ux/css/ClearButton.css</css>
+    <css>/ux/css/Notification.css</css>
+    <css>/ux/css/BoxSelect.css</css>
   </group>
 
   <group name="login">
@@ -51,7 +49,7 @@
     <js>/login.js</js>
     
     <css>/resources/css/app.css</css>
-    <css>/resources/css/Notification.css</css>
+    <css>/ux/css/Notification.css</css>
   </group>
 
 </groups>

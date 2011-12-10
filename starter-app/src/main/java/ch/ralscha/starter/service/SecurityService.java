@@ -19,4 +19,5 @@ public class SecurityService {
 		}
 		return principal.toString();
 	}
+
 }

@@ -2,7 +2,7 @@
 .ext-ux-clearbutton {
 	width: 12px;
 	height: 12px;
-	background-image: url(../images/clear-text-icon.gif);
+	background-image: url(images/clear-text-icon.gif);
 	background-position: 0 0;
 	background-repeat: no-repeat;
 	-moz-user-focus: ignore; /* https://developer.mozilla.org/en/CSS/-moz-user-focus */

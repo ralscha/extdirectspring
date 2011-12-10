@@ -19,11 +19,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.util.StringUtils;
 
 @Entity
 @Table(name = "`User`")
+@JsonIgnoreProperties("new")
 public class User extends AbstractPersistable<Long> {
 
 	private static final long serialVersionUID = 1L;
@@ -60,12 +63,15 @@ public class User extends AbstractPersistable<Long> {
 	@JoinTable(name = "UserRoles", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
 	private Set<Role> roles;
 
-	public void update(User modifiedUser) {
+	public void update(User modifiedUser, boolean personalOptionsUpdate) {
+		if (!personalOptionsUpdate) {
 		this.userName = modifiedUser.getUserName();
+			this.enabled = modifiedUser.isEnabled();
+		}
+
 		this.name = modifiedUser.getName();
 		this.firstName = modifiedUser.getFirstName();
 		this.email = modifiedUser.getEmail();
-		this.enabled = modifiedUser.isEnabled();
 		this.locale = modifiedUser.getLocale();
 
 		if (StringUtils.hasText(modifiedUser.getPasswordHash())) {

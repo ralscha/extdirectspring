@@ -28,7 +28,7 @@ public class DataConfig {
 
 	@Autowired
 	private Environment environment;
-	
+
 	public DataSource dataSource() throws NamingException {
 		Context ctx = new InitialContext();
 		return (DataSource) ctx.lookup("java:comp/env/jdbc/ds");

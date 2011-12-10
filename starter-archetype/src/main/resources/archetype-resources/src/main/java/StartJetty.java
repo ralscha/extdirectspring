@@ -66,13 +66,14 @@ public class StartJetty {
 		server.start();
 
 		System.out.println("Jetty Startup Time: " + (System.currentTimeMillis() - start) + " ms");
-		System.out.println("Jetty running on 8080");
+		System.out.println("Jetty running on " + port);
 	}
 
 	private static class Artifact {
 		private String groupId;
 		private String artifact;
 
+		@SuppressWarnings("unused")
 		public Artifact(String groupId, String artifact) {
 			this.groupId = groupId;
 			this.artifact = artifact;
@@ -187,5 +188,4 @@ public class StartJetty {
 			return resources;
 		}
 	}
-
 }

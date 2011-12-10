@@ -17,8 +17,13 @@
 <!-- by the jetty.xml file. -->
 <!-- -->
 <!-- ===================================================================== -->
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" metadata-complete="true" version="2.5">
+<web-app
+  xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+  metadata-complete="true"
+  version="2.5"
+>
 
 	<description>
     Default web.xml file.  
@@ -41,31 +46,71 @@
 		<listener-class>org.eclipse.jetty.servlet.listener.IntrospectorCleaner</listener-class>
 	</listener>
 
+
 	<!-- ==================================================================== -->
 	<!-- Context params to control Session Cookies -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- UNCOMMENT TO ACTIVATE <context-param> <param-name>org.eclipse.jetty.servlet.SessionDomain</param-name> <param-value>127.0.0.1</param-value> 
-		</context-param> <context-param> <param-name>org.eclipse.jetty.servlet.SessionPath</param-name> <param-value>/</param-value> </context-param> 
-		<context-param> <param-name>org.eclipse.jetty.servlet.MaxAge</param-name> <param-value>-1</param-value> </context-param> -->
+  <!--
+    UNCOMMENT TO ACTIVATE <context-param> <param-name>org.eclipse.jetty.servlet.SessionDomain</param-name> <param-value>127.0.0.1</param-value> </context-param> <context-param>
+    <param-name>org.eclipse.jetty.servlet.SessionPath</param-name> <param-value>/</param-value> </context-param> <context-param> <param-name>org.eclipse.jetty.servlet.MaxAge</param-name>
+    <param-value>-1</param-value> </context-param>
+  -->
 
 	<!-- ==================================================================== -->
 	<!-- The default servlet. -->
 	<!-- This servlet, normally mapped to /, provides the handling for static -->
 	<!-- content, OPTIONS and TRACE methods for the context. -->
 	<!-- The following initParameters are supported: -->
-	<!-- * acceptRanges If true, range requests and responses are * supported * * dirAllowed If true, directory listings are returned if no * welcome 
-		file is found. Else 403 Forbidden. * * welcomeServlets If true, attempt to dispatch to welcome files * that are servlets, but only after no matching 
-		static * resources could be found. If false, then a welcome * file must exist on disk. If "exact", then exact * servlet matches are supported 
-		without an existing file. * Default is true. * * This must be false if you want directory listings, * but have index.jsp in your welcome file 
-		list. * * redirectWelcome If true, welcome files are redirected rather than * forwarded to. * * gzip If set to true, then static content will 
-		be served as * gzip content encoded if a matching resource is * found ending with ".gz" * * resourceBase Set to replace the context resource 
-		base * * resourceCache If set, this is a context attribute name, which the servlet * will use to look for a shared ResourceCache instance. * 
-		* relativeResourceBase * Set with a pathname relative to the base of the * servlet context root. Useful for only serving static content out * 
-		of only specific subdirectories. * * aliases If True, aliases of resources are allowed (eg. symbolic * links and caps variations). May bypass 
-		security constraints. * * maxCacheSize The maximum total size of the cache or 0 for no cache. * maxCachedFileSize The maximum size of a file 
-		to cache * maxCachedFiles The maximum number of files to cache * * useFileMappedBuffer * If set to true, it will use mapped file buffer to serve 
-		static content * when using NIO connector. Setting this value to false means that * a direct buffer will be used instead of a mapped file buffer. 
-		* By default, this is set to true. * * cacheControl If set, all static content will have this value set as the cache-control * header. -->
+  <!--  
+ *  acceptRanges      If true, range requests and responses are
+ *                    supported
+ *
+ *  dirAllowed        If true, directory listings are returned if no
+ *                    welcome file is found. Else 403 Forbidden.
+ *
+ *  welcomeServlets   If true, attempt to dispatch to welcome files
+ *                    that are servlets, but only after no matching static
+ *                    resources could be found. If false, then a welcome
+ *                    file must exist on disk. If "exact", then exact
+ *                    servlet matches are supported without an existing file.
+ *                    Default is true.
+ *
+ *                    This must be false if you want directory listings,
+ *                    but have index.jsp in your welcome file list.
+ *
+ *  redirectWelcome   If true, welcome files are redirected rather than
+ *                    forwarded to.
+ *
+ *  gzip              If set to true, then static content will be served as
+ *                    gzip content encoded if a matching resource is
+ *                    found ending with ".gz"
+ *
+ *  resourceBase      Set to replace the context resource base
+ *
+ *  resourceCache     If set, this is a context attribute name, which the servlet 
+ *                    will use to look for a shared ResourceCache instance. 
+ *                        
+ *  relativeResourceBase
+ *                    Set with a pathname relative to the base of the
+ *                    servlet context root. Useful for only serving static content out
+ *                    of only specific subdirectories.
+ *
+ *  aliases           If True, aliases of resources are allowed (eg. symbolic
+ *                    links and caps variations). May bypass security constraints.
+ *
+ *  maxCacheSize      The maximum total size of the cache or 0 for no cache.
+ *  maxCachedFileSize The maximum size of a file to cache
+ *  maxCachedFiles    The maximum number of files to cache
+ *
+ *  useFileMappedBuffer
+ *                    If set to true, it will use mapped file buffer to serve static content
+ *                    when using NIO connector. Setting this value to false means that
+ *                    a direct buffer will be used instead of a mapped file buffer.
+ *                    By default, this is set to true.
+ *
+ *  cacheControl      If set, all static content will have this value set as the cache-control
+ *                    header.
+ -->
 
 
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -116,7 +161,12 @@
 			<param-name>resourceCache</param-name>
 			<param-value>resourceCache</param-value>
 		</init-param>
-		<!-- <init-param> <param-name>cacheControl</param-name> <param-value>max-age=3600,public</param-value> </init-param> -->
+    <!--
+    <init-param>
+      <param-name>cacheControl</param-name>
+      <param-value>max-age=3600,public</param-value>
+    </init-param>
+    -->
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 
@@ -211,7 +261,9 @@
 	<!-- If you get an error reporting that jikes can't use UTF-8 encoding, -->
 	<!-- try setting the init parameter "javaEncoding" to "ISO-8859-1". -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<servlet id="jsp">
+  <servlet
+    id="jsp"
+  >
 		<servlet-name>jsp</servlet-name>
 		<servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
 		<init-param>
@@ -226,7 +278,12 @@
 			<param-name>xpoweredBy</param-name>
 			<param-value>false</param-value>
 		</init-param>
-		<!-- <init-param> <param-name>classpath</param-name> <param-value>?</param-value> </init-param> -->
+    <!--  
+    <init-param>
+        <param-name>classpath</param-name>
+        <param-value>?</param-value>
+    </init-param>
+    -->
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 
@@ -261,11 +318,12 @@
 	<!-- * All other parameters are copied to the -->
 	<!-- each dynamic servlet as init parameters -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- Uncomment for dynamic invocation <servlet> <servlet-name>invoker</servlet-name> <servlet-class>org.eclipse.jetty.servlet.Invoker</servlet-class> 
-		<init-param> <param-name>verbose</param-name> <param-value>false</param-value> </init-param> <init-param> <param-name>nonContextServlets</param-name> 
-		<param-value>false</param-value> </init-param> <init-param> <param-name>dynamicParam</param-name> <param-value>anyValue</param-value> </init-param> 
-		<load-on-startup>0</load-on-startup> </servlet> <servlet-mapping> <servlet-name>invoker</servlet-name> <url-pattern>/servlet/*</url-pattern> 
-		</servlet-mapping> -->
+  <!--
+    Uncomment for dynamic invocation <servlet> <servlet-name>invoker</servlet-name> <servlet-class>org.eclipse.jetty.servlet.Invoker</servlet-class> <init-param> <param-name>verbose</param-name>
+    <param-value>false</param-value> </init-param> <init-param> <param-name>nonContextServlets</param-name> <param-value>false</param-value> </init-param> <init-param>
+    <param-name>dynamicParam</param-name> <param-value>anyValue</param-value> </init-param> <load-on-startup>0</load-on-startup> </servlet> <servlet-mapping> <servlet-name>invoker</servlet-name>
+    <url-pattern>/servlet/*</url-pattern> </servlet-mapping>
+  -->
 
 
 
@@ -280,7 +338,12 @@
 	<!-- resource in the org.eclipse.jetty.server.jar file. Additional or modified -->
 	<!-- mappings may be specified here -->
 	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-	<!-- UNCOMMENT TO ACTIVATE <mime-mapping> <extension>mysuffix</extension> <mime-type>mymime/type</mime-type> </mime-mapping> -->
+  <!-- UNCOMMENT TO ACTIVATE
+  <mime-mapping>
+    <extension>mysuffix</extension>
+    <mime-type>mymime/type</mime-type>
+  </mime-mapping>
+  -->
 
 	<!-- ==================================================================== -->
 	<welcome-file-list>

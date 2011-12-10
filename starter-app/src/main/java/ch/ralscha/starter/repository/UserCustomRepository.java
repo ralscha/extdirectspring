@@ -21,7 +21,7 @@ public class UserCustomRepository {
 		if (!StringUtils.hasText(filterValue)) {
 			return userRepository.findAll(pageable);
 		}
-		
+
 		BooleanBuilder bb = new BooleanBuilder();
 		if (StringUtils.hasText(filterValue)) {
 			String likeValue = "%" + filterValue.toLowerCase() + "%";

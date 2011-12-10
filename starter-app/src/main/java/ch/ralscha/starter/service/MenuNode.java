@@ -16,7 +16,7 @@ public class MenuNode {
 	private boolean leaf;
 	private boolean expanded;
 	private String iconCls;
-	
+
 	private Set<String> roles = Sets.newHashSet();
 
 	private List<MenuNode> children = Lists.newArrayList();
@@ -39,12 +39,6 @@ public class MenuNode {
 	}
 
 	private boolean hasRole(MenuNode child, Collection<? extends GrantedAuthority> authorities) {
-		System.out.println("ROLES");
-		for (String role : child.getRoles()) {
-			System.out.println(role);
-		}
-		System.out.println("==========");
-		
 		if (child.getRoles().isEmpty()) {
 			return true;
 		}

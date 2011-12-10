@@ -5,11 +5,11 @@
 }
 
 .ux-notification-icon-information {
-	background-image: url('../images/icon16_info.png');
+	background-image: url('images/icon16_info.png');
 }
 
 .ux-notification-icon-error {
-	background-image: url('../images/icon16_error.png');
+	background-image: url('images/icon16_error.png');
 }
 
 /*
@@ -20,7 +20,7 @@ If you wish to style the notifications as in the Demo 2 below then download the 
 
 body .ux-notification-light {
 	background-color: white;
-	background-image: url('../images/fader.png');
+	background-image: url('images/fader.png');
 }
 
 .ux-notification-light .x-window-body {

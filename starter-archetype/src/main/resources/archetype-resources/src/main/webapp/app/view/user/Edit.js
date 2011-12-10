@@ -7,12 +7,12 @@ Ext.define('Starter.view.user.Edit', {
 	layout: 'fit',
 	autoShow: true,
 	resizable: true,
-	width: 400,
+	width: 450,
 	modal: true,
 
 	iconCls: 'icon-user-edit',
 
-	requires: ['Ext.ux.form.ItemSelector'],
+	requires: ['Ext.ux.form.field.BoxSelect'],
 	
 	initComponent: function() {
 		var me = this;
@@ -70,8 +70,7 @@ Ext.define('Starter.view.user.Edit', {
                 name: 'locale',
                 store: Ext.create('Ext.data.ArrayStore', {
                     fields: ['code', 'language'],
-                    data : [['de', i18n.user_language_german], 
-                            ['en', i18n.user_language_english]]
+					data: [ [ 'de', i18n.user_language_german ], [ 'en', i18n.user_language_english ] ]
                 }),
                 valueField: 'code',
                 displayField: 'language',
@@ -86,8 +85,10 @@ Ext.define('Starter.view.user.Edit', {
 				inputValue: 'true',
 				uncheckedValue: 'false'
 			},{
-				xtype: 'itemselector',
+				xtype: 'comboboxselect',
 	            name: 'roleIds',
+                    queryMode: 'local',
+	            pinList: false,
 	            fieldLabel: i18n.user_roles,
 	            store: 'Roles',
 	            displayField: 'name',

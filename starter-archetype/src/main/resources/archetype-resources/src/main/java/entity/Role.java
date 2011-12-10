@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.data.jpa.domain.AbstractPersistable;
+
 @Entity
 public class Role extends AbstractPersistable<Long> {
 

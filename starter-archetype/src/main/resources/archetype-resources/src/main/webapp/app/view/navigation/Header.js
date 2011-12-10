@@ -17,7 +17,8 @@ Ext.define('Starter.view.navigation.Header', {
 		flex: 1
 	}, {
 		xtype: 'label',
-		text: i18n.login_loggedon + ': ',
+			text: '',
+			cls: 'userName',
 		width: 200,
 		margins: {
 			top: 6,
@@ -26,6 +27,17 @@ Ext.define('Starter.view.navigation.Header', {
 			left: 0
 		}
 	}, {
+			xtype: 'button',
+			text: i18n.options,
+			iconCls: 'icon-gear',
+			action: 'options',
+			margins: {
+				top: 2,
+				right: 0,
+				bottom: 10,
+				left: 0
+			}			
+		}, {
 		xtype: 'tbspacer',
 		width: 20,
 	}, {
