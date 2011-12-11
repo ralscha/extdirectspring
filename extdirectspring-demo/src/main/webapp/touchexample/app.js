@@ -108,7 +108,8 @@ Ext.application({
 										Ext.Msg.alert('Thank You', 'Your message has been received', function() {
 											form.reset();
 										});
-									}
+									},
+									scope:this
 								});
 
 							}
