@@ -140,6 +140,10 @@
 					<artifactId>cglib</artifactId>
 					<groupId>cglib</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>jsr305</artifactId>
+					<groupId>net.sourceforge.findbugs</groupId>
+				</exclusion>				
 			</exclusions>
 		</dependency>
 
