@@ -32,6 +32,6 @@
   
   <bean id="userdata" class="org.springframework.core.io.ClassPathResource">
     <constructor-arg value="/users.csv"/>
-  </bean>     
+  </bean>
      
 </beans>

@@ -14,7 +14,6 @@ Ext.onReady(function(){
     Ext.app.REMOTING_API.enableBuffer = 100;
     Ext.direct.Manager.addProvider(Ext.app.REMOTING_API);
     
-    // provide feedback for any errors
     Ext.tip.QuickTipManager.init();
     
     var basicInfo = Ext.create('Ext.form.Panel', {
