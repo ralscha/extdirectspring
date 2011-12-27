@@ -1,0 +1,31 @@
+.home {
+    text-align: center;
+}
+
+.home h1 {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.home p {
+    color: #666;
+    font-size: 0.8em;
+    line-height: 1.6em;
+    margin: 10px 20px 20px 20px;
+}
+
+.home img {
+    margin-top: -10px;
+}
+
+.home h2 {
+    color: #999;
+    font-size: 0.7em;
+}
+
+.blog p {
+    color: #555;
+    padding: 20px 20px 0 20px;
+    font-size: 1em;
+    line-height: 1.4em;
+}
