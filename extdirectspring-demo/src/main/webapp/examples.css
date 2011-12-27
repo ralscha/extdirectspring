@@ -4,6 +4,10 @@ body {
 	padding-top: 32px;
 	font-size: 13px;
 }
+.x-body {
+    font-family:helvetica,tahoma,verdana,sans-serif;
+    font-size:13px;
+}
 p {
 	margin-bottom: 15px;
 }
