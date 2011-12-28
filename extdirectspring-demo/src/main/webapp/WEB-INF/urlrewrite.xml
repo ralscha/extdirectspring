@@ -5,67 +5,34 @@
 
 	<rule>
 		<from>^/simple$</from>
-		<to type="permanent-redirect">/extjs4/simple/index.html</to>
+		<to type="redirect">/extjs4/simple/index.html</to>
 	</rule>
 	<rule>
 		<from>^/direct-named-arguments.html$</from>
-		<to type="permanent-redirect">/extjs4/named-arguments.html</to>
+		<to type="redirect">/extjs4/named-arguments.html</to>
 	</rule>
 	<rule>
 		<from>^/direct4.html$</from>
-		<to type="permanent-redirect">/extjs4/direct.html</to>
+		<to type="redirect">/extjs4/direct.html</to>
 	</rule>
 	<rule>
 		<from>^/direct-(.*)4\.html$</from>
-		<to type="permanent-redirect">/extjs4/$1.html</to>
+		<to type="redirect">/extjs4/$1.html</to>
 	</rule>
 	
 
 	<rule>
 		<from>^/direct.html$</from>
-		<to type="permanent-redirect">/extjs3/direct.html</to>
+		<to type="redirect">/extjs3/direct.html</to>
 	</rule>
 	<rule>
 		<from>^/direct-(.*)\.html$</from>
-		<to type="permanent-redirect">/extjs3/$1.html</to>
+		<to type="redirect">/extjs3/$1.html</to>
 	</rule>	
 	
 	<rule>
 		<from>^/touchexample$</from>
-		<to type="permanent-redirect">/touch2/index.html</to>
-	</rule>		
-	
-	
-	<rule>
-		<from>^/demo/simple$</from>
-		<to type="permanent-redirect">/demo/extjs4/simple/index.html</to>
-	</rule>
-	<rule>
-		<from>^/demo/direct-named-arguments.html$</from>
-		<to type="permanent-redirect">/demo/extjs4/named-arguments.html</to>
-	</rule>
-	<rule>
-		<from>^/demo/direct4.html$</from>
-		<to type="permanent-redirect">/demo/extjs4/direct.html</to>
-	</rule>
-	<rule>
-		<from>^/demo/direct-(.*)4\.html$</from>
-		<to type="permanent-redirect">/demo/extjs4/$1.html</to>
-	</rule>
-	
-
-	<rule>
-		<from>^/demo/direct.html$</from>
-		<to type="permanent-redirect">/demo/extjs3/direct.html</to>
-	</rule>
-	<rule>
-		<from>^/demo/direct-(.*)\.html$</from>
-		<to type="permanent-redirect">/demo/extjs3/$1.html</to>
-	</rule>	
-	
-	<rule>
-		<from>^/demo/touchexample$</from>
-		<to type="permanent-redirect">/demo/touch2/index.html</to>
-	</rule>		
+		<to type="redirect">/touch2/index.html</to>
+	</rule>			
 
 </urlrewrite>
