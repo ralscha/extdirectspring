@@ -43,7 +43,7 @@ public class ContactService {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "touch")
 	public Contact create(Contact newContact) {
 		System.out.println("create");
-		newContact.setId((int)(Math.random() * 1000) + 1);
+		newContact.setId((int) (Math.random() * 1000) + 1);
 		System.out.println(newContact);
 		return newContact;
 	}

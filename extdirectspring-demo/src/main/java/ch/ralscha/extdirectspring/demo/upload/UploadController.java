@@ -47,29 +47,29 @@ public class UploadController {
 		builder.successful();
 		builder.buildAndWriteUploadResponse(response);
 	}
-	
+
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "upload4")
 	@RequestMapping(value = "/uploadTest4", method = RequestMethod.POST)
-	public void uploadTest4(Locale locale, HttpServletRequest request, @RequestParam("fileUpload1") MultipartFile file1,
-			 @RequestParam("fileUpload2") MultipartFile file2,
+	public void uploadTest4(Locale locale, HttpServletRequest request,
+			@RequestParam("fileUpload1") MultipartFile file1, @RequestParam("fileUpload2") MultipartFile file2,
 			HttpServletResponse response) throws IOException {
 
 		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-		
+
 		if (file1 != null && !file1.isEmpty()) {
-			System.out.println("File1 Name : "  + file1.getName());
-			System.out.println("File1 Bytes: "  + file1.getSize());
+			System.out.println("File1 Name : " + file1.getName());
+			System.out.println("File1 Bytes: " + file1.getSize());
 		}
-		
+
 		if (file2 != null && !file2.isEmpty()) {
-			System.out.println("File2 Name : "  + file2.getName());
-			System.out.println("File2 Bytes: "  + file2.getSize());
-			
+			System.out.println("File2 Name : " + file2.getName());
+			System.out.println("File2 Bytes: " + file2.getSize());
+
 			builder.addResultProperty("fileContents", new String(file2.getBytes()));
 		}
-		
+
 		builder.successful();
 		builder.buildAndWriteUploadResponse(response);
-	}	
-	
+	}
+
 }
