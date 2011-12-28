@@ -66,8 +66,7 @@ public class Person4Action {
 		List<Person> insertedPersons = Lists.newArrayList();
 
 		for (Person newPerson : newPersons) {
-			dataBean.insert(newPerson);
-			insertedPersons.add(newPerson);
+			insertedPersons.add(dataBean.insert(newPerson));
 		}
 
 		return insertedPersons;
