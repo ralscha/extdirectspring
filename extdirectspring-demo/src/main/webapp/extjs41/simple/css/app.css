@@ -1,0 +1,11 @@
+.icon-add {
+    background-image: url(add.png) !important;
+}
+
+.icon-delete {
+    background-image: url(delete.png) !important;
+}
+
+.icon-info {
+    background-image: url(information.png) !important;
+}
