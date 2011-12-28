@@ -34,6 +34,10 @@
 		<from>^/touchexample$</from>
 		<to type="permanent-redirect">/demo/touch2/index.html</to>
 	</rule>		
+	<rule>
+		<from>^/touchexample/$</from>
+		<to type="permanent-redirect">/demo/touch2/index.html</to>
+	</rule>		
 	
 
 </urlrewrite>
