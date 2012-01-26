@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.controller.Configuration;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.JsonHandler;
 import ch.ralscha.extdirectspring.util.MethodInfo;
@@ -55,6 +57,9 @@ public class ApiController {
 
 	private ApplicationContext context;
 	private JsonHandler jsonHandler;
+
+	@Autowired(required = false)
+	private Configuration configuration;
 
 	@Autowired
 	public ApiController(ApplicationContext context, JsonHandler jsonHandler) {
@@ -154,6 +159,24 @@ public class ApiController {
 			final boolean debug) {
 
 		RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
+
+		if (configuration != null) {
+			remotingApi.setTimeout(configuration.getTimeout());
+			remotingApi.setMaxRetries(configuration.getMaxRetries());
+
+			String enableBuffer = configuration.getEnableBuffer();
+			if (StringUtils.hasText(enableBuffer)) {
+				if (enableBuffer.equalsIgnoreCase("true")) {
+					remotingApi.setEnableBuffer(true);
+				} else if (enableBuffer.equalsIgnoreCase("false")) {
+					remotingApi.setEnableBuffer(false);
+				} else {
+					Integer enableBufferMs = NumberUtils.parseNumber(enableBuffer, Integer.class);
+					remotingApi.setEnableBuffer(enableBufferMs);
+				}
+			}
+		}
+
 		scanForExtDirectMethods(remotingApi, group);
 
 		StringBuilder sb = new StringBuilder();
