@@ -44,6 +44,9 @@ public class Configuration {
 	private Map<Class<?>, String> exceptionToMessage;
 	private boolean alwaysWrapStoreResponse = false;
 	private boolean synchronizeOnSession = false;
+	private Integer timeout = null;
+	private Integer maxRetries = null;
+	private String enableBuffer = null;
 
 	public String getDefaultExceptionMessage() {
 		return defaultExceptionMessage;
@@ -91,6 +94,30 @@ public class Configuration {
 
 	public void setSynchronizeOnSession(boolean synchronizeOnSession) {
 		this.synchronizeOnSession = synchronizeOnSession;
+	}
+
+	public Integer getTimeout() {
+		return timeout;
+	}
+
+	public void setTimeout(Integer timeout) {
+		this.timeout = timeout;
+	}
+
+	public Integer getMaxRetries() {
+		return maxRetries;
+	}
+
+	public void setMaxRetries(Integer maxRetries) {
+		this.maxRetries = maxRetries;
+	}
+
+	public String getEnableBuffer() {
+		return enableBuffer;
+	}
+
+	public void setEnableBuffer(String enableBuffer) {
+		this.enableBuffer = enableBuffer;
 	}
 
 	public String getMessage(Throwable exception) {

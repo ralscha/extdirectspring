@@ -36,6 +36,9 @@ class RemotingApi {
 	private final String namespace;
 	private final String type = "remoting";
 	private final Map<String, List<Action>> actions;
+	private Integer timeout;
+	private Integer maxRetries;
+	private Object enableBuffer;
 
 	private final List<PollingProvider> pollingProviders;
 
@@ -75,6 +78,30 @@ class RemotingApi {
 
 	public void setDescriptor(String descriptor) {
 		this.descriptor = descriptor;
+	}
+
+	public Integer getTimeout() {
+		return timeout;
+	}
+
+	public void setTimeout(Integer timeout) {
+		this.timeout = timeout;
+	}
+
+	public Integer getMaxRetries() {
+		return maxRetries;
+	}
+
+	public void setMaxRetries(Integer maxRetries) {
+		this.maxRetries = maxRetries;
+	}
+
+	public Object getEnableBuffer() {
+		return enableBuffer;
+	}
+
+	public void setEnableBuffer(Object enableBuffer) {
+		this.enableBuffer = enableBuffer;
 	}
 
 	@JsonIgnore
