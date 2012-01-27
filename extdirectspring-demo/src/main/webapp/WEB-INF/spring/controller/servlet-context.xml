@@ -8,10 +8,12 @@
 
 	<mvc:annotation-driven />
 
+    <!-- 
      <bean id="extDirectSpringConfiguration" 
       class="ch.ralscha.extdirectspring.controller.Configuration" 
       p:timeout="12000" p:maxRetries="10" p:enableBuffer="false"/>
-
+    -->
+    
 	<context:component-scan base-package="ch.ralscha.extdirectspring" />
 
 	<context:component-scan base-package="ch.ralscha.extdirectspring.demo" use-default-filters="false">
