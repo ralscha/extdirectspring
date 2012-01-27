@@ -42,7 +42,7 @@
 		<slf4j.version>1.6.4</slf4j.version>
 		<logback.version>1.0.0</logback.version>
 		<hibernatevalidator.version>4.2.0.Final</hibernatevalidator.version>
-		<jetty.version>8.1.0.RC2</jetty.version>
+		<jetty.version>8.1.0.RC5</jetty.version>
 		<eds.version>1.0.14-SNAPSHOT</eds.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -119,7 +119,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>11.0</version>
+			<version>11.0.1</version>
 		</dependency>
 
 		<dependency>
@@ -144,12 +144,6 @@
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>2.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>net.java.dev.rome</groupId>
-			<artifactId>rome</artifactId>
-			<version>1.0.0</version>
 		</dependency>
 
 		<!-- To be able to run Jetty as a simple class for easier debugging -->
