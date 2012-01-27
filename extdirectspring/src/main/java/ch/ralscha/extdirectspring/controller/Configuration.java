@@ -46,7 +46,7 @@ public class Configuration {
 	private boolean synchronizeOnSession = false;
 	private Integer timeout = null;
 	private Integer maxRetries = null;
-	private String enableBuffer = null;
+	private Object enableBuffer = null;
 
 	public String getDefaultExceptionMessage() {
 		return defaultExceptionMessage;
@@ -112,11 +112,11 @@ public class Configuration {
 		this.maxRetries = maxRetries;
 	}
 
-	public String getEnableBuffer() {
+	public Object getEnableBuffer() {
 		return enableBuffer;
 	}
 
-	public void setEnableBuffer(String enableBuffer) {
+	public void setEnableBuffer(Object enableBuffer) {
 		this.enableBuffer = enableBuffer;
 	}
 

@@ -48,4 +48,11 @@ enum ApiCache {
 		}
 		return null;
 	}
+	
+	/**
+	 * for unit tests
+	 */
+	public void clear() {
+		cache.clear();
+	}
 }
