@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.api;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -38,6 +39,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.StringUtils;
 
+import ch.ralscha.extdirectspring.controller.Configuration;
 import ch.ralscha.extdirectspring.util.JsonHandler;
 
 /**
@@ -55,7 +57,7 @@ public class ApiControllerTest {
 
 	@Autowired
 	private ApiController apiController;
-
+	
 	@Test
 	public void testNoActionNamespaceDebug() throws IOException {
 		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
@@ -67,6 +69,26 @@ public class ApiControllerTest {
 		response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", null, false, null, request, response);
 		compare(response, allApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
+				
+		//With configuration
+		ApiCache.INSTANCE.clear();
+		Configuration config = new Configuration();
+		config.setEnableBuffer(10);
+		config.setMaxRetries(2);
+		config.setTimeout(12000);
+		apiController.setConfiguration(config);
+				
+		request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		response = new MockHttpServletResponse();
+		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", null, false, null, request, response);
+		compare(response, allApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
+
+		request = new MockHttpServletRequest("POST", "/action/api.js");
+		response = new MockHttpServletResponse();
+		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", null, false, null, request, response);
+		compare(response, allApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
+		
+		apiController.setConfiguration(null);
 	}
 
 	@Test
@@ -82,6 +104,28 @@ public class ApiControllerTest {
 		apiController.api("Ext.ns", "actionns", "TEST_REMOTING_API", "TEST_POLLING_URLS", null, false, null, request,
 				response);
 		compare(response, allApis("actionns"), "Ext.ns", "TEST_REMOTING_API", "TEST_POLLING_URLS");
+		
+		
+		//With configuration
+		ApiCache.INSTANCE.clear();
+		Configuration config = new Configuration();
+		config.setEnableBuffer(false);		
+		config.setTimeout(10000);
+		apiController.setConfiguration(config);
+		
+		request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		response = new MockHttpServletResponse();
+		apiController.api("Ext.ns", "actionns", "TEST_REMOTING_API", "TEST_POLLING_URLS", null, false, null, request,
+				response);
+		compare(response, allApis("actionns"), "Ext.ns", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
+
+		request = new MockHttpServletRequest("POST", "/action/api.js");
+		response = new MockHttpServletResponse();
+		apiController.api("Ext.ns", "actionns", "TEST_REMOTING_API", "TEST_POLLING_URLS", null, false, null, request,
+				response);
+		compare(response, allApis("actionns"), "Ext.ns", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);		
+		
+		apiController.setConfiguration(null);				
 	}
 
 	@Test
@@ -95,6 +139,26 @@ public class ApiControllerTest {
 		response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "xy", false, null, request, response);
 		compare(response, noApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
+		
+		
+		//With configuration
+		ApiCache.INSTANCE.clear();
+		Configuration config = new Configuration();
+		config.setEnableBuffer(true);
+		apiController.setConfiguration(config);
+				
+		request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		response = new MockHttpServletResponse();
+		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "xy", false, null, request, response);
+		compare(response, noApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
+
+		request = new MockHttpServletRequest("POST", "/action/api.js");
+		response = new MockHttpServletResponse();
+		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "xy", false, null, request, response);
+		compare(response, noApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
+				
+		apiController.setConfiguration(null);				
+		
 	}
 
 	@Test
@@ -109,13 +173,42 @@ public class ApiControllerTest {
 		response = new MockHttpServletResponse();
 		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", false, null, request,
 				response);
-		compare(response, group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS");
+		compare(response, group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS");				
 	}
 
 	@Test
 	public void testGroup1Again() throws IOException {
 		testGroup1();
 	}
+	
+	private void runTestGroup1WithConfig(Configuration config) throws IOException {
+		//With configuration			
+		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", false, null, request,
+				response);
+		compare(response, group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", config);
+
+		request = new MockHttpServletRequest("POST", "/action/api.js");
+		response = new MockHttpServletResponse();
+		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", false, null, request,
+				response);
+		compare(response, group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", config);
+	}
+	
+	@Test
+	public void testGroup1WithConfig() throws IOException {
+		ApiCache.INSTANCE.clear();
+		Configuration config = new Configuration();
+		config.setTimeout(12000);
+		apiController.setConfiguration(config);
+		
+		runTestGroup1WithConfig(config);
+		runTestGroup1WithConfig(config);
+		
+		apiController.setConfiguration(null);	
+	}
+
 
 	@Test
 	public void testGroup2() throws IOException {
@@ -480,6 +573,11 @@ public class ApiControllerTest {
 
 	private void compare(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs,
 			String remotingApiVar, String pollingUrlsVar) throws JsonParseException, JsonMappingException, IOException {
+		compare(response, remotingApi, apiNs, remotingApiVar, pollingUrlsVar, null);
+	}
+	
+	private void compare(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs,
+			String remotingApiVar, String pollingUrlsVar, Configuration config) throws JsonParseException, JsonMappingException, IOException {
 		String content = response.getContentAsString();
 		content = content.replace(";", ";\n");
 		content = content.replace("{", "{\n");
@@ -528,11 +626,24 @@ public class ApiControllerTest {
 			}
 		}
 
+		int noOfconfigOptions = 0;
+		if (config != null) {
+			if (config.getTimeout() != null) {
+				noOfconfigOptions++;
+			}
+			if (config.getEnableBuffer() != null) {
+				noOfconfigOptions++;
+			}
+			if (config.getMaxRetries() != null) {
+				noOfconfigOptions++;
+			}
+		}
+		
 		Map<String, Object> rootAsMap = jsonHandler.readValue(remotingJson, Map.class);
 		if (remotingApi.getNamespace() == null) {
-			assertEquals(3, rootAsMap.size());
+			assertEquals(3+noOfconfigOptions, rootAsMap.size());
 		} else {
-			assertEquals(4, rootAsMap.size());
+			assertEquals(4+noOfconfigOptions, rootAsMap.size());
 		}
 
 		assertEquals(remotingApi.getUrl(), rootAsMap.get("url"));
@@ -541,6 +652,30 @@ public class ApiControllerTest {
 
 		if (remotingApi.getNamespace() != null) {
 			assertEquals(remotingApi.getNamespace(), rootAsMap.get("namespace"));
+		}
+		
+		if (config != null) {
+			if (config.getTimeout() != null) {
+				assertEquals(config.getTimeout(), rootAsMap.get("timeout"));
+			} else {
+				assertNull(rootAsMap.get("timeout"));
+			}
+			
+			if (config.getEnableBuffer() != null) {
+				assertEquals(config.getEnableBuffer(), rootAsMap.get("enableBuffer"));
+			} else {
+				assertNull(rootAsMap.get("enableBuffer"));
+			}
+			
+			if (config.getMaxRetries() != null) {
+				assertEquals(config.getMaxRetries(), rootAsMap.get("maxRetries"));
+			} else {
+				assertNull(rootAsMap.get("maxRetries"));
+			}
+		} else {
+			assertNull(rootAsMap.get("timeout"));
+			assertNull(rootAsMap.get("enableBuffer"));
+			assertNull(rootAsMap.get("maxRetries"));
 		}
 
 		Map<String, Object> beans = (Map<String, Object>) rootAsMap.get("actions");

@@ -66,6 +66,10 @@ public class ApiController {
 		this.context = context;
 		this.jsonHandler = jsonHandler;
 	}
+	
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
 
 	/**
 	 * Method that handles api.js calls. Generates a Javascript with the necessary
@@ -164,17 +168,20 @@ public class ApiController {
 			remotingApi.setTimeout(configuration.getTimeout());
 			remotingApi.setMaxRetries(configuration.getMaxRetries());
 
-			String enableBuffer = configuration.getEnableBuffer();
-			if (StringUtils.hasText(enableBuffer)) {
-				if (enableBuffer.equalsIgnoreCase("true")) {
+			Object enableBuffer = configuration.getEnableBuffer();
+			if (enableBuffer instanceof String && StringUtils.hasText((String)enableBuffer)) {
+				String enableBufferString = (String)enableBuffer;
+				if (enableBufferString.equalsIgnoreCase("true")) {
 					remotingApi.setEnableBuffer(true);
-				} else if (enableBuffer.equalsIgnoreCase("false")) {
+				} else if (enableBufferString.equalsIgnoreCase("false")) {
 					remotingApi.setEnableBuffer(false);
 				} else {
-					Integer enableBufferMs = NumberUtils.parseNumber(enableBuffer, Integer.class);
+					Integer enableBufferMs = NumberUtils.parseNumber(enableBufferString, Integer.class);
 					remotingApi.setEnableBuffer(enableBufferMs);
 				}
-			}
+			} else if (enableBuffer instanceof Number || enableBuffer instanceof Boolean) {
+				remotingApi.setEnableBuffer(enableBuffer);
+			} 
 		}
 
 		scanForExtDirectMethods(remotingApi, group);
