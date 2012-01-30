@@ -10,7 +10,7 @@
 		<spring.version>3.1.0.RELEASE</spring.version>
 		<spring.security.version>3.1.0.RELEASE</spring.security.version>
 
-		<hibernate.version>4.0.0.Final</hibernate.version>
+		<hibernate.version>4.0.1.Final</hibernate.version>
 		<querydsl.version>2.3.0</querydsl.version>
 
 		<slf4j.version>1.6.4</slf4j.version>
@@ -18,7 +18,7 @@
 
 		<eds.version>1.0.13</eds.version>
 
-        <jetty.version>8.1.0.RC2</jetty.version>
+        <jetty.version>8.1.0.v20120127</jetty.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.debug>true</maven.compiler.debug>
@@ -192,7 +192,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>11.0</version>
+			<version>11.0.1</version>
 		</dependency>
 
 		<dependency>
@@ -231,7 +231,7 @@
 		<dependency>
 			<groupId>ro.isdc.wro4j</groupId>
 			<artifactId>wro4j-core</artifactId>
-			<version>1.4.2</version>
+			<version>1.4.3</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>log4j</artifactId>
@@ -351,7 +351,7 @@
 		<!-- For hibernate support -->
 		<repository>
 			<id>jboss</id>
-			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
+			<url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
 		</repository>
 
 		<repository>
