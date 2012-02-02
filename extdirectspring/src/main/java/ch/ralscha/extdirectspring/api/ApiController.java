@@ -66,7 +66,7 @@ public class ApiController {
 		this.context = context;
 		this.jsonHandler = jsonHandler;
 	}
-	
+
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
 	}
@@ -169,8 +169,8 @@ public class ApiController {
 			remotingApi.setMaxRetries(configuration.getMaxRetries());
 
 			Object enableBuffer = configuration.getEnableBuffer();
-			if (enableBuffer instanceof String && StringUtils.hasText((String)enableBuffer)) {
-				String enableBufferString = (String)enableBuffer;
+			if (enableBuffer instanceof String && StringUtils.hasText((String) enableBuffer)) {
+				String enableBufferString = (String) enableBuffer;
 				if (enableBufferString.equalsIgnoreCase("true")) {
 					remotingApi.setEnableBuffer(true);
 				} else if (enableBufferString.equalsIgnoreCase("false")) {
@@ -181,7 +181,7 @@ public class ApiController {
 				}
 			} else if (enableBuffer instanceof Number || enableBuffer instanceof Boolean) {
 				remotingApi.setEnableBuffer(enableBuffer);
-			} 
+			}
 		}
 
 		scanForExtDirectMethods(remotingApi, group);

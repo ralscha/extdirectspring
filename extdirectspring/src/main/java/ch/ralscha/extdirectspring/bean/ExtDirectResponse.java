@@ -44,7 +44,7 @@ public class ExtDirectResponse extends BaseResponse {
 	public ExtDirectResponse(final HttpServletRequest request) {
 		action = request.getParameter("extAction");
 		method = request.getParameter("extMethod");
-		
+
 		String extTID = request.getParameter("extTID");
 		if (extTID != null) {
 			tid = Integer.parseInt(extTID);
