@@ -55,6 +55,7 @@ public class RouterControllerInterfaceTest {
 
 	@Before
 	public void beforeTest() {
+		Locale.setDefault(Locale.US);
 		response = new MockHttpServletResponse();
 		request = new MockHttpServletRequest();
 	}
