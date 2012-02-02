@@ -43,8 +43,8 @@ public class RemoteProviderStoreModifySingle {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public Row create2(Row row, HttpServletResponse response, HttpServletRequest request,
-			HttpSession session, Locale locale) {
+	public Row create2(Row row, HttpServletResponse response, HttpServletRequest request, HttpSession session,
+			Locale locale) {
 		assertNotNull(response);
 		assertNotNull(request);
 		assertNotNull(session);

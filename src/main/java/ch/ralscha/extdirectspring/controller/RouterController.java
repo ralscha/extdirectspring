@@ -289,8 +289,7 @@ public class RouterController implements InitializingBean {
 			if (directStoreEntryClass != null && data != null && data.size() > 0) {
 				Object obj = data.get(0);
 				if (obj instanceof List) {
-					directStoreModifyRecords = convertObjectEntriesToType((List<Object>) obj,
-							directStoreEntryClass);
+					directStoreModifyRecords = convertObjectEntriesToType((List<Object>) obj, directStoreEntryClass);
 				} else {
 					Map<String, Object> jsonData = (Map<String, Object>) obj;
 					Object records = jsonData.get("records");

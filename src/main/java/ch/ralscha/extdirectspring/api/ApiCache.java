@@ -48,7 +48,7 @@ enum ApiCache {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * for unit tests
 	 */
