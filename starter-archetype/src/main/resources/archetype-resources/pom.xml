@@ -6,8 +6,12 @@
 	<version>${version}</version>
 	<packaging>war</packaging>
 
+	<prerequisites>
+		<maven>2.2.0</maven>
+	</prerequisites>
+
 	<properties>
-		<spring.version>3.1.0.RELEASE</spring.version>
+		<spring.version>3.1.1.RELEASE</spring.version>
 		<spring.security.version>3.1.0.RELEASE</spring.security.version>
 
 		<hibernate.version>4.1.0.Final</hibernate.version>
@@ -18,7 +22,7 @@
 
 		<eds.version>1.0.14</eds.version>
 
-        <jetty.version>8.1.0.v20120127</jetty.version>
+        <jetty.version>8.1.1.v20120215</jetty.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.debug>true</maven.compiler.debug>
@@ -116,12 +120,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>3.12.1.GA</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<version>4.2.0.Final</version>
@@ -150,7 +148,7 @@
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
-			<version>1.0.2.RELEASE</version>
+			<version>1.0.3.RELEASE</version>
 		</dependency>
 
 		<dependency>
@@ -267,6 +265,18 @@
 		</dependency>
 
 		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.4</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>activation</artifactId>
+					<groupId>javax.activation</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>1.3.164</version>
@@ -294,32 +304,29 @@
 			<scope>provided</scope>
 			<exclusions>
 				<exclusion>
-					<artifactId>activation</artifactId>
-					<groupId>javax.activation</groupId>
+					<artifactId>javax.activation</artifactId>
+					<groupId>org.eclipse.jetty.orbit</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>javax.mail.glassfish</artifactId>
+					<groupId>org.eclipse.jetty.orbit</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 
 		<dependency>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>jsp-impl</artifactId>
-			<version>2.2.2.b05.0</version>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-jsp</artifactId>
+			<version>${jetty.version}</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>javax.servlet.jsp.jstl</artifactId>
+					<groupId>org.eclipse.jetty.orbit</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>2.2.1-b03</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.glassfish.web</groupId>
-			<artifactId>el-impl</artifactId>
-			<version>2.2.1-b05</version>
-			<scope>provided</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
@@ -329,6 +336,10 @@
 				<exclusion>
 					<artifactId>servlet-api</artifactId>
 					<groupId>javax.servlet</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jsp-api</artifactId>
+					<groupId>javax.servlet.jsp</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -340,27 +351,8 @@
 			<scope>test</scope>
 		</dependency>
 
+
 	</dependencies>
-	<repositories>
-		<repository>
-			<id>org.springframework.maven.milestones</id>
-			<name>Spring Maven Milestones Repository</name>
-			<url>http://maven.springframework.org/milestone</url>
-		</repository>	
-
-		<!-- For hibernate support -->
-		<repository>
-			<id>jboss</id>
-			<url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
-		</repository>
-
-		<repository>
-			<id>ralscha</id>
-			<name>My Private Repository</name>
-			<url>http://ralscha.ch/repository</url>
-		</repository>
-
-	</repositories>
 
 	<build>
 		<resources>
@@ -457,7 +449,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.11</version>
+				<version>2.12</version>
 			</plugin>
 
 			<plugin>
@@ -493,9 +485,9 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.1.1</version>
+				<version>2.2</version>
 				<configuration>
-                  <packagingExcludes>WEB-INF/classes/StartJetty*,WEB-INF/web.xml</packagingExcludes>
+					<packagingExcludes>WEB-INF/classes/StartJetty*</packagingExcludes>
                 </configuration>
 			</plugin>
 

@@ -1,39 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>ch.ralscha</groupId>
-  <artifactId>starter-archetype</artifactId>
-  <version>1.0.0</version>
-  <packaging>maven-archetype</packaging>
+	<groupId>ch.ralscha</groupId>
+	<artifactId>starter-archetype</artifactId>
+	<version>1.0.0</version>
+	<packaging>maven-archetype</packaging>
 
-  <name>starter-archetype</name>
+	<name>starter-archetype</name>
 
-  <build>
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.archetype</groupId>
-        <artifactId>archetype-packaging</artifactId>
-        <version>2.2</version>
-      </extension> 
-    </extensions>
+	<prerequisites>
+		<maven>2.2.0</maven>
+	</prerequisites>
 
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <artifactId>maven-archetype-plugin</artifactId>
-          <version>2.2</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
-  
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.archetype</groupId>
+				<artifactId>archetype-packaging</artifactId>
+				<version>2.2</version>
+			</extension>
+		</extensions>
 
-  <distributionManagement>
-    <repository>
-      <id>localwww</id>
-      <url>file:/var/www/archetypes</url>
-    </repository>
-  </distributionManagement>  
-  
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-archetype-plugin</artifactId>
+					<version>2.2</version>
+				</plugin>
+				
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>2.4.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.7</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>2.3.1</version>
+				</plugin>				
+				<plugin>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.5</version>
+				</plugin>	
+				<plugin>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.0</version>
+				</plugin>	
+			</plugins>
+		</pluginManagement>
+	</build>
+
+
+	<distributionManagement>
+		<repository>
+			<id>localwww</id>
+			<url>file:/var/www/archetypes</url>
+		</repository>
+	</distributionManagement>
+
 </project>
