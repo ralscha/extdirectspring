@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 import org.apache.catalina.deploy.ContextResource;
 
-import ${groupId}.embeddedtc.EmbeddedTomcat;
+import ch.ralscha.embeddedtc.EmbeddedTomcat;
 
 public class StartTomcat {
 	public static void main(String[] args) throws Exception {
