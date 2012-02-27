@@ -15,9 +15,8 @@
  */
 package ch.ralscha.extdirectspring.itest;
 
+import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
@@ -51,11 +50,11 @@ public class RawJsonControllerTest extends JettyTest {
 
 		HttpResponse response = client.execute(post);
 		HttpEntity entity = response.getEntity();
-		assertNotNull(entity);
+		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
 
-		assertNotNull(responseString);
-		assertTrue(responseString.startsWith("[") && responseString.endsWith("]"));
+		assertThat(responseString).isNotNull();
+		assertThat(responseString.startsWith("[") && responseString.endsWith("]")).isTrue();
 
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
@@ -69,7 +68,7 @@ public class RawJsonControllerTest extends JettyTest {
 
 		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 		assertEquals(2, result.size());
-		assertTrue((Boolean) result.get("success"));
+		assertThat((Boolean) result.get("success")).isTrue();
 
 		List<Map<String, Object>> records = (List<Map<String, Object>>) result.get("records");
 		assertEquals(2, records.size());

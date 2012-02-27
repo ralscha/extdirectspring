@@ -15,11 +15,8 @@
  */
 package ch.ralscha.extdirectspring.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
 import java.security.Principal;
 import java.util.Locale;
@@ -38,14 +35,14 @@ public class SupportedParametersTest {
 
 	@Test
 	public void testIsSupported() {
-		assertEquals(5, SupportedParameterTypes.values().length);
-		assertFalse(SupportedParameterTypes.isSupported(String.class));
-		assertFalse(SupportedParameterTypes.isSupported(null));
-		assertTrue(SupportedParameterTypes.isSupported(MockHttpServletResponse.class));
-		assertTrue(SupportedParameterTypes.isSupported(MockHttpServletRequest.class));
-		assertTrue(SupportedParameterTypes.isSupported(MockHttpSession.class));
-		assertTrue(SupportedParameterTypes.isSupported(Locale.class));
-		assertTrue(SupportedParameterTypes.isSupported(Principal.class));
+		assertThat(SupportedParameterTypes.values().length).isEqualTo(5);
+		assertThat(SupportedParameterTypes.isSupported(String.class)).isFalse();
+		assertThat(SupportedParameterTypes.isSupported(null)).isFalse();
+		assertThat(SupportedParameterTypes.isSupported(MockHttpServletResponse.class)).isTrue();
+		assertThat(SupportedParameterTypes.isSupported(MockHttpServletRequest.class)).isTrue();
+		assertThat(SupportedParameterTypes.isSupported(MockHttpSession.class)).isTrue();
+		assertThat(SupportedParameterTypes.isSupported(Locale.class)).isTrue();
+		assertThat(SupportedParameterTypes.isSupported(Principal.class)).isTrue();
 	}
 
 	@Test
@@ -54,7 +51,7 @@ public class SupportedParametersTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		Locale en = Locale.ENGLISH;
 
-		assertNull(SupportedParameterTypes.resolveParameter(String.class, request, response, en));
+		assertThat(SupportedParameterTypes.resolveParameter(String.class, request, response, en)).isNull();
 		assertSame(request,
 				SupportedParameterTypes.resolveParameter(MockHttpServletRequest.class, request, response, en));
 		assertSame(request.getSession(),

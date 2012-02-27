@@ -15,10 +15,7 @@
  */
 package ch.ralscha.extdirectspring.store;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -77,44 +74,44 @@ public class CrudTestMethods {
 				pagingParameters);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "readWithPaging");
 		ExtDirectStoreResponse<Book> storeResponse = (ExtDirectStoreResponse<Book>) resp.getResult();
-		assertEquals(Integer.valueOf(51), storeResponse.getTotal());
-		assertTrue(storeResponse.isSuccess());
-		assertEquals(2, storeResponse.getRecords().size());
+		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(51));
+		assertThat(storeResponse.isSuccess()).isTrue();
+		assertThat(storeResponse.getRecords().size()).isEqualTo(2);
 
 		Iterator<Book> it = storeResponse.getRecords().iterator();
 
 		Book aBook = it.next();
-		assertEquals(1, aBook.getId().intValue());
-		assertEquals("Ext JS in Action", aBook.getTitle());
-		assertEquals("1935182110", aBook.getIsbn());
+		assertThat(aBook.getId().intValue()).isEqualTo(1);
+		assertThat(aBook.getTitle()).isEqualTo("Ext JS in Action");
+		assertThat(aBook.getIsbn()).isEqualTo("1935182110");
 
 		aBook = it.next();
-		assertEquals(2, aBook.getId().intValue());
-		assertEquals("Learning Ext JS 3.2", aBook.getTitle());
-		assertEquals("1849511209", aBook.getIsbn());
+		assertThat(aBook.getId().intValue()).isEqualTo(2);
+		assertThat(aBook.getTitle()).isEqualTo("Learning Ext JS 3.2");
+		assertThat(aBook.getIsbn()).isEqualTo("1849511209");
 
 		edRequest = ControllerUtil.createRequestJson(serviceName, "read", 1);
 		responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		resp = responses.get(0);
 		assertResponse(resp, "read");
 		Collection<Book> books = (Collection<Book>) resp.getResult();
 		it = books.iterator();
 
 		aBook = it.next();
-		assertEquals(1, aBook.getId().intValue());
-		assertEquals("Ext JS in Action", aBook.getTitle());
-		assertEquals("1935182110", aBook.getIsbn());
+		assertThat(aBook.getId().intValue()).isEqualTo(1);
+		assertThat(aBook.getTitle()).isEqualTo("Ext JS in Action");
+		assertThat(aBook.getIsbn()).isEqualTo("1935182110");
 
 		aBook = it.next();
-		assertEquals(2, aBook.getId().intValue());
-		assertEquals("Learning Ext JS 3.2", aBook.getTitle());
-		assertEquals("1849511209", aBook.getIsbn());
+		assertThat(aBook.getId().intValue()).isEqualTo(2);
+		assertThat(aBook.getTitle()).isEqualTo("Learning Ext JS 3.2");
+		assertThat(aBook.getIsbn()).isEqualTo("1849511209");
 	}
 
 	private void testUpdateRecordsOne(RouterController controller, MockHttpServletResponse response,
@@ -124,7 +121,7 @@ public class CrudTestMethods {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "update3", 1, storeRequest);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "update3");
 		assertUpdateResponse(resp, 1, 3);
@@ -141,7 +138,7 @@ public class CrudTestMethods {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "update3", 1, storeRequest);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "update3");
 		assertUpdateResponse(resp, 2, 3);
@@ -153,7 +150,7 @@ public class CrudTestMethods {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "update4", 1, updatedBook);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "update4");
 		assertUpdateResponse(resp, 1, 4);
@@ -167,7 +164,7 @@ public class CrudTestMethods {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "update4", 1, newBooks);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "update4");
 		assertUpdateResponse(resp, 2, 4);
@@ -178,9 +175,9 @@ public class CrudTestMethods {
 		Iterator<Book> it = null;
 		if (version == 3) {
 			ExtDirectStoreResponse<Book> storeResponse = (ExtDirectStoreResponse<Book>) resp.getResult();
-			assertNull(storeResponse.getTotal());
-			assertTrue(storeResponse.isSuccess());
-			assertEquals(noOfRecords, storeResponse.getRecords().size());
+			assertThat(storeResponse.getTotal()).isNull();
+			assertThat(storeResponse.isSuccess()).isTrue();
+			assertThat(storeResponse.getRecords().size()).isEqualTo(noOfRecords);
 			it = storeResponse.getRecords().iterator();
 		} else {
 			Collection<Book> books = (Collection<Book>) resp.getResult();
@@ -188,15 +185,15 @@ public class CrudTestMethods {
 		}
 
 		Book aBook = it.next();
-		assertEquals(1, aBook.getId().intValue());
-		assertEquals("an update", aBook.getTitle());
-		assertEquals("UPDATED_9999999", aBook.getIsbn());
+		assertThat(aBook.getId().intValue()).isEqualTo(1);
+		assertThat(aBook.getTitle()).isEqualTo("an update");
+		assertThat(aBook.getIsbn()).isEqualTo("UPDATED_9999999");
 
 		if (noOfRecords > 1) {
 			aBook = it.next();
-			assertEquals(2, aBook.getId().intValue());
-			assertEquals("a second update", aBook.getTitle());
-			assertEquals("UPDATED_8888888", aBook.getIsbn());
+			assertThat(aBook.getId().intValue()).isEqualTo(2);
+			assertThat(aBook.getTitle()).isEqualTo("a second update");
+			assertThat(aBook.getIsbn()).isEqualTo("UPDATED_8888888");
 		}
 
 	}
@@ -208,7 +205,7 @@ public class CrudTestMethods {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "create3", 1, storeRequest);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "create3");
 		assertCreateResponse(resp, 1, 3);
@@ -225,7 +222,7 @@ public class CrudTestMethods {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "create3", 1, storeRequest);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "create3");
 		assertCreateResponse(resp, 2, 3);
@@ -238,7 +235,7 @@ public class CrudTestMethods {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "create4", 1, newBook);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "create4");
 		assertCreateResponse(resp, 1, 4);
@@ -253,7 +250,7 @@ public class CrudTestMethods {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "create4", 1, newBooks);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "create4");
 		assertCreateResponse(resp, 2, 4);
@@ -266,16 +263,16 @@ public class CrudTestMethods {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "delete3", 1, storeRequest);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "delete3");
 
 		ExtDirectStoreResponse<Integer> storeResponse = (ExtDirectStoreResponse<Integer>) resp.getResult();
-		assertNull(storeResponse.getTotal());
-		assertTrue(storeResponse.isSuccess());
-		assertEquals(1, storeResponse.getRecords().size());
+		assertThat(storeResponse.getTotal()).isNull();
+		assertThat(storeResponse.isSuccess()).isTrue();
+		assertThat(storeResponse.getRecords().size()).isEqualTo(1);
 		Integer deleteBookId = storeResponse.getRecords().iterator().next();
-		assertEquals(1, deleteBookId.intValue());
+		assertThat(deleteBookId.intValue()).isEqualTo(1);
 	}
 
 	private void testDeleteRecordsMany(RouterController controller, MockHttpServletResponse response,
@@ -289,19 +286,19 @@ public class CrudTestMethods {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "delete3", 1, storeRequest);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "delete3");
 
 		ExtDirectStoreResponse<Integer> storeResponse = (ExtDirectStoreResponse<Integer>) resp.getResult();
-		assertNull(storeResponse.getTotal());
-		assertTrue(storeResponse.isSuccess());
-		assertEquals(2, storeResponse.getRecords().size());
+		assertThat(storeResponse.getTotal()).isNull();
+		assertThat(storeResponse.isSuccess()).isTrue();
+		assertThat(storeResponse.getRecords().size()).isEqualTo(2);
 		Iterator<Integer> it = storeResponse.getRecords().iterator();
 		Integer deleteBookId = it.next();
-		assertEquals(1, deleteBookId.intValue());
+		assertThat(deleteBookId.intValue()).isEqualTo(1);
 		deleteBookId = it.next();
-		assertEquals(2, deleteBookId.intValue());
+		assertThat(deleteBookId.intValue()).isEqualTo(2);
 	}
 
 	private void testDeleteOne(RouterController controller, MockHttpServletResponse response,
@@ -311,16 +308,16 @@ public class CrudTestMethods {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "delete4", 1, deleteBook);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "delete4");
 
 		Collection<Book> storeResponse = (Collection<Book>) resp.getResult();
-		assertEquals(1, storeResponse.size());
+		assertThat(storeResponse).hasSize(1);
 		Book book = storeResponse.iterator().next();
-		assertEquals(Integer.valueOf(11), book.getId());
-		assertNull(book.getTitle());
-		assertEquals("DELETED_1847198708", book.getIsbn());
+		assertThat(book.getId()).isEqualTo(Integer.valueOf(11));
+		assertThat(book.getTitle()).isNull();
+		assertThat(book.getIsbn()).isEqualTo("DELETED_1847198708");
 	}
 
 	private void testDeleteMany(RouterController controller, MockHttpServletResponse response,
@@ -333,23 +330,23 @@ public class CrudTestMethods {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "delete4", 1, deletedBooks);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "delete4");
 
 		Collection<Book> storeResponse = (Collection<Book>) resp.getResult();
-		assertEquals(2, storeResponse.size());
+		assertThat(storeResponse).hasSize(2);
 		Iterator<Book> it = storeResponse.iterator();
 
 		Book book = it.next();
-		assertEquals(Integer.valueOf(9), book.getId());
-		assertNull(book.getTitle());
-		assertEquals("DELETED_1847198708", book.getIsbn());
+		assertThat(book.getId()).isEqualTo(Integer.valueOf(9));
+		assertThat(book.getTitle()).isNull();
+		assertThat(book.getIsbn()).isEqualTo("DELETED_1847198708");
 
 		book = it.next();
-		assertEquals(Integer.valueOf(10), book.getId());
-		assertNull(book.getTitle());
-		assertEquals("DELETED_1849511209", book.getIsbn());
+		assertThat(book.getId()).isEqualTo(Integer.valueOf(10));
+		assertThat(book.getTitle()).isNull();
+		assertThat(book.getIsbn()).isEqualTo("DELETED_1849511209");
 	}
 
 	private void assertCreateResponse(ExtDirectResponse resp, int noOfRecords, int version) {
@@ -357,9 +354,9 @@ public class CrudTestMethods {
 		Iterator<Book> it = null;
 		if (version == 3) {
 			ExtDirectStoreResponse<Book> storeResponse = (ExtDirectStoreResponse<Book>) resp.getResult();
-			assertNull(storeResponse.getTotal());
-			assertTrue(storeResponse.isSuccess());
-			assertEquals(noOfRecords, storeResponse.getRecords().size());
+			assertThat(storeResponse.getTotal()).isNull();
+			assertThat(storeResponse.isSuccess()).isTrue();
+			assertThat(storeResponse.getRecords().size()).isEqualTo(noOfRecords);
 			it = storeResponse.getRecords().iterator();
 		} else {
 			Collection<Book> books = (Collection<Book>) resp.getResult();
@@ -367,26 +364,26 @@ public class CrudTestMethods {
 		}
 
 		Book aBook = it.next();
-		assertEquals(3, aBook.getId().intValue());
-		assertEquals("Ext JS 3.0 Cookbook", aBook.getTitle());
-		assertEquals("1847198708", aBook.getIsbn());
+		assertThat(aBook.getId().intValue()).isEqualTo(3);
+		assertThat(aBook.getTitle()).isEqualTo("Ext JS 3.0 Cookbook");
+		assertThat(aBook.getIsbn()).isEqualTo("1847198708");
 
 		if (noOfRecords > 1) {
 			aBook = it.next();
-			assertEquals(4, aBook.getId().intValue());
-			assertEquals("Learning Ext JS 3.2", aBook.getTitle());
-			assertEquals("1849511209", aBook.getIsbn());
+			assertThat(aBook.getId().intValue()).isEqualTo(4);
+			assertThat(aBook.getTitle()).isEqualTo("Learning Ext JS 3.2");
+			assertThat(aBook.getIsbn()).isEqualTo("1849511209");
 		}
 	}
 
 	private void assertResponse(ExtDirectResponse resp, String method) {
-		assertEquals(serviceName, resp.getAction());
-		assertEquals(method, resp.getMethod());
-		assertEquals("rpc", resp.getType());
-		assertEquals(1, resp.getTid());
-		assertNull(resp.getMessage());
-		assertNull(resp.getWhere());
-		assertNotNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo(serviceName);
+		assertThat(resp.getMethod()).isEqualTo(method);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getResult()).isNotNull();
 	}
 
 }

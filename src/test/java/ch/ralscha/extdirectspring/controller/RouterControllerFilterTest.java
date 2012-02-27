@@ -15,9 +15,7 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -90,24 +88,24 @@ public class RouterControllerFilterTest {
 			Map<String, Object> edRequest = jsonHandler.readValue(json, Map.class);
 			List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-			assertEquals(1, responses.size());
+			assertThat(responses).hasSize(1);
 			ExtDirectResponse resp = responses.get(0);
-			assertEquals("remoteProviderStoreRead", resp.getAction());
-			assertEquals("methodFilter", resp.getMethod());
-			assertEquals("rpc", resp.getType());
-			assertEquals(index, resp.getTid());
-			assertNull(resp.getMessage());
-			assertNull(resp.getWhere());
-			assertNotNull(resp.getResult());
+			assertThat(resp.getAction()).isEqualTo("remoteProviderStoreRead");
+			assertThat(resp.getMethod()).isEqualTo("methodFilter");
+			assertThat(resp.getType()).isEqualTo("rpc");
+			assertThat(resp.getTid()).isEqualTo(index);
+			assertThat(resp.getMessage()).isNull();
+			assertThat(resp.getWhere()).isNull();
+			assertThat(resp.getResult()).isNotNull();
 
 			List<Row> rows = (List<Row>) resp.getResult();
-			assertEquals(1, rows.size());
-			assertEquals(index, rows.get(0).getId());
+			assertThat(rows).hasSize(1);
+			assertThat(rows.get(0).getId()).isEqualTo(index);
 
 			index++;
 		}
 
-		assertEquals(15, index);
+		assertThat(index).isEqualTo(15);
 
 	}
 

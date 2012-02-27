@@ -15,10 +15,8 @@
  */
 package ch.ralscha.extdirectspring.api;
 
+import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -30,9 +28,11 @@ import java.util.Map;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
@@ -56,7 +56,15 @@ public class ApiControllerTest {
 	private JsonHandler jsonHandler;
 
 	@Autowired
+	private ApplicationContext applicationContext;
+
 	private ApiController apiController;
+
+	@Before
+	public void setupApiController() {
+		ApiCache.INSTANCE.clear();
+		apiController = new ApiController(applicationContext, jsonHandler);
+	}
 
 	@Test
 	public void testNoActionNamespaceDebug() throws IOException {
@@ -161,50 +169,32 @@ public class ApiControllerTest {
 
 	@Test
 	public void testGroup1() throws IOException {
-		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", false, null, request,
-				response);
-		compare(response, group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS");
-
-		request = new MockHttpServletRequest("POST", "/action/api.js");
-		response = new MockHttpServletResponse();
-		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", false, null, request,
-				response);
-		compare(response, group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS");
-	}
-
-	@Test
-	public void testGroup1Again() throws IOException {
-		testGroup1();
-	}
-
-	private void runTestGroup1WithConfig(Configuration config) throws IOException {
-		//With configuration			
-		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", false, null, request,
-				response);
-		compare(response, group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", config);
-
-		request = new MockHttpServletRequest("POST", "/action/api.js");
-		response = new MockHttpServletResponse();
-		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", false, null, request,
-				response);
-		compare(response, group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", config);
+		testGroup1(null);
+		testGroup1(null);
 	}
 
 	@Test
 	public void testGroup1WithConfig() throws IOException {
-		ApiCache.INSTANCE.clear();
 		Configuration config = new Configuration();
 		config.setTimeout(12000);
 		apiController.setConfiguration(config);
 
-		runTestGroup1WithConfig(config);
-		runTestGroup1WithConfig(config);
+		testGroup1(config);
+		testGroup1(config);
+	}
 
-		apiController.setConfiguration(null);
+	private void testGroup1(Configuration config) throws IOException {
+		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", false, null, request,
+				response);
+		compare(response, group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", config);
+
+		request = new MockHttpServletRequest("POST", "/action/api.js");
+		response = new MockHttpServletResponse();
+		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", false, null, request,
+				response);
+		compare(response, group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", config);
 	}
 
 	@Test
@@ -372,6 +362,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreRead", "method6", 1, false);
 		remotingApi.addAction("remoteProviderStoreRead", "method7", 1, false);
 		remotingApi.addAction("remoteProviderStoreModify", "update4", 1, false);
+		remotingApi.addAction("remoteProviderStoreModifyInterface", "update4", 1, false);
 		remotingApi.addAction("remoteProviderStoreModifySingle", "update4", 1, false);
 		remotingApi.addAction("formInfoController", "upload", 0, true);
 		remotingApi.addPollingProvider("pollProvider", "handleMessage1", "message1");
@@ -390,6 +381,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreRead", "method6", 1, false);
 		remotingApi.addAction("remoteProviderStoreRead", "method7", 1, false);
 		remotingApi.addAction("remoteProviderStoreModify", "update4", 1, false);
+		remotingApi.addAction("remoteProviderStoreModifyInterface", "update4", 1, false);
 		remotingApi.addAction("remoteProviderStoreModifySingle", "update4", 1, false);
 		remotingApi.addAction("formInfoController", "upload", 0, true);
 		remotingApi.addPollingProvider("pollProvider", "handleMessage1", "message1");
@@ -468,6 +460,13 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreModify", "update4", 1, false);
 		remotingApi.addAction("remoteProviderStoreModify", "destroy", 1, false);
 
+		remotingApi.addAction("remoteProviderStoreModifyInterface", "create1", 1, false);
+		remotingApi.addAction("remoteProviderStoreModifyInterface", "create2", 1, false);
+		remotingApi.addAction("remoteProviderStoreModifyInterface", "update1", 1, false);
+		remotingApi.addAction("remoteProviderStoreModifyInterface", "update2", 1, false);
+		remotingApi.addAction("remoteProviderStoreModifyInterface", "update3", 1, false);
+		remotingApi.addAction("remoteProviderStoreModifyInterface", "update4", 1, false);
+
 		remotingApi.addAction("remoteProviderStoreModifySingle", "create1", 1, false);
 		remotingApi.addAction("remoteProviderStoreModifySingle", "create2", 1, false);
 		remotingApi.addAction("remoteProviderStoreModifySingle", "update1", 1, false);
@@ -530,34 +529,34 @@ public class ApiControllerTest {
 	private void compareJson(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs,
 			String remotingApiVar) throws JsonParseException, JsonMappingException, IOException {
 		String content = response.getContentAsString();
-		assertEquals("application/json", response.getContentType());
-		assertTrue(StringUtils.hasText(content));
+		assertThat(response.getContentType()).isEqualTo("application/json");
+		assertThat(StringUtils.hasText(content)).isTrue();
 
 		Map<String, Object> rootAsMap = jsonHandler.readValue(content, Map.class);
 
 		if (remotingApi.getNamespace() == null) {
-			assertEquals(4, rootAsMap.size());
+			assertThat(rootAsMap).hasSize(4);
 		} else {
-			assertEquals(5, rootAsMap.size());
-			assertEquals(remotingApi.getNamespace(), rootAsMap.get("namespace"));
+			assertThat(rootAsMap).hasSize(5);
+			assertThat(rootAsMap.get("namespace")).isEqualTo(remotingApi.getNamespace());
 		}
 
-		assertEquals(remotingApi.getUrl(), rootAsMap.get("url"));
-		assertEquals("remoting", rootAsMap.get("type"));
+		assertThat(rootAsMap.get("url")).isEqualTo(remotingApi.getUrl());
+		assertThat(rootAsMap.get("type")).isEqualTo("remoting");
 		if (StringUtils.hasText(apiNs)) {
-			assertEquals(apiNs + "." + remotingApiVar, rootAsMap.get("descriptor"));
+			assertThat(rootAsMap.get("descriptor")).isEqualTo(apiNs + "." + remotingApiVar);
 		} else {
-			assertEquals(remotingApiVar, rootAsMap.get("descriptor"));
+			assertThat(rootAsMap.get("descriptor")).isEqualTo(remotingApiVar);
 		}
-		assertTrue(rootAsMap.containsKey("actions"));
+		assertThat(rootAsMap.containsKey("actions")).isTrue();
 
 		if (remotingApi.getNamespace() != null) {
-			assertEquals(remotingApi.getNamespace(), rootAsMap.get("namespace"));
+			assertThat(rootAsMap.get("namespace")).isEqualTo(remotingApi.getNamespace());
 		}
 
 		Map<String, Object> beans = (Map<String, Object>) rootAsMap.get("actions");
 
-		assertEquals(remotingApi.getActions().size(), beans.size());
+		assertThat(beans.size()).isEqualTo(remotingApi.getActions().size());
 		for (String beanName : remotingApi.getActions().keySet()) {
 			List<Map<String, Object>> actions = (List<Map<String, Object>>) beans.get(beanName);
 			List<Action> expectedActions = remotingApi.getActions().get(beanName);
@@ -579,8 +578,8 @@ public class ApiControllerTest {
 		content = content.replace("{", "{\n");
 		content = content.replace("}", "}\n");
 
-		assertEquals("application/x-javascript", response.getContentType());
-		assertTrue(StringUtils.hasText(content));
+		assertThat(response.getContentType()).isEqualTo("application/x-javascript");
+		assertThat(StringUtils.hasText(content)).isTrue();
 
 		String[] lines = content.split("\n");
 
@@ -637,46 +636,57 @@ public class ApiControllerTest {
 
 		Map<String, Object> rootAsMap = jsonHandler.readValue(remotingJson, Map.class);
 		if (remotingApi.getNamespace() == null) {
-			assertEquals(3 + noOfconfigOptions, rootAsMap.size());
+			if (3 + noOfconfigOptions != rootAsMap.size()) {
+				for (String key : rootAsMap.keySet()) {
+					System.out.println(key + "->" + rootAsMap.get(key));
+				}
+			}
+			assertThat(rootAsMap.size()).isEqualTo(3 + noOfconfigOptions);
 		} else {
-			assertEquals(4 + noOfconfigOptions, rootAsMap.size());
+			if (4 + noOfconfigOptions != rootAsMap.size()) {
+				System.out.println("NOOFCONFIG: " + noOfconfigOptions);
+				for (String key : rootAsMap.keySet()) {
+					System.out.println(key + "->" + rootAsMap.get(key));
+				}
+			}
+			assertThat(rootAsMap.size()).isEqualTo(4 + noOfconfigOptions);
 		}
 
-		assertEquals(remotingApi.getUrl(), rootAsMap.get("url"));
-		assertEquals("remoting", rootAsMap.get("type"));
-		assertTrue(rootAsMap.containsKey("actions"));
+		assertThat(rootAsMap.get("url")).isEqualTo(remotingApi.getUrl());
+		assertThat(rootAsMap.get("type")).isEqualTo("remoting");
+		assertThat(rootAsMap.containsKey("actions")).isTrue();
 
 		if (remotingApi.getNamespace() != null) {
-			assertEquals(remotingApi.getNamespace(), rootAsMap.get("namespace"));
+			assertThat(rootAsMap.get("namespace")).isEqualTo(remotingApi.getNamespace());
 		}
 
 		if (config != null) {
 			if (config.getTimeout() != null) {
-				assertEquals(config.getTimeout(), rootAsMap.get("timeout"));
+				assertThat(rootAsMap.get("timeout")).isEqualTo(config.getTimeout());
 			} else {
-				assertNull(rootAsMap.get("timeout"));
+				assertThat(rootAsMap.get("timeout")).isNull();
 			}
 
 			if (config.getEnableBuffer() != null) {
-				assertEquals(config.getEnableBuffer(), rootAsMap.get("enableBuffer"));
+				assertThat(rootAsMap.get("enableBuffer")).isEqualTo(config.getEnableBuffer());
 			} else {
-				assertNull(rootAsMap.get("enableBuffer"));
+				assertThat(rootAsMap.get("enableBuffer")).isNull();
 			}
 
 			if (config.getMaxRetries() != null) {
-				assertEquals(config.getMaxRetries(), rootAsMap.get("maxRetries"));
+				assertThat(rootAsMap.get("maxRetries")).isEqualTo(config.getMaxRetries());
 			} else {
-				assertNull(rootAsMap.get("maxRetries"));
+				assertThat(rootAsMap.get("maxRetries")).isNull();
 			}
 		} else {
-			assertNull(rootAsMap.get("timeout"));
-			assertNull(rootAsMap.get("enableBuffer"));
-			assertNull(rootAsMap.get("maxRetries"));
+			assertThat(rootAsMap.get("timeout")).isNull();
+			assertThat(rootAsMap.get("enableBuffer")).isNull();
+			assertThat(rootAsMap.get("maxRetries")).isNull();
 		}
 
 		Map<String, Object> beans = (Map<String, Object>) rootAsMap.get("actions");
 
-		assertEquals(remotingApi.getActions().size(), beans.size());
+		assertThat(beans.size()).isEqualTo(remotingApi.getActions().size());
 		for (String beanName : remotingApi.getActions().keySet()) {
 			List<Map<String, Object>> actions = (List<Map<String, Object>>) beans.get(beanName);
 			List<Action> expectedActions = remotingApi.getActions().get(beanName);
@@ -685,10 +695,10 @@ public class ApiControllerTest {
 
 		if (!remotingApi.getPollingProviders().isEmpty()) {
 			Map<String, Object> pollingMap = jsonHandler.readValue(pollingJson, Map.class);
-			assertEquals(remotingApi.getPollingProviders().size(), pollingMap.size());
+			assertThat(pollingMap.size()).isEqualTo(remotingApi.getPollingProviders().size());
 			for (PollingProvider pp : remotingApi.getPollingProviders()) {
 				String url = (String) pollingMap.get(pp.getEvent());
-				assertNotNull(url);
+				assertThat(url).isNotNull();
 				assertEquals(String.format("%s/%s/%s/%s", remotingApi.getUrl().replace("router", "poll"),
 						pp.getBeanName(), pp.getMethod(), pp.getEvent()), url);
 			}
@@ -696,7 +706,7 @@ public class ApiControllerTest {
 	}
 
 	private void compare(List<Action> expectedActions, List<Map<String, Object>> actions) {
-		assertEquals(expectedActions.size(), actions.size());
+		assertThat(actions.size()).isEqualTo(expectedActions.size());
 		for (Action expectedAction : expectedActions) {
 			Map<String, Object> action = null;
 			for (Map<String, Object> map : actions) {
@@ -705,13 +715,13 @@ public class ApiControllerTest {
 					break;
 				}
 			}
-			assertNotNull(action);
-			assertEquals(expectedAction.getName(), action.get("name"));
-			assertEquals(expectedAction.getLen(), action.get("len"));
+			assertThat(action).isNotNull();
+			assertThat(action.get("name")).isEqualTo(expectedAction.getName());
+			assertThat(action.get("len")).isEqualTo(expectedAction.getLen());
 			if (expectedAction.isFormHandler() != null && expectedAction.isFormHandler()) {
-				assertEquals(expectedAction.isFormHandler(), action.get("formHandler"));
+				assertThat(action.get("formHandler")).isEqualTo(expectedAction.isFormHandler());
 			} else {
-				assertFalse(action.containsKey("formHandler"));
+				assertThat(action.containsKey("formHandler")).isFalse();
 			}
 
 			List<String> params = (List<String>) action.get("params");
@@ -719,9 +729,9 @@ public class ApiControllerTest {
 					|| (params == null && expectedAction.getParams() == null));
 
 			if (expectedAction.getParams() != null) {
-				assertEquals(expectedAction.getParams().size(), params.size());
+				assertThat(params.size()).isEqualTo(expectedAction.getParams().size());
 				for (String param : expectedAction.getParams()) {
-					assertTrue(params.contains(param));
+					assertThat(params.contains(param)).isTrue();
 				}
 			}
 		}

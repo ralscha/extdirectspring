@@ -15,8 +15,7 @@
  */
 package ch.ralscha.extdirectspring.itest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,21 +56,21 @@ public class InfoControllerTest extends JettyTest {
 
 		HttpResponse response = client.execute(post);
 		HttpEntity entity = response.getEntity();
-		assertNotNull(entity);
+		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
 
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-		assertEquals(5, rootAsMap.size());
-		assertEquals("updateInfo", rootAsMap.get("method"));
-		assertEquals("rpc", rootAsMap.get("type"));
-		assertEquals("infoController", rootAsMap.get("action"));
-		assertEquals(1, rootAsMap.get("tid"));
+		assertThat(rootAsMap).hasSize(5);
+		assertThat(rootAsMap.get("method")).isEqualTo("updateInfo");
+		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
+		assertThat(rootAsMap.get("action")).isEqualTo("infoController");
+		assertThat(rootAsMap.get("tid")).isEqualTo(1);
 
 		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertEquals(2, result.size());
-		assertEquals("ralph", result.get("userNameLowerCase"));
-		assertEquals(true, result.get("success"));
+		assertThat(result).hasSize(2);
+		assertThat(result.get("userNameLowerCase")).isEqualTo("ralph");
+		assertThat(result.get("success")).isEqualTo(true);
 
 	}
 

@@ -15,10 +15,7 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.HashMap;
 import java.util.List;
@@ -69,8 +66,8 @@ public class ExceptionHandlingTest {
 	@Test
 	public void testDefault() throws Exception {
 		ExtDirectResponse resp = runTest(null);
-		assertEquals("Server Error", resp.getMessage());
-		assertNull(resp.getWhere());
+		assertThat(resp.getMessage()).isEqualTo("Server Error");
+		assertThat(resp.getWhere()).isNull();
 	}
 
 	@Test
@@ -78,8 +75,8 @@ public class ExceptionHandlingTest {
 		Configuration configuration = new Configuration();
 		configuration.setDefaultExceptionMessage(AN_ERROR_OCCURED);
 		ExtDirectResponse resp = runTest(configuration);
-		assertEquals(AN_ERROR_OCCURED, resp.getMessage());
-		assertNull(resp.getWhere());
+		assertThat(resp.getMessage()).isEqualTo(AN_ERROR_OCCURED);
+		assertThat(resp.getWhere()).isNull();
 	}
 
 	@Test
@@ -87,8 +84,8 @@ public class ExceptionHandlingTest {
 		Configuration configuration = new Configuration();
 		configuration.setSendExceptionMessage(true);
 		ExtDirectResponse resp = runTest(configuration);
-		assertEquals(EXCEPTION_MESSAGE, resp.getMessage());
-		assertNull(resp.getWhere());
+		assertThat(resp.getMessage()).isEqualTo(EXCEPTION_MESSAGE);
+		assertThat(resp.getWhere()).isNull();
 	}
 
 	@Test
@@ -98,8 +95,8 @@ public class ExceptionHandlingTest {
 		exceptionMessageMapping.put(IllegalArgumentException.class, ILLEGAL_ARGUMENT);
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest(configuration);
-		assertEquals(ILLEGAL_ARGUMENT, resp.getMessage());
-		assertNull(resp.getWhere());
+		assertThat(resp.getMessage()).isEqualTo(ILLEGAL_ARGUMENT);
+		assertThat(resp.getWhere()).isNull();
 	}
 
 	@Test
@@ -110,8 +107,8 @@ public class ExceptionHandlingTest {
 		exceptionMessageMapping.put(IllegalArgumentException.class, null);
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest(configuration);
-		assertEquals(EXCEPTION_MESSAGE, resp.getMessage());
-		assertNull(resp.getWhere());
+		assertThat(resp.getMessage()).isEqualTo(EXCEPTION_MESSAGE);
+		assertThat(resp.getWhere()).isNull();
 	}
 
 	@Test
@@ -120,9 +117,9 @@ public class ExceptionHandlingTest {
 		configuration.setSendStacktrace(true);
 		configuration.setDefaultExceptionMessage(AN_ERROR_OCCURED);
 		ExtDirectResponse resp = runTest(configuration);
-		assertEquals(AN_ERROR_OCCURED, resp.getMessage());
-		assertNotNull(resp.getWhere());
-		assertTrue(resp.getWhere().startsWith(STACK_TRACE));
+		assertThat(resp.getMessage()).isEqualTo(AN_ERROR_OCCURED);
+		assertThat(resp.getWhere()).isNotNull();
+		assertThat(resp.getWhere().startsWith(STACK_TRACE)).isTrue();
 	}
 
 	@Test
@@ -131,9 +128,9 @@ public class ExceptionHandlingTest {
 		configuration.setSendStacktrace(true);
 		configuration.setSendExceptionMessage(true);
 		ExtDirectResponse resp = runTest(configuration);
-		assertEquals(EXCEPTION_MESSAGE, resp.getMessage());
-		assertNotNull(resp.getWhere());
-		assertTrue(resp.getWhere().startsWith(STACK_TRACE));
+		assertThat(resp.getMessage()).isEqualTo(EXCEPTION_MESSAGE);
+		assertThat(resp.getWhere()).isNotNull();
+		assertThat(resp.getWhere().startsWith(STACK_TRACE)).isTrue();
 
 	}
 
@@ -145,9 +142,9 @@ public class ExceptionHandlingTest {
 		exceptionMessageMapping.put(IllegalArgumentException.class, ILLEGAL_ARGUMENT);
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest(configuration);
-		assertEquals(ILLEGAL_ARGUMENT, resp.getMessage());
-		assertNotNull(resp.getWhere());
-		assertTrue(resp.getWhere().startsWith(STACK_TRACE));
+		assertThat(resp.getMessage()).isEqualTo(ILLEGAL_ARGUMENT);
+		assertThat(resp.getWhere()).isNotNull();
+		assertThat(resp.getWhere().startsWith(STACK_TRACE)).isTrue();
 	}
 
 	@Test
@@ -159,8 +156,8 @@ public class ExceptionHandlingTest {
 		exceptionMessageMapping.put(IllegalArgumentException.class, null);
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest(configuration);
-		assertEquals(EXCEPTION_MESSAGE, resp.getMessage());
-		assertTrue(resp.getWhere().startsWith(STACK_TRACE));
+		assertThat(resp.getMessage()).isEqualTo(EXCEPTION_MESSAGE);
+		assertThat(resp.getWhere().startsWith(STACK_TRACE)).isTrue();
 	}
 
 	private ExtDirectResponse runTest(Configuration configuration) throws Exception {
@@ -171,13 +168,13 @@ public class ExceptionHandlingTest {
 				"string.param");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method4", resp.getMethod());
-		assertEquals("exception", resp.getType());
-		assertEquals(2, resp.getTid());
-		assertNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method4");
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getTid()).isEqualTo(2);
+		assertThat(resp.getResult()).isNull();
 
 		return resp;
 	}

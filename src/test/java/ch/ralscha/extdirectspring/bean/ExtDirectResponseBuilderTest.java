@@ -15,10 +15,7 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.io.IOException;
 import java.util.Map;
@@ -51,26 +48,26 @@ public class ExtDirectResponseBuilderTest {
 
 		ExtDirectResponse response = builder.build();
 
-		assertEquals("action", response.getAction());
-		assertEquals("method", response.getMethod());
-		assertEquals("type", response.getType());
-		assertEquals(1, response.getTid());
+		assertThat(response.getAction()).isEqualTo("action");
+		assertThat(response.getMethod()).isEqualTo("method");
+		assertThat(response.getType()).isEqualTo("type");
+		assertThat(response.getTid()).isEqualTo(1);
 
-		assertNotNull(response.getResult());
-		assertNull(response.getWhere());
-		assertNull(response.getMessage());
+		assertThat(response.getResult()).isNotNull();
+		assertThat(response.getWhere()).isNull();
+		assertThat(response.getMessage()).isNull();
 
 		Map<String, Object> data = (Map<String, Object>) response.getResult();
-		assertEquals(2, data.size());
-		assertEquals(11, data.get("additionalProperty"));
-		assertEquals(true, data.get("success"));
+		assertThat(data).hasSize(2);
+		assertThat(data.get("additionalProperty")).isEqualTo(11);
+		assertThat(data.get("success")).isEqualTo(true);
 
 		builder.unsuccessful();
 		response = builder.build();
 		data = (Map<String, Object>) response.getResult();
-		assertEquals(2, data.size());
-		assertEquals(11, data.get("additionalProperty"));
-		assertEquals(false, data.get("success"));
+		assertThat(data).hasSize(2);
+		assertThat(data.get("additionalProperty")).isEqualTo(11);
+		assertThat(data.get("success")).isEqualTo(false);
 	}
 
 	@Test
@@ -89,27 +86,27 @@ public class ExtDirectResponseBuilderTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		builder.buildAndWriteUploadResponse(response);
 
-		assertEquals("text/html", response.getContentType());
+		assertThat(response.getContentType()).isEqualTo("text/html");
 		String content = response.getContentAsString();
-		assertTrue(content.startsWith("<html><body><textarea>"));
-		assertTrue(content.endsWith("</textarea></body></html>"));
+		assertThat(content.startsWith("<html><body><textarea>")).isTrue();
+		assertThat(content.endsWith("</textarea></body></html>")).isTrue();
 
 		String json = content.substring(content.indexOf("{"), content.lastIndexOf("}") + 1);
-		assertTrue(json.contains("\\&quot;"));
+		assertThat(json.contains("\\&quot;")).isTrue();
 		json = json.replace("\\&quot;", "\'");
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> header = mapper.readValue(json, Map.class);
 
-		assertEquals("action", header.get("action"));
-		assertEquals("method", header.get("method"));
-		assertEquals("type", header.get("type"));
-		assertEquals(1, header.get("tid"));
+		assertThat(header.get("action")).isEqualTo("action");
+		assertThat(header.get("method")).isEqualTo("method");
+		assertThat(header.get("type")).isEqualTo("type");
+		assertThat(header.get("tid")).isEqualTo(1);
 
 		Map<String, Object> result = (Map<String, Object>) header.get("result");
-		assertEquals(3, result.size());
-		assertTrue((Boolean) result.get("success"));
-		assertEquals("a lot of 'text'", result.get("text"));
-		assertEquals(false, result.get("additionalProperty"));
+		assertThat(result).hasSize(3);
+		assertThat((Boolean) result.get("success")).isTrue();
+		assertThat(result.get("text")).isEqualTo("a lot of 'text'");
+		assertThat(result.get("additionalProperty")).isEqualTo(false);
 	}
 
 }

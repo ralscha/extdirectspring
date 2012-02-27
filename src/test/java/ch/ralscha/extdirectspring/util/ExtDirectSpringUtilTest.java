@@ -15,10 +15,8 @@
  */
 package ch.ralscha.extdirectspring.util;
 
+import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.InvocationTargetException;
@@ -40,21 +38,21 @@ public class ExtDirectSpringUtilTest {
 
 	@Test
 	public void testEqual() {
-		assertTrue(ExtDirectSpringUtil.equal(1, 1));
-		assertFalse(ExtDirectSpringUtil.equal(1, 2));
+		assertThat(ExtDirectSpringUtil.equal(1, 1)).isTrue();
+		assertThat(ExtDirectSpringUtil.equal(1, 2)).isFalse();
 
-		assertTrue(ExtDirectSpringUtil.equal(true, true));
-		assertTrue(ExtDirectSpringUtil.equal(false, false));
+		assertThat(ExtDirectSpringUtil.equal(true, true)).isTrue();
+		assertThat(ExtDirectSpringUtil.equal(false, false)).isTrue();
 
-		assertFalse(ExtDirectSpringUtil.equal(true, false));
-		assertFalse(ExtDirectSpringUtil.equal(false, true));
-		assertFalse(ExtDirectSpringUtil.equal(false, null));
+		assertThat(ExtDirectSpringUtil.equal(true, false)).isFalse();
+		assertThat(ExtDirectSpringUtil.equal(false, true)).isFalse();
+		assertThat(ExtDirectSpringUtil.equal(false, null)).isFalse();
 
-		assertTrue(ExtDirectSpringUtil.equal("a", "a"));
-		assertFalse(ExtDirectSpringUtil.equal("a", "b"));
-		assertFalse(ExtDirectSpringUtil.equal(null, "a"));
-		assertFalse(ExtDirectSpringUtil.equal("a", null));
-		assertTrue(ExtDirectSpringUtil.equal(null, null));
+		assertThat(ExtDirectSpringUtil.equal("a", "a")).isTrue();
+		assertThat(ExtDirectSpringUtil.equal("a", "b")).isFalse();
+		assertThat(ExtDirectSpringUtil.equal(null, "a")).isFalse();
+		assertThat(ExtDirectSpringUtil.equal("a", null)).isFalse();
+		assertThat(ExtDirectSpringUtil.equal(null, null)).isTrue();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -80,12 +78,12 @@ public class ExtDirectSpringUtilTest {
 		MethodInfo methodBInfo = ExtDirectSpringUtil.findMethodInfo(context, "springManagedBean", "methodB");
 		Method methodBWithAnnotation = MethodInfo.findMethodWithAnnotation(methodBInfo.getMethod(),
 				ExtDirectMethod.class);
-		assertEquals(methodBInfo.getMethod(), methodBWithAnnotation);
+		assertThat(methodBWithAnnotation).isEqualTo(methodBInfo.getMethod());
 
 		MethodInfo methodSubBInfo = ExtDirectSpringUtil.findMethodInfo(context, "springManagedSubBean", "methodB");
 		methodBWithAnnotation = MethodInfo.findMethodWithAnnotation(methodSubBInfo.getMethod(), ExtDirectMethod.class);
-		assertFalse(methodSubBInfo.getMethod().equals(methodBWithAnnotation));
-		assertTrue(methodBInfo.getMethod().equals(methodBWithAnnotation));
+		assertThat(methodSubBInfo.getMethod().equals(methodBWithAnnotation)).isFalse();
+		assertThat(methodBInfo.getMethod().equals(methodBWithAnnotation)).isTrue();
 	}
 
 	@Test
@@ -94,20 +92,20 @@ public class ExtDirectSpringUtilTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 
 		try {
-			assertNull(ExtDirectSpringUtil.invoke(null, null, null, null));
+			assertThat(ExtDirectSpringUtil.invoke(null, null, null, null)).isNull();
 			fail("has to throw a IllegalArgumentException");
 		} catch (Exception e) {
-			assertTrue(e instanceof NullPointerException);
+			assertThat(e instanceof NullPointerException).isTrue();
 		}
 
 		try {
 			MethodInfo info = ExtDirectSpringUtil.findMethodInfo(context, "springManagedBeanA", "methodA");
 
-			assertNull(ExtDirectSpringUtil.invoke(context, "springManagedBeanA", info, null));
+			assertThat(ExtDirectSpringUtil.invoke(context, "springManagedBeanA", info, null)).isNull();
 			fail("has to throw a NoSuchBeanDefinitionException");
 		} catch (Exception e) {
-			assertTrue(e instanceof NoSuchBeanDefinitionException);
-			assertEquals("No bean named 'springManagedBeanA' is defined", e.getMessage());
+			assertThat(e instanceof NoSuchBeanDefinitionException).isTrue();
+			assertThat(e.getMessage()).isEqualTo("No bean named 'springManagedBeanA' is defined");
 		}
 
 		try {
@@ -115,15 +113,15 @@ public class ExtDirectSpringUtilTest {
 			ExtDirectSpringUtil.invoke(context, "springManagedBean", info, null);
 			fail("has to throw a IllegalArgumentException");
 		} catch (Exception e) {
-			assertTrue(e instanceof IllegalArgumentException);
+			assertThat(e instanceof IllegalArgumentException).isTrue();
 			assertEquals("Invalid remoting method 'springManagedBean.methodA'. Missing ExtDirectMethod annotation",
 					e.getMessage());
 		}
 
 		MethodInfo infoB = ExtDirectSpringUtil.findMethodInfo(context, "springManagedBean", "methodB");
 
-		assertFalse((Boolean) ExtDirectSpringUtil.invoke(context, "springManagedBean", infoB, null));
-		assertFalse((Boolean) ExtDirectSpringUtil.invoke(context, "springManagedBean", infoB, null));
+		assertThat((Boolean) ExtDirectSpringUtil.invoke(context, "springManagedBean", infoB, null)).isFalse();
+		assertThat((Boolean) ExtDirectSpringUtil.invoke(context, "springManagedBean", infoB, null)).isFalse();
 
 		MethodInfo infoSum = ExtDirectSpringUtil.findMethodInfo(context, "springManagedBean", "sum");
 
@@ -136,8 +134,8 @@ public class ExtDirectSpringUtilTest {
 			ExtDirectSpringUtil.findMethodInfo(context, "springManagedBean", "methodC");
 			fail("has to throw a IllegalArgumentException");
 		} catch (Exception e) {
-			assertTrue(e instanceof IllegalArgumentException);
-			assertEquals("Method 'springManagedBean.methodC' not found", e.getMessage());
+			assertThat(e instanceof IllegalArgumentException).isTrue();
+			assertThat(e.getMessage()).isEqualTo("Method 'springManagedBean.methodC' not found");
 		}
 	}
 

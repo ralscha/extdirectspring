@@ -15,8 +15,7 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -63,14 +62,14 @@ public class ExceptionHandlingConfigInXmlTest {
 				"string.param");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method4", resp.getMethod());
-		assertEquals("exception", resp.getType());
-		assertEquals(2, resp.getTid());
-		assertEquals("illegal argument", resp.getMessage());
-		assertNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method4");
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getTid()).isEqualTo(2);
+		assertThat(resp.getMessage()).isEqualTo("illegal argument");
+		assertThat(resp.getResult()).isNull();
 		assertTrue(resp
 				.getWhere()
 				.startsWith(
@@ -85,14 +84,14 @@ public class ExceptionHandlingConfigInXmlTest {
 				"string.param");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderSimple2", resp.getAction());
-		assertEquals("method4", resp.getMethod());
-		assertEquals("exception", resp.getType());
-		assertEquals(2, resp.getTid());
-		assertEquals("No bean named 'remoteProviderSimple2' is defined", resp.getMessage());
-		assertNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple2");
+		assertThat(resp.getMethod()).isEqualTo("method4");
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getTid()).isEqualTo(2);
+		assertThat(resp.getMessage()).isEqualTo("No bean named 'remoteProviderSimple2' is defined");
+		assertThat(resp.getResult()).isNull();
 		assertTrue(resp
 				.getWhere()
 				.startsWith(
@@ -105,15 +104,15 @@ public class ExceptionHandlingConfigInXmlTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method11", 3);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method11", resp.getMethod());
-		assertEquals("exception", resp.getType());
-		assertEquals(3, resp.getTid());
-		assertEquals("Panic!!!", resp.getMessage());
-		assertNull(resp.getResult());
-		assertTrue(resp.getWhere().startsWith("java.lang.NullPointerException"));
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method11");
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getTid()).isEqualTo(3);
+		assertThat(resp.getMessage()).isEqualTo("Panic!!!");
+		assertThat(resp.getResult()).isNull();
+		assertThat(resp.getWhere().startsWith("java.lang.NullPointerException")).isTrue();
 
 	}
 }

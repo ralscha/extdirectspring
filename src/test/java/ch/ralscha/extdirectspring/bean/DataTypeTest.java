@@ -15,7 +15,7 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import static org.junit.Assert.assertEquals;
+import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;
 
@@ -23,10 +23,10 @@ public class DataTypeTest {
 
 	@Test
 	public void testFromString() {
-		assertEquals("boolean", DataType.BOOLEAN.getName());
-		assertEquals("date", DataType.DATE.getName());
-		assertEquals("float", DataType.FLOAT.getName());
-		assertEquals("int", DataType.INTEGER.getName());
-		assertEquals("string", DataType.STRING.getName());
+		assertThat(DataType.BOOLEAN.getName()).isEqualTo("boolean");
+		assertThat(DataType.DATE.getName()).isEqualTo("date");
+		assertThat(DataType.FLOAT.getName()).isEqualTo("float");
+		assertThat(DataType.INTEGER.getName()).isEqualTo("int");
+		assertThat(DataType.STRING.getName()).isEqualTo("string");
 	}
 }

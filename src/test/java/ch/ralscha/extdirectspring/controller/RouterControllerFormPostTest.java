@@ -15,8 +15,7 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
@@ -45,20 +44,20 @@ public class RouterControllerFormPostTest {
 			controller.router("remoteProviderSimple", "method1");
 			fail("has to throw a IllegalArgumentException");
 		} catch (Exception e) {
-			assertTrue(e instanceof IllegalArgumentException);
-			assertEquals("Invalid remoting form method: remoteProviderSimple.method1", e.getMessage());
+			assertThat(e instanceof IllegalArgumentException).isTrue();
+			assertThat(e.getMessage()).isEqualTo("Invalid remoting form method: remoteProviderSimple.method1");
 		}
 
 		try {
 			controller.router("RemoteProviderSimple", "method1");
 			fail("has to throw a NoSuchBeanDefinitionException");
 		} catch (Exception e) {
-			assertTrue(e instanceof NoSuchBeanDefinitionException);
-			assertEquals("No bean named 'RemoteProviderSimple' is defined", e.getMessage());
+			assertThat(e instanceof NoSuchBeanDefinitionException).isTrue();
+			assertThat(e.getMessage()).isEqualTo("No bean named 'RemoteProviderSimple' is defined");
 		}
 
 		String redirect = controller.router("formInfoController", "updateInfo");
-		assertEquals("forward:updateInfo", redirect);
+		assertThat(redirect).isEqualTo("forward:updateInfo");
 	}
 
 }

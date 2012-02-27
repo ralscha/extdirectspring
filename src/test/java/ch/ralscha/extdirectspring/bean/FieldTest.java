@@ -17,7 +17,6 @@ package ch.ralscha.extdirectspring.bean;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.MapAssert.entry;
-import static org.junit.Assert.assertEquals;
 
 import java.util.Map;
 
@@ -29,7 +28,7 @@ public class FieldTest {
 	public void testSimpleField() {
 		Field aField = new Field("fieldName");
 		Map<String, Object> fieldData = aField.getFieldData();
-		assertEquals(1, fieldData.size());
+		assertThat(fieldData).hasSize(1);
 		assertThat(fieldData).includes(entry("name", "fieldName"));
 	}
 
@@ -43,7 +42,7 @@ public class FieldTest {
 		aField.addCustomProperty("customProperty2", "aValue");
 
 		Map<String, Object> fieldData = aField.getFieldData();
-		assertEquals(6, fieldData.size());
+		assertThat(fieldData).hasSize(6);
 		assertThat(fieldData).includes(entry("name", "fieldName"));
 		assertThat(fieldData).includes(entry("allowBlank", true));
 		assertThat(fieldData).includes(entry("dateFormat", "Y-m-d"));

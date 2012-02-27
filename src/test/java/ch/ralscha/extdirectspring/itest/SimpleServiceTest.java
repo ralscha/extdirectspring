@@ -15,9 +15,7 @@
  */
 package ch.ralscha.extdirectspring.itest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -53,11 +51,11 @@ public class SimpleServiceTest extends JettyTest {
 		HttpGet get = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_simple");
 		HttpResponse response = client.execute(get);
 		HttpEntity entity = response.getEntity();
-		assertNotNull(entity);
+		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
 		EntityUtils.consume(entity);
-		assertTrue(responseString.contains("\"name\" : \"toUpperCase\""));
-		assertTrue(responseString.contains("\"name\" : \"echo\""));
+		assertThat(responseString.contains("\"name\" : \"toUpperCase\"")).isTrue();
+		assertThat(responseString.contains("\"name\" : \"echo\"")).isTrue();
 	}
 
 	@Test
@@ -81,21 +79,21 @@ public class SimpleServiceTest extends JettyTest {
 
 		HttpResponse response = client.execute(post);
 		HttpEntity entity = response.getEntity();
-		assertNotNull(entity);
+		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
 
-		assertNotNull(responseString);
-		assertTrue(responseString.startsWith("[") && responseString.endsWith("]"));
+		assertThat(responseString).isNotNull();
+		assertThat(responseString.startsWith("[") && responseString.endsWith("]")).isTrue();
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
 		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
 				Map.class);
-		assertEquals(5, rootAsMap.size());
-		assertEquals(text.toUpperCase(), rootAsMap.get("result"));
-		assertEquals("toUpperCase", rootAsMap.get("method"));
-		assertEquals("rpc", rootAsMap.get("type"));
-		assertEquals("simpleService", rootAsMap.get("action"));
-		assertEquals(1, rootAsMap.get("tid"));
+		assertThat(rootAsMap).hasSize(5);
+		assertThat(rootAsMap.get("result")).isEqualTo(text.toUpperCase());
+		assertThat(rootAsMap.get("method")).isEqualTo("toUpperCase");
+		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
+		assertThat(rootAsMap.get("action")).isEqualTo("simpleService");
+		assertThat(rootAsMap.get("tid")).isEqualTo(1);
 	}
 
 	@Test
@@ -121,22 +119,22 @@ public class SimpleServiceTest extends JettyTest {
 
 		HttpResponse response = client.execute(post);
 		HttpEntity entity = response.getEntity();
-		assertNotNull(entity);
+		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
 
-		assertNotNull(responseString);
+		assertThat(responseString).isNotNull();
 
-		assertTrue(responseString.startsWith("[") && responseString.endsWith("]"));
+		assertThat(responseString.startsWith("[") && responseString.endsWith("]")).isTrue();
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
 		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
 				Map.class);
-		assertEquals(5, rootAsMap.size());
-		assertEquals(expectedResult, rootAsMap.get("result"));
-		assertEquals("echo", rootAsMap.get("method"));
-		assertEquals("rpc", rootAsMap.get("type"));
-		assertEquals("simpleService", rootAsMap.get("action"));
-		assertEquals(1, rootAsMap.get("tid"));
+		assertThat(rootAsMap).hasSize(5);
+		assertThat(rootAsMap.get("result")).isEqualTo(expectedResult);
+		assertThat(rootAsMap.get("method")).isEqualTo("echo");
+		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
+		assertThat(rootAsMap.get("action")).isEqualTo("simpleService");
+		assertThat(rootAsMap.get("tid")).isEqualTo(1);
 	}
 
 }

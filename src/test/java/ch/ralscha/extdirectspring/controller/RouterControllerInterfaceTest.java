@@ -15,9 +15,7 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -67,14 +65,14 @@ public class RouterControllerInterfaceTest {
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals(1, responses.size());
-		assertEquals("remoteProviderImplementation", resp.getAction());
-		assertEquals("method2", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertEquals("method2() called", resp.getResult());
+		assertThat(responses).hasSize(1);
+		assertThat(resp.getAction()).isEqualTo("remoteProviderImplementation");
+		assertThat(resp.getMethod()).isEqualTo("method2");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isEqualTo("method2() called");
 	}
 
 	@Test
@@ -84,14 +82,14 @@ public class RouterControllerInterfaceTest {
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals(1, responses.size());
-		assertEquals("remoteProviderImplementation", resp.getAction());
-		assertEquals("method3", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertEquals("method3() called-20-2.1-aString", resp.getResult());
+		assertThat(responses).hasSize(1);
+		assertThat(resp.getAction()).isEqualTo("remoteProviderImplementation");
+		assertThat(resp.getMethod()).isEqualTo("method3");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isEqualTo("method3() called-20-2.1-aString");
 	}
 
 	@Test
@@ -105,22 +103,22 @@ public class RouterControllerInterfaceTest {
 
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 
-		assertEquals("remoteProviderImplementation", resp.getAction());
-		assertEquals("storeRead", resp.getMethod());
-		assertEquals("rpc", resp.getType());
-		assertEquals(1, resp.getTid());
-		assertNull(resp.getMessage());
-		assertNull(resp.getWhere());
-		assertNotNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderImplementation");
+		assertThat(resp.getMethod()).isEqualTo("storeRead");
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getResult()).isNotNull();
 
 		List<Row> rows = (List<Row>) resp.getResult();
-		assertEquals(1, rows.size());
+		assertThat(rows).hasSize(1);
 		Row theRow = rows.get(0);
-		assertEquals(1, theRow.getId());
-		assertEquals("Smith", theRow.getName());
-		assertEquals(new BigDecimal("40"), theRow.getSalary());
+		assertThat(theRow.getId()).isEqualTo(1);
+		assertThat(theRow.getName()).isEqualTo("Smith");
+		assertThat(theRow.getSalary()).isEqualTo(new BigDecimal("40"));
 	}
 }

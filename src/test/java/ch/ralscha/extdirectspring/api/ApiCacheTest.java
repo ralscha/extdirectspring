@@ -15,11 +15,7 @@
  */
 package ch.ralscha.extdirectspring.api;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;
 
@@ -30,7 +26,7 @@ public class ApiCacheTest {
 
 	@Test
 	public void testPutAndGet() {
-		assertNotNull(ApiCache.INSTANCE);
+		assertThat(ApiCache.INSTANCE).isNotNull();
 
 		ApiCacheKey key1 = new ApiCacheKey(null, null, null, null, null, false);
 		ApiCacheKey key2 = new ApiCacheKey(null, null, null, null, null, true);
@@ -46,33 +42,33 @@ public class ApiCacheTest {
 		ApiCache.INSTANCE.put(key6, "six");
 		ApiCache.INSTANCE.put(key7, "seven");
 
-		assertNull(ApiCache.INSTANCE.get(null));
-		assertNull(ApiCache.INSTANCE.get(key2));
-		assertNotNull(ApiCache.INSTANCE.get(key1));
-		assertEquals("one", ApiCache.INSTANCE.get(key1));
-		assertEquals("three", ApiCache.INSTANCE.get(key3));
-		assertEquals("four", ApiCache.INSTANCE.get(key4));
-		assertEquals("five", ApiCache.INSTANCE.get(key5));
-		assertEquals("six", ApiCache.INSTANCE.get(key6));
-		assertEquals("seven", ApiCache.INSTANCE.get(key7));
+		assertThat(ApiCache.INSTANCE.get(null)).isNull();
+		assertThat(ApiCache.INSTANCE.get(key2)).isNull();
+		assertThat(ApiCache.INSTANCE.get(key1)).isNotNull();
+		assertThat(ApiCache.INSTANCE.get(key1)).isEqualTo("one");
+		assertThat(ApiCache.INSTANCE.get(key3)).isEqualTo("three");
+		assertThat(ApiCache.INSTANCE.get(key4)).isEqualTo("four");
+		assertThat(ApiCache.INSTANCE.get(key5)).isEqualTo("five");
+		assertThat(ApiCache.INSTANCE.get(key6)).isEqualTo("six");
+		assertThat(ApiCache.INSTANCE.get(key7)).isEqualTo("seven");
 
-		assertFalse(key1.equals("test"));
-		assertFalse(key1.equals(null));
+		assertThat(key1.equals("test")).isFalse();
+		assertThat(key1.equals(null)).isFalse();
 
-		assertTrue(key1.equals(key1));
-		assertTrue(key2.equals(key2));
-		assertTrue(key3.equals(key3));
-		assertTrue(key4.equals(key4));
-		assertTrue(key5.equals(key5));
-		assertTrue(key6.equals(key6));
-		assertTrue(key7.equals(key7));
+		assertThat(key1.equals(key1)).isTrue();
+		assertThat(key2.equals(key2)).isTrue();
+		assertThat(key3.equals(key3)).isTrue();
+		assertThat(key4.equals(key4)).isTrue();
+		assertThat(key5.equals(key5)).isTrue();
+		assertThat(key6.equals(key6)).isTrue();
+		assertThat(key7.equals(key7)).isTrue();
 
-		assertFalse(key2.equals(key1));
-		assertFalse(key3.equals(key1));
-		assertFalse(key4.equals(key1));
-		assertFalse(key5.equals(key1));
-		assertFalse(key6.equals(key1));
-		assertFalse(key7.equals(key1));
+		assertThat(key2.equals(key1)).isFalse();
+		assertThat(key3.equals(key1)).isFalse();
+		assertThat(key4.equals(key1)).isFalse();
+		assertThat(key5.equals(key1)).isFalse();
+		assertThat(key6.equals(key1)).isFalse();
+		assertThat(key7.equals(key1)).isFalse();
 
 	}
 
