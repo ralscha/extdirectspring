@@ -10,13 +10,13 @@
         <include>**/*.java</include>
       </includes>
       <excludes>
-        <exclude>StartJetty.java</exclude>
+        <exclude>StartTomcat.java</exclude>
       </excludes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">
       <directory>src/main/java</directory>
       <includes>
-        <include>StartJetty.java</include>
+        <include>StartTomcat.java</include>
       </includes>
     </fileSet>
     <fileSet filtered="true" encoding="UTF-8">

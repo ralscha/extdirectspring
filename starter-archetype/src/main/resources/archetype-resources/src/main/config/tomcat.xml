@@ -1,0 +1,18 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<!DOCTYPE context>
+<Context>
+
+  <Resource name="jdbc/ds" auth="Container"
+            factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+            type="javax.sql.DataSource" username="sa" password=""
+            driverClassName="org.h2.Driver"
+            url="jdbc:h2:~/starter"
+            initialSize="2"
+            minIdle="2"
+            maxIdle="4"
+            maxActive="10" maxWait="10000"
+            defaultAutoCommit="false"/>
+
+</Context>
