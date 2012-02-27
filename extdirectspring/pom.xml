@@ -51,7 +51,7 @@
 
 	<properties>
 		<spring.version>3.0.7.RELEASE</spring.version>
-		<jackson.version>1.9.4</jackson.version>
+		<jackson.version>1.9.5</jackson.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -184,14 +184,14 @@
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
-			<version>2.2.5</version>
+			<version>2.2.6</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.sun.xml.bind</groupId>
 			<artifactId>jaxb-impl</artifactId>
-			<version>2.2.5-b02</version>
+			<version>2.2.5</version>
 			<scope>test</scope>
 		</dependency>
 
