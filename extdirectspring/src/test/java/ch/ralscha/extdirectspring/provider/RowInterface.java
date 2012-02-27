@@ -13,28 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.filter;
+package ch.ralscha.extdirectspring.provider;
 
-import static org.fest.assertions.Assertions.assertThat;
+import java.math.BigDecimal;
 
-import java.util.Arrays;
-import java.util.List;
+public interface RowInterface {
 
-import org.junit.Test;
+	public int getId();
 
-public class ListFilterTest {
+	public String getName();
 
-	@Test
-	public void testList() {
-		String[] values = { "one", "two", "three" };
-		ListFilter filter = new ListFilter("field", Arrays.asList(values));
+	public boolean isAdmin();
 
-		List<String> list = filter.getValue();
-		assertThat(list).hasSize(3);
-		assertThat(list).contains("one", "two", "three");
-
-		assertThat(filter.getField()).isEqualTo("field");
-		assertThat(filter.toString()).isEqualTo("ListFilter [value=[one, two, three], getField()=field]");
-	}
+	public BigDecimal getSalary();
 
 }

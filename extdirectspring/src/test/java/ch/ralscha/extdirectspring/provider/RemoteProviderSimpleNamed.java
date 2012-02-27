@@ -15,9 +15,7 @@
  */
 package ch.ralscha.extdirectspring.provider;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -32,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.fest.assertions.Delta;
 import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -90,10 +89,10 @@ public class RemoteProviderSimpleNamed {
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public long method6(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale,
 			Principal principal) {
-		assertNotNull(response);
-		assertNotNull(request);
-		assertNotNull(session);
-		assertEquals(Locale.ENGLISH, locale);
+		assertThat(response).isNotNull();
+		assertThat(request).isNotNull();
+		assertThat(session).isNotNull();
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
 		return 42;
 	}
@@ -101,26 +100,26 @@ public class RemoteProviderSimpleNamed {
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public String method7(boolean flag, char aCharacter, Workflow workflow, int aInt, long aLong, double aDouble,
 			float aFloat, short aShort, byte aByte) {
-		assertTrue(flag);
-		assertEquals('c', aCharacter);
-		assertEquals(Workflow.PENDING, workflow);
-		assertEquals(14, aInt);
-		assertEquals(21, aLong);
-		assertEquals(3.14, aDouble);
-		assertEquals(10.01, aFloat, 0.01);
-		assertEquals(1, aShort);
-		assertEquals(2, aByte);
+		assertThat(flag).isTrue();
+		assertThat(aCharacter).isEqualTo('c');
+		assertThat(workflow).isEqualTo(Workflow.PENDING);
+		assertThat(aInt).isEqualTo(14);
+		assertThat(aLong).isEqualTo(21);
+		assertThat(aDouble).isEqualTo(3.14);
+		assertThat(aFloat).isEqualTo(10.01f, Delta.delta(0.01f));
+		assertThat(aShort).isEqualTo((short) 1);
+		assertThat(aByte).isEqualTo((byte) 2);
 		return String.format("method7() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, workflow, aInt,
 				aLong, aDouble, aFloat, aShort, aByte);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public String method9(Row aRow) {
-		assertNotNull(aRow);
-		assertEquals(104, aRow.getId());
-		assertEquals("myRow", aRow.getName());
-		assertEquals(true, aRow.isAdmin());
-		assertEquals("100.45", aRow.getSalary().toPlainString());
+		assertThat(aRow).isNotNull();
+		assertThat(aRow.getId()).isEqualTo(104);
+		assertThat(aRow.getName()).isEqualTo("myRow");
+		assertThat(aRow.isAdmin()).isEqualTo(true);
+		assertThat(aRow.getSalary().toPlainString()).isEqualTo("100.45");
 		return aRow.toString();
 	}
 
@@ -129,20 +128,20 @@ public class RemoteProviderSimpleNamed {
 			short aShort, byte aByte, Workflow workflow, HttpSession session, int aInt, long aLong, Locale locale,
 			double aDouble, float aFloat, Principal principal) {
 
-		assertNotNull(response);
-		assertNotNull(request);
-		assertNotNull(session);
-		assertEquals(Locale.ENGLISH, locale);
+		assertThat(response).isNotNull();
+		assertThat(request).isNotNull();
+		assertThat(session).isNotNull();
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
-		assertTrue(flag);
-		assertEquals('c', aCharacter);
-		assertEquals(Workflow.PENDING, workflow);
-		assertEquals(14, aInt);
-		assertEquals(21, aLong);
-		assertEquals(3.14, aDouble);
-		assertEquals(10.01, aFloat, 0.01);
-		assertEquals(1, aShort);
-		assertEquals(2, aByte);
+		assertThat(flag).isTrue();
+		assertThat(aCharacter).isEqualTo('c');
+		assertThat(workflow).isEqualTo(Workflow.PENDING);
+		assertThat(aInt).isEqualTo(14);
+		assertThat(aLong).isEqualTo(21);
+		assertThat(aDouble).isEqualTo(3.14);
+		assertThat(aFloat).isEqualTo(10.01f, Delta.delta(0.01f));
+		assertThat(aShort).isEqualTo((short) 1);
+		assertThat(aByte).isEqualTo((byte) 2);
 		return String.format("method10() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, workflow, aInt,
 				aLong, aDouble, aFloat, aShort, aByte);
 	}
@@ -164,7 +163,7 @@ public class RemoteProviderSimpleNamed {
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public ResultObject methodRP1(@RequestParam(value = "lastName") String name,
 			@RequestParam(value = "theAge") Integer age, Boolean active, HttpServletRequest request) {
-		assertNotNull(request);
+		assertThat(request).isNotNull();
 		return new ResultObject(name, age, active);
 	}
 
@@ -173,7 +172,7 @@ public class RemoteProviderSimpleNamed {
 			@RequestParam(value = "lastName", required = false, defaultValue = "myName") String name,
 			@RequestParam(value = "theAge", defaultValue = "20") Integer age,
 			@RequestParam(defaultValue = "true") Boolean active) {
-		assertNotNull(session);
+		assertThat(session).isNotNull();
 		return new ResultObject(name, age, active);
 	}
 
@@ -181,7 +180,7 @@ public class RemoteProviderSimpleNamed {
 	public ResultObject methodRP3(HttpSession session, @RequestParam(value = "lastName", required = false) String name,
 			@RequestParam(value = "theAge", required = false) Integer age,
 			@RequestParam(required = false) Boolean active) {
-		assertNotNull(session);
+		assertThat(session).isNotNull();
 		return new ResultObject(name, age, active);
 	}
 

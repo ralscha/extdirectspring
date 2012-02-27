@@ -15,10 +15,7 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -70,18 +67,18 @@ public class RouterControllerSimpleTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProvider", "method1", 1, 3, 2.5,
 				"string.param");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		checkBeanNotFoundResponse(responses.get(0));
 	}
 
 	static void checkBeanNotFoundResponse(ExtDirectResponse resp) {
-		assertEquals("remoteProvider", resp.getAction());
-		assertEquals("method1", resp.getMethod());
-		assertEquals("exception", resp.getType());
-		assertEquals(1, resp.getTid());
-		assertNull(resp.getResult());
-		assertEquals("Server Error", resp.getMessage());
-		assertNull(resp.getWhere());
+		assertThat(resp.getAction()).isEqualTo("remoteProvider");
+		assertThat(resp.getMethod()).isEqualTo("method1");
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getResult()).isNull();
+		assertThat(resp.getMessage()).isEqualTo("Server Error");
+		assertThat(resp.getWhere()).isNull();
 	}
 
 	@Test
@@ -90,19 +87,19 @@ public class RouterControllerSimpleTest {
 				"string.param");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		checkMethodNotFoundResponse(responses.get(0));
 
 	}
 
 	static void checkMethodNotFoundResponse(ExtDirectResponse resp) {
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method4", resp.getMethod());
-		assertEquals("exception", resp.getType());
-		assertEquals(2, resp.getTid());
-		assertNull(resp.getResult());
-		assertEquals("Server Error", resp.getMessage());
-		assertNull(resp.getWhere());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method4");
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getTid()).isEqualTo(2);
+		assertThat(resp.getResult()).isNull();
+		assertThat(resp.getMessage()).isEqualTo("Server Error");
+		assertThat(resp.getWhere()).isNull();
 	}
 
 	@Test
@@ -110,18 +107,18 @@ public class RouterControllerSimpleTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method1", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		checkNoParametersResponse(responses.get(0), 1);
 	}
 
 	static void checkNoParametersResponse(ExtDirectResponse resp, int tid) {
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method1", resp.getMethod());
-		assertEquals(tid, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertEquals("method1() called", resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method1");
+		assertThat(resp.getTid()).isEqualTo(tid);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isEqualTo("method1() called");
 	}
 
 	@Test
@@ -130,7 +127,7 @@ public class RouterControllerSimpleTest {
 				"requestparameter");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		checkNoParametersResponse(resp, 1);
 	}
@@ -140,15 +137,15 @@ public class RouterControllerSimpleTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method2", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method2", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertEquals("method2() called", resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method2");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isEqualTo("method2() called");
 	}
 
 	@Test
@@ -157,15 +154,15 @@ public class RouterControllerSimpleTest {
 				"requestParameter");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method3", resp.getMethod());
-		assertEquals(10, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertEquals("method3() called-1-3.1-requestParameter", resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method3");
+		assertThat(resp.getTid()).isEqualTo(10);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isEqualTo("method3() called-1-3.1-requestParameter");
 	}
 
 	@Test
@@ -174,15 +171,15 @@ public class RouterControllerSimpleTest {
 				"4.2", 20);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method3", resp.getMethod());
-		assertEquals(10, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertEquals("method3() called-10-4.2-20", resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method3");
+		assertThat(resp.getTid()).isEqualTo(10);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isEqualTo("method3() called-10-4.2-20");
 	}
 
 	@Test
@@ -190,15 +187,15 @@ public class RouterControllerSimpleTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method3", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method3", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("exception", resp.getType());
-		assertNull(resp.getWhere());
-		assertEquals("Server Error", resp.getMessage());
-		assertNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method3");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isEqualTo("Server Error");
+		assertThat(resp.getResult()).isNull();
 	}
 
 	@Test
@@ -206,15 +203,15 @@ public class RouterControllerSimpleTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method5", 1, "ralph");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method5", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertEquals(true, resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method5");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isEqualTo(true);
 	}
 
 	@Test
@@ -222,15 +219,15 @@ public class RouterControllerSimpleTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method5", 1, "joe");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method5", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertEquals(false, resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method5");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isEqualTo(false);
 	}
 
 	@Test
@@ -239,15 +236,15 @@ public class RouterControllerSimpleTest {
 				.createRequestJson("remoteProviderSimple", "method5", 1, "martin");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method5", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method5");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isNull();
 	}
 
 	@Test
@@ -255,7 +252,7 @@ public class RouterControllerSimpleTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method6", 3, 10, 20);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		checkIntParameterResult(resp, 3, 30);
 	}
@@ -266,19 +263,19 @@ public class RouterControllerSimpleTest {
 				"40");
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		checkIntParameterResult(resp, 3, 70);
 	}
 
 	static void checkIntParameterResult(ExtDirectResponse resp, int tid, int result) {
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method6", resp.getMethod());
-		assertEquals(tid, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertEquals(result, resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method6");
+		assertThat(resp.getTid()).isEqualTo(tid);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isEqualTo(result);
 	}
 
 	@Test
@@ -286,15 +283,15 @@ public class RouterControllerSimpleTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method7", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method7", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method7");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isNull();
 	}
 
 	@Test
@@ -302,26 +299,26 @@ public class RouterControllerSimpleTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method8", 1, 7.34);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method8", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertNotNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method8");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isNotNull();
 
-		assertTrue(resp.getResult() instanceof FormInfo);
+		assertThat(resp.getResult() instanceof FormInfo).isTrue();
 		FormInfo info = (FormInfo) resp.getResult();
 
-		assertTrue(Double.compare(7.34, info.getBack()) == 0);
-		assertEquals(false, info.isAdmin());
-		assertEquals(32, info.getAge());
-		assertEquals("John", info.getName());
-		assertEquals(new BigDecimal("8720.20"), info.getSalary());
-		assertEquals(new GregorianCalendar(1986, Calendar.JULY, 22).getTime(), info.getBirthday());
+		assertThat(Double.compare(7.34, info.getBack()) == 0).isTrue();
+		assertThat(info.isAdmin()).isEqualTo(false);
+		assertThat(info.getAge()).isEqualTo(32);
+		assertThat(info.getName()).isEqualTo("John");
+		assertThat(info.getSalary()).isEqualTo(new BigDecimal("8720.20"));
+		assertThat(info.getBirthday()).isEqualTo(new GregorianCalendar(1986, Calendar.JULY, 22).getTime());
 	}
 
 	@Test
@@ -330,16 +327,16 @@ public class RouterControllerSimpleTest {
 
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method9", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertEquals(42l, resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method9");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isEqualTo(42l);
 	}
 
 	@Test
@@ -349,15 +346,15 @@ public class RouterControllerSimpleTest {
 
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method10", resp.getMethod());
-		assertEquals(3, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertEquals("method10() called-true-c-ACTIVE-14-21-3.14-10.01-1-2", resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method10");
+		assertThat(resp.getTid()).isEqualTo(3);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isEqualTo("method10() called-true-c-ACTIVE-14-21-3.14-10.01-1-2");
 
 	}
 
@@ -368,15 +365,15 @@ public class RouterControllerSimpleTest {
 
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method13", resp.getMethod());
-		assertEquals(4, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertEquals("method13() called-true-c-ACTIVE-14-21-3.14-10.01-1-2", resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method13");
+		assertThat(resp.getTid()).isEqualTo(4);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isEqualTo("method13() called-true-c-ACTIVE-14-21-3.14-10.01-1-2");
 	}
 
 	@Test
@@ -390,21 +387,21 @@ public class RouterControllerSimpleTest {
 
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method14", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method14");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
 
 		Map<String, Object> resultMap = (Map<String, Object>) resp.getResult();
-		assertEquals(today.toDate(), resultMap.get("endDate"));
-		assertEquals(today.toLocalDate(), resultMap.get("jodaLocalDate"));
-		assertEquals(new BigDecimal("0.999"), resultMap.get("percent"));
-		assertEquals("normalParameter", resultMap.get("normalParameter"));
-		assertEquals("127.0.0.1", resultMap.get("remoteAddr"));
+		assertThat(resultMap.get("endDate")).isEqualTo(today.toDate());
+		assertThat(resultMap.get("jodaLocalDate")).isEqualTo(today.toLocalDate());
+		assertThat(resultMap.get("percent")).isEqualTo(new BigDecimal("0.999"));
+		assertThat(resultMap.get("normalParameter")).isEqualTo("normalParameter");
+		assertThat(resultMap.get("remoteAddr")).isEqualTo("127.0.0.1");
 	}
 
 	@Test
@@ -414,16 +411,16 @@ public class RouterControllerSimpleTest {
 
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderSimple", resp.getAction());
-		assertEquals("method12", resp.getMethod());
-		assertEquals(5, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method12");
+		assertThat(resp.getTid()).isEqualTo(5);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
 
-		assertEquals("Row [id=104, name=myRow, admin=true, salary=100.45]", resp.getResult());
+		assertThat(resp.getResult()).isEqualTo("Row [id=104, name=myRow, admin=true, salary=100.45]");
 	}
 
 }

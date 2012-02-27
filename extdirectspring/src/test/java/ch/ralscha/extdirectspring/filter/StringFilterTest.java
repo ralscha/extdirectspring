@@ -15,7 +15,7 @@
  */
 package ch.ralscha.extdirectspring.filter;
 
-import static org.junit.Assert.assertEquals;
+import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;
 
@@ -24,8 +24,8 @@ public class StringFilterTest {
 	@Test
 	public void testString() {
 		StringFilter filter = new StringFilter("field", "value");
-		assertEquals("value", filter.getValue());
-		assertEquals("field", filter.getField());
-		assertEquals("StringFilter [value=value, getField()=field]", filter.toString());
+		assertThat(filter.getValue()).isEqualTo("value");
+		assertThat(filter.getField()).isEqualTo("field");
+		assertThat(filter.toString()).isEqualTo("StringFilter [value=value, getField()=field]");
 	}
 }

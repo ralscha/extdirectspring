@@ -15,8 +15,7 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static junit.framework.Assert.assertNull;
-import static org.junit.Assert.assertEquals;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -69,15 +68,15 @@ public class RouterControllerTreeLoaderTest {
 				requestParameters);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderTreeLoad", resp.getAction());
-		assertEquals("method1", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderTreeLoad");
+		assertThat(resp.getMethod()).isEqualTo("method1");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
 
 		assertResult((List<Node>) resp.getResult());
 
@@ -95,15 +94,15 @@ public class RouterControllerTreeLoaderTest {
 				requestParameters);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderTreeLoad", resp.getAction());
-		assertEquals("method2", resp.getMethod());
-		assertEquals(2, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderTreeLoad");
+		assertThat(resp.getMethod()).isEqualTo("method2");
+		assertThat(resp.getTid()).isEqualTo(2);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
 
 		assertResult((List<Node>) resp.getResult());
 
@@ -118,27 +117,27 @@ public class RouterControllerTreeLoaderTest {
 				requestParameters);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderTreeLoad", resp.getAction());
-		assertEquals("method3", resp.getMethod());
-		assertEquals(3, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderTreeLoad");
+		assertThat(resp.getMethod()).isEqualTo("method3");
+		assertThat(resp.getTid()).isEqualTo(3);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
 
 		assertResult((List<Node>) resp.getResult());
 	}
 
 	private void assertResult(List<Node> nodes) {
-		assertEquals(5, nodes.size());
+		assertThat(nodes).hasSize(5);
 
 		for (int i = 1; i <= 5; ++i) {
 			Node node = nodes.get(i - 1);
-			assertEquals("n" + i, node.id);
-			assertEquals("Node " + i, node.text);
-			assertEquals(false, node.leaf);
+			assertThat(node.id).isEqualTo("n" + i);
+			assertThat(node.text).isEqualTo("Node " + i);
+			assertThat(node.leaf).isEqualTo(false);
 		}
 
 	}

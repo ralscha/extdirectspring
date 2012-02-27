@@ -15,7 +15,7 @@
  */
 package ch.ralscha.extdirectspring.filter;
 
-import static org.junit.Assert.assertEquals;
+import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;
 
@@ -24,16 +24,16 @@ public class BooleanFilterTest {
 	@Test
 	public void testFalseFilter() {
 		BooleanFilter filter = new BooleanFilter("field", false);
-		assertEquals(false, filter.getValue());
-		assertEquals("field", filter.getField());
-		assertEquals("BooleanFilter [value=false, getField()=field]", filter.toString());
+		assertThat(filter.getValue()).isEqualTo(false);
+		assertThat(filter.getField()).isEqualTo("field");
+		assertThat(filter.toString()).isEqualTo("BooleanFilter [value=false, getField()=field]");
 	}
 
 	@Test
 	public void testTrueFilter() {
 		BooleanFilter filter = new BooleanFilter("xy", true);
-		assertEquals(true, filter.getValue());
-		assertEquals("xy", filter.getField());
-		assertEquals("BooleanFilter [value=true, getField()=xy]", filter.toString());
+		assertThat(filter.getValue()).isEqualTo(true);
+		assertThat(filter.getField()).isEqualTo("xy");
+		assertThat(filter.toString()).isEqualTo("BooleanFilter [value=true, getField()=xy]");
 	}
 }

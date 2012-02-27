@@ -17,10 +17,6 @@ package ch.ralscha.extdirectspring.provider;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.MapAssert.entry;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -75,10 +71,10 @@ public class RemoteProviderStoreRead {
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public List<Row> method3(HttpServletResponse response, HttpServletRequest request, HttpSession session,
 			Locale locale) {
-		assertNotNull(response);
-		assertNotNull(request);
-		assertNotNull(session);
-		assertEquals(Locale.ENGLISH, locale);
+		assertThat(response).isNotNull();
+		assertThat(request).isNotNull();
+		assertThat(session).isNotNull();
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
 		return createRows();
 	}
@@ -91,10 +87,10 @@ public class RemoteProviderStoreRead {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group3")
 	public ExtDirectStoreResponse<Row> method5(ExtDirectStoreReadRequest request, Locale locale,
 			@RequestParam(value = "id") int id) {
-		assertEquals(10, id);
-		assertEquals(Locale.ENGLISH, locale);
+		assertThat(id).isEqualTo(10);
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
-		assertEquals(1, request.getParams().size());
+		assertThat(request.getParams().size()).isEqualTo(1);
 		assertThat(request.getParams()).includes(entry("id", 10));
 
 		return createExtDirectStoreResponse(request);
@@ -103,17 +99,17 @@ public class RemoteProviderStoreRead {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
 	public ExtDirectStoreResponse<Row> method6(@RequestParam(value = "id", defaultValue = "1") int id,
 			HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
-		assertEquals(1, id);
-		assertNotNull(servletRequest);
+		assertThat(id).isEqualTo(1);
+		assertThat(servletRequest).isNotNull();
 		return createExtDirectStoreResponse(request);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
 	public List<Row> method7(@RequestParam(value = "id", required = false) Integer id) {
 		if (id == null) {
-			assertNull(id);
+			assertThat(id).isNull();
 		} else {
-			assertEquals(Integer.valueOf(11), id);
+			assertThat(id).isEqualTo(Integer.valueOf(11));
 		}
 		return createRows();
 	}
@@ -121,8 +117,8 @@ public class RemoteProviderStoreRead {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
 	public ExtDirectStoreResponse<Row> method8(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
 			HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
-		assertNotNull(endDate);
-		assertNotNull(servletRequest);
+		assertThat(endDate).isNotNull();
+		assertThat(servletRequest).isNotNull();
 		return createExtDirectStoreResponse(request);
 	}
 
@@ -155,7 +151,7 @@ public class RemoteProviderStoreRead {
 
 			if (!sorters.isEmpty()) {
 				SortInfo sortInfo = sorters.iterator().next();
-				assertEquals("id", sortInfo.getProperty());
+				assertThat(sortInfo.getProperty()).isEqualTo("id");
 
 				if (sortInfo.getDirection() == SortDirection.ASCENDING) {
 					Collections.sort(rows);
@@ -169,7 +165,7 @@ public class RemoteProviderStoreRead {
 					});
 				}
 			} else if (StringUtils.hasText(request.getSort())) {
-				assertEquals("id", request.getSort());
+				assertThat(request.getSort()).isEqualTo("id");
 
 				if (request.isAscendingSort()) {
 					Collections.sort(rows);
@@ -188,7 +184,7 @@ public class RemoteProviderStoreRead {
 			if (!groups.isEmpty()) {
 				GroupInfo groupInfo = groups.iterator().next();
 
-				assertEquals("id", groupInfo.getProperty());
+				assertThat(groupInfo.getProperty()).isEqualTo("id");
 				if (groupInfo.getDirection() == SortDirection.ASCENDING) {
 					Collections.sort(rows);
 				} else {
@@ -202,7 +198,7 @@ public class RemoteProviderStoreRead {
 				}
 
 			} else if (StringUtils.hasText(request.getGroupBy())) {
-				assertEquals("id", request.getGroupBy());
+				assertThat(request.getGroupBy()).isEqualTo("id");
 
 				if (request.isAscendingGroupSort()) {
 					Collections.sort(rows);
@@ -296,158 +292,158 @@ public class RemoteProviderStoreRead {
 		List<Filter> filters = new ArrayList<Filter>(request.getFilters());
 		switch (type) {
 		case 1:
-			assertEquals(1, request.getFilters().size());
-			assertTrue(filters.get(0) instanceof NumericFilter);
+			assertThat(request.getFilters().size()).isEqualTo(1);
+			assertThat(filters.get(0) instanceof NumericFilter).isTrue();
 
 			NumericFilter nf = (NumericFilter) filters.get(0);
-			assertEquals(2, nf.getValue());
-			assertEquals("id", nf.getField());
-			assertEquals(Comparison.EQUAL, nf.getComparison());
+			assertThat(nf.getValue()).isEqualTo(2);
+			assertThat(nf.getField()).isEqualTo("id");
+			assertThat(nf.getComparison()).isEqualTo(Comparison.EQUAL);
 
 			return createResult(1);
 		case 2:
-			assertEquals(2, request.getFilters().size());
-			assertTrue(filters.get(0) instanceof NumericFilter);
-			assertTrue(filters.get(1) instanceof NumericFilter);
+			assertThat(request.getFilters().size()).isEqualTo(2);
+			assertThat(filters.get(0) instanceof NumericFilter).isTrue();
+			assertThat(filters.get(1) instanceof NumericFilter).isTrue();
 
 			nf = (NumericFilter) filters.get(0);
-			assertEquals(100, nf.getValue());
-			assertEquals("id", nf.getField());
-			assertEquals(Comparison.LESS_THAN, nf.getComparison());
+			assertThat(nf.getValue()).isEqualTo(100);
+			assertThat(nf.getField()).isEqualTo("id");
+			assertThat(nf.getComparison()).isEqualTo(Comparison.LESS_THAN);
 
 			nf = (NumericFilter) filters.get(1);
-			assertEquals(90, nf.getValue());
-			assertEquals("id", nf.getField());
-			assertEquals(Comparison.GREATER_THAN, nf.getComparison());
+			assertThat(nf.getValue()).isEqualTo(90);
+			assertThat(nf.getField()).isEqualTo("id");
+			assertThat(nf.getComparison()).isEqualTo(Comparison.GREATER_THAN);
 			return createResult(2);
 		case 3:
-			assertEquals(1, filters.size());
-			assertTrue(filters.get(0) instanceof BooleanFilter);
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0) instanceof BooleanFilter).isTrue();
 
 			BooleanFilter bf = (BooleanFilter) filters.get(0);
-			assertEquals(true, bf.getValue());
-			assertEquals("visible", bf.getField());
+			assertThat(bf.getValue()).isEqualTo(true);
+			assertThat(bf.getField()).isEqualTo("visible");
 
 			return createResult(3);
 		case 4:
-			assertEquals(1, filters.size());
-			assertTrue(filters.get(0) instanceof BooleanFilter);
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0) instanceof BooleanFilter).isTrue();
 
 			bf = (BooleanFilter) filters.get(0);
-			assertEquals(false, bf.getValue());
-			assertEquals("visible", bf.getField());
+			assertThat(bf.getValue()).isEqualTo(false);
+			assertThat(bf.getField()).isEqualTo("visible");
 
 			return createResult(4);
 		case 5:
-			assertEquals(1, filters.size());
-			assertTrue(filters.get(0) instanceof StringFilter);
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0) instanceof StringFilter).isTrue();
 
 			StringFilter sf = (StringFilter) filters.get(0);
-			assertEquals("abb", sf.getValue());
-			assertEquals("company", sf.getField());
+			assertThat(sf.getValue()).isEqualTo("abb");
+			assertThat(sf.getField()).isEqualTo("company");
 
 			return createResult(5);
 
 		case 6:
-			assertEquals(1, filters.size());
-			assertTrue(filters.get(0) instanceof ListFilter);
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0) instanceof ListFilter).isTrue();
 
 			ListFilter lf = (ListFilter) filters.get(0);
-			assertEquals(1, lf.getValue().size());
-			assertEquals("small", lf.getValue().get(0));
-			assertEquals("size", lf.getField());
+			assertThat(lf.getValue().size()).isEqualTo(1);
+			assertThat(lf.getValue().get(0)).isEqualTo("small");
+			assertThat(lf.getField()).isEqualTo("size");
 
 			return createResult(6);
 
 		case 7:
-			assertEquals(1, filters.size());
-			assertTrue(filters.get(0) instanceof ListFilter);
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0) instanceof ListFilter).isTrue();
 
 			lf = (ListFilter) filters.get(0);
-			assertEquals(2, lf.getValue().size());
-			assertEquals("small", lf.getValue().get(0));
-			assertEquals("medium", lf.getValue().get(1));
-			assertEquals("size", lf.getField());
+			assertThat(lf.getValue().size()).isEqualTo(2);
+			assertThat(lf.getValue().get(0)).isEqualTo("small");
+			assertThat(lf.getValue().get(1)).isEqualTo("medium");
+			assertThat(lf.getField()).isEqualTo("size");
 
 			return createResult(7);
 
 		case 8:
 
-			assertEquals(2, filters.size());
-			assertTrue(filters.get(0) instanceof DateFilter);
-			assertTrue(filters.get(1) instanceof DateFilter);
+			assertThat(filters).hasSize(2);
+			assertThat(filters.get(0) instanceof DateFilter).isTrue();
+			assertThat(filters.get(1) instanceof DateFilter).isTrue();
 
 			DateFilter df = (DateFilter) filters.get(0);
-			assertEquals("07/31/2010", df.getValue());
-			assertEquals("date", df.getField());
-			assertEquals(Comparison.LESS_THAN, df.getComparison());
+			assertThat(df.getValue()).isEqualTo("07/31/2010");
+			assertThat(df.getField()).isEqualTo("date");
+			assertThat(df.getComparison()).isEqualTo(Comparison.LESS_THAN);
 
 			df = (DateFilter) filters.get(1);
-			assertEquals("07/01/2010", df.getValue());
-			assertEquals("date", df.getField());
-			assertEquals(Comparison.GREATER_THAN, df.getComparison());
+			assertThat(df.getValue()).isEqualTo("07/01/2010");
+			assertThat(df.getField()).isEqualTo("date");
+			assertThat(df.getComparison()).isEqualTo(Comparison.GREATER_THAN);
 
 			return createResult(8);
 
 		case 9:
-			assertEquals(1, filters.size());
-			assertTrue(filters.get(0) instanceof DateFilter);
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0) instanceof DateFilter).isTrue();
 
 			df = (DateFilter) filters.get(0);
-			assertEquals("07/01/2010", df.getValue());
-			assertEquals("date", df.getField());
-			assertEquals(Comparison.EQUAL, df.getComparison());
+			assertThat(df.getValue()).isEqualTo("07/01/2010");
+			assertThat(df.getField()).isEqualTo("date");
+			assertThat(df.getComparison()).isEqualTo(Comparison.EQUAL);
 
 			return createResult(9);
 
 		case 10:
-			assertEquals(1, filters.size());
-			assertTrue(filters.get(0) instanceof StringFilter);
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0) instanceof StringFilter).isTrue();
 
 			sf = (StringFilter) filters.get(0);
-			assertEquals("ERROR", sf.getValue());
-			assertEquals("level", sf.getField());
+			assertThat(sf.getValue()).isEqualTo("ERROR");
+			assertThat(sf.getField()).isEqualTo("level");
 
 			return createResult(10);
 		case 11:
-			assertEquals(1, request.getFilters().size());
-			assertTrue(filters.get(0) instanceof NumericFilter);
+			assertThat(request.getFilters().size()).isEqualTo(1);
+			assertThat(filters.get(0) instanceof NumericFilter).isTrue();
 
 			nf = (NumericFilter) filters.get(0);
-			assertEquals(1, nf.getValue());
-			assertEquals("level", nf.getField());
-			assertNull(nf.getComparison());
+			assertThat(nf.getValue()).isEqualTo(1);
+			assertThat(nf.getField()).isEqualTo("level");
+			assertThat(nf.getComparison()).isNull();
 
 			return createResult(11);
 		case 12:
-			assertEquals(1, filters.size());
-			assertTrue(filters.get(0) instanceof BooleanFilter);
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0) instanceof BooleanFilter).isTrue();
 
 			bf = (BooleanFilter) filters.get(0);
-			assertEquals(true, bf.getValue());
-			assertEquals("level", bf.getField());
+			assertThat(bf.getValue()).isEqualTo(true);
+			assertThat(bf.getField()).isEqualTo("level");
 
 			return createResult(12);
 		case 13:
-			assertEquals(1, filters.size());
-			assertTrue(filters.get(0) instanceof ListFilter);
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0) instanceof ListFilter).isTrue();
 
 			lf = (ListFilter) filters.get(0);
-			assertEquals(1, lf.getValue().size());
-			assertEquals("small", lf.getValue().get(0));
-			assertEquals("size", lf.getField());
+			assertThat(lf.getValue().size()).isEqualTo(1);
+			assertThat(lf.getValue().get(0)).isEqualTo("small");
+			assertThat(lf.getField()).isEqualTo("size");
 
 			return createResult(13);
 
 		case 14:
-			assertEquals(1, filters.size());
-			assertTrue(filters.get(0) instanceof ListFilter);
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0) instanceof ListFilter).isTrue();
 
 			lf = (ListFilter) filters.get(0);
-			assertEquals(2, lf.getValue().size());
-			assertEquals("small", lf.getValue().get(0));
-			assertEquals("medium", lf.getValue().get(1));
-			assertEquals("size", lf.getField());
+			assertThat(lf.getValue().size()).isEqualTo(2);
+			assertThat(lf.getValue().get(0)).isEqualTo("small");
+			assertThat(lf.getValue().get(1)).isEqualTo("medium");
+			assertThat(lf.getField()).isEqualTo("size");
 
 			return createResult(14);
 		}

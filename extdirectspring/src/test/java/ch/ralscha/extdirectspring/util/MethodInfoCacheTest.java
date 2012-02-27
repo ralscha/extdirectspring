@@ -15,11 +15,8 @@
  */
 package ch.ralscha.extdirectspring.util;
 
+import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Method;
 
@@ -35,22 +32,22 @@ public class MethodInfoCacheTest {
 
 	@Test
 	public void testPutAndGet() throws SecurityException, NoSuchMethodException {
-		assertNotNull(MethodInfoCache.INSTANCE);
+		assertThat(MethodInfoCache.INSTANCE).isNotNull();
 		Method thisMethod = getClass().getMethod("testPutAndGet", null);
 
 		MethodInfoCache.INSTANCE.put(null, null, null, null);
-		assertNull(MethodInfoCache.INSTANCE.get(null, null));
+		assertThat(MethodInfoCache.INSTANCE.get(null, null)).isNull();
 
 		MethodInfoCache.INSTANCE.put(null, null, getClass(), thisMethod);
 		assertEquals(thisMethod, MethodInfoCache.INSTANCE.get(null, null).getMethod());
 
 		MethodInfoCache.INSTANCE.put(null, "testPut", getClass(), thisMethod);
-		assertNull(MethodInfoCache.INSTANCE.get(null, "testPu"));
+		assertThat(MethodInfoCache.INSTANCE.get(null, "testPu")).isNull();
 		assertEquals(thisMethod, MethodInfoCache.INSTANCE.get(null, "testPut").getMethod());
 
 		MethodInfoCache.INSTANCE.put("methodCacheTest", "testPut", getClass(), thisMethod);
-		assertNull(MethodInfoCache.INSTANCE.get("methodCacheTest", "testPu"));
-		assertNull(MethodInfoCache.INSTANCE.get("methodCacheTes", "testPut"));
+		assertThat(MethodInfoCache.INSTANCE.get("methodCacheTest", "testPu")).isNull();
+		assertThat(MethodInfoCache.INSTANCE.get("methodCacheTes", "testPut")).isNull();
 		assertEquals(thisMethod, MethodInfoCache.INSTANCE.get("methodCacheTest", "testPut").getMethod());
 	}
 
@@ -60,14 +57,14 @@ public class MethodInfoCacheTest {
 		MethodInfoCache.Key key2 = new MethodInfoCache.Key("bean", "otherMethod");
 		MethodInfoCache.Key key3 = new MethodInfoCache.Key("otherBean", "otherMethod");
 
-		assertTrue(key1.equals(key1));
-		assertTrue(key2.equals(key2));
-		assertTrue(key3.equals(key3));
+		assertThat(key1.equals(key1)).isTrue();
+		assertThat(key2.equals(key2)).isTrue();
+		assertThat(key3.equals(key3)).isTrue();
 
-		assertFalse(key1.equals(key2));
-		assertFalse(key1.equals(key3));
+		assertThat(key1.equals(key2)).isFalse();
+		assertThat(key1.equals(key3)).isFalse();
 
-		assertFalse(key1.equals("test"));
+		assertThat(key1.equals("test")).isFalse();
 	}
 
 }

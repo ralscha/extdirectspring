@@ -15,9 +15,7 @@
  */
 package ch.ralscha.extdirectspring.itest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,32 +62,32 @@ public class FileUploadControllerTest extends JettyTest {
 		HttpResponse response = client.execute(post);
 		HttpEntity resEntity = response.getEntity();
 
-		assertNotNull(resEntity);
+		assertThat(resEntity).isNotNull();
 		String responseString = EntityUtils.toString(resEntity);
 
 		String prefix = "<html><body><textarea>";
 		String postfix = "</textarea></body></html>";
-		assertTrue(responseString.startsWith(prefix));
-		assertTrue(responseString.endsWith(postfix));
+		assertThat(responseString.startsWith(prefix)).isTrue();
+		assertThat(responseString.endsWith(postfix)).isTrue();
 
 		String json = responseString.substring(prefix.length(), responseString.length() - postfix.length());
 
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> rootAsMap = mapper.readValue(json, Map.class);
-		assertEquals(5, rootAsMap.size());
-		assertEquals("uploadTest", rootAsMap.get("method"));
-		assertEquals("rpc", rootAsMap.get("type"));
-		assertEquals("fileUploadController", rootAsMap.get("action"));
-		assertEquals(2, rootAsMap.get("tid"));
+		assertThat(rootAsMap).hasSize(5);
+		assertThat(rootAsMap.get("method")).isEqualTo("uploadTest");
+		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
+		assertThat(rootAsMap.get("action")).isEqualTo("fileUploadController");
+		assertThat(rootAsMap.get("tid")).isEqualTo(2);
 
 		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertEquals(6, result.size());
-		assertEquals("Jim", result.get("name"));
-		assertEquals(25, result.get("age"));
-		assertEquals("test@test.ch", result.get("email"));
-		assertEquals("UploadTestFile.txt", result.get("fileName"));
-		assertEquals("contents of upload file", result.get("fileContents"));
-		assertEquals(true, result.get("success"));
+		assertThat(result).hasSize(6);
+		assertThat(result.get("name")).isEqualTo("Jim");
+		assertThat(result.get("age")).isEqualTo(25);
+		assertThat(result.get("email")).isEqualTo("test@test.ch");
+		assertThat(result.get("fileName")).isEqualTo("UploadTestFile.txt");
+		assertThat(result.get("fileContents")).isEqualTo("contents of upload file");
+		assertThat(result.get("success")).isEqualTo(true);
 
 		EntityUtils.consume(resEntity);
 		client.getConnectionManager().shutdown();

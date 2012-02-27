@@ -15,8 +15,7 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;
 
@@ -24,12 +23,12 @@ public class SortDirectionTest {
 
 	@Test
 	public void testFromString() {
-		assertSame(SortDirection.ASCENDING, SortDirection.fromString("asc"));
-		assertSame(SortDirection.ASCENDING, SortDirection.fromString("ASC"));
+		assertThat(SortDirection.fromString("asc")).isSameAs(SortDirection.ASCENDING);
+		assertThat(SortDirection.fromString("ASC")).isSameAs(SortDirection.ASCENDING);
 
-		assertSame(SortDirection.DESCENDING, SortDirection.fromString("desc"));
-		assertSame(SortDirection.DESCENDING, SortDirection.fromString("DESC"));
+		assertThat(SortDirection.fromString("desc")).isSameAs(SortDirection.DESCENDING);
+		assertThat(SortDirection.fromString("DESC")).isSameAs(SortDirection.DESCENDING);
 
-		assertNull(SortDirection.fromString("xy"));
+		assertThat(SortDirection.fromString("xy")).isNull();
 	}
 }

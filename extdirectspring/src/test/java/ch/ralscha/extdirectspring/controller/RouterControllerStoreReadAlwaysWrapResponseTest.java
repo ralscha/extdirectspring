@@ -15,9 +15,7 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.HashMap;
 import java.util.List;
@@ -65,19 +63,19 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method1", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderStoreRead", resp.getAction());
-		assertEquals("method1", resp.getMethod());
-		assertEquals("rpc", resp.getType());
-		assertEquals(1, resp.getTid());
-		assertNull(resp.getMessage());
-		assertNull(resp.getWhere());
-		assertNotNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderStoreRead");
+		assertThat(resp.getMethod()).isEqualTo("method1");
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getResult()).isNotNull();
 
 		ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse) resp.getResult();
 		List<Row> rows = (List<Row>) storeResponse.getRecords();
-		assertEquals(100, rows.size());
+		assertThat(rows.size()).isEqualTo(100);
 
 	}
 
@@ -91,19 +89,19 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 				storeRead);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderStoreRead", resp.getAction());
-		assertEquals("method1", resp.getMethod());
-		assertEquals("rpc", resp.getType());
-		assertEquals(1, resp.getTid());
-		assertNull(resp.getMessage());
-		assertNull(resp.getWhere());
-		assertNotNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderStoreRead");
+		assertThat(resp.getMethod()).isEqualTo("method1");
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getResult()).isNotNull();
 
 		ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse) resp.getResult();
 		List<Row> rows = (List<Row>) storeResponse.getRecords();
-		assertEquals(100, rows.size());
+		assertThat(rows.size()).isEqualTo(100);
 
 	}
 
@@ -113,19 +111,19 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method3", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
-		assertEquals("remoteProviderStoreRead", resp.getAction());
-		assertEquals("method3", resp.getMethod());
-		assertEquals("rpc", resp.getType());
-		assertEquals(1, resp.getTid());
-		assertNull(resp.getMessage());
-		assertNull(resp.getWhere());
-		assertNotNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderStoreRead");
+		assertThat(resp.getMethod()).isEqualTo("method3");
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getResult()).isNotNull();
 
 		ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse) resp.getResult();
 		List<Row> rows = (List<Row>) storeResponse.getRecords();
-		assertEquals(100, rows.size());
+		assertThat(rows.size()).isEqualTo(100);
 
 	}
 
@@ -135,20 +133,20 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method7", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 
-		assertEquals("remoteProviderStoreRead", resp.getAction());
-		assertEquals("method7", resp.getMethod());
-		assertEquals("rpc", resp.getType());
-		assertEquals(1, resp.getTid());
-		assertNull(resp.getMessage());
-		assertNull(resp.getWhere());
-		assertNotNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderStoreRead");
+		assertThat(resp.getMethod()).isEqualTo("method7");
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getResult()).isNotNull();
 
 		ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse) resp.getResult();
 		List<Row> rows = (List<Row>) storeResponse.getRecords();
-		assertEquals(100, rows.size());
+		assertThat(rows.size()).isEqualTo(100);
 
 		Map<String, Object> readRequest = new HashMap<String, Object>();
 		readRequest.put("id", 11);
@@ -157,20 +155,20 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method7", 1, readRequest);
 		responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		resp = responses.get(0);
 
-		assertEquals("remoteProviderStoreRead", resp.getAction());
-		assertEquals("method7", resp.getMethod());
-		assertEquals("rpc", resp.getType());
-		assertEquals(1, resp.getTid());
-		assertNull(resp.getMessage());
-		assertNull(resp.getWhere());
-		assertNotNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderStoreRead");
+		assertThat(resp.getMethod()).isEqualTo("method7");
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getResult()).isNotNull();
 
 		storeResponse = (ExtDirectStoreResponse) resp.getResult();
 		rows = (List<Row>) storeResponse.getRecords();
-		assertEquals(100, rows.size());
+		assertThat(rows.size()).isEqualTo(100);
 
 	}
 

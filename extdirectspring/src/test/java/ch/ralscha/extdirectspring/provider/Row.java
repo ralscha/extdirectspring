@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Row implements Comparable<Row> {
+public class Row implements Comparable<Row>, RowInterface {
 
 	private int id;
 	private String name;
@@ -41,6 +41,9 @@ public class Row implements Comparable<Row> {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see ch.ralscha.extdirectspring.provider.RowInterface#getId()
+	 */
 	public int getId() {
 		return id;
 	}
@@ -49,6 +52,9 @@ public class Row implements Comparable<Row> {
 		this.id = id;
 	}
 
+	/* (non-Javadoc)
+	 * @see ch.ralscha.extdirectspring.provider.RowInterface#getName()
+	 */
 	public String getName() {
 		return name;
 	}
@@ -57,6 +63,9 @@ public class Row implements Comparable<Row> {
 		this.name = name;
 	}
 
+	/* (non-Javadoc)
+	 * @see ch.ralscha.extdirectspring.provider.RowInterface#isAdmin()
+	 */
 	public boolean isAdmin() {
 		return admin;
 	}
@@ -65,6 +74,9 @@ public class Row implements Comparable<Row> {
 		this.admin = admin;
 	}
 
+	/* (non-Javadoc)
+	 * @see ch.ralscha.extdirectspring.provider.RowInterface#getSalary()
+	 */
 	public BigDecimal getSalary() {
 		return salary;
 	}

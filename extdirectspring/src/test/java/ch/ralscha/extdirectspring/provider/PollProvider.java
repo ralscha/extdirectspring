@@ -15,6 +15,8 @@
  */
 package ch.ralscha.extdirectspring.provider;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -23,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.junit.Assert;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -43,10 +44,10 @@ public class PollProvider {
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message2", group = "group2")
 	public String handleMessage2(HttpServletResponse response, HttpServletRequest request, HttpSession session,
 			Locale locale) {
-		Assert.assertNotNull(response);
-		Assert.assertNotNull(request);
-		Assert.assertNotNull(session);
-		Assert.assertEquals(Locale.ENGLISH, locale);
+		assertThat(response).isNotNull();
+		assertThat(request).isNotNull();
+		assertThat(session).isNotNull();
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
 		Date now = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd 'at' hh:mm:ss");
@@ -55,19 +56,19 @@ public class PollProvider {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message3", group = "group4")
 	public String handleMessage3(Locale locale, @RequestParam(value = "id") int id) {
-		Assert.assertEquals(Locale.ENGLISH, locale);
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
 		return "Result: " + id;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message4")
 	public int handleMessage4(@RequestParam(value = "id", defaultValue = "1") int id, HttpServletRequest request) {
-		Assert.assertNotNull(request);
+		assertThat(request).isNotNull();
 		return id * 2;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message5", group = "group3")
 	public Integer handleMessage5(@RequestParam(value = "id", required = false) Integer id, String dummy) {
-		Assert.assertNull(dummy);
+		assertThat(dummy).isNull();
 		if (id != null) {
 			return id * 2;
 		}

@@ -15,12 +15,9 @@
  */
 package ch.ralscha.extdirectspring.util;
 
+import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -113,42 +110,42 @@ public class JsonHandlerTest {
 
 		Object o = jsonHandler.readValue("", new TypeReference<String>() {/* empty */
 		});
-		assertNull(o);
+		assertThat(o).isNull();
 
 		o = jsonHandler.readValue("xy", new TypeReference<Integer>() {/* empty */
 		});
-		assertNull(o);
+		assertThat(o).isNull();
 
 	}
 
 	@Test
 	public void testdeserializeStringClassOfT() {
-		assertNull(jsonHandler.readValue("null", String.class));
+		assertThat(jsonHandler.readValue("null", String.class)).isNull();
 		assertEquals("a", jsonHandler.readValue("\"a\"", String.class));
 		assertEquals(Integer.valueOf(1), jsonHandler.readValue("1", Integer.class));
-		assertTrue(jsonHandler.readValue("true", Boolean.class));
+		assertThat(jsonHandler.readValue("true", Boolean.class)).isTrue();
 
 		String json1 = "{\"a\":1,\"b\":\"2\",\"c\":null,\"d\":false,\"e\":[1,2]}";
 		String json2 = "{\r\n  \"a\" : 1,\r\n  \"b\" : \"2\",\r\n  \"c\" : null,\r\n  \"d\" : false,\r\n  \"e\" : [ 1, 2 ]\r\n}";
 		JsonTestBean testBean = jsonHandler.readValue(json1, JsonTestBean.class);
 		assertEquals(Integer.valueOf(1), testBean.getA());
 		assertEquals("2", testBean.getB());
-		assertNull(testBean.getC());
-		assertFalse(testBean.getD());
+		assertThat(testBean.getC()).isNull();
+		assertThat(testBean.getD()).isFalse();
 		assertArrayEquals(new Integer[] { 1, 2 }, testBean.getE());
 
 		testBean = jsonHandler.readValue(json2, JsonTestBean.class);
 		assertEquals(Integer.valueOf(1), testBean.getA());
 		assertEquals("2", testBean.getB());
-		assertNull(testBean.getC());
-		assertFalse(testBean.getD());
+		assertThat(testBean.getC()).isNull();
+		assertThat(testBean.getD()).isFalse();
 		assertArrayEquals(new Integer[] { 1, 2 }, testBean.getE());
 
 		Object o = jsonHandler.readValue("", String.class);
-		assertNull(o);
+		assertThat(o).isNull();
 
 		o = jsonHandler.readValue("xy", Integer.class);
-		assertNull(o);
+		assertThat(o).isNull();
 
 	}
 
@@ -163,11 +160,11 @@ public class JsonHandlerTest {
 		req.setData(new Object[] { "one", "two" });
 
 		String json = jsonHandler.writeValueAsString(req);
-		assertNotNull(json);
-		assertTrue(StringUtils.hasText(json));
+		assertThat(json).isNotNull();
+		assertThat(StringUtils.hasText(json)).isTrue();
 
 		ExtDirectRequest desReq = jsonHandler.readValue(json, ExtDirectRequest.class);
-		assertNotNull(desReq);
+		assertThat(desReq).isNotNull();
 
 		assertEquals(req.getAction(), desReq.getAction());
 		assertArrayEquals((Object[]) req.getData(), ((List<Object>) desReq.getData()).toArray());

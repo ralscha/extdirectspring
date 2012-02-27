@@ -15,11 +15,8 @@
  */
 package ch.ralscha.extdirectspring.filter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,10 +40,10 @@ public class FilterTest {
 		json.put("value", 12);
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertTrue(filter instanceof NumericFilter);
+		assertThat(filter instanceof NumericFilter).isTrue();
 		NumericFilter numericFilter = (NumericFilter) filter;
-		assertEquals("aField", numericFilter.getField());
-		assertEquals(12, numericFilter.getValue());
+		assertThat(numericFilter.getField()).isEqualTo("aField");
+		assertThat(numericFilter.getValue()).isEqualTo(12);
 		assertSame(Comparison.LESS_THAN, numericFilter.getComparison());
 
 		json = new HashMap<String, Object>();
@@ -56,10 +53,10 @@ public class FilterTest {
 		json.put("value", "0");
 
 		filter = Filter.createFilter(json, genericConversionService);
-		assertTrue(filter instanceof NumericFilter);
+		assertThat(filter instanceof NumericFilter).isTrue();
 		numericFilter = (NumericFilter) filter;
-		assertEquals("aField", numericFilter.getField());
-		assertEquals(0, numericFilter.getValue().intValue());
+		assertThat(numericFilter.getField()).isEqualTo("aField");
+		assertThat(numericFilter.getValue().intValue()).isEqualTo(0);
 		assertSame(Comparison.EQUAL, numericFilter.getComparison());
 	}
 
@@ -70,10 +67,10 @@ public class FilterTest {
 		json.put("value", 10);
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertTrue(filter instanceof NumericFilter);
+		assertThat(filter instanceof NumericFilter).isTrue();
 		NumericFilter numericFilter = (NumericFilter) filter;
-		assertEquals("aField", numericFilter.getField());
-		assertEquals(10, numericFilter.getValue());
+		assertThat(numericFilter.getField()).isEqualTo("aField");
+		assertThat(numericFilter.getValue()).isEqualTo(10);
 	}
 
 	@Test
@@ -84,10 +81,10 @@ public class FilterTest {
 		json.put("value", "aString");
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertTrue(filter instanceof StringFilter);
+		assertThat(filter instanceof StringFilter).isTrue();
 		StringFilter stringFilter = (StringFilter) filter;
-		assertEquals("aField", stringFilter.getField());
-		assertEquals("aString", stringFilter.getValue());
+		assertThat(stringFilter.getField()).isEqualTo("aField");
+		assertThat(stringFilter.getValue()).isEqualTo("aString");
 	}
 
 	@Test
@@ -97,10 +94,10 @@ public class FilterTest {
 		json.put("value", "aString");
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertTrue(filter instanceof StringFilter);
+		assertThat(filter instanceof StringFilter).isTrue();
 		StringFilter stringFilter = (StringFilter) filter;
-		assertEquals("aField", stringFilter.getField());
-		assertEquals("aString", stringFilter.getValue());
+		assertThat(stringFilter.getField()).isEqualTo("aField");
+		assertThat(stringFilter.getValue()).isEqualTo("aString");
 	}
 
 	@Test
@@ -112,10 +109,10 @@ public class FilterTest {
 		json.put("comparison", "gt");
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertTrue(filter instanceof DateFilter);
+		assertThat(filter instanceof DateFilter).isTrue();
 		DateFilter dateFilter = (DateFilter) filter;
-		assertEquals("aField", dateFilter.getField());
-		assertEquals("12.12.2010", dateFilter.getValue());
+		assertThat(dateFilter.getField()).isEqualTo("aField");
+		assertThat(dateFilter.getValue()).isEqualTo("12.12.2010");
 		assertSame(Comparison.GREATER_THAN, dateFilter.getComparison());
 	}
 
@@ -127,16 +124,13 @@ public class FilterTest {
 		json.put("value", "one,two,three");
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertTrue(filter instanceof ListFilter);
+		assertThat(filter instanceof ListFilter).isTrue();
 		ListFilter listFilter = (ListFilter) filter;
-		assertEquals("aField", listFilter.getField());
+		assertThat(listFilter.getField()).isEqualTo("aField");
 
 		List<String> list = listFilter.getValue();
-		assertEquals(3, list.size());
-		assertTrue(list.contains("one"));
-		assertTrue(list.contains("two"));
-		assertTrue(list.contains("three"));
-		assertFalse(list.contains("four"));
+		assertThat(list).hasSize(3);
+		assertThat(list).contains("one", "two", "three");
 	}
 
 	@Test
@@ -147,10 +141,10 @@ public class FilterTest {
 		json.put("value", false);
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertTrue(filter instanceof BooleanFilter);
+		assertThat(filter instanceof BooleanFilter).isTrue();
 		BooleanFilter booleanFilter = (BooleanFilter) filter;
-		assertEquals("aField", booleanFilter.getField());
-		assertEquals(false, booleanFilter.getValue());
+		assertThat(booleanFilter.getField()).isEqualTo("aField");
+		assertThat(booleanFilter.getValue()).isEqualTo(false);
 	}
 
 	@Test
@@ -160,10 +154,10 @@ public class FilterTest {
 		json.put("value", false);
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertTrue(filter instanceof BooleanFilter);
+		assertThat(filter instanceof BooleanFilter).isTrue();
 		BooleanFilter booleanFilter = (BooleanFilter) filter;
-		assertEquals("aField", booleanFilter.getField());
-		assertEquals(false, booleanFilter.getValue());
+		assertThat(booleanFilter.getField()).isEqualTo("aField");
+		assertThat(booleanFilter.getValue()).isEqualTo(false);
 	}
 
 	@Test
@@ -174,7 +168,7 @@ public class FilterTest {
 		json.put("value", "aValue");
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertNull(filter);
+		assertThat(filter).isNull();
 	}
 
 	@Test
@@ -183,6 +177,6 @@ public class FilterTest {
 		json.put("property", "aField");
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertNull(filter);
+		assertThat(filter).isNull();
 	}
 }

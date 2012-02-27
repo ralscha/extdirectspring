@@ -17,9 +17,6 @@ package ch.ralscha.extdirectspring.provider;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.MapAssert.entry;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,13 +43,13 @@ public class RemoteProviderImplementation implements RemoteProviderInterface {
 			@RequestParam(value = "theAge", defaultValue = "40") Integer age, Boolean active,
 			HttpServletRequest httpRequest) {
 
-		assertEquals(40, age.intValue());
-		assertNotNull(httpRequest);
-		assertNotNull(request);
-		assertEquals("Smith", name);
-		assertTrue(active);
+		assertThat(age.intValue()).isEqualTo(40);
+		assertThat(httpRequest).isNotNull();
+		assertThat(request).isNotNull();
+		assertThat(name).isEqualTo("Smith");
+		assertThat(active).isTrue();
 
-		assertEquals(2, request.getParams().size());
+		assertThat(request.getParams().size()).isEqualTo(2);
 		assertThat(request.getParams()).includes(entry("lastName", "Smith"));
 		assertThat(request.getParams()).includes(entry("active", true));
 

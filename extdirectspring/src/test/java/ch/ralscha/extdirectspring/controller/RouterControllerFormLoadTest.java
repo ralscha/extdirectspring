@@ -15,11 +15,7 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -72,7 +68,7 @@ public class RouterControllerFormLoadTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method1", 1, data);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 
 		checkFormLoadResult(resp, 3.141, 1);
@@ -83,16 +79,16 @@ public class RouterControllerFormLoadTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method2", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 
-		assertEquals("remoteProviderFormLoad", resp.getAction());
-		assertEquals("method2", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderFormLoad");
+		assertThat(resp.getMethod()).isEqualTo("method2");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isNull();
 	}
 
 	@Test
@@ -100,16 +96,16 @@ public class RouterControllerFormLoadTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method3", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 
-		assertEquals("remoteProviderFormLoad", resp.getAction());
-		assertEquals("method3", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderFormLoad");
+		assertThat(resp.getMethod()).isEqualTo("method3");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isNull();
 	}
 
 	@Test
@@ -119,22 +115,22 @@ public class RouterControllerFormLoadTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method4", 1, data);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 
-		assertEquals("remoteProviderFormLoad", resp.getAction());
-		assertEquals("method4", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertNotNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderFormLoad");
+		assertThat(resp.getMethod()).isEqualTo("method4");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isNotNull();
 
-		assertTrue(resp.getResult() instanceof ExtDirectFormLoadResult);
+		assertThat(resp.getResult() instanceof ExtDirectFormLoadResult).isTrue();
 		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) resp.getResult();
-		assertTrue(wrapper.isSuccess());
-		assertNotNull(wrapper.getData());
-		assertTrue(wrapper.getData() instanceof FormInfo);
+		assertThat(wrapper.isSuccess()).isTrue();
+		assertThat(wrapper.getData()).isNotNull();
+		assertThat(wrapper.getData() instanceof FormInfo).isTrue();
 	}
 
 	@Test
@@ -142,21 +138,21 @@ public class RouterControllerFormLoadTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method5", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 
-		assertEquals("remoteProviderFormLoad", resp.getAction());
-		assertEquals("method5", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertNotNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderFormLoad");
+		assertThat(resp.getMethod()).isEqualTo("method5");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isNotNull();
 
-		assertTrue(resp.getResult() instanceof ExtDirectFormLoadResult);
+		assertThat(resp.getResult() instanceof ExtDirectFormLoadResult).isTrue();
 		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) resp.getResult();
-		assertTrue(wrapper.isSuccess());
-		assertNull(wrapper.getData());
+		assertThat(wrapper.isSuccess()).isTrue();
+		assertThat(wrapper.getData()).isNull();
 	}
 
 	@Test
@@ -164,66 +160,66 @@ public class RouterControllerFormLoadTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method6", 1, null);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 
-		assertEquals("remoteProviderFormLoad", resp.getAction());
-		assertEquals("method6", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertNotNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderFormLoad");
+		assertThat(resp.getMethod()).isEqualTo("method6");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isNotNull();
 
-		assertTrue(resp.getResult() instanceof ExtDirectFormLoadResult);
+		assertThat(resp.getResult() instanceof ExtDirectFormLoadResult).isTrue();
 		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) resp.getResult();
-		assertTrue(wrapper.isSuccess());
-		assertEquals("TEST", wrapper.getData());
+		assertThat(wrapper.isSuccess()).isTrue();
+		assertThat(wrapper.getData()).isEqualTo("TEST");
 
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("id", 11);
 		edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method6", 1, data);
 		responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		resp = responses.get(0);
 
-		assertEquals("remoteProviderFormLoad", resp.getAction());
-		assertEquals("method6", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertNotNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderFormLoad");
+		assertThat(resp.getMethod()).isEqualTo("method6");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isNotNull();
 
-		assertTrue(resp.getResult() instanceof ExtDirectFormLoadResult);
+		assertThat(resp.getResult() instanceof ExtDirectFormLoadResult).isTrue();
 		wrapper = (ExtDirectFormLoadResult) resp.getResult();
-		assertTrue(wrapper.isSuccess());
-		assertEquals("TEST", wrapper.getData());
+		assertThat(wrapper.isSuccess()).isTrue();
+		assertThat(wrapper.getData()).isEqualTo("TEST");
 	}
 
 	private void checkFormLoadResult(ExtDirectResponse resp, double back, int tid) {
-		assertEquals("remoteProviderFormLoad", resp.getAction());
-		assertEquals("method1", resp.getMethod());
-		assertEquals(tid, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertNotNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderFormLoad");
+		assertThat(resp.getMethod()).isEqualTo("method1");
+		assertThat(resp.getTid()).isEqualTo(tid);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isNotNull();
 
-		assertTrue(resp.getResult() instanceof ExtDirectFormLoadResult);
+		assertThat(resp.getResult() instanceof ExtDirectFormLoadResult).isTrue();
 		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) resp.getResult();
-		assertTrue(wrapper.isSuccess());
-		assertNotNull(wrapper.getData());
-		assertTrue(wrapper.getData() instanceof FormInfo);
+		assertThat(wrapper.isSuccess()).isTrue();
+		assertThat(wrapper.getData()).isNotNull();
+		assertThat(wrapper.getData() instanceof FormInfo).isTrue();
 		FormInfo info = (FormInfo) wrapper.getData();
 
-		assertTrue(Double.compare(back, info.getBack()) == 0);
-		assertEquals(true, info.isAdmin());
-		assertEquals(31, info.getAge());
-		assertEquals("Bob", info.getName());
-		assertEquals(new BigDecimal("10000.55"), info.getSalary());
-		assertEquals(new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime(), info.getBirthday());
+		assertThat(Double.compare(back, info.getBack()) == 0).isTrue();
+		assertThat(info.isAdmin()).isEqualTo(true);
+		assertThat(info.getAge()).isEqualTo(31);
+		assertThat(info.getName()).isEqualTo("Bob");
+		assertThat(info.getSalary()).isEqualTo(new BigDecimal("10000.55"));
+		assertThat(info.getBirthday()).isEqualTo(new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime());
 	}
 
 	@Test
@@ -245,7 +241,7 @@ public class RouterControllerFormLoadTest {
 
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequests);
 
-		assertEquals(6, responses.size());
+		assertThat(responses).hasSize(6);
 		RouterControllerSimpleTest.checkBeanNotFoundResponse(responses.get(0));
 		RouterControllerSimpleTest.checkMethodNotFoundResponse(responses.get(1));
 		RouterControllerSimpleTest.checkNoParametersResponse(responses.get(2), 3);
@@ -264,21 +260,21 @@ public class RouterControllerFormLoadTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method7", 1, data);
 		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 
-		assertEquals("remoteProviderFormLoad", resp.getAction());
-		assertEquals("method7", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertNotNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderFormLoad");
+		assertThat(resp.getMethod()).isEqualTo("method7");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isNotNull();
 
-		assertTrue(resp.getResult() instanceof ExtDirectFormLoadResult);
+		assertThat(resp.getResult() instanceof ExtDirectFormLoadResult).isTrue();
 		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) resp.getResult();
-		assertTrue(wrapper.isSuccess());
-		assertEquals("one", wrapper.getData());
+		assertThat(wrapper.isSuccess()).isTrue();
+		assertThat(wrapper.getData()).isEqualTo("one");
 
 		data = new HashMap<String, Object>();
 		data.put("data", "two");
@@ -286,20 +282,20 @@ public class RouterControllerFormLoadTest {
 		edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method7", 1, data);
 		responses = controller.router(request, response, Locale.ENGLISH, edRequest);
 
-		assertEquals(1, responses.size());
+		assertThat(responses).hasSize(1);
 		resp = responses.get(0);
 
-		assertEquals("remoteProviderFormLoad", resp.getAction());
-		assertEquals("method7", resp.getMethod());
-		assertEquals(1, resp.getTid());
-		assertEquals("rpc", resp.getType());
-		assertNull(resp.getWhere());
-		assertNull(resp.getMessage());
-		assertNotNull(resp.getResult());
+		assertThat(resp.getAction()).isEqualTo("remoteProviderFormLoad");
+		assertThat(resp.getMethod()).isEqualTo("method7");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isNotNull();
 
-		assertTrue(resp.getResult() instanceof ExtDirectFormLoadResult);
+		assertThat(resp.getResult() instanceof ExtDirectFormLoadResult).isTrue();
 		wrapper = (ExtDirectFormLoadResult) resp.getResult();
-		assertFalse(wrapper.isSuccess());
-		assertEquals("two", wrapper.getData());
+		assertThat(wrapper.isSuccess()).isFalse();
+		assertThat(wrapper.getData()).isEqualTo("two");
 	}
 }

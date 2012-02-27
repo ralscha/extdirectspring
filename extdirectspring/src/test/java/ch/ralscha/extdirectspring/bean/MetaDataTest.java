@@ -17,8 +17,6 @@ package ch.ralscha.extdirectspring.bean;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.MapAssert.entry;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +30,7 @@ public class MetaDataTest {
 	public void testSimpleMetaData() {
 		MetaData metaData = new MetaData();
 		Map<String, Object> meta = metaData.getMetaData();
-		assertEquals(3, meta.size());
+		assertThat(meta).hasSize(3);
 
 		assertThat(meta).includes(entry("root", "records"));
 		assertThat(meta).includes(entry("totalProperty", "total"));
@@ -58,9 +56,9 @@ public class MetaDataTest {
 		metaData.addCustomProperty("customProperty2", "aValue");
 
 		Map<String, Object> meta = metaData.getMetaData();
-		assertEquals(10, meta.size());
+		assertThat(meta.size()).isEqualTo(10);
 		metaData.addFields(null);
-		assertEquals(10, meta.size());
+		assertThat(meta.size()).isEqualTo(10);
 
 		assertThat(meta).includes(entry("root", "records"));
 		assertThat(meta).includes(entry("totalProperty", "total"));
@@ -70,18 +68,18 @@ public class MetaDataTest {
 		assertThat(meta).includes(entry("limit", 50));
 		assertThat(meta).includes(entry("customProperty1", 10));
 		assertThat(meta).includes(entry("customProperty2", "aValue"));
-		assertTrue(meta.containsKey("sortInfo"));
-		assertTrue(meta.containsKey("fields"));
+		assertThat(meta.containsKey("sortInfo")).isTrue();
+		assertThat(meta.containsKey("fields")).isTrue();
 
 		@SuppressWarnings("unchecked")
 		Map<String, String> sortInfo = (Map<String, String>) meta.get("sortInfo");
-		assertEquals(2, sortInfo.size());
+		assertThat(sortInfo).hasSize(2);
 		assertThat(sortInfo).includes(entry("field", "name"));
 		assertThat(sortInfo).includes(entry("direction", "ASC"));
 
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> fields = (List<Map<String, Object>>) meta.get("fields");
-		assertEquals(3, fields.size());
+		assertThat(fields).hasSize(3);
 
 		Map<String, Object> field1 = fields.get(0);
 		assertThat(field1).includes(entry("name", "name"));

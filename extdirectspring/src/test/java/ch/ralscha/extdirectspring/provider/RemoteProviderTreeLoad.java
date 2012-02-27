@@ -15,8 +15,7 @@
  */
 package ch.ralscha.extdirectspring.provider;
 
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -28,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.joda.time.LocalDate;
-import org.junit.Assert;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Service;
@@ -55,9 +53,9 @@ public class RemoteProviderTreeLoad {
 	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD)
 	public List<Node> method2(@RequestParam("node") String node,
 			@RequestParam(defaultValue = "defaultValue") String foo, @DateTimeFormat(iso = ISO.DATE) LocalDate today) {
-		assertEquals("foo", foo);
-		assertNotNull(today);
-		assertEquals(new LocalDate(), today);
+		assertThat(foo).isEqualTo("foo");
+		assertThat(today).isNotNull();
+		assertThat(today).isEqualTo(new LocalDate());
 		return createTreeList(node);
 	}
 
@@ -65,11 +63,11 @@ public class RemoteProviderTreeLoad {
 	public List<Node> method3(@RequestParam("node") String node, HttpServletResponse response,
 			HttpServletRequest request, @RequestParam(defaultValue = "defaultValue") String foo, HttpSession session,
 			Locale locale, Principal principal) {
-		assertEquals("defaultValue", foo);
-		Assert.assertNotNull(response);
-		Assert.assertNotNull(request);
-		Assert.assertNotNull(session);
-		Assert.assertEquals(Locale.ENGLISH, locale);
+		assertThat(foo).isEqualTo("defaultValue");
+		assertThat(response).isNotNull();
+		assertThat(request).isNotNull();
+		assertThat(session).isNotNull();
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
 		return createTreeList(node);
 	}

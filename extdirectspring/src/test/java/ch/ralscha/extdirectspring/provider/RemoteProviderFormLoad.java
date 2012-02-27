@@ -15,6 +15,8 @@
  */
 package ch.ralscha.extdirectspring.provider;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -24,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.junit.Assert;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -54,35 +55,35 @@ public class RemoteProviderFormLoad {
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
 	public FormInfo method3(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {
-		Assert.assertNotNull(response);
-		Assert.assertNotNull(request);
-		Assert.assertNotNull(session);
-		Assert.assertEquals(Locale.ENGLISH, locale);
+		assertThat(response).isNotNull();
+		assertThat(request).isNotNull();
+		assertThat(session).isNotNull();
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
 		return null;
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
 	public FormInfo method4(Locale locale, @RequestParam(value = "id") int id) {
-		Assert.assertEquals(10, id);
-		Assert.assertEquals(Locale.ENGLISH, locale);
+		assertThat(id).isEqualTo(10);
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
 		return new FormInfo();
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3")
 	public ExtDirectFormLoadResult method5(@RequestParam(value = "id", defaultValue = "1") int id,
 			HttpServletRequest servletRequest) {
-		Assert.assertEquals(1, id);
-		Assert.assertNotNull(servletRequest);
+		assertThat(id).isEqualTo(1);
+		assertThat(servletRequest).isNotNull();
 		return new ExtDirectFormLoadResult();
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
 	public ExtDirectFormLoadResult method6(@RequestParam(value = "id", required = false) Integer id) {
 		if (id == null) {
-			Assert.assertNull(id);
+			assertThat(id).isNull();
 		} else {
-			Assert.assertEquals(Integer.valueOf(11), id);
+			assertThat(id).isEqualTo(Integer.valueOf(11));
 		}
 		return new ExtDirectFormLoadResult("TEST");
 	}

@@ -15,9 +15,7 @@
  */
 package ch.ralscha.extdirectspring.provider;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.Locale;
 
@@ -45,10 +43,10 @@ public class RemoteProviderStoreModifySingle {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
 	public Row create2(Row row, HttpServletResponse response, HttpServletRequest request, HttpSession session,
 			Locale locale) {
-		assertNotNull(response);
-		assertNotNull(request);
-		assertNotNull(session);
-		assertEquals(Locale.ENGLISH, locale);
+		assertThat(response).isNotNull();
+		assertThat(request).isNotNull();
+		assertThat(session).isNotNull();
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
 		return row;
 	}
@@ -60,16 +58,16 @@ public class RemoteProviderStoreModifySingle {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
 	public Row update2(Locale locale, @RequestParam(value = "aParam") int aParam, Row row) {
-		assertEquals(42, aParam);
-		assertEquals(Locale.ENGLISH, locale);
+		assertThat(aParam).isEqualTo(42);
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
 		return row;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
 	public Row update3(Row row, @RequestParam(value = "aParam", defaultValue = "1") int aParam,
 			HttpServletRequest servletRequest) {
-		assertEquals(1, aParam);
-		assertNotNull(servletRequest);
+		assertThat(aParam).isEqualTo(1);
+		assertThat(servletRequest).isNotNull();
 		return row;
 	}
 
@@ -78,12 +76,12 @@ public class RemoteProviderStoreModifySingle {
 			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate yesterday, Row row) {
 
 		if (aParam == null) {
-			assertNull(aParam);
-			assertNull(yesterday);
+			assertThat(aParam).isNull();
+			assertThat(yesterday).isNull();
 		} else {
-			assertNotNull(yesterday);
-			assertEquals(new LocalDate().minusDays(1), yesterday);
-			assertEquals(Integer.valueOf(11), aParam);
+			assertThat(yesterday).isNotNull();
+			assertThat(yesterday).isEqualTo(new LocalDate().minusDays(1));
+			assertThat(aParam).isEqualTo(Integer.valueOf(11));
 		}
 		return row;
 	}

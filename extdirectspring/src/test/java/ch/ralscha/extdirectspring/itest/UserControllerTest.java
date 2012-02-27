@@ -15,8 +15,7 @@
  */
 package ch.ralscha.extdirectspring.itest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -68,25 +67,25 @@ public class UserControllerTest extends JettyTest {
 
 		HttpResponse response = client.execute(post);
 		HttpEntity entity = response.getEntity();
-		assertNotNull(entity);
+		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
 
 		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-		assertEquals(5, rootAsMap.size());
-		assertEquals("updateUser", rootAsMap.get("method"));
-		assertEquals("rpc", rootAsMap.get("type"));
-		assertEquals("userController", rootAsMap.get("action"));
-		assertEquals(2, rootAsMap.get("tid"));
+		assertThat(rootAsMap).hasSize(5);
+		assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
+		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
+		assertThat(rootAsMap.get("action")).isEqualTo("userController");
+		assertThat(rootAsMap.get("tid")).isEqualTo(2);
 
 		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertEquals(4, result.size());
-		assertEquals("Joe", result.get("name"));
-		assertEquals(30, result.get("age"));
-		assertEquals(false, result.get("success"));
+		assertThat(result).hasSize(4);
+		assertThat(result.get("name")).isEqualTo("Joe");
+		assertThat(result.get("age")).isEqualTo(30);
+		assertThat(result.get("success")).isEqualTo(false);
 
 		Map<String, Object> errors = (Map<String, Object>) result.get("errors");
-		assertEquals(1, errors.size());
-		assertEquals("may not be empty", errors.get("email"));
+		assertThat(errors).hasSize(1);
+		assertThat(errors.get("email")).isEqualTo("may not be empty");
 	}
 
 	@Test
@@ -108,20 +107,20 @@ public class UserControllerTest extends JettyTest {
 
 		HttpResponse response = client.execute(post);
 		HttpEntity entity = response.getEntity();
-		assertNotNull(entity);
+		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
 
 		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-		assertEquals(5, rootAsMap.size());
-		assertEquals("updateUser", rootAsMap.get("method"));
-		assertEquals("rpc", rootAsMap.get("type"));
-		assertEquals("userController", rootAsMap.get("action"));
-		assertEquals(3, rootAsMap.get("tid"));
+		assertThat(rootAsMap).hasSize(5);
+		assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
+		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
+		assertThat(rootAsMap.get("action")).isEqualTo("userController");
+		assertThat(rootAsMap.get("tid")).isEqualTo(3);
 
 		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertEquals(3, result.size());
-		assertEquals("Jim", result.get("name"));
-		assertEquals(25, result.get("age"));
-		assertEquals(true, result.get("success"));
+		assertThat(result).hasSize(3);
+		assertThat(result.get("name")).isEqualTo("Jim");
+		assertThat(result.get("age")).isEqualTo(25);
+		assertThat(result.get("success")).isEqualTo(true);
 	}
 }

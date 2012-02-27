@@ -15,8 +15,7 @@
  */
 package ch.ralscha.extdirectspring.itest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.fest.assertions.Assertions.assertThat;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,21 +63,21 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 
 		HttpResponse response = client.execute(post);
 		HttpEntity entity = response.getEntity();
-		assertNotNull(entity);
+		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
 
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
 		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-		assertEquals(7, rootAsMap.size());
-		assertEquals("throwAException", rootAsMap.get("method"));
-		assertEquals("exception", rootAsMap.get("type"));
-		assertEquals("exceptionFormPostController", rootAsMap.get("action"));
-		assertEquals(3, rootAsMap.get("tid"));
-		assertEquals("server error", rootAsMap.get("message"));
-		assertEquals("java.lang.NullPointerException: a null pointer", rootAsMap.get("where"));
+		assertThat(rootAsMap).hasSize(7);
+		assertThat(rootAsMap.get("method")).isEqualTo("throwAException");
+		assertThat(rootAsMap.get("type")).isEqualTo("exception");
+		assertThat(rootAsMap.get("action")).isEqualTo("exceptionFormPostController");
+		assertThat(rootAsMap.get("tid")).isEqualTo(3);
+		assertThat(rootAsMap.get("message")).isEqualTo("server error");
+		assertThat(rootAsMap.get("where")).isEqualTo("java.lang.NullPointerException: a null pointer");
 		@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertEquals(false, result.get("success"));
+		assertThat(result.get("success")).isEqualTo(false);
 	}
 }
