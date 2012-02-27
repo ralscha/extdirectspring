@@ -56,4 +56,14 @@ public @interface ExtDirectMethod {
 	 */
 	boolean synchronizeOnSession() default false;
 
+	/**
+	 * Optional parameter. Specifies the type of an object in a collection.
+	 * If the generic type of a collection is an interface the library cannot
+	 * figure out the type of the implementation class. For this scenario specify
+	 * the class with this parameter.
+	 * 
+	 * STORE_MODIFY methods
+	 */
+	Class<?> entryClass() default Object.class;
+
 }

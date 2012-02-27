@@ -76,18 +76,24 @@ public class MethodInfo {
 			}
 		}
 
+		this.collectionType = null;
+
 		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 		if (extDirectMethodAnnotation != null) {
 			this.type = extDirectMethodAnnotation.value();
 			this.synchronizeOnSession = extDirectMethodAnnotation.synchronizeOnSession();
+			this.collectionType = (extDirectMethodAnnotation.entryClass() == Object.class) ? null
+					: extDirectMethodAnnotation.entryClass();
 		}
 
 		this.parameters = buildParameterList(clazz, method);
 
-		for (ParameterInfo parameter : parameters) {
-			if (parameter.getCollectionType() != null) {
-				this.collectionType = parameter.getCollectionType();
-				break;
+		if (this.collectionType == null) {
+			for (ParameterInfo parameter : parameters) {
+				if (parameter.getCollectionType() != null) {
+					this.collectionType = parameter.getCollectionType();
+					break;
+				}
 			}
 		}
 
