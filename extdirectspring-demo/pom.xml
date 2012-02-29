@@ -46,8 +46,7 @@
 		<slf4j.version>1.6.4</slf4j.version>
 		<logback.version>1.0.0</logback.version>
 		<hibernatevalidator.version>4.2.0.Final</hibernatevalidator.version>
-		<jetty.version>8.1.1.v20120215</jetty.version>
-		<eds.version>1.0.15-SNAPSHOT</eds.version>
+		<eds.version>1.0.15</eds.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.debug>true</maven.compiler.debug>
