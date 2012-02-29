@@ -20,7 +20,7 @@
 		<slf4j.version>1.6.4</slf4j.version>
 		<logback.version>1.0.0</logback.version>
 
-		<eds.version>1.0.14</eds.version>
+		<eds.version>1.0.15</eds.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.debug>true</maven.compiler.debug>
