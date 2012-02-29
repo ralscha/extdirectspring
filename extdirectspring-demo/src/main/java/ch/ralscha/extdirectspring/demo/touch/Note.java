@@ -13,20 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.demo.filter;
+package ch.ralscha.extdirectspring.demo.touch;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
-public class Company {
+import ch.ralscha.extdirectspring.demo.util.DMYDateSerializer;
+
+public class Note {
 	private int id;
-	private String company;
-	private BigDecimal price;
 	private Date date;
-	private boolean visible;
-	private SizeEnum size;
+	private String title;
+	private String narrative;
 
 	public int getId() {
 		return id;
@@ -36,23 +35,7 @@ public class Company {
 		this.id = id;
 	}
 
-	public String getCompany() {
-		return company;
-	}
-
-	public void setCompany(String company) {
-		this.company = company;
-	}
-
-	public BigDecimal getPrice() {
-		return price;
-	}
-
-	public void setPrice(BigDecimal price) {
-		this.price = price;
-	}
-
-	@JsonSerialize(using = MyDateSerializer.class)
+	@JsonSerialize(using = DMYDateSerializer.class)
 	public Date getDate() {
 		return date;
 	}
@@ -61,21 +44,20 @@ public class Company {
 		this.date = date;
 	}
 
-	public boolean isVisible() {
-		return visible;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setVisible(boolean visible) {
-		this.visible = visible;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	@JsonSerialize(using = SizeSerializer.class)
-	public SizeEnum getSize() {
-		return size;
+	public String getNarrative() {
+		return narrative;
 	}
 
-	public void setSize(SizeEnum size) {
-		this.size = size;
+	public void setNarrative(String narrative) {
+		this.narrative = narrative;
 	}
 
 }
