@@ -7,7 +7,8 @@ Ext.define('Sencha.view.PresidentDetail', {
         styleHtmlContent: true,
         scrollable: 'vertical',
         tpl: [
-            'Hello {firstName}!'
+            '<p>Hello {firstName}!</p>',
+            '<img src="http://www.whitehouse.gov/sites/default/files/first-family/masthead_image/{imageUrl}" />'
         ]
     }
 });

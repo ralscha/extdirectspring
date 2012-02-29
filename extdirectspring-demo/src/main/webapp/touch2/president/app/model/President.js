@@ -1,13 +1,10 @@
 Ext.define('Sencha.model.President', {
     extend: 'Ext.data.Model',
     config: {
-        fields: ['firstName', 'middleInitial', 'lastName'],
+        fields: ['id', 'imageUrl', 'firstName', 'middleInitial', 'lastName'],
 		proxy : {
 			type: 'direct',
-			directFn: presidentsService.getPresidents,
-			reader: {
-				rootProperty: '_result'
-			}
+			directFn: presidentsService.getPresidents			
 		}
     },
 
