@@ -149,11 +149,23 @@
 			<version>2.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>net.java.dev.rome</groupId>
+			<artifactId>rome</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.imgscalr</groupId>
+			<artifactId>imgscalr-lib</artifactId>
+			<version>4.2</version>
+		</dependency>
+
 		<!-- To be able to run Tomcat as a simple class for easier debugging -->
 		<dependency>
 			<groupId>ch.ralscha</groupId>
 			<artifactId>embeddedtc</artifactId>
-			<version>0.0.3</version>
+			<version>0.0.4</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -162,6 +174,12 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.6</version>
+		</dependency>		
+		
 	</dependencies>
 
 	<repositories>
@@ -188,8 +206,8 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.0-beta-1</version>
 				<configuration>
-				    <path>/</path>	
-				    <port>8080</port>		
+					<path>/</path>
+					<port>8080</port>
 				</configuration>
 			</plugin>
 
@@ -295,7 +313,7 @@
 				<version>2.2</version>
 				<configuration>
 					<packagingExcludes>
-						WEB-INF/classes/RunDemoOnJetty
+						WEB-INF/classes/RunDemoOnTomcat
 					</packagingExcludes>
 				</configuration>
 			</plugin>
