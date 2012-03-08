@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ch.ralscha</groupId>
 	<artifactId>extdirectspring-demo</artifactId>
-	<version>1.0.14</version>
+	<version>1.0.15</version>
 	<packaging>war</packaging>
 
 	<prerequisites>
@@ -161,6 +161,12 @@
 			<version>4.2</version>
 		</dependency>
 
+		<dependency>
+			<groupId>resources</groupId>
+			<artifactId>sencha-touch-gpl</artifactId>
+			<version>2.0.0.0</version>
+		</dependency>
+
 		<!-- To be able to run Tomcat as a simple class for easier debugging -->
 		<dependency>
 			<groupId>ch.ralscha</groupId>
@@ -183,6 +189,13 @@
 	</dependencies>
 
 	<repositories>
+
+
+		<repository>
+			<id>ralscha</id>
+			<name>My Repository</name>
+			<url>http://ralscha.ch/repository</url>
+		</repository>
 
 		<repository>
 			<id>sonatype</id>

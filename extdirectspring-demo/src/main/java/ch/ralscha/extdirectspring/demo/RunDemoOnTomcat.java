@@ -21,6 +21,7 @@ public class RunDemoOnTomcat {
 
 	public static void main(String[] args) {
 		EmbeddedTomcat et = new EmbeddedTomcat();
+		et.addDependencyAsResourceJar("resources", "sencha-touch-gpl");
 		et.startAndWait();
 	}
 }
