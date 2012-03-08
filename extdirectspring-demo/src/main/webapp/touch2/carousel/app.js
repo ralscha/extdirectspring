@@ -9,14 +9,8 @@
  * 
  * Our application's launch function is called automatically when everything is loaded.
  */
-Ext.Loader.setConfig({
-    enabled: true,
-    paths: { 'Ext': 'http://www.ralscha.ch/sencha-touch-2.0.0-gpl/src' }
-});
 
-Ext.require(['Ext.direct.Manager','Ext.direct.RemotingProvider', 'Ext.data.proxy.Direct'], function() {
-	Ext.direct.Manager.addProvider(Ext.app.REMOTING_API);
-});
+Ext.direct.Manager.addProvider(Ext.app.REMOTING_API);
 
 Ext.application({
     name: 'apod',
