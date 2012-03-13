@@ -13,10 +13,7 @@ Ext.define('NotesApp.model.Note', {
         ],
 		proxy : {
 			type: 'direct',
-			directFn: notesService.readNotes,
-			reader: {
-				rootProperty: '_result'
-			}
+			directFn: notesService.readNotes
 		}
     }
 });
