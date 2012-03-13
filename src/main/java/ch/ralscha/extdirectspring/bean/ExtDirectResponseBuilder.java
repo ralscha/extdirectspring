@@ -84,12 +84,12 @@ public class ExtDirectResponseBuilder {
 					message = messageSource.getMessage(fieldError.getCode(), fieldError.getArguments(), loc);
 				}
 				List<String> fieldErrors = errorMap.get(fieldError.getField());
-				
-				if(fieldErrors == null){
+
+				if (fieldErrors == null) {
 					fieldErrors = new ArrayList<String>();
 					errorMap.put(fieldError.getField(), fieldErrors);
 				}
-				
+
 				fieldErrors.add(message);
 			}
 			if (errorMap.isEmpty()) {
