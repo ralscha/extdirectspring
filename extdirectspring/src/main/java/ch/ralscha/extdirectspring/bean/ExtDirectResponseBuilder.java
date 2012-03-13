@@ -16,7 +16,9 @@
 package ch.ralscha.extdirectspring.bean;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -74,20 +76,27 @@ public class ExtDirectResponseBuilder {
 	 */
 	public void addErrors(final Locale locale, final MessageSource messageSource, final BindingResult bindingResult) {
 		if (bindingResult != null && bindingResult.hasFieldErrors()) {
-			Map<String, String> errorMap = new HashMap<String, String>();
+			Map<String, List<String>> errorMap = new HashMap<String, List<String>>();
 			for (FieldError fieldError : bindingResult.getFieldErrors()) {
 				String message = fieldError.getDefaultMessage();
 				if (messageSource != null) {
 					Locale loc = (locale != null ? locale : Locale.getDefault());
 					message = messageSource.getMessage(fieldError.getCode(), fieldError.getArguments(), loc);
 				}
-				errorMap.put(fieldError.getField(), message);
+				List<String> fieldErrors = errorMap.get(fieldError.getField());
+				
+				if(fieldErrors == null){
+					fieldErrors = new ArrayList<String>();
+					errorMap.put(fieldError.getField(), fieldErrors);
+				}
+				
+				fieldErrors.add(message);
 			}
 			if (errorMap.isEmpty()) {
-				result.put("success", true);
+				addResultProperty("success", true);
 			} else {
-				result.put("errors", errorMap);
-				result.put("success", false);
+				addResultProperty("errors", errorMap);
+				addResultProperty("success", false);
 			}
 		}
 	}
