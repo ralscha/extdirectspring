@@ -39,6 +39,11 @@ public class UserController {
 	public ExtDirectResponse updateUser(HttpServletRequest request, @Valid User user, BindingResult result) {
 		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
 
+		if (request.getParameter("addemailerror") != null) {
+			result.rejectValue("email", "", "another email error");
+			result.rejectValue("name", "", "a name error");
+		}
+
 		builder.addErrors(result);
 
 		builder.addResultProperty("name", user.getName());
