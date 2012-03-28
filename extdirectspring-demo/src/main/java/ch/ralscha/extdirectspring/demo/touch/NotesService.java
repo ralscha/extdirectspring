@@ -15,7 +15,6 @@
  */
 package ch.ralscha.extdirectspring.demo.touch;
 
-import java.util.Date;
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -44,21 +43,21 @@ public class NotesService {
 
 		Note n = new Note();
 		n.setId(1);
-		n.setDate(new Date());
+		n.setDateCreated(LocalDate.now().toDate());
 		n.setTitle("Test Note");
 		n.setNarrative("This is a simple test note");
 		notes.add(n);
 
 		n = new Note();
 		n.setId(2);
-		n.setDate(LocalDate.now().plusDays(1).toDate());
+		n.setDateCreated(LocalDate.now().plusDays(1).toDate());
 		n.setTitle("Test Note 2 ");
 		n.setNarrative("This is a second test note");
 		notes.add(n);
 
 		n = new Note();
 		n.setId(3);
-		n.setDate(LocalDate.now().plusDays(1).toDate());
+		n.setDateCreated(LocalDate.now().plusDays(2).toDate());
 		n.setTitle("Test Note 3 ");
 		n.setNarrative("This is a third test note");
 		notes.add(n);

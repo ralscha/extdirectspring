@@ -23,7 +23,7 @@ import ch.ralscha.extdirectspring.demo.util.DMYDateSerializer;
 
 public class Note {
 	private int id;
-	private Date date;
+	private Date dateCreated;
 	private String title;
 	private String narrative;
 
@@ -36,12 +36,12 @@ public class Note {
 	}
 
 	@JsonSerialize(using = DMYDateSerializer.class)
-	public Date getDate() {
-		return date;
+	public Date getDateCreated() {
+		return dateCreated;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDateCreated(Date date) {
+		this.dateCreated = date;
 	}
 
 	public String getTitle() {

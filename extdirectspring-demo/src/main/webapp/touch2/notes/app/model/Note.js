@@ -8,7 +8,7 @@
 		}, {
 			name: 'dateCreated',
 			type: 'date',
-			dateFormat: 'c'
+			dateFormat: 'd.m.Y'
 		}, {
 			name: 'title',
 			type: 'string'
@@ -26,6 +26,15 @@
 			type: 'presence',
 			field: 'title',
 			message: 'Please enter a title for this note.'
-		} ]
+		} ],
+		proxy : {
+			type: 'direct',
+			api: {
+			    create  : undefined,
+			    read    : notesService.readNotes,
+			    update  : undefined,
+			    destroy : undefined
+			}
+		}
 	}
 });
