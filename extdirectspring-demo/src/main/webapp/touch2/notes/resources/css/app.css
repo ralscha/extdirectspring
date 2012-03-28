@@ -1,0 +1,45 @@
+/* Increase height of list item so title and narrative fit */
+.x-list .x-list-item .x-list-item-label
+{
+     min-height: 3.5em!important;
+}
+/* Move the disclosure button up to account for the list item height increase */
+.x-list .x-list-disclosure {
+position: absolute;
+bottom: 0.85em;
+right: 0.44em;
+}
+.list-item-title
+{
+    float:left;
+    width:100%;
+    font-size:90%;
+    white-space: nowrap;  
+    overflow: hidden;  
+    text-overflow: ellipsis;  
+    padding-right:25px;
+    line-height:150%;
+}
+.list-item-narrative
+{
+    float:left;
+    width:95%;
+    color:#666666;
+    font-size:80%;
+    white-space: nowrap;  
+    overflow: hidden;  
+    text-overflow: ellipsis;   
+    padding-right:25px;
+}
+.x-item-selected .list-item-title 
+{
+    color:#ffffff;
+}
+.x-item-selected .list-item-narrative
+{
+    color:#ffffff;
+}
+.notes-list-empty-text 
+{
+    padding:10px;
+}

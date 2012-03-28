@@ -19,6 +19,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
@@ -28,6 +30,13 @@ import com.google.common.collect.Lists;
 
 @Service
 public class NotesService {
+
+	private final static Logger logger = LoggerFactory.getLogger(NotesService.class);
+
+	@ExtDirectMethod(group = "touchnote")
+	public void log(String msg) {
+		logger.info(msg);
+	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "touchnote")
 	public List<Note> readNotes() {
