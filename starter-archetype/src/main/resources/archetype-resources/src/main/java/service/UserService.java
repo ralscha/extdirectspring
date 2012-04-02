@@ -20,8 +20,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -137,7 +137,7 @@ public class UserService {
 		if (!result.hasErrors()) {
 
 			if (StringUtils.hasText(modifiedUser.getPasswordHash())) {
-				modifiedUser.setPasswordHash(passwordEncoder.encode(modifiedUser.getPasswordHash()));
+				modifiedUser.setPasswordHash(passwordEncoder.encodePassword(modifiedUser.getPasswordHash(), null));
 			}
 
 			if (!options) {

@@ -36,7 +36,6 @@ Ext.define('Starter.controller.Navigation', {
 			'useroptions button[action=save]': {
 				click: this.updateUser
 			}
-
 		});
 		securityService.getLoggedOnUser(this.showLoggedOnUser, this);
 	},
