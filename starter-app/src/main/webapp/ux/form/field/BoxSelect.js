@@ -86,8 +86,8 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
      * @cfg {Boolean} encodeSubmitValue
      * Controls the formatting of the form submit value of the field. (defaults to <code>false</code>). This
      * is not applicable of {@link #multiSelect} is false.
-     * <code>true</code> for the field value to submit as a json encoded array in a single POST variable
-     * <code>false</code> for the field to submit as an array of POST variables
+     * <code>true</code> for the field value to submit as a json encoded array in a single GET/POST variable
+     * <code>false</code> for the field to submit as an array of GET/POST variables
      */
     encodeSubmitValue: false,
 
