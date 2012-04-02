@@ -5,7 +5,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +38,7 @@ public class Startup implements ApplicationListener<ContextRefreshedEvent> {
 			adminUser.setEmail("test@test.ch");
 			adminUser.setFirstName("admin");
 			adminUser.setName("admin");
-			adminUser.setPasswordHash(passwordEncoder.encode("admin"));
+			adminUser.setPasswordHash(passwordEncoder.encodePassword("admin", null));
 			adminUser.setEnabled(true);
 			adminUser.setLocale("en");
 			adminUser.setCreateDate(new Date());
@@ -55,7 +55,7 @@ public class Startup implements ApplicationListener<ContextRefreshedEvent> {
 			normalUser.setFirstName("user");
 			normalUser.setName("user");
 
-			normalUser.setPasswordHash(passwordEncoder.encode("user"));
+			normalUser.setPasswordHash(passwordEncoder.encodePassword("user", null));
 			normalUser.setEnabled(true);
 			normalUser.setLocale("de");
 			normalUser.setCreateDate(new Date());
