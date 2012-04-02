@@ -5,11 +5,13 @@
             factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
             type="javax.sql.DataSource" username="sa" password=""
             driverClassName="org.h2.Driver"
-            url="jdbc:h2:~/starter"
+            url="jdbc:h2:./target/starter"
             initialSize="2"
             minIdle="2"
             maxIdle="4"
             maxActive="10" maxWait="10000"
             defaultAutoCommit="false"/>
+            
+  <Environment name="spring.profiles.active" value="development" type="java.lang.String" override="false"/>
 
 </Context>
