@@ -23,6 +23,7 @@
 	    <link rel="stylesheet" type="text/css" href="ux/css/BoxSelect.css">
 	    
 	    <script charset="utf-8" src="http://cdn.sencha.io/ext-4.0.7-gpl/ext-all-debug.js"></script>
+	    <script src="override.js"></script>
 	    <!-- 
 	    <script src="extjs/ext-all-debug.js?v=<spring:eval expression='@environment["extjs.version"]'/>"></script>
 	     -->
