@@ -2,8 +2,6 @@
 <groups xmlns="http://www.isdc.ro/wro">
 
   <group name="app">
-    <js>/override.js</js>
-    
     <js>/ux/RowExpander.js</js>
     <js>/ux/BoxReorderer.js</js>
     <js>/ux/TabCloseMenu.js</js>
