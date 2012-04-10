@@ -30,9 +30,9 @@
 		proxy : {
 			type: 'direct',
 			api: {
-			    create  : undefined,
+			    create  : notesService.updateNotes,
 			    read    : notesService.readNotes,
-			    update  : undefined,
+			    update  : notesService.updateNotes,
 			    destroy : undefined
 			}
 		}

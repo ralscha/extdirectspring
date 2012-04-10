@@ -1,4 +1,4 @@
-﻿Ext.define("Notes.view.NotesList", {
+﻿Ext.define('Notes.view.NotesList', {
     extend: 'Ext.dataview.List',
     alias: 'widget.noteslist',
     config: {

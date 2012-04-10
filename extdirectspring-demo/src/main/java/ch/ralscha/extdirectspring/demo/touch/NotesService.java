@@ -37,6 +37,14 @@ public class NotesService {
 		logger.info(msg);
 	}
 
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "touchnote")
+	public List<Note> updateNotes(List<Note> updatedNotes) {
+		
+		
+		
+		return updatedNotes;
+	}
+	
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "touchnote")
 	public List<Note> readNotes() {
 		List<Note> notes = Lists.newArrayList();
