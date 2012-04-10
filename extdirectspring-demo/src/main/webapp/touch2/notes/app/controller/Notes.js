@@ -19,10 +19,12 @@ Ext.define("Notes.controller.Notes", {
 	onNewNoteCommand: function() {		
 		notesService.log('onNewNoteCommand');
 		var newNote = Ext.create('Notes.model.Note', {
+			id: -1,
 			dateCreated: new Date(),
 			title: '',
 			narrative: ''
 		});
+		console.dir(newNote);
 		
 		this.activateNoteEditor(newNote);		
 	},
@@ -69,7 +71,8 @@ Ext.define("Notes.controller.Notes", {
 		}
 		
 		var notesStore = Ext.getStore('Notes');
-		if (currentNote.data.id === null) {
+		console.dir(currentNote);
+		if (currentNote.data.id === -1) {
 			notesStore.add(currentNote);
 		}
 		

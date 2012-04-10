@@ -22,16 +22,16 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import ch.ralscha.extdirectspring.demo.util.DMYDateSerializer;
 
 public class Note {
-	private int id;
+	private Integer id;
 	private Date dateCreated;
 	private String title;
 	private String narrative;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -58,6 +58,28 @@ public class Note {
 
 	public void setNarrative(String narrative) {
 		this.narrative = narrative;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Note other = (Note) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
 
 }

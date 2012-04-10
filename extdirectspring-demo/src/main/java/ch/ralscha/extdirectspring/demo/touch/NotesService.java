@@ -17,21 +17,22 @@ package ch.ralscha.extdirectspring.demo.touch;
 
 import java.util.List;
 
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-
-import com.google.common.collect.Lists;
 
 @Service
 public class NotesService {
 
 	private final static Logger logger = LoggerFactory.getLogger(NotesService.class);
 
+	@Autowired
+	private NotesDb notesDb;
+	
 	@ExtDirectMethod(group = "touchnote")
 	public void log(String msg) {
 		logger.info(msg);
@@ -40,36 +41,15 @@ public class NotesService {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "touchnote")
 	public List<Note> updateNotes(List<Note> updatedNotes) {
 		
-		
+		for (Note note : updatedNotes) {
+			notesDb.addOrUpdate(note);
+		}
 		
 		return updatedNotes;
 	}
 	
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "touchnote")
 	public List<Note> readNotes() {
-		List<Note> notes = Lists.newArrayList();
-
-		Note n = new Note();
-		n.setId(1);
-		n.setDateCreated(LocalDate.now().toDate());
-		n.setTitle("Test Note");
-		n.setNarrative("This is a simple test note");
-		notes.add(n);
-
-		n = new Note();
-		n.setId(2);
-		n.setDateCreated(LocalDate.now().plusDays(1).toDate());
-		n.setTitle("Test Note 2 ");
-		n.setNarrative("This is a second test note");
-		notes.add(n);
-
-		n = new Note();
-		n.setId(3);
-		n.setDateCreated(LocalDate.now().plusDays(2).toDate());
-		n.setTitle("Test Note 3 ");
-		n.setNarrative("This is a third test note");
-		notes.add(n);
-
-		return notes;
+		return notesDb.readAll();
 	}
 }
