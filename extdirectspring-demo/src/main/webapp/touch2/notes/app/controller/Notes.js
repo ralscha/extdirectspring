@@ -11,7 +11,8 @@ Ext.define("Notes.controller.Notes", {
 				editNoteCommand: 'onEditNoteCommand'
 			},
 			noteEditor: {
-				saveNoteCommand: 'onSaveNoteCommand'
+				saveNoteCommand: 'onSaveNoteCommand',
+				homeCommand: 'onHomeCommand'
 			}
 		}
 	},
@@ -24,7 +25,6 @@ Ext.define("Notes.controller.Notes", {
 			title: '',
 			narrative: ''
 		});
-		console.dir(newNote);
 		
 		this.activateNoteEditor(newNote);		
 	},
@@ -54,6 +54,10 @@ Ext.define("Notes.controller.Notes", {
 		this.activateNoteEditor(record);	
 	},
 	
+	onHomeCommand: function() {
+		this.activateNotesList();	
+	},
+	
 	onSaveNoteCommand: function() {
 		notesService.log('onSaveNoteCommand');
 		var noteEditor = this.getNoteEditor();
@@ -71,7 +75,7 @@ Ext.define("Notes.controller.Notes", {
 		}
 		
 		var notesStore = Ext.getStore('Notes');
-		console.dir(currentNote);
+
 		if (currentNote.data.id === -1) {
 			notesStore.add(currentNote);
 		}

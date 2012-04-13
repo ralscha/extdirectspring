@@ -12,7 +12,9 @@ Ext.define('Notes.view.NoteEditor', {
 		var backButton = {
 			xtype: "button",
 			ui: "back",
-			text: "Home"
+			text: "Home",
+			handler: this.onHomeButtonTap,
+			scope: this
 		};
 
 		var saveButton = {
@@ -64,6 +66,11 @@ Ext.define('Notes.view.NoteEditor', {
 		}, bottomToolbar ]);
 	},
 
+	onHomeButtonTap: function() {
+		notesService.log('homeCommand');
+		this.fireEvent("homeCommand", this);
+	},
+	
 	onSaveButtonTap: function() {
 		notesService.log('saveNoteCommand');
 		this.fireEvent("saveNoteCommand", this);

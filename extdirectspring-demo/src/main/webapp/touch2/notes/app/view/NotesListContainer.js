@@ -39,7 +39,6 @@ Ext.define("Notes.view.NotesListContainer", {
 	},
 
 	onNotesListDisclose: function(list, record, target, index, evt, options) {
-		console.log(this);
 		notesService.log('editNoteCommand');
 		this.fireEvent('editNoteCommand', this, record);
 	},
