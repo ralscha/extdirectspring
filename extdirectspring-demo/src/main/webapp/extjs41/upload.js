@@ -7,10 +7,10 @@ Ext.onReady(function() {
 
 	Ext.tip.QuickTipManager.init();
 
-	Ext.direct.Manager.on('exception', function(e) {		
+	Ext.direct.Manager.on('exception', function(e) {
 		Ext.Msg.alert('Failure', 'Something went wrong');
-	});	
-	
+	});
+
 	Ext.create('Ext.form.Panel', {
 		renderTo: Ext.getBody(),
 		frame: true,
@@ -37,7 +37,7 @@ Ext.onReady(function() {
 			name: 'textArea',
 			fieldLabel: "File contents",
 			height: 300,
-	        anchor: '100%'
+			anchor: '100%'
 		}) ],
 		api: {
 			submit: uploadController.uploadTest4
@@ -45,16 +45,16 @@ Ext.onReady(function() {
 		buttons: [ {
 			text: "Upload",
 			handler: function() {
-				
+
 				var form = this.up('form').getForm();
-	            if(form.isValid()){
-	                form.submit({
-	                    waitMsg: 'Uploading your files...',
+				if (form.isValid()) {
+					form.submit({
+						waitMsg: 'Uploading your files...',
 						success: function(form, action) {
 							textArea1.setValue(action.result.fileContents);
 						}
-	                });
-	            }				
+					});
+				}
 
 			}
 		}, {
