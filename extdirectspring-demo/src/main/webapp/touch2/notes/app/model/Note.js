@@ -27,13 +27,13 @@
 			field: 'title',
 			message: 'Please enter a title for this note.'
 		} ],
-		proxy : {
+		proxy: {
 			type: 'direct',
 			api: {
-			    create  : notesService.updateNotes,
-			    read    : notesService.readNotes,
-			    update  : notesService.updateNotes,
-			    destroy : undefined
+				create: notesService.updateNotes,
+				read: notesService.readNotes,
+				update: notesService.updateNotes,
+				destroy: notesService.destroyNotes
 			}
 		}
 	}

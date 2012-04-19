@@ -26,7 +26,10 @@ Ext.define("Notes.view.NotesListContainer", {
 			xtype: 'noteslist',
 			store: Ext.getStore('Notes'),
 			listeners: {
-				disclose: { fn: this.onNotesListDisclose, scope: this }
+				disclose: {
+					fn: this.onNotesListDisclose,
+					scope: this
+				}
 			}
 		};
 

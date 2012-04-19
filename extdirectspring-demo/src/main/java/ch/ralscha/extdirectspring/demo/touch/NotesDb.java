@@ -28,7 +28,7 @@ public class NotesDb {
 	}
 	
 	public void delete(Note note) {
-		map.replace(note.getId(), note);
+		map.remove(note.getId());
 	}	
 	
 	@PostConstruct

@@ -11,22 +11,11 @@ Ext.define("Notes.controller.Notes", {
 				editNoteCommand: 'onEditNoteCommand'
 			},
 			noteEditor: {
-				saveNoteCommand: 'onSaveNoteCommand',
-				homeCommand: 'onHomeCommand'
+                saveNoteCommand: 'onSaveNoteCommand',
+                deleteNoteCommand: 'onDeleteNoteCommand',
+                backToHomeCommand: 'onBackToHomeCommand'
 			}
 		}
-	},
-
-	onNewNoteCommand: function() {		
-		notesService.log('onNewNoteCommand');
-		var newNote = Ext.create('Notes.model.Note', {
-			id: -1,
-			dateCreated: new Date(),
-			title: '',
-			narrative: ''
-		});
-		
-		this.activateNoteEditor(newNote);		
 	},
 	
 	slideLeftTransition: {
@@ -48,16 +37,24 @@ Ext.define("Notes.controller.Notes", {
 	activateNotesList: function(record) {		
 		Ext.Viewport.animateActiveItem(this.getNotesListContainer(), this.slideRightTransition);
 	},	
+
+	onNewNoteCommand: function() {		
+		notesService.log('onNewNoteCommand');
+		var newNote = Ext.create('Notes.model.Note', {
+			id: -1,
+			dateCreated: new Date(),
+			title: '',
+			narrative: ''
+		});
+		
+		this.activateNoteEditor(newNote);		
+	},
 	
 	onEditNoteCommand: function(list, record) {
 		notesService.log('onEditNoteCommand');
 		this.activateNoteEditor(record);	
 	},
-	
-	onHomeCommand: function() {
-		this.activateNotesList();	
-	},
-	
+		
 	onSaveNoteCommand: function() {
 		notesService.log('onSaveNoteCommand');
 		var noteEditor = this.getNoteEditor();
@@ -66,6 +63,7 @@ Ext.define("Notes.controller.Notes", {
 		
 		currentNote.set('title', newValues.title);
 		currentNote.set('narrative', newValues.narrative);
+		currentNote.set('dateCreated', newValues.dateCreated);
 		
 		var errors = currentNote.validate();
 		if (!errors.isValid()) {
@@ -85,6 +83,25 @@ Ext.define("Notes.controller.Notes", {
 		
 		this.activateNotesList();
 	},
+	
+    onDeleteNoteCommand: function () {
+    	notesService.log("onDeleteNoteCommand");
+
+        var noteEditor = this.getNoteEditor();
+        var currentNote = noteEditor.getRecord();
+        
+        var notesStore = Ext.getStore('Notes');
+               
+        notesStore.remove(currentNote);
+        notesStore.sync();
+
+        this.activateNotesList();
+    }, 
+
+    onBackToHomeCommand: function () {
+    	notesService.log("onBackToHomeCommand");
+        this.activateNotesList();
+    },
 
 	launch: function() {
 		this.callParent();

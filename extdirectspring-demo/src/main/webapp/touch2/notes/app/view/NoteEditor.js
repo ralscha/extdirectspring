@@ -13,7 +13,7 @@ Ext.define('Notes.view.NoteEditor', {
 			xtype: "button",
 			ui: "back",
 			text: "Home",
-			handler: this.onHomeButtonTap,
+			handler: this.onBackButtonTap,
 			scope: this
 		};
 
@@ -38,6 +38,7 @@ Ext.define('Notes.view.NoteEditor', {
 			xtype: "button",
 			iconCls: "trash",
 			iconMask: true,
+			handler: this.onDeleteButtonTap,
 			scope: this
 		};
 
@@ -47,33 +48,38 @@ Ext.define('Notes.view.NoteEditor', {
 			items: [ deleteButton ]
 		};
 
-		var noteTitleEditor = {
-			xtype: 'textfield',
-			name: 'title',
-			label: 'Title',
-			required: true
-		};
-
-		var noteNarrativeEditor = {
-			xtype: 'textareafield',
-			name: 'narrative',
-			label: 'Narrative'
-		};
-
 		this.add([ topToolbar, {
 			xtype: "fieldset",
-			items: [ noteTitleEditor, noteNarrativeEditor ]
+			items: [ {
+				xtype: 'datepickerfield',
+				name: 'dateCreated',
+				dateFormat: 'd.m.Y',
+				label: 'Date',
+				required: true
+			}, {
+				xtype: 'textfield',
+				name: 'title',
+				label: 'Title',
+				required: true
+			}, {
+				xtype: 'textareafield',
+				name: 'narrative',
+				label: 'Narrative'
+			} ]
 		}, bottomToolbar ]);
 	},
 
-	onHomeButtonTap: function() {
-		notesService.log('homeCommand');
-		this.fireEvent("homeCommand", this);
-	},
-	
 	onSaveButtonTap: function() {
 		notesService.log('saveNoteCommand');
 		this.fireEvent("saveNoteCommand", this);
-	}
+	},
 
+	onDeleteButtonTap: function() {
+		notesService.log("deleteNoteCommand");
+		this.fireEvent("deleteNoteCommand", this);
+	},
+	onBackButtonTap: function() {
+		notesService.log("backToHomeCommand");
+		this.fireEvent("backToHomeCommand", this);
+	}
 });

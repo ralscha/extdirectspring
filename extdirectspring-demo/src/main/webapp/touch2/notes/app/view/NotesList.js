@@ -5,6 +5,7 @@
         loadingText: 'Loading Notes...',
         emptyText: '<div class=\"notes-list-empty-text\">No notes found.</div>',
         onItemDisclosure: true,
-        itemTpl: '<div class=\"list-item-title\">{id}:{title}</div><div class=\"list-item-narrative\">{narrative}</div>'     
+        grouped: true,
+        itemTpl: '<div class=\"list-item-title\">{id}: {title}</div><div class=\"list-item-narrative\">{narrative}</div>'     
     }
 });

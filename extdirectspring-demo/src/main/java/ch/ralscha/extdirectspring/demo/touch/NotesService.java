@@ -52,4 +52,12 @@ public class NotesService {
 	public List<Note> readNotes() {
 		return notesDb.readAll();
 	}
+	
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "touchnote")
+	public void destroyNotes(List<Note> deleteIds) {
+		for (Note note : deleteIds) {
+			notesDb.delete(note);
+		}
+	}
+	
 }
