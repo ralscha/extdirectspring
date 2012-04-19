@@ -2,6 +2,9 @@
     extend: 'Ext.dataview.List',
     alias: 'widget.noteslist',
     config: {
+    	plugins: [
+          { xclass: 'Ext.plugin.PullRefresh' }
+        ],
         loadingText: 'Loading Notes...',
         emptyText: '<div class=\"notes-list-empty-text\">No notes found.</div>',
         onItemDisclosure: true,
