@@ -29,7 +29,6 @@ public class CarouselService {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "touchcarousel")
 	public List<CarouselPicture> readPictures(HttpServletRequest request) throws IllegalArgumentException, FeedException, IOException {
 		
-		
 		URL feedUrl = new URL(RSS_URL);
 		List<CarouselPicture> pictures = Lists.newArrayList();
 
