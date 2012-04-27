@@ -129,8 +129,8 @@ public class MethodInfo {
 			if (parameterAnnotations != null) {
 				paramAnnotations = parameterAnnotations[paramIndex];
 			}
-
-			params.add(new ParameterInfo(clazz, method, paramIndex, parameterTypes[paramIndex], paramName,
+			
+			params.add(new ParameterInfo(clazz, method, methodWithAnnotation, paramIndex, parameterTypes[paramIndex], paramName,
 					paramAnnotations));
 		}
 
