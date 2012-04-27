@@ -50,12 +50,17 @@ public class ParameterInfo {
 	private TypeDescriptor typeDescriptor;
 	private boolean supportedParameter;
 
-	public ParameterInfo(Class<?> clazz, Method method, int paramIndex, Class<?> type, String paramName,
+	public ParameterInfo(Class<?> clazz, Method method, Method methodWithAnnotation, int paramIndex, Class<?> type, String paramName,
 			Annotation[] paramAnnotations) {
 		this.type = type;
 		this.supportedParameter = SupportedParameterTypes.isSupported(type);
 		this.name = paramName;
-		MethodParameter methodParameter = new MethodParameter(method, paramIndex);
+		
+		Method typeDescriptorMethod = method;
+		if (methodWithAnnotation != null) {
+			typeDescriptorMethod = methodWithAnnotation;
+		}
+		MethodParameter methodParameter = new MethodParameter(typeDescriptorMethod, paramIndex);
 		this.typeDescriptor = new TypeDescriptor(methodParameter);
 
 		if (Collection.class.isAssignableFrom(type)) {
@@ -78,7 +83,6 @@ public class ParameterInfo {
 				}
 			}
 		}
-
 	}
 
 	public Class<?> getType() {

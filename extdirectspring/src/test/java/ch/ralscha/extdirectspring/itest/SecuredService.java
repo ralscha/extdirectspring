@@ -15,10 +15,12 @@
  */
 package ch.ralscha.extdirectspring.itest;
 
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -28,23 +30,11 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 public class SecuredService {
 
 	@ExtDirectMethod(group = "secured")
-	//@PreAuthorize("isAnonymous()")
-	public String setDateSecure(@DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
-		System.out.println(date);
-		return date.toString();
+	@PreAuthorize("isAnonymous()")
+	public String setDate(@RequestParam(value = "id", defaultValue = "10") String id,
+			@DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
+		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+		return id + "," + dateFormat.format(date);
 	}
-	
-	@ExtDirectMethod(group = "secured")
-	public String setDate(@DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
-		System.out.println(date);
-		return date.toString();
-	}
-	
-	@ExtDirectMethod(group = "secured")
-	public String setDateWithRequestParam(@RequestParam(value="id", defaultValue="10") String id, @DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
-		System.out.println(id);
-		System.out.println(date);
-		return date.toString();
-	}
-	
+
 }
