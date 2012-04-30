@@ -18,9 +18,9 @@
 		<querydsl.version>2.3.3</querydsl.version>
 
 		<slf4j.version>1.6.4</slf4j.version>
-		<logback.version>1.0.1</logback.version>
+		<logback.version>1.0.2</logback.version>
 
-		<eds.version>1.0.16</eds.version>
+		<eds.version>1.0.17</eds.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.debug>true</maven.compiler.debug>
