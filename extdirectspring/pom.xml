@@ -13,7 +13,7 @@
 
 	<groupId>ch.ralscha</groupId>
 	<artifactId>extdirectspring</artifactId>
-	<version>1.0.17-SNAPSHOT</version>
+	<version>1.0.17</version>
 
 	<inceptionYear>2010</inceptionYear>
 
@@ -42,9 +42,9 @@
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:http://extdirectspring.googlecode.com/svn/trunk/extdirectspring</connection>
-		<developerConnection>scm:svn:https://extdirectspring.googlecode.com/svn/trunk/extdirectspring</developerConnection>
-		<url>http://extdirectspring.googlecode.com/svn/trunk/extdirectspring</url>
+		<connection>scm:svn:http://extdirectspring.googlecode.com/svn/tags/extdirectspring-1.0.17</connection>
+		<developerConnection>scm:svn:https://extdirectspring.googlecode.com/svn/tags/extdirectspring-1.0.17</developerConnection>
+		<url>http://extdirectspring.googlecode.com/svn/tags/extdirectspring-1.0.17</url>
 	</scm>
 
 
