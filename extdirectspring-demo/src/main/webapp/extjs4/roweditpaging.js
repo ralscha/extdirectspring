@@ -39,10 +39,7 @@ Ext.onReady(function() {
 		model : 'Person',
 		pageSize : 50,
 		remoteSort: true,
-		autoLoad : {
-			start : 0,
-			limit : 50
-		}
+		autoLoad : true
 	});
 	
 	var rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
