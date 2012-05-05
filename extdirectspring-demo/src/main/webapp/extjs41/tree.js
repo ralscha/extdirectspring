@@ -11,7 +11,6 @@ Ext.onReady(function() {
 		proxy: {
 			type: 'direct',
 			directFn: treeProvider.getTree,
-			paramsAsHash: true,
 			extraParams: {
 				foo: new Date()
 			}
