@@ -29,8 +29,7 @@ Ext.onReady(function() {
 			type : 'direct',
 			directFn : personAction.loadWithPaging,
 			reader : {
-				root : 'records',
-				totalProperty : 'total'
+				root : 'records'
 			}
 		},
 		sorters : [ {
