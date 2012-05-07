@@ -261,7 +261,14 @@ public class RouterControllerFormLoadTest {
 		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(6);
-		RouterControllerSimpleTest.checkBeanNotFoundResponse(responses.get(0));
+		ExtDirectResponse resp = responses.get(0);
+		assertThat(resp.getAction()).isEqualTo("remoteProvider");
+		assertThat(resp.getMethod()).isEqualTo("method1");
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getTid()).isEqualTo(1);
+		assertThat(resp.getResult()).isNull();
+		assertThat(resp.getMessage()).isEqualTo("Server Error");
+		assertThat(resp.getWhere()).isNull();
 		RouterControllerSimpleTest.checkMethodNotFoundResponse(responses.get(1));
 		RouterControllerSimpleTest.checkNoParametersResponse(responses.get(2), 3);
 

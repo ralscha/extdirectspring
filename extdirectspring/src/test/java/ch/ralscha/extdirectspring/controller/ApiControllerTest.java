@@ -447,6 +447,13 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", new Action("method13", 9, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method14", 4, false));
 
+		remotingApi.addAction("remoteProviderSimple", new Action("method15", 2, false));
+		remotingApi.addAction("remoteProviderSimple", new Action("method16", 1, false));
+		remotingApi.addAction("remoteProviderSimple", new Action("method17", 0, false));
+		remotingApi.addAction("remoteProviderSimple", new Action("method18", 0, false));
+		remotingApi.addAction("remoteProviderSimple", new Action("method19", 1, false));
+		remotingApi.addAction("remoteProviderSimple", new Action("method20", 0, false));
+
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method1", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method2", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method3", 1, false));

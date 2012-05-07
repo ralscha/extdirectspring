@@ -15,10 +15,14 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
+import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assert.fail;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.logging.LogFactory;
@@ -28,6 +32,8 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
@@ -46,6 +52,34 @@ public class ControllerUtil {
 		dr.setType("rpc");
 		dr.setData(data);
 		return mapper.convertValue(dr, LinkedHashMap.class);
+	}
+
+	public static ExtDirectResponse sendAndReceive(RouterController controller, String action, String method,
+			Object... data) {
+
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		MockHttpServletRequest request = new MockHttpServletRequest();
+
+		int tid = (int) (Math.random() * 1000);
+		Map<String, Object> edRequest = createRequestJson(action, method, tid, data);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		try {
+			controller.router(request, response, Locale.ENGLISH);
+		} catch (IOException e) {
+			fail("call controller.router: " + e.getMessage());
+		}
+		List<ExtDirectResponse> responses = readDirectResponses(response.getContentAsByteArray());
+		assertThat(responses).hasSize(1);
+
+		ExtDirectResponse edResponse = responses.get(0);
+
+		assertThat(edResponse.getAction()).isEqualTo(action);
+		assertThat(edResponse.getMethod()).isEqualTo(method);
+		assertThat(edResponse.getTid()).isEqualTo(tid);
+		assertThat(edResponse.getWhere()).isNull();
+
+		return edResponse;
 	}
 
 	@SuppressWarnings("unchecked")

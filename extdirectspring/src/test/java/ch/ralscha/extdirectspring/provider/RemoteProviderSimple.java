@@ -36,6 +36,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 
@@ -177,4 +178,37 @@ public class RemoteProviderSimple {
 		result.put("remoteAddr", request.getRemoteAddr());
 		return result;
 	}
+
+	@ExtDirectMethod
+	public String method15(Integer id, String dummy, @RequestHeader String header) {
+		return id + ";" + dummy + ";" + header;
+	}
+
+	@ExtDirectMethod
+	public String method16(Integer id, @RequestHeader("anotherName") String header) {
+		return id + ";" + header;
+	}
+
+	@ExtDirectMethod
+	public String method17(@RequestHeader(value = "anotherName", defaultValue = "default") String header) {
+		return header;
+	}
+
+	@ExtDirectMethod
+	public String method18(@RequestHeader(defaultValue = "default", required = false) String header) {
+		return header;
+	}
+
+	@ExtDirectMethod
+	public String method19(@RequestHeader(defaultValue = "default1", required = false) String header1, Integer id,
+			@RequestHeader(defaultValue = "default2", required = false) String header2,
+			@RequestHeader(value = "last") String header3) {
+		return id + ";" + header1 + ";" + header2 + ";" + header3;
+	}
+
+	@ExtDirectMethod
+	public String method20(@RequestHeader Integer intHeader, @RequestHeader Boolean booleanHeader) {
+		return intHeader + ";" + booleanHeader;
+	}
+
 }

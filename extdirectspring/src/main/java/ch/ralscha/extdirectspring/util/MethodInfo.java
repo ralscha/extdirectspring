@@ -109,7 +109,7 @@ public class MethodInfo {
 		if (type == ExtDirectMethodType.SIMPLE) {
 			int paramLength = 0;
 			for (ParameterInfo parameter : this.parameters) {
-				if (!parameter.isSupportedParameter()) {
+				if (!parameter.isSupportedParameter() && !parameter.isHasRequestHeaderAnnotation()) {
 					paramLength++;
 				}
 			}
@@ -117,7 +117,7 @@ public class MethodInfo {
 		} else if (type == ExtDirectMethodType.SIMPLE_NAMED) {
 			List<String> parameterNames = new ArrayList<String>();
 			for (ParameterInfo parameter : this.parameters) {
-				if (!parameter.isSupportedParameter()) {
+				if (!parameter.isSupportedParameter() && !parameter.isHasRequestHeaderAnnotation()) {
 					parameterNames.add(parameter.getName());
 				}
 			}
