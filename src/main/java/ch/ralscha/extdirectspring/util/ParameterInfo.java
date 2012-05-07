@@ -71,6 +71,7 @@ public class ParameterInfo {
 					this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()) ? null
 							: requestParam.defaultValue();
 					this.hasRequestParamAnnotation = true;
+					this.hasRequestHeaderAnnotation = false;
 					break;
 				} else if (RequestHeader.class.isInstance(paramAnn)) {
 					RequestHeader requestHeader = (RequestHeader) paramAnn;
@@ -80,6 +81,7 @@ public class ParameterInfo {
 					this.required = requestHeader.required();
 					this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestHeader.defaultValue()) ? null
 							: requestHeader.defaultValue();
+					this.hasRequestParamAnnotation = false;
 					this.hasRequestHeaderAnnotation = true;
 					break;
 				}

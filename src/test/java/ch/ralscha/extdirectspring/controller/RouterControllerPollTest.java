@@ -163,4 +163,163 @@ public class RouterControllerPollTest {
 		assertThat(resp.getMessage()).isNull();
 	}
 
+	@Test
+	public void pollRequiredHeaderWithoutValue() throws Exception {
+		request.addHeader("header", "headerValue");
+
+		controller.poll("pollProvider", "message7", "message7", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("message7");
+		assertThat(resp.getData()).isEqualTo("null;null;headerValue");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollRequiredHeaderWithValue() throws Exception {
+		request.setParameter("id", "1");
+		request.addHeader("header", "headerValue");
+		request.addHeader("anotherName", "headerValue1");
+		request.addHeader("anotherName", "headerValue2");
+
+		controller.poll("pollProvider", "message8", "message8", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("message8");
+		assertThat(resp.getData()).isEqualTo("1;headerValue1");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollRequiredHeaderWithValueAndDefault1() throws Exception {
+		request.addHeader("header", "headerValue");
+		request.addHeader("anotherName", "headerValue1");
+
+		controller.poll("pollProvider", "message9", "message9", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("message9");
+		assertThat(resp.getData()).isEqualTo("headerValue1");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollRequiredHeaderWithValueAndDefault2() throws Exception {
+
+		controller.poll("pollProvider", "message9", "message9", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("message9");
+		assertThat(resp.getData()).isEqualTo("default");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollOptionalHeaderWithoutValueAndDefault1() throws Exception {
+		request.addHeader("header", "headerValue");
+		request.addHeader("anotherName", "headerValue1");
+
+		controller.poll("pollProvider", "message10", "message10", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("message10");
+		assertThat(resp.getData()).isEqualTo("headerValue");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollOptionalHeaderWithoutValueAndDefault2() throws Exception {
+		controller.poll("pollProvider", "message10", "message10", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("message10");
+		assertThat(resp.getData()).isEqualTo("default");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollMultipleHeaders1() throws Exception {
+		request.addHeader("last", "lastHeader");
+
+		controller.poll("pollProvider", "message11", "message11", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("message11");
+		assertThat(resp.getData()).isEqualTo("null;default1;default2;lastHeader");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollMultipleHeaders2() throws Exception {
+		request.setParameter("id", "33");
+		request.addHeader("last", "lastHeader");
+		request.addHeader("header2", "2ndHeader");
+
+		controller.poll("pollProvider", "message11", "message11", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("message11");
+		assertThat(resp.getData()).isEqualTo("33;default1;2ndHeader;lastHeader");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollMultipleHeaders3() throws Exception {
+		request.setParameter("id", "44");
+		request.addHeader("last", "last");
+		request.addHeader("header1", "1st");
+		request.addHeader("header2", "2nd");
+
+		controller.poll("pollProvider", "message11", "message11", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("message11");
+		assertThat(resp.getData()).isEqualTo("44;1st;2nd;last");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollHeaderWithConversion() throws Exception {
+
+		request.addHeader("intHeader", "2");
+		request.addHeader("booleanHeader", "true");
+
+		controller.poll("pollProvider", "message12", "message12", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("message12");
+		assertThat(resp.getData()).isEqualTo("2;true");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+
+	}
 }

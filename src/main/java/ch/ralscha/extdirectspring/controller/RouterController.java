@@ -238,6 +238,8 @@ public class RouterController implements InitializingBean {
 						if (methodParameter.isSupportedParameter()) {
 							parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(),
 									request, response, locale);
+						} else if (methodParameter.isHasRequestHeaderAnnotation()) {
+							parameters[paramIndex] = handleRequestHeader(request, methodParameter);
 						} else {
 							parameters[paramIndex] = handleRequestParam(request, null, methodParameter);
 						}
