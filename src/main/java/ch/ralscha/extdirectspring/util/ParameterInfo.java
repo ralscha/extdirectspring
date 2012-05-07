@@ -17,12 +17,13 @@ package ch.ralscha.extdirectspring.util;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Collection;
 
-import org.springframework.core.GenericCollectionTypeResolver;
+import org.springframework.core.GenericTypeResolver;
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ValueConstants;
 
@@ -33,32 +34,31 @@ import org.springframework.web.bind.annotation.ValueConstants;
  * @author Ralph Schaer
  */
 public class ParameterInfo {
-	private Class<?> type;
-	private Class<?> collectionType;
+
+	private static final LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
+
 	private String name;
-	private boolean hasRequestParamAnnotation;
-	private boolean required;
-	private String defaultValue;
 	private TypeDescriptor typeDescriptor;
+
 	private boolean supportedParameter;
 
-	public ParameterInfo(Class<?> clazz, Method method, Method methodWithAnnotation, int paramIndex, Class<?> type,
-			String paramName, Annotation[] paramAnnotations) {
-		this.type = type;
-		this.supportedParameter = SupportedParameterTypes.isSupported(type);
-		this.name = paramName;
+	private boolean hasRequestParamAnnotation;
+	private boolean hasRequestHeaderAnnotation;
+	private boolean required;
+	private String defaultValue;
 
-		Method typeDescriptorMethod = method;
-		if (methodWithAnnotation != null) {
-			typeDescriptorMethod = methodWithAnnotation;
-		}
-		MethodParameter methodParameter = new MethodParameter(typeDescriptorMethod, paramIndex);
-		this.typeDescriptor = new TypeDescriptor(methodParameter);
+	public ParameterInfo(Method method, int paramIndex) {
 
-		if (Collection.class.isAssignableFrom(type)) {
-			this.collectionType = getCollectionParameterType(clazz, method, paramIndex, methodParameter);
-		}
+		MethodParameter methodParam = new MethodParameter(method, paramIndex);
+		methodParam.initParameterNameDiscovery(discoverer);
+		GenericTypeResolver.resolveParameterType(methodParam, method.getClass());
 
+		this.name = methodParam.getParameterName();
+		this.typeDescriptor = new TypeDescriptor(methodParam);
+
+		this.supportedParameter = SupportedParameters.isSupported(typeDescriptor.getObjectType());
+
+		Annotation[] paramAnnotations = methodParam.getParameterAnnotations();
 		if (paramAnnotations != null) {
 
 			for (Annotation paramAnn : paramAnnotations) {
@@ -72,17 +72,37 @@ public class ParameterInfo {
 							: requestParam.defaultValue();
 					this.hasRequestParamAnnotation = true;
 					break;
+				} else if (RequestHeader.class.isInstance(paramAnn)) {
+					RequestHeader requestHeader = (RequestHeader) paramAnn;
+					if (StringUtils.hasText(requestHeader.value())) {
+						this.name = requestHeader.value();
+					}
+					this.required = requestHeader.required();
+					this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestHeader.defaultValue()) ? null
+							: requestHeader.defaultValue();
+					this.hasRequestHeaderAnnotation = true;
+					break;
 				}
 			}
+		}
+
+		if (this.name == null) {
+			throw new IllegalStateException("No parameter name specified for argument of type ["
+					+ methodParam.getParameterType().getName()
+					+ "], and no parameter name information found in class file either.");
+
 		}
 	}
 
 	public Class<?> getType() {
-		return type;
+		return typeDescriptor.getType();
 	}
 
 	public Class<?> getCollectionType() {
-		return collectionType;
+		if (typeDescriptor.isCollection()) {
+			return typeDescriptor.getElementType();
+		}
+		return null;
 	}
 
 	public String getName() {
@@ -91,6 +111,10 @@ public class ParameterInfo {
 
 	public boolean isHasRequestParamAnnotation() {
 		return hasRequestParamAnnotation;
+	}
+
+	public boolean isHasRequestHeaderAnnotation() {
+		return hasRequestHeaderAnnotation;
 	}
 
 	public boolean isRequired() {
@@ -109,28 +133,4 @@ public class ParameterInfo {
 		return typeDescriptor;
 	}
 
-	private Class<?> getCollectionParameterType(Class<?> clazz, final Method method, final int paramIndex,
-			final MethodParameter methodParameter) {
-
-		Class<?> paramType = GenericCollectionTypeResolver.getCollectionParameterType(methodParameter);
-
-		if (paramType == null) {
-
-			Class<?> superClass = clazz.getSuperclass();
-
-			while (superClass != null && paramType == null) {
-				try {
-					Method equivalentMethod = superClass
-							.getDeclaredMethod(method.getName(), method.getParameterTypes());
-					paramType = GenericCollectionTypeResolver.getCollectionParameterType(new MethodParameter(
-							equivalentMethod, paramIndex));
-
-				} catch (NoSuchMethodException e) {
-					// do nothing here
-				}
-				superClass = superClass.getSuperclass();
-			}
-		}
-		return paramType;
-	}
 }

@@ -20,7 +20,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +36,6 @@ import ch.ralscha.extdirectspring.bean.api.PollingProvider;
  * @author Ralph Schaer
  */
 public class MethodInfo {
-	private static final LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
 
 	private String group;
 	private ExtDirectMethodType type;
@@ -64,7 +62,7 @@ public class MethodInfo {
 			this.synchronizeOnSession = extDirectMethodAnnotation.synchronizeOnSession();
 			this.streamResponse = extDirectMethodAnnotation.streamResponse();
 
-			this.parameters = buildParameterList(clazz, method);
+			this.parameters = buildParameterList(method);
 
 			this.collectionType = (extDirectMethodAnnotation.entryClass() == Object.class) ? null
 					: extDirectMethodAnnotation.entryClass();
@@ -139,34 +137,18 @@ public class MethodInfo {
 				.hasText(requestMapping.value()[0]));
 	}
 
-	private static List<ParameterInfo> buildParameterList(final Class<?> clazz, final Method method) {
+	private static List<ParameterInfo> buildParameterList(final Method method) {
 		List<ParameterInfo> params = new ArrayList<ParameterInfo>();
 
 		Class<?>[] parameterTypes = method.getParameterTypes();
-		Annotation[][] parameterAnnotations = null;
-		String[] parameterNames = null;
 
 		Method methodWithAnnotation = findMethodWithAnnotation(method, ExtDirectMethod.class);
-		if (methodWithAnnotation != null) {
-			parameterAnnotations = methodWithAnnotation.getParameterAnnotations();
-			parameterNames = discoverer.getParameterNames(methodWithAnnotation);
-		} else {
-			parameterAnnotations = method.getParameterAnnotations();
-			parameterNames = discoverer.getParameterNames(method);
+		if (methodWithAnnotation == null) {
+			methodWithAnnotation = method;
 		}
 
 		for (int paramIndex = 0; paramIndex < parameterTypes.length; paramIndex++) {
-			String paramName = null;
-			if (parameterNames != null) {
-				paramName = parameterNames[paramIndex];
-			}
-			Annotation[] paramAnnotations = null;
-			if (parameterAnnotations != null) {
-				paramAnnotations = parameterAnnotations[paramIndex];
-			}
-
-			params.add(new ParameterInfo(clazz, method, methodWithAnnotation, paramIndex, parameterTypes[paramIndex],
-					paramName, paramAnnotations));
+			params.add(new ParameterInfo(methodWithAnnotation, paramIndex));
 		}
 
 		return params;

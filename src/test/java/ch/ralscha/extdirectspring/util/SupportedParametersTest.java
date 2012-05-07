@@ -27,7 +27,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 
 /**
- * Tests for {@link SupportedParameterTypes}.
+ * Tests for {@link SupportedParameters}.
  * 
  * @author Ralph Schaer
  */
@@ -35,14 +35,14 @@ public class SupportedParametersTest {
 
 	@Test
 	public void testIsSupported() {
-		assertThat(SupportedParameterTypes.values().length).isEqualTo(5);
-		assertThat(SupportedParameterTypes.isSupported(String.class)).isFalse();
-		assertThat(SupportedParameterTypes.isSupported(null)).isFalse();
-		assertThat(SupportedParameterTypes.isSupported(MockHttpServletResponse.class)).isTrue();
-		assertThat(SupportedParameterTypes.isSupported(MockHttpServletRequest.class)).isTrue();
-		assertThat(SupportedParameterTypes.isSupported(MockHttpSession.class)).isTrue();
-		assertThat(SupportedParameterTypes.isSupported(Locale.class)).isTrue();
-		assertThat(SupportedParameterTypes.isSupported(Principal.class)).isTrue();
+		assertThat(SupportedParameters.values().length).isEqualTo(5);
+		assertThat(SupportedParameters.isSupported(String.class)).isFalse();
+		assertThat(SupportedParameters.isSupported(null)).isFalse();
+		assertThat(SupportedParameters.isSupported(MockHttpServletResponse.class)).isTrue();
+		assertThat(SupportedParameters.isSupported(MockHttpServletRequest.class)).isTrue();
+		assertThat(SupportedParameters.isSupported(MockHttpSession.class)).isTrue();
+		assertThat(SupportedParameters.isSupported(Locale.class)).isTrue();
+		assertThat(SupportedParameters.isSupported(Principal.class)).isTrue();
 	}
 
 	@Test
@@ -51,16 +51,14 @@ public class SupportedParametersTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		Locale en = Locale.ENGLISH;
 
-		assertThat(SupportedParameterTypes.resolveParameter(String.class, request, response, en)).isNull();
-		assertSame(request,
-				SupportedParameterTypes.resolveParameter(MockHttpServletRequest.class, request, response, en));
+		assertThat(SupportedParameters.resolveParameter(String.class, request, response, en)).isNull();
+		assertSame(request, SupportedParameters.resolveParameter(MockHttpServletRequest.class, request, response, en));
 		assertSame(request.getSession(),
-				SupportedParameterTypes.resolveParameter(MockHttpSession.class, request, response, en));
+				SupportedParameters.resolveParameter(MockHttpSession.class, request, response, en));
 		assertSame(request.getUserPrincipal(),
-				SupportedParameterTypes.resolveParameter(Principal.class, request, response, en));
-		assertSame(response,
-				SupportedParameterTypes.resolveParameter(MockHttpServletResponse.class, request, response, en));
-		assertSame(en, SupportedParameterTypes.resolveParameter(Locale.class, request, response, en));
+				SupportedParameters.resolveParameter(Principal.class, request, response, en));
+		assertSame(response, SupportedParameters.resolveParameter(MockHttpServletResponse.class, request, response, en));
+		assertSame(en, SupportedParameters.resolveParameter(Locale.class, request, response, en));
 	}
 
 }
