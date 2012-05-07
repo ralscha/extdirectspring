@@ -34,6 +34,10 @@ public class ExtDirectResponse extends BaseResponse {
 	private String method;
 	private Object result;
 
+	public ExtDirectResponse() {
+		//needs a default constructor for testing
+	}
+
 	public ExtDirectResponse(final ExtDirectRequest directRequest) {
 		action = directRequest.getAction();
 		method = directRequest.getMethod();

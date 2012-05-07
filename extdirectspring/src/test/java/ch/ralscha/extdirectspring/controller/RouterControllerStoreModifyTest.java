@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.LocalDate;
 import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Before;
@@ -38,7 +40,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.Row;
-import ch.ralscha.extdirectspring.util.JsonHandler;
 
 /**
  * Tests for {@link RouterController}.
@@ -53,9 +54,6 @@ public class RouterControllerStoreModifyTest {
 	@Autowired
 	private RouterController controller;
 
-	@Autowired
-	private JsonHandler jsonHandler;
-
 	private MockHttpServletResponse response;
 	private MockHttpServletRequest request;
 
@@ -66,16 +64,22 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	@Test
-	public void testCreateNoData() {
+	public void testCreateNoData() throws IOException {
 		testCreateNoData("remoteProviderStoreModify");
+
+		response = new MockHttpServletResponse();
+		request = new MockHttpServletRequest();
 		testCreateNoData("remoteProviderStoreModifyInterface");
 	}
 
-	private void testCreateNoData(String action) {
+	private void testCreateNoData(String action) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		storeRequest.put("records", new ArrayList<Row>());
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(action, "create1", 1, storeRequest);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -87,17 +91,21 @@ public class RouterControllerStoreModifyTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		List<Row> rows = (List<Row>) resp.getResult();
+		List<Row> rows = ControllerUtil.convertValue(resp.getResult(), new TypeReference<List<Row>>() {
+		});
 		assertThat(rows).isEmpty();
 	}
 
 	@Test
-	public void testCreateWithData() {
+	public void testCreateWithData() throws IOException {
 		testCreateWithData("remoteProviderStoreModify");
+
+		response = new MockHttpServletResponse();
+		request = new MockHttpServletRequest();
 		testCreateWithData("remoteProviderStoreModifyInterface");
 	}
 
-	private void testCreateWithData(String action) {
+	private void testCreateWithData(String action) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
@@ -105,7 +113,10 @@ public class RouterControllerStoreModifyTest {
 
 		storeRequest.put("records", rowsToUpdate);
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(action, "create1", 1, storeRequest);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -117,7 +128,8 @@ public class RouterControllerStoreModifyTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		List<Row> storeResponse = (List<Row>) resp.getResult();
+		List<Row> storeResponse = ControllerUtil.convertValue(resp.getResult(), new TypeReference<List<Row>>() {
+		});
 		assertThat(storeResponse).hasSize(2);
 
 		Collections.sort(storeResponse);
@@ -127,10 +139,13 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	@Test
-	public void testCreateWithDataSingle() {
+	public void testCreateWithDataSingle() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModifySingle", "create1",
 				1, new Row(10, "Ralph", true, "109.55"));
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -142,25 +157,31 @@ public class RouterControllerStoreModifyTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		Row storeResponse = (Row) resp.getResult();
+		Row storeResponse = ControllerUtil.convertValue(resp.getResult(), Row.class);
 
 		assertThat(storeResponse.getId()).isEqualTo(10);
 	}
 
 	@Test
-	public void testCreateWithDataAndSupportedArguments() {
+	public void testCreateWithDataAndSupportedArguments() throws IOException {
 		testCreateWithDataAndSupportedArguments("remoteProviderStoreModify");
+
+		response = new MockHttpServletResponse();
+		request = new MockHttpServletRequest();
 		testCreateWithDataAndSupportedArguments("remoteProviderStoreModifyInterface");
 	}
 
-	private void testCreateWithDataAndSupportedArguments(String action) {
+	private void testCreateWithDataAndSupportedArguments(String action) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", false, "109.55"));
 
 		storeRequest.put("records", rowsToUpdate);
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(action, "create2", 1, storeRequest);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -172,16 +193,20 @@ public class RouterControllerStoreModifyTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		List<Row> storeResponse = (List<Row>) resp.getResult();
+		List<Row> storeResponse = ControllerUtil.convertValue(resp.getResult(), new TypeReference<List<Row>>() {
+		});
 		assertThat(storeResponse).hasSize(1);
 		assertThat(storeResponse).onProperty("id").containsExactly(10);
 	}
 
 	@Test
-	public void testCreateWithDataAndSupportedArgumentsSingle() {
+	public void testCreateWithDataAndSupportedArgumentsSingle() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModifySingle", "create2",
 				1, new Row(10, "Ralph", false, "109.55"));
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -193,17 +218,20 @@ public class RouterControllerStoreModifyTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		Row storeResponse = (Row) resp.getResult();
+		Row storeResponse = ControllerUtil.convertValue(resp.getResult(), Row.class);
 		assertThat(storeResponse.getId()).isEqualTo(10);
 	}
 
 	@Test
-	public void testUpdate() {
+	public void testUpdate() throws IOException {
 		testUpdate("remoteProviderStoreModify");
+
+		response = new MockHttpServletResponse();
+		request = new MockHttpServletRequest();
 		testUpdate("remoteProviderStoreModifyInterface");
 	}
 
-	private void testUpdate(String action) {
+	private void testUpdate(String action) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
@@ -212,12 +240,15 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	@Test
-	public void testUpdateWithRequestParam() {
+	public void testUpdateWithRequestParam() throws IOException {
 		testUpdateWithRequestParam("remoteProviderStoreModify");
+
+		response = new MockHttpServletResponse();
+		request = new MockHttpServletRequest();
 		testUpdateWithRequestParam("remoteProviderStoreModifyInterface");
 	}
 
-	private void testUpdateWithRequestParam(String action) {
+	private void testUpdateWithRequestParam(String action) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
@@ -227,12 +258,15 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	@Test
-	public void testUpdateWithRequestParamDefaultValue() {
+	public void testUpdateWithRequestParamDefaultValue() throws IOException {
 		testUpdateWithRequestParamDefaultValue("remoteProviderStoreModify");
+
+		response = new MockHttpServletResponse();
+		request = new MockHttpServletRequest();
 		testUpdateWithRequestParamDefaultValue("remoteProviderStoreModifyInterface");
 	}
 
-	private void testUpdateWithRequestParamDefaultValue(String action) {
+	private void testUpdateWithRequestParamDefaultValue(String action) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
@@ -241,12 +275,15 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	@Test
-	public void testUpdateWithRequestParamOptional() {
+	public void testUpdateWithRequestParamOptional() throws IOException {
 		testUpdateWithRequestParamOptional("remoteProviderStoreModify");
+
+		response = new MockHttpServletResponse();
+		request = new MockHttpServletRequest();
 		testUpdateWithRequestParamOptional("remoteProviderStoreModifyInterface");
 	}
 
-	private void testUpdateWithRequestParamOptional(String action) {
+	private void testUpdateWithRequestParamOptional(String action) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
@@ -263,47 +300,50 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	@Test
-	public void testUpdateSingle() {
+	public void testUpdateSingle() throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		Row row = new Row(10, "Ralph", true, "109.55");
-		storeRequest.putAll(jsonHandler.convertValue(row, Map.class));
+		storeRequest.putAll(ControllerUtil.convertValue(row, Map.class));
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update1");
 	}
 
 	@Test
-	public void testUpdateWithRequestParamSingle() {
+	public void testUpdateWithRequestParamSingle() throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		Row row = new Row(10, "Ralph", true, "109.55");
 		storeRequest.put("aParam", 42);
-		storeRequest.putAll(jsonHandler.convertValue(row, Map.class));
+		storeRequest.putAll(ControllerUtil.convertValue(row, Map.class));
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update2");
 	}
 
 	@Test
-	public void testUpdateWithRequestParamDefaultValueSingle() {
+	public void testUpdateWithRequestParamDefaultValueSingle() throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		Row row = new Row(10, "Ralph", true, "109.55");
-		storeRequest.putAll(jsonHandler.convertValue(row, Map.class));
+		storeRequest.putAll(ControllerUtil.convertValue(row, Map.class));
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update3");
 	}
 
 	@Test
-	public void testUpdateWithRequestParamOptionalSingle() {
+	public void testUpdateWithRequestParamOptionalSingle() throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		Row row = new Row(10, "Ralph", true, "109.55");
-		storeRequest.putAll(jsonHandler.convertValue(row, Map.class));
+		storeRequest.putAll(ControllerUtil.convertValue(row, Map.class));
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update4");
 
 		storeRequest = new LinkedHashMap<String, Object>();
-		storeRequest.putAll(jsonHandler.convertValue(row, Map.class));
+		storeRequest.putAll(ControllerUtil.convertValue(row, Map.class));
 		storeRequest.put("aParam", 11);
 		storeRequest.put("yesterday", ISODateTimeFormat.date().print(new LocalDate().minusDays(1)));
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update4");
 	}
 
-	private void executeUpdate(String action, Map<String, Object> storeRequest, String method) {
+	private void executeUpdate(String action, Map<String, Object> storeRequest, String method) throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(action, method, 1, storeRequest);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -317,14 +357,15 @@ public class RouterControllerStoreModifyTest {
 
 		Object result = resp.getResult();
 		if (result instanceof List) {
-			List<Row> storeResponse = (List<Row>) result;
+			List<Row> storeResponse = ControllerUtil.convertValue(result, new TypeReference<List<Row>>() {
+			});
 			assertThat(storeResponse).hasSize(1);
 			assertThat(storeResponse.get(0).getId()).isEqualTo(10);
 			assertThat(storeResponse.get(0).getName()).isEqualTo("Ralph");
 			assertThat(storeResponse.get(0).isAdmin()).isTrue();
 			assertThat(storeResponse.get(0).getSalary()).isEqualTo(new BigDecimal("109.55"));
 		} else {
-			Row storeResponse = (Row) result;
+			Row storeResponse = ControllerUtil.convertValue(result, Row.class);
 			assertThat(storeResponse.getId()).isEqualTo(10);
 			assertThat(storeResponse.getName()).isEqualTo("Ralph");
 			assertThat(storeResponse.isAdmin()).isTrue();
@@ -333,7 +374,7 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	@Test
-	public void testDestroy() {
+	public void testDestroy() throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Integer> rowsToUpdate = new ArrayList<Integer>();
 		rowsToUpdate.add(10);
@@ -341,7 +382,10 @@ public class RouterControllerStoreModifyTest {
 		storeRequest.put("records", rowsToUpdate);
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModify", "destroy", 1,
 				storeRequest);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -359,10 +403,13 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	@Test
-	public void testDestroySingle() {
+	public void testDestroySingle() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreModifySingle", "destroy",
 				1, 10);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);

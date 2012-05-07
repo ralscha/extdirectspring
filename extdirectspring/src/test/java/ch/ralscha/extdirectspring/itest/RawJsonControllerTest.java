@@ -54,7 +54,7 @@ public class RawJsonControllerTest extends JettyTest {
 		String responseString = EntityUtils.toString(entity);
 
 		assertThat(responseString).isNotNull();
-		assertThat(responseString.startsWith("[") && responseString.endsWith("]")).isTrue();
+		assertThat(responseString).startsWith("[").endsWith("]");
 
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),

@@ -57,8 +57,6 @@ public enum ExtDirectMethodType {
 	 */
 	TREE_LOAD,
 
-	@Deprecated
-	TREE_LOADER,
 	/**
 	 * Specifies a method that handles polling
 	 */

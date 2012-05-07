@@ -15,12 +15,23 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.LogFactory;
+import org.codehaus.jackson.JsonEncoding;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
+import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
+import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 
 public class ControllerUtil {
 
@@ -47,6 +58,76 @@ public class ControllerUtil {
 		dr.setType("rpc");
 		dr.setData(data);
 		return mapper.convertValue(dr, LinkedHashMap.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T readValue(final String json, final Class<?> clazz) {
+		try {
+			return (T) mapper.readValue(json, clazz);
+		} catch (Exception e) {
+			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
+			return null;
+		}
+	}
+
+	public static <T> T convertValue(final Object object, final Class<T> clazz) {
+		return mapper.convertValue(object, clazz);
+	}
+
+	public static <T> T convertValue(Object object, TypeReference<T> typeReference) {
+		return mapper.convertValue(object, typeReference);
+	}
+
+	public static List<ExtDirectResponse> readDirectResponses(byte[] response) {
+		try {
+			return mapper.readValue(response, new TypeReference<List<ExtDirectResponse>>() {/*nothing here*/
+			});
+		} catch (JsonParseException e) {
+			throw new RuntimeException(e);
+		} catch (JsonMappingException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static ExtDirectResponse readDirectResponse(byte[] response) {
+		try {
+			return mapper.readValue(response, ExtDirectResponse.class);
+		} catch (JsonParseException e) {
+			throw new RuntimeException(e);
+		} catch (JsonMappingException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static ExtDirectPollResponse readDirectPollResponse(byte[] response) {
+		try {
+			return mapper.readValue(response, ExtDirectPollResponse.class);
+		} catch (JsonParseException e) {
+			throw new RuntimeException(e);
+		} catch (JsonMappingException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static byte[] writeAsByte(Object obj) {
+		try {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			mapper.getJsonFactory().createJsonGenerator(bos, JsonEncoding.UTF8);
+			return mapper.writeValueAsBytes(obj);
+		} catch (JsonGenerationException e) {
+			throw new RuntimeException(e);
+		} catch (JsonMappingException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 
 }

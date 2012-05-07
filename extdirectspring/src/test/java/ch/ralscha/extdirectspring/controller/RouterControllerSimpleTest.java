@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Before;
@@ -63,10 +65,14 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testBeanNotFound() {
+	public void testBeanNotFound() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProvider", "method1", 1, 3, 2.5,
 				"string.param");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+
 		assertThat(responses).hasSize(1);
 		checkBeanNotFoundResponse(responses.get(0));
 	}
@@ -82,10 +88,13 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testMethodNotFound() {
+	public void testMethodNotFound() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5,
 				"string.param");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		checkMethodNotFoundResponse(responses.get(0));
@@ -103,9 +112,12 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testNoParameters() {
+	public void testNoParameters() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method1", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		checkNoParametersResponse(responses.get(0), 1);
@@ -122,10 +134,13 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testNoParametersWithRequestParameter() {
+	public void testNoParametersWithRequestParameter() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method1", 1,
 				"requestparameter");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -133,9 +148,12 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testNoParameters2() {
+	public void testNoParameters2() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method2", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -149,10 +167,13 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testWithParameters() {
+	public void testWithParameters() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method3", 10, 1, 3.1,
 				"requestParameter");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -166,10 +187,13 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testWithParametersWithTypeConversion() {
+	public void testWithParametersWithTypeConversion() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method3", 10, "10",
 				"4.2", 20);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -183,9 +207,12 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testWithParametersNoRequestParameter() {
+	public void testWithParametersNoRequestParameter() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method3", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -199,9 +226,12 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testResultTrue() {
+	public void testResultTrue() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method5", 1, "ralph");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -215,9 +245,12 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testResultFalse() {
+	public void testResultFalse() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method5", 1, "joe");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -231,10 +264,13 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testResultNull() {
+	public void testResultNull() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil
 				.createRequestJson("remoteProviderSimple", "method5", 1, "martin");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -248,9 +284,12 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testIntParameterAndResult() {
+	public void testIntParameterAndResult() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method6", 3, 10, 20);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -258,10 +297,13 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testIntParameterAndResultWithTypeConversion() {
+	public void testIntParameterAndResultWithTypeConversion() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method6", 3, "30",
 				"40");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -279,9 +321,12 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testResultStringNull() {
+	public void testResultStringNull() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method7", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -295,9 +340,12 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testReturnsObject() {
+	public void testReturnsObject() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method8", 1, 7.34);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -310,22 +358,23 @@ public class RouterControllerSimpleTest {
 		assertThat(resp.getMessage()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		assertThat(resp.getResult() instanceof FormInfo).isTrue();
-		FormInfo info = (FormInfo) resp.getResult();
+		FormInfo info = ControllerUtil.convertValue(resp.getResult(), FormInfo.class);
 
 		assertThat(Double.compare(7.34, info.getBack()) == 0).isTrue();
 		assertThat(info.isAdmin()).isEqualTo(false);
 		assertThat(info.getAge()).isEqualTo(32);
 		assertThat(info.getName()).isEqualTo("John");
-		assertThat(info.getSalary()).isEqualTo(new BigDecimal("8720.20"));
+		assertThat(info.getSalary()).isEqualTo(new BigDecimal("8720.2"));
 		assertThat(info.getBirthday()).isEqualTo(new GregorianCalendar(1986, Calendar.JULY, 22).getTime());
 	}
 
 	@Test
-	public void testSupportedArguments() {
+	public void testSupportedArguments() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method9", 1, null);
 
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -336,15 +385,17 @@ public class RouterControllerSimpleTest {
 		assertThat(resp.getType()).isEqualTo("rpc");
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
-		assertThat(resp.getResult()).isEqualTo(42l);
+		assertThat(resp.getResult()).isEqualTo(42);
 	}
 
 	@Test
-	public void testTypeConversion() {
+	public void testTypeConversion() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method10", 3, "true",
 				"c", "ACTIVE", "14", "21", "3.14", "10.01", "1", "2");
 
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -359,11 +410,13 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testMixParameterAndSupportedParameters() {
+	public void testMixParameterAndSupportedParameters() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method13", 4, "true",
 				"c", "ACTIVE", "14", "21", "3.14", "10.01", "1", "2");
 
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -377,7 +430,7 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testWithConversion() {
+	public void testWithConversion() throws IOException {
 
 		DateTime today = new DateTime();
 
@@ -385,7 +438,9 @@ public class RouterControllerSimpleTest {
 				ISODateTimeFormat.dateTime().print(today), "normalParameter", ISODateTimeFormat.date().print(today),
 				"99.9%");
 
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -397,19 +452,26 @@ public class RouterControllerSimpleTest {
 		assertThat(resp.getMessage()).isNull();
 
 		Map<String, Object> resultMap = (Map<String, Object>) resp.getResult();
-		assertThat(resultMap.get("endDate")).isEqualTo(today.toDate());
-		assertThat(resultMap.get("jodaLocalDate")).isEqualTo(today.toLocalDate());
-		assertThat(resultMap.get("percent")).isEqualTo(new BigDecimal("0.999"));
+		assertThat(resultMap.get("endDate")).isEqualTo(today.getMillis());
+		ObjectMapper mapper = new ObjectMapper();
+
+		List<Object> expectedValue = mapper.readValue(mapper.writeValueAsString(today.toLocalDate()), List.class);
+		Object actualValue = resultMap.get("jodaLocalDate");
+
+		assertThat((List<Object>) resultMap.get("jodaLocalDate")).isEqualTo(expectedValue);
+		assertThat(resultMap.get("percent")).isEqualTo(0.999);
 		assertThat(resultMap.get("normalParameter")).isEqualTo("normalParameter");
 		assertThat(resultMap.get("remoteAddr")).isEqualTo("127.0.0.1");
 	}
 
 	@Test
-	public void testTypeConversionWithObjects() {
+	public void testTypeConversionWithObjects() throws IOException {
 		Row aRow = new Row(104, "myRow", true, "100.45");
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method12", 5, aRow);
 
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);

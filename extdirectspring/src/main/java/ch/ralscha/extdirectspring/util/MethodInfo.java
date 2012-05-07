@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.bean.api.Action;
+import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 
 /**
  * Object holds information about a method like the method itself and a list of
@@ -37,66 +39,99 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 public class MethodInfo {
 	private static final LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
 
+	private String group;
+	private ExtDirectMethodType type;
+	private boolean synchronizeOnSession;
+	private boolean streamResponse;
+
 	private List<ParameterInfo> parameters;
 	private Method method;
 	private String forwardPath;
 
-	private ExtDirectMethodType type;
 	private Class<?> collectionType;
-	private boolean synchronizeOnSession;
 
-	public MethodInfo(final Class<?> clazz, final Method method) {
+	private Action action;
+	private PollingProvider pollingProvider;
 
-		this.method = method;
-
-		RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-		if (methodAnnotation != null) {
-
-			RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
-
-			String path = null;
-			if (hasValue(classAnnotation)) {
-				path = classAnnotation.value()[0];
-			}
-
-			if (hasValue(methodAnnotation)) {
-				String methodPath = methodAnnotation.value()[0];
-				if (path != null) {
-					path = path + methodPath;
-				} else {
-					path = methodPath;
-				}
-			}
-
-			if (path != null) {
-				if (path.charAt(0) == '/' && path.length() > 1) {
-					path = path.substring(1, path.length());
-				}
-				this.forwardPath = "forward:" + path;
-			}
-		}
-
-		this.collectionType = null;
+	public MethodInfo(final Class<?> clazz, final String beanName, final Method method) {
 
 		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
-		if (extDirectMethodAnnotation != null) {
-			this.type = extDirectMethodAnnotation.value();
+		this.type = extDirectMethodAnnotation.value();
+		this.group = extDirectMethodAnnotation.group();
+
+		if (type != ExtDirectMethodType.FORM_POST) {
+			this.method = method;
 			this.synchronizeOnSession = extDirectMethodAnnotation.synchronizeOnSession();
+			this.streamResponse = extDirectMethodAnnotation.streamResponse();
+
+			this.parameters = buildParameterList(clazz, method);
+
 			this.collectionType = (extDirectMethodAnnotation.entryClass() == Object.class) ? null
 					: extDirectMethodAnnotation.entryClass();
-		}
 
-		this.parameters = buildParameterList(clazz, method);
-
-		if (this.collectionType == null) {
-			for (ParameterInfo parameter : parameters) {
-				if (parameter.getCollectionType() != null) {
-					this.collectionType = parameter.getCollectionType();
-					break;
+			if (this.collectionType == null) {
+				for (ParameterInfo parameter : parameters) {
+					if (parameter.getCollectionType() != null) {
+						this.collectionType = parameter.getCollectionType();
+						break;
+					}
 				}
 			}
+
+		} else {
+			RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
+			if (methodAnnotation != null) {
+
+				RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
+
+				String path = null;
+				if (hasValue(classAnnotation)) {
+					path = classAnnotation.value()[0];
+				}
+
+				if (hasValue(methodAnnotation)) {
+					String methodPath = methodAnnotation.value()[0];
+					if (path != null) {
+						path = path + methodPath;
+					} else {
+						path = methodPath;
+					}
+				}
+
+				if (path != null) {
+					if (path.charAt(0) == '/' && path.length() > 1) {
+						path = path.substring(1, path.length());
+					}
+					this.forwardPath = "forward:" + path;
+				}
+			}
+
 		}
 
+		if (type == ExtDirectMethodType.SIMPLE) {
+			int paramLength = 0;
+			for (ParameterInfo parameter : this.parameters) {
+				if (!parameter.isSupportedParameter()) {
+					paramLength++;
+				}
+			}
+			this.action = new Action(method.getName(), paramLength, null);
+		} else if (type == ExtDirectMethodType.SIMPLE_NAMED) {
+			List<String> parameterNames = new ArrayList<String>();
+			for (ParameterInfo parameter : this.parameters) {
+				if (!parameter.isSupportedParameter()) {
+					parameterNames.add(parameter.getName());
+				}
+			}
+			this.action = new Action(method.getName(), parameterNames);
+		} else if (type == ExtDirectMethodType.FORM_LOAD || type == ExtDirectMethodType.STORE_READ
+				|| type == ExtDirectMethodType.STORE_MODIFY || type == ExtDirectMethodType.TREE_LOAD) {
+			this.action = new Action(method.getName(), 1, null);
+		} else if (type == ExtDirectMethodType.FORM_POST) {
+			this.action = new Action(method.getName(), 0, true);
+		} else if (type == ExtDirectMethodType.POLL) {
+			this.pollingProvider = new PollingProvider(beanName, method.getName(), extDirectMethodAnnotation.event());
+		}
 	}
 
 	private boolean hasValue(RequestMapping requestMapping) {
@@ -104,7 +139,7 @@ public class MethodInfo {
 				.hasText(requestMapping.value()[0]));
 	}
 
-	private static List<ParameterInfo> buildParameterList(Class<?> clazz, Method method) {
+	private static List<ParameterInfo> buildParameterList(final Class<?> clazz, final Method method) {
 		List<ParameterInfo> params = new ArrayList<ParameterInfo>();
 
 		Class<?>[] parameterTypes = method.getParameterTypes();
@@ -129,9 +164,9 @@ public class MethodInfo {
 			if (parameterAnnotations != null) {
 				paramAnnotations = parameterAnnotations[paramIndex];
 			}
-			
-			params.add(new ParameterInfo(clazz, method, methodWithAnnotation, paramIndex, parameterTypes[paramIndex], paramName,
-					paramAnnotations));
+
+			params.add(new ParameterInfo(clazz, method, methodWithAnnotation, paramIndex, parameterTypes[paramIndex],
+					paramName, paramAnnotations));
 		}
 
 		return params;
@@ -159,6 +194,22 @@ public class MethodInfo {
 
 	public boolean isSynchronizeOnSession() {
 		return synchronizeOnSession;
+	}
+
+	public boolean isStreamResponse() {
+		return streamResponse;
+	}
+
+	public PollingProvider getPollingProvider() {
+		return pollingProvider;
+	}
+
+	public Action getAction() {
+		return action;
+	}
+
+	public String getGroup() {
+		return group;
 	}
 
 	/**

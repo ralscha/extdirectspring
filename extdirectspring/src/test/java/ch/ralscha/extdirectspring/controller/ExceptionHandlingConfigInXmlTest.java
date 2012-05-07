@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.controller;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -60,7 +61,10 @@ public class ExceptionHandlingConfigInXmlTest {
 
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5,
 				"string.param");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -68,12 +72,9 @@ public class ExceptionHandlingConfigInXmlTest {
 		assertThat(resp.getMethod()).isEqualTo("method4");
 		assertThat(resp.getType()).isEqualTo("exception");
 		assertThat(resp.getTid()).isEqualTo(2);
-		assertThat(resp.getMessage()).isEqualTo("illegal argument");
+		assertThat(resp.getMessage()).isEqualTo("Panic!!!");
 		assertThat(resp.getResult()).isNull();
-		assertTrue(resp
-				.getWhere()
-				.startsWith(
-						"java.lang.IllegalArgumentException: Invalid remoting method 'remoteProviderSimple.method4'. Missing ExtDirectMethod annotation"));
+		assertTrue(resp.getWhere().startsWith("Method 'remoteProviderSimple.method4' not found"));
 
 	}
 
@@ -82,7 +83,10 @@ public class ExceptionHandlingConfigInXmlTest {
 
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple2", "method4", 2, 3, 2.5,
 				"string.param");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -90,19 +94,19 @@ public class ExceptionHandlingConfigInXmlTest {
 		assertThat(resp.getMethod()).isEqualTo("method4");
 		assertThat(resp.getType()).isEqualTo("exception");
 		assertThat(resp.getTid()).isEqualTo(2);
-		assertThat(resp.getMessage()).isEqualTo("No bean named 'remoteProviderSimple2' is defined");
+		assertThat(resp.getMessage()).isEqualTo("Panic!!!");
 		assertThat(resp.getResult()).isNull();
-		assertTrue(resp
-				.getWhere()
-				.startsWith(
-						"org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'remoteProviderSimple2' is defined"));
+		assertTrue(resp.getWhere().startsWith("Method 'remoteProviderSimple2.method4' not found"));
 
 	}
 
 	@Test
-	public void testExceptionNotInMapping() {
+	public void testExceptionNotInMapping() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method11", 3);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);

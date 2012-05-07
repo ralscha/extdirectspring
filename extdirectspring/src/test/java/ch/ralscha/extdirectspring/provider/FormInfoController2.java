@@ -24,11 +24,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 @SuppressWarnings("unused")
@@ -37,23 +35,17 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 public class FormInfoController2 {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
-	@ResponseBody
 	@RequestMapping(value = "/updateInfo1", method = RequestMethod.POST)
-	public ExtDirectResponse updateInfo1(Locale locale, HttpServletRequest request, FormInfo formInfo,
+	public void updateInfo1(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
 			BindingResult result) {
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-		builder.addErrors(result);
-		return builder.build();
+		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
-	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
-	public ExtDirectResponse updateInfo2(Locale locale, HttpServletRequest request, FormInfo formInfo,
+	public void updateInfo2(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
 			BindingResult result) {
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-		builder.addErrors(result);
-		return builder.build();
+		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")

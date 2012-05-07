@@ -41,7 +41,7 @@ public class FileUploadController {
 	public void uploadTest(HttpServletRequest request, @RequestParam("fileUpload") MultipartFile file,
 			HttpServletResponse response, @Valid User user, BindingResult result) throws IOException {
 
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
+		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request, response);
 
 		if (file != null && !file.isEmpty()) {
 			builder.addResultProperty("fileContents", new String(file.getBytes()));
@@ -53,7 +53,7 @@ public class FileUploadController {
 		builder.addResultProperty("email", user.getEmail());
 
 		builder.successful();
-		builder.buildAndWriteUploadResponse(response);
+		builder.buildAndWrite();
 	}
 
 }

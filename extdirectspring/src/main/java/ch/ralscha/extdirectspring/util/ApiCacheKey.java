@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.api;
+package ch.ralscha.extdirectspring.util;
 
 import java.util.Arrays;
-
-import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
  * @author Ralph Schaer
  */
-class ApiCacheKey {
+public class ApiCacheKey {
 
 	private final String apiNs;
 	private final String actionNs;

@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.junit.Before;
+import org.codehaus.jackson.type.TypeReference;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +38,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.Row;
-import ch.ralscha.extdirectspring.util.JsonHandler;
 
 /**
  * Tests for {@link RouterController}.
@@ -52,12 +51,6 @@ public class RouterControllerFilterTest {
 
 	@Autowired
 	private RouterController controller;
-
-	@Autowired
-	private JsonHandler jsonHandler;
-
-	private MockHttpServletResponse response;
-	private MockHttpServletRequest request;
 
 	private static List<String> jsonList;
 
@@ -74,19 +67,18 @@ public class RouterControllerFilterTest {
 		is.close();
 	}
 
-	@Before
-	public void beforeTest() {
-		response = new MockHttpServletResponse();
-		request = new MockHttpServletRequest();
-	}
-
 	@Test
-	public void testFilters() {
+	public void testFilters() throws IOException {
 
 		int index = 1;
 		for (String json : jsonList) {
-			Map<String, Object> edRequest = jsonHandler.readValue(json, Map.class);
-			List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+			MockHttpServletResponse response = new MockHttpServletResponse();
+			MockHttpServletRequest request = new MockHttpServletRequest();
+			Map<String, Object> edRequest = ControllerUtil.readValue(json, Map.class);
+
+			request.setContent(ControllerUtil.writeAsByte(edRequest));
+			controller.router(request, response, Locale.ENGLISH);
+			List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 			assertThat(responses).hasSize(1);
 			ExtDirectResponse resp = responses.get(0);
@@ -98,7 +90,9 @@ public class RouterControllerFilterTest {
 			assertThat(resp.getWhere()).isNull();
 			assertThat(resp.getResult()).isNotNull();
 
-			List<Row> rows = (List<Row>) resp.getResult();
+			List<Row> rows = ControllerUtil.convertValue(resp.getResult(), new TypeReference<List<Row>>() {
+			});
+
 			assertThat(rows).hasSize(1);
 			assertThat(rows.get(0).getId()).isEqualTo(index);
 

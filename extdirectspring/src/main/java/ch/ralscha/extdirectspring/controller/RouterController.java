@@ -16,9 +16,11 @@
 package ch.ralscha.extdirectspring.controller;
 
 import java.beans.PropertyDescriptor;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -36,23 +38,32 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.jackson.JsonEncoding;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.ReflectionUtils.MethodFilter;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.WebUtils;
 
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.BaseResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
@@ -66,8 +77,8 @@ import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.bean.SortInfo;
 import ch.ralscha.extdirectspring.filter.Filter;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
-import ch.ralscha.extdirectspring.util.JsonHandler;
 import ch.ralscha.extdirectspring.util.MethodInfo;
+import ch.ralscha.extdirectspring.util.MethodInfoCache;
 import ch.ralscha.extdirectspring.util.ParameterInfo;
 import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
 
@@ -81,111 +92,208 @@ import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
 @Controller
 public class RouterController implements InitializingBean {
 
+	public static final MediaType APPLICATION_JSON = new MediaType("application", "json", Charset.forName("UTF-8"));
+	public static final MediaType TEXT_HTML = new MediaType("text", "html", Charset.forName("UTF-8"));
+
 	private static final Log log = LogFactory.getLog(RouterController.class);
 
+	@Autowired
 	private ConversionService conversionService;
-	private ApplicationContext context;
-	private JsonHandler jsonHandler;
 
-	@Deprecated
+	@Autowired
+	private ApplicationContext context;
+
 	@Autowired(required = false)
-	@Qualifier("extDirectSpringExceptionToMessage")
-	private Map<String, Map<Class<?>, String>> exceptionToMessage;
+	private JsonHandler jsonHandler;
 
 	@Autowired(required = false)
 	private Configuration configuration;
 
-	@Autowired
-	public RouterController(ApplicationContext context, ConversionService conversionService, JsonHandler jsonHandler) {
-		this.context = context;
-		this.conversionService = conversionService;
-		this.jsonHandler = jsonHandler;
+	public Configuration getConfiguration() {
+		return configuration;
 	}
 
-	public void setConfiguration(Configuration configuration) {
-		this.configuration = configuration;
+	public JsonHandler getJsonHandler() {
+		return jsonHandler;
 	}
 
-	public void afterPropertiesSet() throws Exception {
+	public void afterPropertiesSet() {
 
 		if (configuration == null) {
 			configuration = new Configuration();
 		}
 
-		if (exceptionToMessage != null && configuration.getExceptionToMessage() == null) {
-			configuration.setExceptionToMessage(exceptionToMessage.get("extDirectSpringExceptionToMessage"));
+		if (jsonHandler == null) {
+			jsonHandler = new JsonHandler();
+		}
+
+		//register DirectMethod methods		
+		MethodInfoCache.INSTANCE.clear();
+
+		String[] beanNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(context, Object.class);
+
+		for (String beanName : beanNames) {
+
+			Class<?> handlerType = context.getType(beanName);
+			final Class<?> userType = ClassUtils.getUserClass(handlerType);
+
+			Set<Method> methods = ExtDirectSpringUtil.selectMethods(userType, new MethodFilter() {
+				public boolean matches(Method method) {
+					return AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) != null;
+				}
+			});
+
+			for (Method method : methods) {
+				ExtDirectMethod directMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+				if (directMethodAnnotation.value() == ExtDirectMethodType.FORM_POST) {
+					if (!isValidFormPostMethod(userType, method)) {
+						//todo do logging
+						//					if (!method.getReturnType().equals(DirectFormPostResult.class)) {
+						//						log.warn("Method '" + beanName + "." + method.getName()
+						//								+ "' is annotated as a form post method but is not valid. "
+						//								+ "A form post method must return an instance of DirectFormPostResult.");
+						continue;
+					}
+				}
+				MethodInfoCache.INSTANCE.put(beanName, handlerType, method);
+			}
+
 		}
 	}
 
+	private boolean isValidFormPostMethod(final Class<?> clazz, final Method method) {
+
+		if (!method.getReturnType().equals(Void.TYPE)) {
+			return false;
+		}
+
+		if (AnnotationUtils.findAnnotation(clazz, Controller.class) == null) {
+			return false;
+		}
+
+		RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
+
+		if (methodAnnotation == null) {
+			return false;
+		}
+
+		RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
+
+		boolean hasValue = false;
+
+		if (classAnnotation != null) {
+			hasValue = (classAnnotation.value() != null && classAnnotation.value().length > 0);
+		}
+
+		if (!hasValue) {
+			hasValue = (methodAnnotation.value() != null && methodAnnotation.value().length > 0);
+		}
+
+		return hasValue && hasPostMethod(methodAnnotation.method());
+	}
+
+	private boolean hasPostMethod(RequestMethod[] methods) {
+		if (methods != null) {
+			for (RequestMethod method : methods) {
+				if (method.equals(RequestMethod.POST)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
-	@ResponseBody
-	public ExtDirectPollResponse poll(@PathVariable("beanName") String beanName, @PathVariable("method") String method,
+	public void poll(@PathVariable("beanName") String beanName, @PathVariable("method") String method,
 			@PathVariable("event") String event, HttpServletRequest request, HttpServletResponse response, Locale locale)
 			throws Exception {
 
 		ExtDirectPollResponse directPollResponse = new ExtDirectPollResponse();
 		directPollResponse.setName(event);
 
-		try {
-			MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, beanName, method);
+		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(beanName, method);
+		boolean streamResponse;
 
-			List<ParameterInfo> methodParameters = methodInfo.getParameters();
-			Object[] parameters = null;
-			if (!methodParameters.isEmpty()) {
-				parameters = new Object[methodParameters.size()];
+		if (methodInfo != null) {
 
-				for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
-					ParameterInfo methodParameter = methodParameters.get(paramIndex);
+			streamResponse = configuration.isStreamResponse() || methodInfo.isStreamResponse();
 
-					if (methodParameter.isSupportedParameter()) {
-						parameters[paramIndex] = SupportedParameterTypes.resolveParameter(methodParameter.getType(),
-								request, response, locale);
-					} else {
-						parameters[paramIndex] = handleRequestParam(request, null, methodParameter);
+			try {
+
+				List<ParameterInfo> methodParameters = methodInfo.getParameters();
+				Object[] parameters = null;
+				if (!methodParameters.isEmpty()) {
+					parameters = new Object[methodParameters.size()];
+
+					for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
+						ParameterInfo methodParameter = methodParameters.get(paramIndex);
+
+						if (methodParameter.isSupportedParameter()) {
+							parameters[paramIndex] = SupportedParameterTypes.resolveParameter(
+									methodParameter.getType(), request, response, locale);
+						} else {
+							parameters[paramIndex] = handleRequestParam(request, null, methodParameter);
+						}
+
 					}
-
 				}
-			}
 
-			if (configuration.isSynchronizeOnSession() || methodInfo.isSynchronizeOnSession()) {
-				HttpSession session = request.getSession(false);
-				if (session != null) {
-					Object mutex = WebUtils.getSessionMutex(session);
-					synchronized (mutex) {
+				if (configuration.isSynchronizeOnSession() || methodInfo.isSynchronizeOnSession()) {
+					HttpSession session = request.getSession(false);
+					if (session != null) {
+						Object mutex = WebUtils.getSessionMutex(session);
+						synchronized (mutex) {
+							directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo,
+									parameters));
+						}
+					} else {
 						directPollResponse.setData(ExtDirectSpringUtil
 								.invoke(context, beanName, methodInfo, parameters));
 					}
 				} else {
 					directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
 				}
-			} else {
-				directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
-			}
 
-		} catch (Exception e) {
-			log.error("Error polling method '" + beanName + "." + method + "'", e.getCause() != null ? e.getCause() : e);
-			handleException(directPollResponse, e);
+			} catch (Exception e) {
+				log.error("Error polling method '" + beanName + "." + method + "'", e.getCause() != null ? e.getCause()
+						: e);
+				handleException(directPollResponse, e);
+			}
+		} else {
+			log.error("Error invoking method '" + beanName + "." + method + "'. Method not found");
+			handleMethodNotFoundError(directPollResponse, beanName, method);
+			streamResponse = configuration.isStreamResponse();
 		}
-		return directPollResponse;
+
+		writeJsonResponse(response, directPollResponse, streamResponse);
 
 	}
 
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "extAction")
-	public String router(@RequestParam("extAction") String extAction, @RequestParam("extMethod") String extMethod) {
+	public String router(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam("extAction") String extAction, @RequestParam("extMethod") String extMethod)
+			throws IOException {
 
-		MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, extAction, extMethod);
-		if (methodInfo.getForwardPath() != null) {
+		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(extAction, extMethod);
+
+		if (methodInfo != null && methodInfo.getForwardPath() != null) {
 			return methodInfo.getForwardPath();
 		}
-		throw new IllegalArgumentException("Invalid remoting form method: " + extAction + "." + extMethod);
 
+		log.error("Error invoking method '" + extAction + "." + extMethod + "'. Method not found");
+		ExtDirectResponse directResponse = new ExtDirectResponse(request);
+		handleMethodNotFoundError(directResponse, extAction, extMethod);
+		writeJsonResponse(response, directResponse, configuration.isStreamResponse());
+
+		return null;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction")
-	@ResponseBody
-	public List<ExtDirectResponse> router(HttpServletRequest request, HttpServletResponse response, Locale locale,
-			@RequestBody Object requestData) {
+	public void router(HttpServletRequest request, HttpServletResponse response, Locale locale) throws IOException {
+
+		Object requestData = jsonHandler.readValue(request.getInputStream(), Object.class);
 
 		List<ExtDirectRequest> directRequests = new ArrayList<ExtDirectRequest>();
 		if (requestData instanceof Map) {
@@ -197,62 +305,83 @@ public class RouterController implements InitializingBean {
 		}
 
 		List<ExtDirectResponse> directResponses = new ArrayList<ExtDirectResponse>();
+		boolean streamResponse = configuration.isStreamResponse();
 
 		for (ExtDirectRequest directRequest : directRequests) {
 
 			ExtDirectResponse directResponse = new ExtDirectResponse(directRequest);
 
-			try {
-				MethodInfo methodInfo = ExtDirectSpringUtil.findMethodInfo(context, directRequest.getAction(),
-						directRequest.getMethod());
+			MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(directRequest.getAction(), directRequest.getMethod());
 
-				Object result = processRemotingRequest(request, response, locale, directRequest, methodInfo);
+			if (methodInfo != null) {
 
-				if (result != null) {
+				try {
+					streamResponse = streamResponse || methodInfo.isStreamResponse();
 
-					if (methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
-							&& !ExtDirectFormLoadResult.class.isAssignableFrom(result.getClass())) {
-						result = new ExtDirectFormLoadResult(result);
-					} else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo
-							.isType(ExtDirectMethodType.STORE_READ))
-							&& !ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())
-							&& configuration.isAlwaysWrapStoreResponse()) {
-						if (result instanceof Collection) {
-							result = new ExtDirectStoreResponse((Collection) result);
-						} else {
-							List responses = new ArrayList();
-							responses.add(result);
-							result = new ExtDirectStoreResponse(responses);
+					Object result = processRemotingRequest(request, response, locale, directRequest, methodInfo);
+
+					if (result != null) {
+
+						if (methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
+								&& !ExtDirectFormLoadResult.class.isAssignableFrom(result.getClass())) {
+							result = new ExtDirectFormLoadResult(result);
+						} else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo
+								.isType(ExtDirectMethodType.STORE_READ))
+								&& !ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())
+								&& configuration.isAlwaysWrapStoreResponse()) {
+							if (result instanceof Collection) {
+								result = new ExtDirectStoreResponse((Collection) result);
+							} else {
+								List responses = new ArrayList();
+								responses.add(result);
+								result = new ExtDirectStoreResponse(responses);
+							}
+						}
+
+						directResponse.setResult(result);
+					} else {
+						if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)
+								|| methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
+							directResponse.setResult(Collections.emptyList());
 						}
 					}
 
-					directResponse.setResult(result);
-				} else {
-					if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)
-							|| methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
-						directResponse.setResult(Collections.emptyList());
-					}
+				} catch (Exception e) {
+					log.error("Error calling method: " + directRequest.getMethod(), e.getCause() != null ? e.getCause()
+							: e);
+					handleException(directResponse, e);
 				}
-
-			} catch (Exception e) {
-				log.error("Error calling method: " + directRequest.getMethod(), e.getCause() != null ? e.getCause() : e);
-				handleException(directResponse, e);
+			} else {
+				log.error("Error invoking method '" + directRequest.getAction() + "." + directRequest.getMethod()
+						+ "'. Method not found");
+				handleMethodNotFoundError(directResponse, directRequest.getAction(), directRequest.getMethod());
 			}
 
 			directResponses.add(directResponse);
 		}
 
-		return directResponses;
-
+		writeJsonResponse(response, directResponses, streamResponse);
 	}
 
-	private String getStackTrace(final Throwable t) {
-		StringWriter sw = new StringWriter();
-		PrintWriter pw = new PrintWriter(sw, true);
-		t.printStackTrace(pw);
-		pw.flush();
-		sw.flush();
-		return sw.toString();
+	public void writeJsonResponse(final HttpServletResponse response, final Object responseObject,
+			final boolean streamResponse) throws IOException, JsonGenerationException, JsonMappingException {
+		response.setContentType(APPLICATION_JSON.toString());
+		response.setCharacterEncoding(APPLICATION_JSON.getCharSet().name());
+
+		final ObjectMapper objectMapper = jsonHandler.getMapper();
+
+		if (!streamResponse) {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
+			JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(bos, JsonEncoding.UTF8);
+			objectMapper.writeValue(jsonGenerator, responseObject);
+			response.setContentLength(bos.size());
+			FileCopyUtils.copy(bos.toByteArray(), response.getOutputStream());
+		} else {
+			JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(response.getOutputStream(),
+					JsonEncoding.UTF8);
+			objectMapper.writeValue(jsonGenerator, responseObject);
+			response.getOutputStream().flush();
+		}
 	}
 
 	@SuppressWarnings({ "unchecked" })
@@ -261,21 +390,20 @@ public class RouterController implements InitializingBean {
 
 		int jsonParamIndex = 0;
 		Map<String, Object> remainingParameters = null;
-		ExtDirectStoreReadRequest directStoreReadRequest = null;
+		ExtDirectStoreReadRequest ExtDirectStoreReadRequest = null;
 
 		List<Object> directStoreModifyRecords = null;
 		Class<?> directStoreEntryClass;
 
 		if (methodInfo.isType(ExtDirectMethodType.STORE_READ) || methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
-				|| methodInfo.isType(ExtDirectMethodType.TREE_LOADER)
 				|| methodInfo.isType(ExtDirectMethodType.TREE_LOAD)) {
 
 			List<Object> data = (List<Object>) directRequest.getData();
 
 			if (data != null && data.size() > 0) {
 				if (methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
-					directStoreReadRequest = new ExtDirectStoreReadRequest();
-					remainingParameters = fillReadRequestFromMap(directStoreReadRequest,
+					ExtDirectStoreReadRequest = new ExtDirectStoreReadRequest();
+					remainingParameters = fillReadRequestFromMap(ExtDirectStoreReadRequest,
 							(Map<String, Object>) data.get(0));
 				} else {
 					remainingParameters = (Map<String, Object>) data.get(0);
@@ -342,7 +470,7 @@ public class RouterController implements InitializingBean {
 					parameters[paramIndex] = SupportedParameterTypes.resolveParameter(methodParameter.getType(),
 							request, response, locale);
 				} else if (ExtDirectStoreReadRequest.class.isAssignableFrom(methodParameter.getType())) {
-					parameters[paramIndex] = directStoreReadRequest;
+					parameters[paramIndex] = ExtDirectStoreReadRequest;
 				} else if (directStoreModifyRecords != null && methodParameter.getCollectionType() != null) {
 					parameters[paramIndex] = directStoreModifyRecords;
 				} else if (methodParameter.isHasRequestParamAnnotation()) {
@@ -493,8 +621,11 @@ public class RouterController implements InitializingBean {
 		}
 
 		if (to.getLimit() != null) {
+			//this test is no longer needed with extjs 4.0.7 and extjs 4.1.0
+			//these two libraries always send page, start and limit
 			if (to.getPage() != null && to.getStart() == null) {
 				to.setStart(to.getLimit() * (to.getPage() - 1));
+				//the else if is still valid for extjs 3 code
 			} else if (to.getPage() == null && to.getStart() != null) {
 				to.setPage(to.getStart() / to.getLimit() + 1);
 			}
@@ -547,7 +678,18 @@ public class RouterController implements InitializingBean {
 		response.setMessage(configuration.getMessage(cause));
 
 		if (configuration.isSendStacktrace()) {
-			response.setWhere(getStackTrace(cause));
+			response.setWhere(ExtDirectSpringUtil.getStackTrace(cause));
+		} else {
+			response.setWhere(null);
+		}
+	}
+
+	private void handleMethodNotFoundError(BaseResponse response, String beanName, String methodName) {
+		response.setType("exception");
+		response.setMessage(configuration.getDefaultExceptionMessage());
+
+		if (configuration.isSendStacktrace()) {
+			response.setWhere("Method '" + beanName + "." + methodName + "' not found");
 		} else {
 			response.setWhere(null);
 		}

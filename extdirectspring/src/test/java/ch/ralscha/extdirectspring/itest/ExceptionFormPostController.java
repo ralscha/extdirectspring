@@ -20,12 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
-import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 @Controller
 @RequestMapping("/exceptionTest")
@@ -33,18 +30,11 @@ public class ExceptionFormPostController {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_upload")
 	@RequestMapping(value = "/throwIt", method = RequestMethod.POST)
-	@ResponseBody
-	public ExtDirectResponse throwAException(HttpServletRequest request) {
-
-		@SuppressWarnings("unused")
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-
+	public void throwAException(@SuppressWarnings("unused") HttpServletRequest request) {
 		throw new NullPointerException("a null pointer");
-
-		//return builder.build();
 	}
 
-	//todo this only works with the new spring 3.1
+	//todo this only works with Spring 3.1
 	//	@ExceptionHandler(Exception.class)
 	//	@ResponseBody
 	//	public ExtDirectResponse handleException(HttpServletRequest request) {

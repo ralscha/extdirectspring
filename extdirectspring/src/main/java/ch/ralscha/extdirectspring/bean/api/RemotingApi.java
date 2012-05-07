@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.api;
+package ch.ralscha.extdirectspring.bean.api;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ import org.springframework.util.StringUtils;
  * @author Ralph Schaer
  */
 @JsonSerialize(include = Inclusion.NON_NULL)
-class RemotingApi {
+public class RemotingApi {
 
 	private String descriptor;
 	private final String url;
@@ -109,40 +109,17 @@ class RemotingApi {
 		return pollingProviders;
 	}
 
-	public void addAction(final String beanName, final String methodName, final Integer len) {
-		addAction(beanName, methodName, len, null, null);
-	}
-
-	public void addAction(final String beanName, final String methodName, final List<String> parameterNames) {
-		addAction(beanName, methodName, null, null, parameterNames);
-	}
-
-	public void addAction(final String beanName, final String methodName, final Integer len, final Boolean formHandler) {
-		addAction(beanName, methodName, len, formHandler, null);
-	}
-
-	public void addAction(final String beanName, final String methodName, final Integer len, final Boolean formHandler,
-			final List<String> parameterNames) {
+	public void addAction(final String beanName, final Action action) {
 		List<Action> beanActions = actions.get(beanName);
 		if (beanActions == null) {
 			beanActions = new ArrayList<Action>();
 			actions.put(beanName, beanActions);
 		}
-
-		Action action;
-		if (parameterNames == null) {
-			action = new Action(methodName, len, formHandler);
-		} else {
-			action = new Action(methodName, parameterNames);
-		}
-
-		if (!beanActions.contains(action)) {
-			beanActions.add(action);
-		}
+		beanActions.add(action);
 	}
 
-	public void addPollingProvider(final String beanName, final String method, final String event) {
-		pollingProviders.add(new PollingProvider(beanName, method, event));
+	public void addPollingProvider(final PollingProvider pollingProvider) {
+		pollingProviders.add(pollingProvider);
 	}
 
 }

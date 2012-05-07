@@ -16,27 +16,23 @@
 package ch.ralscha.extdirectspring.itest;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 @Controller
 public class InfoController {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_info")
-	@ResponseBody
 	@RequestMapping(value = "/info", method = RequestMethod.POST)
-	public ExtDirectResponse updateInfo(HttpServletRequest request, Info info) {
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-		builder.addResultProperty("userNameLowerCase", info.getUserName().toLowerCase());
-		return builder.build();
+	public void updateInfo(HttpServletRequest request, HttpServletResponse response, Info info) {
+		ExtDirectResponseBuilder.create(request, response)
+				.addResultProperty("userNameLowerCase", info.getUserName().toLowerCase()).buildAndWrite();
 	}
-
 }

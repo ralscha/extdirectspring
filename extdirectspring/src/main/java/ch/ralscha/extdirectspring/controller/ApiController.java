@@ -13,23 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.api;
+package ch.ralscha.extdirectspring.controller;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
@@ -37,14 +30,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
-import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.controller.Configuration;
+import ch.ralscha.extdirectspring.bean.api.PollingProvider;
+import ch.ralscha.extdirectspring.bean.api.RemotingApi;
+import ch.ralscha.extdirectspring.util.ApiCache;
+import ch.ralscha.extdirectspring.util.ApiCacheKey;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
-import ch.ralscha.extdirectspring.util.JsonHandler;
 import ch.ralscha.extdirectspring.util.MethodInfo;
-import ch.ralscha.extdirectspring.util.ParameterInfo;
-import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
+import ch.ralscha.extdirectspring.util.MethodInfoCache;
 
 /**
  * Spring managed controller that handles /api.jsp and /api-debug.js requests
@@ -55,21 +47,8 @@ import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
 @Controller
 public class ApiController {
 
-	private ApplicationContext context;
-	private JsonHandler jsonHandler;
-
-	@Autowired(required = false)
-	private Configuration configuration;
-
 	@Autowired
-	public ApiController(ApplicationContext context, JsonHandler jsonHandler) {
-		this.context = context;
-		this.jsonHandler = jsonHandler;
-	}
-
-	public void setConfiguration(Configuration configuration) {
-		this.configuration = configuration;
-	}
+	private RouterController routerController;
 
 	/**
 	 * Method that handles api.js calls. Generates a Javascript with the necessary
@@ -90,8 +69,8 @@ public class ApiController {
 	 *          If true the router property contains the full request URL with method, server and port. Defaults to false
 	 *          returns only the url without method, server and port           
 	 * @param format 
-	 *          Only valid value is "json2. Ext Designer sends this parameter and the response is a valid JSON.
-	 *          Defaults to null and response is standard Javascript.
+	 *          Only valid value is "json2. Ext Designer sends this parameter and the response is a JSON.
+	 *          Defaults to null and response is Javascript.
 	 * @param request
 	 * @param response
 	 * @throws IOException
@@ -139,9 +118,12 @@ public class ApiController {
 				ApiCache.INSTANCE.put(apiKey, apiString);
 			}
 
+			response.setContentLength(apiString.getBytes().length);
 			response.getOutputStream().write(apiString.getBytes());
 		} else {
-			response.setContentType("application/json");
+			response.setContentType(RouterController.APPLICATION_JSON.toString());
+			response.setCharacterEncoding(RouterController.APPLICATION_JSON.getCharSet().name());
+
 			String requestUrlString = request.getRequestURL().toString();
 
 			boolean debug = requestUrlString.contains("api-debug.js");
@@ -154,8 +136,11 @@ public class ApiController {
 			}
 
 			String apiString = buildApiJson(apiNs, actionNs, remotingApiVar, routerUrl, group, debug);
+			response.setContentLength(apiString.getBytes().length);
 			response.getOutputStream().write(apiString.getBytes());
 		}
+
+		response.getOutputStream().flush();
 	}
 
 	private String buildApiString(final String apiNs, final String actionNs, final String remotingApiVar,
@@ -164,27 +149,25 @@ public class ApiController {
 
 		RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
 
-		if (configuration != null) {
-			remotingApi.setTimeout(configuration.getTimeout());
-			remotingApi.setMaxRetries(configuration.getMaxRetries());
+		remotingApi.setTimeout(routerController.getConfiguration().getTimeout());
+		remotingApi.setMaxRetries(routerController.getConfiguration().getMaxRetries());
 
-			Object enableBuffer = configuration.getEnableBuffer();
-			if (enableBuffer instanceof String && StringUtils.hasText((String) enableBuffer)) {
-				String enableBufferString = (String) enableBuffer;
-				if (enableBufferString.equalsIgnoreCase("true")) {
-					remotingApi.setEnableBuffer(true);
-				} else if (enableBufferString.equalsIgnoreCase("false")) {
-					remotingApi.setEnableBuffer(false);
-				} else {
-					Integer enableBufferMs = NumberUtils.parseNumber(enableBufferString, Integer.class);
-					remotingApi.setEnableBuffer(enableBufferMs);
-				}
-			} else if (enableBuffer instanceof Number || enableBuffer instanceof Boolean) {
-				remotingApi.setEnableBuffer(enableBuffer);
+		Object enableBuffer = routerController.getConfiguration().getEnableBuffer();
+		if (enableBuffer instanceof String && StringUtils.hasText((String) enableBuffer)) {
+			String enableBufferString = (String) enableBuffer;
+			if (enableBufferString.equalsIgnoreCase("true")) {
+				remotingApi.setEnableBuffer(true);
+			} else if (enableBufferString.equalsIgnoreCase("false")) {
+				remotingApi.setEnableBuffer(false);
+			} else {
+				Integer enableBufferMs = NumberUtils.parseNumber(enableBufferString, Integer.class);
+				remotingApi.setEnableBuffer(enableBufferMs);
 			}
+		} else if (enableBuffer instanceof Number || enableBuffer instanceof Boolean) {
+			remotingApi.setEnableBuffer(enableBuffer);
 		}
 
-		scanForExtDirectMethods(remotingApi, group);
+		buildRemotingApi(remotingApi, group);
 
 		StringBuilder sb = new StringBuilder();
 
@@ -208,7 +191,7 @@ public class ApiController {
 			}
 		}
 
-		String jsonConfig = jsonHandler.writeValueAsString(remotingApi, debug);
+		String jsonConfig = routerController.getJsonHandler().writeValueAsString(remotingApi, debug);
 
 		if (StringUtils.hasText(apiNs)) {
 			sb.append(apiNs).append(".");
@@ -274,99 +257,31 @@ public class ApiController {
 			remotingApi.setDescriptor(remotingApiVar);
 		}
 
-		scanForExtDirectMethods(remotingApi, group);
+		buildRemotingApi(remotingApi, group);
 
-		return jsonHandler.writeValueAsString(remotingApi, debug);
+		return routerController.getJsonHandler().writeValueAsString(remotingApi, debug);
 
 	}
 
-	private void scanForExtDirectMethods(final RemotingApi remotingApi, final String group) {
-		Map<String, Class<?>> beanDefinitions = getAllBeanClasses();
+	private void buildRemotingApi(final RemotingApi remotingApi, final String group) {
 
-		for (Entry<String, Class<?>> entry : beanDefinitions.entrySet()) {
-			Class<?> beanClass = entry.getValue();
-			String beanName = entry.getKey();
-
-			Method[] methods = beanClass.getMethods();
-
-			for (Method method : methods) {
-				ExtDirectMethod annotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
-				if (annotation != null && isSameGroup(group, annotation.group())) {
-					ExtDirectMethodType type = annotation.value();
-
-					switch (type) {
-					case SIMPLE:
-						remotingApi.addAction(beanName, method.getName(), numberOfParameters(method));
-						break;
-					case SIMPLE_NAMED:
-						remotingApi.addAction(beanName, method.getName(), parameterNames(beanClass, method));
-						break;
-					case FORM_LOAD:
-					case STORE_READ:
-					case STORE_MODIFY:
-					case TREE_LOADER:
-					case TREE_LOAD:
-						remotingApi.addAction(beanName, method.getName(), 1);
-						break;
-					case FORM_POST:
-						if (isValidFormPostMethod(beanClass, method)) {
-							remotingApi.addAction(beanName, method.getName(), 0, true);
-						} else {
-							LogFactory
-									.getLog(getClass())
-									.warn("Method '"
-											+ beanName
-											+ "."
-											+ method.getName()
-											+ "' is annotated as a form post method but is not valid. "
-											+ "A form post method must be annotated with @RequestMapping and method=RequestMethod.POST. Method ignored.");
-						}
-						break;
-					case POLL:
-						remotingApi.addPollingProvider(beanName, method.getName(), annotation.event());
-						break;
-
-					}
-
+		for (Map.Entry<MethodInfoCache.Key, MethodInfo> entry : MethodInfoCache.INSTANCE) {
+			final MethodInfo methodInfo = entry.getValue();
+			if (isSameGroup(group, methodInfo.getGroup())) {
+				if (methodInfo.getAction() != null) {
+					remotingApi.addAction(entry.getKey().getBeanName(), methodInfo.getAction());
+				} else {
+					remotingApi.addPollingProvider(methodInfo.getPollingProvider());
 				}
-
-			}
-
-		}
-	}
-
-	private int numberOfParameters(final Method method) {
-		Class<?>[] parameterTypes = method.getParameterTypes();
-		int paramLength = 0;
-		for (Class<?> parameterType : parameterTypes) {
-			if (!SupportedParameterTypes.isSupported(parameterType)) {
-				paramLength++;
 			}
 		}
-		return paramLength;
-	}
-
-	private List<String> parameterNames(final Class<?> beanClass, final Method method) {
-		MethodInfo methodInfo = new MethodInfo(beanClass, method);
-
-		List<String> result = new ArrayList<String>();
-		List<ParameterInfo> parameters = methodInfo.getParameters();
-		for (ParameterInfo parameter : parameters) {
-			if (!parameter.isSupportedParameter()) {
-				result.add(parameter.getName());
-			}
-		}
-
-		return result;
 	}
 
 	private boolean isSameGroup(final String requestedGroupString, final String annotationGroupString) {
 		if (requestedGroupString != null) {
-			String[] requestedGroups = requestedGroupString.split(",");
-			for (String requestedGroup : requestedGroups) {
-				if (annotationGroupString != null) {
-					String[] annotationGroups = annotationGroupString.split(",");
-					for (String annotationGroup : annotationGroups) {
+			if (annotationGroupString != null) {
+				for (String requestedGroup : requestedGroupString.split(",")) {
+					for (String annotationGroup : annotationGroupString.split(",")) {
 						if (ExtDirectSpringUtil.equal(requestedGroup, annotationGroup)) {
 							return true;
 						}
@@ -377,61 +292,6 @@ public class ApiController {
 		}
 
 		return true;
-	}
-
-	private boolean isValidFormPostMethod(final Class<?> clazz, final Method method) {
-		if (AnnotationUtils.findAnnotation(clazz, Controller.class) == null) {
-			return false;
-		}
-
-		RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-
-		if (methodAnnotation == null) {
-			return false;
-		}
-
-		RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
-
-		boolean hasValue = false;
-
-		if (classAnnotation != null) {
-			hasValue = (classAnnotation.value() != null && classAnnotation.value().length > 0);
-		}
-
-		if (!hasValue) {
-			hasValue = (methodAnnotation.value() != null && methodAnnotation.value().length > 0);
-		}
-
-		return hasValue && hasPostMethod(methodAnnotation.method());
-	}
-
-	private boolean hasPostMethod(RequestMethod[] methods) {
-		if (methods != null) {
-			for (RequestMethod method : methods) {
-				if (method.equals(RequestMethod.POST)) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	private Map<String, Class<?>> getAllBeanClasses() {
-		Map<String, Class<?>> beanClasses = new HashMap<String, Class<?>>();
-
-		ApplicationContext currentCtx = context;
-		do {
-			for (String beanName : currentCtx.getBeanDefinitionNames()) {
-				Class<?> type = currentCtx.getType(beanName);
-				if (type != null) {
-					beanClasses.put(beanName, type);
-				}
-			}
-			currentCtx = currentCtx.getParent();
-		} while (currentCtx != null);
-
-		return beanClasses;
 	}
 
 }

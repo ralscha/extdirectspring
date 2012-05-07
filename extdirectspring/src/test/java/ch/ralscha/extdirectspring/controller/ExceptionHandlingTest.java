@@ -30,6 +30,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 
@@ -43,13 +44,13 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 @ContextConfiguration(locations = "classpath:/testExceptionHandling.xml")
 public class ExceptionHandlingTest {
 
-	private static final String STACK_TRACE = "java.lang.IllegalArgumentException: Invalid remoting method 'remoteProviderSimple.method4'. Missing ExtDirectMethod annotation";
+	private static final String METHOD_NOT_FOUND_MESSAGE = "Method 'remoteProviderSimple.method4' not found";
 
-	private static final String ILLEGAL_ARGUMENT = "illegal argument";
+	private static final String NULL_POINTER = "null pointer";
 
 	private static final String AN_ERROR_OCCURED = "an error occured";
 
-	private static final String EXCEPTION_MESSAGE = "Invalid remoting method 'remoteProviderSimple.method4'. Missing ExtDirectMethod annotation";
+	private static final String EXCEPTION_MESSAGE = "Server Error";
 
 	@Autowired
 	private RouterController controller;
@@ -65,7 +66,7 @@ public class ExceptionHandlingTest {
 
 	@Test
 	public void testDefault() throws Exception {
-		ExtDirectResponse resp = runTest(null);
+		ExtDirectResponse resp = runTest(new Configuration());
 		assertThat(resp.getMessage()).isEqualTo("Server Error");
 		assertThat(resp.getWhere()).isNull();
 	}
@@ -92,10 +93,10 @@ public class ExceptionHandlingTest {
 	public void testExceptionToMessage() throws Exception {
 		Configuration configuration = new Configuration();
 		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
-		exceptionMessageMapping.put(IllegalArgumentException.class, ILLEGAL_ARGUMENT);
+		exceptionMessageMapping.put(NullPointerException.class, NULL_POINTER);
 		configuration.setExceptionToMessage(exceptionMessageMapping);
-		ExtDirectResponse resp = runTest(configuration);
-		assertThat(resp.getMessage()).isEqualTo(ILLEGAL_ARGUMENT);
+		ExtDirectResponse resp = runTest11(configuration);
+		assertThat(resp.getMessage()).isEqualTo(NULL_POINTER);
 		assertThat(resp.getWhere()).isNull();
 	}
 
@@ -119,7 +120,7 @@ public class ExceptionHandlingTest {
 		ExtDirectResponse resp = runTest(configuration);
 		assertThat(resp.getMessage()).isEqualTo(AN_ERROR_OCCURED);
 		assertThat(resp.getWhere()).isNotNull();
-		assertThat(resp.getWhere().startsWith(STACK_TRACE)).isTrue();
+		assertThat(resp.getWhere().startsWith(METHOD_NOT_FOUND_MESSAGE)).isTrue();
 	}
 
 	@Test
@@ -130,7 +131,7 @@ public class ExceptionHandlingTest {
 		ExtDirectResponse resp = runTest(configuration);
 		assertThat(resp.getMessage()).isEqualTo(EXCEPTION_MESSAGE);
 		assertThat(resp.getWhere()).isNotNull();
-		assertThat(resp.getWhere().startsWith(STACK_TRACE)).isTrue();
+		assertThat(resp.getWhere().startsWith(METHOD_NOT_FOUND_MESSAGE)).isTrue();
 
 	}
 
@@ -139,12 +140,12 @@ public class ExceptionHandlingTest {
 		Configuration configuration = new Configuration();
 		configuration.setSendStacktrace(true);
 		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
-		exceptionMessageMapping.put(IllegalArgumentException.class, ILLEGAL_ARGUMENT);
+		exceptionMessageMapping.put(NullPointerException.class, NULL_POINTER);
 		configuration.setExceptionToMessage(exceptionMessageMapping);
-		ExtDirectResponse resp = runTest(configuration);
-		assertThat(resp.getMessage()).isEqualTo(ILLEGAL_ARGUMENT);
+		ExtDirectResponse resp = runTest11(configuration);
+		assertThat(resp.getMessage()).isEqualTo(NULL_POINTER);
 		assertThat(resp.getWhere()).isNotNull();
-		assertThat(resp.getWhere().startsWith(STACK_TRACE)).isTrue();
+		assertThat(resp.getWhere()).startsWith("java.lang.NullPointerException");
 	}
 
 	@Test
@@ -157,16 +158,18 @@ public class ExceptionHandlingTest {
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest(configuration);
 		assertThat(resp.getMessage()).isEqualTo(EXCEPTION_MESSAGE);
-		assertThat(resp.getWhere().startsWith(STACK_TRACE)).isTrue();
+		assertThat(resp.getWhere().startsWith(METHOD_NOT_FOUND_MESSAGE)).isTrue();
 	}
 
 	private ExtDirectResponse runTest(Configuration configuration) throws Exception {
-		controller.setConfiguration(configuration);
-		controller.afterPropertiesSet();
+		ReflectionTestUtils.setField(controller, "configuration", configuration);
 
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5,
 				"string.param");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -175,6 +178,30 @@ public class ExceptionHandlingTest {
 		assertThat(resp.getType()).isEqualTo("exception");
 		assertThat(resp.getTid()).isEqualTo(2);
 		assertThat(resp.getResult()).isNull();
+
+		ReflectionTestUtils.setField(controller, "configuration", new Configuration());
+
+		return resp;
+	}
+
+	private ExtDirectResponse runTest11(Configuration configuration) throws Exception {
+		ReflectionTestUtils.setField(controller, "configuration", configuration);
+
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method11", 3);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+
+		assertThat(responses).hasSize(1);
+		ExtDirectResponse resp = responses.get(0);
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method11");
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getTid()).isEqualTo(3);
+		assertThat(resp.getResult()).isNull();
+
+		ReflectionTestUtils.setField(controller, "configuration", new Configuration());
 
 		return resp;
 	}

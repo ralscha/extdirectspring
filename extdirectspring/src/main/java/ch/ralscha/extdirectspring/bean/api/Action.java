@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.api;
+package ch.ralscha.extdirectspring.bean.api;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +26,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
  * @author Ralph Schaer
  */
 @JsonSerialize(include = Inclusion.NON_NULL)
-class Action {
+public class Action {
 
 	private final String name;
 	private final Integer len;
@@ -64,60 +64,6 @@ class Action {
 			return Collections.unmodifiableList(params);
 		}
 		return null;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((formHandler == null) ? 0 : formHandler.hashCode());
-		result = prime * result + ((len == null) ? 0 : len.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((params == null) ? 0 : params.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		Action other = (Action) obj;
-		if (formHandler == null) {
-			if (other.formHandler != null) {
-				return false;
-			}
-		} else if (!formHandler.equals(other.formHandler)) {
-			return false;
-		}
-		if (len == null) {
-			if (other.len != null) {
-				return false;
-			}
-		} else if (!len.equals(other.len)) {
-			return false;
-		}
-		if (name == null) {
-			if (other.name != null) {
-				return false;
-			}
-		} else if (!name.equals(other.name)) {
-			return false;
-		}
-		if (params == null) {
-			if (other.params != null) {
-				return false;
-			}
-		} else if (!params.equals(other.params)) {
-			return false;
-		}
-		return true;
 	}
 
 }

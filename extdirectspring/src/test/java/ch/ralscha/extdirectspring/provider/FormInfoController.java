@@ -25,11 +25,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 @Controller
@@ -37,22 +35,17 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 public class FormInfoController {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
-	@ResponseBody
 	@RequestMapping(value = "/updateInfo", method = RequestMethod.POST)
-	public ExtDirectResponse updateInfo(Locale locale, HttpServletRequest request, FormInfo formInfo,
+	public void updateInfo(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
 			BindingResult result) {
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-		builder.addErrors(result);
-		return builder.build();
+		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2")
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public void upload(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
 			BindingResult result) throws IOException {
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-		builder.addErrors(result);
-		builder.buildAndWriteUploadResponse(response);
+		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2")

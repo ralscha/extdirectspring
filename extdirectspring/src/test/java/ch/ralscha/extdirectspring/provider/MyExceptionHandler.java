@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.itest;
+package ch.ralscha.extdirectspring.provider;
 
 import java.io.IOException;
 
@@ -26,7 +26,6 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
-import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 @Component
 public class MyExceptionHandler implements HandlerExceptionResolver {
@@ -35,10 +34,8 @@ public class MyExceptionHandler implements HandlerExceptionResolver {
 
 	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse res, Object handler,
 			Exception ex) {
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-		builder.unsuccessful();
 
-		ExtDirectResponse response = builder.build();
+		ExtDirectResponse response = new ExtDirectResponse(request);
 		response.setType("exception");
 		response.setMessage("server error");
 		response.setWhere(ex.toString());

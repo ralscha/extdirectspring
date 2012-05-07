@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.api;
+package ch.ralscha.extdirectspring.util;
 
 import java.lang.ref.SoftReference;
 import java.util.Map;
@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author Ralph Schaer
  */
-enum ApiCache {
+public enum ApiCache {
 
 	/**
 	 * Singleton enum pattern

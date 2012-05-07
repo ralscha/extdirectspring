@@ -17,15 +17,17 @@ package ch.ralscha.extdirectspring.util;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map.Entry;
 
 /**
  * A simple cache for methods with key beanName/methodName
  * 
  * @author Ralph Schaer
  */
-public enum MethodInfoCache {
+public enum MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, MethodInfo>> {
 
 	/**
 	 * Singleton enum pattern
@@ -35,7 +37,7 @@ public enum MethodInfoCache {
 	private final Map<Key, MethodInfo> cache;
 
 	private MethodInfoCache() {
-		cache = new ConcurrentHashMap<Key, MethodInfo>();
+		cache = new HashMap<Key, MethodInfo>();
 	}
 
 	/**
@@ -43,21 +45,15 @@ public enum MethodInfoCache {
 	 * 
 	 * @param beanName
 	 *          the name of the bean
-	 * @param methodName
-	 *          the name of the method
 	 * @param clazz 
 	 * 			the class of the bean
 	 * @param method
 	 *          the method
-	 * @return the methodInfo object of the method
 	 */
-	public MethodInfo put(final String beanName, final String methodName, final Class<?> clazz, final Method method) {
-		if (method != null) {
-			MethodInfo info = new MethodInfo(clazz, method);
-			cache.put(new Key(beanName, methodName), info);
-			return info;
-		}
-		return null;
+	public void put(final String beanName, final Class<?> clazz, final Method method) {
+		//todo add null assert for beanName, clazz and method
+		MethodInfo info = new MethodInfo(clazz, beanName, method);
+		cache.put(new Key(beanName, method.getName()), info);
 	}
 
 	/**
@@ -71,10 +67,11 @@ public enum MethodInfoCache {
 	 *         the cache
 	 */
 	public MethodInfo get(final String beanName, final String methodName) {
+		//todo add null assert
 		return cache.get(new Key(beanName, methodName));
 	}
 
-	final static class Key {
+	public final static class Key {
 
 		private final String beanName;
 		private final String methodName;
@@ -82,6 +79,10 @@ public enum MethodInfoCache {
 		public Key(final String beanName, final String methodName) {
 			this.beanName = beanName;
 			this.methodName = methodName;
+		}
+
+		public String getBeanName() {
+			return beanName;
 		}
 
 		@Override
@@ -101,4 +102,13 @@ public enum MethodInfoCache {
 		}
 
 	}
+
+	public Iterator<Entry<Key, MethodInfo>> iterator() {
+		return cache.entrySet().iterator();
+	}
+
+	public void clear() {
+		cache.clear();
+	}
+
 }
