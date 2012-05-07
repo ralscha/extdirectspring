@@ -269,15 +269,45 @@ public class RouterControllerFormLoadTest {
 		assertThat(resp.getResult()).isNull();
 		assertThat(resp.getMessage()).isEqualTo("Server Error");
 		assertThat(resp.getWhere()).isNull();
-		RouterControllerSimpleTest.checkMethodNotFoundResponse(responses.get(1));
-		RouterControllerSimpleTest.checkNoParametersResponse(responses.get(2), 3);
+		checkMethodNotFoundResponse(responses.get(1));
+		checkNoParametersResponse(responses.get(2), 3);
 
 		checkFormLoadResult(responses.get(3), 1.1, 4);
 		checkFormLoadResult(responses.get(4), 2.2, 5);
 
-		RouterControllerSimpleTest.checkIntParameterResult(responses.get(5), 6, 40);
+		checkIntParameterResult(responses.get(5), 6, 40);
 	}
 
+	static void checkIntParameterResult(ExtDirectResponse resp, int tid, int result) {
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method6");
+		assertThat(resp.getTid()).isEqualTo(tid);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isEqualTo(result);
+	}
+	
+	static void checkMethodNotFoundResponse(ExtDirectResponse resp) {
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method4");
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getTid()).isEqualTo(2);
+		assertThat(resp.getResult()).isNull();
+		assertThat(resp.getMessage()).isEqualTo("Server Error");
+		assertThat(resp.getWhere()).isNull();
+	}
+	
+	static void checkNoParametersResponse(ExtDirectResponse resp, int tid) {
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method1");
+		assertThat(resp.getTid()).isEqualTo(tid);
+		assertThat(resp.getType()).isEqualTo("rpc");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+		assertThat(resp.getResult()).isEqualTo("method1() called");
+	}
+	
 	@Test
 	public void testResult() throws IOException {
 		Map<String, Object> data = new HashMap<String, Object>();
