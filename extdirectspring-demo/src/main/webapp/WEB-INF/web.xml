@@ -3,8 +3,13 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" metadata-complete="true">
 
 	<context-param>
+		<param-name>contextClass</param-name>
+		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+	</context-param>
+
+	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/spring/root-context.xml</param-value>
+		<param-value>ch.ralscha.extdirectspring.demo.config.SpringConfig</param-value>
 	</context-param>
 
 	<listener>
@@ -51,9 +56,10 @@
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/spring/controller/servlet-context.xml</param-value>
+			<param-value></param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
+		<multipart-config/>
 	</servlet>
 
 	<servlet-mapping>
