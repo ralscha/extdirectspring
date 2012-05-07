@@ -37,17 +37,6 @@ public class MethodInfoCacheTest {
 		assertThat(MethodInfoCache.INSTANCE).isNotNull();
 		Method thisMethod = getClass().getMethod("testPutAndGet", null);
 
-		//todo re-enable these tests
-		//		MethodInfoCache.INSTANCE.put(null, null, null);
-		//		assertThat(MethodInfoCache.INSTANCE.get(null, null)).isNull();
-		//
-		//		MethodInfoCache.INSTANCE.put(null, getClass(), thisMethod);
-		//		assertEquals(thisMethod, MethodInfoCache.INSTANCE.get(null, null).getMethod());
-		//
-		//		MethodInfoCache.INSTANCE.put(null, getClass(), thisMethod);
-		//		assertThat(MethodInfoCache.INSTANCE.get(null, "testPu")).isNull();
-		//		assertEquals(thisMethod, MethodInfoCache.INSTANCE.get(null, "testPut").getMethod());
-
 		MethodInfoCache.INSTANCE.put("methodCacheTest", getClass(), thisMethod);
 		assertThat(MethodInfoCache.INSTANCE.get("methodCacheTest", "testPu")).isNull();
 		assertThat(MethodInfoCache.INSTANCE.get("methodCacheTes", "testPut")).isNull();
