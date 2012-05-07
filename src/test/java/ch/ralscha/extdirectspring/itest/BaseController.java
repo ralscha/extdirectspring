@@ -16,35 +16,32 @@
 package ch.ralscha.extdirectspring.itest;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 public abstract class BaseController<T> {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_base")
-	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
-	public ExtDirectResponse update(HttpServletRequest request, @SuppressWarnings("unused") @Valid T model,
-			BindingResult result) {
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-		builder.addErrors(result);
-		return builder.build();
+	public void update(HttpServletRequest request, HttpServletResponse response,
+			@SuppressWarnings("unused") @Valid T model, BindingResult result) {
+		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();
 	}
 
-	public abstract ExtDirectResponse method1(HttpServletRequest request, @Valid T model, BindingResult result);
+	public abstract void method1(HttpServletRequest request, HttpServletResponse response, @Valid T model,
+			BindingResult result);
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_base")
-	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
-	public abstract ExtDirectResponse method2(HttpServletRequest request, @Valid T model, BindingResult result);
+	public abstract void method2(HttpServletRequest request, HttpServletResponse response, @Valid T model,
+			BindingResult result);
 
 }

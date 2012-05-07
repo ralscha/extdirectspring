@@ -31,12 +31,12 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.StringUtils;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
+import ch.ralscha.extdirectspring.controller.JsonHandler;
 
 /**
  * Tests for {@link JsonHandler}.
@@ -48,11 +48,9 @@ import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class JsonHandlerTest {
 
-	@Autowired
-	private JsonHandler jsonHandler;
-
 	@Test
 	public void testserializeObject() {
+		JsonHandler jsonHandler = new JsonHandler();
 		assertEquals("null", jsonHandler.writeValueAsString(null));
 		assertEquals("\"a\"", jsonHandler.writeValueAsString("a"));
 		assertEquals("1", jsonHandler.writeValueAsString(1));
@@ -76,6 +74,7 @@ public class JsonHandlerTest {
 
 	@Test
 	public void testserializeObjectBoolean() {
+		JsonHandler jsonHandler = new JsonHandler();
 		assertEquals("null", jsonHandler.writeValueAsString(null, true));
 		assertEquals("\"a\"", jsonHandler.writeValueAsString("a", true));
 		assertEquals("1", jsonHandler.writeValueAsString(1, true));
@@ -99,6 +98,7 @@ public class JsonHandlerTest {
 
 	@Test
 	public void testdeserializeStringTypeReferenceOfT() {
+		JsonHandler jsonHandler = new JsonHandler();
 		String json = "[\"1\",\"2\",\"3\",\"4\"]";
 		List<String> result = jsonHandler.readValue(json, new TypeReference<List<String>>() {/* empty */
 		});
@@ -120,6 +120,7 @@ public class JsonHandlerTest {
 
 	@Test
 	public void testdeserializeStringClassOfT() {
+		JsonHandler jsonHandler = new JsonHandler();
 		assertThat(jsonHandler.readValue("null", String.class)).isNull();
 		assertEquals("a", jsonHandler.readValue("\"a\"", String.class));
 		assertEquals(Integer.valueOf(1), jsonHandler.readValue("1", Integer.class));
@@ -152,6 +153,7 @@ public class JsonHandlerTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testJsonUtilObject() {
+		JsonHandler jsonHandler = new JsonHandler();
 		ExtDirectRequest req = new ExtDirectRequest();
 		req.setAction("testAction");
 		req.setMethod("testMethod");
@@ -176,6 +178,7 @@ public class JsonHandlerTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testJsonList() throws JsonGenerationException, JsonMappingException, IOException {
+		JsonHandler jsonHandler = new JsonHandler();
 		List<ExtDirectRequest> requests = new ArrayList<ExtDirectRequest>();
 
 		ExtDirectRequest req = new ExtDirectRequest();

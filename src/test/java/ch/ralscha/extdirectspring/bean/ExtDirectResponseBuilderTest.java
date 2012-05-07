@@ -22,8 +22,18 @@ import java.util.Map;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockMultipartHttpServletRequest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.context.support.GenericWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
+
+import ch.ralscha.extdirectspring.controller.ControllerUtil;
 
 /**
  * Tests for {@link ExtDirectResponseBuilder}.
@@ -31,23 +41,30 @@ import org.springframework.mock.web.MockHttpServletResponse;
  * @author Ralph Schaer
  */
 @SuppressWarnings("all")
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ExtDirectResponseBuilderTest {
+
+	@Autowired
+	private DefaultListableBeanFactory applicationContext;
 
 	@Test
 	public void testBuilder() {
 
 		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, new GenericWebApplicationContext(
+				applicationContext));
+
 		request.setParameter("extAction", "action");
 		request.setParameter("extMethod", "method");
 		request.setParameter("extType", "type");
 		request.setParameter("extTID", "1");
 
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
+		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
+		ExtDirectResponseBuilder.create(request, servletResponse).addResultProperty("additionalProperty", 11)
+				.buildAndWrite();
 
-		builder.addResultProperty("additionalProperty", 11);
-
-		ExtDirectResponse response = builder.build();
-
+		ExtDirectResponse response = ControllerUtil.readDirectResponse(servletResponse.getContentAsByteArray());
 		assertThat(response.getAction()).isEqualTo("action");
 		assertThat(response.getMethod()).isEqualTo("method");
 		assertThat(response.getType()).isEqualTo("type");
@@ -62,32 +79,36 @@ public class ExtDirectResponseBuilderTest {
 		assertThat(data.get("additionalProperty")).isEqualTo(11);
 		assertThat(data.get("success")).isEqualTo(true);
 
-		builder.unsuccessful();
-		response = builder.build();
+		servletResponse = new MockHttpServletResponse();
+		ExtDirectResponseBuilder.create(request, servletResponse).unsuccessful()
+				.addResultProperty("additionalProperty", 9).buildAndWrite();
+		response = ControllerUtil.readDirectResponse(servletResponse.getContentAsByteArray());
 		data = (Map<String, Object>) response.getResult();
 		assertThat(data).hasSize(2);
-		assertThat(data.get("additionalProperty")).isEqualTo(11);
+		assertThat(data.get("additionalProperty")).isEqualTo(9);
 		assertThat(data.get("success")).isEqualTo(false);
 	}
 
 	@Test
 	public void testBuilderUploadResponse() throws IOException {
 
-		MockHttpServletRequest request = new MockHttpServletRequest();
+		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
+		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, new GenericWebApplicationContext(
+				applicationContext));
+
 		request.setParameter("extAction", "action");
 		request.setParameter("extMethod", "method");
 		request.setParameter("extType", "type");
 		request.setParameter("extTID", "1");
 
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-		builder.addResultProperty("additionalProperty", false);
-		builder.addResultProperty("text", "a lot of &quot;text&quot;");
+		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
+		ExtDirectResponseBuilder.create(request, servletResponse).addResultProperty("additionalProperty", false)
+				.addResultProperty("text", "a lot of &quot;text&quot;").buildAndWrite();
 
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		builder.buildAndWriteUploadResponse(response);
+		assertThat(servletResponse.getContentType()).isEqualTo("text/html;charset=UTF-8");
+		String content = servletResponse.getContentAsString();
+		assertThat(servletResponse.getContentLength()).isEqualTo(content.getBytes().length);
 
-		assertThat(response.getContentType()).isEqualTo("text/html");
-		String content = response.getContentAsString();
 		assertThat(content.startsWith("<html><body><textarea>")).isTrue();
 		assertThat(content.endsWith("</textarea></body></html>")).isTrue();
 

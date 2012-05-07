@@ -189,6 +189,10 @@ public class RemoteProviderSimpleNamed {
 		private Integer age;
 		private Boolean active;
 
+		public ResultObject() {
+			//default constructor
+		}
+
 		public ResultObject(String name, Integer age, Boolean active) {
 			this.name = name;
 			this.age = age;

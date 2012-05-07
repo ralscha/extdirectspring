@@ -15,6 +15,8 @@
  */
 package ch.ralscha.extdirectspring.store;
 
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,22 +46,22 @@ public class BookSubServiceTest {
 	}
 
 	@Test
-	public void testCreate() {
-		new CrudTestMethods("bookSubService").testCreate(controller, response, request);
+	public void testCreate() throws IOException {
+		new CrudTestMethods("bookSubService").testCreate(controller);
 	}
 
 	@Test
-	public void testRead() {
-		new CrudTestMethods("bookSubService").testRead(controller, response, request);
+	public void testRead() throws IOException {
+		new CrudTestMethods("bookSubService").testRead(controller);
 	}
 
 	@Test
-	public void testUpdate() {
-		new CrudTestMethods("bookSubService").testUpdate(controller, response, request);
+	public void testUpdate() throws IOException {
+		new CrudTestMethods("bookSubService").testUpdate(controller);
 	}
 
 	@Test
-	public void testDelete() {
-		new CrudTestMethods("bookSubService").testDelete(controller, response, request);
+	public void testDelete() throws IOException {
+		new CrudTestMethods("bookSubService").testDelete(controller);
 	}
 }

@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,11 +63,14 @@ public class RouterControllerFormLoadTest {
 	}
 
 	@Test
-	public void testFormLoad() {
+	public void testFormLoad() throws IOException {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("d", 3.141);
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method1", 1, data);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -75,9 +79,12 @@ public class RouterControllerFormLoadTest {
 	}
 
 	@Test
-	public void testFormLoadReturnsNull() {
+	public void testFormLoadReturnsNull() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method2", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -92,9 +99,12 @@ public class RouterControllerFormLoadTest {
 	}
 
 	@Test
-	public void testWithSupportedArguments() {
+	public void testWithSupportedArguments() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method3", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -109,11 +119,14 @@ public class RouterControllerFormLoadTest {
 	}
 
 	@Test
-	public void testWithRequestParam() {
+	public void testWithRequestParam() throws IOException {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("id", 10);
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method4", 1, data);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -126,17 +139,19 @@ public class RouterControllerFormLoadTest {
 		assertThat(resp.getMessage()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		assertThat(resp.getResult() instanceof ExtDirectFormLoadResult).isTrue();
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) resp.getResult();
+		ExtDirectFormLoadResult wrapper = ControllerUtil.convertValue(resp.getResult(), ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
-		assertThat(wrapper.getData() instanceof FormInfo).isTrue();
+		FormInfo formInfo = ControllerUtil.convertValue(wrapper.getData(), FormInfo.class);
 	}
 
 	@Test
-	public void testWithRequestParamDefaultValue() {
+	public void testWithRequestParamDefaultValue() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method5", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -149,16 +164,18 @@ public class RouterControllerFormLoadTest {
 		assertThat(resp.getMessage()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		assertThat(resp.getResult() instanceof ExtDirectFormLoadResult).isTrue();
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) resp.getResult();
+		ExtDirectFormLoadResult wrapper = ControllerUtil.convertValue(resp.getResult(), ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNull();
 	}
 
 	@Test
-	public void testWithRequestParamOptional() {
+	public void testWithRequestParamOptional() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method6", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -171,15 +188,17 @@ public class RouterControllerFormLoadTest {
 		assertThat(resp.getMessage()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		assertThat(resp.getResult() instanceof ExtDirectFormLoadResult).isTrue();
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) resp.getResult();
+		ExtDirectFormLoadResult wrapper = ControllerUtil.convertValue(resp.getResult(), ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isEqualTo("TEST");
 
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("id", 11);
 		edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method6", 1, data);
-		responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		resp = responses.get(0);
@@ -192,8 +211,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(resp.getMessage()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		assertThat(resp.getResult() instanceof ExtDirectFormLoadResult).isTrue();
-		wrapper = (ExtDirectFormLoadResult) resp.getResult();
+		wrapper = ControllerUtil.convertValue(resp.getResult(), ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isEqualTo("TEST");
 	}
@@ -207,12 +225,11 @@ public class RouterControllerFormLoadTest {
 		assertThat(resp.getMessage()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		assertThat(resp.getResult() instanceof ExtDirectFormLoadResult).isTrue();
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) resp.getResult();
+		ExtDirectFormLoadResult wrapper = ControllerUtil.convertValue(resp.getResult(), ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
-		assertThat(wrapper.getData() instanceof FormInfo).isTrue();
-		FormInfo info = (FormInfo) wrapper.getData();
+
+		FormInfo info = ControllerUtil.convertValue(wrapper.getData(), FormInfo.class);
 
 		assertThat(Double.compare(back, info.getBack()) == 0).isTrue();
 		assertThat(info.isAdmin()).isEqualTo(true);
@@ -223,7 +240,7 @@ public class RouterControllerFormLoadTest {
 	}
 
 	@Test
-	public void testMultipleRequests() {
+	public void testMultipleRequests() throws IOException {
 		List<Map<String, Object>> edRequests = new ArrayList<Map<String, Object>>();
 		edRequests.add(ControllerUtil.createRequestJson("remoteProvider", "method1", 1, 3, 2.5, "string.param"));
 		edRequests.add(ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5, "string.param"));
@@ -239,7 +256,9 @@ public class RouterControllerFormLoadTest {
 
 		edRequests.add(ControllerUtil.createRequestJson("remoteProviderSimple", "method6", 6, 20, 20));
 
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequests);
+		request.setContent(ControllerUtil.writeAsByte(edRequests));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(6);
 		RouterControllerSimpleTest.checkBeanNotFoundResponse(responses.get(0));
@@ -253,12 +272,15 @@ public class RouterControllerFormLoadTest {
 	}
 
 	@Test
-	public void testResult() {
+	public void testResult() throws IOException {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("data", "one");
 		data.put("success", true);
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method7", 1, data);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -271,8 +293,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(resp.getMessage()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		assertThat(resp.getResult() instanceof ExtDirectFormLoadResult).isTrue();
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) resp.getResult();
+		ExtDirectFormLoadResult wrapper = ControllerUtil.convertValue(resp.getResult(), ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isEqualTo("one");
 
@@ -280,7 +301,13 @@ public class RouterControllerFormLoadTest {
 		data.put("data", "two");
 		data.put("success", false);
 		edRequest = ControllerUtil.createRequestJson("remoteProviderFormLoad", "method7", 1, data);
-		responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request = new MockHttpServletRequest();
+		response = new MockHttpServletResponse();
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		resp = responses.get(0);
@@ -293,8 +320,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(resp.getMessage()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		assertThat(resp.getResult() instanceof ExtDirectFormLoadResult).isTrue();
-		wrapper = (ExtDirectFormLoadResult) resp.getResult();
+		wrapper = ControllerUtil.convertValue(resp.getResult(), ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isFalse();
 		assertThat(wrapper.getData()).isEqualTo("two");
 	}

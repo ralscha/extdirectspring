@@ -8,12 +8,12 @@
 	</parent>
 
 	<prerequisites>
-		<maven>2.2.1</maven>
+		<maven>3.0.0</maven>
 	</prerequisites>
 
 	<groupId>ch.ralscha</groupId>
 	<artifactId>extdirectspring</artifactId>
-	<version>1.0.18-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 
 	<inceptionYear>2010</inceptionYear>
 
@@ -50,7 +50,7 @@
 
 	<properties>
 		<spring.version>3.0.7.RELEASE</spring.version>
-		<jackson.version>1.9.6</jackson.version>
+		<jackson.version>1.9.7</jackson.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -107,7 +107,6 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
@@ -255,7 +254,7 @@
 		<dependency>
 			<groupId>org.databene</groupId>
 			<artifactId>contiperf</artifactId>
-			<version>2.0.0</version>
+			<version>2.1.0</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -297,14 +296,14 @@
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
-			<version>7.5.4.v20111024</version>
+			<version>7.6.3.v20120416</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-webapp</artifactId>
-			<version>7.5.4.v20111024</version>
+			<version>7.6.3.v20120416</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -314,7 +313,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<version>2.4</version>
 				<configuration>
 					<source>1.5</source>
 					<target>1.5</target>
@@ -380,7 +379,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>3.0</version>
+				<version>3.1</version>
 				<configuration>
 					<reportPlugins>
 						<plugin>
@@ -404,24 +403,24 @@
 						</plugin>
 						<plugin>
 							<artifactId>maven-pmd-plugin</artifactId>
-							<version>2.5</version>
+							<version>2.7.1</version>
 							<configuration>
 								<targetJdk>1.5</targetJdk>
 							</configuration>
 						</plugin>
 						<plugin>
 							<artifactId>maven-surefire-report-plugin</artifactId>
-							<version>2.6</version>
+							<version>2.9</version>
 						</plugin>
 						<plugin>
 							<groupId>org.codehaus.mojo</groupId>
 							<artifactId>findbugs-maven-plugin</artifactId>
-							<version>2.3.1</version>
+							<version>2.4.0</version>
 						</plugin>
 						<plugin>
 							<groupId>org.codehaus.mojo</groupId>
 							<artifactId>cobertura-maven-plugin</artifactId>
-							<version>2.4</version>
+							<version>2.5.1</version>
 						</plugin>
 					</reportPlugins>
 				</configuration>

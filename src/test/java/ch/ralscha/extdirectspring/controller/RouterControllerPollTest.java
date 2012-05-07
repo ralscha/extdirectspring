@@ -53,8 +53,10 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollNoArguments() throws Exception {
-		ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage1", "message1", request, response,
-				Locale.ENGLISH);
+
+		controller.poll("pollProvider", "handleMessage1", "message1", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
 		assertThat(resp.getName()).isEqualTo("message1");
@@ -65,8 +67,9 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollSupportedArguments() throws Exception {
-		ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage2", "message2", request, response,
-				Locale.ENGLISH);
+		controller.poll("pollProvider", "handleMessage2", "message2", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
 		assertThat(resp.getName()).isEqualTo("message2");
@@ -78,8 +81,10 @@ public class RouterControllerPollTest {
 	@Test
 	public void pollRequiredArgument() throws Exception {
 		request.setParameter("id", "2");
-		ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage3", "message3", request, response,
-				Locale.ENGLISH);
+
+		controller.poll("pollProvider", "handleMessage3", "message3", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
 		assertThat(resp.getName()).isEqualTo("message3");
@@ -90,8 +95,10 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollRequiredArgumentNoRequestParameter() throws Exception {
-		ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage3", "message3", request, response,
-				Locale.ENGLISH);
+
+		controller.poll("pollProvider", "handleMessage3", "message3", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("exception");
 		assertThat(resp.getName()).isEqualTo("message3");
@@ -103,8 +110,10 @@ public class RouterControllerPollTest {
 	@Test
 	public void pollDefaultValueArgumentWithRequestParameter() throws Exception {
 		request.setParameter("id", "7");
-		ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage4", "message4", request, response,
-				Locale.ENGLISH);
+
+		controller.poll("pollProvider", "handleMessage4", "message4", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
 		assertThat(resp.getName()).isEqualTo("message4");
@@ -115,8 +124,9 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollDefaultValueArgumentWithoutRequestParameter() throws Exception {
-		ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage4", "message4", request, response,
-				Locale.ENGLISH);
+		controller.poll("pollProvider", "handleMessage4", "message4", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
 		assertThat(resp.getName()).isEqualTo("message4");
@@ -128,8 +138,10 @@ public class RouterControllerPollTest {
 	@Test
 	public void pollNotRequiredArgumentWithRequestParameter() throws Exception {
 		request.setParameter("id", "3");
-		ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage5", "message5", request, response,
-				Locale.ENGLISH);
+
+		controller.poll("pollProvider", "handleMessage5", "message5", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
 		assertThat(resp.getName()).isEqualTo("message5");
@@ -140,8 +152,9 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollNotRequiredArgumentWithoutRequestParameter() throws Exception {
-		ExtDirectPollResponse resp = controller.poll("pollProvider", "handleMessage5", "message5", request, response,
-				Locale.ENGLISH);
+		controller.poll("pollProvider", "handleMessage5", "message5", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
 		assertThat(resp.getName()).isEqualTo("message5");

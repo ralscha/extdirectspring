@@ -17,12 +17,14 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.codehaus.jackson.type.TypeReference;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,10 +61,13 @@ public class RouterControllerInterfaceTest {
 	}
 
 	@Test
-	public void testNoParameters() {
+	public void testNoParameters() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderImplementation", "method2", 1,
 				null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		ExtDirectResponse resp = responses.get(0);
 		assertThat(responses).hasSize(1);
@@ -76,10 +81,13 @@ public class RouterControllerInterfaceTest {
 	}
 
 	@Test
-	public void testNoParameterAnnotation() {
+	public void testNoParameterAnnotation() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderImplementation", "method3", 1,
 				20, 2.1, "aString");
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		ExtDirectResponse resp = responses.get(0);
 		assertThat(responses).hasSize(1);
@@ -93,7 +101,7 @@ public class RouterControllerInterfaceTest {
 	}
 
 	@Test
-	public void testWithRequestParamAnnotation() {
+	public void testWithRequestParamAnnotation() throws IOException {
 
 		Map<String, Object> readRequest = new HashMap<String, Object>();
 		readRequest.put("lastName", "Smith");
@@ -101,7 +109,9 @@ public class RouterControllerInterfaceTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderImplementation", "storeRead",
 				1, readRequest);
 
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -114,7 +124,8 @@ public class RouterControllerInterfaceTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		List<Row> rows = (List<Row>) resp.getResult();
+		List<Row> rows = ControllerUtil.convertValue(resp.getResult(), new TypeReference<List<Row>>() {
+		});
 		assertThat(rows).hasSize(1);
 		Row theRow = rows.get(0);
 		assertThat(theRow.getId()).isEqualTo(1);

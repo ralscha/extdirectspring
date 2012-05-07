@@ -13,25 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.util;
+package ch.ralscha.extdirectspring.controller;
+
+import java.io.InputStream;
 
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig.Feature;
 import org.codehaus.jackson.type.TypeReference;
-import org.springframework.stereotype.Component;
 
-@Component
 public class JsonHandler {
 
 	private ObjectMapper mapper;
-	private ObjectMapper indentMapper;
 
 	public JsonHandler() {
 		mapper = new ObjectMapper();
-		indentMapper = new ObjectMapper();
-		indentMapper.getSerializationConfig().enable(Feature.INDENT_OUTPUT);
-		//jackson 1.9: indentMapper.enable(Feature.INDENT_OUTPUT);
 	}
 
 	public void setMapper(ObjectMapper mapper) {
@@ -42,12 +37,8 @@ public class JsonHandler {
 		this.mapper = mapper;
 	}
 
-	public void setIndentMapper(ObjectMapper indentMapper) {
-		if (indentMapper == null) {
-			throw new IllegalArgumentException("ObjectMapper must not be null");
-		}
-
-		this.indentMapper = indentMapper;
+	public ObjectMapper getMapper() {
+		return mapper;
 	}
 
 	/**
@@ -75,11 +66,11 @@ public class JsonHandler {
 	public String writeValueAsString(Object obj, boolean indent) {
 		try {
 			if (indent) {
-				return indentMapper.writeValueAsString(obj);
+				return mapper.writer().withDefaultPrettyPrinter().writeValueAsString(obj);
 			}
 			return mapper.writeValueAsString(obj);
 		} catch (Exception e) {
-			LogFactory.getLog(ExtDirectSpringUtil.class).info("serialize object to json", e);
+			LogFactory.getLog(JsonHandler.class).info("serialize object to json", e);
 			return null;
 		}
 	}
@@ -102,7 +93,7 @@ public class JsonHandler {
 		try {
 			return (T) mapper.readValue(json, typeReference);
 		} catch (Exception e) {
-			LogFactory.getLog(ExtDirectSpringUtil.class).info("deserialize json to object", e);
+			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
 			return null;
 		}
 	}
@@ -123,7 +114,16 @@ public class JsonHandler {
 		try {
 			return mapper.readValue(json, clazz);
 		} catch (Exception e) {
-			LogFactory.getLog(ExtDirectSpringUtil.class).info("deserialize json to object", e);
+			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
+			return null;
+		}
+	}
+
+	public Object readValue(InputStream is, Class<Object> clazz) {
+		try {
+			return mapper.readValue(is, clazz);
+		} catch (Exception e) {
+			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
 			return null;
 		}
 	}

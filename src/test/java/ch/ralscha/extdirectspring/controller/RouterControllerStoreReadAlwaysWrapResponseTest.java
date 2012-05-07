@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -59,12 +60,17 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 	}
 
 	@Test
-	public void testNoArgumentsNoRequestParameters() {
+	public void testNoArgumentsNoRequestParameters() throws IOException {
+
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method1", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
+
 		assertThat(resp.getAction()).isEqualTo("remoteProviderStoreRead");
 		assertThat(resp.getMethod()).isEqualTo("method1");
 		assertThat(resp.getType()).isEqualTo("rpc");
@@ -73,21 +79,25 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse) resp.getResult();
+		ExtDirectStoreResponse storeResponse = ControllerUtil.convertValue(resp.getResult(),
+				ExtDirectStoreResponse.class);
 		List<Row> rows = (List<Row>) storeResponse.getRecords();
 		assertThat(rows.size()).isEqualTo(100);
 
 	}
 
 	@Test
-	public void testNoArgumentsWithRequestParameters() {
+	public void testNoArgumentsWithRequestParameters() throws IOException {
 
 		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
 		storeRead.setQuery("ralph");
 
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method1", 1,
 				storeRead);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -99,17 +109,20 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse) resp.getResult();
+		ExtDirectStoreResponse storeResponse = ControllerUtil.convertValue(resp.getResult(),
+				ExtDirectStoreResponse.class);
 		List<Row> rows = (List<Row>) storeResponse.getRecords();
 		assertThat(rows.size()).isEqualTo(100);
 
 	}
 
 	@Test
-	public void testSupportedArguments() {
-
+	public void testSupportedArguments() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method3", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -121,17 +134,21 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse) resp.getResult();
+		ExtDirectStoreResponse storeResponse = ControllerUtil.convertValue(resp.getResult(),
+				ExtDirectStoreResponse.class);
 		List<Row> rows = (List<Row>) storeResponse.getRecords();
 		assertThat(rows.size()).isEqualTo(100);
 
 	}
 
 	@Test
-	public void testWithAdditionalParametersOptional() {
+	public void testWithAdditionalParametersOptional() throws IOException {
 
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method7", 1, null);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -144,7 +161,8 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		ExtDirectStoreResponse storeResponse = (ExtDirectStoreResponse) resp.getResult();
+		ExtDirectStoreResponse storeResponse = ControllerUtil.convertValue(resp.getResult(),
+				ExtDirectStoreResponse.class);
 		List<Row> rows = (List<Row>) storeResponse.getRecords();
 		assertThat(rows.size()).isEqualTo(100);
 
@@ -153,7 +171,12 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		readRequest.put("query", "");
 
 		edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method7", 1, readRequest);
-		responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		response = new MockHttpServletResponse();
+		request = new MockHttpServletRequest();
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		resp = responses.get(0);
@@ -166,7 +189,7 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		storeResponse = (ExtDirectStoreResponse) resp.getResult();
+		storeResponse = ControllerUtil.convertValue(resp.getResult(), ExtDirectStoreResponse.class);
 		rows = (List<Row>) storeResponse.getRecords();
 		assertThat(rows.size()).isEqualTo(100);
 

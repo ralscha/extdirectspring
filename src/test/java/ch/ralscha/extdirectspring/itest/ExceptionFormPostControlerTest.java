@@ -69,15 +69,12 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
 		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-		assertThat(rootAsMap).hasSize(7);
+		assertThat(rootAsMap).hasSize(6);
 		assertThat(rootAsMap.get("method")).isEqualTo("throwAException");
 		assertThat(rootAsMap.get("type")).isEqualTo("exception");
 		assertThat(rootAsMap.get("action")).isEqualTo("exceptionFormPostController");
 		assertThat(rootAsMap.get("tid")).isEqualTo(3);
 		assertThat(rootAsMap.get("message")).isEqualTo("server error");
 		assertThat(rootAsMap.get("where")).isEqualTo("java.lang.NullPointerException: a null pointer");
-		@SuppressWarnings("unchecked")
-		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertThat(result.get("success")).isEqualTo(false);
 	}
 }

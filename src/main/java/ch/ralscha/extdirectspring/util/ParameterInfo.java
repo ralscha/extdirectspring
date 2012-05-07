@@ -17,17 +17,9 @@ package ch.ralscha.extdirectspring.util;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Proxy;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.springframework.aop.support.AopUtils;
 import org.springframework.core.GenericCollectionTypeResolver;
-import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.util.StringUtils;
@@ -50,12 +42,12 @@ public class ParameterInfo {
 	private TypeDescriptor typeDescriptor;
 	private boolean supportedParameter;
 
-	public ParameterInfo(Class<?> clazz, Method method, Method methodWithAnnotation, int paramIndex, Class<?> type, String paramName,
-			Annotation[] paramAnnotations) {
+	public ParameterInfo(Class<?> clazz, Method method, Method methodWithAnnotation, int paramIndex, Class<?> type,
+			String paramName, Annotation[] paramAnnotations) {
 		this.type = type;
 		this.supportedParameter = SupportedParameterTypes.isSupported(type);
 		this.name = paramName;
-		
+
 		Method typeDescriptorMethod = method;
 		if (methodWithAnnotation != null) {
 			typeDescriptorMethod = methodWithAnnotation;
@@ -124,10 +116,6 @@ public class ParameterInfo {
 
 		if (paramType == null) {
 
-			Map<TypeVariable<?>, Class<?>> typeVarMap = getTypeVariableMap(clazz);
-
-			paramType = getGenericCollectionParameterType(typeVarMap, method, paramIndex);
-
 			Class<?> superClass = clazz.getSuperclass();
 
 			while (superClass != null && paramType == null) {
@@ -137,67 +125,12 @@ public class ParameterInfo {
 					paramType = GenericCollectionTypeResolver.getCollectionParameterType(new MethodParameter(
 							equivalentMethod, paramIndex));
 
-					if (paramType == null) {
-						paramType = getGenericCollectionParameterType(typeVarMap, equivalentMethod, paramIndex);
-					}
-
 				} catch (NoSuchMethodException e) {
 					// do nothing here
 				}
 				superClass = superClass.getSuperclass();
 			}
 		}
-
 		return paramType;
-	}
-
-	private Class<?> getGenericCollectionParameterType(final Map<TypeVariable<?>, Class<?>> typeVarMap,
-			final Method method, final int paramIndex) {
-
-		if (!typeVarMap.isEmpty()) {
-			Type genericType = method.getGenericParameterTypes()[paramIndex];
-
-			if (genericType instanceof ParameterizedType) {
-				ParameterizedType parameterizedType = (ParameterizedType) genericType;
-				Type actualType = parameterizedType.getActualTypeArguments()[0];
-				if (actualType instanceof TypeVariable) {
-					return typeVarMap.get(actualType);
-				}
-			}
-		}
-		return null;
-
-	}
-
-	/**
-	 * Copy of Spring's {@link org.springframework.core.GenericTypeResolver}. Needed
-	 * until {@link #getTypeVariableMap(Class)} gets public.
-	 * 
-	 * TODO: remove that method, as soon as Spring 3.0.6 gets released.
-	 */
-	private Map<TypeVariable<?>, Class<?>> getTypeVariableMap(final Class<?> c) {
-		Map<TypeVariable<?>, Class<?>> varMap = new HashMap<TypeVariable<?>, Class<?>>();
-
-		Class<?> clazz;
-		if (Proxy.isProxyClass(c) || AopUtils.isCglibProxyClass(c)) {
-			clazz = c.getSuperclass();
-		} else {
-			clazz = c;
-		}
-
-		Type genericSuperclassType = clazz.getGenericSuperclass();
-		if (genericSuperclassType instanceof ParameterizedType) {
-			ParameterizedType parameterizedType = (ParameterizedType) genericSuperclassType;
-			Class<?>[] typeArguments = GenericTypeResolver.resolveTypeArguments(clazz, clazz.getSuperclass());
-			varMap = new HashMap<TypeVariable<?>, Class<?>>();
-
-			TypeVariable<?>[] typeVariables = ((Class<?>) parameterizedType.getRawType()).getTypeParameters();
-
-			for (int i = 0; i < typeVariables.length; i++) {
-				varMap.put(typeVariables[i], typeArguments[i]);
-			}
-		}
-
-		return varMap;
 	}
 }

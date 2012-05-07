@@ -47,6 +47,7 @@ public class Configuration {
 	private Integer timeout = null;
 	private Integer maxRetries = null;
 	private Object enableBuffer = null;
+	private boolean streamResponse = false;
 
 	public String getDefaultExceptionMessage() {
 		return defaultExceptionMessage;
@@ -139,5 +140,13 @@ public class Configuration {
 		}
 		return getDefaultExceptionMessage();
 
+	}
+
+	public boolean isStreamResponse() {
+		return streamResponse;
+	}
+
+	public void setStreamResponse(boolean streamResponse) {
+		this.streamResponse = streamResponse;
 	}
 }

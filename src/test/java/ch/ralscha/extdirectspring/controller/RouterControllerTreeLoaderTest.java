@@ -17,11 +17,13 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.LocalDate;
 import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Before;
@@ -59,14 +61,17 @@ public class RouterControllerTreeLoaderTest {
 	}
 
 	@Test
-	public void testNoAdditionalParameters() {
+	public void testNoAdditionalParameters() throws IOException {
 
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoad", "method1", 1,
 				requestParameters);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 
@@ -78,12 +83,13 @@ public class RouterControllerTreeLoaderTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
 
-		assertResult((List<Node>) resp.getResult());
+		assertResult(ControllerUtil.convertValue(resp.getResult(), new TypeReference<List<Node>>() {
+		}));
 
 	}
 
 	@Test
-	public void testAdditionalParameters() {
+	public void testAdditionalParameters() throws IOException {
 
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
@@ -92,7 +98,10 @@ public class RouterControllerTreeLoaderTest {
 
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoad", "method2", 2,
 				requestParameters);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 
@@ -104,18 +113,22 @@ public class RouterControllerTreeLoaderTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
 
-		assertResult((List<Node>) resp.getResult());
+		assertResult(ControllerUtil.convertValue(resp.getResult(), new TypeReference<List<Node>>() {
+		}));
 
 	}
 
 	@Test
-	public void testSupportedParameters() {
+	public void testSupportedParameters() throws IOException {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoad", "method3", 3,
 				requestParameters);
-		List<ExtDirectResponse> responses = controller.router(request, response, Locale.ENGLISH, edRequest);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 
@@ -127,7 +140,8 @@ public class RouterControllerTreeLoaderTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
 
-		assertResult((List<Node>) resp.getResult());
+		assertResult(ControllerUtil.convertValue(resp.getResult(), new TypeReference<List<Node>>() {
+		}));
 	}
 
 	private void assertResult(List<Node> nodes) {

@@ -16,6 +16,7 @@
 package ch.ralscha.extdirectspring.itest;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 @Controller
@@ -36,8 +36,9 @@ public class UserController {
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_user")
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
-	public ExtDirectResponse updateUser(HttpServletRequest request, @Valid User user, BindingResult result) {
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
+	public void updateUser(HttpServletRequest request, HttpServletResponse response, @Valid User user,
+			BindingResult result) {
+		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request, response);
 
 		if (request.getParameter("addemailerror") != null) {
 			result.rejectValue("email", "", "another email error");
@@ -48,7 +49,8 @@ public class UserController {
 
 		builder.addResultProperty("name", user.getName());
 		builder.addResultProperty("age", user.getAge());
-		return builder.build();
+
+		builder.buildAndWrite();
 	}
 
 }
