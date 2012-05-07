@@ -51,7 +51,6 @@ public enum MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, M
 	 *          the method
 	 */
 	public void put(final String beanName, final Class<?> clazz, final Method method) {
-		//todo add null assert for beanName, clazz and method
 		MethodInfo info = new MethodInfo(clazz, beanName, method);
 		cache.put(new Key(beanName, method.getName()), info);
 	}
@@ -67,7 +66,6 @@ public enum MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, M
 	 *         the cache
 	 */
 	public MethodInfo get(final String beanName, final String methodName) {
-		//todo add null assert
 		return cache.get(new Key(beanName, methodName));
 	}
 

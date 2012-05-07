@@ -26,6 +26,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
@@ -35,8 +36,8 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import ch.ralscha.extdirectspring.controller.RouterController;
 
 /**
- * An utility class that helps building a {@link ExtDirectResponse}. A form
- * handler must return an instance of such type.
+ * An utility class that helps building the response for a FORM_POST method. 
+ * The reponse is written directly into the http servlet response with {@link #buildAndWrite()}
  * 
  * @author Ralph Schaer
  */
@@ -48,12 +49,12 @@ public class ExtDirectResponseBuilder {
 	private final Map<String, Object> result;
 
 	/**
-	 * Creates a builder that builds the response object needed for form handler
-	 * and form upload handler methods. Sets the successful flag to true, can be
+	 * Creates a builder that builds the response object needed for FORM_POST methods. 
+	 * Sets the successful flag to true, can be
 	 * changed with the successful() and unsuccessful() methods
 	 * 
-	 * @param request
-	 *          the current request
+	 * @param request the current http servlet request object
+	 * @param response the current http servlet response object
 	 */
 	public ExtDirectResponseBuilder(final HttpServletRequest request, final HttpServletResponse response) {
 		this.request = request;
@@ -70,10 +71,11 @@ public class ExtDirectResponseBuilder {
 	}
 
 	/**
-	 * Creates a errors property in the response if there are any errors in the
+	 * Creates an errors property in the response if there are any errors in the
 	 * bindingResult Sets the success flag to false if there are errors
 	 * 
 	 * @param bindingResult
+	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder addErrors(final BindingResult bindingResult) {
 		addErrors(null, null, bindingResult);
@@ -84,9 +86,10 @@ public class ExtDirectResponseBuilder {
 	 * Creates a errors property in the response if there are any errors in the
 	 * bindingResult Sets the success flag to false if there are errors
 	 * 
-	 * @param locale
+	 * @param locale 
 	 * @param messageSource
 	 * @param bindingResult
+	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder addErrors(final Locale locale, final MessageSource messageSource,
 			final BindingResult bindingResult) {
@@ -120,10 +123,9 @@ public class ExtDirectResponseBuilder {
 	/**
 	 * Add additional property to the response
 	 * 
-	 * @param key
-	 *          the key of the property
-	 * @param value
-	 *          the value of this property
+	 * @param key the key of the property
+	 * @param value the value of this property
+	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder addResultProperty(final String key, final Object value) {
 		result.put(key, value);
@@ -132,6 +134,7 @@ public class ExtDirectResponseBuilder {
 
 	/**
 	 * Sets success flag to true
+	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder successful() {
 		result.put("success", true);
@@ -140,6 +143,7 @@ public class ExtDirectResponseBuilder {
 
 	/**
 	 * Sets success flag to false
+	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder unsuccessful() {
 		result.put("success", false);
@@ -147,13 +151,12 @@ public class ExtDirectResponseBuilder {
 	}
 
 	/**
-	 * Builds and writes the response to the OutputStream of the response. This
-	 * methods has to be called at the end of a form upload handler method.	 * 
+	 * Builds and writes the response to the OutputStream of the http servlet response. This
+	 * methods has to be called at the end of a FORM_POST method.	
 	 */
 	public void buildAndWrite() {
 
 		try {
-
 			RouterController routerController = RequestContextUtils.getWebApplicationContext(request).getBean(
 					RouterController.class);
 
@@ -178,8 +181,7 @@ public class ExtDirectResponseBuilder {
 						.isStreamResponse());
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LogFactory.getLog(getClass()).error("buildAndWrite", e);
 			throw new RuntimeException(e);
 		}
 

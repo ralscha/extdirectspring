@@ -61,6 +61,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.WebUtils;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
@@ -83,7 +84,7 @@ import ch.ralscha.extdirectspring.util.ParameterInfo;
 import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
 
 /**
- * Main router controller who handles polling, form handler and normal
+ * Main router controller that handles polling, form handler and normal
  * Ext.Direct calls
  * 
  * @author mansari
@@ -147,14 +148,15 @@ public class RouterController implements InitializingBean {
 				ExtDirectMethod directMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 				if (directMethodAnnotation.value() == ExtDirectMethodType.FORM_POST) {
 					if (!isValidFormPostMethod(userType, method)) {
-						//todo do logging
-						//					if (!method.getReturnType().equals(DirectFormPostResult.class)) {
-						//						log.warn("Method '" + beanName + "." + method.getName()
-						//								+ "' is annotated as a form post method but is not valid. "
-						//								+ "A form post method must return an instance of DirectFormPostResult.");
+						log.warn("Method '" + beanName + "." + method.getName()
+								+ "' is annotated with FORM_POST but is not valid. "
+								+ "A form post method must not return anything, " +
+								"needs to be part of a @Controller bean, " +
+								"and needs annotated with @RequestMapping.");
 						continue;
 					}
 				}
+				log.debug("Register " + beanName + "." + method.getName() + " " + directMethodAnnotation.value());
 				MethodInfoCache.INSTANCE.put(beanName, handlerType, method);
 			}
 
@@ -167,6 +169,10 @@ public class RouterController implements InitializingBean {
 			return false;
 		}
 
+		if (AnnotationUtils.findAnnotation(clazz, ResponseBody.class) != null) {
+			return false;
+		}
+		
 		if (AnnotationUtils.findAnnotation(clazz, Controller.class) == null) {
 			return false;
 		}
