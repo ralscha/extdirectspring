@@ -77,27 +77,28 @@ public class MethodInfoCacheTest {
 		assertThat(methodBInfo.getMethod().equals(methodBWithAnnotation)).isTrue();
 	}
 
-
-	@Test(expected=NullPointerException.class)
+	@Test(expected = NullPointerException.class)
 	public void testInvokeWithNull() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 		ExtDirectSpringUtil.invoke(null, null, null, null);
 	}
-	
-	@Test(expected=NoSuchBeanDefinitionException.class)
-	public void testNonExistingBeanAndMethod() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+
+	@Test(expected = NoSuchBeanDefinitionException.class)
+	public void testNonExistingBeanAndMethod() throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
 		ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 		MethodInfo info = MethodInfoCache.INSTANCE.get("springManagedBeanA", "methodA");
 		ExtDirectSpringUtil.invoke(context, "springManagedBeanA", info, null);
 	}
-	
-	@Test(expected=NullPointerException.class)
-	public void testExistingWithouEdsAnnotation() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+
+	@Test(expected = NullPointerException.class)
+	public void testExistingWithouEdsAnnotation() throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
 		ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 		MethodInfo info = MethodInfoCache.INSTANCE.get("springManagedBean", "methodA");
 		ExtDirectSpringUtil.invoke(context, "springManagedBean", info, null);
 	}
-	
+
 	@Test
 	public void testFindMethodAndInvoke() throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException {
@@ -110,10 +111,12 @@ public class MethodInfoCacheTest {
 
 		MethodInfo infoSum = MethodInfoCache.INSTANCE.get("springManagedBean", "sum");
 
-		assertThat(ExtDirectSpringUtil.invoke(context, "springManagedBean", infoSum, new Object[] { 1, 2 })).isEqualTo(Integer.valueOf(3));
-		assertThat(ExtDirectSpringUtil.invoke(context, "springManagedBean", infoSum, new Object[] { 6, 3 })).isEqualTo(Integer.valueOf(9));
+		assertThat(ExtDirectSpringUtil.invoke(context, "springManagedBean", infoSum, new Object[] { 1, 2 })).isEqualTo(
+				Integer.valueOf(3));
+		assertThat(ExtDirectSpringUtil.invoke(context, "springManagedBean", infoSum, new Object[] { 6, 3 })).isEqualTo(
+				Integer.valueOf(9));
 
 		assertThat(MethodInfoCache.INSTANCE.get("springManagedBean", "methodC")).isNull();
 	}
-	
+
 }

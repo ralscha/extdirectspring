@@ -150,9 +150,9 @@ public class RouterController implements InitializingBean {
 					if (!isValidFormPostMethod(userType, method)) {
 						log.warn("Method '" + beanName + "." + method.getName()
 								+ "' is annotated with FORM_POST but is not valid. "
-								+ "A form post method must not return anything, " +
-								"needs to be part of a @Controller bean, " +
-								"and needs annotated with @RequestMapping.");
+								+ "A form post method must not return anything, "
+								+ "needs to be part of a @Controller bean, "
+								+ "and needs annotated with @RequestMapping.");
 						continue;
 					}
 				}
@@ -172,7 +172,7 @@ public class RouterController implements InitializingBean {
 		if (AnnotationUtils.findAnnotation(clazz, ResponseBody.class) != null) {
 			return false;
 		}
-		
+
 		if (AnnotationUtils.findAnnotation(clazz, Controller.class) == null) {
 			return false;
 		}

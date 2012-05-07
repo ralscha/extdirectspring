@@ -34,7 +34,7 @@ public class MyExceptionHandler implements HandlerExceptionResolver {
 
 	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse res, Object handler,
 			Exception ex) {
-		
+
 		ExtDirectResponse response = new ExtDirectResponse(request);
 		response.setType("exception");
 		response.setMessage("server error");

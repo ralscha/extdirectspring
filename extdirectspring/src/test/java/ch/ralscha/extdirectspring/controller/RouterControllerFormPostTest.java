@@ -59,8 +59,8 @@ public class RouterControllerFormPostTest {
 		request.setParameter("extAction", "remoteProviderSimple");
 		request.setParameter("extMethod", "method1");
 		controller.router(request, response, "remoteProviderSimple", "method1");
-		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(response.getContentAsByteArray());		
-		
+		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(response.getContentAsByteArray());
+
 		assertThat(edsResponse.getType()).isEqualTo("exception");
 		assertThat(edsResponse.getMessage()).isEqualTo("Server Error");
 		assertThat(edsResponse.getWhere()).isNull();
@@ -68,29 +68,29 @@ public class RouterControllerFormPostTest {
 		assertThat(edsResponse.getAction()).isEqualTo("remoteProviderSimple");
 		assertThat(edsResponse.getMethod()).isEqualTo("method1");
 	}
-	
+
 	@Test
 	public void testCallNonExistsFormPostMethodWithConfig() throws IOException {
 		Configuration conf = new Configuration();
 		conf.setDefaultExceptionMessage("something wrong");
 		conf.setSendStacktrace(true);
 		ReflectionTestUtils.setField(controller, "configuration", conf);
-		
+
 		request.setParameter("extTID", "12");
 		request.setParameter("extAction", "remoteProviderSimple");
 		request.setParameter("extMethod", "method1");
 		controller.router(request, response, "remoteProviderSimple", "method1");
-		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(response.getContentAsByteArray());		
-		
+		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(response.getContentAsByteArray());
+
 		assertThat(edsResponse.getType()).isEqualTo("exception");
 		assertThat(edsResponse.getMessage()).isEqualTo("something wrong");
 		assertThat(edsResponse.getWhere()).isEqualTo("Method 'remoteProviderSimple.method1' not found");
-		
+
 		assertThat(edsResponse.getTid()).isEqualTo(12);
 		assertThat(edsResponse.getAction()).isEqualTo("remoteProviderSimple");
 		assertThat(edsResponse.getMethod()).isEqualTo("method1");
 	}
-	
+
 	public void testCallExistsFormPostMethod() throws IOException {
 		String redirect = controller.router(request, response, "formInfoController", "updateInfo");
 		assertThat(redirect).isEqualTo("forward:updateInfo");

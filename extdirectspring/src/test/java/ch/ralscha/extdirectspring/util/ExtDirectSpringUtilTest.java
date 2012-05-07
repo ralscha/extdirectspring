@@ -45,5 +45,4 @@ public class ExtDirectSpringUtilTest {
 		assertThat(ExtDirectSpringUtil.equal(null, null)).isTrue();
 	}
 
-
 }
