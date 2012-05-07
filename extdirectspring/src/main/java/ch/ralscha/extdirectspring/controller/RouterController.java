@@ -81,7 +81,7 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.MethodInfo;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
 import ch.ralscha.extdirectspring.util.ParameterInfo;
-import ch.ralscha.extdirectspring.util.SupportedParameterTypes;
+import ch.ralscha.extdirectspring.util.SupportedParameters;
 
 /**
  * Main router controller that handles polling, form handler and normal
@@ -236,8 +236,8 @@ public class RouterController implements InitializingBean {
 						ParameterInfo methodParameter = methodParameters.get(paramIndex);
 
 						if (methodParameter.isSupportedParameter()) {
-							parameters[paramIndex] = SupportedParameterTypes.resolveParameter(
-									methodParameter.getType(), request, response, locale);
+							parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(),
+									request, response, locale);
 						} else {
 							parameters[paramIndex] = handleRequestParam(request, null, methodParameter);
 						}
@@ -473,14 +473,16 @@ public class RouterController implements InitializingBean {
 				ParameterInfo methodParameter = methodParameters.get(paramIndex);
 
 				if (methodParameter.isSupportedParameter()) {
-					parameters[paramIndex] = SupportedParameterTypes.resolveParameter(methodParameter.getType(),
-							request, response, locale);
+					parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(), request,
+							response, locale);
 				} else if (ExtDirectStoreReadRequest.class.isAssignableFrom(methodParameter.getType())) {
 					parameters[paramIndex] = ExtDirectStoreReadRequest;
 				} else if (directStoreModifyRecords != null && methodParameter.getCollectionType() != null) {
 					parameters[paramIndex] = directStoreModifyRecords;
 				} else if (methodParameter.isHasRequestParamAnnotation()) {
 					parameters[paramIndex] = handleRequestParam(null, remainingParameters, methodParameter);
+				} else if (methodParameter.isHasRequestHeaderAnnotation()) {
+					parameters[paramIndex] = handleRequestHeader(request, methodParameter);
 				} else if (remainingParameters != null && remainingParameters.containsKey(methodParameter.getName())) {
 					Object jsonValue = remainingParameters.get(methodParameter.getName());
 					parameters[paramIndex] = convertValue(jsonValue, methodParameter);
@@ -510,19 +512,19 @@ public class RouterController implements InitializingBean {
 		return ExtDirectSpringUtil.invoke(context, directRequest.getAction(), methodInfo, parameters);
 	}
 
-	private Object convertValue(Object jsonValue, ParameterInfo methodParameter) {
-		if (jsonValue != null) {
-			if (methodParameter.getType().equals(jsonValue.getClass())) {
-				return jsonValue;
-			} else if (conversionService.canConvert(TypeDescriptor.forObject(jsonValue),
+	private Object convertValue(Object value, ParameterInfo methodParameter) {
+		if (value != null) {
+			if (methodParameter.getType().equals(value.getClass())) {
+				return value;
+			} else if (conversionService.canConvert(TypeDescriptor.forObject(value),
 					methodParameter.getTypeDescriptor())) {
-				return conversionService.convert(jsonValue, TypeDescriptor.forObject(jsonValue),
+				return conversionService.convert(value, TypeDescriptor.forObject(value),
 						methodParameter.getTypeDescriptor());
 			} else {
-				return jsonHandler.convertValue(jsonValue, methodParameter.getType());
+				return jsonHandler.convertValue(value, methodParameter.getType());
 			}
 		}
-		return jsonValue;
+		return value;
 	}
 
 	private Object handleRequestParam(final HttpServletRequest request, final Map<String, Object> valueContainer,
@@ -547,8 +549,28 @@ public class RouterController implements InitializingBean {
 			}
 
 			if (parameterInfo.isRequired()) {
-				throw new IllegalArgumentException("Missing request parameter: " + parameterInfo.getName());
+				throw new IllegalStateException("Missing parameter '" + parameterInfo.getName() + "' of type ["
+						+ parameterInfo.getTypeDescriptor().getType() + "]");
 			}
+		}
+
+		return null;
+	}
+
+	private Object handleRequestHeader(final HttpServletRequest request, final ParameterInfo parameterInfo) {
+		String value = request.getHeader(parameterInfo.getName());
+
+		if (value == null) {
+			value = parameterInfo.getDefaultValue();
+		}
+
+		if (value != null) {
+			return convertValue(value, parameterInfo);
+		}
+
+		if (parameterInfo.isRequired()) {
+			throw new IllegalStateException("Missing header '" + parameterInfo.getName() + "' of type ["
+					+ parameterInfo.getTypeDescriptor().getType() + "]");
 		}
 
 		return null;

@@ -89,7 +89,7 @@ public class RouterControllerFormPostTest {
 		assertThat(edsResponse.getTid()).isEqualTo(12);
 		assertThat(edsResponse.getAction()).isEqualTo("remoteProviderSimple");
 		assertThat(edsResponse.getMethod()).isEqualTo("method1");
-		
+
 		ReflectionTestUtils.setField(controller, "configuration", new Configuration());
 	}
 

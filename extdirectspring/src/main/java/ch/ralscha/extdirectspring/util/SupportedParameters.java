@@ -30,14 +30,14 @@ import javax.servlet.http.HttpSession;
  * @author mansari
  * @author Ralph Schaer
  */
-public enum SupportedParameterTypes {
+public enum SupportedParameters {
 
 	SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class), SESSION(HttpSession.class), LOCALE(
 			Locale.class), PRINCIPAL(Principal.class);
 
 	private final Class<?> clazz;
 
-	private SupportedParameterTypes(Class<?> clazz) {
+	private SupportedParameters(Class<?> clazz) {
 		this.clazz = clazz;
 	}
 
@@ -56,7 +56,7 @@ public enum SupportedParameterTypes {
 	 */
 	public static boolean isSupported(final Class<?> clazz) {
 		if (clazz != null) {
-			for (SupportedParameterTypes supportedParameter : SupportedParameterTypes.values()) {
+			for (SupportedParameters supportedParameter : SupportedParameters.values()) {
 				if (supportedParameter.clazz.isAssignableFrom(clazz)) {
 					return true;
 				}
