@@ -54,12 +54,18 @@ public class ControllerUtil {
 		return mapper.convertValue(dr, LinkedHashMap.class);
 	}
 
-	public static ExtDirectResponse sendAndReceive(RouterController controller, String action, String method,
-			Object... data) {
+	public static Object sendAndReceive(RouterController controller,  String action, String method,
+			Object[] data, Object result) {		
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		return sendAndReceive(controller, request, action, method, data, result);
+	}
+
+	
+	public static Object sendAndReceive(RouterController controller,  MockHttpServletRequest request, String action, String method,
+			Object[] data, Object result) {
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		MockHttpServletRequest request = new MockHttpServletRequest();
-
+		
 		int tid = (int) (Math.random() * 1000);
 		Map<String, Object> edRequest = createRequestJson(action, method, tid, data);
 
@@ -78,8 +84,25 @@ public class ControllerUtil {
 		assertThat(edResponse.getMethod()).isEqualTo(method);
 		assertThat(edResponse.getTid()).isEqualTo(tid);
 		assertThat(edResponse.getWhere()).isNull();
+		
+		if (result == null) {
+			assertThat(edResponse.getType()).isEqualTo("exception");
+			assertThat(edResponse.getResult()).isNull();
+			assertThat(edResponse.getMessage()).isEqualTo("Server Error");
+		} else {
+			assertThat(edResponse.getType()).isEqualTo("rpc");
+			assertThat(edResponse.getMessage()).isNull();
+			if (result == Void.TYPE) {
+				assertThat(edResponse.getResult()).isNull();
+			} else if (result instanceof Class<?>) {
+				Object r = ControllerUtil.convertValue(edResponse.getResult(), (Class<?>)result);
+				return r;
+			} else {
+				assertThat(edResponse.getResult()).isEqualTo(result);
+			}
+		}
 
-		return edResponse;
+		return edResponse.getResult();
 	}
 
 	@SuppressWarnings("unchecked")
