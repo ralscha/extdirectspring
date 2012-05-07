@@ -15,6 +15,10 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
+import static org.fest.assertions.Assertions.assertThat;
+
+import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +27,9 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 
 /**
  * Tests for {@link RouterController}.
@@ -47,26 +54,46 @@ public class RouterControllerFormPostTest {
 	}
 
 	@Test
-	public void testFormPostRouter() {
-		//todo check this code. maybe no longer needed
-		//		try {
-		//			controller.router("remoteProviderSimple", "method1", request, response);
-		//			fail("has to throw a IllegalArgumentException");
-		//		} catch (Exception e) {
-		//			assertThat(e instanceof IllegalArgumentException).isTrue();
-		//			assertThat(e.getMessage()).isEqualTo("Invalid remoting form method: remoteProviderSimple.method1");
-		//		}
-		//
-		//		try {
-		//			controller.router("RemoteProviderSimple", "method1", request, response);
-		//			fail("has to throw a NoSuchBeanDefinitionException");
-		//		} catch (Exception e) {
-		//			assertThat(e instanceof NoSuchBeanDefinitionException).isTrue();
-		//			assertThat(e.getMessage()).isEqualTo("No bean named 'RemoteProviderSimple' is defined");
-		//		}
-		//
-		//		String redirect = controller.router("formInfoController", "updateInfo", request, response);
-		//		assertThat(redirect).isEqualTo("forward:updateInfo");
+	public void testCallNonExistsFormPostMethod() throws IOException {
+		request.setParameter("extTID", "11");
+		request.setParameter("extAction", "remoteProviderSimple");
+		request.setParameter("extMethod", "method1");
+		controller.router(request, response, "remoteProviderSimple", "method1");
+		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(response.getContentAsByteArray());		
+		
+		assertThat(edsResponse.getType()).isEqualTo("exception");
+		assertThat(edsResponse.getMessage()).isEqualTo("Server Error");
+		assertThat(edsResponse.getWhere()).isNull();
+		assertThat(edsResponse.getTid()).isEqualTo(11);
+		assertThat(edsResponse.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(edsResponse.getMethod()).isEqualTo("method1");
+	}
+	
+	@Test
+	public void testCallNonExistsFormPostMethodWithConfig() throws IOException {
+		Configuration conf = new Configuration();
+		conf.setDefaultExceptionMessage("something wrong");
+		conf.setSendStacktrace(true);
+		ReflectionTestUtils.setField(controller, "configuration", conf);
+		
+		request.setParameter("extTID", "12");
+		request.setParameter("extAction", "remoteProviderSimple");
+		request.setParameter("extMethod", "method1");
+		controller.router(request, response, "remoteProviderSimple", "method1");
+		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(response.getContentAsByteArray());		
+		
+		assertThat(edsResponse.getType()).isEqualTo("exception");
+		assertThat(edsResponse.getMessage()).isEqualTo("something wrong");
+		assertThat(edsResponse.getWhere()).isEqualTo("Method 'remoteProviderSimple.method1' not found");
+		
+		assertThat(edsResponse.getTid()).isEqualTo(12);
+		assertThat(edsResponse.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(edsResponse.getMethod()).isEqualTo("method1");
+	}
+	
+	public void testCallExistsFormPostMethod() throws IOException {
+		String redirect = controller.router(request, response, "formInfoController", "updateInfo");
+		assertThat(redirect).isEqualTo("forward:updateInfo");
 	}
 
 }
