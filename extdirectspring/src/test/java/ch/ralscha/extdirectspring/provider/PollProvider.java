@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
@@ -80,5 +81,41 @@ public class PollProvider {
 		Date now = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd 'at' hh:mm:ss");
 		return "Successfully polled at: " + formatter.format(now);
+	}
+
+	/* Request Header */
+
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
+	public String message7(@RequestParam(value = "id", required = false) Integer id, String dummy,
+			@RequestHeader String header) {
+		return id + ";" + dummy + ";" + header;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
+	public String message8(@RequestParam Integer id, @RequestHeader("anotherName") String header) {
+		return id + ";" + header;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
+	public String message9(@RequestHeader(value = "anotherName", defaultValue = "default") String header) {
+		return header;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
+	public String message10(@RequestHeader(defaultValue = "default", required = false) String header) {
+		return header;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
+	public String message11(@RequestHeader(defaultValue = "default1", required = false) String header1,
+			@RequestParam(value = "id", required = false) Integer id,
+			@RequestHeader(defaultValue = "default2", required = false) String header2,
+			@RequestHeader(value = "last") String header3) {
+		return id + ";" + header1 + ";" + header2 + ";" + header3;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
+	public String message12(@RequestHeader Integer intHeader, @RequestHeader Boolean booleanHeader) {
+		return intHeader + ";" + booleanHeader;
 	}
 }
