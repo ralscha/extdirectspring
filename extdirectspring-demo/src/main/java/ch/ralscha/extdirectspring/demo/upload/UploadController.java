@@ -39,13 +39,13 @@ public class UploadController {
 	public void uploadTest(Locale locale, HttpServletRequest request, @RequestParam("fileUpload") MultipartFile file,
 			HttpServletResponse response) throws IOException {
 
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
+		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request, response);
 
 		if (file != null && !file.isEmpty()) {
 			builder.addResultProperty("fileContents", new String(file.getBytes()));
 		}
 		builder.successful();
-		builder.buildAndWriteUploadResponse(response);
+		builder.buildAndWrite();
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "upload4")
@@ -54,7 +54,7 @@ public class UploadController {
 			@RequestParam("fileUpload1") MultipartFile file1, @RequestParam("fileUpload2") MultipartFile file2,
 			HttpServletResponse response) throws IOException {
 
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
+		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request, response);
 
 		if (file1 != null && !file1.isEmpty()) {
 			System.out.println("File1 Name : " + file1.getName());
@@ -69,7 +69,7 @@ public class UploadController {
 		}
 
 		builder.successful();
-		builder.buildAndWriteUploadResponse(response);
+		builder.buildAndWrite();
 	}
 
 }

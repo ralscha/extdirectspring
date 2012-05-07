@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -27,11 +28,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 @Controller
@@ -74,9 +73,8 @@ public class Profile {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "form")
-	@ResponseBody
 	@RequestMapping(value = "/updateBasicInfo", method = RequestMethod.POST)
-	public ExtDirectResponse updateBasicInfo(Locale locale, HttpServletRequest request, @Valid BasicInfo basicInfo,
+	public void updateBasicInfo(Locale locale, HttpServletRequest request, HttpServletResponse response, @Valid BasicInfo basicInfo,
 			BindingResult result) {
 
 		if (!result.hasErrors()) {
@@ -85,9 +83,6 @@ public class Profile {
 			}
 		}
 
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request);
-		builder.addErrors(result);
-		return builder.build();
-
+		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();
 	}
 }
