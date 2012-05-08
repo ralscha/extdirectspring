@@ -20,7 +20,7 @@ import java.util.Arrays;
 /**
  * @author Ralph Schaer
  */
-public class ApiCacheKey {
+public final class ApiCacheKey {
 
 	private final String apiNs;
 	private final String actionNs;
