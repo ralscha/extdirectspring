@@ -109,11 +109,11 @@ public class ExtDirectResponseBuilderTest {
 		String content = servletResponse.getContentAsString();
 		assertThat(servletResponse.getContentLength()).isEqualTo(content.getBytes().length);
 
-		assertThat(content.startsWith("<html><body><textarea>")).isTrue();
-		assertThat(content.endsWith("</textarea></body></html>")).isTrue();
+		assertThat(content).startsWith("<html><body><textarea>");
+		assertThat(content).endsWith("</textarea></body></html>");
 
 		String json = content.substring(content.indexOf("{"), content.lastIndexOf("}") + 1);
-		assertThat(json.contains("\\&quot;")).isTrue();
+		assertThat(json).contains("\\&quot;");
 		json = json.replace("\\&quot;", "\'");
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> header = mapper.readValue(json, Map.class);

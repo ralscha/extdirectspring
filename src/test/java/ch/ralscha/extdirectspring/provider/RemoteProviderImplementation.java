@@ -49,7 +49,7 @@ public class RemoteProviderImplementation implements RemoteProviderInterface {
 		assertThat(name).isEqualTo("Smith");
 		assertThat(active).isTrue();
 
-		assertThat(request.getParams().size()).isEqualTo(2);
+		assertThat(request.getParams()).hasSize(2);
 		assertThat(request.getParams()).includes(entry("lastName", "Smith"));
 		assertThat(request.getParams()).includes(entry("active", true));
 

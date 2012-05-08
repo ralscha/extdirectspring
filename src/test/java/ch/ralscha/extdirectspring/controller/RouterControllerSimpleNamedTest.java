@@ -157,7 +157,7 @@ public class RouterControllerSimpleNamedTest {
 		FormInfo info = (FormInfo) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method5",
 				true, params, FormInfo.class);
 
-		assertThat(Double.compare(7.34, info.getBack()) == 0).isTrue();
+		assertThat(info.getBack()).isEqualTo(7.34);
 		assertThat(info.isAdmin()).isEqualTo(false);
 		assertThat(info.getAge()).isEqualTo(32);
 		assertThat(info.getName()).isEqualTo("John");

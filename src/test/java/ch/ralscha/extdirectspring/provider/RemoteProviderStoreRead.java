@@ -298,8 +298,8 @@ public class RemoteProviderStoreRead {
 			return createResult(1);
 		case 2:
 			assertThat(request.getFilters().size()).isEqualTo(2);
-			assertThat(filters.get(0) instanceof NumericFilter).isTrue();
-			assertThat(filters.get(1) instanceof NumericFilter).isTrue();
+			assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
+			assertThat(filters.get(1)).isInstanceOf(NumericFilter.class);
 
 			nf = (NumericFilter) filters.get(0);
 			assertThat(nf.getValue()).isEqualTo(100);
@@ -313,7 +313,7 @@ public class RemoteProviderStoreRead {
 			return createResult(2);
 		case 3:
 			assertThat(filters).hasSize(1);
-			assertThat(filters.get(0) instanceof BooleanFilter).isTrue();
+			assertThat(filters.get(0)).isInstanceOf(BooleanFilter.class);
 
 			BooleanFilter bf = (BooleanFilter) filters.get(0);
 			assertThat(bf.getValue()).isEqualTo(true);
@@ -322,7 +322,7 @@ public class RemoteProviderStoreRead {
 			return createResult(3);
 		case 4:
 			assertThat(filters).hasSize(1);
-			assertThat(filters.get(0) instanceof BooleanFilter).isTrue();
+			assertThat(filters.get(0)).isInstanceOf(BooleanFilter.class);
 
 			bf = (BooleanFilter) filters.get(0);
 			assertThat(bf.getValue()).isEqualTo(false);
@@ -331,7 +331,7 @@ public class RemoteProviderStoreRead {
 			return createResult(4);
 		case 5:
 			assertThat(filters).hasSize(1);
-			assertThat(filters.get(0) instanceof StringFilter).isTrue();
+			assertThat(filters.get(0)).isInstanceOf(StringFilter.class);
 
 			StringFilter sf = (StringFilter) filters.get(0);
 			assertThat(sf.getValue()).isEqualTo("abb");
@@ -341,7 +341,7 @@ public class RemoteProviderStoreRead {
 
 		case 6:
 			assertThat(filters).hasSize(1);
-			assertThat(filters.get(0) instanceof ListFilter).isTrue();
+			assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
 			ListFilter lf = (ListFilter) filters.get(0);
 			assertThat(lf.getValue().size()).isEqualTo(1);
@@ -352,7 +352,7 @@ public class RemoteProviderStoreRead {
 
 		case 7:
 			assertThat(filters).hasSize(1);
-			assertThat(filters.get(0) instanceof ListFilter).isTrue();
+			assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
 			lf = (ListFilter) filters.get(0);
 			assertThat(lf.getValue().size()).isEqualTo(2);
@@ -365,8 +365,8 @@ public class RemoteProviderStoreRead {
 		case 8:
 
 			assertThat(filters).hasSize(2);
-			assertThat(filters.get(0) instanceof DateFilter).isTrue();
-			assertThat(filters.get(1) instanceof DateFilter).isTrue();
+			assertThat(filters.get(0)).isInstanceOf(DateFilter.class);
+			assertThat(filters.get(1)).isInstanceOf(DateFilter.class);
 
 			DateFilter df = (DateFilter) filters.get(0);
 			assertThat(df.getValue()).isEqualTo("07/31/2010");
@@ -382,7 +382,7 @@ public class RemoteProviderStoreRead {
 
 		case 9:
 			assertThat(filters).hasSize(1);
-			assertThat(filters.get(0) instanceof DateFilter).isTrue();
+			assertThat(filters.get(0)).isInstanceOf(DateFilter.class);
 
 			df = (DateFilter) filters.get(0);
 			assertThat(df.getValue()).isEqualTo("07/01/2010");
@@ -393,7 +393,7 @@ public class RemoteProviderStoreRead {
 
 		case 10:
 			assertThat(filters).hasSize(1);
-			assertThat(filters.get(0) instanceof StringFilter).isTrue();
+			assertThat(filters.get(0)).isInstanceOf(StringFilter.class);
 
 			sf = (StringFilter) filters.get(0);
 			assertThat(sf.getValue()).isEqualTo("ERROR");
@@ -402,7 +402,7 @@ public class RemoteProviderStoreRead {
 			return createResult(10);
 		case 11:
 			assertThat(request.getFilters().size()).isEqualTo(1);
-			assertThat(filters.get(0) instanceof NumericFilter).isTrue();
+			assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
 
 			nf = (NumericFilter) filters.get(0);
 			assertThat(nf.getValue()).isEqualTo(1);
@@ -412,7 +412,7 @@ public class RemoteProviderStoreRead {
 			return createResult(11);
 		case 12:
 			assertThat(filters).hasSize(1);
-			assertThat(filters.get(0) instanceof BooleanFilter).isTrue();
+			assertThat(filters.get(0)).isInstanceOf(BooleanFilter.class);
 
 			bf = (BooleanFilter) filters.get(0);
 			assertThat(bf.getValue()).isEqualTo(true);
@@ -421,7 +421,7 @@ public class RemoteProviderStoreRead {
 			return createResult(12);
 		case 13:
 			assertThat(filters).hasSize(1);
-			assertThat(filters.get(0) instanceof ListFilter).isTrue();
+			assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
 			lf = (ListFilter) filters.get(0);
 			assertThat(lf.getValue().size()).isEqualTo(1);
@@ -432,7 +432,7 @@ public class RemoteProviderStoreRead {
 
 		case 14:
 			assertThat(filters).hasSize(1);
-			assertThat(filters.get(0) instanceof ListFilter).isTrue();
+			assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
 			lf = (ListFilter) filters.get(0);
 			assertThat(lf.getValue().size()).isEqualTo(2);

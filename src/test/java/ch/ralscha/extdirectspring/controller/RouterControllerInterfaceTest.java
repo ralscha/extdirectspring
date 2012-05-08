@@ -25,16 +25,13 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.codehaus.jackson.type.TypeReference;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.Row;
 
 /**
@@ -50,54 +47,20 @@ public class RouterControllerInterfaceTest {
 	@Autowired
 	private RouterController controller;
 
-	private MockHttpServletResponse response;
-	private MockHttpServletRequest request;
-
-	@Before
-	public void beforeTest() {
+	@BeforeClass
+	public static void beforeTest() {
 		Locale.setDefault(Locale.US);
-		response = new MockHttpServletResponse();
-		request = new MockHttpServletRequest();
 	}
 
 	@Test
 	public void testNoParameters() throws IOException {
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderImplementation", "method2", 1,
-				null);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		ExtDirectResponse resp = responses.get(0);
-		assertThat(responses).hasSize(1);
-		assertThat(resp.getAction()).isEqualTo("remoteProviderImplementation");
-		assertThat(resp.getMethod()).isEqualTo("method2");
-		assertThat(resp.getTid()).isEqualTo(1);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
-		assertThat(resp.getResult()).isEqualTo("method2() called");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderImplementation", "method2", null, "method2() called");
 	}
 
 	@Test
 	public void testNoParameterAnnotation() throws IOException {
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderImplementation", "method3", 1,
-				new Object[] { 20, 2.1, "aString" });
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		ExtDirectResponse resp = responses.get(0);
-		assertThat(responses).hasSize(1);
-		assertThat(resp.getAction()).isEqualTo("remoteProviderImplementation");
-		assertThat(resp.getMethod()).isEqualTo("method3");
-		assertThat(resp.getTid()).isEqualTo(1);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
-		assertThat(resp.getResult()).isEqualTo("method3() called-20-2.1-aString");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderImplementation", "method3", new Object[] { 21, 3.1,
+				"aString2" }, "method3() called-21-3.1-aString2");
 	}
 
 	@Test
@@ -106,26 +69,11 @@ public class RouterControllerInterfaceTest {
 		Map<String, Object> readRequest = new HashMap<String, Object>();
 		readRequest.put("lastName", "Smith");
 		readRequest.put("active", true);
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderImplementation", "storeRead",
-				1, readRequest);
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderImplementation",
+				"storeRead", readRequest, new TypeReference<List<Row>>() {/*nothing here*/
+				});
 
-		assertThat(responses).hasSize(1);
-		ExtDirectResponse resp = responses.get(0);
-
-		assertThat(resp.getAction()).isEqualTo("remoteProviderImplementation");
-		assertThat(resp.getMethod()).isEqualTo("storeRead");
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getTid()).isEqualTo(1);
-		assertThat(resp.getMessage()).isNull();
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getResult()).isNotNull();
-
-		List<Row> rows = ControllerUtil.convertValue(resp.getResult(), new TypeReference<List<Row>>() {
-		});
 		assertThat(rows).hasSize(1);
 		Row theRow = rows.get(0);
 		assertThat(theRow.getId()).isEqualTo(1);

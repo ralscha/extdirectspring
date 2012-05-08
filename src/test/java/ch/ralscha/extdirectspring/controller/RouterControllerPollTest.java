@@ -60,7 +60,7 @@ public class RouterControllerPollTest {
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
 		assertThat(resp.getName()).isEqualTo("message1");
-		assertThat(((String) resp.getData()).startsWith("Successfully polled at: ")).isTrue();
+		assertThat((String) resp.getData()).startsWith("Successfully polled at: ");
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
 	}
@@ -73,7 +73,7 @@ public class RouterControllerPollTest {
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
 		assertThat(resp.getName()).isEqualTo("message2");
-		assertThat(((String) resp.getData()).startsWith("Successfully polled at: ")).isTrue();
+		assertThat((String) resp.getData()).startsWith("Successfully polled at: ");
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
 	}

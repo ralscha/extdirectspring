@@ -70,7 +70,6 @@ public class RouterControllerTreeLoadTest {
 		assertThat(nodes).hasSize(5).containsSequence(new Node("id1", "Node 1.1", true),
 				new Node("id2", "Node 1.2", true), new Node("id3", "Node 1.3", true),
 				new Node("id4", "Node 1.4", true), new Node("id5", "Node 1.5", true));
-
 	}
 
 	@Test
