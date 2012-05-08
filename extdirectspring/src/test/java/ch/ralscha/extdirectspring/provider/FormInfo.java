@@ -26,6 +26,7 @@ public class FormInfo {
 	private Date birthday;
 	private BigDecimal salary;
 	private double back;
+	private String result;
 
 	public String getName() {
 		return name;
@@ -73,6 +74,14 @@ public class FormInfo {
 
 	public void setBack(double back) {
 		this.back = back;
+	}
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
 	}
 
 }

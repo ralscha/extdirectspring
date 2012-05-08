@@ -36,7 +36,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.FormInfo;
 import ch.ralscha.extdirectspring.provider.Row;
 
@@ -138,8 +137,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testReturnsObject() throws IOException {
-		FormInfo info = (FormInfo)ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method8", a(7.34),
-				FormInfo.class);
+		FormInfo info = (FormInfo) ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method8",
+				a(7.34), FormInfo.class);
 
 		assertThat(Double.compare(7.34, info.getBack()) == 0).isTrue();
 		assertThat(info.isAdmin()).isEqualTo(false);
@@ -173,7 +172,7 @@ public class RouterControllerSimpleTest {
 
 		DateTime today = new DateTime();
 
-		Map<String, Object> resultMap = (Map<String, Object>)ControllerUtil.sendAndReceive(
+		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil.sendAndReceive(
 				controller,
 				"remoteProviderSimple",
 				"method14",
@@ -269,8 +268,8 @@ public class RouterControllerSimpleTest {
 		request.addHeader("header1", "1st");
 		request.addHeader("header2", "2nd");
 
-		ControllerUtil
-				.sendAndReceive(controller, request, "remoteProviderSimple", "method19", a(100), "100;1st;2nd;last");
+		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method19", a(100),
+				"100;1st;2nd;last");
 	}
 
 	@Test

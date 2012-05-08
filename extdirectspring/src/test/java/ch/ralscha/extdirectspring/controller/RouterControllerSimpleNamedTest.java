@@ -30,7 +30,7 @@ import java.util.Map;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,53 +57,23 @@ public class RouterControllerSimpleNamedTest {
 	@Autowired
 	private RouterController controller;
 
-	private MockHttpServletResponse response;
-	private MockHttpServletRequest request;
-
-	@Before
-	public void beforeTest() {
+	@BeforeClass
+	public static void beforeTest() {
 		Locale.setDefault(Locale.US);
-		response = new MockHttpServletResponse();
-		request = new MockHttpServletRequest();
 	}
 
 	@Test
 	public void testNoParameters() throws IOException {
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method1", 1, null);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		assertThat(responses).hasSize(1);
-		checkNoParametersResponse(responses.get(0), 1);
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method1", true, null,
+				"method1() called");
 	}
 
 	@Test
 	public void testNoParametersWithRequestParameter() throws IOException {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("requestparameter", "aValue");
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method1", 1, params);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		assertThat(responses).hasSize(1);
-		ExtDirectResponse resp = responses.get(0);
-		checkNoParametersResponse(resp, 1);
-	}
-
-	static void checkNoParametersResponse(ExtDirectResponse resp, int tid) {
-		assertThat(resp.getAction()).isEqualTo("remoteProviderSimpleNamed");
-		assertThat(resp.getMethod()).isEqualTo("method1");
-		assertThat(resp.getTid()).isEqualTo(tid);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
-		assertThat(resp.getResult()).isEqualTo("method1() called");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method1", true, params,
+				"method1() called");
 	}
 
 	@Test
@@ -111,24 +81,9 @@ public class RouterControllerSimpleNamedTest {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("d", 2.1);
 		params.put("s", "aString");
-		params.put("i", 20);
-
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method2", 10, params);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		assertThat(responses).hasSize(1);
-		ExtDirectResponse resp = responses.get(0);
-		assertThat(resp.getAction()).isEqualTo("remoteProviderSimpleNamed");
-		assertThat(resp.getMethod()).isEqualTo("method2");
-		assertThat(resp.getTid()).isEqualTo(10);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
-		assertThat(resp.getResult()).isEqualTo("method2() called-20-2.100-aString");
+		params.put("i", 30);
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method2", true, params,
+				"method2() called-30-2.100-aString");
 	}
 
 	@Test
@@ -137,15 +92,7 @@ public class RouterControllerSimpleNamedTest {
 		params.put("i", 20);
 		params.put("de", 2.1);
 		params.put("s", "aString");
-
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method2", 10, params);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		checkWrongParametersResult(responses);
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method2", true, params, null);
 	}
 
 	@Test
@@ -153,27 +100,7 @@ public class RouterControllerSimpleNamedTest {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("i", 20);
 		params.put("s", "aString");
-
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method2", 10, params);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		checkWrongParametersResult(responses);
-	}
-
-	private void checkWrongParametersResult(List<ExtDirectResponse> responses) {
-		assertThat(responses).hasSize(1);
-		ExtDirectResponse resp = responses.get(0);
-		assertThat(resp.getAction()).isEqualTo("remoteProviderSimpleNamed");
-		assertThat(resp.getMethod()).isEqualTo("method2");
-		assertThat(resp.getTid()).isEqualTo(10);
-		assertThat(resp.getType()).isEqualTo("exception");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isEqualTo("Server Error");
-		assertThat(resp.getResult()).isNull();
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method2", true, params, null);
 	}
 
 	@Test
@@ -182,93 +109,29 @@ public class RouterControllerSimpleNamedTest {
 		params.put("i", "30");
 		params.put("s", 100.45);
 		params.put("d", "3.141");
-
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method2", 11, params);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		assertThat(responses).hasSize(1);
-		ExtDirectResponse resp = responses.get(0);
-		assertThat(resp.getAction()).isEqualTo("remoteProviderSimpleNamed");
-		assertThat(resp.getMethod()).isEqualTo("method2");
-		assertThat(resp.getTid()).isEqualTo(11);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
-		assertThat(resp.getResult()).isEqualTo("method2() called-30-3.141-100.45");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method2", true, params,
+				"method2() called-30-3.141-100.45");
 	}
 
 	@Test
 	public void testResultTrue() throws IOException {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("userName", "ralph");
-
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method3", 1, params);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		assertThat(responses).hasSize(1);
-		ExtDirectResponse resp = responses.get(0);
-		assertThat(resp.getAction()).isEqualTo("remoteProviderSimpleNamed");
-		assertThat(resp.getMethod()).isEqualTo("method3");
-		assertThat(resp.getTid()).isEqualTo(1);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
-		assertThat(resp.getResult()).isEqualTo(true);
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method3", true, params, true);
 	}
 
 	@Test
 	public void testResultFalse() throws IOException {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("userName", "joe");
-
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method3", 1, params);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		assertThat(responses).hasSize(1);
-		ExtDirectResponse resp = responses.get(0);
-		assertThat(resp.getAction()).isEqualTo("remoteProviderSimpleNamed");
-		assertThat(resp.getMethod()).isEqualTo("method3");
-		assertThat(resp.getTid()).isEqualTo(1);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
-		assertThat(resp.getResult()).isEqualTo(false);
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method3", true, params, false);
 	}
 
 	@Test
 	public void testResultNull() throws IOException {
-
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("userName", "martin");
-
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method3", 1, params);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		assertThat(responses).hasSize(1);
-		ExtDirectResponse resp = responses.get(0);
-		assertThat(resp.getAction()).isEqualTo("remoteProviderSimpleNamed");
-		assertThat(resp.getMethod()).isEqualTo("method3");
-		assertThat(resp.getTid()).isEqualTo(1);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
-		assertThat(resp.getResult()).isNull();
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method3", true, params, Void.TYPE);
 	}
 
 	@Test
@@ -276,17 +139,7 @@ public class RouterControllerSimpleNamedTest {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("a", 10);
 		params.put("b", 20);
-
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method4", 3, params);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		assertThat(responses).hasSize(1);
-		ExtDirectResponse resp = responses.get(0);
-		checkIntParameterResult(resp, 3, 30);
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method4", true, params, 30);
 	}
 
 	@Test
@@ -294,53 +147,15 @@ public class RouterControllerSimpleNamedTest {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("b", "40");
 		params.put("a", "30");
-
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method4", 4, params);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		assertThat(responses).hasSize(1);
-		ExtDirectResponse resp = responses.get(0);
-		checkIntParameterResult(resp, 4, 70);
-	}
-
-	static void checkIntParameterResult(ExtDirectResponse resp, int tid, int result) {
-		assertThat(resp.getAction()).isEqualTo("remoteProviderSimpleNamed");
-		assertThat(resp.getMethod()).isEqualTo("method4");
-		assertThat(resp.getTid()).isEqualTo(tid);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
-		assertThat(resp.getResult()).isEqualTo(result);
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method4", true, params, 70);
 	}
 
 	@Test
 	public void testReturnsObject() throws IOException {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("d", 7.34);
-
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method5", 1, params);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		assertThat(responses).hasSize(1);
-		ExtDirectResponse resp = responses.get(0);
-
-		assertThat(resp.getAction()).isEqualTo("remoteProviderSimpleNamed");
-		assertThat(resp.getMethod()).isEqualTo("method5");
-		assertThat(resp.getTid()).isEqualTo(1);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
-		assertThat(resp.getResult()).isNotNull();
-
-		FormInfo info = ControllerUtil.convertValue(resp.getResult(), FormInfo.class);
+		FormInfo info = (FormInfo) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method5",
+				true, params, FormInfo.class);
 
 		assertThat(Double.compare(7.34, info.getBack()) == 0).isTrue();
 		assertThat(info.isAdmin()).isEqualTo(false);
@@ -352,28 +167,11 @@ public class RouterControllerSimpleNamedTest {
 
 	@Test
 	public void testSupportedArguments() throws IOException {
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method6", 1, null);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		assertThat(responses).hasSize(1);
-		ExtDirectResponse resp = responses.get(0);
-
-		assertThat(resp.getAction()).isEqualTo("remoteProviderSimpleNamed");
-		assertThat(resp.getMethod()).isEqualTo("method6");
-		assertThat(resp.getTid()).isEqualTo(1);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
-		assertThat(resp.getResult()).isEqualTo(42);
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method6", true, null, 42);
 	}
 
 	@Test
 	public void testTypeConversion() throws IOException {
-
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("flag", "true");
 		params.put("aCharacter", "c");
@@ -384,28 +182,12 @@ public class RouterControllerSimpleNamedTest {
 		params.put("aDouble", "3.14");
 		params.put("aFloat", "10.01");
 		params.put("aShort", "1");
-
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method7", 1, params);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		assertThat(responses).hasSize(1);
-		ExtDirectResponse resp = responses.get(0);
-		assertThat(resp.getAction()).isEqualTo("remoteProviderSimpleNamed");
-		assertThat(resp.getMethod()).isEqualTo("method7");
-		assertThat(resp.getTid()).isEqualTo(1);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
-		assertThat(resp.getResult()).isEqualTo("method7() called-true-c-PENDING-14-21-3.14-10.01-1-2");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method7", true, params,
+				"method7() called-true-c-PENDING-14-21-3.14-10.01-1-2");
 	}
 
 	@Test
 	public void testMixParameterAndSupportedParameters() throws IOException {
-
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("aLong", "21");
 		params.put("aDouble", "3.14");
@@ -416,23 +198,8 @@ public class RouterControllerSimpleNamedTest {
 		params.put("aInt", "14");
 		params.put("aShort", "1");
 		params.put("aByte", "2");
-
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method10", 1, params);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		assertThat(responses).hasSize(1);
-		ExtDirectResponse resp = responses.get(0);
-		assertThat(resp.getAction()).isEqualTo("remoteProviderSimpleNamed");
-		assertThat(resp.getMethod()).isEqualTo("method10");
-		assertThat(resp.getTid()).isEqualTo(1);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
-		assertThat(resp.getResult()).isEqualTo("method10() called-true-c-PENDING-14-21-3.14-10.01-1-2");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method10", true, params,
+				"method10() called-true-c-PENDING-14-21-3.14-10.01-1-2");
 	}
 
 	@Test
@@ -440,24 +207,8 @@ public class RouterControllerSimpleNamedTest {
 		Row aRow = new Row(104, "myRow", true, "100.45");
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("aRow", aRow);
-
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method9", 5, params);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		assertThat(responses).hasSize(1);
-		ExtDirectResponse resp = responses.get(0);
-		assertThat(resp.getAction()).isEqualTo("remoteProviderSimpleNamed");
-		assertThat(resp.getMethod()).isEqualTo("method9");
-		assertThat(resp.getTid()).isEqualTo(5);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
-
-		assertThat(resp.getResult()).isEqualTo("Row [id=104, name=myRow, admin=true, salary=100.45]");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method9", true, params,
+				"Row [id=104, name=myRow, admin=true, salary=100.45]");
 	}
 
 	@Test
@@ -471,23 +222,9 @@ public class RouterControllerSimpleNamedTest {
 		params.put("normalParameter", "normalParameter");
 		params.put("percent", "99.9%");
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"method11", 1, params);
+		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderSimpleNamed", "method11", true, params, Map.class);
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-
-		assertThat(responses).hasSize(1);
-		ExtDirectResponse resp = responses.get(0);
-		assertThat(resp.getAction()).isEqualTo("remoteProviderSimpleNamed");
-		assertThat(resp.getMethod()).isEqualTo("method11");
-		assertThat(resp.getTid()).isEqualTo(1);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
-
-		Map<String, Object> resultMap = (Map<String, Object>) resp.getResult();
 		assertThat(resultMap.get("endDate")).isEqualTo(today.getMillis());
 		ObjectMapper mapper = new ObjectMapper();
 
@@ -508,18 +245,17 @@ public class RouterControllerSimpleNamedTest {
 		params.put("lastName", expectedResult.getName());
 		params.put("theAge", expectedResult.getAge());
 		params.put("active", expectedResult.getActive());
-
-		Map<String, Object> edRequest = ControllerUtil.createRequestJsonNamedParam("remoteProviderSimpleNamed",
-				"methodRP1", 1, params);
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP1", 1, expectedResult, responses);
+		ResultObject result = (ResultObject) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
+				"methodRP1", true, params, ResultObject.class);
+		assertThat(result).isEqualTo(expectedResult);
 	}
 
 	@Test
 	public void testDefaultValues() throws IOException {
 		List<Map<String, Object>> multiRequests = new ArrayList<Map<String, Object>>();
+
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		MockHttpServletRequest request = new MockHttpServletRequest();
 
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("lastName", "Olstead");
@@ -646,6 +382,9 @@ public class RouterControllerSimpleNamedTest {
 	@Test
 	public void testOptionalNoDefaultValue() throws IOException {
 		List<Map<String, Object>> multiRequests = new ArrayList<Map<String, Object>>();
+
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		MockHttpServletRequest request = new MockHttpServletRequest();
 
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("lastName", "Olstead");

@@ -20,6 +20,8 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+
 import org.junit.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
@@ -34,6 +36,11 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
  */
 @SuppressWarnings("all")
 public class MethodInfoCacheTest {
+
+	@Test
+	public void verifyEquals() {
+		EqualsVerifier.forClass(MethodInfoCache.Key.class).verify();
+	}
 
 	@Test
 	@ExtDirectMethod
@@ -65,7 +72,7 @@ public class MethodInfoCacheTest {
 
 	@Test
 	public void testFindMethodWithAnnotation() {
-		ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
+		new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 		MethodInfo methodBInfo = MethodInfoCache.INSTANCE.get("springManagedBean", "methodB");
 		Method methodBWithAnnotation = MethodInfo.findMethodWithAnnotation(methodBInfo.getMethod(),
 				ExtDirectMethod.class);
@@ -79,7 +86,7 @@ public class MethodInfoCacheTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testInvokeWithNull() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
+		new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 		ExtDirectSpringUtil.invoke(null, null, null, null);
 	}
 

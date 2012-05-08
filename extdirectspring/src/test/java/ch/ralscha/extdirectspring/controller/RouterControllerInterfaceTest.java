@@ -83,7 +83,7 @@ public class RouterControllerInterfaceTest {
 	@Test
 	public void testNoParameterAnnotation() throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderImplementation", "method3", 1,
-				20, 2.1, "aString");
+				new Object[] { 20, 2.1, "aString" });
 
 		request.setContent(ControllerUtil.writeAsByte(edRequest));
 		controller.router(request, response, Locale.ENGLISH);

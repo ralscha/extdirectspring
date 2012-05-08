@@ -104,7 +104,7 @@ public class CrudTestMethods {
 		assertThat(aBook.getTitle()).isEqualTo("Learning Ext JS 3.2");
 		assertThat(aBook.getIsbn()).isEqualTo("1849511209");
 
-		edRequest = ControllerUtil.createRequestJson(serviceName, "read", 1);
+		edRequest = ControllerUtil.createRequestJson(serviceName, "read", 1, null);
 		response = new MockHttpServletResponse();
 		request = new MockHttpServletRequest();
 		request.setContent(ControllerUtil.writeAsByte(edRequest));

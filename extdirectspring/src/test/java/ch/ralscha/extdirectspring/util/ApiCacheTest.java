@@ -16,6 +16,7 @@
 package ch.ralscha.extdirectspring.util;
 
 import static org.fest.assertions.Assertions.assertThat;
+import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 
@@ -23,6 +24,11 @@ import org.junit.Test;
  * @author Ralph Schaer
  */
 public class ApiCacheTest {
+
+	@Test
+	public void verifyEquals() {
+		EqualsVerifier.forClass(ApiCacheKey.class).verify();
+	}
 
 	@Test
 	public void testPutAndGet() {
