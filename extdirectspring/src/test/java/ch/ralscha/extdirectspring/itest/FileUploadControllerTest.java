@@ -67,8 +67,8 @@ public class FileUploadControllerTest extends JettyTest {
 
 		String prefix = "<html><body><textarea>";
 		String postfix = "</textarea></body></html>";
-		assertThat(responseString.startsWith(prefix)).isTrue();
-		assertThat(responseString.endsWith(postfix)).isTrue();
+		assertThat(responseString).startsWith(prefix);
+		assertThat(responseString).endsWith(postfix);
 
 		String json = responseString.substring(prefix.length(), responseString.length() - postfix.length());
 

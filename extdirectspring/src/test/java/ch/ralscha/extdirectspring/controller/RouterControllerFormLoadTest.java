@@ -69,7 +69,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(wrapper.getData()).isNotNull();
 
 		FormInfo info = ControllerUtil.convertValue(wrapper.getData(), FormInfo.class);
-		assertThat(Double.compare(3.141, info.getBack()) == 0).isTrue();
+		assertThat(info.getBack()).isEqualTo(3.141);
 		assertThat(info.isAdmin()).isEqualTo(true);
 		assertThat(info.getAge()).isEqualTo(31);
 		assertThat(info.getName()).isEqualTo("Bob");

@@ -54,8 +54,8 @@ public class SimpleServiceTest extends JettyTest {
 		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
 		EntityUtils.consume(entity);
-		assertThat(responseString.contains("\"name\" : \"toUpperCase\"")).isTrue();
-		assertThat(responseString.contains("\"name\" : \"echo\"")).isTrue();
+		assertThat(responseString).contains("\"name\" : \"toUpperCase\"");
+		assertThat(responseString).contains("\"name\" : \"echo\"");
 	}
 
 	@Test
@@ -83,7 +83,7 @@ public class SimpleServiceTest extends JettyTest {
 		String responseString = EntityUtils.toString(entity);
 
 		assertThat(responseString).isNotNull();
-		assertThat(responseString.startsWith("[") && responseString.endsWith("]")).isTrue();
+		assertThat(responseString).startsWith("[").endsWith("]");
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
 		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
@@ -124,7 +124,7 @@ public class SimpleServiceTest extends JettyTest {
 
 		assertThat(responseString).isNotNull();
 
-		assertThat(responseString.startsWith("[") && responseString.endsWith("]")).isTrue();
+		assertThat(responseString).startsWith("[").endsWith("]");
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
 		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),

@@ -557,7 +557,7 @@ public class ApiControllerTest {
 			String remotingApiVar) throws JsonParseException, JsonMappingException, IOException {
 		String content = response.getContentAsString();
 		assertThat(response.getContentType()).isEqualTo("application/json;charset=UTF-8");
-		assertThat(StringUtils.hasText(content)).isTrue();
+		assertThat(content).isNotEmpty();
 
 		Map<String, Object> rootAsMap = ControllerUtil.readValue(content, Map.class);
 
@@ -583,7 +583,7 @@ public class ApiControllerTest {
 
 		Map<String, Object> beans = (Map<String, Object>) rootAsMap.get("actions");
 
-		assertThat(beans.size()).isEqualTo(remotingApi.getActions().size());
+		assertThat(beans).hasSize(remotingApi.getActions().size());
 		for (String beanName : remotingApi.getActions().keySet()) {
 			List<Map<String, Object>> actions = (List<Map<String, Object>>) beans.get(beanName);
 			List<Action> expectedActions = remotingApi.getActions().get(beanName);
@@ -606,7 +606,7 @@ public class ApiControllerTest {
 		content = content.replace("}", "}\n");
 
 		assertThat(response.getContentType()).isEqualTo("application/x-javascript");
-		assertThat(StringUtils.hasText(content)).isTrue();
+		assertThat(content).isNotEmpty();
 
 		String[] lines = content.split("\n");
 
@@ -668,7 +668,7 @@ public class ApiControllerTest {
 					System.out.println(key + "->" + rootAsMap.get(key));
 				}
 			}
-			assertThat(rootAsMap.size()).isEqualTo(3 + noOfconfigOptions);
+			assertThat(rootAsMap).hasSize(3 + noOfconfigOptions);
 		} else {
 			if (4 + noOfconfigOptions != rootAsMap.size()) {
 				System.out.println("NOOFCONFIG: " + noOfconfigOptions);
@@ -676,7 +676,7 @@ public class ApiControllerTest {
 					System.out.println(key + "->" + rootAsMap.get(key));
 				}
 			}
-			assertThat(rootAsMap.size()).isEqualTo(4 + noOfconfigOptions);
+			assertThat(rootAsMap).hasSize(4 + noOfconfigOptions);
 		}
 
 		assertThat(rootAsMap.get("url")).isEqualTo(remotingApi.getUrl());
@@ -722,7 +722,7 @@ public class ApiControllerTest {
 
 		if (!remotingApi.getPollingProviders().isEmpty()) {
 			Map<String, Object> pollingMap = ControllerUtil.readValue(pollingJson, Map.class);
-			assertThat(pollingMap.size()).isEqualTo(remotingApi.getPollingProviders().size());
+			assertThat(pollingMap).hasSize(remotingApi.getPollingProviders().size());
 			for (PollingProvider pp : remotingApi.getPollingProviders()) {
 				String url = (String) pollingMap.get(pp.getEvent());
 				assertThat(url).isNotNull();
@@ -733,7 +733,7 @@ public class ApiControllerTest {
 	}
 
 	private void compare(List<Action> expectedActions, List<Map<String, Object>> actions) {
-		assertThat(actions.size()).isEqualTo(expectedActions.size());
+		assertThat(actions).hasSize(expectedActions.size());
 		for (Action expectedAction : expectedActions) {
 			Map<String, Object> action = null;
 			for (Map<String, Object> map : actions) {
@@ -756,7 +756,7 @@ public class ApiControllerTest {
 					|| (params == null && expectedAction.getParams() == null));
 
 			if (expectedAction.getParams() != null) {
-				assertThat(params.size()).isEqualTo(expectedAction.getParams().size());
+				assertThat(params).hasSize(expectedAction.getParams().size());
 				for (String param : expectedAction.getParams()) {
 					assertThat(params.contains(param)).isTrue();
 				}
