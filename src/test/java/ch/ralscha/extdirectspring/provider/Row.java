@@ -41,9 +41,6 @@ public class Row implements Comparable<Row>, RowInterface {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.ralscha.extdirectspring.provider.RowInterface#getId()
-	 */
 	public int getId() {
 		return id;
 	}
@@ -52,9 +49,6 @@ public class Row implements Comparable<Row>, RowInterface {
 		this.id = id;
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.ralscha.extdirectspring.provider.RowInterface#getName()
-	 */
 	public String getName() {
 		return name;
 	}
@@ -63,9 +57,6 @@ public class Row implements Comparable<Row>, RowInterface {
 		this.name = name;
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.ralscha.extdirectspring.provider.RowInterface#isAdmin()
-	 */
 	public boolean isAdmin() {
 		return admin;
 	}
@@ -74,9 +65,6 @@ public class Row implements Comparable<Row>, RowInterface {
 		this.admin = admin;
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.ralscha.extdirectspring.provider.RowInterface#getSalary()
-	 */
 	public BigDecimal getSalary() {
 		return salary;
 	}

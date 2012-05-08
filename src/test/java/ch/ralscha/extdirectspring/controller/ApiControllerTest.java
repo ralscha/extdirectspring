@@ -505,6 +505,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderTreeLoad", new Action("method1", 1, false));
 		remotingApi.addAction("remoteProviderTreeLoad", new Action("method2", 1, false));
 		remotingApi.addAction("remoteProviderTreeLoad", new Action("method3", 1, false));
+		remotingApi.addAction("remoteProviderTreeLoad", new Action("method4", 1, false));
 
 		remotingApi.addAction("remoteProviderImplementation", new Action("storeRead", 1, false));
 		remotingApi.addAction("remoteProviderImplementation", new Action("method2", 0, false));
