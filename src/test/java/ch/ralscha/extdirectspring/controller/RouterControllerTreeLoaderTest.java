@@ -20,22 +20,18 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.codehaus.jackson.type.TypeReference;
 import org.joda.time.LocalDate;
 import org.joda.time.format.ISODateTimeFormat;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad.Node;
 
 /**
@@ -51,41 +47,28 @@ public class RouterControllerTreeLoaderTest {
 	@Autowired
 	private RouterController controller;
 
-	private MockHttpServletResponse response;
-	private MockHttpServletRequest request;
-
-	@Before
-	public void beforeTest() {
-		response = new MockHttpServletResponse();
-		request = new MockHttpServletRequest();
-	}
-
 	@Test
 	public void testNoAdditionalParameters() throws IOException {
 
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoad", "method1", 1,
-				requestParameters);
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(controller, "remoteProviderTreeLoad", "method1",
+				requestParameters, new TypeReference<List<Node>>() {/*nothing here*/});
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1", false), new Node("n2", "Node 2", false),
+				new Node("n3", "Node 3", false), new Node("n4", "Node 4", false), new Node("n5", "Node 5", false));
 
-		assertThat(responses).hasSize(1);
+		
+		requestParameters = new LinkedHashMap<String, Object>();
+		requestParameters.put("node", "n1");
 
-		ExtDirectResponse resp = responses.get(0);
-		assertThat(resp.getAction()).isEqualTo("remoteProviderTreeLoad");
-		assertThat(resp.getMethod()).isEqualTo("method1");
-		assertThat(resp.getTid()).isEqualTo(1);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(controller, "remoteProviderTreeLoad", "method1",
+				requestParameters, new TypeReference<List<Node>>() {/*nothing here*/});
 
-		assertResult(ControllerUtil.convertValue(resp.getResult(), new TypeReference<List<Node>>() {
-		}));
-
+		assertThat(nodes).hasSize(5).containsSequence(new Node("id1", "Node 1.1", true), new Node("id2", "Node 1.2", true),
+				new Node("id3", "Node 1.3", true), new Node("id4", "Node 1.4", true), new Node("id5", "Node 1.5", true));
+		
 	}
 
 	@Test
@@ -96,26 +79,24 @@ public class RouterControllerTreeLoaderTest {
 		requestParameters.put("foo", "foo");
 		requestParameters.put("today", ISODateTimeFormat.date().print(new LocalDate()));
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoad", "method2", 2,
-				requestParameters);
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(controller, "remoteProviderTreeLoad", "method2",
+				requestParameters, new TypeReference<List<Node>>() {/*nothing here*/});
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		String appendix = ":foo;"+new LocalDate().toString();
+		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1"+appendix, false), new Node("n2", "Node 2"+appendix, false),
+				new Node("n3", "Node 3"+appendix, false), new Node("n4", "Node 4"+appendix, false), new Node("n5", "Node 5"+appendix, false));
 
-		assertThat(responses).hasSize(1);
+		
+		requestParameters = new LinkedHashMap<String, Object>();
+		requestParameters.put("node", "root");
+		requestParameters.put("today", ISODateTimeFormat.date().print(new LocalDate().plusDays(10)));
 
-		ExtDirectResponse resp = responses.get(0);
-		assertThat(resp.getAction()).isEqualTo("remoteProviderTreeLoad");
-		assertThat(resp.getMethod()).isEqualTo("method2");
-		assertThat(resp.getTid()).isEqualTo(2);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(controller, "remoteProviderTreeLoad", "method2",
+				requestParameters, new TypeReference<List<Node>>() {/*nothing here*/});
 
-		assertResult(ControllerUtil.convertValue(resp.getResult(), new TypeReference<List<Node>>() {
-		}));
-
+		appendix = ":defaultValue;"+new LocalDate().plusDays(10).toString();
+		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1"+appendix, false), new Node("n2", "Node 2"+appendix, false),
+				new Node("n3", "Node 3"+appendix, false), new Node("n4", "Node 4"+appendix, false), new Node("n5", "Node 5"+appendix, false));
 	}
 
 	@Test
@@ -123,37 +104,56 @@ public class RouterControllerTreeLoaderTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderTreeLoad", "method3", 3,
-				requestParameters);
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(controller, "remoteProviderTreeLoad", "method3",
+				requestParameters, new TypeReference<List<Node>>() {/*nothing here*/});
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		String appendix = ":defaultValue;true;true;true;en";
+		
+		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1"+appendix, false), new Node("n2", "Node 2"+appendix, false),
+				new Node("n3", "Node 3"+appendix, false), new Node("n4", "Node 4"+appendix, false), new Node("n5", "Node 5"+appendix, false));
+		
+		
+		requestParameters = new LinkedHashMap<String, Object>();
+		requestParameters.put("node", "n2");
+		requestParameters.put("foo", "f");
 
-		assertThat(responses).hasSize(1);
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(controller, "remoteProviderTreeLoad", "method3",
+				requestParameters, new TypeReference<List<Node>>() {/*nothing here*/});
 
-		ExtDirectResponse resp = responses.get(0);
-		assertThat(resp.getAction()).isEqualTo("remoteProviderTreeLoad");
-		assertThat(resp.getMethod()).isEqualTo("method3");
-		assertThat(resp.getTid()).isEqualTo(3);
-		assertThat(resp.getType()).isEqualTo("rpc");
-		assertThat(resp.getWhere()).isNull();
-		assertThat(resp.getMessage()).isNull();
-
-		assertResult(ControllerUtil.convertValue(resp.getResult(), new TypeReference<List<Node>>() {
-		}));
+		appendix = ":f;true;true;true;en";
+		
+		assertThat(nodes).hasSize(5).containsSequence(new Node("id1", "Node 2.1"+appendix, true), new Node("id2", "Node 2.2"+appendix, true),
+				new Node("id3", "Node 2.3"+appendix, true), new Node("id4", "Node 2.4"+appendix, true), new Node("id5", "Node 2.5"+appendix, true));
 	}
+	
+	@Test
+	public void testWithHeader() throws IOException {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.addHeader("aHeader", "true");
+		
+		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
+		requestParameters.put("node", "root");
 
-	private void assertResult(List<Node> nodes) {
-		assertThat(nodes).hasSize(5);
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(controller, request, "remoteProviderTreeLoad", "method4",
+				requestParameters, new TypeReference<List<Node>>() {/*nothing here*/});
 
-		for (int i = 1; i <= 5; ++i) {
-			Node node = nodes.get(i - 1);
-			assertThat(node.id).isEqualTo("n" + i);
-			assertThat(node.text).isEqualTo("Node " + i);
-			assertThat(node.leaf).isEqualTo(false);
-		}
+		String appendix = ":true;true;true";
+		
+		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1"+appendix, false), new Node("n2", "Node 2"+appendix, false),
+				new Node("n3", "Node 3"+appendix, false), new Node("n4", "Node 4"+appendix, false), new Node("n5", "Node 5"+appendix, false));
+		
+		
+		
+		request = new MockHttpServletRequest();
+		request.addHeader("aHeader", "false");
+		
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(controller, request, "remoteProviderTreeLoad", "method4",
+				requestParameters, new TypeReference<List<Node>>() {/*nothing here*/});
 
+		appendix = ":false;true;true";		
+		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1"+appendix, false), new Node("n2", "Node 2"+appendix, false),
+				new Node("n3", "Node 3"+appendix, false), new Node("n4", "Node 4"+appendix, false), new Node("n5", "Node 5"+appendix, false));
+		
 	}
 
 }

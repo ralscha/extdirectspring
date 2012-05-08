@@ -164,8 +164,8 @@ public class ExceptionHandlingTest {
 	private ExtDirectResponse runTest(Configuration configuration) throws Exception {
 		ReflectionTestUtils.setField(controller, "configuration", configuration);
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, 3, 2.5,
-				"string.param");
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2,
+				new Object[] { 3, 2.5, "string.param" });
 
 		request.setContent(ControllerUtil.writeAsByte(edRequest));
 		controller.router(request, response, Locale.ENGLISH);
@@ -187,7 +187,7 @@ public class ExceptionHandlingTest {
 	private ExtDirectResponse runTest11(Configuration configuration) throws Exception {
 		ReflectionTestUtils.setField(controller, "configuration", configuration);
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method11", 3);
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method11", 3, null);
 
 		request.setContent(ControllerUtil.writeAsByte(edRequest));
 		controller.router(request, response, Locale.ENGLISH);

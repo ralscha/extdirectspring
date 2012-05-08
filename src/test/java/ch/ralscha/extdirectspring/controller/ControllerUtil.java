@@ -43,31 +43,51 @@ public class ControllerUtil {
 
 	private static ObjectMapper mapper = new ObjectMapper();
 
+	public static Map<String, Object> createRequestJson(String action, String method, int tid, Object data) {
+		return createRequestJson(action, method, false, tid, data);
+	}
+
 	@SuppressWarnings("unchecked")
-	public static Map<String, Object> createRequestJson(String action, String method, int tid, Object... data) {
+	public static Map<String, Object> createRequestJson(String action, String method, boolean namedParameter, int tid,
+			Object data) {
 		ExtDirectRequest dr = new ExtDirectRequest();
 		dr.setAction(action);
 		dr.setMethod(method);
 		dr.setTid(tid);
 		dr.setType("rpc");
-		dr.setData(data);
+
+		if (namedParameter || data instanceof Object[] || data == null) {
+			dr.setData(data);
+		} else {
+			dr.setData(new Object[] { data });
+		}
 		return mapper.convertValue(dr, LinkedHashMap.class);
 	}
 
-	public static Object sendAndReceive(RouterController controller,  String action, String method,
-			Object[] data, Object result) {		
+	public static Object sendAndReceive(RouterController controller, String action, String method, Object data,
+			Object result) {
 		MockHttpServletRequest request = new MockHttpServletRequest();
-		return sendAndReceive(controller, request, action, method, data, result);
+		return sendAndReceive(controller, request, action, method, false, data, result);
 	}
 
-	
-	public static Object sendAndReceive(RouterController controller,  MockHttpServletRequest request, String action, String method,
-			Object[] data, Object result) {
+	public static Object sendAndReceive(RouterController controller, String action, String method,
+			boolean namedParameter, Object data, Object result) {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		return sendAndReceive(controller, request, action, method, namedParameter, data, result);
+	}
+
+	public static Object sendAndReceive(RouterController controller, MockHttpServletRequest request, String action,
+			String method, Object data, Object result) {
+		return sendAndReceive(controller, request, action, method, false, data, result);
+	}
+
+	public static Object sendAndReceive(RouterController controller, MockHttpServletRequest request, String action,
+			String method, boolean namedParameter, Object data, Object result) {
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		
+
 		int tid = (int) (Math.random() * 1000);
-		Map<String, Object> edRequest = createRequestJson(action, method, tid, data);
+		Map<String, Object> edRequest = createRequestJson(action, method, namedParameter, tid, data);
 
 		request.setContent(ControllerUtil.writeAsByte(edRequest));
 		try {
@@ -84,7 +104,7 @@ public class ControllerUtil {
 		assertThat(edResponse.getMethod()).isEqualTo(method);
 		assertThat(edResponse.getTid()).isEqualTo(tid);
 		assertThat(edResponse.getWhere()).isNull();
-		
+
 		if (result == null) {
 			assertThat(edResponse.getType()).isEqualTo("exception");
 			assertThat(edResponse.getResult()).isNull();
@@ -95,7 +115,10 @@ public class ControllerUtil {
 			if (result == Void.TYPE) {
 				assertThat(edResponse.getResult()).isNull();
 			} else if (result instanceof Class<?>) {
-				Object r = ControllerUtil.convertValue(edResponse.getResult(), (Class<?>)result);
+				Object r = ControllerUtil.convertValue(edResponse.getResult(), (Class<?>) result);
+				return r;
+			} else if (result instanceof TypeReference) {
+				Object r = ControllerUtil.convertValue(edResponse.getResult(), (TypeReference<?>) result);
 				return r;
 			} else {
 				assertThat(edResponse.getResult()).isEqualTo(result);

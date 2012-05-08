@@ -15,8 +15,6 @@
  */
 package ch.ralscha.extdirectspring.provider;
 
-import static org.fest.assertions.Assertions.assertThat;
-
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -55,37 +53,29 @@ public class RemoteProviderFormLoad {
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
 	public FormInfo method3(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {
-		assertThat(response).isNotNull();
-		assertThat(request).isNotNull();
-		assertThat(session).isNotNull();
-		assertThat(locale).isEqualTo(Locale.ENGLISH);
-
-		return null;
+		FormInfo fi = new FormInfo();
+		fi.setResult((response != null) + ";" + (request != null) + ";" + (session != null) + ";" + locale);
+		return fi;
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
 	public FormInfo method4(Locale locale, @RequestParam(value = "id") int id) {
-		assertThat(id).isEqualTo(10);
-		assertThat(locale).isEqualTo(Locale.ENGLISH);
-		return new FormInfo();
+		FormInfo fi = new FormInfo();
+		fi.setResult("id=" + id + ";" + locale);
+		return fi;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3")
 	public ExtDirectFormLoadResult method5(@RequestParam(value = "id", defaultValue = "1") int id,
 			HttpServletRequest servletRequest) {
-		assertThat(id).isEqualTo(1);
-		assertThat(servletRequest).isNotNull();
-		return new ExtDirectFormLoadResult();
+		FormInfo fi = new FormInfo();
+		fi.setResult(id + ";" + (servletRequest != null));
+		return new ExtDirectFormLoadResult(fi);
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
 	public ExtDirectFormLoadResult method6(@RequestParam(value = "id", required = false) Integer id) {
-		if (id == null) {
-			assertThat(id).isNull();
-		} else {
-			assertThat(id).isEqualTo(Integer.valueOf(11));
-		}
-		return new ExtDirectFormLoadResult("TEST");
+		return new ExtDirectFormLoadResult("TEST:" + id);
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
