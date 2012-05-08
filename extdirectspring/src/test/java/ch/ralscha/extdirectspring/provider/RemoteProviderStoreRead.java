@@ -60,7 +60,7 @@ public class RemoteProviderStoreRead {
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public List<Row> method1() {
-		return createRows();
+		return createRows("");
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
@@ -71,17 +71,12 @@ public class RemoteProviderStoreRead {
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public List<Row> method3(HttpServletResponse response, HttpServletRequest request, HttpSession session,
 			Locale locale) {
-		assertThat(response).isNotNull();
-		assertThat(request).isNotNull();
-		assertThat(session).isNotNull();
-		assertThat(locale).isEqualTo(Locale.ENGLISH);
-
-		return createRows();
+		return createRows(":" + (response != null) + ";" + (request != null) + ";" + (session != null) + ";" + locale);
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public ExtDirectStoreResponse<Row> method4(ExtDirectStoreReadRequest request) {
-		return createExtDirectStoreResponse(request);
+		return createExtDirectStoreResponse(request, "");
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group3")
@@ -93,7 +88,7 @@ public class RemoteProviderStoreRead {
 		assertThat(request.getParams().size()).isEqualTo(1);
 		assertThat(request.getParams()).includes(entry("id", 10));
 
-		return createExtDirectStoreResponse(request);
+		return createExtDirectStoreResponse(request, ":" + id + ";" + locale);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
@@ -101,7 +96,7 @@ public class RemoteProviderStoreRead {
 			HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
-		return createExtDirectStoreResponse(request);
+		return createExtDirectStoreResponse(request, ":" + id + ";" + (servletRequest != null));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
@@ -111,7 +106,7 @@ public class RemoteProviderStoreRead {
 		} else {
 			assertThat(id).isEqualTo(Integer.valueOf(11));
 		}
-		return createRows();
+		return createRows(":" + id);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
@@ -119,11 +114,11 @@ public class RemoteProviderStoreRead {
 			HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(endDate).isNotNull();
 		assertThat(servletRequest).isNotNull();
-		return createExtDirectStoreResponse(request);
+		return createExtDirectStoreResponse(request, ":" + endDate.toString() + ";" + (servletRequest != null));
 	}
 
-	private ExtDirectStoreResponse<Row> createExtDirectStoreResponse(ExtDirectStoreReadRequest request) {
-		List<Row> rows = createRows();
+	private ExtDirectStoreResponse<Row> createExtDirectStoreResponse(ExtDirectStoreReadRequest request, String appendix) {
+		List<Row> rows = createRows(appendix);
 
 		int totalSize = rows.size();
 
@@ -225,18 +220,18 @@ public class RemoteProviderStoreRead {
 
 	}
 
-	private List<Row> createRows() {
+	private List<Row> createRows(String appendix) {
 		List<Row> rows = new ArrayList<Row>();
 		for (int i = 0; i < 100; i += 2) {
-			rows.add(new Row(i, "name: " + i, true, "" + (1000 + i)));
-			rows.add(new Row(i + 1, "firstname: " + (i + 1), false, "" + (10 + i + 1)));
+			rows.add(new Row(i, "name: " + i + appendix, true, "" + (1000 + i)));
+			rows.add(new Row(i + 1, "firstname: " + (i + 1) + appendix, false, "" + (10 + i + 1)));
 		}
 		return rows;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
 	public ExtDirectStoreResponse<Row> methodMetadata(ExtDirectStoreReadRequest request) {
-		ExtDirectStoreResponse<Row> response = createExtDirectStoreResponse(request);
+		ExtDirectStoreResponse<Row> response = createExtDirectStoreResponse(request, "");
 
 		if (request.getStart() == null && request.getSort() == null) {
 			MetaData metaData = new MetaData();
