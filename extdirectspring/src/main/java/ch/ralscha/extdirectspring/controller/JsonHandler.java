@@ -29,7 +29,7 @@ public class JsonHandler {
 		mapper = new ObjectMapper();
 	}
 
-	public void setMapper(ObjectMapper mapper) {
+	public void setMapper(final ObjectMapper mapper) {
 		if (mapper == null) {
 			throw new IllegalArgumentException("ObjectMapper must not be null");
 		}
@@ -49,7 +49,7 @@ public class JsonHandler {
 	 *          the object to serialize into json
 	 * @return obj in json format
 	 */
-	public String writeValueAsString(Object obj) {
+	public String writeValueAsString(final Object obj) {
 		return writeValueAsString(obj, false);
 	}
 
@@ -63,7 +63,7 @@ public class JsonHandler {
 	 *          if false writes json on one line
 	 * @return obj in json format, null if there is an exception
 	 */
-	public String writeValueAsString(Object obj, boolean indent) {
+	public String writeValueAsString(final Object obj, boolean indent) {
 		try {
 			if (indent) {
 				return mapper.writer().withDefaultPrettyPrinter().writeValueAsString(obj);
@@ -119,7 +119,7 @@ public class JsonHandler {
 		}
 	}
 
-	public Object readValue(InputStream is, Class<Object> clazz) {
+	public Object readValue(final InputStream is, final Class<Object> clazz) {
 		try {
 			return mapper.readValue(is, clazz);
 		} catch (Exception e) {

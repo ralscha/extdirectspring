@@ -37,7 +37,7 @@ public enum SupportedParameters {
 
 	private final Class<?> clazz;
 
-	private SupportedParameters(Class<?> clazz) {
+	private SupportedParameters(final Class<?> clazz) {
 		this.clazz = clazz;
 	}
 
@@ -65,8 +65,8 @@ public enum SupportedParameters {
 		return false;
 	}
 
-	public static Object resolveParameter(Class<?> parameterType, HttpServletRequest request,
-			HttpServletResponse response, Locale locale) {
+	public static Object resolveParameter(final Class<?> parameterType, final HttpServletRequest request,
+			final HttpServletResponse response, final Locale locale) {
 
 		if (SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
 			return request;

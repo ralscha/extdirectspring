@@ -29,7 +29,7 @@ import org.springframework.util.StringUtils;
  * @author Ralph Schaer
  */
 @JsonSerialize(include = Inclusion.NON_NULL)
-public class RemotingApi {
+public final class RemotingApi {
 
 	private String descriptor;
 	private final String url;
@@ -76,7 +76,7 @@ public class RemotingApi {
 		return descriptor;
 	}
 
-	public void setDescriptor(String descriptor) {
+	public void setDescriptor(final String descriptor) {
 		this.descriptor = descriptor;
 	}
 
@@ -84,7 +84,7 @@ public class RemotingApi {
 		return timeout;
 	}
 
-	public void setTimeout(Integer timeout) {
+	public void setTimeout(final Integer timeout) {
 		this.timeout = timeout;
 	}
 
@@ -92,7 +92,7 @@ public class RemotingApi {
 		return maxRetries;
 	}
 
-	public void setMaxRetries(Integer maxRetries) {
+	public void setMaxRetries(final Integer maxRetries) {
 		this.maxRetries = maxRetries;
 	}
 
@@ -100,7 +100,7 @@ public class RemotingApi {
 		return enableBuffer;
 	}
 
-	public void setEnableBuffer(Object enableBuffer) {
+	public void setEnableBuffer(final Object enableBuffer) {
 		this.enableBuffer = enableBuffer;
 	}
 

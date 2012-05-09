@@ -26,7 +26,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
  * @author Ralph Schaer
  */
 @JsonSerialize(include = Inclusion.NON_NULL)
-public class Action {
+public final class Action {
 
 	private final String name;
 	private final Integer len;
@@ -40,7 +40,7 @@ public class Action {
 		this.params = null;
 	}
 
-	public Action(final String name, List<String> params) {
+	public Action(final String name, final List<String> params) {
 		this.name = name;
 		this.len = null;
 		this.formHandler = null;

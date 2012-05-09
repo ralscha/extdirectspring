@@ -35,7 +35,7 @@ import org.springframework.util.ReflectionUtils.MethodFilter;
  * @author mansari
  * @author Ralph Schaer
  */
-public class ExtDirectSpringUtil {
+public final class ExtDirectSpringUtil {
 
 	private ExtDirectSpringUtil() {
 		//singleton

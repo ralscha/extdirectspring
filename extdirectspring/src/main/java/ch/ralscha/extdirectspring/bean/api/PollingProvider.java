@@ -20,7 +20,7 @@ import org.springframework.util.StringUtils;
 /**
  * @author Ralph Schaer
  */
-public class PollingProvider {
+public final class PollingProvider {
 
 	private final String beanName;
 	private final String method;

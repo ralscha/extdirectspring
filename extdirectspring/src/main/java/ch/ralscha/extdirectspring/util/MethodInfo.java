@@ -35,7 +35,7 @@ import ch.ralscha.extdirectspring.bean.api.PollingProvider;
  * 
  * @author Ralph Schaer
  */
-public class MethodInfo {
+public final class MethodInfo {
 
 	private String group;
 	private ExtDirectMethodType type;
@@ -132,7 +132,7 @@ public class MethodInfo {
 		}
 	}
 
-	private boolean hasValue(RequestMapping requestMapping) {
+	private boolean hasValue(final RequestMapping requestMapping) {
 		return (requestMapping != null && requestMapping.value() != null && requestMapping.value().length > 0 && StringUtils
 				.hasText(requestMapping.value()[0]));
 	}
