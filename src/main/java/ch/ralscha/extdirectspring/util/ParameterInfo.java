@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.ValueConstants;
  * 
  * @author Ralph Schaer
  */
-public class ParameterInfo {
+public final class ParameterInfo {
 
 	private static final LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
 
@@ -47,7 +47,7 @@ public class ParameterInfo {
 	private boolean required;
 	private String defaultValue;
 
-	public ParameterInfo(Method method, int paramIndex) {
+	public ParameterInfo(final Method method, final int paramIndex) {
 
 		MethodParameter methodParam = new MethodParameter(method, paramIndex);
 		methodParam.initParameterNameDiscovery(discoverer);

@@ -53,7 +53,7 @@ public class Configuration {
 		return defaultExceptionMessage;
 	}
 
-	public void setDefaultExceptionMessage(String defaultExceptionMessage) {
+	public void setDefaultExceptionMessage(final String defaultExceptionMessage) {
 		this.defaultExceptionMessage = defaultExceptionMessage;
 	}
 
@@ -61,7 +61,7 @@ public class Configuration {
 		return sendExceptionMessage;
 	}
 
-	public void setSendExceptionMessage(boolean sendExceptionMessage) {
+	public void setSendExceptionMessage(final boolean sendExceptionMessage) {
 		this.sendExceptionMessage = sendExceptionMessage;
 	}
 
@@ -69,7 +69,7 @@ public class Configuration {
 		return sendStacktrace;
 	}
 
-	public void setSendStacktrace(boolean sendStacktrace) {
+	public void setSendStacktrace(final boolean sendStacktrace) {
 		this.sendStacktrace = sendStacktrace;
 	}
 
@@ -77,7 +77,7 @@ public class Configuration {
 		return exceptionToMessage;
 	}
 
-	public void setExceptionToMessage(Map<Class<?>, String> exceptionToMessage) {
+	public void setExceptionToMessage(final Map<Class<?>, String> exceptionToMessage) {
 		this.exceptionToMessage = exceptionToMessage;
 	}
 
@@ -85,7 +85,7 @@ public class Configuration {
 		return alwaysWrapStoreResponse;
 	}
 
-	public void setAlwaysWrapStoreResponse(boolean alwaysWrapStoreResponse) {
+	public void setAlwaysWrapStoreResponse(final boolean alwaysWrapStoreResponse) {
 		this.alwaysWrapStoreResponse = alwaysWrapStoreResponse;
 	}
 
@@ -93,7 +93,7 @@ public class Configuration {
 		return synchronizeOnSession;
 	}
 
-	public void setSynchronizeOnSession(boolean synchronizeOnSession) {
+	public void setSynchronizeOnSession(final boolean synchronizeOnSession) {
 		this.synchronizeOnSession = synchronizeOnSession;
 	}
 
@@ -101,7 +101,7 @@ public class Configuration {
 		return timeout;
 	}
 
-	public void setTimeout(Integer timeout) {
+	public void setTimeout(final Integer timeout) {
 		this.timeout = timeout;
 	}
 
@@ -109,7 +109,7 @@ public class Configuration {
 		return maxRetries;
 	}
 
-	public void setMaxRetries(Integer maxRetries) {
+	public void setMaxRetries(final Integer maxRetries) {
 		this.maxRetries = maxRetries;
 	}
 
@@ -117,11 +117,11 @@ public class Configuration {
 		return enableBuffer;
 	}
 
-	public void setEnableBuffer(Object enableBuffer) {
+	public void setEnableBuffer(final Object enableBuffer) {
 		this.enableBuffer = enableBuffer;
 	}
 
-	public String getMessage(Throwable exception) {
+	public String getMessage(final Throwable exception) {
 		String message = null;
 		if (getExceptionToMessage() != null) {
 			message = getExceptionToMessage().get(exception.getClass());
@@ -146,7 +146,7 @@ public class Configuration {
 		return streamResponse;
 	}
 
-	public void setStreamResponse(boolean streamResponse) {
+	public void setStreamResponse(final boolean streamResponse) {
 		this.streamResponse = streamResponse;
 	}
 }
