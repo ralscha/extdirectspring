@@ -383,6 +383,22 @@
 				<version>2.5</version>
 			</plugin>
 
+						<plugin>
+							<groupId>com.atlassian.maven.plugins</groupId>
+							<artifactId>maven-clover2-plugin</artifactId>
+							<version>3.1.4</version>
+							<configuration>
+								<license><![CDATA[
+									nqnMRdMcPMnTVgXvLUhKHiOBOMpPaqbbGHWgAhuMntGQiDC
+									mj2L0DkB6BZ2OlhgEfP55Vnz22K>xA7GYjQAlGpmmg<P1S5
+									qONOwSoMQNMpMRooppOXvoNoonnpqPoRQqxxsUWmStxvwTS
+									tXtSnXuWvPRnRMnmqmUUnppsrtommmmmmUUnppsrtommmmm
+									mUU5JJW4bsbilmjbkqW17UUnmmmm										
+								]]></license>
+							</configuration>
+						</plugin>
+			
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
@@ -429,6 +445,17 @@
 							<artifactId>cobertura-maven-plugin</artifactId>
 							<version>2.5.1</version>
 						</plugin>
+
+						<plugin>
+							<groupId>com.atlassian.maven.plugins</groupId>
+							<artifactId>maven-clover2-plugin</artifactId>
+							<version>3.1.4</version>
+							<configuration>
+								<generatePdf>true</generatePdf>
+								<generateHtml>true</generateHtml>
+							</configuration>
+						</plugin>
+
 					</reportPlugins>
 				</configuration>
 
