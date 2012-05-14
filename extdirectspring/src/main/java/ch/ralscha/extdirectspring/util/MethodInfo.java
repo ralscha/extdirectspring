@@ -55,7 +55,12 @@ public final class MethodInfo {
 
 		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 		this.type = extDirectMethodAnnotation.value();
-		this.group = extDirectMethodAnnotation.group();
+		
+		if (StringUtils.hasText(extDirectMethodAnnotation.group())) {
+			this.group = extDirectMethodAnnotation.group().trim();
+		} else {
+			this.group = null;
+		}
 
 		if (type != ExtDirectMethodType.FORM_POST) {
 			this.method = method;
