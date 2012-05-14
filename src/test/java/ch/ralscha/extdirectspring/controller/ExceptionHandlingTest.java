@@ -44,14 +44,6 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 @ContextConfiguration(locations = "classpath:/testExceptionHandling.xml")
 public class ExceptionHandlingTest {
 
-	private static final String METHOD_NOT_FOUND_MESSAGE = "Bean or Method 'remoteProviderSimple.method4' not found";
-
-	private static final String NULL_POINTER = "null pointer";
-
-	private static final String AN_ERROR_OCCURED = "an error occured";
-
-	private static final String EXCEPTION_MESSAGE = "Server Error";
-
 	@Autowired
 	private RouterController controller;
 
@@ -74,9 +66,9 @@ public class ExceptionHandlingTest {
 	@Test
 	public void testDefaultExceptionMessage() throws Exception {
 		Configuration configuration = new Configuration();
-		configuration.setDefaultExceptionMessage(AN_ERROR_OCCURED);
+		configuration.setDefaultExceptionMessage("an error occured");
 		ExtDirectResponse resp = runTest(configuration);
-		assertThat(resp.getMessage()).isEqualTo(AN_ERROR_OCCURED);
+		assertThat(resp.getMessage()).isEqualTo("an error occured");
 		assertThat(resp.getWhere()).isNull();
 	}
 
@@ -85,7 +77,7 @@ public class ExceptionHandlingTest {
 		Configuration configuration = new Configuration();
 		configuration.setSendExceptionMessage(true);
 		ExtDirectResponse resp = runTest(configuration);
-		assertThat(resp.getMessage()).isEqualTo(EXCEPTION_MESSAGE);
+		assertThat(resp.getMessage()).isEqualTo("For input string: \"xxx\"");
 		assertThat(resp.getWhere()).isNull();
 	}
 
@@ -93,10 +85,10 @@ public class ExceptionHandlingTest {
 	public void testExceptionToMessage() throws Exception {
 		Configuration configuration = new Configuration();
 		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
-		exceptionMessageMapping.put(NullPointerException.class, NULL_POINTER);
+		exceptionMessageMapping.put(NullPointerException.class, "null pointer");
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest11(configuration);
-		assertThat(resp.getMessage()).isEqualTo(NULL_POINTER);
+		assertThat(resp.getMessage()).isEqualTo("null pointer");
 		assertThat(resp.getWhere()).isNull();
 	}
 
@@ -105,10 +97,10 @@ public class ExceptionHandlingTest {
 		Configuration configuration = new Configuration();
 		configuration.setSendExceptionMessage(false);
 		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
-		exceptionMessageMapping.put(IllegalArgumentException.class, null);
+		exceptionMessageMapping.put(NumberFormatException.class, null);
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest(configuration);
-		assertThat(resp.getMessage()).isEqualTo(EXCEPTION_MESSAGE);
+		assertThat(resp.getMessage()).isEqualTo("For input string: \"xxx\"");
 		assertThat(resp.getWhere()).isNull();
 	}
 
@@ -116,11 +108,10 @@ public class ExceptionHandlingTest {
 	public void testDefaultExceptionMessageWithStacktrace() throws Exception {
 		Configuration configuration = new Configuration();
 		configuration.setSendStacktrace(true);
-		configuration.setDefaultExceptionMessage(AN_ERROR_OCCURED);
+		configuration.setDefaultExceptionMessage("an error occured");
 		ExtDirectResponse resp = runTest(configuration);
-		assertThat(resp.getMessage()).isEqualTo(AN_ERROR_OCCURED);
-		assertThat(resp.getWhere()).isNotNull();
-		assertThat(resp.getWhere().startsWith(METHOD_NOT_FOUND_MESSAGE)).isTrue();
+		assertThat(resp.getMessage()).isEqualTo("an error occured");
+		assertThat(resp.getWhere()).startsWith("java.lang.NumberFormatException");
 	}
 
 	@Test
@@ -129,9 +120,8 @@ public class ExceptionHandlingTest {
 		configuration.setSendStacktrace(true);
 		configuration.setSendExceptionMessage(true);
 		ExtDirectResponse resp = runTest(configuration);
-		assertThat(resp.getMessage()).isEqualTo(EXCEPTION_MESSAGE);
-		assertThat(resp.getWhere()).isNotNull();
-		assertThat(resp.getWhere().startsWith(METHOD_NOT_FOUND_MESSAGE)).isTrue();
+		assertThat(resp.getMessage()).isEqualTo("For input string: \"xxx\"");
+		assertThat(resp.getWhere()).startsWith("java.lang.NumberFormatException");
 
 	}
 
@@ -140,11 +130,10 @@ public class ExceptionHandlingTest {
 		Configuration configuration = new Configuration();
 		configuration.setSendStacktrace(true);
 		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
-		exceptionMessageMapping.put(NullPointerException.class, NULL_POINTER);
+		exceptionMessageMapping.put(NullPointerException.class, "null pointer");
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest11(configuration);
-		assertThat(resp.getMessage()).isEqualTo(NULL_POINTER);
-		assertThat(resp.getWhere()).isNotNull();
+		assertThat(resp.getMessage()).isEqualTo("null pointer");
 		assertThat(resp.getWhere()).startsWith("java.lang.NullPointerException");
 	}
 
@@ -154,18 +143,18 @@ public class ExceptionHandlingTest {
 		configuration.setSendExceptionMessage(false);
 		configuration.setSendStacktrace(true);
 		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
-		exceptionMessageMapping.put(IllegalArgumentException.class, null);
+		exceptionMessageMapping.put(NumberFormatException.class, null);
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest(configuration);
-		assertThat(resp.getMessage()).isEqualTo(EXCEPTION_MESSAGE);
-		assertThat(resp.getWhere().startsWith(METHOD_NOT_FOUND_MESSAGE)).isTrue();
+		assertThat(resp.getMessage()).isEqualTo("For input string: \"xxx\"");
+		assertThat(resp.getWhere()).startsWith("java.lang.NumberFormatException");
 	}
 
 	private ExtDirectResponse runTest(Configuration configuration) throws Exception {
 		ReflectionTestUtils.setField(controller, "configuration", configuration);
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2,
-				new Object[] { 3, 2.5, "string.param" });
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4b", 2,
+				new Object[] { 3, "xxx", "string.param" });
 
 		request.setContent(ControllerUtil.writeAsByte(edRequest));
 		controller.router(request, response, Locale.ENGLISH);
@@ -174,7 +163,7 @@ public class ExceptionHandlingTest {
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
-		assertThat(resp.getMethod()).isEqualTo("method4");
+		assertThat(resp.getMethod()).isEqualTo("method4b");
 		assertThat(resp.getType()).isEqualTo("exception");
 		assertThat(resp.getTid()).isEqualTo(2);
 		assertThat(resp.getResult()).isNull();

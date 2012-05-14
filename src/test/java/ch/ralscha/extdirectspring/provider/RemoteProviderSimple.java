@@ -209,7 +209,7 @@ public class RemoteProviderSimple {
 		return header;
 	}
 
-	@ExtDirectMethod
+	@ExtDirectMethod(synchronizeOnSession = true)
 	public String method19(@RequestHeader(defaultValue = "default1", required = false) String header1, Integer id,
 			@RequestHeader(defaultValue = "default2", required = false) String header2,
 			@RequestHeader(value = "last") String header3) {

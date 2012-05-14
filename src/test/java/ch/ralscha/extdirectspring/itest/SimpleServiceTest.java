@@ -78,9 +78,11 @@ public class SimpleServiceTest extends JettyTest {
 		post.setHeader("Content-Type", "application/json; charset=UTF-8");
 
 		HttpResponse response = client.execute(post);
+						
 		HttpEntity entity = response.getEntity();
 		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
+		assertThat(response.getFirstHeader("Content-Length").getValue()).isEqualTo(""+responseString.length());
 
 		assertThat(responseString).isNotNull();
 		assertThat(responseString).startsWith("[").endsWith("]");
@@ -121,7 +123,9 @@ public class SimpleServiceTest extends JettyTest {
 		HttpEntity entity = response.getEntity();
 		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
-
+		
+		assertThat(response.getFirstHeader("Content-Length")).isNull();
+		
 		assertThat(responseString).isNotNull();
 
 		assertThat(responseString).startsWith("[").endsWith("]");

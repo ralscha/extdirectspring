@@ -49,9 +49,9 @@ public class WrongFormPostController {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_POST)
+	@RequestMapping(value = "/wrong", method = RequestMethod.POST)
 	@ResponseBody
-	public ExtDirectResponse updateInfo4(HttpServletRequest request, HttpServletResponse response) {
+	public void updateInfo4(HttpServletRequest request, HttpServletResponse response) {
 		ExtDirectResponseBuilder.create(request, response).buildAndWrite();
-		return null;
 	}
 }
