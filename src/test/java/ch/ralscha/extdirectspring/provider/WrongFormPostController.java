@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
@@ -46,4 +47,11 @@ public class WrongFormPostController {
 		ExtDirectResponseBuilder.create(request, response).buildAndWrite();
 		return null;
 	}
+	
+	@ExtDirectMethod(ExtDirectMethodType.FORM_POST)
+	@ResponseBody
+	public ExtDirectResponse updateInfo4(HttpServletRequest request, HttpServletResponse response) {
+		ExtDirectResponseBuilder.create(request, response).buildAndWrite();
+		return null;
+	}	
 }

@@ -36,7 +36,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.StringUtils;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
-import ch.ralscha.extdirectspring.controller.JsonHandler;
 
 /**
  * Tests for {@link JsonHandler}.
@@ -48,6 +47,12 @@ import ch.ralscha.extdirectspring.controller.JsonHandler;
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class JsonHandlerTest {
 
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetNullObjectMapper() {
+		JsonHandler jsonHandler = new JsonHandler();
+		jsonHandler.setMapper(null);
+	}	
+	
 	@Test
 	public void testserializeObject() {
 		JsonHandler jsonHandler = new JsonHandler();
