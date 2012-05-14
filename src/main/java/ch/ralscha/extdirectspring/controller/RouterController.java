@@ -170,7 +170,7 @@ public class RouterController implements InitializingBean {
 			return false;
 		}
 
-		if (AnnotationUtils.findAnnotation(clazz, ResponseBody.class) != null) {
+		if (AnnotationUtils.findAnnotation(method, ResponseBody.class) != null) {
 			return false;
 		}
 
@@ -200,11 +200,9 @@ public class RouterController implements InitializingBean {
 	}
 
 	private boolean hasPostMethod(RequestMethod[] methods) {
-		if (methods != null) {
-			for (RequestMethod method : methods) {
-				if (method.equals(RequestMethod.POST)) {
-					return true;
-				}
+		for (RequestMethod method : methods) {
+			if (method.equals(RequestMethod.POST)) {
+				return true;
 			}
 		}
 
@@ -270,7 +268,7 @@ public class RouterController implements InitializingBean {
 				handleException(directPollResponse, e);
 			}
 		} else {
-			log.error("Error invoking method '" + beanName + "." + method + "'. Method not found");
+			log.error("Error invoking method '" + beanName + "." + method + "'. Method or Bean not found");
 			handleMethodNotFoundError(directPollResponse, beanName, method);
 			streamResponse = configuration.isStreamResponse();
 		}
@@ -290,7 +288,7 @@ public class RouterController implements InitializingBean {
 			return methodInfo.getForwardPath();
 		}
 
-		log.error("Error invoking method '" + extAction + "." + extMethod + "'. Method not found");
+		log.error("Error invoking method '" + extAction + "." + extMethod + "'. Method  or Bean not found");
 		ExtDirectResponse directResponse = new ExtDirectResponse(request);
 		handleMethodNotFoundError(directResponse, extAction, extMethod);
 		writeJsonResponse(response, directResponse, configuration.isStreamResponse());
@@ -362,7 +360,7 @@ public class RouterController implements InitializingBean {
 				}
 			} else {
 				log.error("Error invoking method '" + directRequest.getAction() + "." + directRequest.getMethod()
-						+ "'. Method not found");
+						+ "'. Method or Bean not found");
 				handleMethodNotFoundError(directResponse, directRequest.getAction(), directRequest.getMethod());
 			}
 
@@ -720,7 +718,7 @@ public class RouterController implements InitializingBean {
 		response.setMessage(configuration.getDefaultExceptionMessage());
 
 		if (configuration.isSendStacktrace()) {
-			response.setWhere("Method '" + beanName + "." + methodName + "' not found");
+			response.setWhere("Bean or Method '" + beanName + "." + methodName + "' not found");
 		} else {
 			response.setWhere(null);
 		}
