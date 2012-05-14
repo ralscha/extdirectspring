@@ -67,6 +67,11 @@ public class RemoteProviderSimple {
 		return "method4() called";
 	}
 
+	@ExtDirectMethod
+	public String method4b(long i, Double d, String s) {
+		return "method4b() called";
+	}
+
 	@ExtDirectMethod(group = "group2,group3")
 	public Boolean method5(String userName) {
 		if ("ralph".equals(userName)) {
@@ -132,6 +137,11 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod
+	public String method11b() {
+		throw new UnsupportedOperationException("not supported");
+	}
+
+	@ExtDirectMethod
 	public String method12(Row aRow) {
 		assertThat(aRow).isNotNull();
 		assertThat(aRow.getId()).isEqualTo(104);
@@ -194,7 +204,7 @@ public class RemoteProviderSimple {
 		return header;
 	}
 
-	@ExtDirectMethod
+	@ExtDirectMethod(synchronizeOnSession = true)
 	public String method18(@RequestHeader(defaultValue = "default", required = false) String header) {
 		return header;
 	}
@@ -206,7 +216,7 @@ public class RemoteProviderSimple {
 		return id + ";" + header1 + ";" + header2 + ";" + header3;
 	}
 
-	@ExtDirectMethod
+	@ExtDirectMethod(synchronizeOnSession = true)
 	public String method20(@RequestHeader Integer intHeader, @RequestHeader Boolean booleanHeader) {
 		return intHeader + ";" + booleanHeader;
 	}

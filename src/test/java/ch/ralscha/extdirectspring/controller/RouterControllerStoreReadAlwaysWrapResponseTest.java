@@ -15,7 +15,10 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
+import static org.fest.assertions.Assertions.assertThat;
+
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,6 +93,20 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 				"method7", readRequest, new TypeReference<ExtDirectStoreResponse<Row>>() {
 				});
 		RouterControllerStoreReadTest.assert100Rows(new ArrayList<Row>(rows.getRecords()), ":11");
+	}
+
+	@Test
+	public void testCreateWithDataSingle() throws IOException {
+		ExtDirectStoreResponse<Row> rows = (ExtDirectStoreResponse<Row>) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderStoreModifySingle", "create1", new Row(10, "Ralph", true, "109.55"),
+				new TypeReference<ExtDirectStoreResponse<Row>>() {
+				});
+		assertThat(rows.getRecords()).hasSize(1);
+		assertThat(rows.isSuccess()).isTrue();
+		Row row = rows.getRecords().iterator().next();
+		assertThat(row.getId()).isEqualTo(10);
+		assertThat(row.getName()).isEqualTo("Ralph");
+		assertThat(row.getSalary()).isEqualTo(new BigDecimal("109.55"));
 	}
 
 }

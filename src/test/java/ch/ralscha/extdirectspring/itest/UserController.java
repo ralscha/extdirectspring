@@ -23,7 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
@@ -34,7 +33,6 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 public class UserController {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_user")
-	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
 	public void updateUser(HttpServletRequest request, HttpServletResponse response, @Valid User user,
 			BindingResult result) {

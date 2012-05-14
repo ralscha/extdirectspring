@@ -19,6 +19,7 @@
 	      p:enableBuffer="true"
 		  p:maxRetries="6" 
 		  p:streamResponse="true" 
-		  p:timeout="15111" />
+		  p:timeout="15111" 
+		  p:synchronizeOnSession="true"/>
 
 </beans>

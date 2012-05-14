@@ -16,7 +16,6 @@
 package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
@@ -59,8 +58,8 @@ public class ExceptionHandlingConfigInXmlTest {
 	@Test
 	public void testExceptionInMapping() throws Exception {
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2,
-				new Object[] { 3, 2.5, "string.param" });
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4b", 2,
+				new Object[] { 3, "xxx", "string.param" });
 
 		request.setContent(ControllerUtil.writeAsByte(edRequest));
 		controller.router(request, response, Locale.ENGLISH);
@@ -69,17 +68,16 @@ public class ExceptionHandlingConfigInXmlTest {
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
-		assertThat(resp.getMethod()).isEqualTo("method4");
+		assertThat(resp.getMethod()).isEqualTo("method4b");
 		assertThat(resp.getType()).isEqualTo("exception");
 		assertThat(resp.getTid()).isEqualTo(2);
-		assertThat(resp.getMessage()).isEqualTo("Panic!!!");
+		assertThat(resp.getMessage()).isEqualTo("there is something wrong");
 		assertThat(resp.getResult()).isNull();
-		assertTrue(resp.getWhere().startsWith("Method 'remoteProviderSimple.method4' not found"));
-
+		assertThat(resp.getWhere()).startsWith("java.lang.NumberFormatException: For input string: \"xxx\"");
 	}
 
 	@Test
-	public void testExceptionInMappingWithNullValue() throws Exception {
+	public void testBeanOrMethodNotFound() throws Exception {
 
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple2", "method4", 2,
 				new Object[] { 3, 2.5, "string.param" });
@@ -96,8 +94,27 @@ public class ExceptionHandlingConfigInXmlTest {
 		assertThat(resp.getTid()).isEqualTo(2);
 		assertThat(resp.getMessage()).isEqualTo("Panic!!!");
 		assertThat(resp.getResult()).isNull();
-		assertTrue(resp.getWhere().startsWith("Method 'remoteProviderSimple2.method4' not found"));
+		assertThat(resp.getWhere()).startsWith("Bean or Method 'remoteProviderSimple2.method4' not found");
 
+	}
+
+	@Test
+	public void testExceptionInMappingWithNullValue() throws Exception {
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method11b", 3, null);
+
+		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		controller.router(request, response, Locale.ENGLISH);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+
+		assertThat(responses).hasSize(1);
+		ExtDirectResponse resp = responses.get(0);
+		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
+		assertThat(resp.getMethod()).isEqualTo("method11b");
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getTid()).isEqualTo(3);
+		assertThat(resp.getMessage()).isEqualTo("not supported");
+		assertThat(resp.getResult()).isNull();
+		assertThat(resp.getWhere()).startsWith("java.lang.UnsupportedOperationException");
 	}
 
 	@Test
@@ -116,7 +133,7 @@ public class ExceptionHandlingConfigInXmlTest {
 		assertThat(resp.getTid()).isEqualTo(3);
 		assertThat(resp.getMessage()).isEqualTo("Panic!!!");
 		assertThat(resp.getResult()).isNull();
-		assertThat(resp.getWhere().startsWith("java.lang.NullPointerException")).isTrue();
+		assertThat(resp.getWhere()).startsWith("java.lang.NullPointerException");
 
 	}
 }

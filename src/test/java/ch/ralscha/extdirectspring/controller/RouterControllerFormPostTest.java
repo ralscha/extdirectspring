@@ -84,7 +84,7 @@ public class RouterControllerFormPostTest {
 
 		assertThat(edsResponse.getType()).isEqualTo("exception");
 		assertThat(edsResponse.getMessage()).isEqualTo("something wrong");
-		assertThat(edsResponse.getWhere()).isEqualTo("Method 'remoteProviderSimple.method1' not found");
+		assertThat(edsResponse.getWhere()).isEqualTo("Bean or Method 'remoteProviderSimple.method1' not found");
 
 		assertThat(edsResponse.getTid()).isEqualTo(12);
 		assertThat(edsResponse.getAction()).isEqualTo("remoteProviderSimple");

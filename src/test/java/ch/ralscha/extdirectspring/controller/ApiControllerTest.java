@@ -436,6 +436,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method2", 0, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3, false));
+		remotingApi.addAction("remoteProviderSimple", new Action("method4b", 3, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method6", 2, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method7", 0, false));
@@ -443,6 +444,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", new Action("method9", 0, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method10", 9, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method11", 0, false));
+		remotingApi.addAction("remoteProviderSimple", new Action("method11b", 0, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method12", 1, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method13", 9, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method14", 4, false));
@@ -592,14 +594,13 @@ public class ApiControllerTest {
 
 	}
 
-	static void compare(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs,
-			String remotingApiVar, String pollingUrlsVar) throws JsonParseException, JsonMappingException, IOException {
+	static void compare(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs, String remotingApiVar,
+			String pollingUrlsVar) throws JsonParseException, JsonMappingException, IOException {
 		compare(response, remotingApi, apiNs, remotingApiVar, pollingUrlsVar, null);
 	}
 
-	static void compare(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs,
-			String remotingApiVar, String pollingUrlsVar, Configuration config) throws JsonParseException,
-			JsonMappingException, IOException {
+	static void compare(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs, String remotingApiVar,
+			String pollingUrlsVar, Configuration config) throws JsonParseException, JsonMappingException, IOException {
 		String content = response.getContentAsString();
 		content = content.replace(";", ";\n");
 		content = content.replace("{", "{\n");

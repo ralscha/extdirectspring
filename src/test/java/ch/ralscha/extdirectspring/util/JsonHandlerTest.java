@@ -47,12 +47,12 @@ import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class JsonHandlerTest {
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testSetNullObjectMapper() {
 		JsonHandler jsonHandler = new JsonHandler();
 		jsonHandler.setMapper(null);
-	}	
-	
+	}
+
 	@Test
 	public void testserializeObject() {
 		JsonHandler jsonHandler = new JsonHandler();
@@ -184,6 +184,7 @@ public class JsonHandlerTest {
 	@Test
 	public void testJsonList() throws JsonGenerationException, JsonMappingException, IOException {
 		JsonHandler jsonHandler = new JsonHandler();
+		jsonHandler.setMapper(new ObjectMapper());
 		List<ExtDirectRequest> requests = new ArrayList<ExtDirectRequest>();
 
 		ExtDirectRequest req = new ExtDirectRequest();

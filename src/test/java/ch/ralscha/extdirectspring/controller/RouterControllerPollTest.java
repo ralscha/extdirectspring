@@ -52,6 +52,20 @@ public class RouterControllerPollTest {
 	}
 
 	@Test
+	public void pollBeanDoesNotExists() throws Exception {
+
+		controller.poll("pollProviderXY", "handleMessage1", "message1", request, response, Locale.ENGLISH);
+		ExtDirectPollResponse resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getName()).isEqualTo("message1");
+		assertThat(resp.getData()).isNull();
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isEqualTo("Server Error");
+	}
+
+	@Test
 	public void pollNoArguments() throws Exception {
 
 		controller.poll("pollProvider", "handleMessage1", "message1", request, response, Locale.ENGLISH);
