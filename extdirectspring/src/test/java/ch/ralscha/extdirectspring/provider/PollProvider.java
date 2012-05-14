@@ -61,7 +61,7 @@ public class PollProvider {
 		return "Result: " + id;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message4")
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message4", synchronizeOnSession = true)
 	public int handleMessage4(@RequestParam(value = "id", defaultValue = "1") int id, HttpServletRequest request) {
 		assertThat(request).isNotNull();
 		return id * 2;
@@ -91,7 +91,7 @@ public class PollProvider {
 		return id + ";" + dummy + ";" + header;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5", synchronizeOnSession = true)
 	public String message8(@RequestParam Integer id, @RequestHeader("anotherName") String header) {
 		return id + ";" + header;
 	}

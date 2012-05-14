@@ -44,7 +44,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 @ContextConfiguration(locations = "classpath:/testExceptionHandling.xml")
 public class ExceptionHandlingTest {
 
-	private static final String METHOD_NOT_FOUND_MESSAGE = "Method 'remoteProviderSimple.method4' not found";
+	private static final String METHOD_NOT_FOUND_MESSAGE = "Bean or Method 'remoteProviderSimple.method4' not found";
 
 	private static final String NULL_POINTER = "null pointer";
 

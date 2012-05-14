@@ -16,18 +16,9 @@
 package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,12 +28,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.util.StringUtils;
 
-import ch.ralscha.extdirectspring.bean.api.Action;
-import ch.ralscha.extdirectspring.bean.api.PollingProvider;
-import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.util.ApiCache;
 
 /**
@@ -65,17 +51,17 @@ public class ApiControllerWithXMLConfig3Test {
 	private RouterController routerController;
 
 	private Configuration config;
-	
+
 	@Before
 	public void setupApiController() throws Exception {
 		routerController.afterPropertiesSet();
 		ApiCache.INSTANCE.clear();
-		
+
 		config = new Configuration();
 		config.setTimeout(15111);
 		config.setEnableBuffer(true);
 		config.setMaxRetries(6);
-		config.setStreamResponse(true);	
+		config.setStreamResponse(true);
 	}
 
 	@Test
@@ -84,16 +70,18 @@ public class ApiControllerWithXMLConfig3Test {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "group2", false, null, request,
 				response);
-		ApiControllerTest.compare(response, ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
+		ApiControllerTest.compare(response, ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API",
+				"TEST_POLLING_URLS", config);
 
 		assertThat(response.getContentLength()).isEqualTo(response.getContentAsByteArray().length);
-		
+
 		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "group2", false, null, request,
 				response);
-		ApiControllerTest.compare(response, ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
-		
+		ApiControllerTest.compare(response, ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API",
+				"TEST_POLLING_URLS", config);
+
 		assertThat(response.getContentLength()).isEqualTo(response.getContentAsByteArray().length);
 	}
 
@@ -101,7 +89,5 @@ public class ApiControllerWithXMLConfig3Test {
 	public void testGroup2Again() throws IOException {
 		testGroup2();
 	}
-
-	
 
 }
