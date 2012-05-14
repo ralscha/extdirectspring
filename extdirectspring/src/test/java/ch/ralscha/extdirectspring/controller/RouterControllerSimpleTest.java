@@ -33,6 +33,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -245,6 +246,7 @@ public class RouterControllerSimpleTest {
 	@Test
 	public void methodMultipleHeaders1() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setSession(new MockHttpSession());
 		request.addHeader("last", "lastHeader");
 
 		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method19", a(100),
@@ -275,6 +277,7 @@ public class RouterControllerSimpleTest {
 	@Test
 	public void methodHeaderWithConversion() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setSession(new MockHttpSession());
 		request.addHeader("intHeader", "2");
 		request.addHeader("booleanHeader", "true");
 
