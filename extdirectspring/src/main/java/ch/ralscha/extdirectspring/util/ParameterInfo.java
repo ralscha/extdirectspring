@@ -59,32 +59,30 @@ public final class ParameterInfo {
 		this.supportedParameter = SupportedParameters.isSupported(typeDescriptor.getObjectType());
 
 		Annotation[] paramAnnotations = methodParam.getParameterAnnotations();
-		if (paramAnnotations != null) {
 
-			for (Annotation paramAnn : paramAnnotations) {
-				if (RequestParam.class.isInstance(paramAnn)) {
-					RequestParam requestParam = (RequestParam) paramAnn;
-					if (StringUtils.hasText(requestParam.value())) {
-						this.name = requestParam.value();
-					}
-					this.required = requestParam.required();
-					this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()) ? null
-							: requestParam.defaultValue();
-					this.hasRequestParamAnnotation = true;
-					this.hasRequestHeaderAnnotation = false;
-					break;
-				} else if (RequestHeader.class.isInstance(paramAnn)) {
-					RequestHeader requestHeader = (RequestHeader) paramAnn;
-					if (StringUtils.hasText(requestHeader.value())) {
-						this.name = requestHeader.value();
-					}
-					this.required = requestHeader.required();
-					this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestHeader.defaultValue()) ? null
-							: requestHeader.defaultValue();
-					this.hasRequestParamAnnotation = false;
-					this.hasRequestHeaderAnnotation = true;
-					break;
+		for (Annotation paramAnn : paramAnnotations) {
+			if (RequestParam.class.isInstance(paramAnn)) {
+				RequestParam requestParam = (RequestParam) paramAnn;
+				if (StringUtils.hasText(requestParam.value())) {
+					this.name = requestParam.value();
 				}
+				this.required = requestParam.required();
+				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()) ? null
+						: requestParam.defaultValue();
+				this.hasRequestParamAnnotation = true;
+				this.hasRequestHeaderAnnotation = false;
+				break;
+			} else if (RequestHeader.class.isInstance(paramAnn)) {
+				RequestHeader requestHeader = (RequestHeader) paramAnn;
+				if (StringUtils.hasText(requestHeader.value())) {
+					this.name = requestHeader.value();
+				}
+				this.required = requestHeader.required();
+				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestHeader.defaultValue()) ? null
+						: requestHeader.defaultValue();
+				this.hasRequestParamAnnotation = false;
+				this.hasRequestHeaderAnnotation = true;
+				break;
 			}
 		}
 

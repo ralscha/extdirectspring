@@ -55,7 +55,7 @@ public final class MethodInfo {
 
 		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 		this.type = extDirectMethodAnnotation.value();
-		
+
 		if (StringUtils.hasText(extDirectMethodAnnotation.group())) {
 			this.group = extDirectMethodAnnotation.group().trim();
 		} else {
@@ -111,7 +111,8 @@ public final class MethodInfo {
 
 		}
 
-		if (type == ExtDirectMethodType.SIMPLE) {
+		switch (type) {
+		case SIMPLE:
 			int paramLength = 0;
 			for (ParameterInfo parameter : this.parameters) {
 				if (!parameter.isSupportedParameter() && !parameter.isHasRequestHeaderAnnotation()) {
@@ -119,7 +120,8 @@ public final class MethodInfo {
 				}
 			}
 			this.action = new Action(method.getName(), paramLength, null);
-		} else if (type == ExtDirectMethodType.SIMPLE_NAMED) {
+			break;
+		case SIMPLE_NAMED:
 			List<String> parameterNames = new ArrayList<String>();
 			for (ParameterInfo parameter : this.parameters) {
 				if (!parameter.isSupportedParameter() && !parameter.isHasRequestHeaderAnnotation()) {
@@ -127,13 +129,19 @@ public final class MethodInfo {
 				}
 			}
 			this.action = new Action(method.getName(), parameterNames);
-		} else if (type == ExtDirectMethodType.FORM_LOAD || type == ExtDirectMethodType.STORE_READ
-				|| type == ExtDirectMethodType.STORE_MODIFY || type == ExtDirectMethodType.TREE_LOAD) {
+			break;
+		case FORM_LOAD:
+		case STORE_READ:
+		case STORE_MODIFY:
+		case TREE_LOAD:
 			this.action = new Action(method.getName(), 1, null);
-		} else if (type == ExtDirectMethodType.FORM_POST) {
+			break;
+		case FORM_POST:
 			this.action = new Action(method.getName(), 0, true);
-		} else if (type == ExtDirectMethodType.POLL) {
+			break;
+		case POLL:
 			this.pollingProvider = new PollingProvider(beanName, method.getName(), extDirectMethodAnnotation.event());
+			break;
 		}
 	}
 
