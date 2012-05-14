@@ -57,7 +57,7 @@ public class ExtDirectFormLoadResult {
 
 	@Override
 	public String toString() {
-		return "ExtDirectFormResultWrapper [data=" + data + ", success=" + success + "]";
+		return "ExtDirectFormLoadResult [data=" + data + ", success=" + success + "]";
 	}
 
 }
