@@ -72,12 +72,12 @@ public class ApiControllerTest {
 
 	@Test
 	public void testNoActionNamespaceDebug() throws IOException {
-		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", null, false, null, request, response);
 		compare(response, allApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
 
-		request = new MockHttpServletRequest("POST", "/action/api.js");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", null, false, null, request, response);
 		compare(response, allApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
@@ -90,12 +90,12 @@ public class ApiControllerTest {
 		config.setTimeout(12000);
 		ReflectionTestUtils.setField(routerController, "configuration", config);
 
-		request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", null, false, null, request, response);
 		compare(response, allApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
 
-		request = new MockHttpServletRequest("POST", "/action/api.js");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", null, false, null, request, response);
 		compare(response, allApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
@@ -105,13 +105,13 @@ public class ApiControllerTest {
 
 	@Test
 	public void testWithActionNamespace() throws IOException {
-		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("Ext.ns", "actionns", "TEST_REMOTING_API", "TEST_POLLING_URLS", null, false, null, request,
 				response);
 		compare(response, allApis("actionns"), "Ext.ns", "TEST_REMOTING_API", "TEST_POLLING_URLS");
 
-		request = new MockHttpServletRequest("POST", "/action/api.js");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("Ext.ns", "actionns", "TEST_REMOTING_API", "TEST_POLLING_URLS", null, false, null, request,
 				response);
@@ -124,13 +124,13 @@ public class ApiControllerTest {
 		config.setTimeout(10000);
 		ReflectionTestUtils.setField(routerController, "configuration", config);
 
-		request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		response = new MockHttpServletResponse();
 		apiController.api("Ext.ns", "actionns", "TEST_REMOTING_API", "TEST_POLLING_URLS", null, false, null, request,
 				response);
 		compare(response, allApis("actionns"), "Ext.ns", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
 
-		request = new MockHttpServletRequest("POST", "/action/api.js");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("Ext.ns", "actionns", "TEST_REMOTING_API", "TEST_POLLING_URLS", null, false, null, request,
 				response);
@@ -141,12 +141,12 @@ public class ApiControllerTest {
 
 	@Test
 	public void testUnknownGroup() throws IOException {
-		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "xy", false, null, request, response);
 		compare(response, noApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
 
-		request = new MockHttpServletRequest("POST", "/action/api.js");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "xy", false, null, request, response);
 		compare(response, noApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
@@ -157,12 +157,12 @@ public class ApiControllerTest {
 		config.setEnableBuffer(true);
 		ReflectionTestUtils.setField(routerController, "configuration", config);
 
-		request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "xy", false, null, request, response);
 		compare(response, noApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
 
-		request = new MockHttpServletRequest("POST", "/action/api.js");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "xy", false, null, request, response);
 		compare(response, noApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
@@ -190,13 +190,13 @@ public class ApiControllerTest {
 	}
 
 	private void testGroup1(Configuration config) throws IOException {
-		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", false, null, request,
 				response);
 		compare(response, group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", config);
 
-		request = new MockHttpServletRequest("POST", "/action/api.js");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", false, null, request,
 				response);
@@ -205,13 +205,13 @@ public class ApiControllerTest {
 
 	@Test
 	public void testGroup2() throws IOException {
-		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "group2", false, null, request,
 				response);
 		compare(response, group2Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
 
-		request = new MockHttpServletRequest("POST", "/action/api.js");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "group2", false, null, request,
 				response);
@@ -225,12 +225,12 @@ public class ApiControllerTest {
 
 	@Test
 	public void testGroup3() throws IOException {
-		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("Extns", "ns", "RAPI", "PURLS", "group3", false, null, request, response);
 		compare(response, group3Apis("ns"), "Extns", "RAPI", "PURLS");
 
-		request = new MockHttpServletRequest("POST", "/action/api.js");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("Extns", "ns", "RAPI", "PURLS", "group3", false, null, request, response);
 		compare(response, group3Apis("ns"), "Extns", "RAPI", "PURLS");
@@ -243,13 +243,13 @@ public class ApiControllerTest {
 
 	@Test
 	public void testGroup4() throws IOException {
-		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("test", "", "TEST_REMOTING_API", "TEST_POLLING_URLS", "group4", false, null, request,
 				response);
 		compare(response, group4Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
 
-		request = new MockHttpServletRequest("POST", "/action/api.js");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "group4", false, null, request,
 				response);
@@ -263,13 +263,13 @@ public class ApiControllerTest {
 
 	@Test
 	public void testGroup1and2() throws IOException {
-		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1,group2", false, null, request,
 				response);
 		compare(response, group1and2Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS");
 
-		request = new MockHttpServletRequest("POST", "/action/api.js");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1,group2", false, null, request,
 				response);
@@ -278,13 +278,13 @@ public class ApiControllerTest {
 
 	@Test
 	public void testGroup1andUnknown() throws IOException {
-		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1,unknown", false, null, request,
 				response);
 		compare(response, group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS");
 
-		request = new MockHttpServletRequest("POST", "/action/api.js");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1,unknown", false, null, request,
 				response);
@@ -293,13 +293,13 @@ public class ApiControllerTest {
 
 	@Test
 	public void testInterfaceGroup() throws IOException {
-		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("test", "", "TEST_REMOTING_API", "TEST_POLLING_URLS", "interface", false, null, request,
 				response);
 		compare(response, interfaceApis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS");
 
-		request = new MockHttpServletRequest("POST", "/action/api.js");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "interface", false, null, request,
 				response);
@@ -308,12 +308,12 @@ public class ApiControllerTest {
 
 	@Test
 	public void testNoApiNs() throws IOException {
-		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("", "", "TEST_REMOTING_API", "TEST_POLLING_URLS", "group4", false, null, request, response);
 		compare(response, group4Apis(null), null, "TEST_REMOTING_API", "TEST_POLLING_URLS");
 
-		request = new MockHttpServletRequest("POST", "/action/api.js");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "group4", false, null, request, response);
 		compare(response, group4Apis(null), null, "TEST_REMOTING_API", "TEST_POLLING_URLS");
@@ -321,13 +321,13 @@ public class ApiControllerTest {
 
 	@Test
 	public void testFullRouterUrl() throws IOException {
-		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("apiNs", "", "TEST_RMT_API", "TEST_POLL_URLS", "group2", true, null, request, response);
 		compare(response, group2Apis(null, "http://localhost:80/action/router"), "apiNs", "TEST_RMT_API",
 				"TEST_POLL_URLS");
 
-		request = new MockHttpServletRequest("POST", "/action/api.js");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("apiNs", null, "TEST_RMT_API", "TEST_POLL_URLS", "group2", true, null, request, response);
 		compare(response, group2Apis(null, "http://localhost:80/action/router"), "apiNs", "TEST_RMT_API",
@@ -337,12 +337,12 @@ public class ApiControllerTest {
 	@Test
 	public void testFormat() throws IOException {
 
-		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("apiNs", "", "TEST_RMT_API", "TEST_POLL_URLS", "group2", false, "json", request, response);
 		compareJson(response, group2Apis(null, "http://localhost:80/action/router"), "apiNs", "TEST_RMT_API");
 
-		request = new MockHttpServletRequest("POST", "/action/api.js");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("", "ns", "TEST_RMT_API", "TEST_POLL_URLS", "group2", true, "json", request, response);
 		compareJson(response, group2Apis("ns", "http://localhost:80/action/router"), "", "TEST_RMT_API");
@@ -354,14 +354,14 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	private RemotingApi group1Apis(String namespace) {
+	static RemotingApi group1Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0, false));
 		remotingApi.addAction("remoteProviderTreeLoad", new Action("method1", 1, false));
 		return remotingApi;
 	}
 
-	private RemotingApi group2Apis(String namespace, String url) {
+	private static RemotingApi group2Apis(String namespace, String url) {
 		RemotingApi remotingApi = new RemotingApi(url, namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
@@ -396,7 +396,7 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	private RemotingApi group2Apis(String namespace) {
+	static RemotingApi group2Apis(String namespace) {
 		return group2Apis(namespace, "/action/router");
 	}
 
@@ -592,12 +592,12 @@ public class ApiControllerTest {
 
 	}
 
-	private void compare(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs,
+	static void compare(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs,
 			String remotingApiVar, String pollingUrlsVar) throws JsonParseException, JsonMappingException, IOException {
 		compare(response, remotingApi, apiNs, remotingApiVar, pollingUrlsVar, null);
 	}
 
-	private void compare(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs,
+	static void compare(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs,
 			String remotingApiVar, String pollingUrlsVar, Configuration config) throws JsonParseException,
 			JsonMappingException, IOException {
 		String content = response.getContentAsString();
@@ -732,7 +732,7 @@ public class ApiControllerTest {
 		}
 	}
 
-	private void compare(List<Action> expectedActions, List<Map<String, Object>> actions) {
+	private static void compare(List<Action> expectedActions, List<Map<String, Object>> actions) {
 		assertThat(actions).hasSize(expectedActions.size());
 		for (Action expectedAction : expectedActions) {
 			Map<String, Object> action = null;
@@ -764,7 +764,7 @@ public class ApiControllerTest {
 		}
 	}
 
-	private int assertContains(String extNsLine, String[] lines) {
+	private static int assertContains(String extNsLine, String[] lines) {
 		if (lines == null) {
 			fail("no lines");
 		}

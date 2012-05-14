@@ -38,6 +38,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
+import ch.ralscha.extdirectspring.util.JsonHandler;
 
 public class ControllerUtil {
 
