@@ -39,8 +39,7 @@ public class FilterActionImplementation implements FilterActionInterface {
 		List<Company> companies;
 		if (!request.getFilters().isEmpty()) {
 			companies = dataBean.findCompanies(request.getFilters());
-		}
-		else {
+		} else {
 			companies = dataBean.findAllCompanies();
 		}
 

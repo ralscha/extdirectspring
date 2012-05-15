@@ -99,30 +99,24 @@ public class CompanyDataBean {
 		for (Filter filter : filters) {
 			if (filter.getField().equals("company")) {
 				predicates.add(new CompanyPredicate(((StringFilter) filter).getValue()));
-			}
-			else if (filter.getField().equals("visible")) {
+			} else if (filter.getField().equals("visible")) {
 				predicates.add(new VisiblePredicate(((BooleanFilter) filter).getValue()));
-			}
-			else if (filter.getField().equals("id")) {
+			} else if (filter.getField().equals("id")) {
 				NumericFilter numericFilter = (NumericFilter) filter;
 				predicates.add(new IdPredicate(numericFilter.getComparison(), numericFilter.getValue()));
-			}
-			else if (filter.getField().equals("price")) {
+			} else if (filter.getField().equals("price")) {
 				NumericFilter numericFilter = (NumericFilter) filter;
 				predicates.add(new PricePredicate(numericFilter.getComparison(), numericFilter.getValue()));
-			}
-			else if (filter.getField().equals("size")) {
+			} else if (filter.getField().equals("size")) {
 				ListFilter listFilter = (ListFilter) filter;
 				predicates.add(new SizePredicate(listFilter.getValue()));
-			}
-			else if (filter.getField().equals("date")) {
+			} else if (filter.getField().equals("date")) {
 				DateFilter dateFilter = (DateFilter) filter;
 				DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 				try {
 					Date d = formatter.parse(dateFilter.getValue());
 					predicates.add(new DatePredicate(dateFilter.getComparison(), d));
-				}
-				catch (ParseException e) {
+				} catch (ParseException e) {
 					// nothing to do
 				}
 

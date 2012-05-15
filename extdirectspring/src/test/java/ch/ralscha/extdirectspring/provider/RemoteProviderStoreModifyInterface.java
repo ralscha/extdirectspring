@@ -79,8 +79,7 @@ public class RemoteProviderStoreModifyInterface {
 		if (id == null) {
 			assertThat(id).isNull();
 			assertThat(yesterday).isNull();
-		}
-		else {
+		} else {
 			assertThat(yesterday).isNotNull();
 			assertThat(yesterday).isEqualTo(new LocalDate().minusDays(1));
 			assertThat(id).isEqualTo(Integer.valueOf(11));

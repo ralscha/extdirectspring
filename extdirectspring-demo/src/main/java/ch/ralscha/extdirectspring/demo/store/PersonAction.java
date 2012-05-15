@@ -144,8 +144,7 @@ public class PersonAction {
 					}
 					if (ordering == null) {
 						ordering = colOrder;
-					}
-					else {
+					} else {
 						ordering = ordering.compound(colOrder);
 					}
 				}
@@ -227,8 +226,7 @@ public class PersonAction {
 
 		if (request.getStart() != null && request.getLimit() != null) {
 			persons = persons.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
-		}
-		else {
+		} else {
 			persons = persons.subList(0, 100);
 		}
 
@@ -273,8 +271,7 @@ public class PersonAction {
 
 		if (request.getStart() != null && request.getLimit() != null) {
 			persons = persons.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
-		}
-		else {
+		} else {
 			persons = persons.subList(0, 50);
 		}
 
@@ -337,15 +334,13 @@ public class PersonAction {
 					}
 					if (ordering == null) {
 						ordering = colOrder;
-					}
-					else {
+					} else {
 						ordering = ordering.compound(colOrder);
 					}
 				}
 
 			}
-		}
-		else {
+		} else {
 			ordering = orderingMap.get("lastName");
 		}
 
@@ -355,8 +350,7 @@ public class PersonAction {
 
 		if (request.getStart() != null && request.getLimit() != null) {
 			persons = persons.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
-		}
-		else {
+		} else {
 			persons = persons.subList(0, 60);
 		}
 

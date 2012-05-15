@@ -63,8 +63,7 @@ public class RemoteProviderSimpleNamed {
 	public Boolean method3(String userName) {
 		if ("ralph".equals(userName)) {
 			return true;
-		}
-		else if ("joe".equals(userName)) {
+		} else if ("joe".equals(userName)) {
 			return false;
 		}
 		return null;
@@ -237,24 +236,21 @@ public class RemoteProviderSimpleNamed {
 				if (other.active != null) {
 					return false;
 				}
-			}
-			else if (!active.equals(other.active)) {
+			} else if (!active.equals(other.active)) {
 				return false;
 			}
 			if (age == null) {
 				if (other.age != null) {
 					return false;
 				}
-			}
-			else if (!age.equals(other.age)) {
+			} else if (!age.equals(other.age)) {
 				return false;
 			}
 			if (name == null) {
 				if (other.name != null) {
 					return false;
 				}
-			}
-			else if (!name.equals(other.name)) {
+			} else if (!name.equals(other.name)) {
 				return false;
 			}
 			return true;

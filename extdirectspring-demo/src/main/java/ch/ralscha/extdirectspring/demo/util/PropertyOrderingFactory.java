@@ -50,8 +50,7 @@ public enum PropertyOrderingFactory {
 				Ordering<T> propertyOrdering = createOrdering(sorter.getProperty(), sorter.getDirection());
 				if (ordering == null) {
 					ordering = propertyOrdering;
-				}
-				else {
+				} else {
 					ordering = ordering.compound(propertyOrdering);
 				}
 			}
@@ -68,8 +67,7 @@ public enum PropertyOrderingFactory {
 				Ordering<T> propertyOrdering = createOrdering(group.getProperty(), group.getDirection());
 				if (ordering == null) {
 					ordering = propertyOrdering;
-				}
-				else {
+				} else {
 					ordering = ordering.compound(propertyOrdering);
 				}
 			}

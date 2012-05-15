@@ -65,12 +65,10 @@ public class PictureResizer {
 				ImageIO.write(resizedImage, format, tempFile);
 				FileUtils.copyFile(tempFile, out);
 				tempFile.delete();
-			}
-			else {
+			} else {
 				FileUtils.copyFile(pictureFile, out);
 			}
-		}
-		else {
+		} else {
 			FileUtils.copyFile(pictureFile, out);
 		}
 

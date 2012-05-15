@@ -101,8 +101,7 @@ public class RemoteProviderStoreRead {
 	public List<Row> method7(@RequestParam(value = "id", required = false) Integer id) {
 		if (id == null) {
 			assertThat(id).isNull();
-		}
-		else {
+		} else {
 			assertThat(id).isEqualTo(Integer.valueOf(11));
 		}
 		return createRows(":" + id);
@@ -130,8 +129,7 @@ public class RemoteProviderStoreRead {
 						iterator.remove();
 					}
 				}
-			}
-			else if ("firstname".equals(request.getQuery())) {
+			} else if ("firstname".equals(request.getQuery())) {
 				for (Iterator<Row> iterator = rows.listIterator(); iterator.hasNext();) {
 					Row row = iterator.next();
 					if (!row.getName().startsWith("firstname")) {
@@ -150,8 +148,7 @@ public class RemoteProviderStoreRead {
 
 				if (sortInfo.getDirection() == SortDirection.ASCENDING) {
 					Collections.sort(rows);
-				}
-				else {
+				} else {
 					Collections.sort(rows, new Comparator<Row>() {
 
 						// @Override
@@ -160,14 +157,12 @@ public class RemoteProviderStoreRead {
 						}
 					});
 				}
-			}
-			else if (StringUtils.hasText(request.getSort())) {
+			} else if (StringUtils.hasText(request.getSort())) {
 				assertThat(request.getSort()).isEqualTo("id");
 
 				if (request.isAscendingSort()) {
 					Collections.sort(rows);
-				}
-				else if (request.isDescendingSort()) {
+				} else if (request.isDescendingSort()) {
 					Collections.sort(rows, new Comparator<Row>() {
 
 						// @Override
@@ -185,8 +180,7 @@ public class RemoteProviderStoreRead {
 				assertThat(groupInfo.getProperty()).isEqualTo("id");
 				if (groupInfo.getDirection() == SortDirection.ASCENDING) {
 					Collections.sort(rows);
-				}
-				else {
+				} else {
 					Collections.sort(rows, new Comparator<Row>() {
 
 						// @Override
@@ -196,14 +190,12 @@ public class RemoteProviderStoreRead {
 					});
 				}
 
-			}
-			else if (StringUtils.hasText(request.getGroupBy())) {
+			} else if (StringUtils.hasText(request.getGroupBy())) {
 				assertThat(request.getGroupBy()).isEqualTo("id");
 
 				if (request.isAscendingGroupSort()) {
 					Collections.sort(rows);
-				}
-				else if (request.isDescendingGroupSort()) {
+				} else if (request.isDescendingGroupSort()) {
 					Collections.sort(rows, new Comparator<Row>() {
 
 						// @Override
@@ -216,8 +208,7 @@ public class RemoteProviderStoreRead {
 
 			if (request.getStart() != null && request.getLimit() != null) {
 				rows = rows.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
-			}
-			else {
+			} else {
 				rows = rows.subList(0, 50);
 			}
 

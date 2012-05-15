@@ -207,8 +207,7 @@ public class CrudTestMethods {
 			assertThat(storeResponse.isSuccess()).isTrue();
 			assertThat(storeResponse.getRecords().size()).isEqualTo(noOfRecords);
 			it = storeResponse.getRecords().iterator();
-		}
-		else {
+		} else {
 			Collection<Book> books = ControllerUtil.convertValue(resp.getResult(), new TypeReference<Collection<Book>>() {
 			});
 			it = books.iterator();
@@ -421,8 +420,7 @@ public class CrudTestMethods {
 			assertThat(storeResponse.getRecords().size()).isEqualTo(noOfRecords);
 			it = ControllerUtil.convertValue(storeResponse.getRecords(), new TypeReference<Collection<Book>>() {
 			}).iterator();
-		}
-		else {
+		} else {
 			Collection<Book> books = ControllerUtil.convertValue(resp.getResult(), new TypeReference<Collection<Book>>() {
 			});
 			it = books.iterator();

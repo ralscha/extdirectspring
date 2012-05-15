@@ -76,8 +76,7 @@ public class RemoteProviderSimple {
 	public Boolean method5(String userName) {
 		if ("ralph".equals(userName)) {
 			return true;
-		}
-		else if ("joe".equals(userName)) {
+		} else if ("joe".equals(userName)) {
 			return false;
 		}
 		return null;

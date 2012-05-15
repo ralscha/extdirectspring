@@ -58,8 +58,7 @@ public final class RemotingApi {
 
 		if (StringUtils.hasText(namespace)) {
 			this.namespace = namespace.trim();
-		}
-		else {
+		} else {
 			this.namespace = null;
 		}
 	}

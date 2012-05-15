@@ -60,8 +60,7 @@ public class ChartService {
 
 			LocalDate ld = new LocalDate(2011, 1, 1);
 			siteInfo.add(new SiteInfo(ld, rnd.nextInt(100) + 1, rnd.nextInt(100) + 1, rnd.nextInt(100) + 1));
-		}
-		else {
+		} else {
 			SiteInfo lastSiteInfo = siteInfo.get(siteInfo.size() - 1);
 
 			LocalDate nextDate = lastSiteInfo.getDate().plusDays(1);

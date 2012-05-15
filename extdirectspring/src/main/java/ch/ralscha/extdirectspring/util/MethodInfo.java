@@ -64,8 +64,7 @@ public final class MethodInfo {
 
 		if (StringUtils.hasText(extDirectMethodAnnotation.group())) {
 			this.group = extDirectMethodAnnotation.group().trim();
-		}
-		else {
+		} else {
 			this.group = null;
 		}
 
@@ -87,8 +86,7 @@ public final class MethodInfo {
 				}
 			}
 
-		}
-		else {
+		} else {
 			RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
 			if (methodAnnotation != null) {
 
@@ -103,8 +101,7 @@ public final class MethodInfo {
 					String methodPath = methodAnnotation.value()[0];
 					if (path != null) {
 						path = path + methodPath;
-					}
-					else {
+					} else {
 						path = methodPath;
 					}
 				}
@@ -235,8 +232,7 @@ public final class MethodInfo {
 				if (equivalentMethod.isAnnotationPresent(annotation)) {
 					return equivalentMethod;
 				}
-			}
-			catch (NoSuchMethodException e) {
+			} catch (NoSuchMethodException e) {
 				// do nothing here
 			}
 			cl = cl.getSuperclass();

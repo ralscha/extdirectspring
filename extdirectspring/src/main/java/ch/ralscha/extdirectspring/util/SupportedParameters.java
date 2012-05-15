@@ -70,17 +70,13 @@ public enum SupportedParameters {
 
 		if (SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
 			return request;
-		}
-		else if (SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
+		} else if (SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
 			return response;
-		}
-		else if (SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
+		} else if (SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
 			return request.getSession();
-		}
-		else if (PRINCIPAL.getSupportedClass().isAssignableFrom(parameterType)) {
+		} else if (PRINCIPAL.getSupportedClass().isAssignableFrom(parameterType)) {
 			return request.getUserPrincipal();
-		}
-		else if (LOCALE.getSupportedClass().equals(parameterType)) {
+		} else if (LOCALE.getSupportedClass().equals(parameterType)) {
 			return locale;
 		}
 

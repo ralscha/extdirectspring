@@ -262,8 +262,7 @@ public class RouterControllerStoreModifyTest {
 			assertThat(storeResponse.get(0).getName()).isEqualTo("Ralph");
 			assertThat(storeResponse.get(0).isAdmin()).isTrue();
 			assertThat(storeResponse.get(0).getSalary()).isEqualTo(new BigDecimal("109.55"));
-		}
-		else {
+		} else {
 			Row storeResponse = ControllerUtil.convertValue(result, Row.class);
 			assertThat(storeResponse.getId()).isEqualTo(10);
 			assertThat(storeResponse.getName()).isEqualTo("Ralph");
