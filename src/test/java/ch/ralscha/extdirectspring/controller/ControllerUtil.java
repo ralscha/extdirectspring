@@ -44,14 +44,12 @@ public class ControllerUtil {
 
 	private static ObjectMapper mapper = new ObjectMapper();
 
-	public static Map<String, Object> createRequestJson(String action,
-			String method, int tid, Object data) {
+	public static Map<String, Object> createRequestJson(String action, String method, int tid, Object data) {
 		return createRequestJson(action, method, false, tid, data);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Map<String, Object> createRequestJson(String action,
-			String method, boolean namedParameter, int tid, Object data) {
+	public static Map<String, Object> createRequestJson(String action, String method, boolean namedParameter, int tid, Object data) {
 		ExtDirectRequest dr = new ExtDirectRequest();
 		dr.setAction(action);
 		dr.setMethod(method);
@@ -67,37 +65,29 @@ public class ControllerUtil {
 		return mapper.convertValue(dr, LinkedHashMap.class);
 	}
 
-	public static Object sendAndReceive(RouterController controller,
-			String action, String method, Object data, Object result) {
+	public static Object sendAndReceive(RouterController controller, String action, String method, Object data, Object result) {
 		MockHttpServletRequest request = new MockHttpServletRequest();
-		return sendAndReceive(controller, request, action, method, false, data,
-				result);
+		return sendAndReceive(controller, request, action, method, false, data, result);
 	}
 
-	public static Object sendAndReceive(RouterController controller,
-			String action, String method, boolean namedParameter, Object data,
+	public static Object sendAndReceive(RouterController controller, String action, String method, boolean namedParameter, Object data,
 			Object result) {
 		MockHttpServletRequest request = new MockHttpServletRequest();
-		return sendAndReceive(controller, request, action, method,
-				namedParameter, data, result);
+		return sendAndReceive(controller, request, action, method, namedParameter, data, result);
 	}
 
-	public static Object sendAndReceive(RouterController controller,
-			MockHttpServletRequest request, String action, String method,
+	public static Object sendAndReceive(RouterController controller, MockHttpServletRequest request, String action, String method,
 			Object data, Object result) {
-		return sendAndReceive(controller, request, action, method, false, data,
-				result);
+		return sendAndReceive(controller, request, action, method, false, data, result);
 	}
 
-	public static Object sendAndReceive(RouterController controller,
-			MockHttpServletRequest request, String action, String method,
+	public static Object sendAndReceive(RouterController controller, MockHttpServletRequest request, String action, String method,
 			boolean namedParameter, Object data, Object result) {
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
 		int tid = (int) (Math.random() * 1000);
-		Map<String, Object> edRequest = createRequestJson(action, method,
-				namedParameter, tid, data);
+		Map<String, Object> edRequest = createRequestJson(action, method, namedParameter, tid, data);
 
 		request.setContent(ControllerUtil.writeAsByte(edRequest));
 		try {
@@ -106,8 +96,7 @@ public class ControllerUtil {
 		catch (IOException e) {
 			fail("call controller.router: " + e.getMessage());
 		}
-		List<ExtDirectResponse> responses = readDirectResponses(response
-				.getContentAsByteArray());
+		List<ExtDirectResponse> responses = readDirectResponses(response.getContentAsByteArray());
 		assertThat(responses).hasSize(1);
 
 		ExtDirectResponse edResponse = responses.get(0);
@@ -129,13 +118,11 @@ public class ControllerUtil {
 				assertThat(edResponse.getResult()).isNull();
 			}
 			else if (result instanceof Class<?>) {
-				Object r = ControllerUtil.convertValue(edResponse.getResult(),
-						(Class<?>) result);
+				Object r = ControllerUtil.convertValue(edResponse.getResult(), (Class<?>) result);
 				return r;
 			}
 			else if (result instanceof TypeReference) {
-				Object r = ControllerUtil.convertValue(edResponse.getResult(),
-						(TypeReference<?>) result);
+				Object r = ControllerUtil.convertValue(edResponse.getResult(), (TypeReference<?>) result);
 				return r;
 			}
 			else {
@@ -147,8 +134,7 @@ public class ControllerUtil {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Map<String, Object> createRequestJsonNamedParam(
-			String action, String method, int tid, Map<String, Object> data) {
+	public static Map<String, Object> createRequestJsonNamedParam(String action, String method, int tid, Map<String, Object> data) {
 		ExtDirectRequest dr = new ExtDirectRequest();
 		dr.setAction(action);
 		dr.setMethod(method);
@@ -164,8 +150,7 @@ public class ControllerUtil {
 			return (T) mapper.readValue(json, clazz);
 		}
 		catch (Exception e) {
-			LogFactory.getLog(JsonHandler.class).info(
-					"deserialize json to object", e);
+			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
 			return null;
 		}
 	}
@@ -174,16 +159,17 @@ public class ControllerUtil {
 		return mapper.convertValue(object, clazz);
 	}
 
-	public static <T> T convertValue(Object object,
-			TypeReference<T> typeReference) {
+	public static <T> T convertValue(Object object, TypeReference<T> typeReference) {
 		return mapper.convertValue(object, typeReference);
 	}
 
 	public static List<ExtDirectResponse> readDirectResponses(byte[] response) {
 		try {
-			return mapper.readValue(response,
-					new TypeReference<List<ExtDirectResponse>>() {/* nothing here */
-					});
+			return mapper.readValue(response, new TypeReference<List<ExtDirectResponse>>() {/*
+																							 * nothing
+																							 * here
+																							 */
+			});
 		}
 		catch (JsonParseException e) {
 			throw new RuntimeException(e);

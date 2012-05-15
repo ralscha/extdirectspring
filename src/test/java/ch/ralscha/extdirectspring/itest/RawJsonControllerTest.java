@@ -43,8 +43,7 @@ public class RawJsonControllerTest extends JettyTest {
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
 		StringEntity postEntity = new StringEntity(
-				"{\"action\":\"rawJsonController\",\"method\":\"listUsers\",\"data\":[],\"type\":\"rpc\",\"tid\":1}",
-				"UTF-8");
+				"{\"action\":\"rawJsonController\",\"method\":\"listUsers\",\"data\":[],\"type\":\"rpc\",\"tid\":1}", "UTF-8");
 		post.setEntity(postEntity);
 		post.setHeader("Content-Type", "application/json; charset=UTF-8");
 
@@ -57,9 +56,7 @@ public class RawJsonControllerTest extends JettyTest {
 		assertThat(responseString).startsWith("[").endsWith("]");
 
 		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> rootAsMap = mapper.readValue(
-				responseString.substring(1, responseString.length() - 1),
-				Map.class);
+		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1), Map.class);
 		assertEquals(5, rootAsMap.size());
 
 		assertEquals("listUsers", rootAsMap.get("method"));
@@ -67,19 +64,15 @@ public class RawJsonControllerTest extends JettyTest {
 		assertEquals("rawJsonController", rootAsMap.get("action"));
 		assertEquals(1, rootAsMap.get("tid"));
 
-		Map<String, Object> result = (Map<String, Object>) rootAsMap
-				.get("result");
+		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 		assertEquals(2, result.size());
 		assertThat((Boolean) result.get("success")).isTrue();
 
-		List<Map<String, Object>> records = (List<Map<String, Object>>) result
-				.get("records");
+		List<Map<String, Object>> records = (List<Map<String, Object>>) result.get("records");
 		assertEquals(2, records.size());
 
-		assertEquals("4cf8e5b8924e23349fb99454", ((Map<String, Object>) records
-				.get(0).get("_id")).get("$oid"));
-		assertEquals("4cf8e5b8924e2334a0b99454", ((Map<String, Object>) records
-				.get(1).get("_id")).get("$oid"));
+		assertEquals("4cf8e5b8924e23349fb99454", ((Map<String, Object>) records.get(0).get("_id")).get("$oid"));
+		assertEquals("4cf8e5b8924e2334a0b99454", ((Map<String, Object>) records.get(1).get("_id")).get("$oid"));
 
 	}
 

@@ -23,19 +23,14 @@ public class DateFilterTest {
 
 	@Test
 	public void testDate() {
-		DateFilter filter = new DateFilter("field", "12.12.2010",
-				Comparison.LESS_THAN);
+		DateFilter filter = new DateFilter("field", "12.12.2010", Comparison.LESS_THAN);
 		assertThat(filter.getValue()).isEqualTo("12.12.2010");
 		assertThat(filter.getField()).isEqualTo("field");
-		assertThat(filter.toString())
-				.isEqualTo(
-						"DateFilter [value=12.12.2010, comparison=LESS_THAN, getField()=field]");
+		assertThat(filter.toString()).isEqualTo("DateFilter [value=12.12.2010, comparison=LESS_THAN, getField()=field]");
 
 		filter = new DateFilter("xy", "01.01.2000", Comparison.EQUAL);
 		assertThat(filter.getValue()).isEqualTo("01.01.2000");
 		assertThat(filter.getField()).isEqualTo("xy");
-		assertThat(filter.toString())
-				.isEqualTo(
-						"DateFilter [value=01.01.2000, comparison=EQUAL, getField()=xy]");
+		assertThat(filter.toString()).isEqualTo("DateFilter [value=01.01.2000, comparison=EQUAL, getField()=xy]");
 	}
 }

@@ -23,18 +23,14 @@ public class NumericFilterTest {
 
 	@Test
 	public void testNumeric() {
-		NumericFilter filter = new NumericFilter("field", 42,
-				Comparison.GREATER_THAN);
+		NumericFilter filter = new NumericFilter("field", 42, Comparison.GREATER_THAN);
 		assertThat(filter.getValue()).isEqualTo(42);
 		assertThat(filter.getField()).isEqualTo("field");
-		assertThat(filter.toString())
-				.isEqualTo(
-						"NumericFilter [value=42, comparison=GREATER_THAN, getField()=field]");
+		assertThat(filter.toString()).isEqualTo("NumericFilter [value=42, comparison=GREATER_THAN, getField()=field]");
 
 		filter = new NumericFilter("xy", 23, Comparison.EQUAL);
 		assertThat(filter.getValue()).isEqualTo(23);
 		assertThat(filter.getField()).isEqualTo("xy");
-		assertThat(filter.toString()).isEqualTo(
-				"NumericFilter [value=23, comparison=EQUAL, getField()=xy]");
+		assertThat(filter.toString()).isEqualTo("NumericFilter [value=23, comparison=EQUAL, getField()=xy]");
 	}
 }

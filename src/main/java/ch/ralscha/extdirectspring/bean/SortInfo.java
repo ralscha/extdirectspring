@@ -39,16 +39,14 @@ public class SortInfo {
 		String property = (String) jsonData.get("property");
 		String direction = (String) jsonData.get("direction");
 
-		SortInfo sortInfo = new SortInfo(property,
-				SortDirection.fromString(direction));
+		SortInfo sortInfo = new SortInfo(property, SortDirection.fromString(direction));
 
 		return sortInfo;
 	}
 
 	@Override
 	public String toString() {
-		return "SortInfo [property=" + property + ", direction=" + direction
-				+ "]";
+		return "SortInfo [property=" + property + ", direction=" + direction + "]";
 	}
 
 }

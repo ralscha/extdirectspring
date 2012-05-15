@@ -180,10 +180,8 @@ public class ExtDirectStoreReadRequest {
 
 	@Override
 	public String toString() {
-		return "ExtDirectStoreReadRequest [query=" + query + ", limit=" + limit
-				+ ", start=" + start + ", page=" + page + ", dir=" + dir
-				+ ", sort=" + sort + ", groupBy=" + groupBy + ", groupDir="
-				+ groupDir + ", sorters=" + sorters + ", groups=" + groups
+		return "ExtDirectStoreReadRequest [query=" + query + ", limit=" + limit + ", start=" + start + ", page=" + page + ", dir=" + dir
+				+ ", sort=" + sort + ", groupBy=" + groupBy + ", groupDir=" + groupDir + ", sorters=" + sorters + ", groups=" + groups
 				+ ", filters=" + filters + ", params=" + params + "]";
 	}
 

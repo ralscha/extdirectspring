@@ -28,8 +28,7 @@ import org.springframework.core.convert.support.GenericConversionService;
 
 public class FilterTest {
 
-	private static final GenericConversionService genericConversionService = ConversionServiceFactory
-			.createDefaultConversionService();
+	private static final GenericConversionService genericConversionService = ConversionServiceFactory.createDefaultConversionService();
 
 	@Test
 	public void testNumericFilter() {

@@ -48,18 +48,15 @@ public class ExtDirectStoreResponse<T> {
 		init(null, records, true);
 	}
 
-	public ExtDirectStoreResponse(final Integer total,
-			final Collection<T> records) {
+	public ExtDirectStoreResponse(final Integer total, final Collection<T> records) {
 		init(total, records, true);
 	}
 
-	public ExtDirectStoreResponse(final Integer total,
-			final Collection<T> records, final Boolean success) {
+	public ExtDirectStoreResponse(final Integer total, final Collection<T> records, final Boolean success) {
 		init(total, records, success);
 	}
 
-	protected void init(final Integer _total, final Collection<T> _records,
-			final Boolean _success) {
+	protected void init(final Integer _total, final Collection<T> _records, final Boolean _success) {
 		this.total = _total;
 		this.records = _records;
 		this.success = _success;
@@ -90,9 +87,7 @@ public class ExtDirectStoreResponse<T> {
 
 	@Override
 	public String toString() {
-		return "ExtDirectStoreResponse [total=" + total + ", records="
-				+ records + ", success=" + success + ", metaData=" + metaData
-				+ "]";
+		return "ExtDirectStoreResponse [total=" + total + ", records=" + records + ", success=" + success + ", metaData=" + metaData + "]";
 	}
 
 }

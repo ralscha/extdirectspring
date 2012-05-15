@@ -24,8 +24,7 @@ public class DateFilter extends Filter {
 
 	private final Comparison comparison;
 
-	public DateFilter(final String field, final String value,
-			final Comparison comparison) {
+	public DateFilter(final String field, final String value, final Comparison comparison) {
 		super(field);
 		this.value = value;
 		this.comparison = comparison;
@@ -41,8 +40,7 @@ public class DateFilter extends Filter {
 
 	@Override
 	public String toString() {
-		return "DateFilter [value=" + value + ", comparison=" + comparison
-				+ ", getField()=" + getField() + "]";
+		return "DateFilter [value=" + value + ", comparison=" + comparison + ", getField()=" + getField() + "]";
 	}
 
 }

@@ -118,12 +118,10 @@ public class RemoteProviderTreeLoad {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "group3")
 	public List<Node> method3(@RequestParam("node")
-	String node, HttpServletResponse response, HttpServletRequest request,
-			@RequestParam(defaultValue = "defaultValue")
-			String foo, HttpSession session, Locale locale, Principal principal) {
+	String node, HttpServletResponse response, HttpServletRequest request, @RequestParam(defaultValue = "defaultValue")
+	String foo, HttpSession session, Locale locale, Principal principal) {
 
-		return createTreeList(node, ":" + foo + ";" + (response != null) + ";"
-				+ (request != null) + ";" + (session != null) + ";" + locale);
+		return createTreeList(node, ":" + foo + ";" + (response != null) + ";" + (request != null) + ";" + (session != null) + ";" + locale);
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.TREE_LOAD)
@@ -131,8 +129,7 @@ public class RemoteProviderTreeLoad {
 	String node, HttpServletResponse response, @RequestHeader
 	Boolean aHeader, HttpServletRequest request) {
 
-		return createTreeList(node, ":" + aHeader + ";" + (response != null)
-				+ ";" + (request != null));
+		return createTreeList(node, ":" + aHeader + ";" + (response != null) + ";" + (request != null));
 	}
 
 	private List<Node> createTreeList(String id) {
@@ -149,8 +146,7 @@ public class RemoteProviderTreeLoad {
 		else if (id.length() == 2) {
 			String num = id.substring(1);
 			for (int i = 1; i <= 5; ++i) {
-				result.add(new Node("id" + i, "Node " + num + "." + i
-						+ appendix, true));
+				result.add(new Node("id" + i, "Node " + num + "." + i + appendix, true));
 			}
 		}
 		return result;

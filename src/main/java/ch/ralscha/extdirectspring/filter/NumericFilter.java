@@ -24,8 +24,7 @@ public class NumericFilter extends Filter {
 
 	private final Comparison comparison;
 
-	public NumericFilter(final String field, final Number value,
-			final Comparison comparison) {
+	public NumericFilter(final String field, final Number value, final Comparison comparison) {
 		super(field);
 		this.value = value;
 		this.comparison = comparison;
@@ -41,8 +40,7 @@ public class NumericFilter extends Filter {
 
 	@Override
 	public String toString() {
-		return "NumericFilter [value=" + value + ", comparison=" + comparison
-				+ ", getField()=" + getField() + "]";
+		return "NumericFilter [value=" + value + ", comparison=" + comparison + ", getField()=" + getField() + "]";
 	}
 
 }

@@ -38,22 +38,19 @@ public class PollProvider {
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message1", group = "group2")
 	public String handleMessage1() {
 		Date now = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat(
-				"yyyy/MM/dd 'at' hh:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd 'at' hh:mm:ss");
 		return "Successfully polled at: " + formatter.format(now);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message2", group = "group2")
-	public String handleMessage2(HttpServletResponse response,
-			HttpServletRequest request, HttpSession session, Locale locale) {
+	public String handleMessage2(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
 		Date now = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat(
-				"yyyy/MM/dd 'at' hh:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd 'at' hh:mm:ss");
 		return "Successfully polled at: " + formatter.format(now);
 	}
 
@@ -84,8 +81,7 @@ public class PollProvider {
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group2")
 	public String message6() {
 		Date now = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat(
-				"yyyy/MM/dd 'at' hh:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd 'at' hh:mm:ss");
 		return "Successfully polled at: " + formatter.format(now);
 	}
 
@@ -106,27 +102,23 @@ public class PollProvider {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
-	public String message9(
-			@RequestHeader(value = "anotherName", defaultValue = "default")
-			String header) {
+	public String message9(@RequestHeader(value = "anotherName", defaultValue = "default")
+	String header) {
 		return header;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
-	public String message10(
-			@RequestHeader(defaultValue = "default", required = false)
-			String header) {
+	public String message10(@RequestHeader(defaultValue = "default", required = false)
+	String header) {
 		return header;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
-	public String message11(
-			@RequestHeader(defaultValue = "default1", required = false)
-			String header1, @RequestParam(value = "id", required = false)
-			Integer id,
-			@RequestHeader(defaultValue = "default2", required = false)
-			String header2, @RequestHeader(value = "last")
-			String header3) {
+	public String message11(@RequestHeader(defaultValue = "default1", required = false)
+	String header1, @RequestParam(value = "id", required = false)
+	Integer id, @RequestHeader(defaultValue = "default2", required = false)
+	String header2, @RequestHeader(value = "last")
+	String header3) {
 		return id + ";" + header1 + ";" + header2 + ";" + header3;
 	}
 

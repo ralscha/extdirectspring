@@ -32,8 +32,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  * 
  * @author Ralph Schaer
  */
-public class ExtDirectRawJsonStoreResponse extends
-		ExtDirectStoreResponse<String> {
+public class ExtDirectRawJsonStoreResponse extends ExtDirectStoreResponse<String> {
 
 	public ExtDirectRawJsonStoreResponse() {
 		// default constructor
@@ -43,13 +42,11 @@ public class ExtDirectRawJsonStoreResponse extends
 		super(null, records, true);
 	}
 
-	public ExtDirectRawJsonStoreResponse(final Integer total,
-			final Collection<String> records) {
+	public ExtDirectRawJsonStoreResponse(final Integer total, final Collection<String> records) {
 		super(total, records, true);
 	}
 
-	public ExtDirectRawJsonStoreResponse(final Integer total,
-			final Collection<String> records, final Boolean success) {
+	public ExtDirectRawJsonStoreResponse(final Integer total, final Collection<String> records, final Boolean success) {
 		super(total, records, success);
 	}
 
@@ -61,17 +58,14 @@ public class ExtDirectRawJsonStoreResponse extends
 
 	@Override
 	public String toString() {
-		return "ExtDirectRawJsonStoreResponse [getRecords()=" + getRecords()
-				+ ", getTotal()=" + getTotal() + ", isSuccess()=" + isSuccess()
-				+ ", getMetaData()=" + getMetaData() + "]";
+		return "ExtDirectRawJsonStoreResponse [getRecords()=" + getRecords() + ", getTotal()=" + getTotal() + ", isSuccess()="
+				+ isSuccess() + ", getMetaData()=" + getMetaData() + "]";
 	}
 
-	private final static class CollectionStringSerializer extends
-			JsonSerializer<Collection<String>> {
+	private final static class CollectionStringSerializer extends JsonSerializer<Collection<String>> {
 
 		@Override
-		public void serialize(final Collection<String> values,
-				final JsonGenerator jgen, final SerializerProvider provider)
+		public void serialize(final Collection<String> values, final JsonGenerator jgen, final SerializerProvider provider)
 				throws IOException, JsonProcessingException {
 
 			StringBuilder sb = new StringBuilder();

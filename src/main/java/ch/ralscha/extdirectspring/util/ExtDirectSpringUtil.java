@@ -64,10 +64,8 @@ public final class ExtDirectSpringUtil {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public static Object invoke(final ApplicationContext context,
-			final String beanName, final MethodInfo methodInfo,
-			final Object[] params) throws IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
+	public static Object invoke(final ApplicationContext context, final String beanName, final MethodInfo methodInfo, final Object[] params)
+			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		Object bean = context.getBean(beanName);
 
 		Method handlerMethod = methodInfo.getMethod();
@@ -97,8 +95,7 @@ public final class ExtDirectSpringUtil {
 	 * handler methods of interest
 	 * @return the selected methods, or an empty set
 	 */
-	public static Set<Method> selectMethods(final Class<?> handlerType,
-			final MethodFilter handlerMethodFilter) {
+	public static Set<Method> selectMethods(final Class<?> handlerType, final MethodFilter handlerMethodFilter) {
 		final Set<Method> handlerMethods = new LinkedHashSet<Method>();
 		Set<Class<?>> handlerTypes = new LinkedHashSet<Class<?>>();
 
@@ -113,22 +110,17 @@ public final class ExtDirectSpringUtil {
 		}
 
 		for (Class<?> currentHandlerType : handlerTypes) {
-			final Class<?> targetClass = (specificHandlerType != null ? specificHandlerType
-					: currentHandlerType);
-			ReflectionUtils.doWithMethods(currentHandlerType,
-					new ReflectionUtils.MethodCallback() {
-						public void doWith(Method method) {
-							Method specificMethod = ClassUtils
-									.getMostSpecificMethod(method, targetClass);
-							Method bridgedMethod = BridgeMethodResolver
-									.findBridgedMethod(specificMethod);
-							if (handlerMethodFilter.matches(specificMethod)
-									&& (bridgedMethod == specificMethod || !handlerMethodFilter
-											.matches(bridgedMethod))) {
-								handlerMethods.add(specificMethod);
-							}
-						}
-					}, ReflectionUtils.USER_DECLARED_METHODS);
+			final Class<?> targetClass = (specificHandlerType != null ? specificHandlerType : currentHandlerType);
+			ReflectionUtils.doWithMethods(currentHandlerType, new ReflectionUtils.MethodCallback() {
+				public void doWith(Method method) {
+					Method specificMethod = ClassUtils.getMostSpecificMethod(method, targetClass);
+					Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(specificMethod);
+					if (handlerMethodFilter.matches(specificMethod)
+							&& (bridgedMethod == specificMethod || !handlerMethodFilter.matches(bridgedMethod))) {
+						handlerMethods.add(specificMethod);
+					}
+				}
+			}, ReflectionUtils.USER_DECLARED_METHODS);
 		}
 		return handlerMethods;
 	}

@@ -53,8 +53,7 @@ public class UserControllerTest extends JettyTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void testPostWithErrors() throws ClientProtocolException,
-			IOException {
+	public void testPostWithErrors() throws ClientProtocolException, IOException {
 		Locale.setDefault(Locale.ENGLISH);
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "2"));
@@ -64,8 +63,7 @@ public class UserControllerTest extends JettyTest {
 		formparams.add(new BasicNameValuePair("extUpload", "false"));
 		formparams.add(new BasicNameValuePair("name", "Joe"));
 		formparams.add(new BasicNameValuePair("age", "30"));
-		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams,
-				"UTF-8");
+		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
 
 		post.setEntity(postEntity);
 
@@ -74,16 +72,14 @@ public class UserControllerTest extends JettyTest {
 		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
 
-		Map<String, Object> rootAsMap = mapper.readValue(responseString,
-				Map.class);
+		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
 		assertThat(rootAsMap).hasSize(5);
 		assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
 		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
 		assertThat(rootAsMap.get("action")).isEqualTo("userController");
 		assertThat(rootAsMap.get("tid")).isEqualTo(2);
 
-		Map<String, Object> result = (Map<String, Object>) rootAsMap
-				.get("result");
+		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 		assertThat(result).hasSize(4);
 		assertThat(result.get("name")).isEqualTo("Joe");
 		assertThat(result.get("age")).isEqualTo(30);
@@ -91,14 +87,12 @@ public class UserControllerTest extends JettyTest {
 
 		Map<String, Object> errors = (Map<String, Object>) result.get("errors");
 		assertThat(errors).hasSize(1);
-		assertThat((List<String>) errors.get("email")).containsOnly(
-				"may not be empty");
+		assertThat((List<String>) errors.get("email")).containsOnly("may not be empty");
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void testPostWithMoreErrors() throws ClientProtocolException,
-			IOException {
+	public void testPostWithMoreErrors() throws ClientProtocolException, IOException {
 		Locale.setDefault(Locale.ENGLISH);
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
@@ -109,8 +103,7 @@ public class UserControllerTest extends JettyTest {
 		formparams.add(new BasicNameValuePair("name", "Oliver"));
 		formparams.add(new BasicNameValuePair("age", "35"));
 		formparams.add(new BasicNameValuePair("addemailerror", "1"));
-		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams,
-				"UTF-8");
+		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
 
 		post.setEntity(postEntity);
 
@@ -119,16 +112,14 @@ public class UserControllerTest extends JettyTest {
 		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
 
-		Map<String, Object> rootAsMap = mapper.readValue(responseString,
-				Map.class);
+		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
 		assertThat(rootAsMap).hasSize(5);
 		assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
 		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
 		assertThat(rootAsMap.get("action")).isEqualTo("userController");
 		assertThat(rootAsMap.get("tid")).isEqualTo(3);
 
-		Map<String, Object> result = (Map<String, Object>) rootAsMap
-				.get("result");
+		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 		assertThat(result).hasSize(4);
 		assertThat(result.get("name")).isEqualTo("Oliver");
 		assertThat(result.get("age")).isEqualTo(35);
@@ -136,15 +127,13 @@ public class UserControllerTest extends JettyTest {
 
 		Map<String, Object> errors = (Map<String, Object>) result.get("errors");
 		assertThat(errors).hasSize(2);
-		assertThat((List<String>) errors.get("email")).contains(
-				"may not be empty", "another email error");
+		assertThat((List<String>) errors.get("email")).contains("may not be empty", "another email error");
 		assertThat((List<String>) errors.get("name")).contains("a name error");
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void testPostWithoutErrors() throws ClientProtocolException,
-			IOException {
+	public void testPostWithoutErrors() throws ClientProtocolException, IOException {
 
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
@@ -155,8 +144,7 @@ public class UserControllerTest extends JettyTest {
 		formparams.add(new BasicNameValuePair("name", "Jim"));
 		formparams.add(new BasicNameValuePair("age", "25"));
 		formparams.add(new BasicNameValuePair("email", "test@test.ch"));
-		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams,
-				"UTF-8");
+		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
 
 		post.setEntity(postEntity);
 
@@ -165,16 +153,14 @@ public class UserControllerTest extends JettyTest {
 		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
 
-		Map<String, Object> rootAsMap = mapper.readValue(responseString,
-				Map.class);
+		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
 		assertThat(rootAsMap).hasSize(5);
 		assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
 		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
 		assertThat(rootAsMap.get("action")).isEqualTo("userController");
 		assertThat(rootAsMap.get("tid")).isEqualTo(3);
 
-		Map<String, Object> result = (Map<String, Object>) rootAsMap
-				.get("result");
+		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 		assertThat(result).hasSize(3);
 		assertThat(result.get("name")).isEqualTo("Jim");
 		assertThat(result.get("age")).isEqualTo(25);

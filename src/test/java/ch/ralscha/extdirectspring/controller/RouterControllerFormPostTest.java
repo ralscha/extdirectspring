@@ -60,8 +60,7 @@ public class RouterControllerFormPostTest {
 		request.setParameter("extAction", "remoteProviderSimple");
 		request.setParameter("extMethod", "method1");
 		controller.router(request, response, "remoteProviderSimple", "method1");
-		ExtDirectResponse edsResponse = ControllerUtil
-				.readDirectResponse(response.getContentAsByteArray());
+		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(response.getContentAsByteArray());
 
 		assertThat(edsResponse.getType()).isEqualTo("exception");
 		assertThat(edsResponse.getMessage()).isEqualTo("Server Error");
@@ -82,25 +81,21 @@ public class RouterControllerFormPostTest {
 		request.setParameter("extAction", "remoteProviderSimple");
 		request.setParameter("extMethod", "method1");
 		controller.router(request, response, "remoteProviderSimple", "method1");
-		ExtDirectResponse edsResponse = ControllerUtil
-				.readDirectResponse(response.getContentAsByteArray());
+		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(response.getContentAsByteArray());
 
 		assertThat(edsResponse.getType()).isEqualTo("exception");
 		assertThat(edsResponse.getMessage()).isEqualTo("something wrong");
-		assertThat(edsResponse.getWhere()).isEqualTo(
-				"Bean or Method 'remoteProviderSimple.method1' not found");
+		assertThat(edsResponse.getWhere()).isEqualTo("Bean or Method 'remoteProviderSimple.method1' not found");
 
 		assertThat(edsResponse.getTid()).isEqualTo(12);
 		assertThat(edsResponse.getAction()).isEqualTo("remoteProviderSimple");
 		assertThat(edsResponse.getMethod()).isEqualTo("method1");
 
-		ReflectionTestUtils.setField(controller, "configuration",
-				new Configuration());
+		ReflectionTestUtils.setField(controller, "configuration", new Configuration());
 	}
 
 	public void testCallExistsFormPostMethod() throws IOException {
-		String redirect = controller.router(request, response,
-				"formInfoController", "updateInfo");
+		String redirect = controller.router(request, response, "formInfoController", "updateInfo");
 		assertThat(redirect).isEqualTo("forward:updateInfo");
 	}
 

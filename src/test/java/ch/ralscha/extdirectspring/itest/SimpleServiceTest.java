@@ -48,8 +48,7 @@ public class SimpleServiceTest extends JettyTest {
 	public void testSimpleApi() throws IllegalStateException, IOException {
 
 		HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet(
-				"http://localhost:9998/controller/api-debug.js?group=itest_simple");
+		HttpGet get = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_simple");
 		HttpResponse response = client.execute(get);
 		HttpEntity entity = response.getEntity();
 		assertThat(entity).isNotNull();
@@ -68,14 +67,12 @@ public class SimpleServiceTest extends JettyTest {
 		postToUpperCase("andrea", client);
 	}
 
-	private void postToUpperCase(String text, HttpClient client)
-			throws UnsupportedEncodingException, IOException,
-			ClientProtocolException, JsonParseException, JsonMappingException {
+	private void postToUpperCase(String text, HttpClient client) throws UnsupportedEncodingException, IOException, ClientProtocolException,
+			JsonParseException, JsonMappingException {
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
-		StringEntity postEntity = new StringEntity(
-				"{\"action\":\"simpleService\",\"method\":\"toUpperCase\",\"data\":[\""
-						+ text + "\"],\"type\":\"rpc\",\"tid\":1}", "UTF-8");
+		StringEntity postEntity = new StringEntity("{\"action\":\"simpleService\",\"method\":\"toUpperCase\",\"data\":[\"" + text
+				+ "\"],\"type\":\"rpc\",\"tid\":1}", "UTF-8");
 		post.setEntity(postEntity);
 		post.setHeader("Content-Type", "application/json; charset=UTF-8");
 
@@ -84,16 +81,13 @@ public class SimpleServiceTest extends JettyTest {
 		HttpEntity entity = response.getEntity();
 		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
-		assertThat(response.getFirstHeader("Content-Length").getValue())
-				.isEqualTo("" + responseString.length());
+		assertThat(response.getFirstHeader("Content-Length").getValue()).isEqualTo("" + responseString.length());
 
 		assertThat(responseString).isNotNull();
 		assertThat(responseString).startsWith("[").endsWith("]");
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
-		Map<String, Object> rootAsMap = mapper.readValue(
-				responseString.substring(1, responseString.length() - 1),
-				Map.class);
+		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1), Map.class);
 		assertThat(rootAsMap).hasSize(5);
 		assertThat(rootAsMap.get("result")).isEqualTo(text.toUpperCase());
 		assertThat(rootAsMap.get("method")).isEqualTo("toUpperCase");
@@ -106,25 +100,19 @@ public class SimpleServiceTest extends JettyTest {
 	@PerfTest(invocations = 200, threads = 10)
 	public void testSimpleNamedCall() throws IllegalStateException, IOException {
 		HttpClient client = new DefaultHttpClient();
-		postToEcho("\"userId\":\"ralph\", \"logLevel\": 100",
-				"UserId: ralph LogLevel: 100", client);
+		postToEcho("\"userId\":\"ralph\", \"logLevel\": 100", "UserId: ralph LogLevel: 100", client);
 		postToEcho("\"userId\":\"tom\"", "UserId: tom LogLevel: 10", client);
-		postToEcho("\"userId\":\"renee\", \"logLevel\": 1",
-				"UserId: renee LogLevel: 1", client);
-		postToEcho("\"userId\":\"andrea\"", "UserId: andrea LogLevel: 10",
-				client);
+		postToEcho("\"userId\":\"renee\", \"logLevel\": 1", "UserId: renee LogLevel: 1", client);
+		postToEcho("\"userId\":\"andrea\"", "UserId: andrea LogLevel: 10", client);
 	}
 
-	private void postToEcho(String data, String expectedResult,
-			HttpClient client) throws UnsupportedEncodingException,
-			IOException, ClientProtocolException, JsonParseException,
-			JsonMappingException {
+	private void postToEcho(String data, String expectedResult, HttpClient client) throws UnsupportedEncodingException, IOException,
+			ClientProtocolException, JsonParseException, JsonMappingException {
 
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
-		StringEntity postEntity = new StringEntity(
-				"{\"action\":\"simpleService\",\"method\":\"echo\",\"data\":{"
-						+ data + "},\"type\":\"rpc\",\"tid\":1}", "UTF-8");
+		StringEntity postEntity = new StringEntity("{\"action\":\"simpleService\",\"method\":\"echo\",\"data\":{" + data
+				+ "},\"type\":\"rpc\",\"tid\":1}", "UTF-8");
 
 		post.setEntity(postEntity);
 		post.setHeader("Content-Type", "application/json; charset=UTF-8");
@@ -141,9 +129,7 @@ public class SimpleServiceTest extends JettyTest {
 		assertThat(responseString).startsWith("[").endsWith("]");
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
-		Map<String, Object> rootAsMap = mapper.readValue(
-				responseString.substring(1, responseString.length() - 1),
-				Map.class);
+		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1), Map.class);
 		assertThat(rootAsMap).hasSize(5);
 		assertThat(rootAsMap.get("result")).isEqualTo(expectedResult);
 		assertThat(rootAsMap.get("method")).isEqualTo("echo");

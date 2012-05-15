@@ -73,22 +73,14 @@ public class ApiController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = { "/api.js", "/api-debug.js" }, method = RequestMethod.GET)
-	public void api(
-			@RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app")
-			final String apiNs,
-			@RequestParam(value = "actionNs", required = false)
-			final String actionNs,
-			@RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API")
-			final String remotingApiVar,
-			@RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS")
-			final String pollingUrlsVar,
-			@RequestParam(value = "group", required = false)
-			final String group,
-			@RequestParam(value = "fullRouterUrl", required = false, defaultValue = "false")
-			final boolean fullRouterUrl,
-			@RequestParam(value = "format", required = false)
-			final String format, final HttpServletRequest request,
-			final HttpServletResponse response) throws IOException {
+	public void api(@RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app")
+	final String apiNs, @RequestParam(value = "actionNs", required = false)
+	final String actionNs, @RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API")
+	final String remotingApiVar, @RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS")
+	final String pollingUrlsVar, @RequestParam(value = "group", required = false)
+	final String group, @RequestParam(value = "fullRouterUrl", required = false, defaultValue = "false")
+	final boolean fullRouterUrl, @RequestParam(value = "format", required = false)
+	final String format, final HttpServletRequest request, final HttpServletResponse response) throws IOException {
 
 		if (format == null) {
 			response.setContentType("application/x-javascript");
@@ -104,8 +96,7 @@ public class ApiController {
 
 			boolean debug = requestUrlString.contains("api-debug.js");
 
-			ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs,
-					remotingApiVar, pollingUrlsVar, group, debug);
+			ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group, debug);
 			String apiString = ApiCache.INSTANCE.get(apiKey);
 			if (apiString == null) {
 
@@ -117,13 +108,10 @@ public class ApiController {
 					basePollUrl = requestUrlString.replace("api.js", "poll");
 				}
 				else {
-					routerUrl = requestUrlString.replace("api-debug.js",
-							"router");
-					basePollUrl = requestUrlString.replace("api-debug.js",
-							"poll");
+					routerUrl = requestUrlString.replace("api-debug.js", "router");
+					basePollUrl = requestUrlString.replace("api-debug.js", "poll");
 				}
-				apiString = buildApiString(apiNs, actionNs, remotingApiVar,
-						pollingUrlsVar, routerUrl, basePollUrl, group, debug);
+				apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, basePollUrl, group, debug);
 				ApiCache.INSTANCE.put(apiKey, apiString);
 			}
 
@@ -131,10 +119,8 @@ public class ApiController {
 			response.getOutputStream().write(apiString.getBytes());
 		}
 		else {
-			response.setContentType(RouterController.APPLICATION_JSON
-					.toString());
-			response.setCharacterEncoding(RouterController.APPLICATION_JSON
-					.getCharSet().name());
+			response.setContentType(RouterController.APPLICATION_JSON.toString());
+			response.setCharacterEncoding(RouterController.APPLICATION_JSON.getCharSet().name());
 
 			String requestUrlString = request.getRequestURL().toString();
 
@@ -148,8 +134,7 @@ public class ApiController {
 				routerUrl = requestUrlString.replace("api-debug.js", "router");
 			}
 
-			String apiString = buildApiJson(apiNs, actionNs, remotingApiVar,
-					routerUrl, group, debug);
+			String apiString = buildApiJson(apiNs, actionNs, remotingApiVar, routerUrl, group, debug);
 			response.setContentLength(apiString.getBytes().length);
 			response.getOutputStream().write(apiString.getBytes());
 		}
@@ -157,22 +142,16 @@ public class ApiController {
 		response.getOutputStream().flush();
 	}
 
-	private String buildApiString(final String apiNs, final String actionNs,
-			final String remotingApiVar, final String pollingUrlsVar,
-			final String routerUrl, final String basePollUrl,
-			final String group, final boolean debug) {
+	private String buildApiString(final String apiNs, final String actionNs, final String remotingApiVar, final String pollingUrlsVar,
+			final String routerUrl, final String basePollUrl, final String group, final boolean debug) {
 
 		RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
 
-		remotingApi
-				.setTimeout(routerController.getConfiguration().getTimeout());
-		remotingApi.setMaxRetries(routerController.getConfiguration()
-				.getMaxRetries());
+		remotingApi.setTimeout(routerController.getConfiguration().getTimeout());
+		remotingApi.setMaxRetries(routerController.getConfiguration().getMaxRetries());
 
-		Object enableBuffer = routerController.getConfiguration()
-				.getEnableBuffer();
-		if (enableBuffer instanceof String
-				&& StringUtils.hasText((String) enableBuffer)) {
+		Object enableBuffer = routerController.getConfiguration().getEnableBuffer();
+		if (enableBuffer instanceof String && StringUtils.hasText((String) enableBuffer)) {
 			String enableBufferString = (String) enableBuffer;
 			if (enableBufferString.equalsIgnoreCase("true")) {
 				remotingApi.setEnableBuffer(true);
@@ -181,13 +160,11 @@ public class ApiController {
 				remotingApi.setEnableBuffer(false);
 			}
 			else {
-				Integer enableBufferMs = NumberUtils.parseNumber(
-						enableBufferString, Integer.class);
+				Integer enableBufferMs = NumberUtils.parseNumber(enableBufferString, Integer.class);
 				remotingApi.setEnableBuffer(enableBufferMs);
 			}
 		}
-		else if (enableBuffer instanceof Number
-				|| enableBuffer instanceof Boolean) {
+		else if (enableBuffer instanceof Number || enableBuffer instanceof Boolean) {
 			remotingApi.setEnableBuffer(enableBuffer);
 		}
 
@@ -215,8 +192,7 @@ public class ApiController {
 			}
 		}
 
-		String jsonConfig = routerController.getJsonHandler()
-				.writeValueAsString(remotingApi, debug);
+		String jsonConfig = routerController.getJsonHandler().writeValueAsString(remotingApi, debug);
 
 		if (StringUtils.hasText(apiNs)) {
 			sb.append(apiNs).append(".");
@@ -229,8 +205,7 @@ public class ApiController {
 			sb.append("\n\n");
 		}
 
-		List<PollingProvider> pollingProviders = remotingApi
-				.getPollingProviders();
+		List<PollingProvider> pollingProviders = remotingApi.getPollingProviders();
 		if (!pollingProviders.isEmpty()) {
 
 			if (StringUtils.hasText(apiNs)) {
@@ -272,8 +247,7 @@ public class ApiController {
 		return sb.toString();
 	}
 
-	private String buildApiJson(final String apiNs, final String actionNs,
-			final String remotingApiVar, final String routerUrl,
+	private String buildApiJson(final String apiNs, final String actionNs, final String remotingApiVar, final String routerUrl,
 			final String group, final boolean debug) {
 
 		RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
@@ -287,38 +261,31 @@ public class ApiController {
 
 		buildRemotingApi(remotingApi, group);
 
-		return routerController.getJsonHandler().writeValueAsString(
-				remotingApi, debug);
+		return routerController.getJsonHandler().writeValueAsString(remotingApi, debug);
 
 	}
 
-	private void buildRemotingApi(final RemotingApi remotingApi,
-			final String group) {
+	private void buildRemotingApi(final RemotingApi remotingApi, final String group) {
 
 		for (Map.Entry<MethodInfoCache.Key, MethodInfo> entry : MethodInfoCache.INSTANCE) {
 			final MethodInfo methodInfo = entry.getValue();
 			if (isSameGroup(group, methodInfo.getGroup())) {
 				if (methodInfo.getAction() != null) {
-					remotingApi.addAction(entry.getKey().getBeanName(),
-							methodInfo.getAction());
+					remotingApi.addAction(entry.getKey().getBeanName(), methodInfo.getAction());
 				}
 				else {
-					remotingApi.addPollingProvider(methodInfo
-							.getPollingProvider());
+					remotingApi.addPollingProvider(methodInfo.getPollingProvider());
 				}
 			}
 		}
 	}
 
-	private boolean isSameGroup(final String requestedGroupString,
-			final String annotationGroupString) {
+	private boolean isSameGroup(final String requestedGroupString, final String annotationGroupString) {
 		if (requestedGroupString != null) {
 			if (annotationGroupString != null) {
 				for (String requestedGroup : requestedGroupString.split(",")) {
-					for (String annotationGroup : annotationGroupString
-							.split(",")) {
-						if (ExtDirectSpringUtil.equal(requestedGroup,
-								annotationGroup)) {
+					for (String annotationGroup : annotationGroupString.split(",")) {
+						if (ExtDirectSpringUtil.equal(requestedGroup, annotationGroup)) {
 							return true;
 						}
 					}
