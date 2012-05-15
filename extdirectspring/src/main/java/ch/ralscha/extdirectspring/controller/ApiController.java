@@ -73,14 +73,14 @@ public class ApiController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = { "/api.js", "/api-debug.js" }, method = RequestMethod.GET)
-	public void api(@RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app")
-	final String apiNs, @RequestParam(value = "actionNs", required = false)
-	final String actionNs, @RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API")
-	final String remotingApiVar, @RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS")
-	final String pollingUrlsVar, @RequestParam(value = "group", required = false)
-	final String group, @RequestParam(value = "fullRouterUrl", required = false, defaultValue = "false")
-	final boolean fullRouterUrl, @RequestParam(value = "format", required = false)
-	final String format, final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+	public void api(@RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app") final String apiNs,
+			@RequestParam(value = "actionNs", required = false) final String actionNs,
+			@RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API") final String remotingApiVar,
+			@RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS") final String pollingUrlsVar,
+			@RequestParam(value = "group", required = false) final String group,
+			@RequestParam(value = "fullRouterUrl", required = false, defaultValue = "false") final boolean fullRouterUrl,
+			@RequestParam(value = "format", required = false) final String format, final HttpServletRequest request,
+			final HttpServletResponse response) throws IOException {
 
 		if (format == null) {
 			response.setContentType("application/x-javascript");

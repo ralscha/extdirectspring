@@ -77,8 +77,7 @@ public class CompanyDataBean {
 			company.setId(Integer.parseInt(nextLine[0]));
 			company.setCompany(nextLine[2]);
 
-			company.setDate(new GregorianCalendar(rand.nextInt(50) + 1950, rand.nextInt(12), rand.nextInt(28))
-					.getTime());
+			company.setDate(new GregorianCalendar(rand.nextInt(50) + 1950, rand.nextInt(12), rand.nextInt(28)).getTime());
 			company.setPrice(new BigDecimal(rand.nextFloat() * 100).setScale(2, RoundingMode.HALF_EVEN));
 			company.setSize(SizeEnum.values()[rand.nextInt(4)]);
 			company.setVisible(rand.nextBoolean());
@@ -100,24 +99,30 @@ public class CompanyDataBean {
 		for (Filter filter : filters) {
 			if (filter.getField().equals("company")) {
 				predicates.add(new CompanyPredicate(((StringFilter) filter).getValue()));
-			} else if (filter.getField().equals("visible")) {
+			}
+			else if (filter.getField().equals("visible")) {
 				predicates.add(new VisiblePredicate(((BooleanFilter) filter).getValue()));
-			} else if (filter.getField().equals("id")) {
+			}
+			else if (filter.getField().equals("id")) {
 				NumericFilter numericFilter = (NumericFilter) filter;
 				predicates.add(new IdPredicate(numericFilter.getComparison(), numericFilter.getValue()));
-			} else if (filter.getField().equals("price")) {
+			}
+			else if (filter.getField().equals("price")) {
 				NumericFilter numericFilter = (NumericFilter) filter;
 				predicates.add(new PricePredicate(numericFilter.getComparison(), numericFilter.getValue()));
-			} else if (filter.getField().equals("size")) {
+			}
+			else if (filter.getField().equals("size")) {
 				ListFilter listFilter = (ListFilter) filter;
 				predicates.add(new SizePredicate(listFilter.getValue()));
-			} else if (filter.getField().equals("date")) {
+			}
+			else if (filter.getField().equals("date")) {
 				DateFilter dateFilter = (DateFilter) filter;
 				DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 				try {
 					Date d = formatter.parse(dateFilter.getValue());
 					predicates.add(new DatePredicate(dateFilter.getComparison(), d));
-				} catch (ParseException e) {
+				}
+				catch (ParseException e) {
 					// nothing to do
 				}
 
@@ -174,6 +179,7 @@ public class CompanyDataBean {
 
 	private static class IdPredicate implements Predicate<Company> {
 		private Comparison comparison;
+
 		private Number value;
 
 		IdPredicate(Comparison comparison, Number value) {
@@ -197,6 +203,7 @@ public class CompanyDataBean {
 
 	private static class PricePredicate implements Predicate<Company> {
 		private Comparison comparison;
+
 		private Number value;
 
 		PricePredicate(Comparison comparison, Number value) {
@@ -208,14 +215,11 @@ public class CompanyDataBean {
 		public boolean apply(Company company) {
 			switch (comparison) {
 			case EQUAL:
-				return company.getPrice().compareTo(
-						new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) == 0;
+				return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) == 0;
 			case GREATER_THAN:
-				return company.getPrice().compareTo(
-						new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) > 0;
+				return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) > 0;
 			case LESS_THAN:
-				return company.getPrice().compareTo(
-						new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) < 0;
+				return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) < 0;
 			}
 			return false;
 		}
@@ -223,6 +227,7 @@ public class CompanyDataBean {
 
 	private static class DatePredicate implements Predicate<Company> {
 		private Comparison comparison;
+
 		private Date value;
 
 		DatePredicate(Comparison comparison, Date value) {

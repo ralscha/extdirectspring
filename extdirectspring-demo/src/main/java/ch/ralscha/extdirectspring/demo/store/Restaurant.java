@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.demo.store;
 
 public class Restaurant {
 	private String name;
+
 	private String cuisine;
 
 	public Restaurant(String name, String cuisine) {

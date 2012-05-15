@@ -34,13 +34,13 @@ public class FilterActionImplementation implements FilterActionInterface {
 	private CompanyDataBean dataBean;
 
 	@Override
-	public ExtDirectStoreResponse<Company> load(ExtDirectStoreReadRequest request,
-			@RequestParam(required = false) String dRif) {
+	public ExtDirectStoreResponse<Company> load(ExtDirectStoreReadRequest request, @RequestParam(required = false) String dRif) {
 
 		List<Company> companies;
 		if (!request.getFilters().isEmpty()) {
 			companies = dataBean.findCompanies(request.getFilters());
-		} else {
+		}
+		else {
 			companies = dataBean.findAllCompanies();
 		}
 
@@ -52,8 +52,7 @@ public class FilterActionImplementation implements FilterActionInterface {
 		}
 
 		if (request.getStart() != null && request.getLimit() != null) {
-			companies = companies.subList(request.getStart(),
-					Math.min(totalSize, request.getStart() + request.getLimit()));
+			companies = companies.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
 		}
 
 		return new ExtDirectStoreResponse<Company>(totalSize, companies);

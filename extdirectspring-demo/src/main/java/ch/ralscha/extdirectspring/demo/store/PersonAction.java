@@ -144,7 +144,8 @@ public class PersonAction {
 					}
 					if (ordering == null) {
 						ordering = colOrder;
-					} else {
+					}
+					else {
 						ordering = ordering.compound(colOrder);
 					}
 				}
@@ -226,7 +227,8 @@ public class PersonAction {
 
 		if (request.getStart() != null && request.getLimit() != null) {
 			persons = persons.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
-		} else {
+		}
+		else {
 			persons = persons.subList(0, 100);
 		}
 
@@ -237,10 +239,9 @@ public class PersonAction {
 			}
 		});
 
-		ExtDirectStoreResponse<PersonFullName> response = new ExtDirectStoreResponse<PersonFullName>(totalSize,
-				personFullNameList);
+		ExtDirectStoreResponse<PersonFullName> response = new ExtDirectStoreResponse<PersonFullName>(totalSize, personFullNameList);
 
-		//Send metadata only the first time
+		// Send metadata only the first time
 		if (request.getStart() == null) {
 			MetaData metaData = new MetaData();
 
@@ -272,22 +273,22 @@ public class PersonAction {
 
 		if (request.getStart() != null && request.getLimit() != null) {
 			persons = persons.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
-		} else {
+		}
+		else {
 			persons = persons.subList(0, 50);
 		}
 
-		List<PersonFullNameCity> personFullNameCityList = Lists.transform(persons,
-				new Function<Person, PersonFullNameCity>() {
-					@Override
-					public PersonFullNameCity apply(Person person) {
-						return new PersonFullNameCity(person);
-					}
-				});
+		List<PersonFullNameCity> personFullNameCityList = Lists.transform(persons, new Function<Person, PersonFullNameCity>() {
+			@Override
+			public PersonFullNameCity apply(Person person) {
+				return new PersonFullNameCity(person);
+			}
+		});
 
 		ExtDirectStoreResponse<PersonFullNameCity> response = new ExtDirectStoreResponse<PersonFullNameCity>(totalSize,
 				personFullNameCityList);
 
-		//Send metadata only the first time
+		// Send metadata only the first time
 		if (request.getStart() == null) {
 			MetaData metaData = new MetaData();
 
@@ -336,13 +337,15 @@ public class PersonAction {
 					}
 					if (ordering == null) {
 						ordering = colOrder;
-					} else {
+					}
+					else {
 						ordering = ordering.compound(colOrder);
 					}
 				}
 
 			}
-		} else {
+		}
+		else {
 			ordering = orderingMap.get("lastName");
 		}
 
@@ -352,13 +355,14 @@ public class PersonAction {
 
 		if (request.getStart() != null && request.getLimit() != null) {
 			persons = persons.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
-		} else {
+		}
+		else {
 			persons = persons.subList(0, 60);
 		}
 
 		ExtDirectStoreResponse<Person> response = new ExtDirectStoreResponse<Person>(totalSize, persons);
 
-		//Send metadata only the first time
+		// Send metadata only the first time
 		if (request.getStart() == null && request.getSort() == null) {
 			MetaData metaData = new MetaData();
 

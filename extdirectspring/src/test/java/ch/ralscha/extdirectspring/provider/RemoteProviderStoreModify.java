@@ -57,26 +57,22 @@ public class RemoteProviderStoreModify {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public List<Row> update2(Locale locale, @RequestParam(value = "id")
-	int id, List<Row> rows) {
+	public List<Row> update2(Locale locale, @RequestParam(value = "id") int id, List<Row> rows) {
 		assertThat(id).isEqualTo(10);
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 		return rows;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public List<Row> update3(List<Row> rows, @RequestParam(value = "id", defaultValue = "1")
-	int id, HttpServletRequest servletRequest) {
+	public List<Row> update3(List<Row> rows, @RequestParam(value = "id", defaultValue = "1") int id, HttpServletRequest servletRequest) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
 		return rows;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group2")
-	public List<Row> update4(@RequestParam(value = "id", required = false)
-	Integer id, @RequestParam(required = false)
-	@DateTimeFormat(iso = ISO.DATE)
-	LocalDate yesterday, List<Row> rows) {
+	public List<Row> update4(@RequestParam(value = "id", required = false) Integer id,
+			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate yesterday, List<Row> rows) {
 
 		if (id == null) {
 			assertThat(id).isNull();

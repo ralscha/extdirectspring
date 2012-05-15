@@ -22,10 +22,15 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 public class Company {
 	private int id;
+
 	private String company;
+
 	private BigDecimal price;
+
 	private Date date;
+
 	private boolean visible;
+
 	private SizeEnum size;
 
 	public int getId() {

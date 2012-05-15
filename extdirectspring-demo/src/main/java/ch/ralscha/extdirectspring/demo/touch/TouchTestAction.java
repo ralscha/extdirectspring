@@ -45,41 +45,36 @@ public class TouchTestAction {
 	public String doEcho(String message) {
 		return message;
 	}
-	
-	
+
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message", group = "touchdirect")
 	public String handleMessagePoll() {
 		Date now = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd 'at' hh:mm:ss");
 		return "Successfully polled at: " + formatter.format(now);
 	}
-	
-	
+
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "touchdirect")
 	public String showDetails(String firstName, String lastName, int age) {
 		return String.format("Hi %s %s, you are %d years old.", firstName, lastName, age);
 	}
-	
+
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "touchdirect")
 	public List<Turnover> getGrid(ExtDirectStoreReadRequest request) {
 		List<Turnover> result = Lists.newArrayList();
-		
+
 		result.add(new Turnover("ABC Accounting", new BigDecimal("50000")));
 		result.add(new Turnover("Ezy Video Rental", new BigDecimal("106300")));
 		result.add(new Turnover("Greens Fruit Grocery", new BigDecimal("120000")));
 		result.add(new Turnover("Icecream Express", new BigDecimal("73000")));
 		result.add(new Turnover("Ripped Gym", new BigDecimal("88400")));
 		result.add(new Turnover("Smith Auto Mechanic", new BigDecimal("222980")));
-		
+
 		Ordering<Turnover> ordering = PropertyOrderingFactory.INSTANCE.createOrderingFromSorters(request.getSorters());
 		if (ordering != null) {
 			return ordering.sortedCopy(result);
 		}
-		
+
 		return result;
 	}
-	
 
-	
-	
 }

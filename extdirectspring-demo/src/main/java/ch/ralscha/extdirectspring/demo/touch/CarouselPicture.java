@@ -18,10 +18,15 @@ package ch.ralscha.extdirectspring.demo.touch;
 public class CarouselPicture {
 
 	private String id;
+
 	private String title;
+
 	private String link;
+
 	private String author;
+
 	private String content;
+
 	private String image;
 
 	public String getId() {

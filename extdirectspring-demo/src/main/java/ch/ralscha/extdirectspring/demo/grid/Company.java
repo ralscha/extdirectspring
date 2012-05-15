@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.demo.grid;
 
 public class Company {
 	private String name;
+
 	private int turnover;
 
 	public Company(String name, int turnover) {

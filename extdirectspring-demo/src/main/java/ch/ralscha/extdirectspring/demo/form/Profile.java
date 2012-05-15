@@ -39,7 +39,9 @@ public class Profile {
 	public static class PhoneInfo {
 
 		public String cell;
+
 		public String office;
+
 		public String home;
 	}
 

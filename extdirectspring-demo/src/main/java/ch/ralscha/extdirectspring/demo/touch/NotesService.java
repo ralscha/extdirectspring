@@ -32,7 +32,7 @@ public class NotesService {
 
 	@Autowired
 	private NotesDb notesDb;
-	
+
 	@ExtDirectMethod(group = "touchnote")
 	public void log(String msg) {
 		logger.info(msg);
@@ -40,24 +40,24 @@ public class NotesService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "touchnote")
 	public List<Note> updateNotes(List<Note> updatedNotes) {
-		
+
 		for (Note note : updatedNotes) {
 			notesDb.addOrUpdate(note);
 		}
-		
+
 		return updatedNotes;
 	}
-	
+
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "touchnote")
 	public List<Note> readNotes() {
 		return notesDb.readAll();
 	}
-	
+
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "touchnote")
 	public void destroyNotes(List<Note> deleteIds) {
 		for (Note note : deleteIds) {
 			notesDb.delete(note);
 		}
 	}
-	
+
 }

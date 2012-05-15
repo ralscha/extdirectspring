@@ -17,7 +17,9 @@ package ch.ralscha.extdirectspring.demo.touch;
 
 public class Post {
 	private String title;
+
 	private boolean leaf;
+
 	private String content;
 
 	public String getTitle() {

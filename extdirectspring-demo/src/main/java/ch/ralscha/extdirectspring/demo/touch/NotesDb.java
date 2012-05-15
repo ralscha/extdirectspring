@@ -28,24 +28,26 @@ import com.google.common.collect.ImmutableList;
 
 @Service
 public class NotesDb {
-	
+
 	private AtomicInteger lastId = new AtomicInteger(0);
+
 	private ConcurrentHashMap<Integer, Note> map = new ConcurrentHashMap<Integer, Note>();
-	
+
 	public void addOrUpdate(Note note) {
 		if (note.getId() == null || note.getId() < 0) {
 			int id = lastId.incrementAndGet();
 			note.setId(id);
 			map.put(id, note);
-		} else {
+		}
+		else {
 			map.put(note.getId(), note);
-		}		
+		}
 	}
-	
+
 	public void delete(Note note) {
 		map.remove(note.getId());
-	}	
-	
+	}
+
 	@PostConstruct
 	public void addTestData() {
 		Note n = new Note();
@@ -64,7 +66,7 @@ public class NotesDb {
 		n.setDateCreated(LocalDate.now().plusDays(2).toDate());
 		n.setTitle("Test Note 3 ");
 		n.setNarrative("This is a third test note");
-		addOrUpdate(n);	
+		addOrUpdate(n);
 	}
 
 	public List<Note> readAll() {

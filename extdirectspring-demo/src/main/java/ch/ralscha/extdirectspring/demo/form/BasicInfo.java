@@ -24,6 +24,7 @@ public class BasicInfo {
 
 	@NotEmpty
 	private String name;
+
 	private String company;
 
 	@Email

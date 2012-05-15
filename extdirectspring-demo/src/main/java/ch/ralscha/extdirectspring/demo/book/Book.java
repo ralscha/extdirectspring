@@ -26,11 +26,17 @@ import org.codehaus.jackson.annotate.JsonAutoDetect;
 public class Book {
 
 	private int id;
+
 	private String title;
+
 	private String publisher;
+
 	private String ISBN10;
+
 	private String ISBN13;
+
 	private String link;
+
 	private String description;
 
 	public int getId() {

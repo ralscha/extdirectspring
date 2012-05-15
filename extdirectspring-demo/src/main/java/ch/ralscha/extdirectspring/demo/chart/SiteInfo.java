@@ -21,8 +21,11 @@ import org.joda.time.LocalDate;
 public class SiteInfo {
 
 	private LocalDate date;
+
 	private int visits;
+
 	private int views;
+
 	private int veins;
 
 	public SiteInfo(LocalDate date, int visits, int views, int veins) {

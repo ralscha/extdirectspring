@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.demo.chart;
 public class SeasonData {
 
 	private final String season;
+
 	private final int total;
 
 	public SeasonData(String season, int total) {

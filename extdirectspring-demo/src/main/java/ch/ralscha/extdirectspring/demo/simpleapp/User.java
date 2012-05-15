@@ -17,13 +17,17 @@ package ch.ralscha.extdirectspring.demo.simpleapp;
 
 public class User {
 	private String id;
+
 	private String firstName;
+
 	private String lastName;
+
 	private String email;
+
 	private String city;
 
 	public User() {
-		//default constructor
+		// default constructor
 	}
 
 	public User(String[] line) {
@@ -83,8 +87,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", city=" + city + "]";
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", city=" + city + "]";
 	}
 
 }

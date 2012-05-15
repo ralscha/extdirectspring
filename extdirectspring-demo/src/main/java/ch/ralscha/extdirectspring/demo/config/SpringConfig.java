@@ -28,20 +28,16 @@ import ch.ralscha.extdirectspring.controller.RouterController;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses=RouterController.class, basePackages = "ch.ralscha.extdirectspring.demo")
+@ComponentScan(basePackageClasses = RouterController.class, basePackages = "ch.ralscha.extdirectspring.demo")
 public class SpringConfig {
 
 	/*
-	@Bean
-	public ch.ralscha.extdirectspring.controller.Configuration edsConfig() {
-		ch.ralscha.extdirectspring.controller.Configuration config = new ch.ralscha.extdirectspring.controller.Configuration();
-		config.setStreamResponse(true);
-		config.setTimeout(12000);
-		config.setMaxRetries(10);
-		config.setEnableBuffer(false);
-		return config;
-	}
-	*/
+	 * @Bean public ch.ralscha.extdirectspring.controller.Configuration
+	 * edsConfig() { ch.ralscha.extdirectspring.controller.Configuration config
+	 * = new ch.ralscha.extdirectspring.controller.Configuration();
+	 * config.setStreamResponse(true); config.setTimeout(12000);
+	 * config.setMaxRetries(10); config.setEnableBuffer(false); return config; }
+	 */
 
 	@Bean
 	public MultipartResolver multipartResolver() {

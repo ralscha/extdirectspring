@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 
 public class Turnover {
 	private final String name;
+
 	private final BigDecimal turnover;
 
 	public Turnover(String name, BigDecimal turnover) {

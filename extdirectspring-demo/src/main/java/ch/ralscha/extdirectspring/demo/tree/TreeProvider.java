@@ -29,7 +29,9 @@ public class TreeProvider {
 
 	public static class Node {
 		public String id;
+
 		public String text;
+
 		public boolean leaf;
 	}
 
@@ -46,7 +48,8 @@ public class TreeProvider {
 				node.leaf = false;
 				result.add(node);
 			}
-		} else if (id.length() == 2) {
+		}
+		else if (id.length() == 2) {
 			String num = id.substring(1);
 			for (int i = 1; i <= 5; ++i) {
 				Node node = new Node();

@@ -22,14 +22,23 @@ public class AreaData {
 	private static Random rnd = new Random();
 
 	private String name;
+
 	private int data1;
+
 	private int data2;
+
 	private int data3;
+
 	private int data4;
+
 	private int data5;
+
 	private int data6;
+
 	private int data7;
+
 	private int data8;
+
 	private int data9;
 
 	public AreaData(String name) {

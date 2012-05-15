@@ -30,8 +30,7 @@ public class ExceptionFormPostController {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_upload")
 	@RequestMapping(value = "/throwIt", method = RequestMethod.POST)
-	public void throwAException(@SuppressWarnings("unused")
-	HttpServletRequest request) {
+	public void throwAException(@SuppressWarnings("unused") HttpServletRequest request) {
 		throw new NullPointerException("a null pointer");
 	}
 

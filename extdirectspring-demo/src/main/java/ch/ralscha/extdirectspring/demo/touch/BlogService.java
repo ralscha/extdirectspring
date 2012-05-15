@@ -39,24 +39,24 @@ public class BlogService {
 	@SuppressWarnings("unchecked")
 	public List<Post> getBlogPosts() throws IllegalArgumentException, FeedException, IOException {
 		List<Post> posts = Lists.newArrayList();
-		
+
 		URL feedUrl = new URL("http://feeds.feedburner.com/SenchaBlog");
-		 
-        SyndFeedInput input = new SyndFeedInput();
-        SyndFeed feed = input.build(new XmlReader(feedUrl));
+
+		SyndFeedInput input = new SyndFeedInput();
+		SyndFeed feed = input.build(new XmlReader(feedUrl));
 
 		List<SyndEntry> entries = feed.getEntries();
 		for (SyndEntry entry : entries) {
-			
+
 			Post post = new Post();
 			post.setTitle(entry.getTitle());
 			post.setLeaf(true);
-			post.setContent(((SyndContentImpl)entry.getContents().iterator().next()).getValue());
+			post.setContent(((SyndContentImpl) entry.getContents().iterator().next()).getValue());
 			posts.add(post);
-        }
-    
+		}
+
 		return posts;
-		
+
 	}
 
 }

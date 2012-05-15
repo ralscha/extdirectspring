@@ -18,13 +18,21 @@ package ch.ralscha.extdirectspring.demo.pivot;
 public class Sale {
 
 	private int id;
+
 	private String product;
+
 	private String city;
+
 	private int quantity;
+
 	private int value;
+
 	private int month;
+
 	private int quarter;
+
 	private int year;
+
 	private String person;
 
 	public Sale() {

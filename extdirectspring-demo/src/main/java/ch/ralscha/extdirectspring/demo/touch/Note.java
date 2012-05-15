@@ -23,8 +23,11 @@ import ch.ralscha.extdirectspring.demo.util.DMYDateSerializer;
 
 public class Note {
 	private Integer id;
+
 	private Date dateCreated;
+
 	private String title;
+
 	private String narrative;
 
 	public Integer getId() {
@@ -70,15 +73,19 @@ public class Note {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Note other = (Note) obj;
-		if (id != other.id)
+		if (id != other.id) {
 			return false;
+		}
 		return true;
 	}
 

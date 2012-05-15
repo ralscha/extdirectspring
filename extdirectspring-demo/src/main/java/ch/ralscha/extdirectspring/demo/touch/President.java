@@ -17,9 +17,13 @@ package ch.ralscha.extdirectspring.demo.touch;
 
 public class President {
 	private int id;
+
 	private String firstName;
+
 	private String lastName;
+
 	private String middleInitial;
+
 	private String imageUrl;
 
 	public President(int id, String firstName, String middleInitial, String lastName) {
@@ -34,9 +38,9 @@ public class President {
 
 		if (imageUrl != null) {
 			this.imageUrl = imageUrl;
-		} else {
-			this.imageUrl = id + firstName.substring(0, 1).toLowerCase() + lastName.substring(0, 1).toLowerCase()
-					+ "_header_sm.jpg";
+		}
+		else {
+			this.imageUrl = id + firstName.substring(0, 1).toLowerCase() + lastName.substring(0, 1).toLowerCase() + "_header_sm.jpg";
 		}
 	}
 

@@ -60,12 +60,12 @@ public class ChartService {
 
 			LocalDate ld = new LocalDate(2011, 1, 1);
 			siteInfo.add(new SiteInfo(ld, rnd.nextInt(100) + 1, rnd.nextInt(100) + 1, rnd.nextInt(100) + 1));
-		} else {
+		}
+		else {
 			SiteInfo lastSiteInfo = siteInfo.get(siteInfo.size() - 1);
 
 			LocalDate nextDate = lastSiteInfo.getDate().plusDays(1);
-			int nextVisits = Math.min(100,
-					Math.max((int) (lastSiteInfo.getVisits() + (rnd.nextDouble() - 0.5) * 20), 0));
+			int nextVisits = Math.min(100, Math.max((int) (lastSiteInfo.getVisits() + (rnd.nextDouble() - 0.5) * 20), 0));
 			int nextViews = Math.min(100, Math.max((int) (lastSiteInfo.getViews() + (rnd.nextDouble() - 0.5) * 10), 0));
 			int nextVeins = Math.min(100, Math.max((int) (lastSiteInfo.getVeins() + (rnd.nextDouble() - 0.5) * 20), 0));
 			siteInfo.add(new SiteInfo(nextDate, nextVisits, nextViews, nextVeins));

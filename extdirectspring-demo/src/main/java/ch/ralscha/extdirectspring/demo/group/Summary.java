@@ -23,9 +23,13 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 public class Summary {
 
 	private String description;
+
 	private BigDecimal estimate;
+
 	private BigDecimal rate;
+
 	private Date due;
+
 	private BigDecimal cost;
 
 	public String getDescription() {

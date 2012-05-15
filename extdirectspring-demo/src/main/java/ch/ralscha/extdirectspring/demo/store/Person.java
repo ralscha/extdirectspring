@@ -18,13 +18,21 @@ package ch.ralscha.extdirectspring.demo.store;
 public class Person {
 
 	private String fullName;
+
 	private String firstName;
+
 	private String lastName;
+
 	private String id;
+
 	private String street;
+
 	private String city;
+
 	private String state;
+
 	private String zip;
+
 	private String country;
 
 	public Person() {
@@ -129,9 +137,8 @@ public class Person {
 
 	@Override
 	public String toString() {
-		return "Person [fullName=" + fullName + ", firstName=" + firstName + ", lastName=" + lastName + ", id=" + id
-				+ ", street=" + street + ", city=" + city + ", state=" + state + ", zip=" + zip + ", country="
-				+ country + "]";
+		return "Person [fullName=" + fullName + ", firstName=" + firstName + ", lastName=" + lastName + ", id=" + id + ", street=" + street
+				+ ", city=" + city + ", state=" + state + ", zip=" + zip + ", country=" + country + "]";
 	}
 
 }

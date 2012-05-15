@@ -39,11 +39,12 @@ import com.sun.syndication.io.XmlReader;
 public class CarouselService {
 
 	private static final String RSS_URL = "http://www.acme.com/jef/apod/rss.xml?num=20";
+
 	private static Pattern IMG_PATTERN = Pattern.compile(".*img src=\"([^\"]+)\".*", Pattern.DOTALL);
-	
+
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "touchcarousel")
 	public List<CarouselPicture> readPictures(HttpServletRequest request) throws IllegalArgumentException, FeedException, IOException {
-		
+
 		URL feedUrl = new URL(RSS_URL);
 		List<CarouselPicture> pictures = Lists.newArrayList();
 
@@ -58,7 +59,7 @@ public class CarouselService {
 			pic.setAuthor(entry.getAuthor());
 			pic.setLink(entry.getLink());
 			pic.setTitle(entry.getTitle());
-			//pic.setContent();
+			// pic.setContent();
 			Matcher matcher = IMG_PATTERN.matcher(entry.getDescription().getValue());
 			if (matcher.matches()) {
 				String imageUrl = matcher.group(1);

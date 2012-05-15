@@ -17,7 +17,9 @@ package ch.ralscha.extdirectspring.demo.touch;
 
 public class Contact {
 	private String name;
+
 	private String email;
+
 	private String message;
 
 	public String getName() {

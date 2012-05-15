@@ -25,15 +25,21 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 public class Task {
 
 	private int projectId;
+
 	private String project;
+
 	private int taskId;
+
 	private String description;
+
 	private BigDecimal estimate;
+
 	private BigDecimal rate;
+
 	private Date due;
 
-	public Task(int projectId, String project, int taskId, String description, BigDecimal estimate, BigDecimal rate,
-			int dueYear, int dueMonth, int dueDay) {
+	public Task(int projectId, String project, int taskId, String description, BigDecimal estimate, BigDecimal rate, int dueYear,
+			int dueMonth, int dueDay) {
 
 		this.projectId = projectId;
 		this.project = project;

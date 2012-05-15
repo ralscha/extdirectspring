@@ -25,8 +25,7 @@ import org.codehaus.jackson.map.SerializerProvider;
 public class LabelValueSerializer extends JsonSerializer<LabelValue> {
 
 	@Override
-	public void serialize(LabelValue value, JsonGenerator jgen, SerializerProvider provider) throws IOException,
-			JsonProcessingException {
+	public void serialize(LabelValue value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
 
 		jgen.writeStartObject();
 		jgen.writeFieldName("label");
