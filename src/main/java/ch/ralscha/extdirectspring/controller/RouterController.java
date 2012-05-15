@@ -209,10 +209,8 @@ public class RouterController implements InitializingBean {
 	}
 
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
-	public void poll(@PathVariable("beanName")
-	String beanName, @PathVariable("method")
-	String method, @PathVariable("event")
-	String event, HttpServletRequest request, HttpServletResponse response, Locale locale) throws Exception {
+	public void poll(@PathVariable("beanName") String beanName, @PathVariable("method") String method, @PathVariable("event") String event,
+			HttpServletRequest request, HttpServletResponse response, Locale locale) throws Exception {
 
 		ExtDirectPollResponse directPollResponse = new ExtDirectPollResponse();
 		directPollResponse.setName(event);
@@ -281,9 +279,8 @@ public class RouterController implements InitializingBean {
 	}
 
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "extAction")
-	public String router(HttpServletRequest request, HttpServletResponse response, @RequestParam("extAction")
-	String extAction, @RequestParam("extMethod")
-	String extMethod) throws IOException {
+	public String router(HttpServletRequest request, HttpServletResponse response, @RequestParam("extAction") String extAction,
+			@RequestParam("extMethod") String extMethod) throws IOException {
 
 		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(extAction, extMethod);
 
