@@ -53,8 +53,10 @@ public class SupportedParametersTest {
 
 		assertThat(SupportedParameters.resolveParameter(String.class, request, response, en)).isNull();
 		assertSame(request, SupportedParameters.resolveParameter(MockHttpServletRequest.class, request, response, en));
-		assertSame(request.getSession(), SupportedParameters.resolveParameter(MockHttpSession.class, request, response, en));
-		assertSame(request.getUserPrincipal(), SupportedParameters.resolveParameter(Principal.class, request, response, en));
+		assertSame(request.getSession(),
+				SupportedParameters.resolveParameter(MockHttpSession.class, request, response, en));
+		assertSame(request.getUserPrincipal(),
+				SupportedParameters.resolveParameter(Principal.class, request, response, en));
 		assertSame(response, SupportedParameters.resolveParameter(MockHttpServletResponse.class, request, response, en));
 		assertSame(en, SupportedParameters.resolveParameter(Locale.class, request, response, en));
 	}

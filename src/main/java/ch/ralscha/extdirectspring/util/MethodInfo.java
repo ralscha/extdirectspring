@@ -75,7 +75,8 @@ public final class MethodInfo {
 
 			this.parameters = buildParameterList(method);
 
-			this.collectionType = (extDirectMethodAnnotation.entryClass() == Object.class) ? null : extDirectMethodAnnotation.entryClass();
+			this.collectionType = (extDirectMethodAnnotation.entryClass() == Object.class) ? null
+					: extDirectMethodAnnotation.entryClass();
 
 			if (this.collectionType == null) {
 				for (ParameterInfo parameter : parameters) {

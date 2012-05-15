@@ -58,15 +58,15 @@ public class ExtDirectRawJsonStoreResponse extends ExtDirectStoreResponse<String
 
 	@Override
 	public String toString() {
-		return "ExtDirectRawJsonStoreResponse [getRecords()=" + getRecords() + ", getTotal()=" + getTotal() + ", isSuccess()="
-				+ isSuccess() + ", getMetaData()=" + getMetaData() + "]";
+		return "ExtDirectRawJsonStoreResponse [getRecords()=" + getRecords() + ", getTotal()=" + getTotal()
+				+ ", isSuccess()=" + isSuccess() + ", getMetaData()=" + getMetaData() + "]";
 	}
 
 	private final static class CollectionStringSerializer extends JsonSerializer<Collection<String>> {
 
 		@Override
-		public void serialize(final Collection<String> values, final JsonGenerator jgen, final SerializerProvider provider)
-				throws IOException, JsonProcessingException {
+		public void serialize(final Collection<String> values, final JsonGenerator jgen,
+				final SerializerProvider provider) throws IOException, JsonProcessingException {
 
 			StringBuilder sb = new StringBuilder();
 			sb.append("[");

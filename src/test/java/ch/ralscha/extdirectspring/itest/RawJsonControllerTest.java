@@ -43,7 +43,8 @@ public class RawJsonControllerTest extends JettyTest {
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
 		StringEntity postEntity = new StringEntity(
-				"{\"action\":\"rawJsonController\",\"method\":\"listUsers\",\"data\":[],\"type\":\"rpc\",\"tid\":1}", "UTF-8");
+				"{\"action\":\"rawJsonController\",\"method\":\"listUsers\",\"data\":[],\"type\":\"rpc\",\"tid\":1}",
+				"UTF-8");
 		post.setEntity(postEntity);
 		post.setHeader("Content-Type", "application/json; charset=UTF-8");
 
@@ -56,7 +57,8 @@ public class RawJsonControllerTest extends JettyTest {
 		assertThat(responseString).startsWith("[").endsWith("]");
 
 		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1), Map.class);
+		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
+				Map.class);
 		assertEquals(5, rootAsMap.size());
 
 		assertEquals("listUsers", rootAsMap.get("method"));

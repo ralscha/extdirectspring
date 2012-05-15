@@ -32,8 +32,8 @@ import javax.servlet.http.HttpSession;
  */
 public enum SupportedParameters {
 
-	SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class), SESSION(HttpSession.class), LOCALE(Locale.class), PRINCIPAL(
-			Principal.class);
+	SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class), SESSION(HttpSession.class), LOCALE(
+			Locale.class), PRINCIPAL(Principal.class);
 
 	private final Class<?> clazz;
 

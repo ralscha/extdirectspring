@@ -72,7 +72,8 @@ public class CrudTestMethods {
 		pagingParameters.put("start", 0);
 		pagingParameters.put("limit", 50);
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "readWithPaging", 1, pagingParameters);
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "readWithPaging", 1,
+				pagingParameters);
 
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		MockHttpServletRequest request = new MockHttpServletRequest();
@@ -128,8 +129,8 @@ public class CrudTestMethods {
 		assertThat(aBook.getIsbn()).isEqualTo("1849511209");
 	}
 
-	private void testUpdateRecordsOne(RouterController controller, MockHttpServletResponse response, MockHttpServletRequest request)
-			throws IOException {
+	private void testUpdateRecordsOne(RouterController controller, MockHttpServletResponse response,
+			MockHttpServletRequest request) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		storeRequest.put("records", new Book(1, "an update", "9999999"));
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "update3", 1, storeRequest);
@@ -144,8 +145,8 @@ public class CrudTestMethods {
 		assertUpdateResponse(resp, 1, 3);
 	}
 
-	private void testUpdateRecordsMany(RouterController controller, MockHttpServletResponse response, MockHttpServletRequest request)
-			throws IOException {
+	private void testUpdateRecordsMany(RouterController controller, MockHttpServletResponse response,
+			MockHttpServletRequest request) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Book> newBooks = new ArrayList<Book>();
 		newBooks.add(new Book(1, "an update", "9999999"));
@@ -164,8 +165,8 @@ public class CrudTestMethods {
 		assertUpdateResponse(resp, 2, 3);
 	}
 
-	private void testUpdateOne(RouterController controller, MockHttpServletResponse response, MockHttpServletRequest request)
-			throws IOException {
+	private void testUpdateOne(RouterController controller, MockHttpServletResponse response,
+			MockHttpServletRequest request) throws IOException {
 		Book updatedBook = new Book(1, "an update", "9999999");
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "update4", 1, updatedBook);
 
@@ -179,8 +180,8 @@ public class CrudTestMethods {
 		assertUpdateResponse(resp, 1, 4);
 	}
 
-	private void testUpdateMany(RouterController controller, MockHttpServletResponse response, MockHttpServletRequest request)
-			throws IOException {
+	private void testUpdateMany(RouterController controller, MockHttpServletResponse response,
+			MockHttpServletRequest request) throws IOException {
 		List<Book> newBooks = new ArrayList<Book>();
 		newBooks.add(new Book(1, "an update", "9999999"));
 		newBooks.add(new Book(2, "a second update", "8888888"));
@@ -208,8 +209,9 @@ public class CrudTestMethods {
 			assertThat(storeResponse.getRecords().size()).isEqualTo(noOfRecords);
 			it = storeResponse.getRecords().iterator();
 		} else {
-			Collection<Book> books = ControllerUtil.convertValue(resp.getResult(), new TypeReference<Collection<Book>>() {
-			});
+			Collection<Book> books = ControllerUtil.convertValue(resp.getResult(),
+					new TypeReference<Collection<Book>>() {
+					});
 			it = books.iterator();
 		}
 
@@ -227,8 +229,8 @@ public class CrudTestMethods {
 
 	}
 
-	private void testCreateRecordsOne(RouterController controller, MockHttpServletResponse response, MockHttpServletRequest request)
-			throws IOException {
+	private void testCreateRecordsOne(RouterController controller, MockHttpServletResponse response,
+			MockHttpServletRequest request) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		storeRequest.put("records", new Book(-1, "Ext JS 3.0 Cookbook", "1847198708"));
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "create3", 1, storeRequest);
@@ -243,8 +245,8 @@ public class CrudTestMethods {
 		assertCreateResponse(resp, 1, 3);
 	}
 
-	private void testCreateRecordsMany(RouterController controller, MockHttpServletResponse response, MockHttpServletRequest request)
-			throws IOException {
+	private void testCreateRecordsMany(RouterController controller, MockHttpServletResponse response,
+			MockHttpServletRequest request) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Book> newBooks = new ArrayList<Book>();
 		newBooks.add(new Book(-1, "Ext JS 3.0 Cookbook", "1847198708"));
@@ -263,8 +265,8 @@ public class CrudTestMethods {
 		assertCreateResponse(resp, 2, 3);
 	}
 
-	private void testCreateOne(RouterController controller, MockHttpServletResponse response, MockHttpServletRequest request)
-			throws IOException {
+	private void testCreateOne(RouterController controller, MockHttpServletResponse response,
+			MockHttpServletRequest request) throws IOException {
 
 		Book newBook = new Book(-1, "Ext JS 3.0 Cookbook", "1847198708");
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "create4", 1, newBook);
@@ -279,8 +281,8 @@ public class CrudTestMethods {
 		assertCreateResponse(resp, 1, 4);
 	}
 
-	private void testCreateMany(RouterController controller, MockHttpServletResponse response, MockHttpServletRequest request)
-			throws IOException {
+	private void testCreateMany(RouterController controller, MockHttpServletResponse response,
+			MockHttpServletRequest request) throws IOException {
 		List<Book> newBooks = new ArrayList<Book>();
 		newBooks.add(new Book(-1, "Ext JS 3.0 Cookbook", "1847198708"));
 		newBooks.add(new Book(-1, "Learning Ext JS 3.2", "1849511209"));
@@ -297,8 +299,8 @@ public class CrudTestMethods {
 		assertCreateResponse(resp, 2, 4);
 	}
 
-	private void testDeleteRecordsOne(RouterController controller, MockHttpServletResponse response, MockHttpServletRequest request)
-			throws IOException {
+	private void testDeleteRecordsOne(RouterController controller, MockHttpServletResponse response,
+			MockHttpServletRequest request) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		storeRequest.put("records", new Integer(1));
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "delete3", 1, storeRequest);
@@ -321,8 +323,8 @@ public class CrudTestMethods {
 		assertThat(deleteBookId.intValue()).isEqualTo(1);
 	}
 
-	private void testDeleteRecordsMany(RouterController controller, MockHttpServletResponse response, MockHttpServletRequest request)
-			throws IOException {
+	private void testDeleteRecordsMany(RouterController controller, MockHttpServletResponse response,
+			MockHttpServletRequest request) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Integer> booksToDelete = new ArrayList<Integer>();
 		booksToDelete.add(1);
@@ -352,8 +354,8 @@ public class CrudTestMethods {
 		assertThat(deleteBookId.intValue()).isEqualTo(2);
 	}
 
-	private void testDeleteOne(RouterController controller, MockHttpServletResponse response, MockHttpServletRequest request)
-			throws IOException {
+	private void testDeleteOne(RouterController controller, MockHttpServletResponse response,
+			MockHttpServletRequest request) throws IOException {
 
 		Book deleteBook = new Book(11, "Ext JS 3.0 Cookbook", "1847198708");
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "delete4", 1, deleteBook);
@@ -366,8 +368,9 @@ public class CrudTestMethods {
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "delete4");
 
-		Collection<Book> storeResponse = ControllerUtil.convertValue(resp.getResult(), new TypeReference<Collection<Book>>() {
-		});
+		Collection<Book> storeResponse = ControllerUtil.convertValue(resp.getResult(),
+				new TypeReference<Collection<Book>>() {
+				});
 		assertThat(storeResponse).hasSize(1);
 		Book book = storeResponse.iterator().next();
 		assertThat(book.getId()).isEqualTo(Integer.valueOf(11));
@@ -375,8 +378,8 @@ public class CrudTestMethods {
 		assertThat(book.getIsbn()).isEqualTo("DELETED_1847198708");
 	}
 
-	private void testDeleteMany(RouterController controller, MockHttpServletResponse response, MockHttpServletRequest request)
-			throws IOException {
+	private void testDeleteMany(RouterController controller, MockHttpServletResponse response,
+			MockHttpServletRequest request) throws IOException {
 
 		List<Book> deletedBooks = new ArrayList<Book>();
 		deletedBooks.add(new Book(9, "Ext JS 3.0 Cookbook", "1847198708"));
@@ -392,8 +395,9 @@ public class CrudTestMethods {
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "delete4");
 
-		Collection<Book> storeResponse = ControllerUtil.convertValue(resp.getResult(), new TypeReference<Collection<Book>>() {
-		});
+		Collection<Book> storeResponse = ControllerUtil.convertValue(resp.getResult(),
+				new TypeReference<Collection<Book>>() {
+				});
 		assertThat(storeResponse).hasSize(2);
 		Iterator<Book> it = storeResponse.iterator();
 
@@ -421,8 +425,9 @@ public class CrudTestMethods {
 			it = ControllerUtil.convertValue(storeResponse.getRecords(), new TypeReference<Collection<Book>>() {
 			}).iterator();
 		} else {
-			Collection<Book> books = ControllerUtil.convertValue(resp.getResult(), new TypeReference<Collection<Book>>() {
-			});
+			Collection<Book> books = ControllerUtil.convertValue(resp.getResult(),
+					new TypeReference<Collection<Book>>() {
+					});
 			it = books.iterator();
 		}
 

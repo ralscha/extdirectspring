@@ -150,8 +150,10 @@ public class RouterController implements InitializingBean {
 				ExtDirectMethod directMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 				if (directMethodAnnotation.value() == ExtDirectMethodType.FORM_POST) {
 					if (!isValidFormPostMethod(userType, method)) {
-						log.warn("Method '" + beanName + "." + method.getName() + "' is annotated with FORM_POST but is not valid. "
-								+ "A form post method must not return anything, " + "needs to be part of a @Controller bean, "
+						log.warn("Method '" + beanName + "." + method.getName()
+								+ "' is annotated with FORM_POST but is not valid. "
+								+ "A form post method must not return anything, "
+								+ "needs to be part of a @Controller bean, "
 								+ "and needs annotated with @RequestMapping.");
 						continue;
 					}
@@ -209,8 +211,9 @@ public class RouterController implements InitializingBean {
 	}
 
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
-	public void poll(@PathVariable("beanName") String beanName, @PathVariable("method") String method, @PathVariable("event") String event,
-			HttpServletRequest request, HttpServletResponse response, Locale locale) throws Exception {
+	public void poll(@PathVariable("beanName") String beanName, @PathVariable("method") String method,
+			@PathVariable("event") String event, HttpServletRequest request, HttpServletResponse response, Locale locale)
+			throws Exception {
 
 		ExtDirectPollResponse directPollResponse = new ExtDirectPollResponse();
 		directPollResponse.setName(event);
@@ -233,8 +236,8 @@ public class RouterController implements InitializingBean {
 						ParameterInfo methodParameter = methodParameters.get(paramIndex);
 
 						if (methodParameter.isSupportedParameter()) {
-							parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(), request, response,
-									locale);
+							parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(),
+									request, response, locale);
 						} else if (methodParameter.isHasRequestHeaderAnnotation()) {
 							parameters[paramIndex] = handleRequestHeader(request, methodParameter);
 						} else {
@@ -249,17 +252,20 @@ public class RouterController implements InitializingBean {
 					if (session != null) {
 						Object mutex = WebUtils.getSessionMutex(session);
 						synchronized (mutex) {
-							directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
+							directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo,
+									parameters));
 						}
 					} else {
-						directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
+						directPollResponse.setData(ExtDirectSpringUtil
+								.invoke(context, beanName, methodInfo, parameters));
 					}
 				} else {
 					directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
 				}
 
 			} catch (Exception e) {
-				log.error("Error polling method '" + beanName + "." + method + "'", e.getCause() != null ? e.getCause() : e);
+				log.error("Error polling method '" + beanName + "." + method + "'", e.getCause() != null ? e.getCause()
+						: e);
 				handleException(directPollResponse, e);
 			}
 		} else {
@@ -273,8 +279,9 @@ public class RouterController implements InitializingBean {
 	}
 
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "extAction")
-	public String router(HttpServletRequest request, HttpServletResponse response, @RequestParam("extAction") String extAction,
-			@RequestParam("extMethod") String extMethod) throws IOException {
+	public String router(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam("extAction") String extAction, @RequestParam("extMethod") String extMethod)
+			throws IOException {
 
 		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(extAction, extMethod);
 
@@ -341,13 +348,15 @@ public class RouterController implements InitializingBean {
 
 						directResponse.setResult(result);
 					} else {
-						if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
+						if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)
+								|| methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
 							directResponse.setResult(Collections.emptyList());
 						}
 					}
 
 				} catch (Exception e) {
-					log.error("Error calling method: " + directRequest.getMethod(), e.getCause() != null ? e.getCause() : e);
+					log.error("Error calling method: " + directRequest.getMethod(), e.getCause() != null ? e.getCause()
+							: e);
 					handleException(directResponse, e);
 				}
 			} else {
@@ -362,8 +371,8 @@ public class RouterController implements InitializingBean {
 		writeJsonResponse(response, directResponses, streamResponse);
 	}
 
-	public void writeJsonResponse(final HttpServletResponse response, final Object responseObject, final boolean streamResponse)
-			throws IOException, JsonGenerationException, JsonMappingException {
+	public void writeJsonResponse(final HttpServletResponse response, final Object responseObject,
+			final boolean streamResponse) throws IOException, JsonGenerationException, JsonMappingException {
 		response.setContentType(APPLICATION_JSON.toString());
 		response.setCharacterEncoding(APPLICATION_JSON.getCharSet().name());
 
@@ -376,15 +385,16 @@ public class RouterController implements InitializingBean {
 			response.setContentLength(bos.size());
 			FileCopyUtils.copy(bos.toByteArray(), response.getOutputStream());
 		} else {
-			JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(response.getOutputStream(), JsonEncoding.UTF8);
+			JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(response.getOutputStream(),
+					JsonEncoding.UTF8);
 			objectMapper.writeValue(jsonGenerator, responseObject);
 			response.getOutputStream().flush();
 		}
 	}
 
 	@SuppressWarnings({ "unchecked" })
-	private Object processRemotingRequest(final HttpServletRequest request, final HttpServletResponse response, final Locale locale,
-			final ExtDirectRequest directRequest, final MethodInfo methodInfo) throws Exception {
+	private Object processRemotingRequest(final HttpServletRequest request, final HttpServletResponse response,
+			final Locale locale, final ExtDirectRequest directRequest, final MethodInfo methodInfo) throws Exception {
 
 		int jsonParamIndex = 0;
 		Map<String, Object> remainingParameters = null;
@@ -401,7 +411,8 @@ public class RouterController implements InitializingBean {
 			if (data != null && data.size() > 0) {
 				if (methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
 					ExtDirectStoreReadRequest = new ExtDirectStoreReadRequest();
-					remainingParameters = fillReadRequestFromMap(ExtDirectStoreReadRequest, (Map<String, Object>) data.get(0));
+					remainingParameters = fillReadRequestFromMap(ExtDirectStoreReadRequest,
+							(Map<String, Object>) data.get(0));
 				} else {
 					remainingParameters = (Map<String, Object>) data.get(0);
 				}
@@ -420,7 +431,8 @@ public class RouterController implements InitializingBean {
 					Object records = jsonData.get("records");
 					if (records != null) {
 						if (records instanceof List) {
-							directStoreModifyRecords = convertObjectEntriesToType((List<Object>) records, directStoreEntryClass);
+							directStoreModifyRecords = convertObjectEntriesToType((List<Object>) records,
+									directStoreEntryClass);
 						} else {
 							directStoreModifyRecords = new ArrayList<Object>();
 							directStoreModifyRecords.add(jsonHandler.convertValue(records, directStoreEntryClass));
@@ -463,7 +475,8 @@ public class RouterController implements InitializingBean {
 				ParameterInfo methodParameter = methodParameters.get(paramIndex);
 
 				if (methodParameter.isSupportedParameter()) {
-					parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(), request, response, locale);
+					parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(), request,
+							response, locale);
 				} else if (ExtDirectStoreReadRequest.class.isAssignableFrom(methodParameter.getType())) {
 					parameters[paramIndex] = ExtDirectStoreReadRequest;
 				} else if (directStoreModifyRecords != null && methodParameter.getCollectionType() != null) {
@@ -505,8 +518,10 @@ public class RouterController implements InitializingBean {
 		if (value != null) {
 			if (methodParameter.getType().equals(value.getClass())) {
 				return value;
-			} else if (conversionService.canConvert(TypeDescriptor.forObject(value), methodParameter.getTypeDescriptor())) {
-				return conversionService.convert(value, TypeDescriptor.forObject(value), methodParameter.getTypeDescriptor());
+			} else if (conversionService.canConvert(TypeDescriptor.forObject(value),
+					methodParameter.getTypeDescriptor())) {
+				return conversionService.convert(value, TypeDescriptor.forObject(value),
+						methodParameter.getTypeDescriptor());
 			} else {
 				return jsonHandler.convertValue(value, methodParameter.getType());
 			}
@@ -563,7 +578,8 @@ public class RouterController implements InitializingBean {
 		return null;
 	}
 
-	private Map<String, Object> fillReadRequestFromMap(final ExtDirectStoreReadRequest to, final Map<String, Object> from) {
+	private Map<String, Object> fillReadRequestFromMap(final ExtDirectStoreReadRequest to,
+			final Map<String, Object> from) {
 		Set<String> foundParameters = new HashSet<String>();
 
 		for (Entry<String, Object> entry : from.entrySet()) {
@@ -619,7 +635,8 @@ public class RouterController implements InitializingBean {
 				if (descriptor != null && descriptor.getWriteMethod() != null) {
 					try {
 
-						descriptor.getWriteMethod().invoke(to, conversionService.convert(value, descriptor.getPropertyType()));
+						descriptor.getWriteMethod().invoke(to,
+								conversionService.convert(value, descriptor.getPropertyType()));
 
 						foundParameters.add(key);
 					} catch (IllegalArgumentException e) {

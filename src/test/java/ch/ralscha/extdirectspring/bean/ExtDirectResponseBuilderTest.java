@@ -52,7 +52,8 @@ public class ExtDirectResponseBuilderTest {
 	public void testBuilder() {
 
 		MockHttpServletRequest request = new MockHttpServletRequest();
-		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, new GenericWebApplicationContext(applicationContext));
+		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, new GenericWebApplicationContext(
+				applicationContext));
 
 		request.setParameter("extAction", "action");
 		request.setParameter("extMethod", "method");
@@ -60,7 +61,8 @@ public class ExtDirectResponseBuilderTest {
 		request.setParameter("extTID", "1");
 
 		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
-		ExtDirectResponseBuilder.create(request, servletResponse).addResultProperty("additionalProperty", 11).buildAndWrite();
+		ExtDirectResponseBuilder.create(request, servletResponse).addResultProperty("additionalProperty", 11)
+				.buildAndWrite();
 
 		ExtDirectResponse response = ControllerUtil.readDirectResponse(servletResponse.getContentAsByteArray());
 		assertThat(response.getAction()).isEqualTo("action");
@@ -78,7 +80,8 @@ public class ExtDirectResponseBuilderTest {
 		assertThat(data.get("success")).isEqualTo(true);
 
 		servletResponse = new MockHttpServletResponse();
-		ExtDirectResponseBuilder.create(request, servletResponse).unsuccessful().addResultProperty("additionalProperty", 9).buildAndWrite();
+		ExtDirectResponseBuilder.create(request, servletResponse).unsuccessful()
+				.addResultProperty("additionalProperty", 9).buildAndWrite();
 		response = ControllerUtil.readDirectResponse(servletResponse.getContentAsByteArray());
 		data = (Map<String, Object>) response.getResult();
 		assertThat(data).hasSize(2);
@@ -90,7 +93,8 @@ public class ExtDirectResponseBuilderTest {
 	public void testBuilderUploadResponse() throws IOException {
 
 		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
-		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, new GenericWebApplicationContext(applicationContext));
+		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, new GenericWebApplicationContext(
+				applicationContext));
 
 		request.setParameter("extAction", "action");
 		request.setParameter("extMethod", "method");

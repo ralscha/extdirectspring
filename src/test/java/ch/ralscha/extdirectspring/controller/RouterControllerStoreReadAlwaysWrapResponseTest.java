@@ -98,8 +98,8 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		readRequest.put("id", 11);
 		readRequest.put("query", "");
 
-		rows = (ExtDirectStoreResponse<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method7", readRequest,
-				new TypeReference<ExtDirectStoreResponse<Row>>() {
+		rows = (ExtDirectStoreResponse<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead",
+				"method7", readRequest, new TypeReference<ExtDirectStoreResponse<Row>>() {
 				});
 		RouterControllerStoreReadTest.assert100Rows(new ArrayList<Row>(rows.getRecords()), ":11");
 	}

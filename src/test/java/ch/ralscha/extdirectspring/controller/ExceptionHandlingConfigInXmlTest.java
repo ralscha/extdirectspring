@@ -59,8 +59,8 @@ public class ExceptionHandlingConfigInXmlTest {
 	@Test
 	public void testExceptionInMapping() throws Exception {
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4b", 2, new Object[] { 3, "xxx",
-				"string.param" });
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4b", 2,
+				new Object[] { 3, "xxx", "string.param" });
 
 		request.setContent(ControllerUtil.writeAsByte(edRequest));
 		controller.router(request, response, Locale.ENGLISH);
@@ -80,8 +80,8 @@ public class ExceptionHandlingConfigInXmlTest {
 	@Test
 	public void testBeanOrMethodNotFound() throws Exception {
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple2", "method4", 2, new Object[] { 3, 2.5,
-				"string.param" });
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple2", "method4", 2,
+				new Object[] { 3, 2.5, "string.param" });
 
 		request.setContent(ControllerUtil.writeAsByte(edRequest));
 		controller.router(request, response, Locale.ENGLISH);

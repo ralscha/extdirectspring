@@ -59,8 +59,8 @@ public class RouterControllerInterfaceTest {
 
 	@Test
 	public void testNoParameterAnnotation() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderImplementation", "method3", new Object[] { 21, 3.1, "aString2" },
-				"method3() called-21-3.1-aString2");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderImplementation", "method3", new Object[] { 21, 3.1,
+				"aString2" }, "method3() called-21-3.1-aString2");
 	}
 
 	@Test
@@ -70,9 +70,8 @@ public class RouterControllerInterfaceTest {
 		readRequest.put("lastName", "Smith");
 		readRequest.put("active", true);
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderImplementation", "storeRead", readRequest,
-				new TypeReference<List<Row>>() {/* nothing here */
-				});
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderImplementation",
+				"storeRead", readRequest, new TypeReference<List<Row>>() {/*nothing here*/});
 
 		assertThat(rows).hasSize(1);
 		Row theRow = rows.get(0);

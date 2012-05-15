@@ -42,8 +42,8 @@ public class RemoteProviderStoreModifyInterface {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Row.class)
-	public List<RowInterface> create2(List<RowInterface> rows, HttpServletResponse response, HttpServletRequest request,
-			HttpSession session, Locale locale) {
+	public List<RowInterface> create2(List<RowInterface> rows, HttpServletResponse response,
+			HttpServletRequest request, HttpSession session, Locale locale) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();

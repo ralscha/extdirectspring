@@ -34,7 +34,8 @@ public class UserController {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_user")
 	@RequestMapping(method = RequestMethod.POST)
-	public void updateUser(HttpServletRequest request, HttpServletResponse response, @Valid User user, BindingResult result) {
+	public void updateUser(HttpServletRequest request, HttpServletResponse response, @Valid User user,
+			BindingResult result) {
 		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request, response);
 
 		if (request.getParameter("addemailerror") != null) {

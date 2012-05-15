@@ -79,7 +79,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testNoParametersWithRequestParameter() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method1", a(1, "requestparameter"), "method1() called");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method1", a(1, "requestparameter"),
+				"method1() called");
 	}
 
 	@Test
@@ -95,7 +96,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testWithParametersWithTypeConversion() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method3", a("10", "4.2", 20), "method3() called-10-4.2-20");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method3", a("10", "4.2", 20),
+				"method3() called-10-4.2-20");
 	}
 
 	@Test
@@ -136,7 +138,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testReturnsObject() throws IOException {
-		FormInfo info = (FormInfo) ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method8", a(7.34), FormInfo.class);
+		FormInfo info = (FormInfo) ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method8",
+				a(7.34), FormInfo.class);
 
 		assertThat(info.getBack()).isEqualTo(7.34);
 		assertThat(info.isAdmin()).isEqualTo(false);
@@ -154,13 +157,15 @@ public class RouterControllerSimpleTest {
 	@Test
 	public void testTypeConversion() throws IOException {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method10",
-				a("true", "c", "ACTIVE", "14", "21", "3.14", "10.01", "1", "2"), "method10() called-true-c-ACTIVE-14-21-3.14-10.01-1-2");
+				a("true", "c", "ACTIVE", "14", "21", "3.14", "10.01", "1", "2"),
+				"method10() called-true-c-ACTIVE-14-21-3.14-10.01-1-2");
 	}
 
 	@Test
 	public void testMixParameterAndSupportedParameters() throws IOException {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method13",
-				a("true", "c", "ACTIVE", "14", "21", "3.14", "10.01", "1", "2"), "method13() called-true-c-ACTIVE-14-21-3.14-10.01-1-2");
+				a("true", "c", "ACTIVE", "14", "21", "3.14", "10.01", "1", "2"),
+				"method13() called-true-c-ACTIVE-14-21-3.14-10.01-1-2");
 	}
 
 	@Test
@@ -168,8 +173,12 @@ public class RouterControllerSimpleTest {
 
 		DateTime today = new DateTime();
 
-		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method14",
-				a(ISODateTimeFormat.dateTime().print(today), "normalParameter", ISODateTimeFormat.date().print(today), "99.9%"), Map.class);
+		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil.sendAndReceive(
+				controller,
+				"remoteProviderSimple",
+				"method14",
+				a(ISODateTimeFormat.dateTime().print(today), "normalParameter", ISODateTimeFormat.date().print(today),
+						"99.9%"), Map.class);
 
 		assertThat(resultMap.get("endDate")).isEqualTo(today.getMillis());
 		ObjectMapper mapper = new ObjectMapper();
@@ -194,7 +203,8 @@ public class RouterControllerSimpleTest {
 	public void methodRequiredHeaderWithoutValue() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("header", "headerValue");
-		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method15", a(1, "v"), "1;v;headerValue");
+		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method15", a(1, "v"),
+				"1;v;headerValue");
 	}
 
 	@Test
@@ -203,7 +213,8 @@ public class RouterControllerSimpleTest {
 		request.addHeader("header", "headerValue");
 		request.addHeader("anotherName", "headerValue1");
 		request.addHeader("anotherName", "headerValue2");
-		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method16", a(11), "11;headerValue1");
+		ControllerUtil
+				.sendAndReceive(controller, request, "remoteProviderSimple", "method16", a(11), "11;headerValue1");
 	}
 
 	@Test
@@ -238,7 +249,8 @@ public class RouterControllerSimpleTest {
 		request.setSession(new MockHttpSession());
 		request.addHeader("last", "lastHeader");
 
-		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method19", a(100), "100;default1;default2;lastHeader");
+		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method19", a(100),
+				"100;default1;default2;lastHeader");
 	}
 
 	@Test
@@ -247,7 +259,8 @@ public class RouterControllerSimpleTest {
 		request.addHeader("last", "lastHeader");
 		request.addHeader("header2", "2ndHeader");
 
-		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method19", a(100), "100;default1;2ndHeader;lastHeader");
+		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method19", a(100),
+				"100;default1;2ndHeader;lastHeader");
 	}
 
 	@Test
@@ -257,7 +270,8 @@ public class RouterControllerSimpleTest {
 		request.addHeader("header1", "1st");
 		request.addHeader("header2", "2nd");
 
-		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method19", a(100), "100;1st;2nd;last");
+		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method19", a(100),
+				"100;1st;2nd;last");
 	}
 
 	@Test
