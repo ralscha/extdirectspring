@@ -41,8 +41,7 @@ public class MyExceptionHandler implements HandlerExceptionResolver {
 		try {
 			res.getOutputStream().print(mapper.writeValueAsString(response));
 			res.getOutputStream().flush();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 

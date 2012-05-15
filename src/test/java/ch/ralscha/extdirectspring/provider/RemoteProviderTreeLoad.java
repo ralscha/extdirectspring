@@ -82,8 +82,7 @@ public class RemoteProviderTreeLoad {
 				if (other.id != null) {
 					return false;
 				}
-			}
-			else if (!id.equals(other.id)) {
+			} else if (!id.equals(other.id)) {
 				return false;
 			}
 			if (leaf != other.leaf) {
@@ -93,8 +92,7 @@ public class RemoteProviderTreeLoad {
 				if (other.text != null) {
 					return false;
 				}
-			}
-			else if (!text.equals(other.text)) {
+			} else if (!text.equals(other.text)) {
 				return false;
 			}
 			return true;
@@ -137,8 +135,7 @@ public class RemoteProviderTreeLoad {
 			for (int i = 1; i <= 5; ++i) {
 				result.add(new Node("n" + i, "Node " + i + appendix, false));
 			}
-		}
-		else if (id.length() == 2) {
+		} else if (id.length() == 2) {
 			String num = id.substring(1);
 			for (int i = 1; i <= 5; ++i) {
 				result.add(new Node("id" + i, "Node " + num + "." + i + appendix, true));

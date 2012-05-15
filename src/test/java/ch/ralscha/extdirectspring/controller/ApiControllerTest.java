@@ -544,8 +544,7 @@ public class ApiControllerTest {
 
 		if (remotingApi.getNamespace() == null) {
 			assertThat(rootAsMap).hasSize(4);
-		}
-		else {
+		} else {
 			assertThat(rootAsMap).hasSize(5);
 			assertThat(rootAsMap.get("namespace")).isEqualTo(remotingApi.getNamespace());
 		}
@@ -554,8 +553,7 @@ public class ApiControllerTest {
 		assertThat(rootAsMap.get("type")).isEqualTo("remoting");
 		if (StringUtils.hasText(apiNs)) {
 			assertThat(rootAsMap.get("descriptor")).isEqualTo(apiNs + "." + remotingApiVar);
-		}
-		else {
+		} else {
 			assertThat(rootAsMap.get("descriptor")).isEqualTo(remotingApiVar);
 		}
 		assertThat(rootAsMap.containsKey("actions")).isTrue();
@@ -601,8 +599,7 @@ public class ApiControllerTest {
 
 			remotingApiLine = apiNs + "." + remotingApiVar + " = {";
 			pollingApiLine = apiNs + "." + pollingUrlsVar + " = {";
-		}
-		else {
+		} else {
 			remotingApiLine = remotingApiVar + " = {";
 			pollingApiLine = pollingUrlsVar + " = {";
 		}
@@ -652,8 +649,7 @@ public class ApiControllerTest {
 				}
 			}
 			assertThat(rootAsMap).hasSize(3 + noOfconfigOptions);
-		}
-		else {
+		} else {
 			if (4 + noOfconfigOptions != rootAsMap.size()) {
 				System.out.println("NOOFCONFIG: " + noOfconfigOptions);
 				for (String key : rootAsMap.keySet()) {
@@ -674,26 +670,22 @@ public class ApiControllerTest {
 		if (config != null) {
 			if (config.getTimeout() != null) {
 				assertThat(rootAsMap.get("timeout")).isEqualTo(config.getTimeout());
-			}
-			else {
+			} else {
 				assertThat(rootAsMap.get("timeout")).isNull();
 			}
 
 			if (config.getEnableBuffer() != null) {
 				assertThat(rootAsMap.get("enableBuffer")).isEqualTo(config.getEnableBuffer());
-			}
-			else {
+			} else {
 				assertThat(rootAsMap.get("enableBuffer")).isNull();
 			}
 
 			if (config.getMaxRetries() != null) {
 				assertThat(rootAsMap.get("maxRetries")).isEqualTo(config.getMaxRetries());
-			}
-			else {
+			} else {
 				assertThat(rootAsMap.get("maxRetries")).isNull();
 			}
-		}
-		else {
+		} else {
 			assertThat(rootAsMap.get("timeout")).isNull();
 			assertThat(rootAsMap.get("enableBuffer")).isNull();
 			assertThat(rootAsMap.get("maxRetries")).isNull();
@@ -736,8 +728,7 @@ public class ApiControllerTest {
 			assertThat(action.get("len")).isEqualTo(expectedAction.getLen());
 			if (expectedAction.isFormHandler() != null && expectedAction.isFormHandler()) {
 				assertThat(action.get("formHandler")).isEqualTo(expectedAction.isFormHandler());
-			}
-			else {
+			} else {
 				assertThat(action.containsKey("formHandler")).isFalse();
 			}
 

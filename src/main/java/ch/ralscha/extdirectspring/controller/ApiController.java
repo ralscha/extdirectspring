@@ -89,8 +89,7 @@ public class ApiController {
 
 			if (fullRouterUrl) {
 				requestUrlString = request.getRequestURL().toString();
-			}
-			else {
+			} else {
 				requestUrlString = request.getRequestURI();
 			}
 
@@ -106,8 +105,7 @@ public class ApiController {
 				if (!debug) {
 					routerUrl = requestUrlString.replace("api.js", "router");
 					basePollUrl = requestUrlString.replace("api.js", "poll");
-				}
-				else {
+				} else {
 					routerUrl = requestUrlString.replace("api-debug.js", "router");
 					basePollUrl = requestUrlString.replace("api-debug.js", "poll");
 				}
@@ -117,8 +115,7 @@ public class ApiController {
 
 			response.setContentLength(apiString.getBytes().length);
 			response.getOutputStream().write(apiString.getBytes());
-		}
-		else {
+		} else {
 			response.setContentType(RouterController.APPLICATION_JSON.toString());
 			response.setCharacterEncoding(RouterController.APPLICATION_JSON.getCharSet().name());
 
@@ -129,8 +126,7 @@ public class ApiController {
 			String routerUrl;
 			if (!debug) {
 				routerUrl = requestUrlString.replace("api.js", "router");
-			}
-			else {
+			} else {
 				routerUrl = requestUrlString.replace("api-debug.js", "router");
 			}
 
@@ -155,16 +151,13 @@ public class ApiController {
 			String enableBufferString = (String) enableBuffer;
 			if (enableBufferString.equalsIgnoreCase("true")) {
 				remotingApi.setEnableBuffer(true);
-			}
-			else if (enableBufferString.equalsIgnoreCase("false")) {
+			} else if (enableBufferString.equalsIgnoreCase("false")) {
 				remotingApi.setEnableBuffer(false);
-			}
-			else {
+			} else {
 				Integer enableBufferMs = NumberUtils.parseNumber(enableBufferString, Integer.class);
 				remotingApi.setEnableBuffer(enableBufferMs);
 			}
-		}
-		else if (enableBuffer instanceof Number || enableBuffer instanceof Boolean) {
+		} else if (enableBuffer instanceof Number || enableBuffer instanceof Boolean) {
 			remotingApi.setEnableBuffer(enableBuffer);
 		}
 
@@ -254,8 +247,7 @@ public class ApiController {
 
 		if (StringUtils.hasText(apiNs)) {
 			remotingApi.setDescriptor(apiNs + "." + remotingApiVar);
-		}
-		else {
+		} else {
 			remotingApi.setDescriptor(remotingApiVar);
 		}
 
@@ -272,8 +264,7 @@ public class ApiController {
 			if (isSameGroup(group, methodInfo.getGroup())) {
 				if (methodInfo.getAction() != null) {
 					remotingApi.addAction(entry.getKey().getBeanName(), methodInfo.getAction());
-				}
-				else {
+				} else {
 					remotingApi.addPollingProvider(methodInfo.getPollingProvider());
 				}
 			}

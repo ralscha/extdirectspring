@@ -235,11 +235,9 @@ public class RouterController implements InitializingBean {
 						if (methodParameter.isSupportedParameter()) {
 							parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(), request, response,
 									locale);
-						}
-						else if (methodParameter.isHasRequestHeaderAnnotation()) {
+						} else if (methodParameter.isHasRequestHeaderAnnotation()) {
 							parameters[paramIndex] = handleRequestHeader(request, methodParameter);
-						}
-						else {
+						} else {
 							parameters[paramIndex] = handleRequestParam(request, null, methodParameter);
 						}
 
@@ -253,22 +251,18 @@ public class RouterController implements InitializingBean {
 						synchronized (mutex) {
 							directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
 						}
-					}
-					else {
+					} else {
 						directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
 					}
-				}
-				else {
+				} else {
 					directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
 				}
 
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				log.error("Error polling method '" + beanName + "." + method + "'", e.getCause() != null ? e.getCause() : e);
 				handleException(directPollResponse, e);
 			}
-		}
-		else {
+		} else {
 			log.error("Error invoking method '" + beanName + "." + method + "'. Method or Bean not found");
 			handleMethodNotFoundError(directPollResponse, beanName, method);
 			streamResponse = configuration.isStreamResponse();
@@ -305,8 +299,7 @@ public class RouterController implements InitializingBean {
 		List<ExtDirectRequest> directRequests = new ArrayList<ExtDirectRequest>();
 		if (requestData instanceof Map) {
 			directRequests.add(jsonHandler.convertValue(requestData, ExtDirectRequest.class));
-		}
-		else if (requestData instanceof List) {
+		} else if (requestData instanceof List) {
 			for (Object oneRequest : (List) requestData) {
 				directRequests.add(jsonHandler.convertValue(oneRequest, ExtDirectRequest.class));
 			}
@@ -333,14 +326,13 @@ public class RouterController implements InitializingBean {
 						if (methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
 								&& !ExtDirectFormLoadResult.class.isAssignableFrom(result.getClass())) {
 							result = new ExtDirectFormLoadResult(result);
-						}
-						else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo.isType(ExtDirectMethodType.STORE_READ))
+						} else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo
+								.isType(ExtDirectMethodType.STORE_READ))
 								&& !ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())
 								&& configuration.isAlwaysWrapStoreResponse()) {
 							if (result instanceof Collection) {
 								result = new ExtDirectStoreResponse((Collection) result);
-							}
-							else {
+							} else {
 								List responses = new ArrayList();
 								responses.add(result);
 								result = new ExtDirectStoreResponse(responses);
@@ -348,20 +340,17 @@ public class RouterController implements InitializingBean {
 						}
 
 						directResponse.setResult(result);
-					}
-					else {
+					} else {
 						if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
 							directResponse.setResult(Collections.emptyList());
 						}
 					}
 
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					log.error("Error calling method: " + directRequest.getMethod(), e.getCause() != null ? e.getCause() : e);
 					handleException(directResponse, e);
 				}
-			}
-			else {
+			} else {
 				log.error("Error invoking method '" + directRequest.getAction() + "." + directRequest.getMethod()
 						+ "'. Method or Bean not found");
 				handleMethodNotFoundError(directResponse, directRequest.getAction(), directRequest.getMethod());
@@ -386,8 +375,7 @@ public class RouterController implements InitializingBean {
 			objectMapper.writeValue(jsonGenerator, responseObject);
 			response.setContentLength(bos.size());
 			FileCopyUtils.copy(bos.toByteArray(), response.getOutputStream());
-		}
-		else {
+		} else {
 			JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(response.getOutputStream(), JsonEncoding.UTF8);
 			objectMapper.writeValue(jsonGenerator, responseObject);
 			response.getOutputStream().flush();
@@ -414,14 +402,12 @@ public class RouterController implements InitializingBean {
 				if (methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
 					ExtDirectStoreReadRequest = new ExtDirectStoreReadRequest();
 					remainingParameters = fillReadRequestFromMap(ExtDirectStoreReadRequest, (Map<String, Object>) data.get(0));
-				}
-				else {
+				} else {
 					remainingParameters = (Map<String, Object>) data.get(0);
 				}
 				jsonParamIndex = 1;
 			}
-		}
-		else if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)) {
+		} else if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)) {
 			directStoreEntryClass = methodInfo.getCollectionType();
 			List<Object> data = (List<Object>) directRequest.getData();
 
@@ -429,48 +415,41 @@ public class RouterController implements InitializingBean {
 				Object obj = data.get(0);
 				if (obj instanceof List) {
 					directStoreModifyRecords = convertObjectEntriesToType((List<Object>) obj, directStoreEntryClass);
-				}
-				else {
+				} else {
 					Map<String, Object> jsonData = (Map<String, Object>) obj;
 					Object records = jsonData.get("records");
 					if (records != null) {
 						if (records instanceof List) {
 							directStoreModifyRecords = convertObjectEntriesToType((List<Object>) records, directStoreEntryClass);
-						}
-						else {
+						} else {
 							directStoreModifyRecords = new ArrayList<Object>();
 							directStoreModifyRecords.add(jsonHandler.convertValue(records, directStoreEntryClass));
 						}
 						remainingParameters = new HashMap<String, Object>(jsonData);
 						remainingParameters.remove("records");
-					}
-					else {
+					} else {
 						directStoreModifyRecords = new ArrayList<Object>();
 						directStoreModifyRecords.add(jsonHandler.convertValue(jsonData, directStoreEntryClass));
 					}
 				}
 				jsonParamIndex = 1;
 
-			}
-			else if (data != null && data.size() > 0) {
+			} else if (data != null && data.size() > 0) {
 				Object obj = data.get(0);
 				if (obj instanceof Map) {
 					remainingParameters = new HashMap<String, Object>((Map<String, Object>) obj);
 					remainingParameters.remove("records");
 				}
 			}
-		}
-		else if (methodInfo.isType(ExtDirectMethodType.SIMPLE_NAMED)) {
+		} else if (methodInfo.isType(ExtDirectMethodType.SIMPLE_NAMED)) {
 			Map<String, Object> data = (Map<String, Object>) directRequest.getData();
 			if (data != null && data.size() > 0) {
 				remainingParameters = new HashMap<String, Object>(data);
 			}
 
-		}
-		else if (methodInfo.isType(ExtDirectMethodType.POLL)) {
+		} else if (methodInfo.isType(ExtDirectMethodType.POLL)) {
 			throw new IllegalStateException("this controller does not handle poll calls");
-		}
-		else if (methodInfo.isType(ExtDirectMethodType.FORM_POST)) {
+		} else if (methodInfo.isType(ExtDirectMethodType.FORM_POST)) {
 			throw new IllegalStateException("this controller does not handle form posts");
 		}
 
@@ -485,30 +464,23 @@ public class RouterController implements InitializingBean {
 
 				if (methodParameter.isSupportedParameter()) {
 					parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(), request, response, locale);
-				}
-				else if (ExtDirectStoreReadRequest.class.isAssignableFrom(methodParameter.getType())) {
+				} else if (ExtDirectStoreReadRequest.class.isAssignableFrom(methodParameter.getType())) {
 					parameters[paramIndex] = ExtDirectStoreReadRequest;
-				}
-				else if (directStoreModifyRecords != null && methodParameter.getCollectionType() != null) {
+				} else if (directStoreModifyRecords != null && methodParameter.getCollectionType() != null) {
 					parameters[paramIndex] = directStoreModifyRecords;
-				}
-				else if (methodParameter.isHasRequestParamAnnotation()) {
+				} else if (methodParameter.isHasRequestParamAnnotation()) {
 					parameters[paramIndex] = handleRequestParam(null, remainingParameters, methodParameter);
-				}
-				else if (methodParameter.isHasRequestHeaderAnnotation()) {
+				} else if (methodParameter.isHasRequestHeaderAnnotation()) {
 					parameters[paramIndex] = handleRequestHeader(request, methodParameter);
-				}
-				else if (remainingParameters != null && remainingParameters.containsKey(methodParameter.getName())) {
+				} else if (remainingParameters != null && remainingParameters.containsKey(methodParameter.getName())) {
 					Object jsonValue = remainingParameters.get(methodParameter.getName());
 					parameters[paramIndex] = convertValue(jsonValue, methodParameter);
-				}
-				else if (directRequest.getData() != null && directRequest.getData() instanceof List
+				} else if (directRequest.getData() != null && directRequest.getData() instanceof List
 						&& ((List<Object>) directRequest.getData()).size() > jsonParamIndex) {
 					Object jsonValue = ((List<Object>) directRequest.getData()).get(jsonParamIndex);
 					parameters[paramIndex] = convertValue(jsonValue, methodParameter);
 					jsonParamIndex++;
-				}
-				else {
+				} else {
 					throw new IllegalArgumentException(
 							"Error, parameter mismatch. Please check your remoting method signature to ensure all supported parameters types are used.");
 				}
@@ -533,11 +505,9 @@ public class RouterController implements InitializingBean {
 		if (value != null) {
 			if (methodParameter.getType().equals(value.getClass())) {
 				return value;
-			}
-			else if (conversionService.canConvert(TypeDescriptor.forObject(value), methodParameter.getTypeDescriptor())) {
+			} else if (conversionService.canConvert(TypeDescriptor.forObject(value), methodParameter.getTypeDescriptor())) {
 				return conversionService.convert(value, TypeDescriptor.forObject(value), methodParameter.getTypeDescriptor());
-			}
-			else {
+			} else {
 				return jsonHandler.convertValue(value, methodParameter.getType());
 			}
 		}
@@ -551,11 +521,9 @@ public class RouterController implements InitializingBean {
 			Object value;
 			if (request != null) {
 				value = request.getParameter(parameterInfo.getName());
-			}
-			else if (valueContainer != null) {
+			} else if (valueContainer != null) {
 				value = valueContainer.get(parameterInfo.getName());
-			}
-			else {
+			} else {
 				value = null;
 			}
 
@@ -613,8 +581,7 @@ public class RouterController implements InitializingBean {
 					for (Map<String, Object> rawFilter : rawFilters) {
 						filters.add(Filter.createFilter(rawFilter, conversionService));
 					}
-				}
-				else if (value instanceof List) {
+				} else if (value instanceof List) {
 					@SuppressWarnings("unchecked")
 					List<Map<String, Object>> filterList = (List<Map<String, Object>>) value;
 					for (Map<String, Object> filter : filterList) {
@@ -623,8 +590,7 @@ public class RouterController implements InitializingBean {
 				}
 				to.setFilters(filters);
 				foundParameters.add(key);
-			}
-			else if (key.equals("sort") && value != null && value instanceof List) {
+			} else if (key.equals("sort") && value != null && value instanceof List) {
 
 				List<SortInfo> sorters = new ArrayList<SortInfo>();
 				@SuppressWarnings("unchecked")
@@ -636,8 +602,7 @@ public class RouterController implements InitializingBean {
 
 				to.setSorters(sorters);
 				foundParameters.add(key);
-			}
-			else if (key.equals("group") && value != null && value instanceof List) {
+			} else if (key.equals("group") && value != null && value instanceof List) {
 				List<GroupInfo> groups = new ArrayList<GroupInfo>();
 				@SuppressWarnings("unchecked")
 				List<Map<String, Object>> rawGroups = (List<Map<String, Object>>) value;
@@ -648,8 +613,7 @@ public class RouterController implements InitializingBean {
 
 				to.setGroups(groups);
 				foundParameters.add(key);
-			}
-			else {
+			} else {
 
 				PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(to.getClass(), key);
 				if (descriptor != null && descriptor.getWriteMethod() != null) {
@@ -658,14 +622,11 @@ public class RouterController implements InitializingBean {
 						descriptor.getWriteMethod().invoke(to, conversionService.convert(value, descriptor.getPropertyType()));
 
 						foundParameters.add(key);
-					}
-					catch (IllegalArgumentException e) {
+					} catch (IllegalArgumentException e) {
 						log.error("fillObjectFromMap", e);
-					}
-					catch (IllegalAccessException e) {
+					} catch (IllegalAccessException e) {
 						log.error("fillObjectFromMap", e);
-					}
-					catch (InvocationTargetException e) {
+					} catch (InvocationTargetException e) {
 						log.error("fillObjectFromMap", e);
 					}
 				}
@@ -678,8 +639,7 @@ public class RouterController implements InitializingBean {
 			if (to.getPage() != null && to.getStart() == null) {
 				to.setStart(to.getLimit() * (to.getPage() - 1));
 				// the else if is still valid for extjs 3 code
-			}
-			else if (to.getPage() == null && to.getStart() != null) {
+			} else if (to.getPage() == null && to.getStart() != null) {
 				to.setPage(to.getStart() / to.getLimit() + 1);
 			}
 		}
@@ -723,8 +683,7 @@ public class RouterController implements InitializingBean {
 		Throwable cause;
 		if (e.getCause() != null) {
 			cause = e.getCause();
-		}
-		else {
+		} else {
 			cause = e;
 		}
 
@@ -733,8 +692,7 @@ public class RouterController implements InitializingBean {
 
 		if (configuration.isSendStacktrace()) {
 			response.setWhere(ExtDirectSpringUtil.getStackTrace(cause));
-		}
-		else {
+		} else {
 			response.setWhere(null);
 		}
 	}
@@ -745,8 +703,7 @@ public class RouterController implements InitializingBean {
 
 		if (configuration.isSendStacktrace()) {
 			response.setWhere("Bean or Method '" + beanName + "." + methodName + "' not found");
-		}
-		else {
+		} else {
 			response.setWhere(null);
 		}
 	}

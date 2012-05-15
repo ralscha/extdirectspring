@@ -115,8 +115,7 @@ public class ExtDirectResponseBuilder {
 			}
 			if (errorMap.isEmpty()) {
 				addResultProperty("success", true);
-			}
-			else {
+			} else {
 				addResultProperty("errors", errorMap);
 				addResultProperty("success", false);
 			}
@@ -178,12 +177,10 @@ public class ExtDirectResponseBuilder {
 
 				response.setContentLength(bos.size());
 				FileCopyUtils.copy(bos.toByteArray(), response.getOutputStream());
-			}
-			else {
+			} else {
 				routerController.writeJsonResponse(response, extDirectResponse, routerController.getConfiguration().isStreamResponse());
 			}
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			LogFactory.getLog(getClass()).error("buildAndWrite", e);
 			throw new RuntimeException(e);
 		}

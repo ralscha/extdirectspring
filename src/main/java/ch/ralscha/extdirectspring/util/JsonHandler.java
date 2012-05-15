@@ -67,8 +67,7 @@ public class JsonHandler {
 				return mapper.writer().withDefaultPrettyPrinter().writeValueAsString(obj);
 			}
 			return mapper.writeValueAsString(obj);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			LogFactory.getLog(JsonHandler.class).info("serialize object to json", e);
 			return null;
 		}
@@ -88,8 +87,7 @@ public class JsonHandler {
 	public <T> T readValue(final String json, final TypeReference<T> typeReference) {
 		try {
 			return (T) mapper.readValue(json, typeReference);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
 			return null;
 		}
@@ -107,8 +105,7 @@ public class JsonHandler {
 	public <T> T readValue(final String json, final Class<T> clazz) {
 		try {
 			return mapper.readValue(json, clazz);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
 			return null;
 		}
@@ -117,8 +114,7 @@ public class JsonHandler {
 	public Object readValue(final InputStream is, final Class<Object> clazz) {
 		try {
 			return mapper.readValue(is, clazz);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
 			return null;
 		}

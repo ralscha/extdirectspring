@@ -76,8 +76,7 @@ public class RemoteProviderStoreModifySingle {
 		if (aParam == null) {
 			assertThat(aParam).isNull();
 			assertThat(yesterday).isNull();
-		}
-		else {
+		} else {
 			assertThat(yesterday).isNotNull();
 			assertThat(yesterday).isEqualTo(new LocalDate().minusDays(1));
 			assertThat(aParam).isEqualTo(Integer.valueOf(11));

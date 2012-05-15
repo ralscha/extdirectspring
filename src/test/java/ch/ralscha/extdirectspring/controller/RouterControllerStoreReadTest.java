@@ -389,8 +389,7 @@ public class RouterControllerStoreReadTest {
 			for (Map<String, Object> map : sorters) {
 				if ("DESCENDING".equals(map.get("direction"))) {
 					map.put("direction", "DESC");
-				}
-				else {
+				} else {
 					map.put("direction", "ASC");
 				}
 			}
@@ -403,8 +402,7 @@ public class RouterControllerStoreReadTest {
 			for (Map<String, Object> map : groups) {
 				if ("DESCENDING".equals(map.get("direction"))) {
 					map.put("direction", "DESC");
-				}
-				else {
+				} else {
 					map.put("direction", "ASC");
 				}
 			}

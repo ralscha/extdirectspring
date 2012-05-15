@@ -75,8 +75,7 @@ public final class ParameterInfo {
 				this.hasRequestParamAnnotation = true;
 				this.hasRequestHeaderAnnotation = false;
 				break;
-			}
-			else if (RequestHeader.class.isInstance(paramAnn)) {
+			} else if (RequestHeader.class.isInstance(paramAnn)) {
 				RequestHeader requestHeader = (RequestHeader) paramAnn;
 				if (StringUtils.hasText(requestHeader.value())) {
 					this.name = requestHeader.value();
