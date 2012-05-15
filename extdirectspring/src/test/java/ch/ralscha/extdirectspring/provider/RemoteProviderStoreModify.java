@@ -42,8 +42,7 @@ public class RemoteProviderStoreModify {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public List<Row> create2(List<Row> rows, HttpServletResponse response,
-			HttpServletRequest request, HttpSession session, Locale locale) {
+	public List<Row> create2(List<Row> rows, HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
@@ -66,9 +65,8 @@ public class RemoteProviderStoreModify {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public List<Row> update3(List<Row> rows,
-			@RequestParam(value = "id", defaultValue = "1")
-			int id, HttpServletRequest servletRequest) {
+	public List<Row> update3(List<Row> rows, @RequestParam(value = "id", defaultValue = "1")
+	int id, HttpServletRequest servletRequest) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
 		return rows;

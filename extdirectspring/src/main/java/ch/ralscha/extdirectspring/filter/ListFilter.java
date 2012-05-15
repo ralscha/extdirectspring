@@ -35,8 +35,7 @@ public class ListFilter extends Filter {
 
 	@Override
 	public String toString() {
-		return "ListFilter [value=" + value + ", getField()=" + getField()
-				+ "]";
+		return "ListFilter [value=" + value + ", getField()=" + getField() + "]";
 	}
 
 }

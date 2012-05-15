@@ -23,15 +23,11 @@ public class SortDirectionTest {
 
 	@Test
 	public void testFromString() {
-		assertThat(SortDirection.fromString("asc")).isSameAs(
-				SortDirection.ASCENDING);
-		assertThat(SortDirection.fromString("ASC")).isSameAs(
-				SortDirection.ASCENDING);
+		assertThat(SortDirection.fromString("asc")).isSameAs(SortDirection.ASCENDING);
+		assertThat(SortDirection.fromString("ASC")).isSameAs(SortDirection.ASCENDING);
 
-		assertThat(SortDirection.fromString("desc")).isSameAs(
-				SortDirection.DESCENDING);
-		assertThat(SortDirection.fromString("DESC")).isSameAs(
-				SortDirection.DESCENDING);
+		assertThat(SortDirection.fromString("desc")).isSameAs(SortDirection.DESCENDING);
+		assertThat(SortDirection.fromString("DESC")).isSameAs(SortDirection.DESCENDING);
 
 		assertThat(SortDirection.fromString("xy")).isNull();
 	}

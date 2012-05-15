@@ -34,8 +34,7 @@ public class ListFilterTest {
 		assertThat(list).contains("one", "two", "three");
 
 		assertThat(filter.getField()).isEqualTo("field");
-		assertThat(filter.toString()).isEqualTo(
-				"ListFilter [value=[one, two, three], getField()=field]");
+		assertThat(filter.toString()).isEqualTo("ListFilter [value=[one, two, three], getField()=field]");
 	}
 
 }

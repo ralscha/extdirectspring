@@ -56,8 +56,7 @@ public class MyModelControlerTest extends JettyTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testApi() throws ClientProtocolException, IOException {
-		HttpGet g = new HttpGet(
-				"http://localhost:9998/controller/api.js?group=itest_base");
+		HttpGet g = new HttpGet("http://localhost:9998/controller/api.js?group=itest_base");
 		HttpResponse response = client.execute(g);
 
 		String responseString = EntityUtils.toString(response.getEntity());
@@ -68,9 +67,7 @@ public class MyModelControlerTest extends JettyTest {
 		int closeBracePos = responseString.lastIndexOf("}");
 
 		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> api = mapper.readValue(
-				responseString.substring(openBracePos, closeBracePos + 1),
-				Map.class);
+		Map<String, Object> api = mapper.readValue(responseString.substring(openBracePos, closeBracePos + 1), Map.class);
 
 		assertThat(api).hasSize(3);
 		assertThat(api).includes(entry("type", "remoting"));
@@ -78,15 +75,13 @@ public class MyModelControlerTest extends JettyTest {
 
 		Map<String, Object> actions = (Map<String, Object>) api.get("actions");
 		assertThat(actions).hasSize(1);
-		List<Map<String, Object>> actionList = (List<Map<String, Object>>) actions
-				.get("myModelController");
+		List<Map<String, Object>> actionList = (List<Map<String, Object>>) actions.get("myModelController");
 		assertThat(actionList).hasSize(3);
 
 		for (Map<String, Object> map : actionList) {
 			assertThat((Boolean) map.get("formHandler")).isTrue();
 			assertThat((Integer) map.get("len")).isZero();
-			assertThat((String) map.get("name")).isIn("method1", "method2",
-					"update");
+			assertThat((String) map.get("name")).isIn("method1", "method2", "update");
 		}
 	}
 
@@ -98,19 +93,16 @@ public class MyModelControlerTest extends JettyTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void callMethod(String method) throws UnsupportedEncodingException,
-			IOException, ClientProtocolException, JsonParseException,
+	private void callMethod(String method) throws UnsupportedEncodingException, IOException, ClientProtocolException, JsonParseException,
 			JsonMappingException {
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
-		formparams
-				.add(new BasicNameValuePair("extAction", "myModelController"));
+		formparams.add(new BasicNameValuePair("extAction", "myModelController"));
 		formparams.add(new BasicNameValuePair("extMethod", method));
 		formparams.add(new BasicNameValuePair("extType", "rpc"));
 		formparams.add(new BasicNameValuePair("extUpload", "false"));
 		formparams.add(new BasicNameValuePair("name", "Jim"));
-		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams,
-				"UTF-8");
+		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
 
 		post.setEntity(postEntity);
 
@@ -120,16 +112,14 @@ public class MyModelControlerTest extends JettyTest {
 		String responseString = EntityUtils.toString(entity);
 
 		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> rootAsMap = mapper.readValue(responseString,
-				Map.class);
+		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
 		assertThat(rootAsMap).hasSize(5);
 		assertThat(rootAsMap.get("method")).isEqualTo(method);
 		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
 		assertThat(rootAsMap.get("action")).isEqualTo("myModelController");
 		assertThat(rootAsMap.get("tid")).isEqualTo(3);
 
-		Map<String, Object> result = (Map<String, Object>) rootAsMap
-				.get("result");
+		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 		assertThat((Boolean) result.get("success")).isTrue();
 	}
 }

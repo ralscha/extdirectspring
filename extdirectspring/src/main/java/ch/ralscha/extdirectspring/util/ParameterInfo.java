@@ -55,14 +55,12 @@ public final class ParameterInfo {
 
 		MethodParameter methodParam = new MethodParameter(method, paramIndex);
 		methodParam.initParameterNameDiscovery(discoverer);
-		GenericTypeResolver
-				.resolveParameterType(methodParam, method.getClass());
+		GenericTypeResolver.resolveParameterType(methodParam, method.getClass());
 
 		this.name = methodParam.getParameterName();
 		this.typeDescriptor = new TypeDescriptor(methodParam);
 
-		this.supportedParameter = SupportedParameters
-				.isSupported(typeDescriptor.getObjectType());
+		this.supportedParameter = SupportedParameters.isSupported(typeDescriptor.getObjectType());
 
 		Annotation[] paramAnnotations = methodParam.getParameterAnnotations();
 
@@ -73,9 +71,7 @@ public final class ParameterInfo {
 					this.name = requestParam.value();
 				}
 				this.required = requestParam.required();
-				this.defaultValue = ValueConstants.DEFAULT_NONE
-						.equals(requestParam.defaultValue()) ? null
-						: requestParam.defaultValue();
+				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()) ? null : requestParam.defaultValue();
 				this.hasRequestParamAnnotation = true;
 				this.hasRequestHeaderAnnotation = false;
 				break;
@@ -86,9 +82,7 @@ public final class ParameterInfo {
 					this.name = requestHeader.value();
 				}
 				this.required = requestHeader.required();
-				this.defaultValue = ValueConstants.DEFAULT_NONE
-						.equals(requestHeader.defaultValue()) ? null
-						: requestHeader.defaultValue();
+				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestHeader.defaultValue()) ? null : requestHeader.defaultValue();
 				this.hasRequestParamAnnotation = false;
 				this.hasRequestHeaderAnnotation = true;
 				break;
@@ -96,10 +90,8 @@ public final class ParameterInfo {
 		}
 
 		if (this.name == null) {
-			throw new IllegalStateException(
-					"No parameter name specified for argument of type ["
-							+ methodParam.getParameterType().getName()
-							+ "], and no parameter name information found in class file either.");
+			throw new IllegalStateException("No parameter name specified for argument of type [" + methodParam.getParameterType().getName()
+					+ "], and no parameter name information found in class file either.");
 
 		}
 	}

@@ -58,8 +58,7 @@ public class ExtDirectFormLoadResult {
 
 	@Override
 	public String toString() {
-		return "ExtDirectFormLoadResult [data=" + data + ", success=" + success
-				+ "]";
+		return "ExtDirectFormLoadResult [data=" + data + ", success=" + success + "]";
 	}
 
 }

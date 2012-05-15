@@ -32,8 +32,7 @@ public class MyExceptionHandler implements HandlerExceptionResolver {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
-	public ModelAndView resolveException(HttpServletRequest request,
-			HttpServletResponse res, Object handler, Exception ex) {
+	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse res, Object handler, Exception ex) {
 
 		ExtDirectResponse response = new ExtDirectResponse(request);
 		response.setType("exception");

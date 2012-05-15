@@ -64,14 +64,12 @@ public class JsonHandler {
 	public String writeValueAsString(final Object obj, boolean indent) {
 		try {
 			if (indent) {
-				return mapper.writer().withDefaultPrettyPrinter()
-						.writeValueAsString(obj);
+				return mapper.writer().withDefaultPrettyPrinter().writeValueAsString(obj);
 			}
 			return mapper.writeValueAsString(obj);
 		}
 		catch (Exception e) {
-			LogFactory.getLog(JsonHandler.class).info(
-					"serialize object to json", e);
+			LogFactory.getLog(JsonHandler.class).info("serialize object to json", e);
 			return null;
 		}
 	}
@@ -87,14 +85,12 @@ public class JsonHandler {
 	 * @return the created object, null if there is an exception
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T readValue(final String json,
-			final TypeReference<T> typeReference) {
+	public <T> T readValue(final String json, final TypeReference<T> typeReference) {
 		try {
 			return (T) mapper.readValue(json, typeReference);
 		}
 		catch (Exception e) {
-			LogFactory.getLog(JsonHandler.class).info(
-					"deserialize json to object", e);
+			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
 			return null;
 		}
 	}
@@ -113,8 +109,7 @@ public class JsonHandler {
 			return mapper.readValue(json, clazz);
 		}
 		catch (Exception e) {
-			LogFactory.getLog(JsonHandler.class).info(
-					"deserialize json to object", e);
+			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
 			return null;
 		}
 	}
@@ -124,8 +119,7 @@ public class JsonHandler {
 			return mapper.readValue(is, clazz);
 		}
 		catch (Exception e) {
-			LogFactory.getLog(JsonHandler.class).info(
-					"deserialize json to object", e);
+			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
 			return null;
 		}
 	}

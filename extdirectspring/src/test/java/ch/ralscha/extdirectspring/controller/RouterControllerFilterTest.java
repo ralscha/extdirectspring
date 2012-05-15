@@ -57,8 +57,7 @@ public class RouterControllerFilterTest {
 	@BeforeClass
 	public static void readJson() throws IOException {
 		jsonList = new ArrayList<String>();
-		InputStream is = RouterControllerFilterTest.class
-				.getResourceAsStream("/filterjson.txt");
+		InputStream is = RouterControllerFilterTest.class.getResourceAsStream("/filterjson.txt");
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		String line = null;
 		while ((line = br.readLine()) != null) {
@@ -75,13 +74,11 @@ public class RouterControllerFilterTest {
 		for (String json : jsonList) {
 			MockHttpServletResponse response = new MockHttpServletResponse();
 			MockHttpServletRequest request = new MockHttpServletRequest();
-			Map<String, Object> edRequest = ControllerUtil.readValue(json,
-					Map.class);
+			Map<String, Object> edRequest = ControllerUtil.readValue(json, Map.class);
 
 			request.setContent(ControllerUtil.writeAsByte(edRequest));
 			controller.router(request, response, Locale.ENGLISH);
-			List<ExtDirectResponse> responses = ControllerUtil
-					.readDirectResponses(response.getContentAsByteArray());
+			List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
 
 			assertThat(responses).hasSize(1);
 			ExtDirectResponse resp = responses.get(0);
@@ -93,9 +90,8 @@ public class RouterControllerFilterTest {
 			assertThat(resp.getWhere()).isNull();
 			assertThat(resp.getResult()).isNotNull();
 
-			List<Row> rows = ControllerUtil.convertValue(resp.getResult(),
-					new TypeReference<List<Row>>() {
-					});
+			List<Row> rows = ControllerUtil.convertValue(resp.getResult(), new TypeReference<List<Row>>() {
+			});
 
 			assertThat(rows).hasSize(1);
 			assertThat(rows.get(0).getId()).isEqualTo(index);

@@ -46,8 +46,7 @@ public class FileUploadControllerTest extends JettyTest {
 		InputStream is = getClass().getResourceAsStream("/UploadTestFile.txt");
 
 		MultipartEntity mpEntity = new MultipartEntity();
-		ContentBody cbFile = new InputStreamBody(is, "text/plain",
-				"UploadTestFile.txt");
+		ContentBody cbFile = new InputStreamBody(is, "text/plain", "UploadTestFile.txt");
 		mpEntity.addPart("fileUpload", cbFile);
 		mpEntity.addPart("extTID", new StringBody("2"));
 		mpEntity.addPart("extAction", new StringBody("fileUploadController"));
@@ -71,8 +70,7 @@ public class FileUploadControllerTest extends JettyTest {
 		assertThat(responseString).startsWith(prefix);
 		assertThat(responseString).endsWith(postfix);
 
-		String json = responseString.substring(prefix.length(),
-				responseString.length() - postfix.length());
+		String json = responseString.substring(prefix.length(), responseString.length() - postfix.length());
 
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> rootAsMap = mapper.readValue(json, Map.class);
@@ -82,15 +80,13 @@ public class FileUploadControllerTest extends JettyTest {
 		assertThat(rootAsMap.get("action")).isEqualTo("fileUploadController");
 		assertThat(rootAsMap.get("tid")).isEqualTo(2);
 
-		Map<String, Object> result = (Map<String, Object>) rootAsMap
-				.get("result");
+		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 		assertThat(result).hasSize(6);
 		assertThat(result.get("name")).isEqualTo("Jim");
 		assertThat(result.get("age")).isEqualTo(25);
 		assertThat(result.get("email")).isEqualTo("test@test.ch");
 		assertThat(result.get("fileName")).isEqualTo("UploadTestFile.txt");
-		assertThat(result.get("fileContents")).isEqualTo(
-				"contents of upload file");
+		assertThat(result.get("fileContents")).isEqualTo("contents of upload file");
 		assertThat(result.get("success")).isEqualTo(true);
 
 		EntityUtils.consume(resEntity);

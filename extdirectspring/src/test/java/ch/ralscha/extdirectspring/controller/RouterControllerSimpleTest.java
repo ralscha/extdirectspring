@@ -64,133 +64,103 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testBeanNotFound() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProvider", "method1",
-				a(3, 2.5, "string.param"), null);
+		ControllerUtil.sendAndReceive(controller, "remoteProvider", "method1", a(3, 2.5, "string.param"), null);
 	}
 
 	@Test
 	public void testMethodNotFound() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method4", a(3, 2.5, "string.param"), null);
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method4", a(3, 2.5, "string.param"), null);
 	}
 
 	@Test
 	public void testNoParameters() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method1", null, "method1() called");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method1", null, "method1() called");
 	}
 
 	@Test
 	public void testNoParametersWithRequestParameter() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method1", a(1, "requestparameter"), "method1() called");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method1", a(1, "requestparameter"), "method1() called");
 	}
 
 	@Test
 	public void testNoParameters2() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method2", null, "method2() called");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method2", null, "method2() called");
 	}
 
 	@Test
 	public void testWithParameters() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method3", a(1, 3.1, "requestParameter"),
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method3", a(1, 3.1, "requestParameter"),
 				"method3() called-1-3.1-requestParameter");
 	}
 
 	@Test
 	public void testWithParametersWithTypeConversion() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method3", a("10", "4.2", 20), "method3() called-10-4.2-20");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method3", a("10", "4.2", 20), "method3() called-10-4.2-20");
 	}
 
 	@Test
 	public void testWithParametersNoRequestParameter() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method3", null, null);
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method3", null, null);
 	}
 
 	@Test
 	public void testResultTrue() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method5", a("ralph"), true);
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method5", a("ralph"), true);
 	}
 
 	@Test
 	public void testResultFalse() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method5", a("joe"), false);
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method5", a("joe"), false);
 	}
 
 	@Test
 	public void testResultNull() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method5", a("martin"), Void.TYPE);
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method5", a("martin"), Void.TYPE);
 
 	}
 
 	@Test
 	public void testIntParameterAndResult() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method6", a(10, 20), 30);
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method6", a(10, 20), 30);
 	}
 
 	@Test
-	public void testIntParameterAndResultWithTypeConversion()
-			throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method6", a("30", "40"), 70);
+	public void testIntParameterAndResultWithTypeConversion() throws IOException {
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method6", a("30", "40"), 70);
 	}
 
 	@Test
 	public void testResultStringNull() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method7", null, Void.TYPE);
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method7", null, Void.TYPE);
 	}
 
 	@Test
 	public void testReturnsObject() throws IOException {
-		FormInfo info = (FormInfo) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderSimple", "method8", a(7.34), FormInfo.class);
+		FormInfo info = (FormInfo) ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method8", a(7.34), FormInfo.class);
 
 		assertThat(info.getBack()).isEqualTo(7.34);
 		assertThat(info.isAdmin()).isEqualTo(false);
 		assertThat(info.getAge()).isEqualTo(32);
 		assertThat(info.getName()).isEqualTo("John");
 		assertThat(info.getSalary()).isEqualTo(new BigDecimal("8720.2"));
-		assertThat(info.getBirthday()).isEqualTo(
-				new GregorianCalendar(1986, Calendar.JULY, 22).getTime());
+		assertThat(info.getBirthday()).isEqualTo(new GregorianCalendar(1986, Calendar.JULY, 22).getTime());
 	}
 
 	@Test
 	public void testSupportedArguments() throws IOException {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method9", null, 42);
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method9", null, 42);
 	}
 
 	@Test
 	public void testTypeConversion() throws IOException {
-		ControllerUtil
-				.sendAndReceive(
-						controller,
-						"remoteProviderSimple",
-						"method10",
-						a("true", "c", "ACTIVE", "14", "21", "3.14", "10.01",
-								"1", "2"),
-						"method10() called-true-c-ACTIVE-14-21-3.14-10.01-1-2");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method10",
+				a("true", "c", "ACTIVE", "14", "21", "3.14", "10.01", "1", "2"), "method10() called-true-c-ACTIVE-14-21-3.14-10.01-1-2");
 	}
 
 	@Test
 	public void testMixParameterAndSupportedParameters() throws IOException {
-		ControllerUtil
-				.sendAndReceive(
-						controller,
-						"remoteProviderSimple",
-						"method13",
-						a("true", "c", "ACTIVE", "14", "21", "3.14", "10.01",
-								"1", "2"),
-						"method13() called-true-c-ACTIVE-14-21-3.14-10.01-1-2");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method13",
+				a("true", "c", "ACTIVE", "14", "21", "3.14", "10.01", "1", "2"), "method13() called-true-c-ACTIVE-14-21-3.14-10.01-1-2");
 	}
 
 	@Test
@@ -198,35 +168,25 @@ public class RouterControllerSimpleTest {
 
 		DateTime today = new DateTime();
 
-		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil
-				.sendAndReceive(
-						controller,
-						"remoteProviderSimple",
-						"method14",
-						a(ISODateTimeFormat.dateTime().print(today),
-								"normalParameter", ISODateTimeFormat.date()
-										.print(today), "99.9%"), Map.class);
+		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method14",
+				a(ISODateTimeFormat.dateTime().print(today), "normalParameter", ISODateTimeFormat.date().print(today), "99.9%"), Map.class);
 
 		assertThat(resultMap.get("endDate")).isEqualTo(today.getMillis());
 		ObjectMapper mapper = new ObjectMapper();
 
-		List<Object> expectedValue = mapper.readValue(
-				mapper.writeValueAsString(today.toLocalDate()), List.class);
+		List<Object> expectedValue = mapper.readValue(mapper.writeValueAsString(today.toLocalDate()), List.class);
 		Object actualValue = resultMap.get("jodaLocalDate");
 
-		assertThat((List<Object>) resultMap.get("jodaLocalDate")).isEqualTo(
-				expectedValue);
+		assertThat((List<Object>) resultMap.get("jodaLocalDate")).isEqualTo(expectedValue);
 		assertThat(resultMap.get("percent")).isEqualTo(0.999);
-		assertThat(resultMap.get("normalParameter")).isEqualTo(
-				"normalParameter");
+		assertThat(resultMap.get("normalParameter")).isEqualTo("normalParameter");
 		assertThat(resultMap.get("remoteAddr")).isEqualTo("127.0.0.1");
 	}
 
 	@Test
 	public void testTypeConversionWithObjects() throws IOException {
 		Row aRow = new Row(104, "myRow", true, "100.45");
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method12", a(aRow),
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method12", a(aRow),
 				"Row [id=104, name=myRow, admin=true, salary=100.45]");
 	}
 
@@ -234,9 +194,7 @@ public class RouterControllerSimpleTest {
 	public void methodRequiredHeaderWithoutValue() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("header", "headerValue");
-		ControllerUtil.sendAndReceive(controller, request,
-				"remoteProviderSimple", "method15", a(1, "v"),
-				"1;v;headerValue");
+		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method15", a(1, "v"), "1;v;headerValue");
 	}
 
 	@Test
@@ -245,8 +203,7 @@ public class RouterControllerSimpleTest {
 		request.addHeader("header", "headerValue");
 		request.addHeader("anotherName", "headerValue1");
 		request.addHeader("anotherName", "headerValue2");
-		ControllerUtil.sendAndReceive(controller, request,
-				"remoteProviderSimple", "method16", a(11), "11;headerValue1");
+		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method16", a(11), "11;headerValue1");
 	}
 
 	@Test
@@ -255,28 +212,24 @@ public class RouterControllerSimpleTest {
 		request.addHeader("header", "headerValue");
 		request.addHeader("anotherName", "headerValue1");
 
-		ControllerUtil.sendAndReceive(controller, request,
-				"remoteProviderSimple", "method17", null, "headerValue1");
+		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method17", null, "headerValue1");
 	}
 
 	@Test
 	public void methodRequiredHeaderWithValueAndDefault2() throws Exception {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method17", null, "default");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method17", null, "default");
 	}
 
 	@Test
 	public void methodOptionalHeaderWithoutValueAndDefault1() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("header", "headerValue");
-		ControllerUtil.sendAndReceive(controller, request,
-				"remoteProviderSimple", "method18", null, "headerValue");
+		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method18", null, "headerValue");
 	}
 
 	@Test
 	public void methodOptionalHeaderWithoutValueAndDefault2() throws Exception {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple",
-				"method18", null, "default");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method18", null, "default");
 	}
 
 	@Test
@@ -285,9 +238,7 @@ public class RouterControllerSimpleTest {
 		request.setSession(new MockHttpSession());
 		request.addHeader("last", "lastHeader");
 
-		ControllerUtil.sendAndReceive(controller, request,
-				"remoteProviderSimple", "method19", a(100),
-				"100;default1;default2;lastHeader");
+		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method19", a(100), "100;default1;default2;lastHeader");
 	}
 
 	@Test
@@ -296,9 +247,7 @@ public class RouterControllerSimpleTest {
 		request.addHeader("last", "lastHeader");
 		request.addHeader("header2", "2ndHeader");
 
-		ControllerUtil.sendAndReceive(controller, request,
-				"remoteProviderSimple", "method19", a(100),
-				"100;default1;2ndHeader;lastHeader");
+		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method19", a(100), "100;default1;2ndHeader;lastHeader");
 	}
 
 	@Test
@@ -308,8 +257,7 @@ public class RouterControllerSimpleTest {
 		request.addHeader("header1", "1st");
 		request.addHeader("header2", "2nd");
 
-		ControllerUtil.sendAndReceive(controller, request,
-				"remoteProviderSimple", "method19", a(100), "100;1st;2nd;last");
+		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method19", a(100), "100;1st;2nd;last");
 	}
 
 	@Test
@@ -319,7 +267,6 @@ public class RouterControllerSimpleTest {
 		request.addHeader("intHeader", "2");
 		request.addHeader("booleanHeader", "true");
 
-		ControllerUtil.sendAndReceive(controller, request,
-				"remoteProviderSimple", "method20", null, "2;true");
+		ControllerUtil.sendAndReceive(controller, request, "remoteProviderSimple", "method20", null, "2;true");
 	}
 }

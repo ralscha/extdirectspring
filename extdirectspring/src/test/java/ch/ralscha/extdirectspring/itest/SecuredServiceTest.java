@@ -37,16 +37,15 @@ import org.junit.Test;
 public class SecuredServiceTest extends JettyTest {
 
 	@Test
-	public void callSetDate() throws UnsupportedEncodingException, IOException,
-			ClientProtocolException, JsonParseException, JsonMappingException {
+	public void callSetDate() throws UnsupportedEncodingException, IOException, ClientProtocolException, JsonParseException,
+			JsonMappingException {
 
 		HttpClient client = new DefaultHttpClient();
 
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
 		StringEntity postEntity = new StringEntity(
-				"{\"action\":\"securedService\",\"method\":\"setDate\",\"data\":[\"26/04/2012\"],\"type\":\"rpc\",\"tid\":1}",
-				"UTF-8");
+				"{\"action\":\"securedService\",\"method\":\"setDate\",\"data\":[\"26/04/2012\"],\"type\":\"rpc\",\"tid\":1}", "UTF-8");
 
 		post.setEntity(postEntity);
 		post.setHeader("Content-Type", "application/json; charset=UTF-8");
@@ -57,14 +56,10 @@ public class SecuredServiceTest extends JettyTest {
 		String responseString = EntityUtils.toString(entity);
 
 		assertThat(responseString).isNotNull();
-		assertThat(
-				responseString.startsWith("[") && responseString.endsWith("]"))
-				.isTrue();
+		assertThat(responseString.startsWith("[") && responseString.endsWith("]")).isTrue();
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
-		Map<String, Object> rootAsMap = mapper.readValue(
-				responseString.substring(1, responseString.length() - 1),
-				Map.class);
+		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1), Map.class);
 		assertThat(rootAsMap).hasSize(5);
 		assertThat(rootAsMap.get("result")).isEqualTo("10,26.04.2012");
 		assertThat(rootAsMap.get("method")).isEqualTo("setDate");

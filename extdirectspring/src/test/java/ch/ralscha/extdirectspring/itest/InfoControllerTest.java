@@ -50,8 +50,7 @@ public class InfoControllerTest extends JettyTest {
 		formparams.add(new BasicNameValuePair("extType", "rpc"));
 		formparams.add(new BasicNameValuePair("extUpload", "false"));
 		formparams.add(new BasicNameValuePair("userName", "RALPH"));
-		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams,
-				"UTF-8");
+		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
 
 		post.setEntity(postEntity);
 
@@ -61,16 +60,14 @@ public class InfoControllerTest extends JettyTest {
 		String responseString = EntityUtils.toString(entity);
 
 		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> rootAsMap = mapper.readValue(responseString,
-				Map.class);
+		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
 		assertThat(rootAsMap).hasSize(5);
 		assertThat(rootAsMap.get("method")).isEqualTo("updateInfo");
 		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
 		assertThat(rootAsMap.get("action")).isEqualTo("infoController");
 		assertThat(rootAsMap.get("tid")).isEqualTo(1);
 
-		Map<String, Object> result = (Map<String, Object>) rootAsMap
-				.get("result");
+		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 		assertThat(result).hasSize(2);
 		assertThat(result.get("userNameLowerCase")).isEqualTo("ralph");
 		assertThat(result.get("success")).isEqualTo(true);

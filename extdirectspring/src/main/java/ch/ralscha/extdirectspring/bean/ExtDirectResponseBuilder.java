@@ -60,8 +60,7 @@ public class ExtDirectResponseBuilder {
 	 * @param request the current http servlet request object
 	 * @param response the current http servlet response object
 	 */
-	public ExtDirectResponseBuilder(final HttpServletRequest request,
-			final HttpServletResponse response) {
+	public ExtDirectResponseBuilder(final HttpServletRequest request, final HttpServletResponse response) {
 		this.request = request;
 		this.response = response;
 
@@ -71,8 +70,7 @@ public class ExtDirectResponseBuilder {
 		extDirectResponse.setResult(result);
 	}
 
-	public static ExtDirectResponseBuilder create(
-			final HttpServletRequest request, final HttpServletResponse response) {
+	public static ExtDirectResponseBuilder create(final HttpServletRequest request, final HttpServletResponse response) {
 		return new ExtDirectResponseBuilder(request, response);
 	}
 
@@ -97,16 +95,14 @@ public class ExtDirectResponseBuilder {
 	 * @param bindingResult
 	 * @return this instance
 	 */
-	public ExtDirectResponseBuilder addErrors(final Locale locale,
-			final MessageSource messageSource, final BindingResult bindingResult) {
+	public ExtDirectResponseBuilder addErrors(final Locale locale, final MessageSource messageSource, final BindingResult bindingResult) {
 		if (bindingResult != null && bindingResult.hasFieldErrors()) {
 			Map<String, List<String>> errorMap = new HashMap<String, List<String>>();
 			for (FieldError fieldError : bindingResult.getFieldErrors()) {
 				String message = fieldError.getDefaultMessage();
 				if (messageSource != null) {
 					Locale loc = (locale != null ? locale : Locale.getDefault());
-					message = messageSource.getMessage(fieldError.getCode(),
-							fieldError.getArguments(), loc);
+					message = messageSource.getMessage(fieldError.getCode(), fieldError.getArguments(), loc);
 				}
 				List<String> fieldErrors = errorMap.get(fieldError.getField());
 
@@ -135,8 +131,7 @@ public class ExtDirectResponseBuilder {
 	 * @param value the value of this property
 	 * @return this instance
 	 */
-	public ExtDirectResponseBuilder addResultProperty(final String key,
-			final Object value) {
+	public ExtDirectResponseBuilder addResultProperty(final String key, final Object value) {
 		result.put(key, value);
 		return this;
 	}
@@ -166,32 +161,26 @@ public class ExtDirectResponseBuilder {
 	public void buildAndWrite() {
 
 		try {
-			RouterController routerController = RequestContextUtils
-					.getWebApplicationContext(request).getBean(
-							RouterController.class);
+			RouterController routerController = RequestContextUtils.getWebApplicationContext(request).getBean(RouterController.class);
 
 			if (isMultipart()) {
 				response.setContentType(RouterController.TEXT_HTML.toString());
-				response.setCharacterEncoding(RouterController.TEXT_HTML
-						.getCharSet().name());
+				response.setCharacterEncoding(RouterController.TEXT_HTML.getCharSet().name());
 
 				ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
 				bos.write("<html><body><textarea>".getBytes());
 
-				String responseJson = routerController.getJsonHandler()
-						.getMapper().writeValueAsString(extDirectResponse);
+				String responseJson = routerController.getJsonHandler().getMapper().writeValueAsString(extDirectResponse);
 
 				responseJson = responseJson.replace("&quot;", "\\&quot;");
 				bos.write(responseJson.getBytes());
 				bos.write("</textarea></body></html>".getBytes());
 
 				response.setContentLength(bos.size());
-				FileCopyUtils.copy(bos.toByteArray(),
-						response.getOutputStream());
+				FileCopyUtils.copy(bos.toByteArray(), response.getOutputStream());
 			}
 			else {
-				routerController.writeJsonResponse(response, extDirectResponse,
-						routerController.getConfiguration().isStreamResponse());
+				routerController.writeJsonResponse(response, extDirectResponse, routerController.getConfiguration().isStreamResponse());
 			}
 		}
 		catch (IOException e) {
@@ -206,7 +195,6 @@ public class ExtDirectResponseBuilder {
 			return false;
 		}
 		String contentType = request.getContentType();
-		return (contentType != null && contentType.toLowerCase().startsWith(
-				"multipart/"));
+		return (contentType != null && contentType.toLowerCase().startsWith("multipart/"));
 	}
 }

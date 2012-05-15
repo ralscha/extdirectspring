@@ -90,8 +90,7 @@ public class Configuration {
 		return exceptionToMessage;
 	}
 
-	public void setExceptionToMessage(
-			final Map<Class<?>, String> exceptionToMessage) {
+	public void setExceptionToMessage(final Map<Class<?>, String> exceptionToMessage) {
 		this.exceptionToMessage = exceptionToMessage;
 	}
 

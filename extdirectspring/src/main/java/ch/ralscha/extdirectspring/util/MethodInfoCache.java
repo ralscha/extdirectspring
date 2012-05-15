@@ -27,8 +27,7 @@ import java.util.Map.Entry;
  * 
  * @author Ralph Schaer
  */
-public enum MethodInfoCache implements
-		Iterable<Map.Entry<MethodInfoCache.Key, MethodInfo>> {
+public enum MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, MethodInfo>> {
 
 	/**
 	 * Singleton enum pattern
@@ -48,8 +47,7 @@ public enum MethodInfoCache implements
 	 * @param clazz the class of the bean
 	 * @param method the method
 	 */
-	public void put(final String beanName, final Class<?> clazz,
-			final Method method) {
+	public void put(final String beanName, final Class<?> clazz, final Method method) {
 		MethodInfo info = new MethodInfo(clazz, beanName, method);
 		cache.put(new Key(beanName, method.getName()), info);
 	}
@@ -88,8 +86,7 @@ public enum MethodInfoCache implements
 			}
 
 			Key other = (Key) o;
-			return (ExtDirectSpringUtil.equal(beanName, other.beanName) && ExtDirectSpringUtil
-					.equal(methodName, other.methodName));
+			return (ExtDirectSpringUtil.equal(beanName, other.beanName) && ExtDirectSpringUtil.equal(methodName, other.methodName));
 		}
 
 		@Override
