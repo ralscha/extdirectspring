@@ -39,6 +39,7 @@ public class ReportService {
 				.add(new SeasonData("Summer", randomGenerator.nextInt(maxRandomValue - minRandomValue) + minRandomValue))
 				.add(new SeasonData("Fall", randomGenerator.nextInt(maxRandomValue - minRandomValue) + minRandomValue))
 				.add(new SeasonData("Winter", randomGenerator.nextInt(maxRandomValue - minRandomValue) + minRandomValue))
-				.add(new SeasonData("Spring", randomGenerator.nextInt(maxRandomValue - minRandomValue) + minRandomValue)).build();
+				.add(new SeasonData("Spring", randomGenerator.nextInt(maxRandomValue - minRandomValue) + minRandomValue))
+				.build();
 	}
 }

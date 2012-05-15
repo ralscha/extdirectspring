@@ -96,8 +96,8 @@ public class RouterControllerStoreModifyTest {
 
 	@Test
 	public void testCreateWithDataSingle() throws IOException {
-		Row row = (Row) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreModifySingle", "create1", new Row(10, "Ralph", true,
-				"109.55"), Row.class);
+		Row row = (Row) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreModifySingle", "create1",
+				new Row(10, "Ralph", true, "109.55"), Row.class);
 		assertThat(row.getId()).isEqualTo(10);
 	}
 
@@ -124,8 +124,8 @@ public class RouterControllerStoreModifyTest {
 
 	@Test
 	public void testCreateWithDataAndSupportedArgumentsSingle() throws IOException {
-		Row row = (Row) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreModifySingle", "create2", new Row(10, "Ralph", false,
-				"109.55"), Row.class);
+		Row row = (Row) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreModifySingle", "create2",
+				new Row(10, "Ralph", false, "109.55"), Row.class);
 		assertThat(row.getId()).isEqualTo(10);
 	}
 
@@ -278,8 +278,11 @@ public class RouterControllerStoreModifyTest {
 		rowsToUpdate.add(10);
 		storeRequest.put("records", rowsToUpdate);
 
-		List<Integer> rows = (List<Integer>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreModify", "destroy",
-				storeRequest, new TypeReference<List<Integer>>() {/* nothing here */
+		List<Integer> rows = (List<Integer>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreModify",
+				"destroy", storeRequest, new TypeReference<List<Integer>>() {/*
+																			 * nothing
+																			 * here
+																			 */
 				});
 
 		assertThat(rows).hasSize(1);

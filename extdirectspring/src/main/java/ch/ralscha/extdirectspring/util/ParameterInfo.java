@@ -71,7 +71,8 @@ public final class ParameterInfo {
 					this.name = requestParam.value();
 				}
 				this.required = requestParam.required();
-				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()) ? null : requestParam.defaultValue();
+				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()) ? null
+						: requestParam.defaultValue();
 				this.hasRequestParamAnnotation = true;
 				this.hasRequestHeaderAnnotation = false;
 				break;
@@ -81,7 +82,8 @@ public final class ParameterInfo {
 					this.name = requestHeader.value();
 				}
 				this.required = requestHeader.required();
-				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestHeader.defaultValue()) ? null : requestHeader.defaultValue();
+				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestHeader.defaultValue()) ? null
+						: requestHeader.defaultValue();
 				this.hasRequestParamAnnotation = false;
 				this.hasRequestHeaderAnnotation = true;
 				break;
@@ -89,7 +91,8 @@ public final class ParameterInfo {
 		}
 
 		if (this.name == null) {
-			throw new IllegalStateException("No parameter name specified for argument of type [" + methodParam.getParameterType().getName()
+			throw new IllegalStateException("No parameter name specified for argument of type ["
+					+ methodParam.getParameterType().getName()
 					+ "], and no parameter name information found in class file either.");
 
 		}

@@ -67,12 +67,13 @@ public class SimpleServiceTest extends JettyTest {
 		postToUpperCase("andrea", client);
 	}
 
-	private void postToUpperCase(String text, HttpClient client) throws UnsupportedEncodingException, IOException, ClientProtocolException,
-			JsonParseException, JsonMappingException {
+	private void postToUpperCase(String text, HttpClient client) throws UnsupportedEncodingException, IOException,
+			ClientProtocolException, JsonParseException, JsonMappingException {
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
-		StringEntity postEntity = new StringEntity("{\"action\":\"simpleService\",\"method\":\"toUpperCase\",\"data\":[\"" + text
-				+ "\"],\"type\":\"rpc\",\"tid\":1}", "UTF-8");
+		StringEntity postEntity = new StringEntity(
+				"{\"action\":\"simpleService\",\"method\":\"toUpperCase\",\"data\":[\"" + text
+						+ "\"],\"type\":\"rpc\",\"tid\":1}", "UTF-8");
 		post.setEntity(postEntity);
 		post.setHeader("Content-Type", "application/json; charset=UTF-8");
 
@@ -87,7 +88,8 @@ public class SimpleServiceTest extends JettyTest {
 		assertThat(responseString).startsWith("[").endsWith("]");
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
-		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1), Map.class);
+		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
+				Map.class);
 		assertThat(rootAsMap).hasSize(5);
 		assertThat(rootAsMap.get("result")).isEqualTo(text.toUpperCase());
 		assertThat(rootAsMap.get("method")).isEqualTo("toUpperCase");
@@ -106,13 +108,13 @@ public class SimpleServiceTest extends JettyTest {
 		postToEcho("\"userId\":\"andrea\"", "UserId: andrea LogLevel: 10", client);
 	}
 
-	private void postToEcho(String data, String expectedResult, HttpClient client) throws UnsupportedEncodingException, IOException,
-			ClientProtocolException, JsonParseException, JsonMappingException {
+	private void postToEcho(String data, String expectedResult, HttpClient client) throws UnsupportedEncodingException,
+			IOException, ClientProtocolException, JsonParseException, JsonMappingException {
 
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
-		StringEntity postEntity = new StringEntity("{\"action\":\"simpleService\",\"method\":\"echo\",\"data\":{" + data
-				+ "},\"type\":\"rpc\",\"tid\":1}", "UTF-8");
+		StringEntity postEntity = new StringEntity("{\"action\":\"simpleService\",\"method\":\"echo\",\"data\":{"
+				+ data + "},\"type\":\"rpc\",\"tid\":1}", "UTF-8");
 
 		post.setEntity(postEntity);
 		post.setHeader("Content-Type", "application/json; charset=UTF-8");
@@ -129,7 +131,8 @@ public class SimpleServiceTest extends JettyTest {
 		assertThat(responseString).startsWith("[").endsWith("]");
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
-		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1), Map.class);
+		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
+				Map.class);
 		assertThat(rootAsMap).hasSize(5);
 		assertThat(rootAsMap.get("result")).isEqualTo(expectedResult);
 		assertThat(rootAsMap.get("method")).isEqualTo("echo");

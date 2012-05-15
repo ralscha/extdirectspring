@@ -64,8 +64,8 @@ public final class ExtDirectSpringUtil {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public static Object invoke(final ApplicationContext context, final String beanName, final MethodInfo methodInfo, final Object[] params)
-			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public static Object invoke(final ApplicationContext context, final String beanName, final MethodInfo methodInfo,
+			final Object[] params) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		Object bean = context.getBean(beanName);
 
 		Method handlerMethod = methodInfo.getMethod();

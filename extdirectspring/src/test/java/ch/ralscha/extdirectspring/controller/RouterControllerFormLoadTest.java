@@ -62,8 +62,8 @@ public class RouterControllerFormLoadTest {
 	public void testFormLoad() throws IOException {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("d", 3.141);
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller, "remoteProviderFormLoad",
-				"method1", data, ExtDirectFormLoadResult.class);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderFormLoad", "method1", data, ExtDirectFormLoadResult.class);
 
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
@@ -84,8 +84,8 @@ public class RouterControllerFormLoadTest {
 
 	@Test
 	public void testWithSupportedArguments() throws IOException {
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller, "remoteProviderFormLoad",
-				"method3", null, ExtDirectFormLoadResult.class);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderFormLoad", "method3", null, ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
 		FormInfo formInfo = ControllerUtil.convertValue(wrapper.getData(), FormInfo.class);
@@ -96,8 +96,8 @@ public class RouterControllerFormLoadTest {
 	public void testWithRequestParam() throws IOException {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("id", 12);
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller, "remoteProviderFormLoad",
-				"method4", data, ExtDirectFormLoadResult.class);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderFormLoad", "method4", data, ExtDirectFormLoadResult.class);
 
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
@@ -107,8 +107,8 @@ public class RouterControllerFormLoadTest {
 
 	@Test
 	public void testWithRequestParamDefaultValue() throws IOException {
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller, "remoteProviderFormLoad",
-				"method5", null, ExtDirectFormLoadResult.class);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderFormLoad", "method5", null, ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
 		FormInfo formInfo = ControllerUtil.convertValue(wrapper.getData(), FormInfo.class);
@@ -118,15 +118,15 @@ public class RouterControllerFormLoadTest {
 	@Test
 	public void testWithRequestParamOptional() throws IOException {
 
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller, "remoteProviderFormLoad",
-				"method6", null, ExtDirectFormLoadResult.class);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderFormLoad", "method6", null, ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isEqualTo("TEST:null");
 
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("id", 11);
-		wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller, "remoteProviderFormLoad", "method6", data,
-				ExtDirectFormLoadResult.class);
+		wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller, "remoteProviderFormLoad",
+				"method6", data, ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isEqualTo("TEST:11");
 	}
@@ -136,16 +136,16 @@ public class RouterControllerFormLoadTest {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("data", "one");
 		data.put("success", true);
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller, "remoteProviderFormLoad",
-				"method7", data, ExtDirectFormLoadResult.class);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderFormLoad", "method7", data, ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isEqualTo("one");
 
 		data = new HashMap<String, Object>();
 		data.put("data", "two");
 		data.put("success", false);
-		wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller, "remoteProviderFormLoad", "method7", data,
-				ExtDirectFormLoadResult.class);
+		wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller, "remoteProviderFormLoad",
+				"method7", data, ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isFalse();
 		assertThat(wrapper.getData()).isEqualTo("two");
 	}
@@ -156,8 +156,10 @@ public class RouterControllerFormLoadTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		MockHttpServletRequest request = new MockHttpServletRequest();
 
-		edRequests.add(ControllerUtil.createRequestJson("remoteProvider", "method1", 1, new Object[] { 3, 2.5, "string.param" }));
-		edRequests.add(ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, new Object[] { 3, 2.5, "string.param" }));
+		edRequests.add(ControllerUtil.createRequestJson("remoteProvider", "method1", 1, new Object[] { 3, 2.5,
+				"string.param" }));
+		edRequests.add(ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, new Object[] { 3, 2.5,
+				"string.param" }));
 		edRequests.add(ControllerUtil.createRequestJson("remoteProviderSimple", "method1", 3, null));
 
 		Map<String, Object> data = new HashMap<String, Object>();

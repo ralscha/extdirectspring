@@ -237,7 +237,8 @@ public class PersonAction {
 			}
 		});
 
-		ExtDirectStoreResponse<PersonFullName> response = new ExtDirectStoreResponse<PersonFullName>(totalSize, personFullNameList);
+		ExtDirectStoreResponse<PersonFullName> response = new ExtDirectStoreResponse<PersonFullName>(totalSize,
+				personFullNameList);
 
 		// Send metadata only the first time
 		if (request.getStart() == null) {
@@ -275,12 +276,13 @@ public class PersonAction {
 			persons = persons.subList(0, 50);
 		}
 
-		List<PersonFullNameCity> personFullNameCityList = Lists.transform(persons, new Function<Person, PersonFullNameCity>() {
-			@Override
-			public PersonFullNameCity apply(Person person) {
-				return new PersonFullNameCity(person);
-			}
-		});
+		List<PersonFullNameCity> personFullNameCityList = Lists.transform(persons,
+				new Function<Person, PersonFullNameCity>() {
+					@Override
+					public PersonFullNameCity apply(Person person) {
+						return new PersonFullNameCity(person);
+					}
+				});
 
 		ExtDirectStoreResponse<PersonFullNameCity> response = new ExtDirectStoreResponse<PersonFullNameCity>(totalSize,
 				personFullNameCityList);

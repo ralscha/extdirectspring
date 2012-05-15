@@ -38,8 +38,8 @@ public class PictureResizer {
 
 	@RequestMapping(value = "/picresize", method = RequestMethod.GET)
 	public void resize(@RequestParam("url") String url, @RequestParam(value = "width", required = false) Integer width,
-			@RequestParam(value = "height", required = false) Integer height, HttpServletRequest request, HttpServletResponse response)
-			throws MalformedURLException, IOException {
+			@RequestParam(value = "height", required = false) Integer height, HttpServletRequest request,
+			HttpServletResponse response) throws MalformedURLException, IOException {
 
 		File servletTmpDir = (File) request.getServletContext().getAttribute("javax.servlet.context.tempdir");
 		String sha = org.apache.commons.codec.digest.DigestUtils.sha256Hex(url);
@@ -54,8 +54,8 @@ public class PictureResizer {
 		if (width != null && height != null) {
 			BufferedImage image = ImageIO.read(pictureFile);
 			if (image.getWidth() > width || image.getHeight() > height) {
-				BufferedImage resizedImage = Scalr.resize(image, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC, width, height,
-						Scalr.OP_ANTIALIAS);
+				BufferedImage resizedImage = Scalr.resize(image, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC, width,
+						height, Scalr.OP_ANTIALIAS);
 
 				int pos = url.lastIndexOf(".");
 				String format = url.substring(pos + 1).toUpperCase();

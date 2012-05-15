@@ -66,7 +66,8 @@ public class RemoteProviderFormLoad {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3")
-	public ExtDirectFormLoadResult method5(@RequestParam(value = "id", defaultValue = "1") int id, HttpServletRequest servletRequest) {
+	public ExtDirectFormLoadResult method5(@RequestParam(value = "id", defaultValue = "1") int id,
+			HttpServletRequest servletRequest) {
 		FormInfo fi = new FormInfo();
 		fi.setResult(id + ";" + (servletRequest != null));
 		return new ExtDirectFormLoadResult(fi);

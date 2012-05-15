@@ -95,7 +95,8 @@ public class ExtDirectResponseBuilder {
 	 * @param bindingResult
 	 * @return this instance
 	 */
-	public ExtDirectResponseBuilder addErrors(final Locale locale, final MessageSource messageSource, final BindingResult bindingResult) {
+	public ExtDirectResponseBuilder addErrors(final Locale locale, final MessageSource messageSource,
+			final BindingResult bindingResult) {
 		if (bindingResult != null && bindingResult.hasFieldErrors()) {
 			Map<String, List<String>> errorMap = new HashMap<String, List<String>>();
 			for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -160,7 +161,8 @@ public class ExtDirectResponseBuilder {
 	public void buildAndWrite() {
 
 		try {
-			RouterController routerController = RequestContextUtils.getWebApplicationContext(request).getBean(RouterController.class);
+			RouterController routerController = RequestContextUtils.getWebApplicationContext(request).getBean(
+					RouterController.class);
 
 			if (isMultipart()) {
 				response.setContentType(RouterController.TEXT_HTML.toString());
@@ -169,7 +171,8 @@ public class ExtDirectResponseBuilder {
 				ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
 				bos.write("<html><body><textarea>".getBytes());
 
-				String responseJson = routerController.getJsonHandler().getMapper().writeValueAsString(extDirectResponse);
+				String responseJson = routerController.getJsonHandler().getMapper()
+						.writeValueAsString(extDirectResponse);
 
 				responseJson = responseJson.replace("&quot;", "\\&quot;");
 				bos.write(responseJson.getBytes());
@@ -178,7 +181,8 @@ public class ExtDirectResponseBuilder {
 				response.setContentLength(bos.size());
 				FileCopyUtils.copy(bos.toByteArray(), response.getOutputStream());
 			} else {
-				routerController.writeJsonResponse(response, extDirectResponse, routerController.getConfiguration().isStreamResponse());
+				routerController.writeJsonResponse(response, extDirectResponse, routerController.getConfiguration()
+						.isStreamResponse());
 			}
 		} catch (IOException e) {
 			LogFactory.getLog(getClass()).error("buildAndWrite", e);

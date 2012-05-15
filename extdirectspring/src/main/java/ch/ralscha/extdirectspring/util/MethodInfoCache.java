@@ -86,7 +86,8 @@ public enum MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, M
 			}
 
 			Key other = (Key) o;
-			return (ExtDirectSpringUtil.equal(beanName, other.beanName) && ExtDirectSpringUtil.equal(methodName, other.methodName));
+			return (ExtDirectSpringUtil.equal(beanName, other.beanName) && ExtDirectSpringUtil.equal(methodName,
+					other.methodName));
 		}
 
 		@Override

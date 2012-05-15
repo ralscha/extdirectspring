@@ -75,7 +75,8 @@ public class ExtDirectRequest {
 
 	@Override
 	public String toString() {
-		return "ExtDirectRequest [action=" + action + ", method=" + method + ", type=" + type + ", tid=" + tid + ", data=" + data + "]";
+		return "ExtDirectRequest [action=" + action + ", method=" + method + ", type=" + type + ", tid=" + tid
+				+ ", data=" + data + "]";
 	}
 
 }

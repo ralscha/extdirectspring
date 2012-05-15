@@ -74,7 +74,8 @@ public class MethodInfoCacheTest {
 	public void testFindMethodWithAnnotation() {
 		new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 		MethodInfo methodBInfo = MethodInfoCache.INSTANCE.get("springManagedBean", "methodB");
-		Method methodBWithAnnotation = MethodInfo.findMethodWithAnnotation(methodBInfo.getMethod(), ExtDirectMethod.class);
+		Method methodBWithAnnotation = MethodInfo.findMethodWithAnnotation(methodBInfo.getMethod(),
+				ExtDirectMethod.class);
 		assertThat(methodBWithAnnotation).isEqualTo(methodBInfo.getMethod());
 
 		MethodInfo methodSubBInfo = MethodInfoCache.INSTANCE.get("springManagedSubBean", "methodB");
@@ -90,21 +91,24 @@ public class MethodInfoCacheTest {
 	}
 
 	@Test(expected = NoSuchBeanDefinitionException.class)
-	public void testNonExistingBeanAndMethod() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public void testNonExistingBeanAndMethod() throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
 		ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 		MethodInfo info = MethodInfoCache.INSTANCE.get("springManagedBeanA", "methodA");
 		ExtDirectSpringUtil.invoke(context, "springManagedBeanA", info, null);
 	}
 
 	@Test(expected = NullPointerException.class)
-	public void testExistingWithouEdsAnnotation() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public void testExistingWithouEdsAnnotation() throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
 		ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 		MethodInfo info = MethodInfoCache.INSTANCE.get("springManagedBean", "methodA");
 		ExtDirectSpringUtil.invoke(context, "springManagedBean", info, null);
 	}
 
 	@Test
-	public void testFindMethodAndInvoke() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public void testFindMethodAndInvoke() throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
 		ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 
 		MethodInfo infoB = MethodInfoCache.INSTANCE.get("springManagedBean", "methodB");
@@ -114,8 +118,10 @@ public class MethodInfoCacheTest {
 
 		MethodInfo infoSum = MethodInfoCache.INSTANCE.get("springManagedBean", "sum");
 
-		assertThat(ExtDirectSpringUtil.invoke(context, "springManagedBean", infoSum, new Object[] { 1, 2 })).isEqualTo(Integer.valueOf(3));
-		assertThat(ExtDirectSpringUtil.invoke(context, "springManagedBean", infoSum, new Object[] { 6, 3 })).isEqualTo(Integer.valueOf(9));
+		assertThat(ExtDirectSpringUtil.invoke(context, "springManagedBean", infoSum, new Object[] { 1, 2 })).isEqualTo(
+				Integer.valueOf(3));
+		assertThat(ExtDirectSpringUtil.invoke(context, "springManagedBean", infoSum, new Object[] { 6, 3 })).isEqualTo(
+				Integer.valueOf(9));
 
 		assertThat(MethodInfoCache.INSTANCE.get("springManagedBean", "methodC")).isNull();
 	}

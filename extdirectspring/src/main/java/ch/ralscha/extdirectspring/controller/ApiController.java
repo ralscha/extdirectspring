@@ -73,7 +73,8 @@ public class ApiController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = { "/api.js", "/api-debug.js" }, method = RequestMethod.GET)
-	public void api(@RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app") final String apiNs,
+	public void api(
+			@RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app") final String apiNs,
 			@RequestParam(value = "actionNs", required = false) final String actionNs,
 			@RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API") final String remotingApiVar,
 			@RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS") final String pollingUrlsVar,
@@ -109,7 +110,8 @@ public class ApiController {
 					routerUrl = requestUrlString.replace("api-debug.js", "router");
 					basePollUrl = requestUrlString.replace("api-debug.js", "poll");
 				}
-				apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, basePollUrl, group, debug);
+				apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, basePollUrl,
+						group, debug);
 				ApiCache.INSTANCE.put(apiKey, apiString);
 			}
 
@@ -138,8 +140,9 @@ public class ApiController {
 		response.getOutputStream().flush();
 	}
 
-	private String buildApiString(final String apiNs, final String actionNs, final String remotingApiVar, final String pollingUrlsVar,
-			final String routerUrl, final String basePollUrl, final String group, final boolean debug) {
+	private String buildApiString(final String apiNs, final String actionNs, final String remotingApiVar,
+			final String pollingUrlsVar, final String routerUrl, final String basePollUrl, final String group,
+			final boolean debug) {
 
 		RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
 
@@ -240,8 +243,8 @@ public class ApiController {
 		return sb.toString();
 	}
 
-	private String buildApiJson(final String apiNs, final String actionNs, final String remotingApiVar, final String routerUrl,
-			final String group, final boolean debug) {
+	private String buildApiJson(final String apiNs, final String actionNs, final String remotingApiVar,
+			final String routerUrl, final String group, final boolean debug) {
 
 		RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
 

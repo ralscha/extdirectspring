@@ -76,8 +76,8 @@ public class Profile {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "form")
 	@RequestMapping(value = "/updateBasicInfo", method = RequestMethod.POST)
-	public void updateBasicInfo(Locale locale, HttpServletRequest request, HttpServletResponse response, @Valid BasicInfo basicInfo,
-			BindingResult result) {
+	public void updateBasicInfo(Locale locale, HttpServletRequest request, HttpServletResponse response,
+			@Valid BasicInfo basicInfo, BindingResult result) {
 
 		if (!result.hasErrors()) {
 			if (basicInfo.getEmail().equals("aaron@extjs.com")) {

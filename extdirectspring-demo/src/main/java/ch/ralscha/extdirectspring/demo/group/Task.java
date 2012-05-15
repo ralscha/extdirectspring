@@ -38,8 +38,8 @@ public class Task {
 
 	private Date due;
 
-	public Task(int projectId, String project, int taskId, String description, BigDecimal estimate, BigDecimal rate, int dueYear,
-			int dueMonth, int dueDay) {
+	public Task(int projectId, String project, int taskId, String description, BigDecimal estimate, BigDecimal rate,
+			int dueYear, int dueMonth, int dueDay) {
 
 		this.projectId = projectId;
 		this.project = project;

@@ -31,7 +31,8 @@ public class SecuredService {
 
 	@ExtDirectMethod(group = "secured")
 	@PreAuthorize("isAnonymous()")
-	public String setDate(@RequestParam(value = "id", defaultValue = "10") String id, @DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
+	public String setDate(@RequestParam(value = "id", defaultValue = "10") String id,
+			@DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
 		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		return id + "," + dateFormat.format(date);
 	}

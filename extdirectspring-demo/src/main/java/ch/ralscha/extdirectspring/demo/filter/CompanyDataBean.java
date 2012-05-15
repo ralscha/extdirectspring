@@ -77,7 +77,8 @@ public class CompanyDataBean {
 			company.setId(Integer.parseInt(nextLine[0]));
 			company.setCompany(nextLine[2]);
 
-			company.setDate(new GregorianCalendar(rand.nextInt(50) + 1950, rand.nextInt(12), rand.nextInt(28)).getTime());
+			company.setDate(new GregorianCalendar(rand.nextInt(50) + 1950, rand.nextInt(12), rand.nextInt(28))
+					.getTime());
 			company.setPrice(new BigDecimal(rand.nextFloat() * 100).setScale(2, RoundingMode.HALF_EVEN));
 			company.setSize(SizeEnum.values()[rand.nextInt(4)]);
 			company.setVisible(rand.nextBoolean());
@@ -209,11 +210,14 @@ public class CompanyDataBean {
 		public boolean apply(Company company) {
 			switch (comparison) {
 			case EQUAL:
-				return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) == 0;
+				return company.getPrice().compareTo(
+						new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) == 0;
 			case GREATER_THAN:
-				return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) > 0;
+				return company.getPrice().compareTo(
+						new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) > 0;
 			case LESS_THAN:
-				return company.getPrice().compareTo(new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) < 0;
+				return company.getPrice().compareTo(
+						new BigDecimal(value.doubleValue()).setScale(2, RoundingMode.HALF_UP)) < 0;
 			}
 			return false;
 		}

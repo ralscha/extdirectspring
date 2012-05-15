@@ -67,7 +67,8 @@ public class MyModelControlerTest extends JettyTest {
 		int closeBracePos = responseString.lastIndexOf("}");
 
 		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> api = mapper.readValue(responseString.substring(openBracePos, closeBracePos + 1), Map.class);
+		Map<String, Object> api = mapper
+				.readValue(responseString.substring(openBracePos, closeBracePos + 1), Map.class);
 
 		assertThat(api).hasSize(3);
 		assertThat(api).includes(entry("type", "remoting"));
@@ -93,8 +94,8 @@ public class MyModelControlerTest extends JettyTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void callMethod(String method) throws UnsupportedEncodingException, IOException, ClientProtocolException, JsonParseException,
-			JsonMappingException {
+	private void callMethod(String method) throws UnsupportedEncodingException, IOException, ClientProtocolException,
+			JsonParseException, JsonMappingException {
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
 		formparams.add(new BasicNameValuePair("extAction", "myModelController"));

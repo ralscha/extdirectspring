@@ -39,7 +39,8 @@ public class President {
 		if (imageUrl != null) {
 			this.imageUrl = imageUrl;
 		} else {
-			this.imageUrl = id + firstName.substring(0, 1).toLowerCase() + lastName.substring(0, 1).toLowerCase() + "_header_sm.jpg";
+			this.imageUrl = id + firstName.substring(0, 1).toLowerCase() + lastName.substring(0, 1).toLowerCase()
+					+ "_header_sm.jpg";
 		}
 	}
 

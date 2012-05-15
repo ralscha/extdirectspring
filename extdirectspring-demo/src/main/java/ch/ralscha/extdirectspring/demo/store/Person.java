@@ -137,8 +137,9 @@ public class Person {
 
 	@Override
 	public String toString() {
-		return "Person [fullName=" + fullName + ", firstName=" + firstName + ", lastName=" + lastName + ", id=" + id + ", street=" + street
-				+ ", city=" + city + ", state=" + state + ", zip=" + zip + ", country=" + country + "]";
+		return "Person [fullName=" + fullName + ", firstName=" + firstName + ", lastName=" + lastName + ", id=" + id
+				+ ", street=" + street + ", city=" + city + ", state=" + state + ", zip=" + zip + ", country="
+				+ country + "]";
 	}
 
 }

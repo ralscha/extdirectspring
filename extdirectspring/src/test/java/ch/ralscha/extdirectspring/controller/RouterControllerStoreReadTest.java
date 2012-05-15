@@ -63,14 +63,15 @@ public class RouterControllerStoreReadTest {
 
 		for (int i = 0; i < rows.size(); i += 2) {
 			assertThat(rows.get(i)).isEqualTo(new Row(i, "name: " + i + appendix, true, "" + (1000 + i)));
-			assertThat(rows.get(i + 1)).isEqualTo(new Row(i + 1, "firstname: " + (i + 1) + appendix, false, "" + (10 + i + 1)));
+			assertThat(rows.get(i + 1)).isEqualTo(
+					new Row(i + 1, "firstname: " + (i + 1) + appendix, false, "" + (10 + i + 1)));
 		}
 	}
 
 	@Test
 	public void testNoArgumentsNoRequestParameters() throws IOException {
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method1", null,
-				new TypeReference<List<Row>>() {/* nothing here */
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method1",
+				null, new TypeReference<List<Row>>() {/* nothing here */
 				});
 		assert100Rows(rows, "");
 	}
@@ -80,8 +81,8 @@ public class RouterControllerStoreReadTest {
 		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
 		storeRead.setQuery("ralph");
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method1", storeRead,
-				new TypeReference<List<Row>>() {/* nothing here */
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method1",
+				storeRead, new TypeReference<List<Row>>() {/* nothing here */
 				});
 		assert100Rows(rows, "");
 	}
@@ -93,8 +94,8 @@ public class RouterControllerStoreReadTest {
 
 	@Test
 	public void testSupportedArguments() throws IOException {
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method3", null,
-				new TypeReference<List<Row>>() {/* nothing here */
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method3",
+				null, new TypeReference<List<Row>>() {/* nothing here */
 				});
 		assert100Rows(rows, ":true;true:true;en");
 	}
@@ -380,8 +381,10 @@ public class RouterControllerStoreReadTest {
 		}
 	}
 
-	private ExtDirectStoreResponse<Row> executeWithExtDirectStoreReadRequest(ExtDirectStoreReadRequest storeRead) throws IOException {
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method4", 1, storeRead);
+	private ExtDirectStoreResponse<Row> executeWithExtDirectStoreReadRequest(ExtDirectStoreReadRequest storeRead)
+			throws IOException {
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method4", 1,
+				storeRead);
 		Map<String, Object> data = (Map<String, Object>) ((List) edRequest.get("data")).get(0);
 		List<Map<String, Object>> sorters = (List<Map<String, Object>>) data.get("sorters");
 
@@ -440,8 +443,9 @@ public class RouterControllerStoreReadTest {
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
-		ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderStoreRead", "method5", readRequest, new TypeReference<ExtDirectStoreResponse<Row>>() {
+		ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) ControllerUtil.sendAndReceive(
+				controller, "remoteProviderStoreRead", "method5", readRequest,
+				new TypeReference<ExtDirectStoreResponse<Row>>() {
 				});
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(50));
@@ -453,8 +457,8 @@ public class RouterControllerStoreReadTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResponse<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method5",
-				readRequest, null);
+		storeResponse = (ExtDirectStoreResponse<Row>) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderStoreRead", "method5", readRequest, null);
 	}
 
 	@Test
@@ -462,8 +466,9 @@ public class RouterControllerStoreReadTest {
 		Map<String, Object> readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "firstname");
 
-		ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderStoreRead", "method6", readRequest, new TypeReference<ExtDirectStoreResponse<Row>>() {
+		ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) ControllerUtil.sendAndReceive(
+				controller, "remoteProviderStoreRead", "method6", readRequest,
+				new TypeReference<ExtDirectStoreResponse<Row>>() {
 				});
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(50));
@@ -478,8 +483,8 @@ public class RouterControllerStoreReadTest {
 	@Test
 	public void testWithAdditionalParametersOptional() throws IOException {
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method7", null,
-				new TypeReference<List<Row>>() {
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method7",
+				null, new TypeReference<List<Row>>() {
 				});
 		assert100Rows(rows, ":null");
 
@@ -500,8 +505,9 @@ public class RouterControllerStoreReadTest {
 		Map<String, Object> readRequest = new HashMap<String, Object>();
 		readRequest.put("endDate", ISODateTimeFormat.dateTime().print(today));
 
-		ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderStoreRead", "method8", readRequest, new TypeReference<ExtDirectStoreResponse<Row>>() {
+		ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) ControllerUtil.sendAndReceive(
+				controller, "remoteProviderStoreRead", "method8", readRequest,
+				new TypeReference<ExtDirectStoreResponse<Row>>() {
 				});
 
 		assertThat(storeResponse.getRecords()).hasSize(50);
@@ -511,8 +517,8 @@ public class RouterControllerStoreReadTest {
 	@Test
 	public void testMetadata() throws IOException {
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "methodMetadata", 1,
-				new HashMap<String, Object>());
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "methodMetadata",
+				1, new HashMap<String, Object>());
 
 		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
 		MockHttpServletRequest request = new MockHttpServletRequest();
