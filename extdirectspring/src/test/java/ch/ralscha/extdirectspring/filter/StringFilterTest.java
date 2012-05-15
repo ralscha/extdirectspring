@@ -26,6 +26,7 @@ public class StringFilterTest {
 		StringFilter filter = new StringFilter("field", "value");
 		assertThat(filter.getValue()).isEqualTo("value");
 		assertThat(filter.getField()).isEqualTo("field");
-		assertThat(filter.toString()).isEqualTo("StringFilter [value=value, getField()=field]");
+		assertThat(filter.toString()).isEqualTo(
+				"StringFilter [value=value, getField()=field]");
 	}
 }

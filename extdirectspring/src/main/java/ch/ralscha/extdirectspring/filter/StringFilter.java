@@ -33,7 +33,8 @@ public class StringFilter extends Filter {
 
 	@Override
 	public String toString() {
-		return "StringFilter [value=" + value + ", getField()=" + getField() + "]";
+		return "StringFilter [value=" + value + ", getField()=" + getField()
+				+ "]";
 	}
 
 }

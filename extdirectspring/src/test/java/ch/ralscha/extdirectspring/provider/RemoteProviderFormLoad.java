@@ -35,12 +35,14 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 public class RemoteProviderFormLoad {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3")
-	public FormInfo method1(@RequestParam(value = "d") double d) {
+	public FormInfo method1(@RequestParam(value = "d")
+	double d) {
 		FormInfo info = new FormInfo();
 		info.setBack(d);
 		info.setAdmin(true);
 		info.setAge(31);
-		info.setBirthday(new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime());
+		info.setBirthday(new GregorianCalendar(1980, Calendar.JANUARY, 15)
+				.getTime());
 		info.setName("Bob");
 		info.setSalary(new BigDecimal("10000.55"));
 		return info;
@@ -52,29 +54,35 @@ public class RemoteProviderFormLoad {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-	public FormInfo method3(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {
+	public FormInfo method3(HttpServletResponse response,
+			HttpServletRequest request, HttpSession session, Locale locale) {
 		FormInfo fi = new FormInfo();
-		fi.setResult((response != null) + ";" + (request != null) + ";" + (session != null) + ";" + locale);
+		fi.setResult((response != null) + ";" + (request != null) + ";"
+				+ (session != null) + ";" + locale);
 		return fi;
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-	public FormInfo method4(Locale locale, @RequestParam(value = "id") int id) {
+	public FormInfo method4(Locale locale, @RequestParam(value = "id")
+	int id) {
 		FormInfo fi = new FormInfo();
 		fi.setResult("id=" + id + ";" + locale);
 		return fi;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3")
-	public ExtDirectFormLoadResult method5(@RequestParam(value = "id", defaultValue = "1") int id,
-			HttpServletRequest servletRequest) {
+	public ExtDirectFormLoadResult method5(
+			@RequestParam(value = "id", defaultValue = "1")
+			int id, HttpServletRequest servletRequest) {
 		FormInfo fi = new FormInfo();
 		fi.setResult(id + ";" + (servletRequest != null));
 		return new ExtDirectFormLoadResult(fi);
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-	public ExtDirectFormLoadResult method6(@RequestParam(value = "id", required = false) Integer id) {
+	public ExtDirectFormLoadResult method6(
+			@RequestParam(value = "id", required = false)
+			Integer id) {
 		return new ExtDirectFormLoadResult("TEST:" + id);
 	}
 

@@ -36,11 +36,16 @@ public class ApiCacheTest {
 
 		ApiCacheKey key1 = new ApiCacheKey(null, null, null, null, null, false);
 		ApiCacheKey key2 = new ApiCacheKey(null, null, null, null, null, true);
-		ApiCacheKey key3 = new ApiCacheKey(null, null, null, null, "group", true);
-		ApiCacheKey key4 = new ApiCacheKey(null, null, null, "polling", "group", true);
-		ApiCacheKey key5 = new ApiCacheKey(null, null, "remoting", "polling", "group", true);
-		ApiCacheKey key6 = new ApiCacheKey(null, "action", "remoting", "polling", "group", true);
-		ApiCacheKey key7 = new ApiCacheKey("api", "action", "remoting", "polling", "group", true);
+		ApiCacheKey key3 = new ApiCacheKey(null, null, null, null, "group",
+				true);
+		ApiCacheKey key4 = new ApiCacheKey(null, null, null, "polling",
+				"group", true);
+		ApiCacheKey key5 = new ApiCacheKey(null, null, "remoting", "polling",
+				"group", true);
+		ApiCacheKey key6 = new ApiCacheKey(null, "action", "remoting",
+				"polling", "group", true);
+		ApiCacheKey key7 = new ApiCacheKey("api", "action", "remoting",
+				"polling", "group", true);
 		ApiCache.INSTANCE.put(key1, "one");
 		ApiCache.INSTANCE.put(key3, "three");
 		ApiCache.INSTANCE.put(key4, "four");

@@ -47,6 +47,7 @@ public class ExceptionHandlingConfigInXmlTest {
 	private RouterController controller;
 
 	private MockHttpServletResponse response;
+
 	private MockHttpServletRequest request;
 
 	@Before
@@ -58,12 +59,14 @@ public class ExceptionHandlingConfigInXmlTest {
 	@Test
 	public void testExceptionInMapping() throws Exception {
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4b", 2,
-				new Object[] { 3, "xxx", "string.param" });
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson(
+				"remoteProviderSimple", "method4b", 2, new Object[] { 3, "xxx",
+						"string.param" });
 
 		request.setContent(ControllerUtil.writeAsByte(edRequest));
 		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -73,18 +76,21 @@ public class ExceptionHandlingConfigInXmlTest {
 		assertThat(resp.getTid()).isEqualTo(2);
 		assertThat(resp.getMessage()).isEqualTo("there is something wrong");
 		assertThat(resp.getResult()).isNull();
-		assertThat(resp.getWhere()).startsWith("java.lang.NumberFormatException: For input string: \"xxx\"");
+		assertThat(resp.getWhere()).startsWith(
+				"java.lang.NumberFormatException: For input string: \"xxx\"");
 	}
 
 	@Test
 	public void testBeanOrMethodNotFound() throws Exception {
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple2", "method4", 2,
-				new Object[] { 3, 2.5, "string.param" });
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson(
+				"remoteProviderSimple2", "method4", 2, new Object[] { 3, 2.5,
+						"string.param" });
 
 		request.setContent(ControllerUtil.writeAsByte(edRequest));
 		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -94,17 +100,20 @@ public class ExceptionHandlingConfigInXmlTest {
 		assertThat(resp.getTid()).isEqualTo(2);
 		assertThat(resp.getMessage()).isEqualTo("Panic!!!");
 		assertThat(resp.getResult()).isNull();
-		assertThat(resp.getWhere()).startsWith("Bean or Method 'remoteProviderSimple2.method4' not found");
+		assertThat(resp.getWhere()).startsWith(
+				"Bean or Method 'remoteProviderSimple2.method4' not found");
 
 	}
 
 	@Test
 	public void testExceptionInMappingWithNullValue() throws Exception {
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method11b", 3, null);
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson(
+				"remoteProviderSimple", "method11b", 3, null);
 
 		request.setContent(ControllerUtil.writeAsByte(edRequest));
 		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -114,16 +123,19 @@ public class ExceptionHandlingConfigInXmlTest {
 		assertThat(resp.getTid()).isEqualTo(3);
 		assertThat(resp.getMessage()).isEqualTo("not supported");
 		assertThat(resp.getResult()).isNull();
-		assertThat(resp.getWhere()).startsWith("java.lang.UnsupportedOperationException");
+		assertThat(resp.getWhere()).startsWith(
+				"java.lang.UnsupportedOperationException");
 	}
 
 	@Test
 	public void testExceptionNotInMapping() throws IOException {
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method11", 3, null);
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson(
+				"remoteProviderSimple", "method11", 3, null);
 
 		request.setContent(ControllerUtil.writeAsByte(edRequest));
 		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -133,7 +145,8 @@ public class ExceptionHandlingConfigInXmlTest {
 		assertThat(resp.getTid()).isEqualTo(3);
 		assertThat(resp.getMessage()).isEqualTo("Panic!!!");
 		assertThat(resp.getResult()).isNull();
-		assertThat(resp.getWhere()).startsWith("java.lang.NullPointerException");
+		assertThat(resp.getWhere())
+				.startsWith("java.lang.NullPointerException");
 
 	}
 }

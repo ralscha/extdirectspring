@@ -30,12 +30,15 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 public class ExtDirectResponse extends BaseResponse {
 
 	private int tid;
+
 	private String action;
+
 	private String method;
+
 	private Object result;
 
 	public ExtDirectResponse() {
-		//needs a default constructor for testing
+		// needs a default constructor for testing
 	}
 
 	public ExtDirectResponse(final ExtDirectRequest directRequest) {
@@ -74,8 +77,8 @@ public class ExtDirectResponse extends BaseResponse {
 
 	@Override
 	public String toString() {
-		return "ExtDirectResponse [tid=" + tid + ", action=" + action + ", method=" + method + ", result=" + result
-				+ "]";
+		return "ExtDirectResponse [tid=" + tid + ", action=" + action
+				+ ", method=" + method + ", result=" + result + "]";
 	}
 
 }

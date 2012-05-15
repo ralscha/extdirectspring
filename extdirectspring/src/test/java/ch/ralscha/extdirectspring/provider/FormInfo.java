@@ -21,11 +21,17 @@ import java.util.Date;
 public class FormInfo {
 
 	private String name;
+
 	private int age;
+
 	private boolean admin;
+
 	private Date birthday;
+
 	private BigDecimal salary;
+
 	private double back;
+
 	private String result;
 
 	public String getName() {

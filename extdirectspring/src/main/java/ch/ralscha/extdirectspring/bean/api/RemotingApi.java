@@ -32,12 +32,19 @@ import org.springframework.util.StringUtils;
 public final class RemotingApi {
 
 	private String descriptor;
+
 	private final String url;
+
 	private final String namespace;
+
 	private final String type = "remoting";
+
 	private final Map<String, List<Action>> actions;
+
 	private Integer timeout;
+
 	private Integer maxRetries;
+
 	private Object enableBuffer;
 
 	private final List<PollingProvider> pollingProviders;
@@ -51,7 +58,8 @@ public final class RemotingApi {
 
 		if (StringUtils.hasText(namespace)) {
 			this.namespace = namespace.trim();
-		} else {
+		}
+		else {
 			this.namespace = null;
 		}
 	}

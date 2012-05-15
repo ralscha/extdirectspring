@@ -23,16 +23,20 @@ import org.springframework.util.StringUtils;
 public final class PollingProvider {
 
 	private final String beanName;
+
 	private final String method;
+
 	private final String event;
 
-	public PollingProvider(final String beanName, final String method, final String event) {
+	public PollingProvider(final String beanName, final String method,
+			final String event) {
 		this.beanName = beanName;
 		this.method = method;
 
 		if (StringUtils.hasText(event)) {
 			this.event = event.trim();
-		} else {
+		}
+		else {
 			this.event = method;
 		}
 	}

@@ -26,16 +26,18 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
  * Class representing the response of a DirectStore request
  * 
  * @author Ralph Schaer
- * @param <T>
- *          Type of the entry inside the collection
+ * @param <T> Type of the entry inside the collection
  */
 @JsonSerialize(include = Inclusion.NON_NULL)
 @JsonPropertyOrder(value = { "metaData", "success", "total", "records" })
 public class ExtDirectStoreResponse<T> {
 
 	private Integer total;
+
 	private Collection<T> records;
+
 	private Boolean success;
+
 	private MetaData metaData;
 
 	public ExtDirectStoreResponse() {
@@ -46,15 +48,18 @@ public class ExtDirectStoreResponse<T> {
 		init(null, records, true);
 	}
 
-	public ExtDirectStoreResponse(final Integer total, final Collection<T> records) {
+	public ExtDirectStoreResponse(final Integer total,
+			final Collection<T> records) {
 		init(total, records, true);
 	}
 
-	public ExtDirectStoreResponse(final Integer total, final Collection<T> records, final Boolean success) {
+	public ExtDirectStoreResponse(final Integer total,
+			final Collection<T> records, final Boolean success) {
 		init(total, records, success);
 	}
 
-	protected void init(final Integer _total, final Collection<T> _records, final Boolean _success) {
+	protected void init(final Integer _total, final Collection<T> _records,
+			final Boolean _success) {
 		this.total = _total;
 		this.records = _records;
 		this.success = _success;
@@ -85,8 +90,9 @@ public class ExtDirectStoreResponse<T> {
 
 	@Override
 	public String toString() {
-		return "ExtDirectStoreResponse [total=" + total + ", records=" + records + ", success=" + success
-				+ ", metaData=" + metaData + "]";
+		return "ExtDirectStoreResponse [total=" + total + ", records="
+				+ records + ", success=" + success + ", metaData=" + metaData
+				+ "]";
 	}
 
 }

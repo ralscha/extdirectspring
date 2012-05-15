@@ -23,14 +23,20 @@ import java.util.Arrays;
 public final class ApiCacheKey {
 
 	private final String apiNs;
+
 	private final String actionNs;
+
 	private final String remotingApiVar;
+
 	private final String pollingUrlsVar;
+
 	private final String group;
+
 	private final boolean debug;
 
-	public ApiCacheKey(final String apiNs, final String actionNs, final String remotingApiVar,
-			final String pollingUrlsVar, final String group, final boolean debug) {
+	public ApiCacheKey(final String apiNs, final String actionNs,
+			final String remotingApiVar, final String pollingUrlsVar,
+			final String group, final boolean debug) {
 		this.apiNs = apiNs;
 		this.actionNs = actionNs;
 		this.remotingApiVar = remotingApiVar;
@@ -46,15 +52,20 @@ public final class ApiCacheKey {
 		}
 
 		ApiCacheKey other = (ApiCacheKey) o;
-		return (ExtDirectSpringUtil.equal(apiNs, other.apiNs) && ExtDirectSpringUtil.equal(actionNs, other.actionNs)
-				&& ExtDirectSpringUtil.equal(remotingApiVar, other.remotingApiVar)
-				&& ExtDirectSpringUtil.equal(pollingUrlsVar, other.pollingUrlsVar)
-				&& ExtDirectSpringUtil.equal(group, other.group) && ExtDirectSpringUtil.equal(debug, other.debug));
+		return (ExtDirectSpringUtil.equal(apiNs, other.apiNs)
+				&& ExtDirectSpringUtil.equal(actionNs, other.actionNs)
+				&& ExtDirectSpringUtil.equal(remotingApiVar,
+						other.remotingApiVar)
+				&& ExtDirectSpringUtil.equal(pollingUrlsVar,
+						other.pollingUrlsVar)
+				&& ExtDirectSpringUtil.equal(group, other.group) && ExtDirectSpringUtil
+					.equal(debug, other.debug));
 	}
 
 	@Override
 	public int hashCode() {
-		return Arrays.hashCode(new Object[] { apiNs, actionNs, remotingApiVar, pollingUrlsVar, group, debug });
+		return Arrays.hashCode(new Object[] { apiNs, actionNs, remotingApiVar,
+				pollingUrlsVar, group, debug });
 	}
 
 }

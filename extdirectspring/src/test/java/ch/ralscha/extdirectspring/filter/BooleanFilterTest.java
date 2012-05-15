@@ -26,7 +26,8 @@ public class BooleanFilterTest {
 		BooleanFilter filter = new BooleanFilter("field", false);
 		assertThat(filter.getValue()).isEqualTo(false);
 		assertThat(filter.getField()).isEqualTo("field");
-		assertThat(filter.toString()).isEqualTo("BooleanFilter [value=false, getField()=field]");
+		assertThat(filter.toString()).isEqualTo(
+				"BooleanFilter [value=false, getField()=field]");
 	}
 
 	@Test
@@ -34,6 +35,7 @@ public class BooleanFilterTest {
 		BooleanFilter filter = new BooleanFilter("xy", true);
 		assertThat(filter.getValue()).isEqualTo(true);
 		assertThat(filter.getField()).isEqualTo("xy");
-		assertThat(filter.toString()).isEqualTo("BooleanFilter [value=true, getField()=xy]");
+		assertThat(filter.toString()).isEqualTo(
+				"BooleanFilter [value=true, getField()=xy]");
 	}
 }

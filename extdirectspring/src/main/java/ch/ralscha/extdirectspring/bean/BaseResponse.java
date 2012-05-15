@@ -18,7 +18,9 @@ package ch.ralscha.extdirectspring.bean;
 public class BaseResponse {
 
 	protected String type;
+
 	protected String message;
+
 	protected String where;
 
 	public BaseResponse() {

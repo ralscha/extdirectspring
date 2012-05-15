@@ -40,7 +40,7 @@ public class RemoteProviderTreeLoad {
 
 	public static class Node {
 		public Node() {
-			//default constructor
+			// default constructor
 		}
 
 		public Node(String id, String text, boolean leaf) {
@@ -51,7 +51,9 @@ public class RemoteProviderTreeLoad {
 		}
 
 		public String id;
+
 		public String text;
+
 		public boolean leaf;
 
 		@Override
@@ -80,7 +82,8 @@ public class RemoteProviderTreeLoad {
 				if (other.id != null) {
 					return false;
 				}
-			} else if (!id.equals(other.id)) {
+			}
+			else if (!id.equals(other.id)) {
 				return false;
 			}
 			if (leaf != other.leaf) {
@@ -90,7 +93,8 @@ public class RemoteProviderTreeLoad {
 				if (other.text != null) {
 					return false;
 				}
-			} else if (!text.equals(other.text)) {
+			}
+			else if (!text.equals(other.text)) {
 				return false;
 			}
 			return true;
@@ -99,30 +103,36 @@ public class RemoteProviderTreeLoad {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "group1")
-	public List<Node> method1(@RequestParam("node") String node) {
+	public List<Node> method1(@RequestParam("node")
+	String node) {
 		return createTreeList(node);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD)
-	public List<Node> method2(@RequestParam("node") String node,
-			@RequestParam(defaultValue = "defaultValue") String foo, @DateTimeFormat(iso = ISO.DATE) LocalDate today) {
+	public List<Node> method2(@RequestParam("node")
+	String node, @RequestParam(defaultValue = "defaultValue")
+	String foo, @DateTimeFormat(iso = ISO.DATE)
+	LocalDate today) {
 		return createTreeList(node, ":" + foo + ";" + today.toString());
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "group3")
-	public List<Node> method3(@RequestParam("node") String node, HttpServletResponse response,
-			HttpServletRequest request, @RequestParam(defaultValue = "defaultValue") String foo, HttpSession session,
-			Locale locale, Principal principal) {
+	public List<Node> method3(@RequestParam("node")
+	String node, HttpServletResponse response, HttpServletRequest request,
+			@RequestParam(defaultValue = "defaultValue")
+			String foo, HttpSession session, Locale locale, Principal principal) {
 
-		return createTreeList(node, ":" + foo + ";" + (response != null) + ";" + (request != null) + ";"
-				+ (session != null) + ";" + locale);
+		return createTreeList(node, ":" + foo + ";" + (response != null) + ";"
+				+ (request != null) + ";" + (session != null) + ";" + locale);
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.TREE_LOAD)
-	public List<Node> method4(@RequestParam("node") String node, HttpServletResponse response,
-			@RequestHeader Boolean aHeader, HttpServletRequest request) {
+	public List<Node> method4(@RequestParam("node")
+	String node, HttpServletResponse response, @RequestHeader
+	Boolean aHeader, HttpServletRequest request) {
 
-		return createTreeList(node, ":" + aHeader + ";" + (response != null) + ";" + (request != null));
+		return createTreeList(node, ":" + aHeader + ";" + (response != null)
+				+ ";" + (request != null));
 	}
 
 	private List<Node> createTreeList(String id) {
@@ -135,10 +145,12 @@ public class RemoteProviderTreeLoad {
 			for (int i = 1; i <= 5; ++i) {
 				result.add(new Node("n" + i, "Node " + i + appendix, false));
 			}
-		} else if (id.length() == 2) {
+		}
+		else if (id.length() == 2) {
 			String num = id.substring(1);
 			for (int i = 1; i <= 5; ++i) {
-				result.add(new Node("id" + i, "Node " + num + "." + i + appendix, true));
+				result.add(new Node("id" + i, "Node " + num + "." + i
+						+ appendix, true));
 			}
 		}
 		return result;

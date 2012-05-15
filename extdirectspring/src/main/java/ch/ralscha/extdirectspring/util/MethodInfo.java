@@ -38,33 +38,43 @@ import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 public final class MethodInfo {
 
 	private String group;
+
 	private ExtDirectMethodType type;
+
 	private boolean synchronizeOnSession;
+
 	private boolean streamResponse;
 
 	private List<ParameterInfo> parameters;
+
 	private Method method;
+
 	private String forwardPath;
 
 	private Class<?> collectionType;
 
 	private Action action;
+
 	private PollingProvider pollingProvider;
 
-	public MethodInfo(final Class<?> clazz, final String beanName, final Method method) {
+	public MethodInfo(final Class<?> clazz, final String beanName,
+			final Method method) {
 
-		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils
+				.findAnnotation(method, ExtDirectMethod.class);
 		this.type = extDirectMethodAnnotation.value();
 
 		if (StringUtils.hasText(extDirectMethodAnnotation.group())) {
 			this.group = extDirectMethodAnnotation.group().trim();
-		} else {
+		}
+		else {
 			this.group = null;
 		}
 
 		if (type != ExtDirectMethodType.FORM_POST) {
 			this.method = method;
-			this.synchronizeOnSession = extDirectMethodAnnotation.synchronizeOnSession();
+			this.synchronizeOnSession = extDirectMethodAnnotation
+					.synchronizeOnSession();
 			this.streamResponse = extDirectMethodAnnotation.streamResponse();
 
 			this.parameters = buildParameterList(method);
@@ -81,11 +91,14 @@ public final class MethodInfo {
 				}
 			}
 
-		} else {
-			RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
+		}
+		else {
+			RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(
+					method, RequestMapping.class);
 			if (methodAnnotation != null) {
 
-				RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
+				RequestMapping classAnnotation = AnnotationUtils
+						.findAnnotation(clazz, RequestMapping.class);
 
 				String path = null;
 				if (hasValue(classAnnotation)) {
@@ -96,7 +109,8 @@ public final class MethodInfo {
 					String methodPath = methodAnnotation.value()[0];
 					if (path != null) {
 						path = path + methodPath;
-					} else {
+					}
+					else {
 						path = methodPath;
 					}
 				}
@@ -115,7 +129,8 @@ public final class MethodInfo {
 		case SIMPLE:
 			int paramLength = 0;
 			for (ParameterInfo parameter : this.parameters) {
-				if (!parameter.isSupportedParameter() && !parameter.isHasRequestHeaderAnnotation()) {
+				if (!parameter.isSupportedParameter()
+						&& !parameter.isHasRequestHeaderAnnotation()) {
 					paramLength++;
 				}
 			}
@@ -124,7 +139,8 @@ public final class MethodInfo {
 		case SIMPLE_NAMED:
 			List<String> parameterNames = new ArrayList<String>();
 			for (ParameterInfo parameter : this.parameters) {
-				if (!parameter.isSupportedParameter() && !parameter.isHasRequestHeaderAnnotation()) {
+				if (!parameter.isSupportedParameter()
+						&& !parameter.isHasRequestHeaderAnnotation()) {
 					parameterNames.add(parameter.getName());
 				}
 			}
@@ -140,14 +156,16 @@ public final class MethodInfo {
 			this.action = new Action(method.getName(), 0, true);
 			break;
 		case POLL:
-			this.pollingProvider = new PollingProvider(beanName, method.getName(), extDirectMethodAnnotation.event());
+			this.pollingProvider = new PollingProvider(beanName,
+					method.getName(), extDirectMethodAnnotation.event());
 			break;
 		}
 	}
 
 	private boolean hasValue(final RequestMapping requestMapping) {
-		return (requestMapping != null && requestMapping.value() != null && requestMapping.value().length > 0 && StringUtils
-				.hasText(requestMapping.value()[0]));
+		return (requestMapping != null && requestMapping.value() != null
+				&& requestMapping.value().length > 0 && StringUtils
+					.hasText(requestMapping.value()[0]));
 	}
 
 	private static List<ParameterInfo> buildParameterList(final Method method) {
@@ -155,7 +173,8 @@ public final class MethodInfo {
 
 		Class<?>[] parameterTypes = method.getParameterTypes();
 
-		Method methodWithAnnotation = findMethodWithAnnotation(method, ExtDirectMethod.class);
+		Method methodWithAnnotation = findMethodWithAnnotation(method,
+				ExtDirectMethod.class);
 		if (methodWithAnnotation == null) {
 			methodWithAnnotation = method;
 		}
@@ -208,16 +227,15 @@ public final class MethodInfo {
 	}
 
 	/**
-	 * Find a method that is annotated with a specific annotation. Starts with the
-	 * method and goes up to the superclasses of the class.
+	 * Find a method that is annotated with a specific annotation. Starts with
+	 * the method and goes up to the superclasses of the class.
 	 * 
-	 * @param method
-	 *          the starting method
-	 * @param annotation
-	 *          the annotation to look for
+	 * @param method the starting method
+	 * @param annotation the annotation to look for
 	 * @return the method if there is a annotated method, else null
 	 */
-	public static Method findMethodWithAnnotation(final Method method, final Class<? extends Annotation> annotation) {
+	public static Method findMethodWithAnnotation(final Method method,
+			final Class<? extends Annotation> annotation) {
 		if (method.isAnnotationPresent(annotation)) {
 			return method;
 		}
@@ -225,11 +243,13 @@ public final class MethodInfo {
 		Class<?> cl = method.getDeclaringClass();
 		while (cl != null && cl != Object.class) {
 			try {
-				Method equivalentMethod = cl.getDeclaredMethod(method.getName(), method.getParameterTypes());
+				Method equivalentMethod = cl.getDeclaredMethod(
+						method.getName(), method.getParameterTypes());
 				if (equivalentMethod.isAnnotationPresent(annotation)) {
 					return equivalentMethod;
 				}
-			} catch (NoSuchMethodException e) {
+			}
+			catch (NoSuchMethodException e) {
 				// do nothing here
 			}
 			cl = cl.getSuperclass();

@@ -20,33 +20,46 @@ import java.util.Map;
 import org.springframework.util.StringUtils;
 
 /**
- * Configuration class to configure the way exception messages get sent back to the client 
+ * Configuration class to configure the way exception messages get sent back to
+ * the client
  * 
- * If there is a mapping for the exception in exceptionToMessage and the value is not null send this value.
- * If there is a mapping for the exception in exceptionToMessage and the value is null send exception.getMessage().
- * If there is no mapping and sendExceptionMessage is true send exception.getMessage().
- * If there is no mapping and sendExceptionMessage is false send defaultExceptionMessage.
+ * If there is a mapping for the exception in exceptionToMessage and the value
+ * is not null send this value. If there is a mapping for the exception in
+ * exceptionToMessage and the value is null send exception.getMessage(). If
+ * there is no mapping and sendExceptionMessage is true send
+ * exception.getMessage(). If there is no mapping and sendExceptionMessage is
+ * false send defaultExceptionMessage.
  * 
- * If sendStacktrace is true, send the full stacktrace in the json field 'where'.
+ * If sendStacktrace is true, send the full stacktrace in the json field
+ * 'where'.
  * 
- * If alwaysWrapStoreResponse is true, always wrap a response of a STORE_READ and STORE_MODIFY response 
- * in a ExtDirectStoreResponse object
+ * If alwaysWrapStoreResponse is true, always wrap a response of a STORE_READ
+ * and STORE_MODIFY response in a ExtDirectStoreResponse object
  * 
- * If synchronizeOnSession is true, execution of the methods is synchronized on the session,
- * to serialize parallel invocations from the same client.
+ * If synchronizeOnSession is true, execution of the methods is synchronized on
+ * the session, to serialize parallel invocations from the same client.
  * 
  * @author Ralph Schaer
  */
 public class Configuration {
 	private String defaultExceptionMessage = "Server Error";
+
 	private boolean sendExceptionMessage = false;
+
 	private boolean sendStacktrace = false;
+
 	private Map<Class<?>, String> exceptionToMessage;
+
 	private boolean alwaysWrapStoreResponse = false;
+
 	private boolean synchronizeOnSession = false;
+
 	private Integer timeout = null;
+
 	private Integer maxRetries = null;
+
 	private Object enableBuffer = null;
+
 	private boolean streamResponse = false;
 
 	public String getDefaultExceptionMessage() {
@@ -77,7 +90,8 @@ public class Configuration {
 		return exceptionToMessage;
 	}
 
-	public void setExceptionToMessage(final Map<Class<?>, String> exceptionToMessage) {
+	public void setExceptionToMessage(
+			final Map<Class<?>, String> exceptionToMessage) {
 		this.exceptionToMessage = exceptionToMessage;
 	}
 
@@ -129,7 +143,7 @@ public class Configuration {
 				return message;
 			}
 
-			//map entry with a null value
+			// map entry with a null value
 			if (getExceptionToMessage().containsKey(exception.getClass())) {
 				return exception.getMessage();
 			}

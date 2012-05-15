@@ -39,6 +39,7 @@ import org.junit.Test;
 public class ExceptionFormPostControlerTest extends JettyTest {
 
 	private HttpClient client;
+
 	private HttpPost post;
 
 	@Before
@@ -52,12 +53,14 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
-		formparams.add(new BasicNameValuePair("extAction", "exceptionFormPostController"));
+		formparams.add(new BasicNameValuePair("extAction",
+				"exceptionFormPostController"));
 		formparams.add(new BasicNameValuePair("extMethod", "throwAException"));
 		formparams.add(new BasicNameValuePair("extType", "rpc"));
 		formparams.add(new BasicNameValuePair("extUpload", "false"));
 
-		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
+		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams,
+				"UTF-8");
 
 		post.setEntity(postEntity);
 
@@ -68,13 +71,16 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
-		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+		Map<String, Object> rootAsMap = mapper.readValue(responseString,
+				Map.class);
 		assertThat(rootAsMap).hasSize(6);
 		assertThat(rootAsMap.get("method")).isEqualTo("throwAException");
 		assertThat(rootAsMap.get("type")).isEqualTo("exception");
-		assertThat(rootAsMap.get("action")).isEqualTo("exceptionFormPostController");
+		assertThat(rootAsMap.get("action")).isEqualTo(
+				"exceptionFormPostController");
 		assertThat(rootAsMap.get("tid")).isEqualTo(3);
 		assertThat(rootAsMap.get("message")).isEqualTo("server error");
-		assertThat(rootAsMap.get("where")).isEqualTo("java.lang.NullPointerException: a null pointer");
+		assertThat(rootAsMap.get("where")).isEqualTo(
+				"java.lang.NullPointerException: a null pointer");
 	}
 }

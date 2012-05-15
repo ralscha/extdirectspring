@@ -24,9 +24,13 @@ package ch.ralscha.extdirectspring.bean;
 public class ExtDirectRequest {
 
 	private String action;
+
 	private String method;
+
 	private String type;
+
 	private int tid;
+
 	private Object data;
 
 	public String getAction() {
@@ -71,8 +75,8 @@ public class ExtDirectRequest {
 
 	@Override
 	public String toString() {
-		return "ExtDirectRequest [action=" + action + ", method=" + method + ", type=" + type + ", tid=" + tid
-				+ ", data=" + data + "]";
+		return "ExtDirectRequest [action=" + action + ", method=" + method
+				+ ", type=" + type + ", tid=" + tid + ", data=" + data + "]";
 	}
 
 }

@@ -38,25 +38,31 @@ public final class ParameterInfo {
 	private static final LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
 
 	private String name;
+
 	private TypeDescriptor typeDescriptor;
 
 	private boolean supportedParameter;
 
 	private boolean hasRequestParamAnnotation;
+
 	private boolean hasRequestHeaderAnnotation;
+
 	private boolean required;
+
 	private String defaultValue;
 
 	public ParameterInfo(final Method method, final int paramIndex) {
 
 		MethodParameter methodParam = new MethodParameter(method, paramIndex);
 		methodParam.initParameterNameDiscovery(discoverer);
-		GenericTypeResolver.resolveParameterType(methodParam, method.getClass());
+		GenericTypeResolver
+				.resolveParameterType(methodParam, method.getClass());
 
 		this.name = methodParam.getParameterName();
 		this.typeDescriptor = new TypeDescriptor(methodParam);
 
-		this.supportedParameter = SupportedParameters.isSupported(typeDescriptor.getObjectType());
+		this.supportedParameter = SupportedParameters
+				.isSupported(typeDescriptor.getObjectType());
 
 		Annotation[] paramAnnotations = methodParam.getParameterAnnotations();
 
@@ -67,18 +73,21 @@ public final class ParameterInfo {
 					this.name = requestParam.value();
 				}
 				this.required = requestParam.required();
-				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()) ? null
+				this.defaultValue = ValueConstants.DEFAULT_NONE
+						.equals(requestParam.defaultValue()) ? null
 						: requestParam.defaultValue();
 				this.hasRequestParamAnnotation = true;
 				this.hasRequestHeaderAnnotation = false;
 				break;
-			} else if (RequestHeader.class.isInstance(paramAnn)) {
+			}
+			else if (RequestHeader.class.isInstance(paramAnn)) {
 				RequestHeader requestHeader = (RequestHeader) paramAnn;
 				if (StringUtils.hasText(requestHeader.value())) {
 					this.name = requestHeader.value();
 				}
 				this.required = requestHeader.required();
-				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestHeader.defaultValue()) ? null
+				this.defaultValue = ValueConstants.DEFAULT_NONE
+						.equals(requestHeader.defaultValue()) ? null
 						: requestHeader.defaultValue();
 				this.hasRequestParamAnnotation = false;
 				this.hasRequestHeaderAnnotation = true;
@@ -87,9 +96,10 @@ public final class ParameterInfo {
 		}
 
 		if (this.name == null) {
-			throw new IllegalStateException("No parameter name specified for argument of type ["
-					+ methodParam.getParameterType().getName()
-					+ "], and no parameter name information found in class file either.");
+			throw new IllegalStateException(
+					"No parameter name specified for argument of type ["
+							+ methodParam.getParameterType().getName()
+							+ "], and no parameter name information found in class file either.");
 
 		}
 	}

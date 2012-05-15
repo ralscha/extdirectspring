@@ -33,7 +33,8 @@ public class BooleanFilter extends Filter {
 
 	@Override
 	public String toString() {
-		return "BooleanFilter [value=" + value + ", getField()=" + getField() + "]";
+		return "BooleanFilter [value=" + value + ", getField()=" + getField()
+				+ "]";
 	}
 
 }
