@@ -18,9 +18,13 @@ package ch.ralscha.extdirectspring.util;
 public class JsonTestBean {
 
 	private Integer a;
+
 	private String b;
+
 	private String c;
+
 	private Boolean d;
+
 	private Integer[] e;
 
 	public JsonTestBean() {

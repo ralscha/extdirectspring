@@ -26,12 +26,14 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * Special response of a DirectStore request. This class is useful if your data
- * is already in JSON format. Add the json to the records collection and the response will
- * contain the unfiltered json. There is no validation that the added json string is valid. 
+ * is already in JSON format. Add the json to the records collection and the
+ * response will contain the unfiltered json. There is no validation that the
+ * added json string is valid.
  * 
  * @author Ralph Schaer
  */
-public class ExtDirectRawJsonStoreResponse extends ExtDirectStoreResponse<String> {
+public class ExtDirectRawJsonStoreResponse extends
+		ExtDirectStoreResponse<String> {
 
 	public ExtDirectRawJsonStoreResponse() {
 		// default constructor
@@ -41,11 +43,13 @@ public class ExtDirectRawJsonStoreResponse extends ExtDirectStoreResponse<String
 		super(null, records, true);
 	}
 
-	public ExtDirectRawJsonStoreResponse(final Integer total, final Collection<String> records) {
+	public ExtDirectRawJsonStoreResponse(final Integer total,
+			final Collection<String> records) {
 		super(total, records, true);
 	}
 
-	public ExtDirectRawJsonStoreResponse(final Integer total, final Collection<String> records, final Boolean success) {
+	public ExtDirectRawJsonStoreResponse(final Integer total,
+			final Collection<String> records, final Boolean success) {
 		super(total, records, success);
 	}
 
@@ -57,15 +61,18 @@ public class ExtDirectRawJsonStoreResponse extends ExtDirectStoreResponse<String
 
 	@Override
 	public String toString() {
-		return "ExtDirectRawJsonStoreResponse [getRecords()=" + getRecords() + ", getTotal()=" + getTotal()
-				+ ", isSuccess()=" + isSuccess() + ", getMetaData()=" + getMetaData() + "]";
+		return "ExtDirectRawJsonStoreResponse [getRecords()=" + getRecords()
+				+ ", getTotal()=" + getTotal() + ", isSuccess()=" + isSuccess()
+				+ ", getMetaData()=" + getMetaData() + "]";
 	}
 
-	private final static class CollectionStringSerializer extends JsonSerializer<Collection<String>> {
+	private final static class CollectionStringSerializer extends
+			JsonSerializer<Collection<String>> {
 
 		@Override
-		public void serialize(final Collection<String> values, final JsonGenerator jgen,
-				final SerializerProvider provider) throws IOException, JsonProcessingException {
+		public void serialize(final Collection<String> values,
+				final JsonGenerator jgen, final SerializerProvider provider)
+				throws IOException, JsonProcessingException {
 
 			StringBuilder sb = new StringBuilder();
 			sb.append("[");

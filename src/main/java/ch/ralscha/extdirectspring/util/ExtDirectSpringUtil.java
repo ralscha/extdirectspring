@@ -38,16 +38,14 @@ import org.springframework.util.ReflectionUtils.MethodFilter;
 public final class ExtDirectSpringUtil {
 
 	private ExtDirectSpringUtil() {
-		//singleton
+		// singleton
 	}
 
 	/**
 	 * Checks if two objects are equal. Returns true if both objects are null
 	 * 
-	 * @param a
-	 *          object one
-	 * @param b
-	 *          object two
+	 * @param a object one
+	 * @param b object two
 	 * @return true if objects are equal
 	 */
 	public static boolean equal(final Object a, final Object b) {
@@ -57,22 +55,19 @@ public final class ExtDirectSpringUtil {
 	/**
 	 * Invokes a method on a Spring managed bean.
 	 * 
-	 * @param context
-	 *          a Spring application context
-	 * @param beanName
-	 *          the name of the bean
-	 * @param methodInfo
-	 *          the methodInfo object
-	 * @param params
-	 *          the parameters
+	 * @param context a Spring application context
+	 * @param beanName the name of the bean
+	 * @param methodInfo the methodInfo object
+	 * @param params the parameters
 	 * @return the result of the method invokation
-	 * @throws IllegalArgumentException
-	 *           if there is no bean in the context
+	 * @throws IllegalArgumentException if there is no bean in the context
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public static Object invoke(final ApplicationContext context, final String beanName, final MethodInfo methodInfo,
-			final Object[] params) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public static Object invoke(final ApplicationContext context,
+			final String beanName, final MethodInfo methodInfo,
+			final Object[] params) throws IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
 		Object bean = context.getBean(beanName);
 
 		Method handlerMethod = methodInfo.getMethod();
@@ -90,17 +85,20 @@ public final class ExtDirectSpringUtil {
 	}
 
 	/**
-	 * Selects handler methods for the given handler type. Callers of this method define handler methods
-	 * of interest through the {@link MethodFilter} parameter.
+	 * Selects handler methods for the given handler type. Callers of this
+	 * method define handler methods of interest through the
+	 * {@link MethodFilter} parameter.
 	 * 
-	 * From the Spring 3.1 Source Code. 
-	 * We can delete this method as soon we update the library to Spring 3.1
+	 * From the Spring 3.1 Source Code. We can delete this method as soon we
+	 * update the library to Spring 3.1
 	 * 
 	 * @param handlerType the handler type to search handler methods on
-	 * @param handlerMethodFilter a {@link MethodFilter} to help recognize handler methods of interest
+	 * @param handlerMethodFilter a {@link MethodFilter} to help recognize
+	 * handler methods of interest
 	 * @return the selected methods, or an empty set
 	 */
-	public static Set<Method> selectMethods(final Class<?> handlerType, final MethodFilter handlerMethodFilter) {
+	public static Set<Method> selectMethods(final Class<?> handlerType,
+			final MethodFilter handlerMethodFilter) {
 		final Set<Method> handlerMethods = new LinkedHashSet<Method>();
 		Set<Class<?>> handlerTypes = new LinkedHashSet<Class<?>>();
 
@@ -115,17 +113,22 @@ public final class ExtDirectSpringUtil {
 		}
 
 		for (Class<?> currentHandlerType : handlerTypes) {
-			final Class<?> targetClass = (specificHandlerType != null ? specificHandlerType : currentHandlerType);
-			ReflectionUtils.doWithMethods(currentHandlerType, new ReflectionUtils.MethodCallback() {
-				public void doWith(Method method) {
-					Method specificMethod = ClassUtils.getMostSpecificMethod(method, targetClass);
-					Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(specificMethod);
-					if (handlerMethodFilter.matches(specificMethod)
-							&& (bridgedMethod == specificMethod || !handlerMethodFilter.matches(bridgedMethod))) {
-						handlerMethods.add(specificMethod);
-					}
-				}
-			}, ReflectionUtils.USER_DECLARED_METHODS);
+			final Class<?> targetClass = (specificHandlerType != null ? specificHandlerType
+					: currentHandlerType);
+			ReflectionUtils.doWithMethods(currentHandlerType,
+					new ReflectionUtils.MethodCallback() {
+						public void doWith(Method method) {
+							Method specificMethod = ClassUtils
+									.getMostSpecificMethod(method, targetClass);
+							Method bridgedMethod = BridgeMethodResolver
+									.findBridgedMethod(specificMethod);
+							if (handlerMethodFilter.matches(specificMethod)
+									&& (bridgedMethod == specificMethod || !handlerMethodFilter
+											.matches(bridgedMethod))) {
+								handlerMethods.add(specificMethod);
+							}
+						}
+					}, ReflectionUtils.USER_DECLARED_METHODS);
 		}
 		return handlerMethods;
 	}

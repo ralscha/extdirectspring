@@ -29,11 +29,15 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 public final class Action {
 
 	private final String name;
+
 	private final Integer len;
+
 	private final List<String> params;
+
 	private final Boolean formHandler;
 
-	public Action(final String name, final Integer len, final Boolean formHandler) {
+	public Action(final String name, final Integer len,
+			final Boolean formHandler) {
 		this.name = name;
 		this.len = len;
 		this.formHandler = formHandler;

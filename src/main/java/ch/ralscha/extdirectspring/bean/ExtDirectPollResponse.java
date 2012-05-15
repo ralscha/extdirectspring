@@ -27,6 +27,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 public class ExtDirectPollResponse extends BaseResponse {
 
 	private String name;
+
 	private Object data;
 
 	public ExtDirectPollResponse() {

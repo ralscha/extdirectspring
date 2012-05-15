@@ -32,8 +32,9 @@ public class SimpleService {
 		return null;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "itest_simple", streamResponse=true)
-	public String echo(String userId, @RequestParam(defaultValue = "10") int logLevel) {
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "itest_simple", streamResponse = true)
+	public String echo(String userId, @RequestParam(defaultValue = "10")
+	int logLevel) {
 		return String.format("UserId: %s LogLevel: %d", userId, logLevel);
 	}
 }

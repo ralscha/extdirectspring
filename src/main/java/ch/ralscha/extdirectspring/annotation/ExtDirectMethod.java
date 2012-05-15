@@ -51,25 +51,26 @@ public @interface ExtDirectMethod {
 	String event() default "";
 
 	/**
-	 * Optional parameter. If true execution of the method is synchronized on the session,
-	 * to serialize parallel invocations from the same client. 
-	 * Not feasible for FORM_POST methods
+	 * Optional parameter. If true execution of the method is synchronized on
+	 * the session, to serialize parallel invocations from the same client. Not
+	 * feasible for FORM_POST methods
 	 */
 	boolean synchronizeOnSession() default false;
 
 	/**
-	 * Optional parameter. If true json response will be streamed into the response, without setting
-	 * the Content-Length HTTP header. Default behaviour (false) is writing the response into a buffer,
-	 * setting the Content-Length header and writing the buffer into the response.
-	 * Not feasible for FORM_POST methods
+	 * Optional parameter. If true json response will be streamed into the
+	 * response, without setting the Content-Length HTTP header. Default
+	 * behaviour (false) is writing the response into a buffer, setting the
+	 * Content-Length header and writing the buffer into the response. Not
+	 * feasible for FORM_POST methods
 	 */
 	boolean streamResponse() default false;
 
 	/**
-	 * Optional parameter. Specifies the type of an object in a collection.
-	 * If the generic type of a collection is an interface the library cannot
-	 * figure out the type of the implementation class. For this scenario specify
-	 * the class with this parameter.
+	 * Optional parameter. Specifies the type of an object in a collection. If
+	 * the generic type of a collection is an interface the library cannot
+	 * figure out the type of the implementation class. For this scenario
+	 * specify the class with this parameter.
 	 * 
 	 * STORE_MODIFY methods
 	 */

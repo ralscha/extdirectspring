@@ -37,6 +37,7 @@ public class BookServiceTest {
 	private RouterController controller;
 
 	private MockHttpServletResponse response;
+
 	private MockHttpServletRequest request;
 
 	@Before

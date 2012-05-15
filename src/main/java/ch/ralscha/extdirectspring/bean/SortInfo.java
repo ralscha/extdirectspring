@@ -19,6 +19,7 @@ import java.util.Map;
 
 public class SortInfo {
 	private String property;
+
 	private SortDirection direction;
 
 	public SortInfo(String property, SortDirection direction) {
@@ -38,14 +39,16 @@ public class SortInfo {
 		String property = (String) jsonData.get("property");
 		String direction = (String) jsonData.get("direction");
 
-		SortInfo sortInfo = new SortInfo(property, SortDirection.fromString(direction));
+		SortInfo sortInfo = new SortInfo(property,
+				SortDirection.fromString(direction));
 
 		return sortInfo;
 	}
 
 	@Override
 	public String toString() {
-		return "SortInfo [property=" + property + ", direction=" + direction + "]";
+		return "SortInfo [property=" + property + ", direction=" + direction
+				+ "]";
 	}
 
 }

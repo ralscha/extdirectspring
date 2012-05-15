@@ -17,10 +17,11 @@ package ch.ralscha.extdirectspring.store;
 
 public class Book extends BaseModel {
 	private String title;
+
 	private String isbn;
 
 	public Book() {
-		//default constructor
+		// default constructor
 	}
 
 	public Book(Integer id, String title, String isbn) {

@@ -20,6 +20,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class User {
 	private String name;
+
 	private int age;
 
 	@Email

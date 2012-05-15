@@ -37,8 +37,8 @@ import org.junit.Test;
 public class SecuredServiceTest extends JettyTest {
 
 	@Test
-	public void callSetDate() throws UnsupportedEncodingException, IOException, ClientProtocolException,
-			JsonParseException, JsonMappingException {
+	public void callSetDate() throws UnsupportedEncodingException, IOException,
+			ClientProtocolException, JsonParseException, JsonMappingException {
 
 		HttpClient client = new DefaultHttpClient();
 
@@ -57,10 +57,13 @@ public class SecuredServiceTest extends JettyTest {
 		String responseString = EntityUtils.toString(entity);
 
 		assertThat(responseString).isNotNull();
-		assertThat(responseString.startsWith("[") && responseString.endsWith("]")).isTrue();
+		assertThat(
+				responseString.startsWith("[") && responseString.endsWith("]"))
+				.isTrue();
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
-		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
+		Map<String, Object> rootAsMap = mapper.readValue(
+				responseString.substring(1, responseString.length() - 1),
 				Map.class);
 		assertThat(rootAsMap).hasSize(5);
 		assertThat(rootAsMap.get("result")).isEqualTo("10,26.04.2012");

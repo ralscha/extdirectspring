@@ -48,6 +48,7 @@ public class ExceptionHandlingTest {
 	private RouterController controller;
 
 	private MockHttpServletResponse response;
+
 	private MockHttpServletRequest request;
 
 	@Before
@@ -111,7 +112,8 @@ public class ExceptionHandlingTest {
 		configuration.setDefaultExceptionMessage("an error occured");
 		ExtDirectResponse resp = runTest(configuration);
 		assertThat(resp.getMessage()).isEqualTo("an error occured");
-		assertThat(resp.getWhere()).startsWith("java.lang.NumberFormatException");
+		assertThat(resp.getWhere()).startsWith(
+				"java.lang.NumberFormatException");
 	}
 
 	@Test
@@ -121,7 +123,8 @@ public class ExceptionHandlingTest {
 		configuration.setSendExceptionMessage(true);
 		ExtDirectResponse resp = runTest(configuration);
 		assertThat(resp.getMessage()).isEqualTo("For input string: \"xxx\"");
-		assertThat(resp.getWhere()).startsWith("java.lang.NumberFormatException");
+		assertThat(resp.getWhere()).startsWith(
+				"java.lang.NumberFormatException");
 
 	}
 
@@ -134,11 +137,13 @@ public class ExceptionHandlingTest {
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest11(configuration);
 		assertThat(resp.getMessage()).isEqualTo("null pointer");
-		assertThat(resp.getWhere()).startsWith("java.lang.NullPointerException");
+		assertThat(resp.getWhere())
+				.startsWith("java.lang.NullPointerException");
 	}
 
 	@Test
-	public void testExceptionToMessageNullValueWithStacktrace() throws Exception {
+	public void testExceptionToMessageNullValueWithStacktrace()
+			throws Exception {
 		Configuration configuration = new Configuration();
 		configuration.setSendExceptionMessage(false);
 		configuration.setSendStacktrace(true);
@@ -147,18 +152,23 @@ public class ExceptionHandlingTest {
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest(configuration);
 		assertThat(resp.getMessage()).isEqualTo("For input string: \"xxx\"");
-		assertThat(resp.getWhere()).startsWith("java.lang.NumberFormatException");
+		assertThat(resp.getWhere()).startsWith(
+				"java.lang.NumberFormatException");
 	}
 
-	private ExtDirectResponse runTest(Configuration configuration) throws Exception {
-		ReflectionTestUtils.setField(controller, "configuration", configuration);
+	private ExtDirectResponse runTest(Configuration configuration)
+			throws Exception {
+		ReflectionTestUtils
+				.setField(controller, "configuration", configuration);
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4b", 2,
-				new Object[] { 3, "xxx", "string.param" });
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson(
+				"remoteProviderSimple", "method4b", 2, new Object[] { 3, "xxx",
+						"string.param" });
 
 		request.setContent(ControllerUtil.writeAsByte(edRequest));
 		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -168,19 +178,24 @@ public class ExceptionHandlingTest {
 		assertThat(resp.getTid()).isEqualTo(2);
 		assertThat(resp.getResult()).isNull();
 
-		ReflectionTestUtils.setField(controller, "configuration", new Configuration());
+		ReflectionTestUtils.setField(controller, "configuration",
+				new Configuration());
 
 		return resp;
 	}
 
-	private ExtDirectResponse runTest11(Configuration configuration) throws Exception {
-		ReflectionTestUtils.setField(controller, "configuration", configuration);
+	private ExtDirectResponse runTest11(Configuration configuration)
+			throws Exception {
+		ReflectionTestUtils
+				.setField(controller, "configuration", configuration);
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method11", 3, null);
+		Map<String, Object> edRequest = ControllerUtil.createRequestJson(
+				"remoteProviderSimple", "method11", 3, null);
 
 		request.setContent(ControllerUtil.writeAsByte(edRequest));
 		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(response.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -190,7 +205,8 @@ public class ExceptionHandlingTest {
 		assertThat(resp.getTid()).isEqualTo(3);
 		assertThat(resp.getResult()).isNull();
 
-		ReflectionTestUtils.setField(controller, "configuration", new Configuration());
+		ReflectionTestUtils.setField(controller, "configuration",
+				new Configuration());
 
 		return resp;
 	}

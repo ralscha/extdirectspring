@@ -23,8 +23,11 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 public class Row implements Comparable<Row>, RowInterface {
 
 	private int id;
+
 	private String name;
+
 	private boolean admin;
+
 	private BigDecimal salary;
 
 	public Row() {
@@ -99,14 +102,15 @@ public class Row implements Comparable<Row>, RowInterface {
 		return true;
 	}
 
-	//@Override
+	// @Override
 	public int compareTo(Row o) {
 		return id - o.id;
 	}
 
 	@Override
 	public String toString() {
-		return "Row [id=" + id + ", name=" + name + ", admin=" + admin + ", salary=" + salary + "]";
+		return "Row [id=" + id + ", name=" + name + ", admin=" + admin
+				+ ", salary=" + salary + "]";
 	}
 
 }

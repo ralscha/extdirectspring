@@ -32,7 +32,8 @@ import javax.servlet.http.HttpSession;
  */
 public enum SupportedParameters {
 
-	SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class), SESSION(HttpSession.class), LOCALE(
+	SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(
+			ServletResponse.class), SESSION(HttpSession.class), LOCALE(
 			Locale.class), PRINCIPAL(Principal.class);
 
 	private final Class<?> clazz;
@@ -56,7 +57,8 @@ public enum SupportedParameters {
 	 */
 	public static boolean isSupported(final Class<?> clazz) {
 		if (clazz != null) {
-			for (SupportedParameters supportedParameter : SupportedParameters.values()) {
+			for (SupportedParameters supportedParameter : SupportedParameters
+					.values()) {
 				if (supportedParameter.clazz.isAssignableFrom(clazz)) {
 					return true;
 				}
@@ -65,18 +67,24 @@ public enum SupportedParameters {
 		return false;
 	}
 
-	public static Object resolveParameter(final Class<?> parameterType, final HttpServletRequest request,
+	public static Object resolveParameter(final Class<?> parameterType,
+			final HttpServletRequest request,
 			final HttpServletResponse response, final Locale locale) {
 
 		if (SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
 			return request;
-		} else if (SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
+		}
+		else if (SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(
+				parameterType)) {
 			return response;
-		} else if (SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
+		}
+		else if (SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
 			return request.getSession();
-		} else if (PRINCIPAL.getSupportedClass().isAssignableFrom(parameterType)) {
+		}
+		else if (PRINCIPAL.getSupportedClass().isAssignableFrom(parameterType)) {
 			return request.getUserPrincipal();
-		} else if (LOCALE.getSupportedClass().equals(parameterType)) {
+		}
+		else if (LOCALE.getSupportedClass().equals(parameterType)) {
 			return locale;
 		}
 

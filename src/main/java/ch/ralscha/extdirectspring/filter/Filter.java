@@ -36,19 +36,24 @@ public class Filter {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Filter createFilter(final Map<String, Object> jsonData, ConversionService conversionService) {
+	public static Filter createFilter(final Map<String, Object> jsonData,
+			ConversionService conversionService) {
 		String type = (String) jsonData.get("type");
 		Object source = jsonData.get("value");
 
 		if (type == null) {
-			if (jsonData.containsKey("property") && jsonData.containsKey("value")) {
-				//a filter from store.filter, create a Filter depending on the type of the value
+			if (jsonData.containsKey("property")
+					&& jsonData.containsKey("value")) {
+				// a filter from store.filter, create a Filter depending on the
+				// type of the value
 				String property = (String) jsonData.get("property");
 				Object filterValue = source;
 
 				if (filterValue instanceof Number) {
-					return new NumericFilter(property, (Number) filterValue, null);
-				} else if (filterValue instanceof Boolean) {
+					return new NumericFilter(property, (Number) filterValue,
+							null);
+				}
+				else if (filterValue instanceof Boolean) {
 					return new BooleanFilter(property, (Boolean) filterValue);
 				}
 				return new StringFilter(property, filterValue.toString());
@@ -61,22 +66,28 @@ public class Filter {
 		if (type.equals("numeric")) {
 			String comparison = (String) jsonData.get("comparison");
 			Number value = conversionService.convert(source, Number.class);
-			return new NumericFilter(field, value, Comparison.fromString(comparison));
-		} else if (type.equals("string")) {
+			return new NumericFilter(field, value,
+					Comparison.fromString(comparison));
+		}
+		else if (type.equals("string")) {
 			String value = (String) source;
 			return new StringFilter(field, value);
-		} else if (type.equals("date")) {
+		}
+		else if (type.equals("date")) {
 			String comparison = (String) jsonData.get("comparison");
 			String value = (String) source;
-			return new DateFilter(field, value, Comparison.fromString(comparison));
-		} else if (type.equals("list")) {
+			return new DateFilter(field, value,
+					Comparison.fromString(comparison));
+		}
+		else if (type.equals("list")) {
 			Object value = source;
 			if (value instanceof String) {
 				String[] values = ((String) value).split(",");
 				return new ListFilter(field, Arrays.asList(values));
 			}
 			return new ListFilter(field, (List<String>) value);
-		} else if (type.equals("boolean")) {
+		}
+		else if (type.equals("boolean")) {
 			boolean value = (Boolean) source;
 			return new BooleanFilter(field, value);
 		}

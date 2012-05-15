@@ -32,16 +32,27 @@ import ch.ralscha.extdirectspring.filter.Filter;
 public class ExtDirectStoreReadRequest {
 
 	private String query;
+
 	private Integer limit;
+
 	private Integer start;
+
 	private Integer page;
+
 	private String dir;
+
 	private String sort;
+
 	private String groupBy;
+
 	private String groupDir;
+
 	private List<SortInfo> sorters;
+
 	private List<GroupInfo> groups;
+
 	private List<Filter> filters;
+
 	private Map<String, Object> params;
 
 	public ExtDirectStoreReadRequest() {
@@ -169,9 +180,11 @@ public class ExtDirectStoreReadRequest {
 
 	@Override
 	public String toString() {
-		return "ExtDirectStoreReadRequest [query=" + query + ", limit=" + limit + ", start=" + start + ", page=" + page
-				+ ", dir=" + dir + ", sort=" + sort + ", groupBy=" + groupBy + ", groupDir=" + groupDir + ", sorters="
-				+ sorters + ", groups=" + groups + ", filters=" + filters + ", params=" + params + "]";
+		return "ExtDirectStoreReadRequest [query=" + query + ", limit=" + limit
+				+ ", start=" + start + ", page=" + page + ", dir=" + dir
+				+ ", sort=" + sort + ", groupBy=" + groupBy + ", groupDir="
+				+ groupDir + ", sorters=" + sorters + ", groups=" + groups
+				+ ", filters=" + filters + ", params=" + params + "]";
 	}
 
 }
