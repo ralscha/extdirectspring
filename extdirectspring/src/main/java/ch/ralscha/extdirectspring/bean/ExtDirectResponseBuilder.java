@@ -53,9 +53,9 @@ public class ExtDirectResponseBuilder {
 	private final Map<String, Object> result;
 
 	/**
-	 * Creates a builder that builds the response object needed for FORM_POST
-	 * methods. Sets the successful flag to true, can be changed with the
-	 * successful() and unsuccessful() methods
+	 * Creates a builder that builds and writes the response needed for
+	 * FORM_POST methods. Sets the successful flag to true, can be changed with
+	 * the successful() and unsuccessful() methods
 	 * 
 	 * @param request the current http servlet request object
 	 * @param response the current http servlet response object
@@ -76,7 +76,7 @@ public class ExtDirectResponseBuilder {
 
 	/**
 	 * Creates an errors property in the response if there are any errors in the
-	 * bindingResult Sets the success flag to false if there are errors
+	 * bindingResult. Sets the success flag to false if there are errors
 	 * 
 	 * @param bindingResult
 	 * @return this instance
@@ -87,8 +87,8 @@ public class ExtDirectResponseBuilder {
 	}
 
 	/**
-	 * Creates a errors property in the response if there are any errors in the
-	 * bindingResult Sets the success flag to false if there are errors
+	 * Creates an errors property in the response if there are any errors in the
+	 * bindingResult. Sets the success flag to false if there are errors
 	 * 
 	 * @param locale
 	 * @param messageSource
