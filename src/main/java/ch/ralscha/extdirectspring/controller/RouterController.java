@@ -61,7 +61,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.WebUtils;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
@@ -130,7 +129,7 @@ public class RouterController implements InitializingBean {
 			jsonHandler = new JsonHandler();
 		}
 
-		// register DirectMethod methods
+		// register ExtDirectMethod methods
 		MethodInfoCache.INSTANCE.clear();
 
 		String[] beanNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(context, Object.class);
@@ -148,66 +147,14 @@ public class RouterController implements InitializingBean {
 
 			for (Method method : methods) {
 				ExtDirectMethod directMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
-				if (directMethodAnnotation.value() == ExtDirectMethodType.FORM_POST) {
-					if (!isValidFormPostMethod(userType, method)) {
-						log.warn("Method '" + beanName + "." + method.getName()
-								+ "' is annotated with FORM_POST but is not valid. "
-								+ "A form post method must not return anything, "
-								+ "needs to be part of a @Controller bean, "
-								+ "and needs annotated with @RequestMapping.");
-						continue;
-					}
+				final String beanMethodName = beanName + "." + method.getName();
+				if (directMethodAnnotation.value().isValid(beanMethodName, userType, method)) {
+					log.debug("Register " + directMethodAnnotation.value() + " : " + beanMethodName);
+					MethodInfoCache.INSTANCE.put(beanName, handlerType, method);
 				}
-				log.debug("Register " + beanName + "." + method.getName() + " " + directMethodAnnotation.value());
-				MethodInfoCache.INSTANCE.put(beanName, handlerType, method);
 			}
 
 		}
-	}
-
-	private boolean isValidFormPostMethod(final Class<?> clazz, final Method method) {
-
-		if (!method.getReturnType().equals(Void.TYPE)) {
-			return false;
-		}
-
-		if (AnnotationUtils.findAnnotation(method, ResponseBody.class) != null) {
-			return false;
-		}
-
-		if (AnnotationUtils.findAnnotation(clazz, Controller.class) == null) {
-			return false;
-		}
-
-		RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-
-		if (methodAnnotation == null) {
-			return false;
-		}
-
-		RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
-
-		boolean hasValue = false;
-
-		if (classAnnotation != null) {
-			hasValue = (classAnnotation.value() != null && classAnnotation.value().length > 0);
-		}
-
-		if (!hasValue) {
-			hasValue = (methodAnnotation.value() != null && methodAnnotation.value().length > 0);
-		}
-
-		return hasValue && hasPostMethod(methodAnnotation.method());
-	}
-
-	private boolean hasPostMethod(RequestMethod[] methods) {
-		for (RequestMethod method : methods) {
-			if (method.equals(RequestMethod.POST)) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")

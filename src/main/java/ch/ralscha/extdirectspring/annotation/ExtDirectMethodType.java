@@ -15,51 +15,280 @@
  */
 package ch.ralscha.extdirectspring.annotation;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 /**
  * Enumeration of all possible remote method types.
  * 
  * @author Ralph Schaer
  */
 public enum ExtDirectMethodType {
-	/**
-	 * Specifies a simple remote method
-	 */
-	SIMPLE,
 
 	/**
-	 * Specifies a simple remote method with named parameters
+	 * Specifies a simple remote method. This type of method can have any
+	 * parameter and any return type but must contain a parameter with @RequestParam
+	 * annotated.
 	 */
-	SIMPLE_NAMED,
+	SIMPLE {
+		@Override
+		public boolean isValid(final String methodName, final Class<?> clazz, final Method method) {
+
+			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
+				log.warn("SIMPLE method '" + methodName + "' does not support event attribute of @ExtDirectMethod");
+			}
+
+			if (extDirectMethodAnnotation.entryClass() != Object.class) {
+				log.warn("SIMPLE method '" + methodName + "' does not support entryClass attribute of @ExtDirectMethod");
+			}
+
+			Annotation[][] allParameterAnnotations = method.getParameterAnnotations();
+
+			for (Annotation[] paramAnnotations : allParameterAnnotations) {
+				for (Annotation paramAnnotation : paramAnnotations) {
+					if (RequestParam.class.isInstance(paramAnnotation)) {
+						log.error("SIMPLE method '" + methodName
+								+ "' contains a non supported parameter annotation @RequestParam");
+						return false;
+					}
+				}
+			}
+
+			return true;
+		}
+	},
 
 	/**
-	 * Specifies a method that handles a form load
+	 * Specifies a simple remote method with named parameters.
 	 */
-	FORM_LOAD,
+	SIMPLE_NAMED {
+		@Override
+		public boolean isValid(final String methodName, final Class<?> clazz, final Method method) {
+
+			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
+				log.warn("SIMPLE_NAMED method '" + methodName
+						+ "' does not support event attribute of @ExtDirectMethod");
+			}
+
+			if (extDirectMethodAnnotation.entryClass() != Object.class) {
+				log.warn("SIMPLE_NAMED method '" + methodName
+						+ "' does not support entryClass attribute of @ExtDirectMethod");
+			}
+
+			return true;
+		}
+	},
 
 	/**
-	 * Specifies a method that handles a read call from DirectStore
+	 * Specifies a method that handles a form load.
 	 */
-	STORE_READ,
+	FORM_LOAD {
+		@Override
+		public boolean isValid(final String methodName, final Class<?> clazz, final Method method) {
+
+			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
+				log.warn("FORM_LOAD method '" + methodName + "' does not support event attribute of @ExtDirectMethod");
+			}
+
+			if (extDirectMethodAnnotation.entryClass() != Object.class) {
+				log.warn("FORM_LOAD method '" + methodName
+						+ "' does not support entryClass attribute of @ExtDirectMethod");
+			}
+
+			return true;
+		}
+	},
 
 	/**
-	 * Specifies a method that handles a create, update or delete call from
-	 * DirectStore
+	 * Specifies a method that handles read calls from DirectStore.
 	 */
-	STORE_MODIFY,
+	STORE_READ {
+		@Override
+		public boolean isValid(final String methodName, final Class<?> clazz, final Method method) {
+
+			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
+				log.warn("STORE_READ method '" + methodName + "' does not support event attribute of @ExtDirectMethod");
+			}
+
+			if (extDirectMethodAnnotation.entryClass() != Object.class) {
+				log.warn("STORE_READ method '" + methodName
+						+ "' does not support entryClass attribute of @ExtDirectMethod");
+			}
+
+			return true;
+		}
+	},
 
 	/**
-	 * Specifies a method that handles a form post (with or without upload)
+	 * Specifies a method that handles create, update or destroy calls from
+	 * DirectStore.
 	 */
-	FORM_POST,
+	STORE_MODIFY {
+		@Override
+		public boolean isValid(final String methodName, final Class<?> clazz, final Method method) {
+
+			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
+				log.warn("STORE_MODIFY method '" + methodName
+						+ "' does not support event attribute of @ExtDirectMethod");
+			}
+
+			return true;
+		}
+	},
 
 	/**
-	 * Specifies a method that handles a read call from a TreeLoader
+	 * Specifies a method that handles a form post (with or without upload). A
+	 * FORM_POST method must not return anything. This type of method must be
+	 * annotated with @RequestMapping. @RequestMapping must contain a value and
+	 * a method of type RequestMethod.POST
 	 */
-	TREE_LOAD,
+	FORM_POST {
+		@Override
+		public boolean isValid(final String methodName, final Class<?> clazz, final Method method) {
+
+			boolean isValid = true;
+
+			if (!method.getReturnType().equals(Void.TYPE)) {
+				log.error("FORM_POST method '" + methodName + "' must return void");
+				isValid = false;
+			}
+
+			if (AnnotationUtils.findAnnotation(method, ResponseBody.class) != null) {
+				log.warn("FORM_POST method '" + methodName + "' should not have a @ResponseBody annotation");
+			}
+
+			if (AnnotationUtils.findAnnotation(clazz, Controller.class) == null) {
+				log.error("FORM_POST method '" + methodName + "' must be a member of a @Controller bean");
+				isValid = false;
+			}
+
+			final RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
+
+			if (methodAnnotation == null) {
+				log.error("FORM_POST method '" + methodName + "' must be annotated with @RequestMapping");
+				isValid = false;
+			}
+
+			RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
+
+			boolean hasValue = false;
+
+			if (classAnnotation != null) {
+				hasValue = (classAnnotation.value() != null && classAnnotation.value().length > 0);
+			}
+
+			if (methodAnnotation != null && !hasValue) {
+				hasValue = (methodAnnotation.value() != null && methodAnnotation.value().length > 0);
+			}
+
+			if (!hasValue) {
+				log.error("FORM_POST method '" + methodName + "' must have a @RequestMapping annotation with a value");
+				isValid = false;
+			}
+
+			if (methodAnnotation != null) {
+				boolean hasPostRequestMethod = false;
+				for (RequestMethod requestMethod : methodAnnotation.method()) {
+					if (requestMethod.equals(RequestMethod.POST)) {
+						hasPostRequestMethod = true;
+						break;
+					}
+				}
+
+				if (!hasPostRequestMethod) {
+					log.error("FORM_POST method '" + methodName
+							+ "' must have a @RequestMapping annotation with method = RequestMethod.POST");
+					isValid = false;
+				}
+			}
+
+			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
+				log.warn("FORM_POST method '" + methodName + "' does not support event attribute of @ExtDirectMethod");
+			}
+
+			if (extDirectMethodAnnotation.entryClass() != Object.class) {
+				log.warn("FORM_POST method '" + methodName
+						+ "' does not support entryClass attribute of @ExtDirectMethod");
+			}
+
+			if (extDirectMethodAnnotation.synchronizeOnSession()) {
+				log.warn("FORM_POST method '" + methodName
+						+ "' does not support synchronizeOnSession attribute of @ExtDirectMethod");
+			}
+
+			return isValid;
+		}
+	},
 
 	/**
-	 * Specifies a method that handles polling
+	 * Specifies a method that handles read calls from TreeLoader or TreeStore
 	 */
-	POLL
+	TREE_LOAD {
+		@Override
+		public boolean isValid(final String methodName, final Class<?> clazz, final Method method) {
+
+			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
+				log.warn("TREE_LOAD method '" + methodName + "' does not support event attribute of @ExtDirectMethod");
+			}
+
+			if (extDirectMethodAnnotation.entryClass() != Object.class) {
+				log.warn("TREE_LOAD method '" + methodName
+						+ "' does not support entryClass attribute of @ExtDirectMethod");
+			}
+
+			return true;
+		}
+	},
+
+	/**
+	 * Specifies a method that handles polling.
+	 */
+	POLL {
+		@Override
+		public boolean isValid(final String methodName, final Class<?> clazz, final Method method) {
+
+			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+
+			if (extDirectMethodAnnotation.entryClass() != Object.class) {
+				log.warn("POLL method '" + methodName + "' does not support entryClass attribute of @ExtDirectMethod");
+			}
+
+			return true;
+		}
+	};
+
+	static final Log log = LogFactory.getLog(ExtDirectMethodType.class);
+
+	/**
+	 * Checks if the annotated method contains non supported annotation
+	 * properties or contains non supported parameters and/or parameter
+	 * annotations. Method logs warnings and errors. Check is running during
+	 * startup of the application.
+	 * 
+	 * @param methodName Name of the bean and method for logging purpose. e.g.
+	 * 'bean.methodname'
+	 * @param clazz The class where the method is member of
+	 * @param method The annotated method
+	 * 
+	 * @return true if the method does not contains any errors.
+	 */
+	public abstract boolean isValid(final String methodName, final Class<?> clazz, final Method method);
 
 }
