@@ -36,7 +36,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 @RequestMapping("/upload")
 public class FileUploadController {
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_upload")
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_upload", event = "test", entryClass = String.class, synchronizeOnSession = true)
 	@RequestMapping(value = "/test", method = RequestMethod.POST)
 	public void uploadTest(HttpServletRequest request, @RequestParam("fileUpload") MultipartFile file,
 			HttpServletResponse response, @Valid User user, BindingResult result) throws IOException {

@@ -34,7 +34,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 @Service
 public class RemoteProviderFormLoad {
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3")
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3", event = "test")
 	public FormInfo method1(@RequestParam(value = "d") double d) {
 		FormInfo info = new FormInfo();
 		info.setBack(d);
@@ -65,7 +65,7 @@ public class RemoteProviderFormLoad {
 		return fi;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3")
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3", entryClass = String.class)
 	public ExtDirectFormLoadResult method5(@RequestParam(value = "id", defaultValue = "1") int id,
 			HttpServletRequest servletRequest) {
 		FormInfo fi = new FormInfo();

@@ -42,7 +42,7 @@ public class PollProvider {
 		return "Successfully polled at: " + formatter.format(now);
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message2", group = "group2")
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message2", group = "group2", entryClass = String.class)
 	public String handleMessage2(HttpServletResponse response, HttpServletRequest request, HttpSession session,
 			Locale locale) {
 		assertThat(response).isNotNull();
@@ -92,7 +92,8 @@ public class PollProvider {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5", synchronizeOnSession = true)
-	public String message8(@RequestParam Integer id, @RequestHeader("anotherName") String header) {
+	public String message8(@RequestParam Integer id,
+			@RequestHeader(value = "anotherName", required = true) String header) {
 		return id + ";" + header;
 	}
 

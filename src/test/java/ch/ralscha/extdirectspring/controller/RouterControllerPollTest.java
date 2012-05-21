@@ -211,6 +211,20 @@ public class RouterControllerPollTest {
 		assertThat(resp.getData()).isEqualTo("1;headerValue1");
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
+
+		request = new MockHttpServletRequest();
+		response = new MockHttpServletResponse();
+		request.setParameter("id", "2");
+
+		controller.poll("pollProvider", "message8", "message8", request, response, Locale.ENGLISH);
+		resp = ControllerUtil.readDirectPollResponse(response.getContentAsByteArray());
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getName()).isEqualTo("message8");
+		assertThat(resp.getData()).isNull();
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isEqualTo("Server Error");
 	}
 
 	@Test

@@ -41,7 +41,7 @@ public class FormInfoController2 {
 		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3", event = "test")
 	@RequestMapping(method = RequestMethod.POST)
 	public void updateInfo2(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
 			BindingResult result) {
