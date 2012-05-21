@@ -26,9 +26,9 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 /**
  * Special response of a DirectStore request. This class is useful if your data
- * is already in JSON format. Add the json to the records collection and the
- * response will contain the unfiltered json. There is no validation that the
- * added json string is valid.
+ * is already in JSON format. Add the JSON to the records collection and the
+ * response will contain the unfiltered JSON. There is no validation that the
+ * added JSON string is valid.
  * 
  * @author Ralph Schaer
  */

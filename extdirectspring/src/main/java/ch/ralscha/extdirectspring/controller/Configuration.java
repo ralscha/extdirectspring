@@ -19,9 +19,11 @@ import java.util.Map;
 
 import org.springframework.util.StringUtils;
 
+import ch.ralscha.extdirectspring.bean.BaseResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
+
 /**
- * Configuration class to configure the way exception messages get sent back to
- * the client
+ * Configuration class to configure different aspects of extdirectspring.
  * 
  * If there is a mapping for the exception in exceptionToMessage and the value
  * is not null send this value. If there is a mapping for the exception in
@@ -30,14 +32,11 @@ import org.springframework.util.StringUtils;
  * exception.getMessage(). If there is no mapping and sendExceptionMessage is
  * false send defaultExceptionMessage.
  * 
- * If sendStacktrace is true, send the full stacktrace in the json field
- * 'where'.
  * 
- * If alwaysWrapStoreResponse is true, always wrap a response of a STORE_READ
- * and STORE_MODIFY response in a ExtDirectStoreResponse object
  * 
- * If synchronizeOnSession is true, execution of the methods is synchronized on
- * the session, to serialize parallel invocations from the same client.
+ * 
+ * 
+ * 
  * 
  * @author Ralph Schaer
  */
@@ -82,6 +81,12 @@ public class Configuration {
 		return sendStacktrace;
 	}
 
+	/**
+	 * If sendStacktrace is true, the library sends the full stacktrace in
+	 * {@link BaseResponse#setWhere(String)} back to the client in case of an
+	 * exception. Should only set to true in development.
+	 * @param sendStacktrace new flag
+	 */
 	public void setSendStacktrace(final boolean sendStacktrace) {
 		this.sendStacktrace = sendStacktrace;
 	}
@@ -98,6 +103,12 @@ public class Configuration {
 		return alwaysWrapStoreResponse;
 	}
 
+	/**
+	 * If alwaysWrapStoreResponse is true, responses of STORE_READ and
+	 * STORE_MODIFY methods are always wrapped in an
+	 * {@link ExtDirectStoreResponse} object
+	 * @param alwaysWrapStoreResponse new flag
+	 */
 	public void setAlwaysWrapStoreResponse(final boolean alwaysWrapStoreResponse) {
 		this.alwaysWrapStoreResponse = alwaysWrapStoreResponse;
 	}
@@ -106,6 +117,12 @@ public class Configuration {
 		return synchronizeOnSession;
 	}
 
+	/**
+	 * If synchronizeOnSession is true, execution of all methods is synchronized
+	 * on the session, to serialize parallel invocations from the same client.
+	 * 
+	 * @param synchronizeOnSession new flag
+	 */
 	public void setSynchronizeOnSession(final boolean synchronizeOnSession) {
 		this.synchronizeOnSession = synchronizeOnSession;
 	}

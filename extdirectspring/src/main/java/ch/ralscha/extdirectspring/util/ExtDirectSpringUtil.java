@@ -59,7 +59,7 @@ public final class ExtDirectSpringUtil {
 	 * @param beanName the name of the bean
 	 * @param methodInfo the methodInfo object
 	 * @param params the parameters
-	 * @return the result of the method invokation
+	 * @return the result of the method invocation
 	 * @throws IllegalArgumentException if there is no bean in the context
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException

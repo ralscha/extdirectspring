@@ -16,7 +16,7 @@
 package ch.ralscha.extdirectspring.bean;
 
 /**
- * Class representing the request of a Ext.Direct call
+ * Class representing the request of a Ext Direct call
  * 
  * @author mansari
  * @author Ralph Schaer
@@ -33,6 +33,9 @@ public class ExtDirectRequest {
 
 	private Object data;
 
+	/**
+	 * @return name of the spring managed bean
+	 */
 	public String getAction() {
 		return action;
 	}
@@ -41,6 +44,9 @@ public class ExtDirectRequest {
 		this.action = action;
 	}
 
+	/**
+	 * @return payload of the request
+	 */
 	public Object getData() {
 		return data;
 	}
@@ -49,6 +55,9 @@ public class ExtDirectRequest {
 		this.data = data;
 	}
 
+	/**
+	 * @return method name that is member of the spring managed bean
+	 */
 	public String getMethod() {
 		return method;
 	}
@@ -57,6 +66,10 @@ public class ExtDirectRequest {
 		this.method = method;
 	}
 
+	/**
+	 * @return the Transaction ID to associate with this request. The response
+	 * has to contain exact the same tid
+	 */
 	public int getTid() {
 		return tid;
 	}
@@ -65,6 +78,10 @@ public class ExtDirectRequest {
 		this.tid = tid;
 	}
 
+	/**
+	 * @return the type of the message. "event" for polling or "rpc" for a
+	 * method call
+	 */
 	public String getType() {
 		return type;
 	}
