@@ -177,7 +177,7 @@
 		<dependency>
 			<groupId>ch.ralscha</groupId>
 			<artifactId>embeddedtc</artifactId>
-			<version>0.0.7</version>
+			<version>0.0.8</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -195,7 +195,6 @@
 	</dependencies>
 
 	<repositories>
-
 
 		<repository>
 			<id>ralscha</id>
