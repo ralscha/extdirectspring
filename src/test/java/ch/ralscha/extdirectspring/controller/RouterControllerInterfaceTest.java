@@ -71,7 +71,8 @@ public class RouterControllerInterfaceTest {
 		readRequest.put("active", true);
 
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderImplementation",
-				"storeRead", readRequest, new TypeReference<List<Row>>() {/* nothing here */});
+				"storeRead", readRequest, new TypeReference<List<Row>>() {/* nothing_here */
+				});
 
 		assertThat(rows).hasSize(1);
 		Row theRow = rows.get(0);

@@ -22,7 +22,6 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 
@@ -31,8 +30,7 @@ public class SecuredService {
 
 	@ExtDirectMethod(group = "secured")
 	@PreAuthorize("isAnonymous()")
-	public String setDate(@RequestParam(value = "id", defaultValue = "10") String id,
-			@DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
+	public String setDate(String id, @DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
 		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		return id + "," + dateFormat.format(date);
 	}
