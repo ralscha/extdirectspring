@@ -63,7 +63,7 @@ public class RemoteProviderStoreRead {
 		return createRows("");
 	}
 
-	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, event = "test")
 	public List<Row> method2() {
 		return null;
 	}
@@ -74,7 +74,7 @@ public class RemoteProviderStoreRead {
 		return createRows(":" + (response != null) + ";" + (request != null) + ";" + (session != null) + ";" + locale);
 	}
 
-	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, entryClass = String.class)
 	public ExtDirectStoreResponse<Row> method4(ExtDirectStoreReadRequest request) {
 		return createExtDirectStoreResponse(request, "");
 	}

@@ -37,6 +37,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 
@@ -63,16 +64,21 @@ public class RemoteProviderSimple {
 		return String.format("method3() called-%d-%.1f-%s", i, d, s);
 	}
 
+	@ExtDirectMethod(group = "group2,groupX")
+	public String method3WithError(long i, Double d, @RequestParam("s") String s) {
+		return String.format("method3() called-%d-%.1f-%s", i, d, s);
+	}
+
 	public String method4(long i, Double d, String s) {
 		return "method4() called";
 	}
 
-	@ExtDirectMethod
+	@ExtDirectMethod(event = "test")
 	public String method4b(long i, Double d, String s) {
 		return "method4b() called";
 	}
 
-	@ExtDirectMethod(group = "group2,group3")
+	@ExtDirectMethod(group = "group2,group3", entryClass = String.class)
 	public Boolean method5(String userName) {
 		if ("ralph".equals(userName)) {
 			return true;

@@ -59,7 +59,7 @@ public class RemoteProviderSimpleNamed {
 		return String.format("method2() called-%d-%.3f-%s", i, d, s);
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named", event = "test")
 	public Boolean method3(String userName) {
 		if ("ralph".equals(userName)) {
 			return true;
@@ -69,7 +69,7 @@ public class RemoteProviderSimpleNamed {
 		return null;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named", entryClass = String.class)
 	public int method4(int a, int b) {
 		return a + b;
 	}

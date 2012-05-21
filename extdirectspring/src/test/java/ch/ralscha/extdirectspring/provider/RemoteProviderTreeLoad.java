@@ -100,12 +100,12 @@ public class RemoteProviderTreeLoad {
 
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "group1")
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "group1", event = "test")
 	public List<Node> method1(@RequestParam("node") String node) {
 		return createTreeList(node);
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD)
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, entryClass = String.class)
 	public List<Node> method2(@RequestParam("node") String node,
 			@RequestParam(defaultValue = "defaultValue") String foo, @DateTimeFormat(iso = ISO.DATE) LocalDate today) {
 		return createTreeList(node, ":" + foo + ";" + today.toString());
