@@ -21,7 +21,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 /**
- * Class representing the response of a Ext.Direct call
+ * Class representing the response of a Ext Direct call
  * 
  * @author mansari
  * @author Ralph Schaer
@@ -45,14 +45,14 @@ public class ExtDirectResponse extends BaseResponse {
 		action = directRequest.getAction();
 		method = directRequest.getMethod();
 		tid = directRequest.getTid();
-		type = directRequest.getType();
+		setType(directRequest.getType());
 	}
 
 	public ExtDirectResponse(final HttpServletRequest request) {
 		action = request.getParameter("extAction");
 		method = request.getParameter("extMethod");
 		tid = Integer.parseInt(request.getParameter("extTID"));
-		type = request.getParameter("extType");
+		setType(request.getParameter("extType"));
 	}
 
 	public String getAction() {

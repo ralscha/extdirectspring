@@ -37,8 +37,8 @@ import ch.ralscha.extdirectspring.controller.RouterController;
 
 /**
  * An utility class that helps building the response for a FORM_POST method. The
- * reponse is written directly into the http servlet response with
- * {@link #buildAndWrite()}
+ * response is written directly into the http servlet response with
+ * {@link #buildAndWrite()}.
  * 
  * @author Ralph Schaer
  */
@@ -53,9 +53,9 @@ public class ExtDirectResponseBuilder {
 	private final Map<String, Object> result;
 
 	/**
-	 * Creates a builder that builds and writes the response needed for
-	 * FORM_POST methods. Sets the successful flag to true, can be changed with
-	 * the successful() and unsuccessful() methods
+	 * Creates a builder that builds and writes the response of a FORM_POST
+	 * method. Sets the successful flag to true, can be changed with the
+	 * {@link #successful()} and {@link #unsuccessful()} methods.
 	 * 
 	 * @param request the current http servlet request object
 	 * @param response the current http servlet response object
@@ -70,13 +70,23 @@ public class ExtDirectResponseBuilder {
 		extDirectResponse.setResult(result);
 	}
 
+	/**
+	 * Creates a builder instance.
+	 * 
+	 * @see #ExtDirectResponseBuilder(HttpServletRequest, HttpServletResponse)
+	 * 
+	 * @param request the current http servlet request object
+	 * @param response the current http servlet response object
+	 * 
+	 * @return the created builder instance
+	 */
 	public static ExtDirectResponseBuilder create(final HttpServletRequest request, final HttpServletResponse response) {
 		return new ExtDirectResponseBuilder(request, response);
 	}
 
 	/**
-	 * Creates an errors property in the response if there are any errors in the
-	 * bindingResult. Sets the success flag to false if there are errors
+	 * Adds an "errors" property in the response if there are any errors in the
+	 * bindingResult. Sets the success flag to false if there are errors.
 	 * 
 	 * @param bindingResult
 	 * @return this instance
@@ -87,8 +97,8 @@ public class ExtDirectResponseBuilder {
 	}
 
 	/**
-	 * Creates an errors property in the response if there are any errors in the
-	 * bindingResult. Sets the success flag to false if there are errors
+	 * Adds an "errors" property in the response if there are any errors in the
+	 * bindingResult. Sets the success flag to false if there are errors.
 	 * 
 	 * @param locale
 	 * @param messageSource
@@ -155,7 +165,7 @@ public class ExtDirectResponseBuilder {
 	}
 
 	/**
-	 * Builds and writes the response to the OutputStream of the http servlet
+	 * Builds and writes the response into the OutputStream of the http servlet
 	 * response. This methods has to be called at the end of a FORM_POST method.
 	 */
 	public void buildAndWrite() {

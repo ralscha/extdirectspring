@@ -21,6 +21,11 @@ import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
+/**
+ * Object contains an {@link ObjectMapper} and provides convenient methods.
+ * 
+ * @author Ralph Schaer
+ */
 public class JsonHandler {
 
 	private ObjectMapper mapper;
@@ -42,26 +47,26 @@ public class JsonHandler {
 	}
 
 	/**
-	 * Converts a object into a String containing the json representation of
+	 * Converts a object into a string containing the JSON representation of
 	 * this object. In case of an exception returns null and logs the exception.
 	 * 
-	 * @param obj the object to serialize into json
-	 * @return obj in json format
+	 * @param obj the object to serialize into JSON
+	 * @return obj in JSON format, null if there is an exception
 	 */
 	public String writeValueAsString(final Object obj) {
 		return writeValueAsString(obj, false);
 	}
 
 	/**
-	 * Converts a object into a String containing the json representation of
+	 * Converts a object into a string containing the JSON representation of
 	 * this object. In case of an exceptions returns null and logs the
 	 * exception.
 	 * 
-	 * @param obj the object to serialize into json
-	 * @param indent if false writes json on one line
-	 * @return obj in json format, null if there is an exception
+	 * @param obj the object to serialize into JSON
+	 * @param indent if false writes JSON on one line
+	 * @return obj in JSON format, null if there is an exception
 	 */
-	public String writeValueAsString(final Object obj, boolean indent) {
+	public String writeValueAsString(final Object obj, final boolean indent) {
 		try {
 			if (indent) {
 				return mapper.writer().withDefaultPrettyPrinter().writeValueAsString(obj);
@@ -74,14 +79,14 @@ public class JsonHandler {
 	}
 
 	/**
-	 * Creates a object from a json String. In case of an exception returns null
+	 * Creates a object from a JSON string. In case of an exception returns null
 	 * and logs the exception.
 	 * 
 	 * @param <T> type of the object to create
-	 * @param json String with the json
-	 * @param typeReference TypeReference instance of the desired result type
-	 * {@link org.codehaus.jackson.type.TypeReference}
-	 * @return the created object, null if there is an exception
+	 * @param json string with the JSON
+	 * @param typeReference {@link TypeReference} instance of the desired result
+	 * type {@link org.codehaus.jackson.type.TypeReference}
+	 * @return the created object, null if there was an exception
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T readValue(final String json, final TypeReference<T> typeReference) {
@@ -94,12 +99,12 @@ public class JsonHandler {
 	}
 
 	/**
-	 * Creates a object from a json String. In case of an exception returns null
-	 * and logs the exception.
+	 * Creates an object from a JSON string. In case of an exception returns
+	 * null and logs the exception.
 	 * 
 	 * @param <T> type of the object to create
-	 * @param json String with the json
-	 * @param clazz Class of object to create
+	 * @param json string with the JSON
+	 * @param clazz class of object to create
 	 * @return the created object, null if there is an exception
 	 */
 	public <T> T readValue(final String json, final Class<T> clazz) {

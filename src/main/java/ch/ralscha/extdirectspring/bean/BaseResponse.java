@@ -15,22 +15,36 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
+import ch.ralscha.extdirectspring.controller.Configuration;
+
+/**
+ * Superclass for response object that are sent to an Ext Direct client.
+ * 
+ * @see ExtDirectPollResponse
+ * @see ExtDirectResponse
+ * 
+ * @author Ralph Schaer
+ */
 public class BaseResponse {
 
-	protected String type;
+	private String type;
 
-	protected String message;
+	private String message;
 
-	protected String where;
-
-	public BaseResponse() {
-		super();
-	}
+	private String where;
 
 	public String getType() {
 		return type;
 	}
 
+	/**
+	 * Sets the type of the response. Valid values are: <br>
+	 * "exception": when an error occurred on the server side <br>
+	 * "event": response from a polling method <br>
+	 * "rpc": response from a remote method call
+	 * 
+	 * @param type The new type of the response
+	 */
 	public void setType(final String type) {
 		this.type = type;
 	}
@@ -39,6 +53,12 @@ public class BaseResponse {
 		return message;
 	}
 
+	/**
+	 * Sets an error message if type is "exception". In all other cases this
+	 * should not be called and message should be null.
+	 * 
+	 * @param message A error message
+	 */
 	public void setMessage(final String message) {
 		this.message = message;
 	}
@@ -47,6 +67,14 @@ public class BaseResponse {
 		return where;
 	}
 
+	/**
+	 * Contains a detailed description (stacktrace) of the error if type is
+	 * "exception" and sendStacktrace is set to true in {@link Configuration}
+	 * 
+	 * @param where Contains an detailed error description
+	 * 
+	 * @see Configuration#setSendStacktrace(boolean)
+	 */
 	public void setWhere(final String where) {
 		this.where = where;
 	}

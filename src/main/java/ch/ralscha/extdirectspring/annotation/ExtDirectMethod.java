@@ -23,7 +23,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation for methods whose implement a call
+ * Annotation for methods that should be exposed to a Ext Direct client
  * 
  * @author Ralph Schaer
  */
@@ -34,12 +34,12 @@ import java.lang.annotation.Target;
 public @interface ExtDirectMethod {
 
 	/**
-	 * Specifies the type of the remote method. Defaults to simple method call.
+	 * Specifies the type of the remote method. Defaults to SIMPLE method call.
 	 */
 	ExtDirectMethodType value() default ExtDirectMethodType.SIMPLE;
 
 	/**
-	 * The name of an api group this method is part of.
+	 * Optional parameter. The name of an api group this method is part of.
 	 */
 	String group() default "";
 
@@ -58,9 +58,9 @@ public @interface ExtDirectMethod {
 	boolean synchronizeOnSession() default false;
 
 	/**
-	 * Optional parameter. Not feasible for FORM_POST methods. If true json
-	 * response will be streamed into the response, without setting the
-	 * Content-Length HTTP header. Default behaviour (false) is writing the
+	 * Optional parameter. Not feasible for FORM_POST methods. If true JSON
+	 * responses will be streamed into the response, without setting the
+	 * Content-Length HTTP header. Default behavior (false) is writing the
 	 * response into a buffer, setting the Content-Length header and writing the
 	 * buffer into the response.
 	 */

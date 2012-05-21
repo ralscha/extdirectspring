@@ -37,7 +37,7 @@ public enum ExtDirectMethodType {
 
 	/**
 	 * Specifies a simple remote method. This type of method can have any
-	 * parameter and any return type but must contain a parameter with @RequestParam
+	 * parameter and any return type but must not contain a parameter with @RequestParam
 	 * annotated.
 	 */
 	SIMPLE {
@@ -70,7 +70,8 @@ public enum ExtDirectMethodType {
 	},
 
 	/**
-	 * Specifies a simple remote method with named parameters.
+	 * Specifies a simple remote method with named parameters. This type of
+	 * method can have any parameter and any return type
 	 */
 	SIMPLE_NAMED {
 		@Override
@@ -278,9 +279,10 @@ public enum ExtDirectMethodType {
 
 	/**
 	 * Checks if the annotated method contains non supported annotation
-	 * properties or contains non supported parameters and/or parameter
+	 * properties and contains non supported parameters and/or parameter
 	 * annotations. Method logs warnings and errors. Check is running during
-	 * startup of the application.
+	 * startup of the application. If return value is false the method is not
+	 * registered and cannot be called from the client.
 	 * 
 	 * @param methodName Name of the bean and method for logging purpose. e.g.
 	 * 'bean.methodname'

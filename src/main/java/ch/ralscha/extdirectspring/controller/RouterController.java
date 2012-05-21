@@ -57,6 +57,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ReflectionUtils.MethodFilter;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -149,8 +150,13 @@ public class RouterController implements InitializingBean {
 				ExtDirectMethod directMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 				final String beanMethodName = beanName + "." + method.getName();
 				if (directMethodAnnotation.value().isValid(beanMethodName, userType, method)) {
-					log.debug("Register " + directMethodAnnotation.value() + " : " + beanMethodName);
 					MethodInfoCache.INSTANCE.put(beanName, handlerType, method);
+					String info = "Register " + beanMethodName + "(" + directMethodAnnotation.value();
+					if (StringUtils.hasText(directMethodAnnotation.group())) {
+						info += ", " + directMethodAnnotation.group();
+					}
+					info += ")";
+					log.debug(info);
 				}
 			}
 

@@ -24,8 +24,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 import ch.ralscha.extdirectspring.filter.Filter;
 
 /**
- * 
- * Class representing the request of a DirectStore read call
+ * Class representing the request of a DirectStore read call.
  * 
  * @author Ralph Schaer
  */
@@ -62,6 +61,9 @@ public class ExtDirectStoreReadRequest {
 		this.params = Collections.emptyMap();
 	}
 
+	/**
+	 * @return a string containing a filter query
+	 */
 	public String getQuery() {
 		return query;
 	}
@@ -70,6 +72,9 @@ public class ExtDirectStoreReadRequest {
 		this.query = query;
 	}
 
+	/**
+	 * @return the number of rows the DirectStore requests for paging.
+	 */
 	public Integer getLimit() {
 		return limit;
 	}
@@ -78,6 +83,10 @@ public class ExtDirectStoreReadRequest {
 		this.limit = limit;
 	}
 
+	/**
+	 * @return the start row from where to send records back for a paging
+	 * request. start = limit * (page-1)
+	 */
 	public Integer getStart() {
 		return start;
 	}
@@ -86,6 +95,13 @@ public class ExtDirectStoreReadRequest {
 		this.start = start;
 	}
 
+	/**
+	 * @return sorting order. "ASC" or "DESC".<br>
+	 * ExtJs 4.x and Touch 2 can send more than one sorters. Use
+	 * {@link #getSorters()} instead.
+	 * @see #isAscendingSort()
+	 * @see #isDescendingSort()
+	 */
 	public String getDir() {
 		return dir;
 	}
@@ -94,16 +110,31 @@ public class ExtDirectStoreReadRequest {
 		this.dir = dir;
 	}
 
+	/**
+	 * @return true if sorting order is ascending.<br>
+	 * ExtJs 4.x and Touch 2 can send more than one sorters. Use
+	 * {@link #getSorters()} instead.
+	 */
 	@JsonIgnore
 	public boolean isAscendingSort() {
 		return (SortDirection.fromString(getDir()) == SortDirection.ASCENDING);
 	}
 
+	/**
+	 * @return true if sorting order is descending.<br>
+	 * ExtJs 4.x and Touch 2 can send more than one sorters. Use
+	 * {@link #getSorters()} instead.
+	 */
 	@JsonIgnore
 	public boolean isDescendingSort() {
 		return (SortDirection.fromString(getDir()) == SortDirection.DESCENDING);
 	}
 
+	/**
+	 * @return the field/property on which the sort should be applied.<br>
+	 * ExtJs 4.x and Touch 2 can send more than one sorters. Use
+	 * {@link #getSorters()} instead.
+	 */
 	public String getSort() {
 		return sort;
 	}
@@ -146,6 +177,9 @@ public class ExtDirectStoreReadRequest {
 		this.filters = filters;
 	}
 
+	/**
+	 * @return page number of a paging request. page = (start / limit) + 1
+	 */
 	public Integer getPage() {
 		return page;
 	}
@@ -154,6 +188,9 @@ public class ExtDirectStoreReadRequest {
 		this.page = page;
 	}
 
+	/**
+	 * @return collection of {@link SortInfo}.
+	 */
 	public List<SortInfo> getSorters() {
 		return Collections.unmodifiableList(sorters);
 	}

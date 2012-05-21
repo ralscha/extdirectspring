@@ -31,7 +31,7 @@ public class ExtDirectPollResponse extends BaseResponse {
 	private Object data;
 
 	public ExtDirectPollResponse() {
-		type = "event";
+		setType("event");
 	}
 
 	public String getName() {
