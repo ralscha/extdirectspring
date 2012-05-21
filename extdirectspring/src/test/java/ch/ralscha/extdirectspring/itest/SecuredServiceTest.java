@@ -45,7 +45,7 @@ public class SecuredServiceTest extends JettyTest {
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
 		StringEntity postEntity = new StringEntity(
-				"{\"action\":\"securedService\",\"method\":\"setDate\",\"data\":[\"26/04/2012\"],\"type\":\"rpc\",\"tid\":1}",
+				"{\"action\":\"securedService\",\"method\":\"setDate\",\"data\":[102,\"26/04/2012\"],\"type\":\"rpc\",\"tid\":1}",
 				"UTF-8");
 
 		post.setEntity(postEntity);
@@ -63,7 +63,7 @@ public class SecuredServiceTest extends JettyTest {
 		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
 				Map.class);
 		assertThat(rootAsMap).hasSize(5);
-		assertThat(rootAsMap.get("result")).isEqualTo("10,26.04.2012");
+		assertThat(rootAsMap.get("result")).isEqualTo("102,26.04.2012");
 		assertThat(rootAsMap.get("method")).isEqualTo("setDate");
 		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
 		assertThat(rootAsMap.get("action")).isEqualTo("securedService");
