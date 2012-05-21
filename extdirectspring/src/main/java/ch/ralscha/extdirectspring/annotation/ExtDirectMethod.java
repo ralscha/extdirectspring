@@ -44,35 +44,33 @@ public @interface ExtDirectMethod {
 	String group() default "";
 
 	/**
-	 * Optional parameter if the method is a POLL method. The name of the event
-	 * this method is sending messages to If parameter is empty the name of the
-	 * method will be used as event name
+	 * Optional parameter. Only feasible for POLL methods. The name of the event
+	 * this method is sending messages to. If this parameter is empty the name
+	 * of the method will be used as event name.
 	 */
 	String event() default "";
 
 	/**
-	 * Optional parameter. If true execution of the method is synchronized on
-	 * the session, to serialize parallel invocations from the same client. Not
-	 * feasible for FORM_POST methods
+	 * Optional parameter. Not feasible for FORM_POST methods. If true execution
+	 * of the method is synchronized on the session. To serialize parallel
+	 * invocations from the same client.
 	 */
 	boolean synchronizeOnSession() default false;
 
 	/**
-	 * Optional parameter. If true json response will be streamed into the
-	 * response, without setting the Content-Length HTTP header. Default
-	 * behaviour (false) is writing the response into a buffer, setting the
-	 * Content-Length header and writing the buffer into the response. Not
-	 * feasible for FORM_POST methods
+	 * Optional parameter. Not feasible for FORM_POST methods. If true json
+	 * response will be streamed into the response, without setting the
+	 * Content-Length HTTP header. Default behaviour (false) is writing the
+	 * response into a buffer, setting the Content-Length header and writing the
+	 * buffer into the response.
 	 */
 	boolean streamResponse() default false;
 
 	/**
-	 * Optional parameter. Specifies the type of an object in a collection. If
-	 * the generic type of a collection is an interface the library cannot
-	 * figure out the type of the implementation class. For this scenario
-	 * specify the class with this parameter.
-	 * 
-	 * STORE_MODIFY methods
+	 * Optional parameter. Only feasible for STORE_MODIFY methods. Specifies the
+	 * type of an object in a collection. If the generic type of a collection is
+	 * an interface the library cannot figure out the type of the implementation
+	 * class. For this scenario specify the class with this parameter.
 	 */
 	Class<?> entryClass() default Object.class;
 
