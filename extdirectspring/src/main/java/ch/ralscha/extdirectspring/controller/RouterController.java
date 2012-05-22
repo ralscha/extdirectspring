@@ -85,8 +85,8 @@ import ch.ralscha.extdirectspring.util.ParameterInfo;
 import ch.ralscha.extdirectspring.util.SupportedParameters;
 
 /**
- * Main router controller that handles polling, form handler and normal
- * Ext Direct calls.
+ * Main router controller that handles polling, form handler and normal Ext
+ * Direct calls.
  * 
  * @author mansari
  * @author Ralph Schaer
@@ -165,8 +165,8 @@ public class RouterController implements InitializingBean {
 
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
 	public void poll(@PathVariable("beanName") final String beanName, @PathVariable("method") final String method,
-			@PathVariable("event") final String event, final HttpServletRequest request, final HttpServletResponse response, final Locale locale)
-			throws Exception {
+			@PathVariable("event") final String event, final HttpServletRequest request,
+			final HttpServletResponse response, final Locale locale) throws Exception {
 
 		ExtDirectPollResponse directPollResponse = new ExtDirectPollResponse();
 		directPollResponse.setName(event);
@@ -252,7 +252,8 @@ public class RouterController implements InitializingBean {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction")
-	public void router(final HttpServletRequest request, final HttpServletResponse response, final Locale locale) throws IOException {
+	public void router(final HttpServletRequest request, final HttpServletResponse response, final Locale locale)
+			throws IOException {
 
 		Object requestData = jsonHandler.readValue(request.getInputStream(), Object.class);
 
