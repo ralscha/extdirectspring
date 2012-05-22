@@ -17,7 +17,6 @@ package ch.ralscha.extdirectspring.demo.store;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +33,10 @@ import ch.ralscha.extdirectspring.bean.Field;
 import ch.ralscha.extdirectspring.bean.MetaData;
 import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.bean.SortInfo;
+import ch.ralscha.extdirectspring.demo.util.PropertyOrderingFactory;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 
@@ -47,69 +46,6 @@ public class PersonAction {
 	@Autowired
 	private RandomDataBean dataBean;
 
-	private Map<String, Ordering<Person>> orderingMap;
-
-	public PersonAction() {
-		orderingMap = Maps.newHashMap();
-		orderingMap.put("fullName", new Ordering<Person>() {
-
-			@Override
-			public int compare(Person left, Person right) {
-				return left.getFullName().compareTo(right.getFullName());
-			}
-		});
-		orderingMap.put("lastName", new Ordering<Person>() {
-
-			@Override
-			public int compare(Person left, Person right) {
-				return left.getLastName().compareTo(right.getLastName());
-			}
-		});
-		orderingMap.put("firstName", new Ordering<Person>() {
-
-			@Override
-			public int compare(Person left, Person right) {
-				return left.getFirstName().compareTo(right.getFirstName());
-			}
-		});
-		orderingMap.put("street", new Ordering<Person>() {
-
-			@Override
-			public int compare(Person left, Person right) {
-				return left.getStreet().compareTo(right.getStreet());
-			}
-		});
-		orderingMap.put("city", new Ordering<Person>() {
-
-			@Override
-			public int compare(Person left, Person right) {
-				return left.getCity().compareTo(right.getCity());
-			}
-		});
-		orderingMap.put("state", new Ordering<Person>() {
-
-			@Override
-			public int compare(Person left, Person right) {
-				return left.getState().compareTo(right.getState());
-			}
-		});
-		orderingMap.put("zip", new Ordering<Person>() {
-
-			@Override
-			public int compare(Person left, Person right) {
-				return left.getZip().compareTo(right.getZip());
-			}
-		});
-		orderingMap.put("country", new Ordering<Person>() {
-
-			@Override
-			public int compare(Person left, Person right) {
-				return left.getCountry().compareTo(right.getCountry());
-			}
-		});
-
-	}
-
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")
 	public List<Person> load(ExtDirectStoreReadRequest request) {
 		return dataBean.findPersons(request.getQuery());
@@ -117,7 +53,7 @@ public class PersonAction {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")
 	public ExtDirectStoreResponse<Person> loadWithPaging(ExtDirectStoreReadRequest request,
-			@RequestParam(value = "no", defaultValue = "0") int no, @RequestParam(required = false) String name) {
+			@RequestParam(value = "no", defaultValue = "0", required=false) int no, @RequestParam(required = false) String name) {
 
 		List<Person> persons = dataBean.findPersons(request.getQuery());
 		int totalSize = persons.size();
@@ -125,7 +61,7 @@ public class PersonAction {
 		Ordering<Person> ordering = null;
 
 		if (StringUtils.hasText(request.getGroupBy())) {
-			ordering = orderingMap.get(request.getGroupBy());
+			ordering = PropertyOrderingFactory.INSTANCE.createOrdering(request.getGroupBy());
 			if (ordering != null) {
 				if (request.isDescendingGroupSort()) {
 					ordering = ordering.reverse();
@@ -137,7 +73,7 @@ public class PersonAction {
 		if (!sorters.isEmpty()) {
 			for (SortInfo sortInfo : sorters) {
 
-				Ordering<Person> colOrder = orderingMap.get(sortInfo.getProperty());
+				Ordering<Person> colOrder = PropertyOrderingFactory.INSTANCE.createOrdering(sortInfo.getProperty());
 				if (colOrder != null) {
 					if (sortInfo.getDirection() == SortDirection.DESCENDING) {
 						colOrder = colOrder.reverse();
@@ -221,7 +157,7 @@ public class PersonAction {
 		List<Person> persons = dataBean.findPersons(null);
 		int totalSize = persons.size();
 
-		Ordering<Person> ordering = orderingMap.get("fullName");
+		Ordering<Person> ordering = PropertyOrderingFactory.INSTANCE.createOrdering("fullName");
 		persons = ordering.reverse().sortedCopy(persons);
 
 		if (request.getStart() != null && request.getLimit() != null) {
@@ -267,7 +203,7 @@ public class PersonAction {
 		List<Person> persons = dataBean.findPersons(null);
 		int totalSize = persons.size();
 
-		Ordering<Person> ordering = orderingMap.get("city");
+		Ordering<Person> ordering = PropertyOrderingFactory.INSTANCE.createOrdering("city");
 		persons = ordering.sortedCopy(persons);
 
 		if (request.getStart() != null && request.getLimit() != null) {
@@ -329,7 +265,7 @@ public class PersonAction {
 		if (!sorters.isEmpty()) {
 			for (SortInfo sortInfo : sorters) {
 
-				Ordering<Person> colOrder = orderingMap.get(sortInfo.getProperty());
+				Ordering<Person> colOrder = PropertyOrderingFactory.INSTANCE.createOrdering(sortInfo.getProperty());
 				if (colOrder != null) {
 					if (sortInfo.getDirection() == SortDirection.DESCENDING) {
 						colOrder = colOrder.reverse();
@@ -343,7 +279,7 @@ public class PersonAction {
 
 			}
 		} else {
-			ordering = orderingMap.get("lastName");
+			ordering = PropertyOrderingFactory.INSTANCE.createOrdering("lastName");
 		}
 
 		if (ordering != null) {

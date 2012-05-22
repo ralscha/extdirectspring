@@ -17,8 +17,7 @@ package ch.ralscha.extdirectspring.demo.util;
 
 import java.util.Collection;
 
-import org.springframework.expression.Expression;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.ParseException;
 
 import ch.ralscha.extdirectspring.bean.GroupInfo;
 import ch.ralscha.extdirectspring.bean.SortDirection;
@@ -29,17 +28,27 @@ import com.google.common.collect.Ordering;
 public enum PropertyOrderingFactory {
 	INSTANCE;
 
-	private final SpelExpressionParser parser = new SpelExpressionParser();
-
-	public <T> Ordering<T> createOrdering(String propertyName, SortDirection sortDirection) {
-		Expression readPropertyExpression = parser.parseExpression(propertyName);
-		Ordering<T> ordering = new PropertyOrdering<T>(readPropertyExpression);
-
-		if (sortDirection == SortDirection.DESCENDING) {
-			ordering = ordering.reverse();
+	public <T> Ordering<T> createOrdering(String propertyName) {
+		try {
+			Ordering<T> ordering = new PropertyOrdering<T>(propertyName);
+			return ordering;
+		} catch (ParseException e) {
+			return null;
 		}
+	}
+	
+	public <T> Ordering<T> createOrdering(String propertyName, SortDirection sortDirection) {
+		try {
+			Ordering<T> ordering = new PropertyOrdering<T>(propertyName);
 
-		return ordering;
+			if (sortDirection == SortDirection.DESCENDING) {
+				ordering = ordering.reverse();
+			}
+
+			return ordering;
+		} catch (ParseException e) {
+			return null;
+		}
 	}
 
 	public <T> Ordering<T> createOrderingFromSorters(Collection<SortInfo> sortInfos) {
