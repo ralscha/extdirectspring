@@ -67,8 +67,8 @@ public class ExtDirectRequest {
 	}
 
 	/**
-	 * @return the transaction ID that is associated with this request. The response
-	 * has to return the same tid
+	 * @return the transaction ID that is associated with this request. The
+	 * response has to return the same tid
 	 */
 	public int getTid() {
 		return tid;

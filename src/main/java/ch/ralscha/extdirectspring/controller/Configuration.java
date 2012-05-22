@@ -17,20 +17,17 @@ package ch.ralscha.extdirectspring.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.util.StringUtils;
 
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.bean.BaseResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 
 /**
  * Configuration class to configure different aspects of extdirectspring.
- * 
- * If there is a mapping for the exception in exceptionToMessage and the value
- * is not null send this value. If there is a mapping for the exception in
- * exceptionToMessage and the value is null send exception.getMessage(). If
- * there is no mapping and sendExceptionMessage is true send
- * exception.getMessage(). If there is no mapping and sendExceptionMessage is
- * false send defaultExceptionMessage.
  * 
  * @author Ralph Schaer
  */
@@ -59,6 +56,21 @@ public class Configuration {
 		return defaultExceptionMessage;
 	}
 
+	/**
+	 * Changes the default message when an exception occurred and there is no
+	 * mapping found in {@link #getExceptionToMessage()} and
+	 * {@link #isSendExceptionMessage()} is false.
+	 * <p>
+	 * Default value is "Server Error".
+	 * <p>
+	 * This value is set into {@link ExtDirectResponse#setMessage(String)} and
+	 * sent to the client.
+	 * 
+	 * @see #setExceptionToMessage(Map)
+	 * @see #setDefaultExceptionMessage(String)
+	 * 
+	 * @param defaultExceptionMessage new default exception message
+	 */
 	public void setDefaultExceptionMessage(final String defaultExceptionMessage) {
 		this.defaultExceptionMessage = defaultExceptionMessage;
 	}
@@ -67,6 +79,21 @@ public class Configuration {
 		return sendExceptionMessage;
 	}
 
+	/**
+	 * Changes the way {@link ExtDirectResponse#setMessage(String)} is called.
+	 * <p>
+	 * If this flag is set to true and an exception occurred instead of
+	 * {@link #getDefaultExceptionMessage()} {@link Throwable#getMessage()} is
+	 * put into the message field of the response. Only if there is no mapping
+	 * found in {@link #getExceptionToMessage()}.
+	 * <p>
+	 * Default value is false.
+	 * 
+	 * @see #setExceptionToMessage(Map)
+	 * @see #setDefaultExceptionMessage(String)
+	 * 
+	 * @param sendExceptionMessage new flag
+	 */
 	public void setSendExceptionMessage(final boolean sendExceptionMessage) {
 		this.sendExceptionMessage = sendExceptionMessage;
 	}
@@ -76,9 +103,14 @@ public class Configuration {
 	}
 
 	/**
-	 * If sendStacktrace is true, the library sends the full stacktrace in
-	 * {@link BaseResponse#setWhere(String)} back to the client in case of an
-	 * exception. Should only set to true in development.
+	 * If sendStacktrace is true, the library sends, in case of an exception,
+	 * the full stacktrace in {@link BaseResponse#setWhere(String)} back to the
+	 * client.
+	 * <p>
+	 * Should only set to true in development.
+	 * <p>
+	 * Default value is false
+	 * 
 	 * @param sendStacktrace new flag
 	 */
 	public void setSendStacktrace(final boolean sendStacktrace) {
@@ -89,6 +121,28 @@ public class Configuration {
 		return exceptionToMessage;
 	}
 
+	/**
+	 * Sets the new exception-to-message map.
+	 * <p>
+	 * If there is a mapping for the exception in
+	 * {@link #getExceptionToMessage()} and the value is not null put this value
+	 * in {@link ExtDirectResponse#setMessage(String)}.
+	 * <p>
+	 * If there is a mapping for the exception in
+	 * {@link #getExceptionToMessage()} and the value is null use
+	 * {@link Throwable#getMessage()}.
+	 * <p>
+	 * If there is no mapping and {@link #isSendExceptionMessage()} is true use
+	 * {@link Throwable#getMessage()}.
+	 * <p>
+	 * If there is no mapping and {@link #isSendExceptionMessage()} is false use
+	 * {@link #getDefaultExceptionMessage()}.
+	 * 
+	 * @see #setDefaultExceptionMessage(String)
+	 * @see #setSendExceptionMessage(boolean)
+	 * 
+	 * @param exceptionToMessage new mapping from exception to message
+	 */
 	public void setExceptionToMessage(final Map<Class<?>, String> exceptionToMessage) {
 		this.exceptionToMessage = exceptionToMessage;
 	}
@@ -100,7 +154,8 @@ public class Configuration {
 	/**
 	 * If alwaysWrapStoreResponse is true, responses of STORE_READ and
 	 * STORE_MODIFY methods are always wrapped in an
-	 * {@link ExtDirectStoreResponse} object
+	 * {@link ExtDirectStoreResponse} object.
+	 * 
 	 * @param alwaysWrapStoreResponse new flag
 	 */
 	public void setAlwaysWrapStoreResponse(final boolean alwaysWrapStoreResponse) {
@@ -113,7 +168,12 @@ public class Configuration {
 
 	/**
 	 * If synchronizeOnSession is true, execution of all methods is synchronized
-	 * on the session, to serialize parallel invocations from the same client.
+	 * on the session object. To serialize parallel invocations from the same
+	 * client and to prevent concurrency issues if the server accesses global or
+	 * session resources.
+	 * <p>
+	 * Instead of globally enable this it's possible to set the flag on a per
+	 * method basis with {@link ExtDirectMethod#synchronizeOnSession()}.
 	 * 
 	 * @param synchronizeOnSession new flag
 	 */
@@ -125,6 +185,15 @@ public class Configuration {
 		return timeout;
 	}
 
+	/**
+	 * Sets the timeout in milliseconds for remote calls. This parameter is part
+	 * of the configuration object api.js sends to the client and configures the
+	 * timeout property of the <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.direct.RemotingProvider"
+	 * >RemotingProvider</a>.
+	 * 
+	 * @param timeout new timeout value
+	 */
 	public void setTimeout(final Integer timeout) {
 		this.timeout = timeout;
 	}
@@ -133,6 +202,16 @@ public class Configuration {
 		return maxRetries;
 	}
 
+	/**
+	 * Sets the number of times the client will try to send a message to the
+	 * server before throwing a failure. Default value is 1. This parameter is
+	 * part of the configuration object api.js sends to the client and
+	 * configures the maxRetries property of the <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.direct.RemotingProvider"
+	 * >RemotingProvider</a>.
+	 * 
+	 * @param maxRetries new number of max retries
+	 */
 	public void setMaxRetries(final Integer maxRetries) {
 		this.maxRetries = maxRetries;
 	}
@@ -141,10 +220,38 @@ public class Configuration {
 		return enableBuffer;
 	}
 
+	/**
+	 * true or false to enable or disable combining of method calls. If a number
+	 * is specified this is the amount of time in milliseconds to wait before
+	 * sending a batched request. Calls which are received within the specified
+	 * timeframe will be concatenated together and sent in a single request,
+	 * optimizing the application by reducing the amount of round trips that
+	 * have to be made to the server.
+	 * <p>
+	 * This parameter is part of the configuration object api.js sends to the
+	 * client and configures the enableBuffer property of the <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.direct.RemotingProvider"
+	 * >RemotingProvider</a>.
+	 * <p>
+	 * Defaults to: 10
+	 * 
+	 * @param enableBuffer new enableBuffer value
+	 */
 	public void setEnableBuffer(final Object enableBuffer) {
 		this.enableBuffer = enableBuffer;
 	}
 
+	/**
+	 * Returns an error message for the supplied exception and based on this
+	 * configuration.
+	 * 
+	 * @see #setDefaultExceptionMessage(String)
+	 * @see #setSendExceptionMessage(boolean)
+	 * @see #setExceptionToMessage(Map)
+	 * 
+	 * @param exception the thrown exception
+	 * @return exception message
+	 */
 	public String getMessage(final Throwable exception) {
 		String message = null;
 		if (getExceptionToMessage() != null) {
@@ -170,6 +277,22 @@ public class Configuration {
 		return streamResponse;
 	}
 
+	/**
+	 * If streamResponse is true, the JSON response will be directly written
+	 * into the {@link HttpServletResponse#getOutputStream()} without setting
+	 * the Content-Length header. The old ExtDirectSpring 1.0.x behavior.
+	 * <p>
+	 * If false the {@link RouterController} writes the JSON into an internal
+	 * buffer, sets the Content-Length header in {@link HttpServletResponse} and
+	 * writes the buffer into {@link HttpServletResponse#getOutputStream()}.
+	 * <p>
+	 * Instead of globally enable this it's possible to set the flag on a per
+	 * method basis with {@link ExtDirectMethod#streamResponse()}.
+	 * <p>
+	 * Default value is false
+	 * 
+	 * @param streamResponse new flag
+	 */
 	public void setStreamResponse(final boolean streamResponse) {
 		this.streamResponse = streamResponse;
 	}
