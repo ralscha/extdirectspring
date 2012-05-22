@@ -22,6 +22,14 @@ import java.util.Map;
 import org.springframework.core.convert.ConversionService;
 
 /**
+ * Base class for all the filter implementation.
+ * 
+ * @see BooleanFilter
+ * @see DateFilter
+ * @see ListFilter
+ * @see NumericFilter
+ * @see StringFilter
+ * 
  * @author Ralph Schaer
  */
 public class Filter {
@@ -36,7 +44,7 @@ public class Filter {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Filter createFilter(final Map<String, Object> jsonData, ConversionService conversionService) {
+	public static Filter createFilter(final Map<String, Object> jsonData, final ConversionService conversionService) {
 		String type = (String) jsonData.get("type");
 		Object source = jsonData.get("value");
 

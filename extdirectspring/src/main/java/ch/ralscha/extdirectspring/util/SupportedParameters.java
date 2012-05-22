@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Enum of all supported parameter types
+ * Enum of all supported parameter types.
  * 
  * @author mansari
  * @author Ralph Schaer
@@ -42,14 +42,14 @@ public enum SupportedParameters {
 	}
 
 	/**
-	 * @return the enclosing Class
+	 * @return the enclosing class
 	 */
 	public Class<?> getSupportedClass() {
 		return clazz;
 	}
 
 	/**
-	 * Checks if the class is a supported parameter type
+	 * Checks if the class is a supported parameter type.
 	 * 
 	 * @param clazz
 	 * @return true if is supported, else false

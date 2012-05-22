@@ -71,7 +71,7 @@ public enum ExtDirectMethodType {
 
 	/**
 	 * Specifies a simple remote method with named parameters. This type of
-	 * method can have any parameter and any return type
+	 * method can have any parameter and any return type.
 	 */
 	SIMPLE_NAMED {
 		@Override
