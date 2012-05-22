@@ -19,7 +19,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 /**
- * Class representing the response of a poll request
+ * Class representing the response of a poll request.
  * 
  * @author Ralph Schaer
  */

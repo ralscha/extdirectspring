@@ -43,7 +43,7 @@ public class BaseResponse {
 	 * "event": response from a polling method <br>
 	 * "rpc": response from a remote method call
 	 * 
-	 * @param type The new type of the response
+	 * @param type the new type of the response
 	 */
 	public void setType(final String type) {
 		this.type = type;
@@ -57,7 +57,7 @@ public class BaseResponse {
 	 * Sets an error message if type is "exception". In all other cases this
 	 * should not be called and message should be null.
 	 * 
-	 * @param message A error message
+	 * @param message an error message
 	 */
 	public void setMessage(final String message) {
 		this.message = message;
@@ -71,7 +71,7 @@ public class BaseResponse {
 	 * Contains a detailed description (stacktrace) of the error if type is
 	 * "exception" and sendStacktrace is set to true in {@link Configuration}
 	 * 
-	 * @param where Contains an detailed error description
+	 * @param where contains an detailed error description
 	 * 
 	 * @see Configuration#setSendStacktrace(boolean)
 	 */

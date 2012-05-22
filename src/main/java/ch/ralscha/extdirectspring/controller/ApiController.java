@@ -39,7 +39,7 @@ import ch.ralscha.extdirectspring.util.MethodInfo;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
 
 /**
- * Spring managed controller that handles /api.jsp and /api-debug.js requests
+ * Spring managed controller that handles /api.jsp and /api-debug.js requests.
  * 
  * @author Ralph Schaer
  * @author jeffreiffers
@@ -51,21 +51,21 @@ public class ApiController {
 	private RouterController routerController;
 
 	/**
-	 * Method that handles api.js calls. Generates a Javascript with the
-	 * necessary code for Ext.Direct
+	 * Method that handles api.js calls. Generates a javascript with the
+	 * necessary code for Ext Direct.
 	 * 
-	 * @param apiNs Name of the namespace the variable remotingApiVar will live
+	 * @param apiNs name of the namespace the variable remotingApiVar will live
 	 * in. Defaults to Ext.app
-	 * @param actionNs Name of the namespace the action will live in.
-	 * @param remotingApiVar Name of the remoting api variable. Defaults to
+	 * @param actionNs name of the namespace the action will live in.
+	 * @param remotingApiVar name of the remoting api variable. Defaults to
 	 * REMOTING_API
-	 * @param pollingUrlsVar Name of the polling urls object. Defaults to
+	 * @param pollingUrlsVar name of the polling urls object. Defaults to
 	 * POLLING_URLS
-	 * @param group Name of the api group. Multiple groups delimited with comma
-	 * @param fullRouterUrl If true the router property contains the full
+	 * @param group name of the api group. Multiple groups delimited with comma
+	 * @param fullRouterUrl if true the router property contains the full
 	 * request URL with method, server and port. Defaults to false returns only
 	 * the url without method, server and port
-	 * @param format Only valid value is "json2. Ext Designer sends this
+	 * @param format only valid value is "json2. Ext Designer sends this
 	 * parameter and the response is a JSON. Defaults to null and response is
 	 * Javascript.
 	 * @param request

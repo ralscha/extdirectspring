@@ -135,7 +135,7 @@ public class ExtDirectResponseBuilder {
 	}
 
 	/**
-	 * Add additional property to the response
+	 * Add additional property to the response.
 	 * 
 	 * @param key the key of the property
 	 * @param value the value of this property
@@ -147,7 +147,7 @@ public class ExtDirectResponseBuilder {
 	}
 
 	/**
-	 * Sets success flag to true
+	 * Sets success flag to true.
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder successful() {
@@ -156,7 +156,7 @@ public class ExtDirectResponseBuilder {
 	}
 
 	/**
-	 * Sets success flag to false
+	 * Sets success flag to false.
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder unsuccessful() {

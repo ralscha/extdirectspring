@@ -21,7 +21,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 /**
- * Class representing the response of a Ext Direct call
+ * Class representing the response of a Ext Direct call.
  * 
  * @author mansari
  * @author Ralph Schaer

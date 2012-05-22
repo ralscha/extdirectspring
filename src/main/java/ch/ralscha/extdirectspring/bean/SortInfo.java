@@ -29,7 +29,7 @@ public class SortInfo {
 
 	private SortDirection direction;
 
-	public SortInfo(String property, SortDirection direction) {
+	public SortInfo(final String property, final SortDirection direction) {
 		this.property = property;
 		this.direction = direction;
 	}

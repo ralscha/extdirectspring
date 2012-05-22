@@ -17,12 +17,19 @@ package ch.ralscha.extdirectspring.bean;
 
 import java.util.Map;
 
+/**
+ * Class contains information about the property on which to perform the group
+ * on and if sort is ascending or descending. ExtJs can send more than one group
+ * info in one request.
+ * 
+ * @author Ralph Schaer
+ */
 public class GroupInfo {
 	private String property;
 
 	private SortDirection direction;
 
-	public GroupInfo(String property, SortDirection direction) {
+	public GroupInfo(final String property, final SortDirection direction) {
 		this.property = property;
 		this.direction = direction;
 	}

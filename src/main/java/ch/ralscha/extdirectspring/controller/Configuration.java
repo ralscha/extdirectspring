@@ -32,12 +32,6 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
  * exception.getMessage(). If there is no mapping and sendExceptionMessage is
  * false send defaultExceptionMessage.
  * 
- * 
- * 
- * 
- * 
- * 
- * 
  * @author Ralph Schaer
  */
 public class Configuration {

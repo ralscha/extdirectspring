@@ -31,7 +31,7 @@ import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 
 /**
  * Object holds information about a method like the method itself and a list of
- * parameters
+ * parameters.
  * 
  * @author Ralph Schaer
  */

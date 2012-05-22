@@ -16,7 +16,7 @@
 package ch.ralscha.extdirectspring.bean;
 
 /**
- * Class representing the request of a Ext Direct call
+ * Class representing the request of a Ext Direct call.
  * 
  * @author mansari
  * @author Ralph Schaer
@@ -67,8 +67,8 @@ public class ExtDirectRequest {
 	}
 
 	/**
-	 * @return the Transaction ID to associate with this request. The response
-	 * has to contain exact the same tid
+	 * @return the transaction ID that is associated with this request. The response
+	 * has to return the same tid
 	 */
 	public int getTid() {
 		return tid;

@@ -23,7 +23,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 /**
- * Class representing the response of a DirectStore request
+ * Class representing the response of a DirectStore request.
  * 
  * @author Ralph Schaer
  * @param <T> Type of the entry inside the collection

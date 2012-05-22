@@ -86,7 +86,7 @@ import ch.ralscha.extdirectspring.util.SupportedParameters;
 
 /**
  * Main router controller that handles polling, form handler and normal
- * Ext.Direct calls
+ * Ext Direct calls.
  * 
  * @author mansari
  * @author Ralph Schaer
@@ -164,8 +164,8 @@ public class RouterController implements InitializingBean {
 	}
 
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
-	public void poll(@PathVariable("beanName") String beanName, @PathVariable("method") String method,
-			@PathVariable("event") String event, HttpServletRequest request, HttpServletResponse response, Locale locale)
+	public void poll(@PathVariable("beanName") final String beanName, @PathVariable("method") final String method,
+			@PathVariable("event") final String event, final HttpServletRequest request, final HttpServletResponse response, final Locale locale)
 			throws Exception {
 
 		ExtDirectPollResponse directPollResponse = new ExtDirectPollResponse();
@@ -232,8 +232,8 @@ public class RouterController implements InitializingBean {
 	}
 
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "extAction")
-	public String router(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("extAction") String extAction, @RequestParam("extMethod") String extMethod)
+	public String router(final HttpServletRequest request, final HttpServletResponse response,
+			@RequestParam("extAction") final String extAction, @RequestParam("extMethod") final String extMethod)
 			throws IOException {
 
 		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(extAction, extMethod);
@@ -252,7 +252,7 @@ public class RouterController implements InitializingBean {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction")
-	public void router(HttpServletRequest request, HttpServletResponse response, Locale locale) throws IOException {
+	public void router(final HttpServletRequest request, final HttpServletResponse response, final Locale locale) throws IOException {
 
 		Object requestData = jsonHandler.readValue(request.getInputStream(), Object.class);
 
@@ -467,7 +467,7 @@ public class RouterController implements InitializingBean {
 		return ExtDirectSpringUtil.invoke(context, directRequest.getAction(), methodInfo, parameters);
 	}
 
-	private Object convertValue(Object value, ParameterInfo methodParameter) {
+	private Object convertValue(final Object value, final ParameterInfo methodParameter) {
 		if (value != null) {
 			if (methodParameter.getType().equals(value.getClass())) {
 				return value;
@@ -649,7 +649,7 @@ public class RouterController implements InitializingBean {
 		return null;
 	}
 
-	private void handleException(BaseResponse response, Exception e) {
+	private void handleException(final BaseResponse response, final Exception e) {
 		Throwable cause;
 		if (e.getCause() != null) {
 			cause = e.getCause();
@@ -667,7 +667,7 @@ public class RouterController implements InitializingBean {
 		}
 	}
 
-	private void handleMethodNotFoundError(BaseResponse response, String beanName, String methodName) {
+	private void handleMethodNotFoundError(final BaseResponse response, final String beanName, final String methodName) {
 		response.setType("exception");
 		response.setMessage(configuration.getDefaultExceptionMessage());
 

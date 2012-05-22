@@ -21,7 +21,12 @@ import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import ch.ralscha.extdirectspring.filter.BooleanFilter;
+import ch.ralscha.extdirectspring.filter.DateFilter;
 import ch.ralscha.extdirectspring.filter.Filter;
+import ch.ralscha.extdirectspring.filter.ListFilter;
+import ch.ralscha.extdirectspring.filter.NumericFilter;
+import ch.ralscha.extdirectspring.filter.StringFilter;
 
 /**
  * Class representing the request of a DirectStore read call.
@@ -73,7 +78,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
-	 * @return the number of rows the DirectStore requests for paging.
+	 * @return the number of rows the DirectStore requests for paging
 	 */
 	public Integer getLimit() {
 		return limit;
@@ -143,6 +148,11 @@ public class ExtDirectStoreReadRequest {
 		this.sort = sort;
 	}
 
+	/**
+	 * @return the field/property name on which the grouping should occur.<br>
+	 * ExtJs 4.x and Touch 2 can send more than one group infos. Use
+	 * {@link #getGroups()} instead.
+	 */
 	public String getGroupBy() {
 		return groupBy;
 	}
@@ -151,6 +161,11 @@ public class ExtDirectStoreReadRequest {
 		this.groupBy = groupBy;
 	}
 
+	/**
+	 * @return sorting order for a grouping request. "ASC" or "DESC".<br>
+	 * ExtJs 4.x and Touch 2 can send more than one group infos. Use
+	 * {@link #getGroups()} instead.
+	 */
 	public String getGroupDir() {
 		return groupDir;
 	}
@@ -159,16 +174,34 @@ public class ExtDirectStoreReadRequest {
 		this.groupDir = groupDir;
 	}
 
+	/**
+	 * @return true if grouping sorting order is ascending.<br>
+	 * ExtJs 4.x and Touch 2 can send more than one group infos. Use
+	 * {@link #getGroups()} instead.
+	 */
 	@JsonIgnore
 	public boolean isAscendingGroupSort() {
 		return (SortDirection.fromString(getGroupDir()) == SortDirection.ASCENDING);
 	}
 
+	/**
+	 * @return true if grouping sorting order is descending.<br>
+	 * ExtJs 4.x and Touch 2 can send more than one group infos. Use
+	 * {@link #getGroups()} instead.
+	 */
 	@JsonIgnore
 	public boolean isDescendingGroupSort() {
 		return (SortDirection.fromString(getGroupDir()) == SortDirection.DESCENDING);
 	}
 
+	/**
+	 * @return collection of filter implementations
+	 * @see BooleanFilter
+	 * @see DateFilter
+	 * @see ListFilter
+	 * @see NumericFilter
+	 * @see StringFilter
+	 */
 	public List<Filter> getFilters() {
 		return Collections.unmodifiableList(filters);
 	}
@@ -188,9 +221,6 @@ public class ExtDirectStoreReadRequest {
 		this.page = page;
 	}
 
-	/**
-	 * @return collection of {@link SortInfo}.
-	 */
 	public List<SortInfo> getSorters() {
 		return Collections.unmodifiableList(sorters);
 	}
@@ -203,15 +233,18 @@ public class ExtDirectStoreReadRequest {
 		return Collections.unmodifiableList(groups);
 	}
 
-	public void setGroups(List<GroupInfo> groups) {
+	public void setGroups(final List<GroupInfo> groups) {
 		this.groups = groups;
 	}
 
+	/**
+	 * @return a map with all the keys and values from <code>extraParams</code>
+	 */
 	public Map<String, Object> getParams() {
 		return Collections.unmodifiableMap(params);
 	}
 
-	public void setParams(Map<String, Object> params) {
+	public void setParams(final Map<String, Object> params) {
 		this.params = params;
 	}
 
