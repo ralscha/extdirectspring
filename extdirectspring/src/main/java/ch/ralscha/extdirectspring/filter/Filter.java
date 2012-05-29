@@ -22,7 +22,7 @@ import java.util.Map;
 import org.springframework.core.convert.ConversionService;
 
 /**
- * Base class for all the filter implementation.
+ * Base class for all filter implementation.
  * 
  * @see BooleanFilter
  * @see DateFilter

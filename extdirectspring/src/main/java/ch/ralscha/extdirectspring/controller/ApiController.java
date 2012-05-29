@@ -64,7 +64,7 @@ public class ApiController {
 	 * @param group name of the api group. Multiple groups delimited with comma
 	 * @param fullRouterUrl if true the router property contains the full
 	 * request URL with method, server and port. Defaults to false returns only
-	 * the url without method, server and port
+	 * the URL without method, server and port
 	 * @param format only valid value is "json2. Ext Designer sends this
 	 * parameter and the response is a JSON. Defaults to null and response is
 	 * Javascript.

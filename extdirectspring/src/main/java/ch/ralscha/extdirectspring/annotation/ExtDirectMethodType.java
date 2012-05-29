@@ -156,7 +156,8 @@ public enum ExtDirectMethodType {
 	 * Specifies a method that handles a form post (with or without upload). A
 	 * FORM_POST method must not return anything. This type of method must be
 	 * annotated with @RequestMapping. @RequestMapping must contain a value and
-	 * a method of type RequestMethod.POST
+	 * a method of type RequestMethod.POST. This kind of method must be member
+	 * of a bean annotated with @Controller.
 	 */
 	FORM_POST {
 		@Override

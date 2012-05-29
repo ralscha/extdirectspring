@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.bean;
 
 /**
  * Enumeration of possible sort directions.
+ * 
  * @see SortInfo
  * @author Ralph Schaer
  */

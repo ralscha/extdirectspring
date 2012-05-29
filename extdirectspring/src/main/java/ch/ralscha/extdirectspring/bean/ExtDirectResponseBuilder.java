@@ -37,8 +37,8 @@ import ch.ralscha.extdirectspring.controller.RouterController;
 
 /**
  * An utility class that helps building the response for a FORM_POST method. The
- * response is written directly into the http servlet response with
- * {@link #buildAndWrite()}.
+ * response is written directly into the
+ * {@link HttpServletResponse#getOutputStream()} with {@link #buildAndWrite()}.
  * 
  * @author Ralph Schaer
  */
@@ -165,8 +165,9 @@ public class ExtDirectResponseBuilder {
 	}
 
 	/**
-	 * Builds and writes the response into the OutputStream of the http servlet
-	 * response. This methods has to be called at the end of a FORM_POST method.
+	 * Builds and writes the response into the OutputStream of
+	 * {@link HttpServletResponse}. This methods has to be called at the end of
+	 * a FORM_POST method.
 	 */
 	public void buildAndWrite() {
 
