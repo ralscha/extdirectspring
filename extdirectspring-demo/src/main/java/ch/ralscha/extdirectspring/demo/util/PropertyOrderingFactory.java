@@ -36,7 +36,7 @@ public enum PropertyOrderingFactory {
 			return null;
 		}
 	}
-	
+
 	public <T> Ordering<T> createOrdering(String propertyName, SortDirection sortDirection) {
 		try {
 			Ordering<T> ordering = new PropertyOrdering<T>(propertyName);

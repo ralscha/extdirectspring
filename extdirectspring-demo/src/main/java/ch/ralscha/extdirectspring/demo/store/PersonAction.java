@@ -53,7 +53,8 @@ public class PersonAction {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")
 	public ExtDirectStoreResponse<Person> loadWithPaging(ExtDirectStoreReadRequest request,
-			@RequestParam(value = "no", defaultValue = "0", required=false) int no, @RequestParam(required = false) String name) {
+			@RequestParam(value = "no", defaultValue = "0", required = false) int no,
+			@RequestParam(required = false) String name) {
 
 		List<Person> persons = dataBean.findPersons(request.getQuery());
 		int totalSize = persons.size();
