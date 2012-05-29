@@ -90,7 +90,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return the start row from where to send records back for a paging
-	 * request. start = limit * (page-1)
+	 * request. start = {@link #getLimit()} * ({@link #getPage()}-1)
 	 */
 	public Integer getStart() {
 		return start;
@@ -163,7 +163,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return sorting order for a grouping request. "ASC" or "DESC".<br>
-	 * ExtJs 4.x and Touch 2 can send more than one group infos. Use
+	 * ExtJs 4.x and Touch 2 can send more than one group info. Use
 	 * {@link #getGroups()} instead.
 	 */
 	public String getGroupDir() {
@@ -176,7 +176,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return true if grouping sorting order is ascending.<br>
-	 * ExtJs 4.x and Touch 2 can send more than one group infos. Use
+	 * ExtJs 4.x and Touch 2 can send more than one group info. Use
 	 * {@link #getGroups()} instead.
 	 */
 	@JsonIgnore
@@ -186,7 +186,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return true if grouping sorting order is descending.<br>
-	 * ExtJs 4.x and Touch 2 can send more than one group infos. Use
+	 * ExtJs 4.x and Touch 2 can send more than one group info. Use
 	 * {@link #getGroups()} instead.
 	 */
 	@JsonIgnore
@@ -211,7 +211,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
-	 * @return page number of a paging request. page = (start / limit) + 1
+	 * @return page number of a paging request. page = ({@link #getStart()} / {@link #getLimit()}) + 1
 	 */
 	public Integer getPage() {
 		return page;

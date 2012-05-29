@@ -69,7 +69,7 @@ public class BaseResponse {
 
 	/**
 	 * Contains a detailed description (stacktrace) of the error if type is
-	 * "exception" and sendStacktrace is set to true in {@link Configuration}
+	 * "exception" and sendStacktrace is set to true in {@link Configuration}.
 	 * 
 	 * @param where contains an detailed error description
 	 * 
