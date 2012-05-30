@@ -67,8 +67,8 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
-	 * @return a string containing a filter query
-	 */
+	 * @return the text a user entered into a combobox with queryMode 'remote' 
+	 */	
 	public String getQuery() {
 		return query;
 	}
