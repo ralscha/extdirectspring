@@ -66,7 +66,6 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 		HttpEntity entity = response.getEntity();
 		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
-
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
 		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
@@ -77,5 +76,11 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 		assertThat(rootAsMap.get("tid")).isEqualTo(3);
 		assertThat(rootAsMap.get("message")).isEqualTo("a null pointer");
 		assertThat(rootAsMap.get("where")).isNull();
+		
+		@SuppressWarnings("unchecked")
+		Map<String, Object> result = (Map<String, Object>)rootAsMap.get("result");
+		assertThat(result).hasSize(1);
+		assertThat((Boolean)result.get("success")).isFalse();
+		
 	}
 }
