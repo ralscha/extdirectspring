@@ -100,6 +100,7 @@ public class ExtDirectResponseBuilder {
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder setException(final Exception exception) {
+		unsuccessful();
 		
 		WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
 		Configuration configuration = null;
