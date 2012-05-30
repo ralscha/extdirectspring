@@ -27,13 +27,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.MessageSource;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import ch.ralscha.extdirectspring.controller.Configuration;
 import ch.ralscha.extdirectspring.controller.RouterController;
+import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
  * An utility class that helps building the response for a FORM_POST method. The
@@ -82,6 +87,38 @@ public class ExtDirectResponseBuilder {
 	 */
 	public static ExtDirectResponseBuilder create(final HttpServletRequest request, final HttpServletResponse response) {
 		return new ExtDirectResponseBuilder(request, response);
+	}
+	
+	/**
+	 * Creates an "exception" response. Calls {@link ExtDirectResponse#setType(String)} with a value of "exception".
+	 * Calls {@link ExtDirectResponse#setMessage(String)} and {@link ExtDirectResponse#setWhere(String)} according
+	 * to the {@link Configuration}.
+     * 
+	 * This is a method primarly used for implementations of {@link HandlerExceptionResolver}. 
+	 * 
+	 * @param exception the exception that was thrown.
+	 * @return this instance
+	 */
+	public ExtDirectResponseBuilder setException(final Exception exception) {
+		
+		WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
+		Configuration configuration = null;
+		try {
+			configuration = ctx.getBean(Configuration.class);
+		} catch (NoSuchBeanDefinitionException e) {
+			configuration = new Configuration();
+		}
+		
+		extDirectResponse.setType("exception");
+		extDirectResponse.setMessage(configuration.getMessage(exception));
+
+		if (configuration.isSendStacktrace()) {
+			extDirectResponse.setWhere(ExtDirectSpringUtil.getStackTrace(exception));
+		} else {
+			extDirectResponse.setWhere(null);
+		}
+		
+		return this;
 	}
 
 	/**
