@@ -15,39 +15,22 @@
  */
 package ch.ralscha.extdirectspring.provider;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 @Component
 public class MyExceptionHandler implements HandlerExceptionResolver {
 
-	private ObjectMapper mapper = new ObjectMapper();
-
-	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse res, Object handler,
+	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
 			Exception ex) {
-
-		ExtDirectResponse response = new ExtDirectResponse(request);
-		response.setType("exception");
-		response.setMessage("server error");
-		response.setWhere(ex.toString());
-		try {
-			res.getOutputStream().print(mapper.writeValueAsString(response));
-			res.getOutputStream().flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		ExtDirectResponseBuilder.create(request, response).setException(ex).buildAndWrite();
 		return null;
-
 	}
 
 }

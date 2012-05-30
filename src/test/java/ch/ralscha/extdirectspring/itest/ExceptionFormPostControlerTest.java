@@ -75,7 +75,7 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 		assertThat(rootAsMap.get("type")).isEqualTo("exception");
 		assertThat(rootAsMap.get("action")).isEqualTo("exceptionFormPostController");
 		assertThat(rootAsMap.get("tid")).isEqualTo(3);
-		assertThat(rootAsMap.get("message")).isEqualTo("server error");
-		assertThat(rootAsMap.get("where")).isEqualTo("java.lang.NullPointerException: a null pointer");
+		assertThat(rootAsMap.get("message")).isEqualTo("a null pointer");
+		assertThat(rootAsMap.get("where")).isNull();
 	}
 }
