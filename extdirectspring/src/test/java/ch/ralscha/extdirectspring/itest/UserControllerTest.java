@@ -43,7 +43,7 @@ public class UserControllerTest extends JettyTest {
 
 	private HttpPost post;
 
-	private ObjectMapper mapper = new ObjectMapper();
+	private final ObjectMapper mapper = new ObjectMapper();
 
 	@Before
 	public void beforeTest() {

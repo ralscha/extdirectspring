@@ -60,26 +60,26 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod(group = "group2,groupX")
-	public String method3(long i, Double d, String s) {
+	public String method3(final long i, final Double d, final String s) {
 		return String.format("method3() called-%d-%.1f-%s", i, d, s);
 	}
 
 	@ExtDirectMethod(group = "group2,groupX")
-	public String method3WithError(long i, Double d, @RequestParam("s") String s) {
+	public String method3WithError(final long i, final Double d, @RequestParam("s") final String s) {
 		return String.format("method3() called-%d-%.1f-%s", i, d, s);
 	}
 
-	public String method4(long i, Double d, String s) {
+	public String method4(final long i, final Double d, final String s) {
 		return "method4() called";
 	}
 
 	@ExtDirectMethod(event = "test")
-	public String method4b(long i, Double d, String s) {
+	public String method4b(final long i, final Double d, final String s) {
 		return "method4b() called";
 	}
 
 	@ExtDirectMethod(group = "group2,group3", entryClass = String.class)
-	public Boolean method5(String userName) {
+	public Boolean method5(final String userName) {
 		if ("ralph".equals(userName)) {
 			return true;
 		} else if ("joe".equals(userName)) {
@@ -89,7 +89,7 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod
-	public int method6(int a, int b) {
+	public int method6(final int a, final int b) {
 		return a + b;
 	}
 
@@ -99,7 +99,7 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod
-	public FormInfo method8(double d) {
+	public FormInfo method8(final double d) {
 		FormInfo info = new FormInfo();
 		info.setBack(d);
 		info.setAdmin(false);
@@ -111,8 +111,8 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod(group = "groupX,group3")
-	public long method9(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale,
-			Principal principal) {
+	public long method9(final HttpServletResponse response, final HttpServletRequest request,
+			final HttpSession session, final Locale locale, final Principal principal) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
@@ -122,8 +122,8 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod
-	public String method10(boolean flag, char aCharacter, StatusEnum status, int aInt, long aLong, double aDouble,
-			float aFloat, short aShort, byte aByte) {
+	public String method10(final boolean flag, final char aCharacter, final StatusEnum status, final int aInt,
+			final long aLong, final double aDouble, final float aFloat, final short aShort, final byte aByte) {
 		assertThat(flag).isTrue();
 		assertThat(aCharacter).isEqualTo('c');
 		assertThat(status).isEqualTo(StatusEnum.ACTIVE);
@@ -148,7 +148,7 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod
-	public String method12(Row aRow) {
+	public String method12(final Row aRow) {
 		assertThat(aRow).isNotNull();
 		assertThat(aRow.getId()).isEqualTo(104);
 		assertThat(aRow.getName()).isEqualTo("myRow");
@@ -158,9 +158,10 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod
-	public String method13(boolean flag, HttpServletResponse response, char aCharacter, HttpServletRequest request,
-			StatusEnum status, HttpSession session, int aInt, long aLong, Locale locale, double aDouble, float aFloat,
-			Principal principal, short aShort, byte aByte) {
+	public String method13(final boolean flag, final HttpServletResponse response, final char aCharacter,
+			final HttpServletRequest request, final StatusEnum status, final HttpSession session, final int aInt,
+			final long aLong, final Locale locale, final double aDouble, final float aFloat, final Principal principal,
+			final short aShort, final byte aByte) {
 
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
@@ -182,9 +183,10 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod
-	public Map<String, Object> method14(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate, String normalParameter,
-			HttpServletRequest request, @DateTimeFormat(iso = ISO.DATE) LocalDate aDate,
-			@NumberFormat(style = NumberFormat.Style.PERCENT) BigDecimal percent) {
+	public Map<String, Object> method14(@DateTimeFormat(iso = ISO.DATE_TIME) final Date endDate,
+			final String normalParameter, final HttpServletRequest request,
+			@DateTimeFormat(iso = ISO.DATE) final LocalDate aDate,
+			@NumberFormat(style = NumberFormat.Style.PERCENT) final BigDecimal percent) {
 
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("endDate", endDate);
@@ -196,34 +198,34 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod
-	public String method15(Integer id, String dummy, @RequestHeader String header) {
+	public String method15(final Integer id, final String dummy, @RequestHeader final String header) {
 		return id + ";" + dummy + ";" + header;
 	}
 
 	@ExtDirectMethod
-	public String method16(Integer id, @RequestHeader("anotherName") String header) {
+	public String method16(final Integer id, @RequestHeader("anotherName") final String header) {
 		return id + ";" + header;
 	}
 
 	@ExtDirectMethod
-	public String method17(@RequestHeader(value = "anotherName", defaultValue = "default") String header) {
+	public String method17(@RequestHeader(value = "anotherName", defaultValue = "default") final String header) {
 		return header;
 	}
 
 	@ExtDirectMethod(synchronizeOnSession = true)
-	public String method18(@RequestHeader(defaultValue = "default", required = false) String header) {
+	public String method18(@RequestHeader(defaultValue = "default", required = false) final String header) {
 		return header;
 	}
 
 	@ExtDirectMethod(synchronizeOnSession = true)
-	public String method19(@RequestHeader(defaultValue = "default1", required = false) String header1, Integer id,
-			@RequestHeader(defaultValue = "default2", required = false) String header2,
-			@RequestHeader(value = "last") String header3) {
+	public String method19(@RequestHeader(defaultValue = "default1", required = false) final String header1,
+			final Integer id, @RequestHeader(defaultValue = "default2", required = false) final String header2,
+			@RequestHeader(value = "last") final String header3) {
 		return id + ";" + header1 + ";" + header2 + ";" + header3;
 	}
 
 	@ExtDirectMethod(synchronizeOnSession = true)
-	public String method20(@RequestHeader Integer intHeader, @RequestHeader Boolean booleanHeader) {
+	public String method20(@RequestHeader final Integer intHeader, @RequestHeader final Boolean booleanHeader) {
 		return intHeader + ";" + booleanHeader;
 	}
 

@@ -80,7 +80,7 @@ public enum MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, M
 		}
 
 		@Override
-		public boolean equals(Object o) {
+		public boolean equals(final Object o) {
 			if (!(o instanceof Key)) {
 				return false;
 			}

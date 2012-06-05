@@ -39,9 +39,9 @@ public final class ParameterInfo {
 
 	private String name;
 
-	private TypeDescriptor typeDescriptor;
+	private final TypeDescriptor typeDescriptor;
 
-	private boolean supportedParameter;
+	private final boolean supportedParameter;
 
 	private boolean hasRequestParamAnnotation;
 

@@ -141,7 +141,7 @@ public class RouterController implements InitializingBean {
 			final Class<?> userType = ClassUtils.getUserClass(handlerType);
 
 			Set<Method> methods = ExtDirectSpringUtil.selectMethods(userType, new MethodFilter() {
-				public boolean matches(Method method) {
+				public boolean matches(final Method method) {
 					return AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) != null;
 				}
 			});

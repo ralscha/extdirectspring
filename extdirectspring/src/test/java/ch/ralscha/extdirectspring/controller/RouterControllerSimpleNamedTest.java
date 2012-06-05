@@ -508,8 +508,8 @@ public class RouterControllerSimpleNamedTest {
 				responses.subList(7, 8));
 	}
 
-	private void assertResponse(String bean, String method, int tid, ResultObject expectedResult,
-			List<ExtDirectResponse> responses) {
+	private void assertResponse(final String bean, final String method, final int tid,
+			final ResultObject expectedResult, final List<ExtDirectResponse> responses) {
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);

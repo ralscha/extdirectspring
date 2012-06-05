@@ -18,16 +18,16 @@ package ch.ralscha.extdirectspring.bean;
 import java.util.Map;
 
 /**
- * Class contains information about the property/field on which to sort and if sort
- * is ascending or descending. ExtJs can send more than one sort info in one
- * request.
+ * Class contains information about the property/field on which to sort and if
+ * sort is ascending or descending. ExtJs can send more than one sort info in
+ * one request.
  * 
  * @author Ralph Schaer
  */
 public class SortInfo {
-	private String property;
+	private final String property;
 
-	private SortDirection direction;
+	private final SortDirection direction;
 
 	public SortInfo(final String property, final SortDirection direction) {
 		this.property = property;

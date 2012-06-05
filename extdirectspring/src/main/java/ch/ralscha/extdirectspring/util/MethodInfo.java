@@ -39,7 +39,7 @@ public final class MethodInfo {
 
 	private String group;
 
-	private ExtDirectMethodType type;
+	private final ExtDirectMethodType type;
 
 	private boolean synchronizeOnSession;
 
