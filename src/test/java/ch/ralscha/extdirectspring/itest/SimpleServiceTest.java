@@ -67,8 +67,8 @@ public class SimpleServiceTest extends JettyTest {
 		postToUpperCase("andrea", client);
 	}
 
-	private void postToUpperCase(String text, HttpClient client) throws UnsupportedEncodingException, IOException,
-			ClientProtocolException, JsonParseException, JsonMappingException {
+	private void postToUpperCase(final String text, final HttpClient client) throws UnsupportedEncodingException,
+			IOException, ClientProtocolException, JsonParseException, JsonMappingException {
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
 		StringEntity postEntity = new StringEntity(
@@ -108,8 +108,9 @@ public class SimpleServiceTest extends JettyTest {
 		postToEcho("\"userId\":\"andrea\"", "UserId: andrea LogLevel: 10", client);
 	}
 
-	private void postToEcho(String data, String expectedResult, HttpClient client) throws UnsupportedEncodingException,
-			IOException, ClientProtocolException, JsonParseException, JsonMappingException {
+	private void postToEcho(final String data, final String expectedResult, final HttpClient client)
+			throws UnsupportedEncodingException, IOException, ClientProtocolException, JsonParseException,
+			JsonMappingException {
 
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 

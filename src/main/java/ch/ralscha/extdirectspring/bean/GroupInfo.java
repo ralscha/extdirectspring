@@ -25,9 +25,9 @@ import java.util.Map;
  * @author Ralph Schaer
  */
 public class GroupInfo {
-	private String property;
+	private final String property;
 
-	private SortDirection direction;
+	private final SortDirection direction;
 
 	public GroupInfo(final String property, final SortDirection direction) {
 		this.property = property;

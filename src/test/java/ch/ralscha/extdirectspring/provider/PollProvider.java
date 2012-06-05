@@ -43,8 +43,8 @@ public class PollProvider {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message2", group = "group2", entryClass = String.class)
-	public String handleMessage2(HttpServletResponse response, HttpServletRequest request, HttpSession session,
-			Locale locale) {
+	public String handleMessage2(final HttpServletResponse response, final HttpServletRequest request,
+			final HttpSession session, final Locale locale) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
@@ -56,19 +56,20 @@ public class PollProvider {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message3", group = "group4")
-	public String handleMessage3(Locale locale, @RequestParam(value = "id") int id) {
+	public String handleMessage3(final Locale locale, @RequestParam(value = "id") final int id) {
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 		return "Result: " + id;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message4", synchronizeOnSession = true)
-	public int handleMessage4(@RequestParam(value = "id", defaultValue = "1") int id, HttpServletRequest request) {
+	public int handleMessage4(@RequestParam(value = "id", defaultValue = "1") final int id,
+			final HttpServletRequest request) {
 		assertThat(request).isNotNull();
 		return id * 2;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message5", group = "group3")
-	public Integer handleMessage5(@RequestParam(value = "id", required = false) Integer id, String dummy) {
+	public Integer handleMessage5(@RequestParam(value = "id", required = false) final Integer id, final String dummy) {
 		assertThat(dummy).isNull();
 		if (id != null) {
 			return id * 2;
@@ -86,37 +87,37 @@ public class PollProvider {
 	/* Request Header */
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
-	public String message7(@RequestParam(value = "id", required = false) Integer id, String dummy,
-			@RequestHeader String header) {
+	public String message7(@RequestParam(value = "id", required = false) final Integer id, final String dummy,
+			@RequestHeader final String header) {
 		return id + ";" + dummy + ";" + header;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5", synchronizeOnSession = true)
-	public String message8(@RequestParam Integer id,
-			@RequestHeader(value = "anotherName", required = true) String header) {
+	public String message8(@RequestParam final Integer id,
+			@RequestHeader(value = "anotherName", required = true) final String header) {
 		return id + ";" + header;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
-	public String message9(@RequestHeader(value = "anotherName", defaultValue = "default") String header) {
+	public String message9(@RequestHeader(value = "anotherName", defaultValue = "default") final String header) {
 		return header;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
-	public String message10(@RequestHeader(defaultValue = "default", required = false) String header) {
+	public String message10(@RequestHeader(defaultValue = "default", required = false) final String header) {
 		return header;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
-	public String message11(@RequestHeader(defaultValue = "default1", required = false) String header1,
-			@RequestParam(value = "id", required = false) Integer id,
-			@RequestHeader(defaultValue = "default2", required = false) String header2,
-			@RequestHeader(value = "last") String header3) {
+	public String message11(@RequestHeader(defaultValue = "default1", required = false) final String header1,
+			@RequestParam(value = "id", required = false) final Integer id,
+			@RequestHeader(defaultValue = "default2", required = false) final String header2,
+			@RequestHeader(value = "last") final String header3) {
 		return id + ";" + header1 + ";" + header2 + ";" + header3;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
-	public String message12(@RequestHeader Integer intHeader, @RequestHeader Boolean booleanHeader) {
+	public String message12(@RequestHeader final Integer intHeader, @RequestHeader final Boolean booleanHeader) {
 		return intHeader + ";" + booleanHeader;
 	}
 }

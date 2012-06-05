@@ -67,8 +67,8 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
-	 * @return the text a user entered into a combobox with queryMode 'remote' 
-	 */	
+	 * @return the text a user entered into a combobox with queryMode 'remote'
+	 */
 	public String getQuery() {
 		return query;
 	}
@@ -211,13 +211,14 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
-	 * @return page number of a paging request. page = ({@link #getStart()} / {@link #getLimit()}) + 1
+	 * @return page number of a paging request. page = ({@link #getStart()} /
+	 * {@link #getLimit()}) + 1
 	 */
 	public Integer getPage() {
 		return page;
 	}
 
-	public void setPage(Integer page) {
+	public void setPage(final Integer page) {
 		this.page = page;
 	}
 

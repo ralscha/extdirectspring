@@ -36,21 +36,21 @@ public class FormInfoController2 {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
 	@RequestMapping(value = "/updateInfo1", method = RequestMethod.POST)
-	public void updateInfo1(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
-			BindingResult result) {
+	public void updateInfo1(final Locale locale, final HttpServletRequest request, final HttpServletResponse response,
+			final FormInfo formInfo, final BindingResult result) {
 		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3", event = "test")
 	@RequestMapping(method = RequestMethod.POST)
-	public void updateInfo2(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
-			BindingResult result) {
+	public void updateInfo2(final Locale locale, final HttpServletRequest request, final HttpServletResponse response,
+			final FormInfo formInfo, final BindingResult result) {
 		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
-	public void invalidMethod(Locale locale, HttpServletRequest request, HttpServletResponse response,
-			FormInfo formInfo, BindingResult result) {
+	public void invalidMethod(final Locale locale, final HttpServletRequest request,
+			final HttpServletResponse response, final FormInfo formInfo, final BindingResult result) {
 		// dummy test method
 	}
 

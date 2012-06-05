@@ -88,20 +88,23 @@ public class ExtDirectResponseBuilder {
 	public static ExtDirectResponseBuilder create(final HttpServletRequest request, final HttpServletResponse response) {
 		return new ExtDirectResponseBuilder(request, response);
 	}
-	
+
 	/**
-	 * Creates an "exception" response. Calls {@link ExtDirectResponse#setType(String)} with a value of "exception".
-	 * Calls {@link ExtDirectResponse#setMessage(String)} and {@link ExtDirectResponse#setWhere(String)} according
-	 * to the {@link Configuration}.
-     * 
-	 * This is a method primarly used for implementations of {@link HandlerExceptionResolver}. 
+	 * Creates an "exception" response. Calls
+	 * {@link ExtDirectResponse#setType(String)} with a value of "exception".
+	 * Calls {@link ExtDirectResponse#setMessage(String)} and
+	 * {@link ExtDirectResponse#setWhere(String)} according to the
+	 * {@link Configuration}.
+	 * 
+	 * This is a method primarly used for implementations of
+	 * {@link HandlerExceptionResolver}.
 	 * 
 	 * @param exception the exception that was thrown.
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder setException(final Exception exception) {
 		unsuccessful();
-		
+
 		WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
 		Configuration configuration = null;
 		try {
@@ -109,7 +112,7 @@ public class ExtDirectResponseBuilder {
 		} catch (NoSuchBeanDefinitionException e) {
 			configuration = new Configuration();
 		}
-		
+
 		extDirectResponse.setType("exception");
 		extDirectResponse.setMessage(configuration.getMessage(exception));
 
@@ -118,7 +121,7 @@ public class ExtDirectResponseBuilder {
 		} else {
 			extDirectResponse.setWhere(null);
 		}
-		
+
 		return this;
 	}
 

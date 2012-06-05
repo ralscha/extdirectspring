@@ -37,13 +37,13 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 public class RemoteProviderStoreModify {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public List<Row> create1(List<Row> rows) {
+	public List<Row> create1(final List<Row> rows) {
 		return rows;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, event = "test")
-	public List<Row> create2(List<Row> rows, HttpServletResponse response, HttpServletRequest request,
-			HttpSession session, Locale locale) {
+	public List<Row> create2(final List<Row> rows, final HttpServletResponse response,
+			final HttpServletRequest request, final HttpSession session, final Locale locale) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
@@ -53,28 +53,29 @@ public class RemoteProviderStoreModify {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public List<Row> update1(List<Row> rows) {
+	public List<Row> update1(final List<Row> rows) {
 		return rows;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public List<Row> update2(Locale locale, @RequestParam(value = "id") int id, List<Row> rows) {
+	public List<Row> update2(final Locale locale, @RequestParam(value = "id") final int id, final List<Row> rows) {
 		assertThat(id).isEqualTo(10);
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 		return rows;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public List<Row> update3(List<Row> rows, @RequestParam(value = "id", defaultValue = "1") int id,
-			HttpServletRequest servletRequest) {
+	public List<Row> update3(final List<Row> rows, @RequestParam(value = "id", defaultValue = "1") final int id,
+			final HttpServletRequest servletRequest) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
 		return rows;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group2")
-	public List<Row> update4(@RequestParam(value = "id", required = false) Integer id,
-			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate yesterday, List<Row> rows) {
+	public List<Row> update4(@RequestParam(value = "id", required = false) final Integer id,
+			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) final LocalDate yesterday,
+			final List<Row> rows) {
 
 		if (id == null) {
 			assertThat(id).isNull();
@@ -88,7 +89,7 @@ public class RemoteProviderStoreModify {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group3")
-	public List<Integer> destroy(List<Integer> rows) {
+	public List<Integer> destroy(final List<Integer> rows) {
 		return rows;
 	}
 

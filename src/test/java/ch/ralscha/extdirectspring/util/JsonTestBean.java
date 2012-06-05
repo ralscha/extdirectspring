@@ -31,7 +31,7 @@ public class JsonTestBean {
 		// no action here
 	}
 
-	public JsonTestBean(Integer a, String b, String c, Boolean d, Integer[] e) {
+	public JsonTestBean(final Integer a, final String b, final String c, final Boolean d, final Integer[] e) {
 		this.a = a;
 		this.b = b;
 		this.c = c;
@@ -43,7 +43,7 @@ public class JsonTestBean {
 		return a;
 	}
 
-	public void setA(Integer a) {
+	public void setA(final Integer a) {
 		this.a = a;
 	}
 
@@ -51,7 +51,7 @@ public class JsonTestBean {
 		return b;
 	}
 
-	public void setB(String b) {
+	public void setB(final String b) {
 		this.b = b;
 	}
 
@@ -59,7 +59,7 @@ public class JsonTestBean {
 		return c;
 	}
 
-	public void setC(String c) {
+	public void setC(final String c) {
 		this.c = c;
 	}
 
@@ -67,7 +67,7 @@ public class JsonTestBean {
 		return d;
 	}
 
-	public void setD(Boolean d) {
+	public void setD(final Boolean d) {
 		this.d = d;
 	}
 
@@ -75,7 +75,7 @@ public class JsonTestBean {
 		return e;
 	}
 
-	public void setE(Integer[] e) {
+	public void setE(final Integer[] e) {
 		this.e = e;
 	}
 

@@ -24,7 +24,7 @@ public class Book extends BaseModel {
 		// default constructor
 	}
 
-	public Book(Integer id, String title, String isbn) {
+	public Book(final Integer id, final String title, final String isbn) {
 		setId(id);
 		this.title = title;
 		this.isbn = isbn;
@@ -34,7 +34,7 @@ public class Book extends BaseModel {
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
@@ -42,7 +42,7 @@ public class Book extends BaseModel {
 		return isbn;
 	}
 
-	public void setIsbn(String isbn) {
+	public void setIsbn(final String isbn) {
 		this.isbn = isbn;
 	}
 
