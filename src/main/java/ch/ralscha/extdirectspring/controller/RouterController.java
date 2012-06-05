@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -55,7 +56,6 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ClassUtils;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ReflectionUtils.MethodFilter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -330,20 +330,22 @@ public class RouterController implements InitializingBean {
 		response.setContentType(APPLICATION_JSON.toString());
 		response.setCharacterEncoding(APPLICATION_JSON.getCharSet().name());
 
-		final ObjectMapper objectMapper = jsonHandler.getMapper();
-
+		final ObjectMapper objectMapper = jsonHandler.getMapper();		
+		final ServletOutputStream outputStream = response.getOutputStream();
+		
 		if (!streamResponse) {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
 			JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(bos, JsonEncoding.UTF8);
 			objectMapper.writeValue(jsonGenerator, responseObject);
 			response.setContentLength(bos.size());
-			FileCopyUtils.copy(bos.toByteArray(), response.getOutputStream());
+			outputStream.write(bos.toByteArray());
 		} else {
-			JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(response.getOutputStream(),
+			JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(outputStream,
 					JsonEncoding.UTF8);
 			objectMapper.writeValue(jsonGenerator, responseObject);
-			response.getOutputStream().flush();
 		}
+		
+		outputStream.flush();
 	}
 
 	@SuppressWarnings({ "unchecked" })

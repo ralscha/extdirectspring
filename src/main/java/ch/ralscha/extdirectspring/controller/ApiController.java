@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -83,6 +84,8 @@ public class ApiController {
 			@RequestParam(value = "format", required = false) final String format, final HttpServletRequest request,
 			final HttpServletResponse response) throws IOException {
 
+		final ServletOutputStream outputStream = response.getOutputStream();
+		
 		if (format == null) {
 			response.setContentType("application/x-javascript");
 
@@ -116,7 +119,7 @@ public class ApiController {
 			}
 
 			response.setContentLength(apiString.getBytes().length);
-			response.getOutputStream().write(apiString.getBytes());
+			outputStream.write(apiString.getBytes());
 		} else {
 			response.setContentType(RouterController.APPLICATION_JSON.toString());
 			response.setCharacterEncoding(RouterController.APPLICATION_JSON.getCharSet().name());
@@ -134,10 +137,10 @@ public class ApiController {
 
 			String apiString = buildApiJson(apiNs, actionNs, remotingApiVar, routerUrl, group, debug);
 			response.setContentLength(apiString.getBytes().length);
-			response.getOutputStream().write(apiString.getBytes());
+			outputStream.write(apiString.getBytes());
 		}
 
-		response.getOutputStream().flush();
+		outputStream.flush();
 	}
 
 	private String buildApiString(final String apiNs, final String actionNs, final String remotingApiVar,
