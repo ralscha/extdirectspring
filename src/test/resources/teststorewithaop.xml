@@ -14,9 +14,7 @@
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
   
   <context:component-scan base-package="ch.ralscha.extdirectspring" />
-  
-  <context:component-scan base-package="ch.ralscha.extdirectspring.store"/>
-	
+  	
   <mvc:annotation-driven />
 	
   <aop:aspectj-autoproxy />

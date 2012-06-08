@@ -33,6 +33,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
@@ -44,6 +45,7 @@ import ch.ralscha.extdirectspring.bean.api.Action;
 import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.util.ApiCache;
+import ch.ralscha.extdirectspring.util.MethodInfoCache;
 
 /**
  * Tests for {@link ApiController}.
@@ -66,8 +68,9 @@ public class ApiControllerTest {
 
 	@Before
 	public void setupApiController() throws Exception {
-		routerController.afterPropertiesSet();
+		MethodInfoCache.INSTANCE.clear();
 		ApiCache.INSTANCE.clear();
+		applicationContext.publishEvent(new ContextRefreshedEvent(applicationContext));
 	}
 
 	@Test
@@ -512,6 +515,31 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderImplementation", new Action("storeRead", 1, false));
 		remotingApi.addAction("remoteProviderImplementation", new Action("method2", 0, false));
 		remotingApi.addAction("remoteProviderImplementation", new Action("method3", 3, false));
+
+		remotingApi.addAction("bookService", new Action("read", 1, false));
+		remotingApi.addAction("bookService", new Action("readWithPaging", 1, false));
+		remotingApi.addAction("bookService", new Action("update3", 1, false));
+		remotingApi.addAction("bookService", new Action("update4", 1, false));
+		remotingApi.addAction("bookService", new Action("delete3", 1, false));
+		remotingApi.addAction("bookService", new Action("delete4", 1, false));
+		remotingApi.addAction("bookService", new Action("create3", 1, false));
+		remotingApi.addAction("bookService", new Action("create4", 1, false));
+		remotingApi.addAction("bookSubAopService", new Action("read", 1, false));
+		remotingApi.addAction("bookSubAopService", new Action("readWithPaging", 1, false));
+		remotingApi.addAction("bookSubAopService", new Action("update3", 1, false));
+		remotingApi.addAction("bookSubAopService", new Action("update4", 1, false));
+		remotingApi.addAction("bookSubAopService", new Action("delete3", 1, false));
+		remotingApi.addAction("bookSubAopService", new Action("delete4", 1, false));
+		remotingApi.addAction("bookSubAopService", new Action("create3", 1, false));
+		remotingApi.addAction("bookSubAopService", new Action("create4", 1, false));
+		remotingApi.addAction("bookSubService", new Action("read", 1, false));
+		remotingApi.addAction("bookSubService", new Action("readWithPaging", 1, false));
+		remotingApi.addAction("bookSubService", new Action("update3", 1, false));
+		remotingApi.addAction("bookSubService", new Action("update4", 1, false));
+		remotingApi.addAction("bookSubService", new Action("delete3", 1, false));
+		remotingApi.addAction("bookSubService", new Action("delete4", 1, false));
+		remotingApi.addAction("bookSubService", new Action("create3", 1, false));
+		remotingApi.addAction("bookSubService", new Action("create4", 1, false));
 
 		remotingApi.addAction("remoteProviderSimpleNamed", new Action("method1", new ArrayList()));
 		remotingApi.addAction("remoteProviderSimpleNamed", new Action("method2", Arrays.asList("i", "d", "s")));

@@ -44,7 +44,6 @@ public class BookServiceTest {
 	public void beforeTest() {
 		response = new MockHttpServletResponse();
 		request = new MockHttpServletRequest();
-		controller.afterPropertiesSet();
 	}
 
 	@Test

@@ -54,7 +54,6 @@ public class ApiControllerWithXMLConfig3Test {
 
 	@Before
 	public void setupApiController() throws Exception {
-		routerController.afterPropertiesSet();
 		ApiCache.INSTANCE.clear();
 
 		config = new Configuration();
