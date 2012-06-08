@@ -28,7 +28,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 @Service
 public class BookSubService extends BaseService<Book> {
 
-	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")
 	public List<Book> read() {
 		List<Book> books = new ArrayList<Book>();
 		books.add(new Book(1, "Ext JS in Action", "1935182110"));
@@ -36,7 +36,7 @@ public class BookSubService extends BaseService<Book> {
 		return books;
 	}
 
-	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")
 	public ExtDirectStoreResponse<Book> readWithPaging(final ExtDirectStoreReadRequest request) {
 		int total = request.getPage() + request.getLimit() + request.getStart();
 		ExtDirectStoreResponse<Book> response = new ExtDirectStoreResponse<Book>(total, read());
