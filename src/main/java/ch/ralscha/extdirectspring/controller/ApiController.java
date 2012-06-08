@@ -85,7 +85,7 @@ public class ApiController {
 			final HttpServletResponse response) throws IOException {
 
 		final ServletOutputStream outputStream = response.getOutputStream();
-		
+
 		if (format == null) {
 			response.setContentType("application/x-javascript");
 
