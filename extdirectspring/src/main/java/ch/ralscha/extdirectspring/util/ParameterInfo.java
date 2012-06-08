@@ -89,13 +89,6 @@ public final class ParameterInfo {
 				break;
 			}
 		}
-
-		if (this.name == null) {
-			throw new IllegalStateException("No parameter name specified for argument of type ["
-					+ methodParam.getParameterType().getName()
-					+ "], and no parameter name information found in class file either.");
-
-		}
 	}
 
 	public Class<?> getType() {
