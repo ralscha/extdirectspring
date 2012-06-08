@@ -19,7 +19,6 @@ import java.beans.PropertyDescriptor;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,25 +45,19 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.ReflectionUtils.MethodFilter;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.WebUtils;
 
-import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.BaseResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
@@ -130,37 +123,6 @@ public class RouterController implements InitializingBean {
 			jsonHandler = new JsonHandler();
 		}
 
-		// register ExtDirectMethod methods
-		MethodInfoCache.INSTANCE.clear();
-
-		String[] beanNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(context, Object.class);
-
-		for (String beanName : beanNames) {
-
-			Class<?> handlerType = context.getType(beanName);
-			final Class<?> userType = ClassUtils.getUserClass(handlerType);
-
-			Set<Method> methods = ExtDirectSpringUtil.selectMethods(userType, new MethodFilter() {
-				public boolean matches(final Method method) {
-					return AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) != null;
-				}
-			});
-
-			for (Method method : methods) {
-				ExtDirectMethod directMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
-				final String beanMethodName = beanName + "." + method.getName();
-				if (directMethodAnnotation.value().isValid(beanMethodName, userType, method)) {
-					MethodInfoCache.INSTANCE.put(beanName, handlerType, method);
-					String info = "Register " + beanMethodName + "(" + directMethodAnnotation.value();
-					if (StringUtils.hasText(directMethodAnnotation.group())) {
-						info += ", " + directMethodAnnotation.group();
-					}
-					info += ")";
-					log.debug(info);
-				}
-			}
-
-		}
 	}
 
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
@@ -330,9 +292,9 @@ public class RouterController implements InitializingBean {
 		response.setContentType(APPLICATION_JSON.toString());
 		response.setCharacterEncoding(APPLICATION_JSON.getCharSet().name());
 
-		final ObjectMapper objectMapper = jsonHandler.getMapper();		
+		final ObjectMapper objectMapper = jsonHandler.getMapper();
 		final ServletOutputStream outputStream = response.getOutputStream();
-		
+
 		if (!streamResponse) {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
 			JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(bos, JsonEncoding.UTF8);
@@ -344,7 +306,7 @@ public class RouterController implements InitializingBean {
 					JsonEncoding.UTF8);
 			objectMapper.writeValue(jsonGenerator, responseObject);
 		}
-		
+
 		outputStream.flush();
 	}
 
