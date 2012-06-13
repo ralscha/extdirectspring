@@ -13,7 +13,7 @@
 
 	<groupId>ch.ralscha</groupId>
 	<artifactId>extdirectspring</artifactId>
-	<version>1.1.1-SNAPSHOT</version>
+	<version>1.1.1</version>
 
 	<inceptionYear>2010</inceptionYear>
 
@@ -42,9 +42,9 @@
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:http://extdirectspring.googlecode.com/svn/trunk/extdirectspring</connection>
-		<developerConnection>scm:svn:https://extdirectspring.googlecode.com/svn/trunk/extdirectspring</developerConnection>
-		<url>http://extdirectspring.googlecode.com/svn/trunk/extdirectspring</url>
+		<connection>scm:svn:http://extdirectspring.googlecode.com/svn/tags/extdirectspring-1.1.1</connection>
+		<developerConnection>scm:svn:https://extdirectspring.googlecode.com/svn/tags/extdirectspring-1.1.1</developerConnection>
+		<url>http://extdirectspring.googlecode.com/svn/tags/extdirectspring-1.1.1</url>
 	</scm>
 
 	<properties>
@@ -421,8 +421,7 @@
 				    <contextFilters>toString</contextFilters>
 					<license><![CDATA[
 					nqnMRdMcPMnTVgXvLUhKHiOBOMpPaqbbGHWgAhuMntGQiDC
-					mj2L0DkB6BZ2OlhgEfP55Vnz22K>xA7GYjQAlGpmmg<P1S5 
-					qONOwSoMQNMpMRooppOXvoNoonnpqPoRQqxxsUWmStxvwTS 
+					mj2L0DkB6BZ2OlhgEfP55Vnz22K>xA7GYjQAlGpmmg<P1S5 qONOwSoMQNMpMRooppOXvoNoonnpqPoRQqxxsUWmStxvwTS 
 					tXtSnXuWvPRnRMnmqmUUnppsrtommmmmmUUnppsrtommmmm
 					mUU5JJW4bsbilmjbkqW17UUnmmmm										
 					]]></license>
