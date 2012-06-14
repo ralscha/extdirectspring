@@ -107,7 +107,7 @@ public class ExtDirectResponseBuilderTest {
 
 		assertThat(servletResponse.getContentType()).isEqualTo("text/html;charset=UTF-8");
 		String content = servletResponse.getContentAsString();
-		assertThat(servletResponse.getContentLength()).isEqualTo(content.getBytes().length);
+		assertThat(servletResponse.getContentLength()).isEqualTo(content.getBytes("UTF-8").length);
 
 		assertThat(content).startsWith("<html><body><textarea>");
 		assertThat(content).endsWith("</textarea></body></html>");

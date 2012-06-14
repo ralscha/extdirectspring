@@ -221,14 +221,14 @@ public class ExtDirectResponseBuilder {
 				response.setCharacterEncoding(RouterController.TEXT_HTML.getCharSet().name());
 
 				ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
-				bos.write("<html><body><textarea>".getBytes());
+				bos.write("<html><body><textarea>".getBytes("UTF-8"));
 
 				String responseJson = routerController.getJsonHandler().getMapper()
 						.writeValueAsString(extDirectResponse);
 
 				responseJson = responseJson.replace("&quot;", "\\&quot;");
-				bos.write(responseJson.getBytes());
-				bos.write("</textarea></body></html>".getBytes());
+				bos.write(responseJson.getBytes("UTF-8"));
+				bos.write("</textarea></body></html>".getBytes("UTF-8"));
 
 				response.setContentLength(bos.size());
 				FileCopyUtils.copy(bos.toByteArray(), response.getOutputStream());
