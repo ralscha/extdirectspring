@@ -118,8 +118,9 @@ public class ApiController {
 				ApiCache.INSTANCE.put(apiKey, apiString);
 			}
 
-			response.setContentLength(apiString.getBytes().length);
-			outputStream.write(apiString.getBytes());
+			byte[] outputBytes = apiString.getBytes("UTF-8");
+			response.setContentLength(outputBytes.length);
+			outputStream.write(outputBytes);
 		} else {
 			response.setContentType(RouterController.APPLICATION_JSON.toString());
 			response.setCharacterEncoding(RouterController.APPLICATION_JSON.getCharSet().name());
@@ -136,8 +137,9 @@ public class ApiController {
 			}
 
 			String apiString = buildApiJson(apiNs, actionNs, remotingApiVar, routerUrl, group, debug);
-			response.setContentLength(apiString.getBytes().length);
-			outputStream.write(apiString.getBytes());
+			byte[] outputBytes = apiString.getBytes("UTF-8");
+			response.setContentLength(outputBytes.length);
+			outputStream.write(outputBytes);
 		}
 
 		outputStream.flush();
