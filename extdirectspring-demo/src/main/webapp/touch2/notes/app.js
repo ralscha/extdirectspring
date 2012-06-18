@@ -16,7 +16,7 @@ Ext.application({
 	models: [ 'Note' ],
 	stores: [ 'Notes' ],
 	controllers: [ 'Notes' ],
-	views: [ 'NotesList', 'NotesListContainer', 'NoteEditor' ],
+	views: [ 'NotesList', 'NoteEditor' ],
 
 	icon: {
 		57: 'resources/icons/Icon.png',
@@ -34,9 +34,9 @@ Ext.application({
 
 		notesService.log('App Launch');
 		Ext.Viewport.add([ {
-			xtype: 'noteslistcontainer'
+			xtype: 'noteslistview'
 		}, {
-			xtype: 'noteeditor'
+			xtype: 'noteeditorview'
 		} ]);
 	},
 

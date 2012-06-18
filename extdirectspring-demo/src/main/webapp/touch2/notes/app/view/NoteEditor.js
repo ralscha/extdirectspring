@@ -1,54 +1,36 @@
 Ext.define('Notes.view.NoteEditor', {
 	extend: 'Ext.form.Panel',
 	requires: 'Ext.form.FieldSet',
-	alias: 'widget.noteeditor',
+	alias: 'widget.noteeditorview',
 	config: {
-		scrollable: 'vertical'
-	},
-
-	initialize: function() {
-		this.callParent(arguments);
-
-		var backButton = {
-			xtype: "button",
-			ui: "back",
-			text: "Home",
-			handler: this.onBackButtonTap,
-			scope: this
-		};
-
-		var saveButton = {
-			xtype: "button",
-			ui: "action",
-			text: "Save",
-			handler: this.onSaveButtonTap,
-			scope: this
-		};
-
-		var topToolbar = {
+		scrollable: 'vertical',
+		items: [ {
 			xtype: "toolbar",
 			docked: "top",
 			title: "Edit Note",
-			items: [ backButton, {
+			items: [ {
+				xtype: "button",
+				ui: "back",
+				text: "Home",
+				itemId: "backButton"
+			}, {
 				xtype: "spacer"
-			}, saveButton ]
-		};
-
-		var deleteButton = {
-			xtype: "button",
-			iconCls: "trash",
-			iconMask: true,
-			handler: this.onDeleteButtonTap,
-			scope: this
-		};
-
-		var bottomToolbar = {
+			}, {
+				xtype: "button",
+				ui: "action",
+				text: "Save",
+				itemId: "saveButton"
+			} ]
+		}, {
 			xtype: "toolbar",
 			docked: "bottom",
-			items: [ deleteButton ]
-		};
-
-		this.add([ topToolbar, {
+			items: [ {
+				xtype: "button",
+				iconCls: "trash",
+				iconMask: true,
+				itemId: "deleteButton"
+			} ]
+		}, {
 			xtype: "fieldset",
 			items: [ {
 				xtype: 'datepickerfield',
@@ -66,14 +48,25 @@ Ext.define('Notes.view.NoteEditor', {
 				name: 'narrative',
 				label: 'Narrative'
 			} ]
-		}, bottomToolbar ]);
+		} ],
+		listeners: [ {
+			delegate: "#backButton",
+			event: "tap",
+			fn: "onBackButtonTap"
+		}, {
+			delegate: "#saveButton",
+			event: "tap",
+			fn: "onSaveButtonTap"
+		}, {
+			delegate: "#deleteButton",
+			event: "tap",
+			fn: "onDeleteButtonTap"
+		} ]
 	},
-
 	onSaveButtonTap: function() {
 		notesService.log('saveNoteCommand');
 		this.fireEvent("saveNoteCommand", this);
 	},
-
 	onDeleteButtonTap: function() {
 		notesService.log("deleteNoteCommand");
 		this.fireEvent("deleteNoteCommand", this);
@@ -82,4 +75,5 @@ Ext.define('Notes.view.NoteEditor', {
 		notesService.log("backToHomeCommand");
 		this.fireEvent("backToHomeCommand", this);
 	}
+
 });
