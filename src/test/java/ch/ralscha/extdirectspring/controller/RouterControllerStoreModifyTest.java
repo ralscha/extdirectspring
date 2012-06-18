@@ -296,7 +296,7 @@ public class RouterControllerStoreModifyTest {
 		assertThat(rows).hasSize(1);
 		assertThat(rows.get(0)).isEqualTo(Integer.valueOf(10));
 	}
-	
+
 	@Test
 	public void testDestroyArray() throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
@@ -304,16 +304,16 @@ public class RouterControllerStoreModifyTest {
 		rowsToUpdate.add(10);
 		storeRequest.put("records", rowsToUpdate);
 
-		List<Integer> rows = (List<Integer>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreModifyArray",
-				"destroy", storeRequest, new TypeReference<List<Integer>>() {/*
-																			 * nothing
-																			 * here
-																			 */
+		List<Integer> rows = (List<Integer>) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderStoreModifyArray", "destroy", storeRequest, new TypeReference<List<Integer>>() {/*
+																												 * nothing
+																												 * here
+																												 */
 				});
 
 		assertThat(rows).hasSize(1);
 		assertThat(rows.get(0)).isEqualTo(Integer.valueOf(10));
-	}	
+	}
 
 	@Test
 	public void testDestroySingle() throws IOException {
