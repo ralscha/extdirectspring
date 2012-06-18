@@ -371,6 +371,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method6", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method7", 1, false));
 		remotingApi.addAction("remoteProviderStoreModify", new Action("update4", 1, false));
+		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update4", 1, false));
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("update4", 1, false));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("update4", 1, false));
 		remotingApi.addAction("formInfoController", new Action("upload", 0, true));
@@ -390,6 +391,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method6", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method7", 1, false));
 		remotingApi.addAction("remoteProviderStoreModify", new Action("update4", 1, false));
+		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update4", 1, false));
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("update4", 1, false));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("update4", 1, false));
 		remotingApi.addAction("formInfoController", new Action("upload", 0, true));
@@ -409,6 +411,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", new Action("method9", 0, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method5", 1, false));
 		remotingApi.addAction("remoteProviderStoreModify", new Action("destroy", 1, false));
+		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("destroy", 1, false));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("destroy", 1, false));
 		remotingApi.addAction("remoteProviderFormLoad", new Action("method1", 1, false));
 		remotingApi.addAction("remoteProviderFormLoad", new Action("method5", 1, false));
@@ -477,6 +480,14 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreModify", new Action("update3", 1, false));
 		remotingApi.addAction("remoteProviderStoreModify", new Action("update4", 1, false));
 		remotingApi.addAction("remoteProviderStoreModify", new Action("destroy", 1, false));
+		
+		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("create1", 1, false));
+		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("create2", 1, false));
+		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update1", 1, false));
+		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update2", 1, false));
+		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update3", 1, false));
+		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update4", 1, false));
+		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("destroy", 1, false));		
 
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("create1", 1, false));
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("create2", 1, false));
