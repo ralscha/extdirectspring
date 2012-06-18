@@ -56,6 +56,7 @@ public class RouterControllerStoreModifyTest {
 	@Test
 	public void testCreateNoData() throws IOException {
 		testCreateNoData("remoteProviderStoreModify");
+		testCreateNoData("remoteProviderStoreModifyArray");
 		testCreateNoData("remoteProviderStoreModifyInterface");
 	}
 
@@ -73,6 +74,7 @@ public class RouterControllerStoreModifyTest {
 	@Test
 	public void testCreateWithData() throws IOException {
 		testCreateWithData("remoteProviderStoreModify");
+		testCreateWithData("remoteProviderStoreModifyArray");
 		testCreateWithData("remoteProviderStoreModifyInterface");
 	}
 
@@ -104,6 +106,7 @@ public class RouterControllerStoreModifyTest {
 	@Test
 	public void testCreateWithDataAndSupportedArguments() throws IOException {
 		testCreateWithDataAndSupportedArguments("remoteProviderStoreModify");
+		testCreateWithDataAndSupportedArguments("remoteProviderStoreModifyArray");
 		testCreateWithDataAndSupportedArguments("remoteProviderStoreModifyInterface");
 	}
 
@@ -132,6 +135,7 @@ public class RouterControllerStoreModifyTest {
 	@Test
 	public void testUpdate() throws IOException {
 		testUpdate("remoteProviderStoreModify");
+		testUpdate("remoteProviderStoreModifyArray");
 		testUpdate("remoteProviderStoreModifyInterface");
 	}
 
@@ -146,6 +150,7 @@ public class RouterControllerStoreModifyTest {
 	@Test
 	public void testUpdateWithRequestParam() throws IOException {
 		testUpdateWithRequestParam("remoteProviderStoreModify");
+		testUpdateWithRequestParam("remoteProviderStoreModifyArray");
 		testUpdateWithRequestParam("remoteProviderStoreModifyInterface");
 	}
 
@@ -161,6 +166,7 @@ public class RouterControllerStoreModifyTest {
 	@Test
 	public void testUpdateWithRequestParamDefaultValue() throws IOException {
 		testUpdateWithRequestParamDefaultValue("remoteProviderStoreModify");
+		testUpdateWithRequestParamDefaultValue("remoteProviderStoreModifyArray");
 		testUpdateWithRequestParamDefaultValue("remoteProviderStoreModifyInterface");
 	}
 
@@ -175,6 +181,7 @@ public class RouterControllerStoreModifyTest {
 	@Test
 	public void testUpdateWithRequestParamOptional() throws IOException {
 		testUpdateWithRequestParamOptional("remoteProviderStoreModify");
+		testUpdateWithRequestParamOptional("remoteProviderStoreModifyArray");
 		testUpdateWithRequestParamOptional("remoteProviderStoreModifyInterface");
 	}
 
@@ -289,6 +296,24 @@ public class RouterControllerStoreModifyTest {
 		assertThat(rows).hasSize(1);
 		assertThat(rows.get(0)).isEqualTo(Integer.valueOf(10));
 	}
+	
+	@Test
+	public void testDestroyArray() throws IOException {
+		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
+		List<Integer> rowsToUpdate = new ArrayList<Integer>();
+		rowsToUpdate.add(10);
+		storeRequest.put("records", rowsToUpdate);
+
+		List<Integer> rows = (List<Integer>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreModifyArray",
+				"destroy", storeRequest, new TypeReference<List<Integer>>() {/*
+																			 * nothing
+																			 * here
+																			 */
+				});
+
+		assertThat(rows).hasSize(1);
+		assertThat(rows.get(0)).isEqualTo(Integer.valueOf(10));
+	}	
 
 	@Test
 	public void testDestroySingle() throws IOException {
