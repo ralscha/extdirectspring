@@ -42,8 +42,8 @@ public class RemoteProviderStoreModifyArray {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, event = "test")
-	public Row[] create2(final List<Row> rows, final HttpServletResponse response,
-			final HttpServletRequest request, final HttpSession session, final Locale locale) {
+	public Row[] create2(final List<Row> rows, final HttpServletResponse response, final HttpServletRequest request,
+			final HttpSession session, final Locale locale) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
