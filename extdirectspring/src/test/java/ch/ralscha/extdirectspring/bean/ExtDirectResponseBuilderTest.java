@@ -51,14 +51,7 @@ public class ExtDirectResponseBuilderTest {
 	@Test
 	public void testBuilder() {
 
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, new GenericWebApplicationContext(
-				applicationContext));
-
-		request.setParameter("extAction", "action");
-		request.setParameter("extMethod", "method");
-		request.setParameter("extType", "type");
-		request.setParameter("extTID", "1");
+		MockHttpServletRequest request = createRequest();
 
 		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
 		ExtDirectResponseBuilder.create(request, servletResponse).addResultProperty("additionalProperty", 11)
@@ -128,6 +121,74 @@ public class ExtDirectResponseBuilderTest {
 		assertThat((Boolean) result.get("success")).isTrue();
 		assertThat(result.get("text")).isEqualTo("a lot of 'text'");
 		assertThat(result.get("additionalProperty")).isEqualTo(false);
+	}
+
+	@Test
+	public void testBuilderSuccessful() {
+		MockHttpServletRequest request = createRequest();
+
+		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
+		ExtDirectResponseBuilder.create(request, servletResponse).successful().buildAndWrite();
+
+		checkResponse(servletResponse, true);
+	}
+
+	@Test
+	public void testBuilderUnsuccessful() {
+		MockHttpServletRequest request = createRequest();
+
+		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
+		ExtDirectResponseBuilder.create(request, servletResponse).unsuccessful().buildAndWrite();
+
+		checkResponse(servletResponse, false);
+	}
+
+	@Test
+	public void testBuilderSetSuccessTrue() {
+		MockHttpServletRequest request = createRequest();
+
+		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
+		ExtDirectResponseBuilder.create(request, servletResponse).setSuccess(true).buildAndWrite();
+
+		checkResponse(servletResponse, true);
+	}
+
+	@Test
+	public void testBuilderSetSuccessFalse() {
+		MockHttpServletRequest request = createRequest();
+
+		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
+		ExtDirectResponseBuilder.create(request, servletResponse).setSuccess(false).buildAndWrite();
+
+		checkResponse(servletResponse, false);
+	}
+
+	private MockHttpServletRequest createRequest() {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, new GenericWebApplicationContext(
+				applicationContext));
+
+		request.setParameter("extAction", "action");
+		request.setParameter("extMethod", "method");
+		request.setParameter("extType", "type");
+		request.setParameter("extTID", "1");
+		return request;
+	}
+
+	private void checkResponse(final MockHttpServletResponse servletResponse, final boolean flag) {
+		ExtDirectResponse response = ControllerUtil.readDirectResponse(servletResponse.getContentAsByteArray());
+		assertThat(response.getAction()).isEqualTo("action");
+		assertThat(response.getMethod()).isEqualTo("method");
+		assertThat(response.getType()).isEqualTo("type");
+		assertThat(response.getTid()).isEqualTo(1);
+
+		assertThat(response.getResult()).isNotNull();
+		assertThat(response.getWhere()).isNull();
+		assertThat(response.getMessage()).isNull();
+
+		Map<String, Object> data = (Map<String, Object>) response.getResult();
+		assertThat(data).hasSize(1);
+		assertThat(data.get("success")).isEqualTo(flag);
 	}
 
 }

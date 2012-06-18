@@ -206,6 +206,16 @@ public class ExtDirectResponseBuilder {
 	}
 
 	/**
+	 * Sets success flag to the provided parameter.
+	 * @param flag the new success value
+	 * @return this instance
+	 */
+	public ExtDirectResponseBuilder setSuccess(final boolean flag) {
+		result.put("success", flag);
+		return this;
+	}
+
+	/**
 	 * Builds and writes the response into the OutputStream of
 	 * {@link HttpServletResponse}. This methods has to be called at the end of
 	 * a FORM_POST method.
