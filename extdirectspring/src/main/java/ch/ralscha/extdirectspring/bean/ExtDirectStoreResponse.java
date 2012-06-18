@@ -15,6 +15,7 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
@@ -42,6 +43,11 @@ public class ExtDirectStoreResponse<T> {
 
 	public ExtDirectStoreResponse() {
 		// default constructor
+	}
+
+	@SuppressWarnings("unchecked")
+	public ExtDirectStoreResponse(final T record) {
+		init(null, Arrays.asList(record), true);
 	}
 
 	public ExtDirectStoreResponse(final Collection<T> records) {
