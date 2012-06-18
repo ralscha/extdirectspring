@@ -49,6 +49,10 @@ public class ExtDirectStoreResponse<T> {
 	public ExtDirectStoreResponse(final T record) {
 		init(null, Arrays.asList(record), true);
 	}
+	
+	public ExtDirectStoreResponse(final T[] record) {
+		init(null, Arrays.asList(record), true);
+	}	
 
 	public ExtDirectStoreResponse(final Collection<T> records) {
 		init(null, records, true);
