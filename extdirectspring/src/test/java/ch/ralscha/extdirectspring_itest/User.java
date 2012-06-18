@@ -23,6 +23,8 @@ public class User {
 
 	private int age;
 
+	private String firstName;
+
 	@Email
 	@NotEmpty
 	private String email;
@@ -33,6 +35,14 @@ public class User {
 
 	public void setName(final String name) {
 		this.name = name;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(final String firstName) {
+		this.firstName = firstName;
 	}
 
 	public int getAge() {
