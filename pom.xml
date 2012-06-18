@@ -417,8 +417,9 @@
 				    <includesTestSourceRoots>false</includesTestSourceRoots>				    
 				    <methodContexts>
 				        <toString>(.* )?public String toString\(\).*</toString>
+				        <extDirectSpringUtilConstructor>.*private ExtDirectSpringUtil\(\).*</extDirectSpringUtilConstructor>
                     </methodContexts>
-				    <contextFilters>toString</contextFilters>
+				    <contextFilters>toString,extDirectSpringUtilConstructor</contextFilters>
 					<license><![CDATA[
 					nqnMRdMcPMnTVgXvLUhKHiOBOMpPaqbbGHWgAhuMntGQiDC
 					mj2L0DkB6BZ2OlhgEfP55Vnz22K>xA7GYjQAlGpmmg<P1S5 qONOwSoMQNMpMRooppOXvoNoonnpqPoRQqxxsUWmStxvwTS tXtSnXuWvPRnRMnmqmUUnppsrtommmmmmUUnppsrtommmmm
