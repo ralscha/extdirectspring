@@ -19,6 +19,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -30,21 +31,29 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 public class RawJsonControllerTest extends JettyTest {
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testRawResponse() throws ClientProtocolException, IOException {
+		testAndCheck("listUsers1", null, true);
+		testAndCheck("listUsers2", 2, true);
+		testAndCheck("listUsers3", 2, false);
+	}
 
+	@SuppressWarnings("unchecked")
+	private void testAndCheck(final String method, final Integer total, final boolean success)
+			throws UnsupportedEncodingException, IOException, ClientProtocolException, JsonParseException,
+			JsonMappingException {
 		HttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
-		StringEntity postEntity = new StringEntity(
-				"{\"action\":\"rawJsonController\",\"method\":\"listUsers\",\"data\":[],\"type\":\"rpc\",\"tid\":1}",
-				"UTF-8");
+		StringEntity postEntity = new StringEntity("{\"action\":\"rawJsonController\",\"method\":\"" + method
+				+ "\",\"data\":[],\"type\":\"rpc\",\"tid\":1}", "UTF-8");
 		post.setEntity(postEntity);
 		post.setHeader("Content-Type", "application/json; charset=UTF-8");
 
@@ -61,21 +70,25 @@ public class RawJsonControllerTest extends JettyTest {
 				Map.class);
 		assertEquals(5, rootAsMap.size());
 
-		assertEquals("listUsers", rootAsMap.get("method"));
+		assertEquals(method, rootAsMap.get("method"));
 		assertEquals("rpc", rootAsMap.get("type"));
 		assertEquals("rawJsonController", rootAsMap.get("action"));
 		assertEquals(1, rootAsMap.get("tid"));
 
 		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertEquals(2, result.size());
-		assertThat((Boolean) result.get("success")).isTrue();
+		if (total != null) {
+			assertEquals(3, result.size());
+			assertThat((Integer) result.get("total")).isEqualTo(total);
+		} else {
+			assertEquals(2, result.size());
+		}
+		assertThat((Boolean) result.get("success")).isEqualTo(success);
 
 		List<Map<String, Object>> records = (List<Map<String, Object>>) result.get("records");
 		assertEquals(2, records.size());
 
 		assertEquals("4cf8e5b8924e23349fb99454", ((Map<String, Object>) records.get(0).get("_id")).get("$oid"));
 		assertEquals("4cf8e5b8924e2334a0b99454", ((Map<String, Object>) records.get(1).get("_id")).get("$oid"));
-
 	}
 
 }
