@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -249,6 +250,10 @@ public class RouterController implements InitializingBean {
 						if (methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
 								&& !ExtDirectFormLoadResult.class.isAssignableFrom(result.getClass())) {
 							result = new ExtDirectFormLoadResult(result);
+						} else if (methodInfo.isType(ExtDirectMethodType.TREE_LOAD)) {
+							if (!(result instanceof Collection) && !result.getClass().isArray()) {
+								result = Arrays.asList(result);
+							}
 						} else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo
 								.isType(ExtDirectMethodType.STORE_READ))
 								&& !ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())
@@ -256,9 +261,7 @@ public class RouterController implements InitializingBean {
 							if (result instanceof Collection) {
 								result = new ExtDirectStoreResponse((Collection) result);
 							} else {
-								List responses = new ArrayList();
-								responses.add(result);
-								result = new ExtDirectStoreResponse(responses);
+								result = new ExtDirectStoreResponse(result);
 							}
 						}
 
