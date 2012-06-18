@@ -71,11 +71,11 @@ public class SimpleUserDb {
 		return users.get(id);
 	}
 
-	public void deleteUser(User user) {
+	public void deleteUser(final User user) {
 		users.remove(user.getId());
 	}
 
-	public User insert(User p) {
+	public User insert(final User p) {
 		maxId = maxId + 1;
 		p.setId(String.valueOf(maxId));
 		users.put(String.valueOf(maxId), p);

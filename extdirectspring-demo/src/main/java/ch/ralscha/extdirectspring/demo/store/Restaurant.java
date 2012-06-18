@@ -16,11 +16,11 @@
 package ch.ralscha.extdirectspring.demo.store;
 
 public class Restaurant {
-	private String name;
+	private final String name;
 
-	private String cuisine;
+	private final String cuisine;
 
-	public Restaurant(String name, String cuisine) {
+	public Restaurant(final String name, final String cuisine) {
 		this.name = name;
 		this.cuisine = cuisine;
 	}

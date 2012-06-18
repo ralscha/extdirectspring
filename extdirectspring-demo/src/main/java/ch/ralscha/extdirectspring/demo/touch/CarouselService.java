@@ -43,7 +43,7 @@ public class CarouselService {
 	private static Pattern IMG_PATTERN = Pattern.compile(".*img src=\"([^\"]+)\".*", Pattern.DOTALL);
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "touchcarousel")
-	public List<CarouselPicture> readPictures(HttpServletRequest request) throws IllegalArgumentException,
+	public List<CarouselPicture> readPictures(final HttpServletRequest request) throws IllegalArgumentException,
 			FeedException, IOException {
 
 		URL feedUrl = new URL(RSS_URL);

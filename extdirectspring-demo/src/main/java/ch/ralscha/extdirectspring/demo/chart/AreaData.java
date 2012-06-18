@@ -21,27 +21,27 @@ public class AreaData {
 
 	private static Random rnd = new Random();
 
-	private String name;
+	private final String name;
 
-	private int data1;
+	private final int data1;
 
-	private int data2;
+	private final int data2;
 
-	private int data3;
+	private final int data3;
 
-	private int data4;
+	private final int data4;
 
-	private int data5;
+	private final int data5;
 
-	private int data6;
+	private final int data6;
 
-	private int data7;
+	private final int data7;
 
-	private int data8;
+	private final int data8;
 
-	private int data9;
+	private final int data9;
 
-	public AreaData(String name) {
+	public AreaData(final String name) {
 		this.name = name;
 
 		data1 = rnd.nextInt(100) + 1;

@@ -36,8 +36,9 @@ public class UploadController {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "upload")
 	@RequestMapping(value = "/uploadTest", method = RequestMethod.POST)
-	public void uploadTest(Locale locale, HttpServletRequest request, @RequestParam("fileUpload") MultipartFile file,
-			HttpServletResponse response) throws IOException {
+	public void uploadTest(final Locale locale, final HttpServletRequest request,
+			@RequestParam("fileUpload") final MultipartFile file, final HttpServletResponse response)
+			throws IOException {
 
 		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request, response);
 
@@ -50,9 +51,10 @@ public class UploadController {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "upload4")
 	@RequestMapping(value = "/uploadTest4", method = RequestMethod.POST)
-	public void uploadTest4(Locale locale, HttpServletRequest request,
-			@RequestParam("fileUpload1") MultipartFile file1, @RequestParam("fileUpload2") MultipartFile file2,
-			HttpServletResponse response) throws IOException {
+	public void uploadTest4(final Locale locale, final HttpServletRequest request,
+			@RequestParam("fileUpload1") final MultipartFile file1,
+			@RequestParam("fileUpload2") final MultipartFile file2, final HttpServletResponse response)
+			throws IOException {
 
 		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request, response);
 

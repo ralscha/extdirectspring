@@ -29,11 +29,11 @@ import com.google.common.collect.ImmutableList;
 @Service
 public class NotesDb {
 
-	private AtomicInteger lastId = new AtomicInteger(0);
+	private final AtomicInteger lastId = new AtomicInteger(0);
 
-	private ConcurrentHashMap<Integer, Note> map = new ConcurrentHashMap<Integer, Note>();
+	private final ConcurrentHashMap<Integer, Note> map = new ConcurrentHashMap<Integer, Note>();
 
-	public void addOrUpdate(Note note) {
+	public void addOrUpdate(final Note note) {
 		if (note.getId() == null || note.getId() < 0) {
 			int id = lastId.incrementAndGet();
 			note.setId(id);
@@ -43,7 +43,7 @@ public class NotesDb {
 		}
 	}
 
-	public void delete(Note note) {
+	public void delete(final Note note) {
 		map.remove(note.getId());
 	}
 

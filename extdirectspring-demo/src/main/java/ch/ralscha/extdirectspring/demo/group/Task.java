@@ -38,8 +38,8 @@ public class Task {
 
 	private Date due;
 
-	public Task(int projectId, String project, int taskId, String description, BigDecimal estimate, BigDecimal rate,
-			int dueYear, int dueMonth, int dueDay) {
+	public Task(final int projectId, final String project, final int taskId, final String description,
+			final BigDecimal estimate, final BigDecimal rate, final int dueYear, final int dueMonth, final int dueDay) {
 
 		this.projectId = projectId;
 		this.project = project;
@@ -56,7 +56,7 @@ public class Task {
 		return projectId;
 	}
 
-	public void setProjectId(int projectId) {
+	public void setProjectId(final int projectId) {
 		this.projectId = projectId;
 	}
 
@@ -64,7 +64,7 @@ public class Task {
 		return project;
 	}
 
-	public void setProject(String project) {
+	public void setProject(final String project) {
 		this.project = project;
 	}
 
@@ -72,7 +72,7 @@ public class Task {
 		return taskId;
 	}
 
-	public void setTaskId(int taskId) {
+	public void setTaskId(final int taskId) {
 		this.taskId = taskId;
 	}
 
@@ -80,7 +80,7 @@ public class Task {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
@@ -88,7 +88,7 @@ public class Task {
 		return estimate;
 	}
 
-	public void setEstimate(BigDecimal estimate) {
+	public void setEstimate(final BigDecimal estimate) {
 		this.estimate = estimate;
 	}
 
@@ -96,7 +96,7 @@ public class Task {
 		return rate;
 	}
 
-	public void setRate(BigDecimal rate) {
+	public void setRate(final BigDecimal rate) {
 		this.rate = rate;
 	}
 
@@ -105,7 +105,7 @@ public class Task {
 		return due;
 	}
 
-	public void setDue(Date due) {
+	public void setDue(final Date due) {
 		this.due = due;
 	}
 

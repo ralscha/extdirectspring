@@ -34,7 +34,7 @@ public class Note {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(final Integer id) {
 		this.id = id;
 	}
 
@@ -43,7 +43,7 @@ public class Note {
 		return dateCreated;
 	}
 
-	public void setDateCreated(Date date) {
+	public void setDateCreated(final Date date) {
 		this.dateCreated = date;
 	}
 
@@ -51,7 +51,7 @@ public class Note {
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
@@ -59,7 +59,7 @@ public class Note {
 		return narrative;
 	}
 
-	public void setNarrative(String narrative) {
+	public void setNarrative(final String narrative) {
 		this.narrative = narrative;
 	}
 
@@ -72,7 +72,7 @@ public class Note {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}

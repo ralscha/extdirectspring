@@ -16,11 +16,11 @@
 package ch.ralscha.extdirectspring.demo.store;
 
 public class PersonFullNameCity {
-	private String fullName;
+	private final String fullName;
 
-	private String city;
+	private final String city;
 
-	public PersonFullNameCity(Person person) {
+	public PersonFullNameCity(final Person person) {
 		this.fullName = person.getFullName();
 		this.city = person.getCity();
 	}

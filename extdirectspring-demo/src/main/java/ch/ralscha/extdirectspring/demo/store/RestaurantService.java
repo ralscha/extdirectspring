@@ -111,7 +111,7 @@ public class RestaurantService {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "grouping")
-	public List<Restaurant> getRestaurants(ExtDirectStoreReadRequest request) {
+	public List<Restaurant> getRestaurants(final ExtDirectStoreReadRequest request) {
 
 		if (!request.getGroups().isEmpty()) {
 

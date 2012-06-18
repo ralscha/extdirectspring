@@ -23,15 +23,15 @@ import com.google.common.collect.Ordering;
 public class PropertyOrdering<T> extends Ordering<T> {
 	private final static SpelExpressionParser parser = new SpelExpressionParser();
 
-	private Expression readPropertyExpression;
+	private final Expression readPropertyExpression;
 
-	public PropertyOrdering(String property) {
+	public PropertyOrdering(final String property) {
 		this.readPropertyExpression = parser.parseExpression(property);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public int compare(T o1, T o2) {
+	public int compare(final T o1, final T o2) {
 		Object left = readPropertyExpression.getValue(o1);
 		Object right = readPropertyExpression.getValue(o2);
 

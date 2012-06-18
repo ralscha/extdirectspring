@@ -70,7 +70,7 @@ public class RandomDataBean {
 			Iterable<Person> filtered = Iterables.filter(persons.values(), new Predicate<Person>() {
 
 				@Override
-				public boolean apply(Person input) {
+				public boolean apply(final Person input) {
 					return input.getLastName().toLowerCase().startsWith(query.toLowerCase());
 				}
 			});
@@ -84,15 +84,15 @@ public class RandomDataBean {
 		return persons.get(Integer.valueOf(id));
 	}
 
-	public void deletePerson(int personId) {
+	public void deletePerson(final int personId) {
 		persons.remove(personId);
 	}
 
-	public void deletePerson(Person person) {
+	public void deletePerson(final Person person) {
 		persons.remove(Integer.valueOf(person.getId()));
 	}
 
-	public Person insert(Person p) {
+	public Person insert(final Person p) {
 		maxId = maxId + 1;
 		p.setId(String.valueOf(maxId));
 		persons.put(maxId, p);

@@ -72,17 +72,17 @@ public class GroupAction {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "total")
-	public List<Task> load(ExtDirectStoreReadRequest request) {
+	public List<Task> load(final ExtDirectStoreReadRequest request) {
 		return tasks;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "hybrid")
-	public List<Task> loadHybrid(ExtDirectStoreReadRequest request) {
+	public List<Task> loadHybrid(final ExtDirectStoreReadRequest request) {
 		return tasks;
 	}
 
 	@ExtDirectMethod(group = "hybrid")
-	public Summary updateSummary(String groupValue) {
+	public Summary updateSummary(final String groupValue) {
 		Summary summary = new Summary();
 		summary.setDescription("22");
 		summary.setEstimate(new BigDecimal(888));

@@ -38,13 +38,13 @@ public class Person4Action {
 	private RandomDataBean dataBean;
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store4")
-	public List<Person> load(ExtDirectStoreReadRequest request) {
+	public List<Person> load(final ExtDirectStoreReadRequest request) {
 		List<Person> persons = dataBean.findPersons(request.getQuery());
 		return persons.subList(0, Math.min(50, persons.size()));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store4")
-	public ExtDirectStoreResponse<Person> loadWithPaging(ExtDirectStoreReadRequest request) {
+	public ExtDirectStoreResponse<Person> loadWithPaging(final ExtDirectStoreReadRequest request) {
 
 		List<Person> persons = dataBean.findPersons(request.getQuery());
 		int totalSize = persons.size();
@@ -62,7 +62,7 @@ public class Person4Action {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store4")
-	public List<Person> create(List<Person> newPersons) {
+	public List<Person> create(final List<Person> newPersons) {
 		List<Person> insertedPersons = Lists.newArrayList();
 
 		for (Person newPerson : newPersons) {
@@ -73,7 +73,7 @@ public class Person4Action {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store4")
-	public List<Person> update(List<Person> modifiedPersons) {
+	public List<Person> update(final List<Person> modifiedPersons) {
 		List<Person> updatedRecords = Lists.newArrayList();
 		for (Person modifiedPerson : modifiedPersons) {
 			Person p = dataBean.findPerson(modifiedPerson.getId());
@@ -86,7 +86,7 @@ public class Person4Action {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store4")
-	public void destroy(List<Person> destroyPersons) {
+	public void destroy(final List<Person> destroyPersons) {
 		for (Person person : destroyPersons) {
 			dataBean.deletePerson(person);
 		}

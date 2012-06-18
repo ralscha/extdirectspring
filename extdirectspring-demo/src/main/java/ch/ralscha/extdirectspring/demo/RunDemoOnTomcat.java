@@ -19,7 +19,7 @@ import ch.ralscha.embeddedtc.EmbeddedTomcat;
 
 public class RunDemoOnTomcat {
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		EmbeddedTomcat.create().addDependencyAsResourceJar("resources", "sencha-touch-gpl").startAndWait();
 	}
 }

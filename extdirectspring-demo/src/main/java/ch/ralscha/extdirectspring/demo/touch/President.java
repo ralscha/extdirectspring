@@ -16,21 +16,22 @@
 package ch.ralscha.extdirectspring.demo.touch;
 
 public class President {
-	private int id;
+	private final int id;
 
-	private String firstName;
+	private final String firstName;
 
-	private String lastName;
+	private final String lastName;
 
-	private String middleInitial;
+	private final String middleInitial;
 
 	private String imageUrl;
 
-	public President(int id, String firstName, String middleInitial, String lastName) {
+	public President(final int id, final String firstName, final String middleInitial, final String lastName) {
 		this(id, firstName, middleInitial, lastName, null);
 	}
 
-	public President(int id, String firstName, String middleInitial, String lastName, String imageUrl) {
+	public President(final int id, final String firstName, final String middleInitial, final String lastName,
+			final String imageUrl) {
 		this.id = id;
 		this.firstName = firstName;
 		this.middleInitial = middleInitial;

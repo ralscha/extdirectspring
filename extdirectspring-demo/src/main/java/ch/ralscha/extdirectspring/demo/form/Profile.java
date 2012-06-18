@@ -46,7 +46,8 @@ public class Profile {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "form")
-	public BasicInfo getBasicInfo(@RequestParam(value = "uid") long userId, @RequestParam(value = "foo") String foo) {
+	public BasicInfo getBasicInfo(@RequestParam(value = "uid") final long userId,
+			@RequestParam(value = "foo") final String foo) {
 		BasicInfo basicInfo = new BasicInfo();
 		basicInfo.setFoo(foo);
 		basicInfo.setName("Aaron Conran");
@@ -56,7 +57,7 @@ public class Profile {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "form")
-	public PhoneInfo getPhoneInfo(@RequestParam(value = "uid") long userId) {
+	public PhoneInfo getPhoneInfo(@RequestParam(value = "uid") final long userId) {
 		PhoneInfo phoneInfo = new PhoneInfo();
 		phoneInfo.cell = "443-555-1234";
 		phoneInfo.office = "1-800-CALLEXT";
@@ -65,7 +66,7 @@ public class Profile {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "form")
-	public Map<String, String> getLocationInfo(@RequestParam(value = "uid") long userId) {
+	public Map<String, String> getLocationInfo(@RequestParam(value = "uid") final long userId) {
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("street", "1234 Red Dog Rd.");
 		data.put("city", "Seminole");
@@ -76,8 +77,8 @@ public class Profile {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "form")
 	@RequestMapping(value = "/updateBasicInfo", method = RequestMethod.POST)
-	public void updateBasicInfo(Locale locale, HttpServletRequest request, HttpServletResponse response,
-			@Valid BasicInfo basicInfo, BindingResult result) {
+	public void updateBasicInfo(final Locale locale, final HttpServletRequest request,
+			final HttpServletResponse response, @Valid final BasicInfo basicInfo, final BindingResult result) {
 
 		if (!result.hasErrors()) {
 			if (basicInfo.getEmail().equals("aaron@extjs.com")) {

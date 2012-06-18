@@ -24,8 +24,8 @@ import org.codehaus.jackson.map.SerializerProvider;
 
 public class SizeSerializer extends JsonSerializer<SizeEnum> {
 	@Override
-	public void serialize(SizeEnum value, JsonGenerator jgen, SerializerProvider provider) throws IOException,
-			JsonProcessingException {
+	public void serialize(final SizeEnum value, final JsonGenerator jgen, final SerializerProvider provider)
+			throws IOException, JsonProcessingException {
 
 		jgen.writeString(value.getLabel());
 	}

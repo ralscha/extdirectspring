@@ -16,11 +16,11 @@
 package ch.ralscha.extdirectspring.demo.grid;
 
 public class Company {
-	private String name;
+	private final String name;
 
-	private int turnover;
+	private final int turnover;
 
-	public Company(String name, int turnover) {
+	public Company(final String name, final int turnover) {
 		this.name = name;
 		this.turnover = turnover;
 	}

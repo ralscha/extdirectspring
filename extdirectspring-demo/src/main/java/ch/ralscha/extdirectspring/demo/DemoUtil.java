@@ -33,7 +33,7 @@ public enum DemoUtil {
 
 	INSTANCE;
 
-	public List<Field> getFields(Class<?> clazz, String... excludeProperties) {
+	public List<Field> getFields(final Class<?> clazz, final String... excludeProperties) {
 		List<Field> fields = Lists.newArrayList();
 
 		Set<String> exclude = new HashSet<String>();
@@ -57,7 +57,7 @@ public enum DemoUtil {
 		return fields;
 	}
 
-	public DataType getDataType(Class<?> clazz) {
+	public DataType getDataType(final Class<?> clazz) {
 		if (clazz == String.class) {
 			return DataType.STRING;
 		}

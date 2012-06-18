@@ -94,7 +94,7 @@ public class CompanyDataBean {
 		return ImmutableList.copyOf(companies.values());
 	}
 
-	public List<Company> findCompanies(Collection<Filter> filters) {
+	public List<Company> findCompanies(final Collection<Filter> filters) {
 
 		List<Predicate<Company>> predicates = Lists.newArrayList();
 		for (Filter filter : filters) {
@@ -131,59 +131,59 @@ public class CompanyDataBean {
 
 	private static class CompanyPredicate implements Predicate<Company> {
 
-		private String value;
+		private final String value;
 
-		CompanyPredicate(String value) {
+		CompanyPredicate(final String value) {
 			this.value = value;
 		}
 
 		@Override
-		public boolean apply(Company company) {
+		public boolean apply(final Company company) {
 			return company.getCompany().toLowerCase().startsWith(value.trim().toLowerCase());
 		}
 
 	}
 
 	private static class VisiblePredicate implements Predicate<Company> {
-		private boolean flag;
+		private final boolean flag;
 
-		VisiblePredicate(boolean flag) {
+		VisiblePredicate(final boolean flag) {
 			this.flag = flag;
 		}
 
 		@Override
-		public boolean apply(Company company) {
+		public boolean apply(final Company company) {
 			return company.isVisible() == flag;
 		}
 
 	}
 
 	private static class SizePredicate implements Predicate<Company> {
-		private List<String> values;
+		private final List<String> values;
 
-		SizePredicate(List<String> values) {
+		SizePredicate(final List<String> values) {
 			this.values = values;
 		}
 
 		@Override
-		public boolean apply(Company company) {
+		public boolean apply(final Company company) {
 			return values.contains(company.getSize().getLabel());
 		}
 
 	}
 
 	private static class IdPredicate implements Predicate<Company> {
-		private Comparison comparison;
+		private final Comparison comparison;
 
-		private Number value;
+		private final Number value;
 
-		IdPredicate(Comparison comparison, Number value) {
+		IdPredicate(final Comparison comparison, final Number value) {
 			this.comparison = comparison;
 			this.value = value;
 		}
 
 		@Override
-		public boolean apply(Company company) {
+		public boolean apply(final Company company) {
 			switch (comparison) {
 			case EQUAL:
 				return company.getId() == value.intValue();
@@ -197,17 +197,17 @@ public class CompanyDataBean {
 	}
 
 	private static class PricePredicate implements Predicate<Company> {
-		private Comparison comparison;
+		private final Comparison comparison;
 
-		private Number value;
+		private final Number value;
 
-		PricePredicate(Comparison comparison, Number value) {
+		PricePredicate(final Comparison comparison, final Number value) {
 			this.comparison = comparison;
 			this.value = value;
 		}
 
 		@Override
-		public boolean apply(Company company) {
+		public boolean apply(final Company company) {
 			switch (comparison) {
 			case EQUAL:
 				return company.getPrice().compareTo(
@@ -224,17 +224,17 @@ public class CompanyDataBean {
 	}
 
 	private static class DatePredicate implements Predicate<Company> {
-		private Comparison comparison;
+		private final Comparison comparison;
 
-		private Date value;
+		private final Date value;
 
-		DatePredicate(Comparison comparison, Date value) {
+		DatePredicate(final Comparison comparison, final Date value) {
 			this.comparison = comparison;
 			this.value = value;
 		}
 
 		@Override
-		public boolean apply(Company company) {
+		public boolean apply(final Company company) {
 			switch (comparison) {
 			case EQUAL:
 				return company.getDate().compareTo(value) == 0;

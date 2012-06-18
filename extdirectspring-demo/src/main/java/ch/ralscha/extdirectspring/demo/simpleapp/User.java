@@ -30,7 +30,7 @@ public class User {
 		// default constructor
 	}
 
-	public User(String[] line) {
+	public User(final String[] line) {
 		this.id = line[0];
 		this.firstName = line[1];
 		this.lastName = line[2];
@@ -38,7 +38,7 @@ public class User {
 		this.city = line[4];
 	}
 
-	public void update(User newValues) {
+	public void update(final User newValues) {
 		this.firstName = newValues.getFirstName();
 		this.lastName = newValues.getLastName();
 		this.email = newValues.email;
@@ -49,7 +49,7 @@ public class User {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 
@@ -57,7 +57,7 @@ public class User {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstName(final String firstName) {
 		this.firstName = firstName;
 	}
 
@@ -65,7 +65,7 @@ public class User {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public void setLastName(final String lastName) {
 		this.lastName = lastName;
 	}
 
@@ -73,7 +73,7 @@ public class User {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		this.email = email;
 	}
 
@@ -81,7 +81,7 @@ public class User {
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(final String city) {
 		this.city = city;
 	}
 

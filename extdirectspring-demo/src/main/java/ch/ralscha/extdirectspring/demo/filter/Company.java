@@ -37,7 +37,7 @@ public class Company {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(final int id) {
 		this.id = id;
 	}
 
@@ -45,7 +45,7 @@ public class Company {
 		return company;
 	}
 
-	public void setCompany(String company) {
+	public void setCompany(final String company) {
 		this.company = company;
 	}
 
@@ -53,7 +53,7 @@ public class Company {
 		return price;
 	}
 
-	public void setPrice(BigDecimal price) {
+	public void setPrice(final BigDecimal price) {
 		this.price = price;
 	}
 
@@ -62,7 +62,7 @@ public class Company {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(final Date date) {
 		this.date = date;
 	}
 
@@ -70,7 +70,7 @@ public class Company {
 		return visible;
 	}
 
-	public void setVisible(boolean visible) {
+	public void setVisible(final boolean visible) {
 		this.visible = visible;
 	}
 
@@ -79,7 +79,7 @@ public class Company {
 		return size;
 	}
 
-	public void setSize(SizeEnum size) {
+	public void setSize(final SizeEnum size) {
 		this.size = size;
 	}
 

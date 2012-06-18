@@ -39,7 +39,7 @@ public class Person {
 		// no action here
 	}
 
-	public Person(String[] nextLine) {
+	public Person(final String[] nextLine) {
 		this.id = nextLine[0];
 		this.firstName = nextLine[1];
 		this.lastName = nextLine[2];
@@ -51,7 +51,7 @@ public class Person {
 		this.country = nextLine[7];
 	}
 
-	public void update(Person newValues) {
+	public void update(final Person newValues) {
 		this.firstName = newValues.getFirstName();
 		this.lastName = newValues.getLastName();
 		this.fullName = this.firstName + " " + this.lastName;
@@ -67,7 +67,7 @@ public class Person {
 		return fullName;
 	}
 
-	public void setFullName(String fullName) {
+	public void setFullName(final String fullName) {
 		this.fullName = fullName;
 	}
 
@@ -75,7 +75,7 @@ public class Person {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 
@@ -83,7 +83,7 @@ public class Person {
 		return street;
 	}
 
-	public void setStreet(String street) {
+	public void setStreet(final String street) {
 		this.street = street;
 	}
 
@@ -91,7 +91,7 @@ public class Person {
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(final String city) {
 		this.city = city;
 	}
 
@@ -99,7 +99,7 @@ public class Person {
 		return state;
 	}
 
-	public void setState(String state) {
+	public void setState(final String state) {
 		this.state = state;
 	}
 
@@ -107,7 +107,7 @@ public class Person {
 		return zip;
 	}
 
-	public void setZip(String zip) {
+	public void setZip(final String zip) {
 		this.zip = zip;
 	}
 
@@ -115,7 +115,7 @@ public class Person {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstName(final String firstName) {
 		this.firstName = firstName;
 	}
 
@@ -123,7 +123,7 @@ public class Person {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public void setLastName(final String lastName) {
 		this.lastName = lastName;
 	}
 
@@ -131,7 +131,7 @@ public class Person {
 		return country;
 	}
 
-	public void setCountry(String country) {
+	public void setCountry(final String country) {
 		this.country = country;
 	}
 

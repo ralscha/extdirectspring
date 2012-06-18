@@ -33,12 +33,12 @@ public class SimpleMethodProvider {
 	}
 
 	@ExtDirectMethod(group = "simple")
-	public String method2(String ping) {
+	public String method2(final String ping) {
 		return ping.toUpperCase();
 	}
 
 	@ExtDirectMethod(group = "simple")
-	public String method3(String ping, HttpServletRequest request) {
+	public String method3(final String ping, final HttpServletRequest request) {
 		return ping + " request uri: " + request.getRequestURI();
 	}
 

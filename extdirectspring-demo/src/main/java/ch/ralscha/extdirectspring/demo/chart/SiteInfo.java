@@ -20,15 +20,15 @@ import org.joda.time.LocalDate;
 
 public class SiteInfo {
 
-	private LocalDate date;
+	private final LocalDate date;
 
-	private int visits;
+	private final int visits;
 
-	private int views;
+	private final int views;
 
-	private int veins;
+	private final int veins;
 
-	public SiteInfo(LocalDate date, int visits, int views, int veins) {
+	public SiteInfo(final LocalDate date, final int visits, final int views, final int veins) {
 		this.date = date;
 		this.visits = visits;
 		this.views = views;

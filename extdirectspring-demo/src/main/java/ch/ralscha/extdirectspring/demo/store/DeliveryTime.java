@@ -26,7 +26,7 @@ public enum DeliveryTime implements LabelValue {
 
 	private String label;
 
-	DeliveryTime(String label) {
+	DeliveryTime(final String label) {
 		this.label = label;
 	}
 

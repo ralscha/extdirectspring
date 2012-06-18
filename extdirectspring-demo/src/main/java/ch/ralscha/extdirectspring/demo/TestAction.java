@@ -23,7 +23,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 public class TestAction {
 
 	@ExtDirectMethod(group = "example")
-	public long multiply(Long num) {
+	public long multiply(final Long num) {
 		if (num != null) {
 			return num * 8;
 		}
@@ -31,7 +31,7 @@ public class TestAction {
 	}
 
 	@ExtDirectMethod(group = "example")
-	public String doEcho(String message) {
+	public String doEcho(final String message) {
 		return message;
 	}
 
