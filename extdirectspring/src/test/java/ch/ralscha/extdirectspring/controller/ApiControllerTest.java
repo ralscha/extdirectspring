@@ -480,14 +480,14 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreModify", new Action("update3", 1, false));
 		remotingApi.addAction("remoteProviderStoreModify", new Action("update4", 1, false));
 		remotingApi.addAction("remoteProviderStoreModify", new Action("destroy", 1, false));
-		
+
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("create1", 1, false));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("create2", 1, false));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update1", 1, false));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update2", 1, false));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update3", 1, false));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update4", 1, false));
-		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("destroy", 1, false));		
+		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("destroy", 1, false));
 
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("create1", 1, false));
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("create2", 1, false));
