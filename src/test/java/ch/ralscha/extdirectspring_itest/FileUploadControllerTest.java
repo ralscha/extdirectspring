@@ -19,6 +19,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 import org.apache.http.HttpEntity;
@@ -54,7 +55,8 @@ public class FileUploadControllerTest extends JettyTest {
 		mpEntity.addPart("extType", new StringBody("rpc"));
 		mpEntity.addPart("extUpload", new StringBody("true"));
 
-		mpEntity.addPart("name", new StringBody("Jim"));
+		mpEntity.addPart("name", new StringBody("Jimöäü", Charset.forName("UTF-8")));
+		mpEntity.addPart("firstName", new StringBody("Ralph"));
 		mpEntity.addPart("age", new StringBody("25"));
 		mpEntity.addPart("email", new StringBody("test@test.ch"));
 
@@ -81,8 +83,9 @@ public class FileUploadControllerTest extends JettyTest {
 		assertThat(rootAsMap.get("tid")).isEqualTo(2);
 
 		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertThat(result).hasSize(6);
-		assertThat(result.get("name")).isEqualTo("Jim");
+		assertThat(result).hasSize(7);
+		assertThat(result.get("name")).isEqualTo("Jimöäü");
+		assertThat(result.get("firstName")).isEqualTo("Ralph");
 		assertThat(result.get("age")).isEqualTo(25);
 		assertThat(result.get("email")).isEqualTo("test@test.ch");
 		assertThat(result.get("fileName")).isEqualTo("UploadTestFile.txt");

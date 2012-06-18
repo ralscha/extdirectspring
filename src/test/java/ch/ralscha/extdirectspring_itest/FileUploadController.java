@@ -49,6 +49,7 @@ public class FileUploadController {
 		}
 		builder.addErrors(result);
 		builder.addResultProperty("name", user.getName());
+		builder.addResultProperty("firstName", user.getFirstName());
 		builder.addResultProperty("age", user.getAge());
 		builder.addResultProperty("email", user.getEmail());
 
