@@ -21,13 +21,19 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.LinkedHashSet;
+import java.util.Locale;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.ReflectionUtils.MethodFilter;
+
+import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 
 /**
  * Utility class
@@ -71,6 +77,17 @@ public final class ExtDirectSpringUtil {
 		Method handlerMethod = methodInfo.getMethod();
 		ReflectionUtils.makeAccessible(handlerMethod);
 		return handlerMethod.invoke(bean, params);
+	}
+
+	public static Object invoke(final HttpServletRequest request, final HttpServletResponse response,
+			final Locale locale, final ApplicationContext context, final ExtDirectRequest directRequest,
+			final ParametersResolver parametersResolver) throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException, Exception {
+
+		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(directRequest.getAction(), directRequest.getMethod());
+		Object[] resolvedParams = parametersResolver.resolveParameters(request, response, locale, directRequest,
+				methodInfo);
+		return invoke(context, directRequest.getAction(), methodInfo, resolvedParams);
 	}
 
 	public static String getStackTrace(final Throwable t) {
