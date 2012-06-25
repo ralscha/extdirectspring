@@ -64,6 +64,9 @@ public class CarouselService {
 			Matcher matcher = IMG_PATTERN.matcher(entry.getDescription().getValue());
 			if (matcher.matches()) {
 				String imageUrl = matcher.group(1);
+				if (imageUrl.startsWith("http://apod.nasa.gov/apod/http://")) {
+					imageUrl = imageUrl.replace("http://apod.nasa.gov/apod/http://", "http://");
+				}
 				pic.setImage(request.getContextPath() + "/controller/picresize?url=" + imageUrl);
 			}
 			pictures.add(pic);
