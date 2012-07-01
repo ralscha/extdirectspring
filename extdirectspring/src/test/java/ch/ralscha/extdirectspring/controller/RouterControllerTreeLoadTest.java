@@ -204,28 +204,15 @@ public class RouterControllerTreeLoadTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 
-		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(controller, request, "remoteProviderTreeLoad",
-				"method6", requestParameters, new TypeReference<List<Node>>() {/*
-																				 * nothing
-																				 * here
-																				 */
-				});
+		Node node = (Node) ControllerUtil.sendAndReceive(controller, request, "remoteProviderTreeLoad", "method6",
+				requestParameters, Node.class);
 
 		String appendix = ";true;true";
 
-		assertThat(nodes).hasSize(1).containsSequence(new Node("n1", "Node 1" + appendix, false));
+		assertThat(node.id).isEqualTo("n1");
+		assertThat(node.text).isEqualTo("Node 1;true;true");
+		assertThat(node.leaf).isEqualTo(false);
 
-		request = new MockHttpServletRequest();
-
-		nodes = (List<Node>) ControllerUtil.sendAndReceive(controller, request, "remoteProviderTreeLoad", "method6",
-				requestParameters, new TypeReference<List<Node>>() {/*
-																	 * nothing
-																	 * here
-																	 */
-				});
-
-		appendix = ";true;true";
-		assertThat(nodes).hasSize(1).containsSequence(new Node("n1", "Node 1" + appendix, false));
 	}
 
 }
