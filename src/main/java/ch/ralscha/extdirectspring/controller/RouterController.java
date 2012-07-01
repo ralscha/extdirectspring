@@ -19,7 +19,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -238,10 +237,6 @@ public class RouterController implements InitializingBean {
 						if (methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
 								&& !ExtDirectFormLoadResult.class.isAssignableFrom(result.getClass())) {
 							result = new ExtDirectFormLoadResult(result);
-						} else if (methodInfo.isType(ExtDirectMethodType.TREE_LOAD)) {
-							if (!(result instanceof Collection) && !result.getClass().isArray()) {
-								result = Arrays.asList(result);
-							}
 						} else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo
 								.isType(ExtDirectMethodType.STORE_READ))
 								&& !ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())
