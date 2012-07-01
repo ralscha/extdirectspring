@@ -24,7 +24,7 @@ public class NumericFilter extends Filter {
 
 	private final Comparison comparison;
 
-	public NumericFilter(final String field, final Number value, final Comparison comparison) {
+	public NumericFilter(String field, Number value, Comparison comparison) {
 		super(field);
 		this.value = value;
 		this.comparison = comparison;

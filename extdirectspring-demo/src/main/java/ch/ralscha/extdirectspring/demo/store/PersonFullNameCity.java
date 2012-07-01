@@ -20,7 +20,7 @@ public class PersonFullNameCity {
 
 	private final String city;
 
-	public PersonFullNameCity(final Person person) {
+	public PersonFullNameCity(Person person) {
 		this.fullName = person.getFullName();
 		this.city = person.getCity();
 	}

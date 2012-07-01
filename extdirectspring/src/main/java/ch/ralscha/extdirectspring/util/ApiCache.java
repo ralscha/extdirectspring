@@ -35,11 +35,11 @@ public enum ApiCache {
 		cache = new ConcurrentHashMap<ApiCacheKey, SoftReference<String>>();
 	}
 
-	public void put(final ApiCacheKey key, final String apiString) {
+	public void put(ApiCacheKey key, String apiString) {
 		cache.put(key, new SoftReference<String>(apiString));
 	}
 
-	public String get(final ApiCacheKey key) {
+	public String get(ApiCacheKey key) {
 		if (key != null) {
 			SoftReference<String> apiStringReference = cache.get(key);
 			if (apiStringReference != null && apiStringReference.get() != null) {

@@ -26,12 +26,11 @@ public class President {
 
 	private String imageUrl;
 
-	public President(final int id, final String firstName, final String middleInitial, final String lastName) {
+	public President(int id, String firstName, String middleInitial, String lastName) {
 		this(id, firstName, middleInitial, lastName, null);
 	}
 
-	public President(final int id, final String firstName, final String middleInitial, final String lastName,
-			final String imageUrl) {
+	public President(int id, String firstName, String middleInitial, String lastName, final String imageUrl) {
 		this.id = id;
 		this.firstName = firstName;
 		this.middleInitial = middleInitial;

@@ -54,7 +54,7 @@ public final class ExtDirectSpringUtil {
 	 * @param b object two
 	 * @return true if objects are equal
 	 */
-	public static boolean equal(final Object a, final Object b) {
+	public static boolean equal(Object a, Object b) {
 		return a == b || (a != null && a.equals(b));
 	}
 
@@ -70,7 +70,7 @@ public final class ExtDirectSpringUtil {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public static Object invoke(final ApplicationContext context, final String beanName, final MethodInfo methodInfo,
+	public static Object invoke(ApplicationContext context, String beanName, MethodInfo methodInfo,
 			final Object[] params) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		Object bean = context.getBean(beanName);
 
@@ -79,10 +79,9 @@ public final class ExtDirectSpringUtil {
 		return handlerMethod.invoke(bean, params);
 	}
 
-	public static Object invoke(final HttpServletRequest request, final HttpServletResponse response,
-			final Locale locale, final ApplicationContext context, final ExtDirectRequest directRequest,
-			final ParametersResolver parametersResolver) throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException, Exception {
+	public static Object invoke(HttpServletRequest request, HttpServletResponse response, final Locale locale,
+			ApplicationContext context, ExtDirectRequest directRequest, final ParametersResolver parametersResolver)
+			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, Exception {
 
 		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(directRequest.getAction(), directRequest.getMethod());
 		Object[] resolvedParams = parametersResolver.resolveParameters(request, response, locale, directRequest,
@@ -90,7 +89,7 @@ public final class ExtDirectSpringUtil {
 		return invoke(context, directRequest.getAction(), methodInfo, resolvedParams);
 	}
 
-	public static String getStackTrace(final Throwable t) {
+	public static String getStackTrace(Throwable t) {
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw, true);
 		t.printStackTrace(pw);
@@ -112,7 +111,7 @@ public final class ExtDirectSpringUtil {
 	 * handler methods of interest
 	 * @return the selected methods, or an empty set
 	 */
-	public static Set<Method> selectMethods(final Class<?> handlerType, final MethodFilter handlerMethodFilter) {
+	public static Set<Method> selectMethods(Class<?> handlerType, final MethodFilter handlerMethodFilter) {
 		final Set<Method> handlerMethods = new LinkedHashSet<Method>();
 		Set<Class<?>> handlerTypes = new LinkedHashSet<Class<?>>();
 
@@ -129,7 +128,7 @@ public final class ExtDirectSpringUtil {
 		for (Class<?> currentHandlerType : handlerTypes) {
 			final Class<?> targetClass = (specificHandlerType != null ? specificHandlerType : currentHandlerType);
 			ReflectionUtils.doWithMethods(currentHandlerType, new ReflectionUtils.MethodCallback() {
-				public void doWith(final Method method) {
+				public void doWith(Method method) {
 					Method specificMethod = ClassUtils.getMostSpecificMethod(method, targetClass);
 					Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(specificMethod);
 					if (handlerMethodFilter.matches(specificMethod)

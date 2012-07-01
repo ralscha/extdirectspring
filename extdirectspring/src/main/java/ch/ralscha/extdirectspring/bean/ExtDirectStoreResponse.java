@@ -46,27 +46,27 @@ public class ExtDirectStoreResponse<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ExtDirectStoreResponse(final T record) {
+	public ExtDirectStoreResponse(T record) {
 		init(null, Arrays.asList(record), true);
 	}
 
-	public ExtDirectStoreResponse(final T[] record) {
+	public ExtDirectStoreResponse(T[] record) {
 		init(null, Arrays.asList(record), true);
 	}
 
-	public ExtDirectStoreResponse(final Collection<T> records) {
+	public ExtDirectStoreResponse(Collection<T> records) {
 		init(null, records, true);
 	}
 
-	public ExtDirectStoreResponse(final Integer total, final Collection<T> records) {
+	public ExtDirectStoreResponse(Integer total, Collection<T> records) {
 		init(total, records, true);
 	}
 
-	public ExtDirectStoreResponse(final Integer total, final Collection<T> records, final Boolean success) {
+	public ExtDirectStoreResponse(Integer total, Collection<T> records, Boolean success) {
 		init(total, records, success);
 	}
 
-	protected void init(final Integer _total, final Collection<T> _records, final Boolean _success) {
+	protected void init(Integer _total, Collection<T> _records, Boolean _success) {
 		this.total = _total;
 		this.records = _records;
 		this.success = _success;
@@ -91,7 +91,7 @@ public class ExtDirectStoreResponse<T> {
 		return null;
 	}
 
-	public void setMetaData(final MetaData metaData) {
+	public void setMetaData(MetaData metaData) {
 		this.metaData = metaData;
 	}
 

@@ -33,7 +33,7 @@ public class TurnoverService {
 	private final ImmutableList<Company> companies;
 
 	public TurnoverService() {
-		ImmutableList.Builder<Company> builder = new ImmutableList.Builder<Company>();
+		ImmutableList.Builder<Company> builder = new ImmutableList.Builder<>();
 
 		builder.add(new Company("ABC Accounting", 50000));
 		builder.add(new Company("Ezy Video Rental", 106300));
@@ -46,7 +46,7 @@ public class TurnoverService {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "turnover")
-	public List<Company> getTurnovers(final ExtDirectStoreReadRequest request) {
+	public List<Company> getTurnovers(ExtDirectStoreReadRequest request) {
 
 		Ordering<Company> ordering = PropertyOrderingFactory.INSTANCE.createOrderingFromSorters(request.getSorters());
 		if (ordering != null) {

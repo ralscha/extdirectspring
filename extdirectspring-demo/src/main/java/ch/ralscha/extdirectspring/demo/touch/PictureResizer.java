@@ -39,7 +39,7 @@ public class PictureResizer {
 	@RequestMapping(value = "/picresize", method = RequestMethod.GET)
 	public void resize(@RequestParam("url") final String url,
 			@RequestParam(value = "width", required = false) final Integer width,
-			@RequestParam(value = "height", required = false) final Integer height, final HttpServletRequest request,
+			@RequestParam(value = "height", required = false) final Integer height, HttpServletRequest request,
 			final HttpServletResponse response) throws MalformedURLException, IOException {
 
 		File servletTmpDir = (File) request.getServletContext().getAttribute("javax.servlet.context.tempdir");
@@ -50,30 +50,29 @@ public class PictureResizer {
 			FileUtils.copyURLToFile(new URL(url), pictureFile);
 		}
 
-		OutputStream out = response.getOutputStream();
+		try (OutputStream out = response.getOutputStream()) {
 
-		if (width != null && height != null) {
-			BufferedImage image = ImageIO.read(pictureFile);
-			if (image.getWidth() > width || image.getHeight() > height) {
-				BufferedImage resizedImage = Scalr.resize(image, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC, width,
-						height, Scalr.OP_ANTIALIAS);
+			if (width != null && height != null) {
+				BufferedImage image = ImageIO.read(pictureFile);
+				if (image.getWidth() > width || image.getHeight() > height) {
+					BufferedImage resizedImage = Scalr.resize(image, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC,
+							width, height, Scalr.OP_ANTIALIAS);
 
-				int pos = url.lastIndexOf(".");
-				String format = url.substring(pos + 1).toUpperCase();
+					int pos = url.lastIndexOf(".");
+					String format = url.substring(pos + 1).toUpperCase();
 
-				File tempFile = File.createTempFile("resized", format);
-				tempFile.deleteOnExit();
-				ImageIO.write(resizedImage, format, tempFile);
-				FileUtils.copyFile(tempFile, out);
-				tempFile.delete();
+					File tempFile = File.createTempFile("resized", format);
+					tempFile.deleteOnExit();
+					ImageIO.write(resizedImage, format, tempFile);
+					FileUtils.copyFile(tempFile, out);
+					tempFile.delete();
+				} else {
+					FileUtils.copyFile(pictureFile, out);
+				}
 			} else {
 				FileUtils.copyFile(pictureFile, out);
 			}
-		} else {
-			FileUtils.copyFile(pictureFile, out);
 		}
-
-		out.close();
 
 	}
 

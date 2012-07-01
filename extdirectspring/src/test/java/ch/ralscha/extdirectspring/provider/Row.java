@@ -34,7 +34,7 @@ public class Row implements Comparable<Row>, RowInterface {
 		// no action
 	}
 
-	public Row(final int id, final String name, final boolean admin, final String salary) {
+	public Row(int id, String name, boolean admin, String salary) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -48,7 +48,7 @@ public class Row implements Comparable<Row>, RowInterface {
 		return id;
 	}
 
-	public void setId(final int id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -56,7 +56,7 @@ public class Row implements Comparable<Row>, RowInterface {
 		return name;
 	}
 
-	public void setName(final String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -64,7 +64,7 @@ public class Row implements Comparable<Row>, RowInterface {
 		return admin;
 	}
 
-	public void setAdmin(final boolean admin) {
+	public void setAdmin(boolean admin) {
 		this.admin = admin;
 	}
 
@@ -72,7 +72,7 @@ public class Row implements Comparable<Row>, RowInterface {
 		return salary;
 	}
 
-	public void setSalary(final BigDecimal salary) {
+	public void setSalary(BigDecimal salary) {
 		this.salary = salary;
 	}
 
@@ -85,7 +85,7 @@ public class Row implements Comparable<Row>, RowInterface {
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
@@ -103,7 +103,7 @@ public class Row implements Comparable<Row>, RowInterface {
 	}
 
 	// @Override
-	public int compareTo(final Row o) {
+	public int compareTo(Row o) {
 		return id - o.id;
 	}
 

@@ -49,7 +49,7 @@ public final class RemotingApi {
 
 	private final List<PollingProvider> pollingProviders;
 
-	public RemotingApi(final String url, final String namespace) {
+	public RemotingApi(String url, String namespace) {
 		this.descriptor = null;
 		this.actions = new HashMap<String, List<Action>>();
 		this.pollingProviders = new ArrayList<PollingProvider>();
@@ -83,7 +83,7 @@ public final class RemotingApi {
 		return descriptor;
 	}
 
-	public void setDescriptor(final String descriptor) {
+	public void setDescriptor(String descriptor) {
 		this.descriptor = descriptor;
 	}
 
@@ -91,7 +91,7 @@ public final class RemotingApi {
 		return timeout;
 	}
 
-	public void setTimeout(final Integer timeout) {
+	public void setTimeout(Integer timeout) {
 		this.timeout = timeout;
 	}
 
@@ -99,7 +99,7 @@ public final class RemotingApi {
 		return maxRetries;
 	}
 
-	public void setMaxRetries(final Integer maxRetries) {
+	public void setMaxRetries(Integer maxRetries) {
 		this.maxRetries = maxRetries;
 	}
 
@@ -107,7 +107,7 @@ public final class RemotingApi {
 		return enableBuffer;
 	}
 
-	public void setEnableBuffer(final Object enableBuffer) {
+	public void setEnableBuffer(Object enableBuffer) {
 		this.enableBuffer = enableBuffer;
 	}
 
@@ -116,7 +116,7 @@ public final class RemotingApi {
 		return pollingProviders;
 	}
 
-	public void addAction(final String beanName, final Action action) {
+	public void addAction(String beanName, Action action) {
 		List<Action> beanActions = actions.get(beanName);
 		if (beanActions == null) {
 			beanActions = new ArrayList<Action>();
@@ -125,7 +125,7 @@ public final class RemotingApi {
 		beanActions.add(action);
 	}
 
-	public void addPollingProvider(final PollingProvider pollingProvider) {
+	public void addPollingProvider(PollingProvider pollingProvider) {
 		pollingProviders.add(pollingProvider);
 	}
 

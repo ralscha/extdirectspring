@@ -36,7 +36,7 @@ public class Summary {
 		return description;
 	}
 
-	public void setDescription(final String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -44,7 +44,7 @@ public class Summary {
 		return estimate;
 	}
 
-	public void setEstimate(final BigDecimal estimate) {
+	public void setEstimate(BigDecimal estimate) {
 		this.estimate = estimate;
 	}
 
@@ -52,7 +52,7 @@ public class Summary {
 		return rate;
 	}
 
-	public void setRate(final BigDecimal rate) {
+	public void setRate(BigDecimal rate) {
 		this.rate = rate;
 	}
 
@@ -61,7 +61,7 @@ public class Summary {
 		return due;
 	}
 
-	public void setDue(final Date due) {
+	public void setDue(Date due) {
 		this.due = due;
 	}
 
@@ -69,7 +69,7 @@ public class Summary {
 		return cost;
 	}
 
-	public void setCost(final BigDecimal cost) {
+	public void setCost(BigDecimal cost) {
 		this.cost = cost;
 	}
 

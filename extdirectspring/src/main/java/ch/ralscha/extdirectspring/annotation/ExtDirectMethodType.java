@@ -42,7 +42,7 @@ public enum ExtDirectMethodType {
 	 */
 	SIMPLE {
 		@Override
-		public boolean isValid(final String methodName, final Class<?> clazz, final Method method) {
+		public boolean isValid(String methodName, Class<?> clazz, Method method) {
 
 			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
@@ -75,7 +75,7 @@ public enum ExtDirectMethodType {
 	 */
 	SIMPLE_NAMED {
 		@Override
-		public boolean isValid(final String methodName, final Class<?> clazz, final Method method) {
+		public boolean isValid(String methodName, Class<?> clazz, Method method) {
 
 			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
@@ -97,7 +97,7 @@ public enum ExtDirectMethodType {
 	 */
 	FORM_LOAD {
 		@Override
-		public boolean isValid(final String methodName, final Class<?> clazz, final Method method) {
+		public boolean isValid(String methodName, Class<?> clazz, Method method) {
 
 			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
@@ -118,7 +118,7 @@ public enum ExtDirectMethodType {
 	 */
 	STORE_READ {
 		@Override
-		public boolean isValid(final String methodName, final Class<?> clazz, final Method method) {
+		public boolean isValid(String methodName, Class<?> clazz, Method method) {
 
 			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
@@ -140,7 +140,7 @@ public enum ExtDirectMethodType {
 	 */
 	STORE_MODIFY {
 		@Override
-		public boolean isValid(final String methodName, final Class<?> clazz, final Method method) {
+		public boolean isValid(String methodName, Class<?> clazz, Method method) {
 
 			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
@@ -161,7 +161,7 @@ public enum ExtDirectMethodType {
 	 */
 	FORM_POST {
 		@Override
-		public boolean isValid(final String methodName, final Class<?> clazz, final Method method) {
+		public boolean isValid(String methodName, Class<?> clazz, Method method) {
 
 			boolean isValid = true;
 
@@ -243,7 +243,7 @@ public enum ExtDirectMethodType {
 	 */
 	TREE_LOAD {
 		@Override
-		public boolean isValid(final String methodName, final Class<?> clazz, final Method method) {
+		public boolean isValid(String methodName, Class<?> clazz, Method method) {
 
 			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
@@ -264,7 +264,7 @@ public enum ExtDirectMethodType {
 	 */
 	POLL {
 		@Override
-		public boolean isValid(final String methodName, final Class<?> clazz, final Method method) {
+		public boolean isValid(String methodName, Class<?> clazz, Method method) {
 
 			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 
@@ -292,6 +292,6 @@ public enum ExtDirectMethodType {
 	 * 
 	 * @return true if the method does not contains any errors.
 	 */
-	public abstract boolean isValid(final String methodName, final Class<?> clazz, final Method method);
+	public abstract boolean isValid(String methodName, Class<?> clazz, Method method);
 
 }

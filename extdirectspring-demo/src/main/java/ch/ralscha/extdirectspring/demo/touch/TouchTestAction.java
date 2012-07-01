@@ -34,7 +34,7 @@ import com.google.common.collect.Ordering;
 public class TouchTestAction {
 
 	@ExtDirectMethod(group = "touchdirect")
-	public long multiply(final Long num) {
+	public long multiply(Long num) {
 		if (num != null) {
 			return num * 8;
 		}
@@ -42,7 +42,7 @@ public class TouchTestAction {
 	}
 
 	@ExtDirectMethod(group = "touchdirect")
-	public String doEcho(final String message) {
+	public String doEcho(String message) {
 		return message;
 	}
 
@@ -54,12 +54,12 @@ public class TouchTestAction {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "touchdirect")
-	public String showDetails(final String firstName, final String lastName, final int age) {
+	public String showDetails(String firstName, String lastName, int age) {
 		return String.format("Hi %s %s, you are %d years old.", firstName, lastName, age);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "touchdirect")
-	public List<Turnover> getGrid(final ExtDirectStoreReadRequest request) {
+	public List<Turnover> getGrid(ExtDirectStoreReadRequest request) {
 		List<Turnover> result = Lists.newArrayList();
 
 		result.add(new Turnover("ABC Accounting", new BigDecimal("50000")));

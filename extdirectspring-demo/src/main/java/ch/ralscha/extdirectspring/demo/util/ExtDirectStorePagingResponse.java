@@ -25,7 +25,7 @@ import com.google.common.collect.Ordering;
 
 public class ExtDirectStorePagingResponse<T> extends ExtDirectStoreResponse<T> {
 
-	public ExtDirectStorePagingResponse(final ExtDirectStoreReadRequest request, final Collection<T> allRecords) {
+	public ExtDirectStorePagingResponse(ExtDirectStoreReadRequest request, Collection<T> allRecords) {
 
 		int totalSize = allRecords.size();
 		Collection<T> records = allRecords;

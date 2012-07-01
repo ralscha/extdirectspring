@@ -21,7 +21,7 @@ public class SeasonData {
 
 	private final int total;
 
-	public SeasonData(final String season, final int total) {
+	public SeasonData(String season, int total) {
 		this.season = season;
 		this.total = total;
 	}

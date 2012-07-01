@@ -161,7 +161,7 @@ public class RouterControllerTreeLoadTest {
 		callTreeLoadAndCheckResult("method5");
 	}
 
-	private void callTreeLoadAndCheckResult(final String method) {
+	private void callTreeLoadAndCheckResult(String method) {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("aHeader", "true");
 

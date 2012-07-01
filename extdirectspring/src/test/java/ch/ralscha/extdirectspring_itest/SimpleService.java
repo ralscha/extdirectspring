@@ -25,7 +25,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 public class SimpleService {
 
 	@ExtDirectMethod(group = "itest_simple")
-	public String toUpperCase(final String in) {
+	public String toUpperCase(String in) {
 		if (in != null) {
 			return in.toUpperCase();
 		}
@@ -33,7 +33,7 @@ public class SimpleService {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "itest_simple", streamResponse = true)
-	public String echo(final String userId, @RequestParam(defaultValue = "10") final int logLevel) {
+	public String echo(String userId, @RequestParam(defaultValue = "10") final int logLevel) {
 		return String.format("UserId: %s LogLevel: %d", userId, logLevel);
 	}
 }

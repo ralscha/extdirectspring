@@ -45,7 +45,7 @@ public class BaseResponse {
 	 * 
 	 * @param type the new type of the response
 	 */
-	public void setType(final String type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
@@ -59,7 +59,7 @@ public class BaseResponse {
 	 * 
 	 * @param message an error message
 	 */
-	public void setMessage(final String message) {
+	public void setMessage(String message) {
 		this.message = message;
 	}
 
@@ -75,7 +75,7 @@ public class BaseResponse {
 	 * 
 	 * @see Configuration#setSendStacktrace(boolean)
 	 */
-	public void setWhere(final String where) {
+	public void setWhere(String where) {
 		this.where = where;
 	}
 

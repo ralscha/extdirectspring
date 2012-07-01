@@ -49,20 +49,17 @@ public class RandomDataBean {
 	@PostConstruct
 	public void readData() throws IOException {
 		persons = Maps.newHashMap();
-		InputStream is = randomdata.getInputStream();
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(is, Charsets.UTF_8.name()));
-
-		CSVReader reader = new CSVReader(br, '|');
-		String[] nextLine;
-		while ((nextLine = reader.readNext()) != null) {
-			Person p = new Person(nextLine);
-			persons.put(Integer.valueOf(p.getId()), p);
-			maxId = Math.max(maxId, Integer.valueOf(p.getId()));
+		try (InputStream is = randomdata.getInputStream();
+				BufferedReader br = new BufferedReader(new InputStreamReader(is, Charsets.UTF_8.name()));
+				CSVReader reader = new CSVReader(br, '|')) {
+			String[] nextLine;
+			while ((nextLine = reader.readNext()) != null) {
+				Person p = new Person(nextLine);
+				persons.put(Integer.valueOf(p.getId()), p);
+				maxId = Math.max(maxId, Integer.valueOf(p.getId()));
+			}
 		}
 
-		br.close();
-		is.close();
 	}
 
 	public List<Person> findPersons(final String query) {
@@ -70,7 +67,7 @@ public class RandomDataBean {
 			Iterable<Person> filtered = Iterables.filter(persons.values(), new Predicate<Person>() {
 
 				@Override
-				public boolean apply(final Person input) {
+				public boolean apply(Person input) {
 					return input.getLastName().toLowerCase().startsWith(query.toLowerCase());
 				}
 			});
@@ -80,19 +77,19 @@ public class RandomDataBean {
 		return ImmutableList.copyOf(persons.values());
 	}
 
-	public Person findPerson(final String id) {
+	public Person findPerson(String id) {
 		return persons.get(Integer.valueOf(id));
 	}
 
-	public void deletePerson(final int personId) {
+	public void deletePerson(int personId) {
 		persons.remove(personId);
 	}
 
-	public void deletePerson(final Person person) {
+	public void deletePerson(Person person) {
 		persons.remove(Integer.valueOf(person.getId()));
 	}
 
-	public Person insert(final Person p) {
+	public Person insert(Person p) {
 		maxId = maxId + 1;
 		p.setId(String.valueOf(maxId));
 		persons.put(maxId, p);

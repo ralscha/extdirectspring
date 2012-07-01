@@ -37,13 +37,13 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 public class RemoteProviderStoreModifyArray {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public Row[] create1(final List<Row> rows) {
+	public Row[] create1(List<Row> rows) {
 		return rows.toArray(new Row[rows.size()]);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, event = "test")
-	public Row[] create2(final List<Row> rows, final HttpServletResponse response, final HttpServletRequest request,
-			final HttpSession session, final Locale locale) {
+	public Row[] create2(List<Row> rows, HttpServletResponse response, HttpServletRequest request,
+			final HttpSession session, Locale locale) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
@@ -53,19 +53,19 @@ public class RemoteProviderStoreModifyArray {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public Row[] update1(final List<Row> rows) {
+	public Row[] update1(List<Row> rows) {
 		return rows.toArray(new Row[rows.size()]);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public Row[] update2(final Locale locale, @RequestParam(value = "id") final int id, final List<Row> rows) {
+	public Row[] update2(Locale locale, @RequestParam(value = "id") final int id, List<Row> rows) {
 		assertThat(id).isEqualTo(10);
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 		return rows.toArray(new Row[rows.size()]);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public Row[] update3(final List<Row> rows, @RequestParam(value = "id", defaultValue = "1") final int id,
+	public Row[] update3(List<Row> rows, @RequestParam(value = "id", defaultValue = "1") final int id,
 			final HttpServletRequest servletRequest) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
@@ -89,7 +89,7 @@ public class RemoteProviderStoreModifyArray {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group3")
-	public Integer[] destroy(final List<Integer> rows) {
+	public Integer[] destroy(List<Integer> rows) {
 		return rows.toArray(new Integer[rows.size()]);
 	}
 

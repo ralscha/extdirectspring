@@ -33,17 +33,17 @@ public class WrongFormPostController {
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_POST)
 	@RequestMapping(value = "/wrong", method = RequestMethod.POST)
-	public void updateInfo1(final HttpServletRequest request, final HttpServletResponse response) {
+	public void updateInfo1(HttpServletRequest request, HttpServletResponse response) {
 		ExtDirectResponseBuilder.create(request, response).buildAndWrite();
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_POST)
-	public void updateInfo2(final HttpServletRequest request, final HttpServletResponse response) {
+	public void updateInfo2(HttpServletRequest request, HttpServletResponse response) {
 		ExtDirectResponseBuilder.create(request, response).buildAndWrite();
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_POST)
-	public ExtDirectResponse updateInfo3(final HttpServletRequest request, final HttpServletResponse response) {
+	public ExtDirectResponse updateInfo3(HttpServletRequest request, HttpServletResponse response) {
 		ExtDirectResponseBuilder.create(request, response).buildAndWrite();
 		return null;
 	}
@@ -51,7 +51,7 @@ public class WrongFormPostController {
 	@ExtDirectMethod(ExtDirectMethodType.FORM_POST)
 	@RequestMapping(value = "/wrong", method = RequestMethod.POST)
 	@ResponseBody
-	public void updateInfo4(final HttpServletRequest request, final HttpServletResponse response) {
+	public void updateInfo4(HttpServletRequest request, HttpServletResponse response) {
 		ExtDirectResponseBuilder.create(request, response).buildAndWrite();
 	}
 }

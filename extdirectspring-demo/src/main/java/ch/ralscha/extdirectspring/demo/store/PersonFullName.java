@@ -18,7 +18,7 @@ package ch.ralscha.extdirectspring.demo.store;
 public class PersonFullName {
 	private final String fullName;
 
-	public PersonFullName(final Person person) {
+	public PersonFullName(Person person) {
 		this.fullName = person.getFullName();
 	}
 

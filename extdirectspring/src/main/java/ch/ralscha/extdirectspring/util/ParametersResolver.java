@@ -70,8 +70,8 @@ public final class ParametersResolver implements InitializingBean {
 	}
 
 	@SuppressWarnings({ "unchecked" })
-	public Object[] resolveParameters(final HttpServletRequest request, final HttpServletResponse response,
-			final Locale locale, final ExtDirectRequest directRequest, final MethodInfo methodInfo) throws Exception {
+	public Object[] resolveParameters(HttpServletRequest request, HttpServletResponse response, final Locale locale,
+			ExtDirectRequest directRequest, MethodInfo methodInfo) throws Exception {
 
 		int jsonParamIndex = 0;
 		Map<String, Object> remainingParameters = null;
@@ -181,7 +181,7 @@ public final class ParametersResolver implements InitializingBean {
 		return parameters;
 	}
 
-	public Object resolveRequestParam(final HttpServletRequest request, final Map<String, Object> valueContainer,
+	public Object resolveRequestParam(HttpServletRequest request, Map<String, Object> valueContainer,
 			final ParameterInfo parameterInfo) {
 
 		if (parameterInfo.getName() != null) {
@@ -211,7 +211,7 @@ public final class ParametersResolver implements InitializingBean {
 		return null;
 	}
 
-	public Object resolveRequestHeader(final HttpServletRequest request, final ParameterInfo parameterInfo) {
+	public Object resolveRequestHeader(HttpServletRequest request, ParameterInfo parameterInfo) {
 		String value = request.getHeader(parameterInfo.getName());
 
 		if (value == null) {
@@ -230,7 +230,7 @@ public final class ParametersResolver implements InitializingBean {
 		return null;
 	}
 
-	private Object convertValue(final Object value, final ParameterInfo methodParameter) {
+	private Object convertValue(Object value, ParameterInfo methodParameter) {
 		if (value != null) {
 			if (methodParameter.getType().equals(value.getClass())) {
 				return value;
@@ -245,8 +245,7 @@ public final class ParametersResolver implements InitializingBean {
 		return value;
 	}
 
-	private Map<String, Object> fillReadRequestFromMap(final ExtDirectStoreReadRequest to,
-			final Map<String, Object> from) {
+	private Map<String, Object> fillReadRequestFromMap(ExtDirectStoreReadRequest to, final Map<String, Object> from) {
 		Set<String> foundParameters = new HashSet<String>();
 
 		for (Entry<String, Object> entry : from.entrySet()) {
@@ -351,7 +350,7 @@ public final class ParametersResolver implements InitializingBean {
 		return remainingParameters;
 	}
 
-	private List<Object> convertObjectEntriesToType(final List<Object> records, final Class<?> directStoreType) {
+	private List<Object> convertObjectEntriesToType(List<Object> records, Class<?> directStoreType) {
 		if (records != null) {
 			List<Object> convertedList = new ArrayList<Object>();
 			for (Object record : records) {

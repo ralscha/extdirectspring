@@ -52,15 +52,15 @@ public class RemoteProviderFormLoad {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-	public FormInfo method3(final HttpServletResponse response, final HttpServletRequest request,
-			final HttpSession session, final Locale locale) {
+	public FormInfo method3(HttpServletResponse response, HttpServletRequest request, final HttpSession session,
+			Locale locale) {
 		FormInfo fi = new FormInfo();
 		fi.setResult((response != null) + ";" + (request != null) + ";" + (session != null) + ";" + locale);
 		return fi;
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-	public FormInfo method4(final Locale locale, @RequestParam(value = "id") final int id) {
+	public FormInfo method4(Locale locale, @RequestParam(value = "id") final int id) {
 		FormInfo fi = new FormInfo();
 		fi.setResult("id=" + id + ";" + locale);
 		return fi;
@@ -80,7 +80,7 @@ public class RemoteProviderFormLoad {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-	public ExtDirectFormLoadResult method7(final String data, final boolean success) {
+	public ExtDirectFormLoadResult method7(String data, boolean success) {
 		ExtDirectFormLoadResult edflr = new ExtDirectFormLoadResult();
 		edflr.setData(data);
 		edflr.setSuccess(success);

@@ -20,7 +20,7 @@ public class Company {
 
 	private final int turnover;
 
-	public Company(final String name, final int turnover) {
+	public Company(String name, int turnover) {
 		this.name = name;
 		this.turnover = turnover;
 	}

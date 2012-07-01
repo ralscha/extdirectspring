@@ -21,7 +21,7 @@ public class State implements Comparable<State> {
 
 	private String state;
 
-	public State(final String state) {
+	public State(String state) {
 		this.state = state;
 	}
 
@@ -29,7 +29,7 @@ public class State implements Comparable<State> {
 		return state;
 	}
 
-	public void setState(final String state) {
+	public void setState(String state) {
 		this.state = state;
 	}
 
@@ -39,7 +39,7 @@ public class State implements Comparable<State> {
 	}
 
 	@Override
-	public boolean equals(final Object o) {
+	public boolean equals(Object o) {
 		if (!(o instanceof State)) {
 			return false;
 		}
@@ -48,7 +48,7 @@ public class State implements Comparable<State> {
 	}
 
 	@Override
-	public int compareTo(final State o) {
+	public int compareTo(State o) {
 		return state.compareTo(o.state);
 	}
 

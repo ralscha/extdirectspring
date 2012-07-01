@@ -41,7 +41,7 @@ public class AreaData {
 
 	private final int data9;
 
-	public AreaData(final String name) {
+	public AreaData(String name) {
 		this.name = name;
 
 		data1 = rnd.nextInt(100) + 1;

@@ -114,8 +114,8 @@ public class RouterController implements InitializingBean {
 
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
 	public void poll(@PathVariable("beanName") final String beanName, @PathVariable("method") final String method,
-			@PathVariable("event") final String event, final HttpServletRequest request,
-			final HttpServletResponse response, final Locale locale) throws Exception {
+			@PathVariable("event") final String event, HttpServletRequest request, final HttpServletResponse response,
+			Locale locale) throws Exception {
 
 		ExtDirectPollResponse directPollResponse = new ExtDirectPollResponse();
 		directPollResponse.setName(event);
@@ -182,7 +182,7 @@ public class RouterController implements InitializingBean {
 	}
 
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "extAction")
-	public String router(final HttpServletRequest request, final HttpServletResponse response,
+	public String router(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam("extAction") final String extAction, @RequestParam("extMethod") final String extMethod)
 			throws IOException {
 
@@ -202,8 +202,7 @@ public class RouterController implements InitializingBean {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction")
-	public void router(final HttpServletRequest request, final HttpServletResponse response, final Locale locale)
-			throws IOException {
+	public void router(HttpServletRequest request, HttpServletResponse response, Locale locale) throws IOException {
 
 		Object requestData = jsonHandler.readValue(request.getInputStream(), Object.class);
 
@@ -273,8 +272,8 @@ public class RouterController implements InitializingBean {
 		writeJsonResponse(response, directResponses, streamResponse);
 	}
 
-	public void writeJsonResponse(final HttpServletResponse response, final Object responseObject,
-			final boolean streamResponse) throws IOException, JsonGenerationException, JsonMappingException {
+	public void writeJsonResponse(HttpServletResponse response, Object responseObject, final boolean streamResponse)
+			throws IOException, JsonGenerationException, JsonMappingException {
 		response.setContentType(APPLICATION_JSON.toString());
 		response.setCharacterEncoding(APPLICATION_JSON.getCharSet().name());
 
@@ -296,8 +295,8 @@ public class RouterController implements InitializingBean {
 		outputStream.flush();
 	}
 
-	private Object processRemotingRequest(final HttpServletRequest request, final HttpServletResponse response,
-			final Locale locale, final ExtDirectRequest directRequest, final MethodInfo methodInfo) throws Exception {
+	private Object processRemotingRequest(HttpServletRequest request, HttpServletResponse response,
+			final Locale locale, ExtDirectRequest directRequest, MethodInfo methodInfo) throws Exception {
 
 		Object[] parameters = parametersResolver
 				.resolveParameters(request, response, locale, directRequest, methodInfo);
@@ -315,7 +314,7 @@ public class RouterController implements InitializingBean {
 		return ExtDirectSpringUtil.invoke(context, directRequest.getAction(), methodInfo, parameters);
 	}
 
-	private void handleException(final BaseResponse response, final Exception e) {
+	private void handleException(BaseResponse response, Exception e) {
 		Throwable cause;
 		if (e.getCause() != null) {
 			cause = e.getCause();
@@ -333,7 +332,7 @@ public class RouterController implements InitializingBean {
 		}
 	}
 
-	private void handleMethodNotFoundError(final BaseResponse response, final String beanName, final String methodName) {
+	private void handleMethodNotFoundError(BaseResponse response, String beanName, String methodName) {
 		response.setType("exception");
 		response.setMessage(configuration.getDefaultExceptionMessage());
 

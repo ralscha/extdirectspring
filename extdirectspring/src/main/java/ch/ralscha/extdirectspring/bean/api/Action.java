@@ -36,14 +36,14 @@ public final class Action {
 
 	private final Boolean formHandler;
 
-	public Action(final String name, final Integer len, final Boolean formHandler) {
+	public Action(String name, Integer len, Boolean formHandler) {
 		this.name = name;
 		this.len = len;
 		this.formHandler = formHandler;
 		this.params = null;
 	}
 
-	public Action(final String name, final List<String> params) {
+	public Action(String name, List<String> params) {
 		this.name = name;
 		this.len = null;
 		this.formHandler = null;

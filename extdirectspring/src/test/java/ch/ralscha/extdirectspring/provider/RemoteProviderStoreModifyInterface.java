@@ -37,13 +37,13 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 public class RemoteProviderStoreModifyInterface {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Row.class)
-	public List<RowInterface> create1(final List<RowInterface> rows) {
+	public List<RowInterface> create1(List<RowInterface> rows) {
 		return rows;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Row.class)
-	public List<RowInterface> create2(final List<RowInterface> rows, final HttpServletResponse response,
-			final HttpServletRequest request, final HttpSession session, final Locale locale) {
+	public List<RowInterface> create2(List<RowInterface> rows, HttpServletResponse response,
+			final HttpServletRequest request, HttpSession session, Locale locale) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
@@ -53,12 +53,12 @@ public class RemoteProviderStoreModifyInterface {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Row.class)
-	public List<RowInterface> update1(final List<RowInterface> rows) {
+	public List<RowInterface> update1(List<RowInterface> rows) {
 		return rows;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Row.class)
-	public List<RowInterface> update2(final Locale locale, @RequestParam(value = "id") final int id,
+	public List<RowInterface> update2(Locale locale, @RequestParam(value = "id") final int id,
 			final List<RowInterface> rows) {
 		assertThat(id).isEqualTo(10);
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
@@ -66,8 +66,8 @@ public class RemoteProviderStoreModifyInterface {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Row.class)
-	public List<RowInterface> update3(final List<RowInterface> rows,
-			@RequestParam(value = "id", defaultValue = "1") final int id, final HttpServletRequest servletRequest) {
+	public List<RowInterface> update3(List<RowInterface> rows,
+			@RequestParam(value = "id", defaultValue = "1") final int id, HttpServletRequest servletRequest) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
 		return rows;

@@ -28,7 +28,7 @@ public class SiteInfo {
 
 	private final int veins;
 
-	public SiteInfo(final LocalDate date, final int visits, final int views, final int veins) {
+	public SiteInfo(LocalDate date, int visits, int views, int veins) {
 		this.date = date;
 		this.visits = visits;
 		this.views = views;

@@ -28,7 +28,7 @@ public final class PollingProvider {
 
 	private final String event;
 
-	public PollingProvider(final String beanName, final String method, final String event) {
+	public PollingProvider(String beanName, String method, String event) {
 		this.beanName = beanName;
 		this.method = method;
 

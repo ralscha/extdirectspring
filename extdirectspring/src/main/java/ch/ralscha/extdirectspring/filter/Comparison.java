@@ -25,7 +25,7 @@ public enum Comparison {
 
 	private final String name;
 
-	private Comparison(final String name) {
+	private Comparison(String name) {
 		this.name = name;
 	}
 
@@ -33,7 +33,7 @@ public enum Comparison {
 		return name;
 	}
 
-	public static Comparison fromString(final String name) {
+	public static Comparison fromString(String name) {
 		for (Comparison comparison : Comparison.values()) {
 			if (comparison.getName().equalsIgnoreCase(name)) {
 				return comparison;

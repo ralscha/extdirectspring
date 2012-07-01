@@ -67,7 +67,7 @@ public class Profile {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "form")
 	public Map<String, String> getLocationInfo(@RequestParam(value = "uid") final long userId) {
-		Map<String, String> data = new HashMap<String, String>();
+		Map<String, String> data = new HashMap<>();
 		data.put("street", "1234 Red Dog Rd.");
 		data.put("city", "Seminole");
 		data.put("state", "FL");
@@ -77,8 +77,8 @@ public class Profile {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "form")
 	@RequestMapping(value = "/updateBasicInfo", method = RequestMethod.POST)
-	public void updateBasicInfo(final Locale locale, final HttpServletRequest request,
-			final HttpServletResponse response, @Valid final BasicInfo basicInfo, final BindingResult result) {
+	public void updateBasicInfo(Locale locale, HttpServletRequest request, final HttpServletResponse response,
+			@Valid final BasicInfo basicInfo, BindingResult result) {
 
 		if (!result.hasErrors()) {
 			if (basicInfo.getEmail().equals("aaron@extjs.com")) {

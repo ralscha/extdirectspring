@@ -58,7 +58,7 @@ public class RouterControllerStoreReadTest {
 	@Autowired
 	private RouterController controller;
 
-	public static void assert100Rows(final List<Row> rows, final String appendix) {
+	public static void assert100Rows(List<Row> rows, String appendix) {
 		assertThat(rows.size()).isEqualTo(100);
 
 		for (int i = 0; i < rows.size(); i += 2) {
@@ -381,7 +381,7 @@ public class RouterControllerStoreReadTest {
 		}
 	}
 
-	private ExtDirectStoreResponse<Row> executeWithExtDirectStoreReadRequest(final ExtDirectStoreReadRequest storeRead)
+	private ExtDirectStoreResponse<Row> executeWithExtDirectStoreReadRequest(ExtDirectStoreReadRequest storeRead)
 			throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method4", 1,
 				storeRead);

@@ -55,12 +55,12 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public String method2(final long i, final Double d, final String s) {
+	public String method2(long i, Double d, String s) {
 		return String.format("method2() called-%d-%.3f-%s", i, d, s);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named", event = "test")
-	public Boolean method3(final String userName) {
+	public Boolean method3(String userName) {
 		if ("ralph".equals(userName)) {
 			return true;
 		} else if ("joe".equals(userName)) {
@@ -70,12 +70,12 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named", entryClass = String.class)
-	public int method4(final int a, final int b) {
+	public int method4(int a, int b) {
 		return a + b;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public FormInfo method5(final double d) {
+	public FormInfo method5(double d) {
 		FormInfo info = new FormInfo();
 		info.setBack(d);
 		info.setAdmin(false);
@@ -87,8 +87,8 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public long method6(final HttpServletResponse response, final HttpServletRequest request,
-			final HttpSession session, final Locale locale, final Principal principal) {
+	public long method6(HttpServletResponse response, HttpServletRequest request, final HttpSession session,
+			Locale locale, Principal principal) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
@@ -98,8 +98,8 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public String method7(final boolean flag, final char aCharacter, final Workflow workflow, final int aInt,
-			final long aLong, final double aDouble, final float aFloat, final short aShort, final byte aByte) {
+	public String method7(boolean flag, char aCharacter, Workflow workflow, int aInt, final long aLong, double aDouble,
+			float aFloat, short aShort, byte aByte) {
 		assertThat(flag).isTrue();
 		assertThat(aCharacter).isEqualTo('c');
 		assertThat(workflow).isEqualTo(Workflow.PENDING);
@@ -114,7 +114,7 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public String method9(final Row aRow) {
+	public String method9(Row aRow) {
 		assertThat(aRow).isNotNull();
 		assertThat(aRow.getId()).isEqualTo(104);
 		assertThat(aRow.getName()).isEqualTo("myRow");
@@ -124,10 +124,9 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public String method10(final boolean flag, final HttpServletResponse response, final char aCharacter,
-			final HttpServletRequest request, final short aShort, final byte aByte, final Workflow workflow,
-			final HttpSession session, final int aInt, final long aLong, final Locale locale, final double aDouble,
-			final float aFloat, final Principal principal) {
+	public String method10(boolean flag, HttpServletResponse response, char aCharacter,
+			final HttpServletRequest request, short aShort, byte aByte, Workflow workflow, final HttpSession session,
+			int aInt, long aLong, Locale locale, double aDouble, final float aFloat, Principal principal) {
 
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
@@ -149,7 +148,7 @@ public class RemoteProviderSimpleNamed {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public Map<String, Object> method11(@DateTimeFormat(iso = ISO.DATE_TIME) final Date endDate,
-			final String normalParameter, final HttpServletRequest request,
+			final String normalParameter, HttpServletRequest request,
 			@DateTimeFormat(iso = ISO.DATE) final LocalDate aDate,
 			@NumberFormat(style = NumberFormat.Style.PERCENT) final BigDecimal percent) {
 
@@ -164,13 +163,13 @@ public class RemoteProviderSimpleNamed {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public ResultObject methodRP1(@RequestParam(value = "lastName") final String name,
-			@RequestParam(value = "theAge") final Integer age, final Boolean active, final HttpServletRequest request) {
+			@RequestParam(value = "theAge") final Integer age, Boolean active, HttpServletRequest request) {
 		assertThat(request).isNotNull();
 		return new ResultObject(name, age, active);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public ResultObject methodRP2(final HttpSession session,
+	public ResultObject methodRP2(HttpSession session,
 			@RequestParam(value = "lastName", required = false, defaultValue = "myName") final String name,
 			@RequestParam(value = "theAge", defaultValue = "20") final Integer age,
 			@RequestParam(defaultValue = "true") final Boolean active) {
@@ -179,7 +178,7 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public ResultObject methodRP3(final HttpSession session,
+	public ResultObject methodRP3(HttpSession session,
 			@RequestParam(value = "lastName", required = false) final String name,
 			@RequestParam(value = "theAge", required = false) final Integer age,
 			@RequestParam(required = false) final Boolean active) {
@@ -198,7 +197,7 @@ public class RemoteProviderSimpleNamed {
 			// default constructor
 		}
 
-		public ResultObject(final String name, final Integer age, final Boolean active) {
+		public ResultObject(String name, Integer age, Boolean active) {
 			this.name = name;
 			this.age = age;
 			this.active = active;
@@ -227,7 +226,7 @@ public class RemoteProviderSimpleNamed {
 		}
 
 		@Override
-		public boolean equals(final Object obj) {
+		public boolean equals(Object obj) {
 			if (this == obj) {
 				return true;
 			}

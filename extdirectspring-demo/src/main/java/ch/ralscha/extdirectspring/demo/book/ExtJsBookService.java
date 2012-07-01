@@ -35,7 +35,7 @@ public class ExtJsBookService {
 	private static final ImmutableList<Book> BOOKS;
 
 	static {
-		ImmutableList.Builder<Book> builder = new ImmutableList.Builder<Book>();
+		ImmutableList.Builder<Book> builder = new ImmutableList.Builder<>();
 
 		Book book = new Book();
 		book.setId(1);

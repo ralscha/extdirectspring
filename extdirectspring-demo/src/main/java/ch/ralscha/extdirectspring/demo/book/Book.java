@@ -43,7 +43,7 @@ public class Book {
 		return id;
 	}
 
-	public void setId(final int id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -51,7 +51,7 @@ public class Book {
 		return title;
 	}
 
-	public void setTitle(final String title) {
+	public void setTitle(String title) {
 		this.title = title;
 	}
 
@@ -59,7 +59,7 @@ public class Book {
 		return publisher;
 	}
 
-	public void setPublisher(final String publisher) {
+	public void setPublisher(String publisher) {
 		this.publisher = publisher;
 	}
 
@@ -67,7 +67,7 @@ public class Book {
 		return ISBN10;
 	}
 
-	public void setISBN10(final String iSBN10) {
+	public void setISBN10(String iSBN10) {
 		ISBN10 = iSBN10;
 	}
 
@@ -75,7 +75,7 @@ public class Book {
 		return ISBN13;
 	}
 
-	public void setISBN13(final String iSBN13) {
+	public void setISBN13(String iSBN13) {
 		ISBN13 = iSBN13;
 	}
 
@@ -83,7 +83,7 @@ public class Book {
 		return link;
 	}
 
-	public void setLink(final String link) {
+	public void setLink(String link) {
 		this.link = link;
 	}
 
@@ -91,7 +91,7 @@ public class Book {
 		return description;
 	}
 
-	public void setDescription(final String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 

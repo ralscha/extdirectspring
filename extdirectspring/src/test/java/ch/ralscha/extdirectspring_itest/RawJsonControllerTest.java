@@ -46,9 +46,8 @@ public class RawJsonControllerTest extends JettyTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void testAndCheck(final String method, final Integer total, final boolean success)
-			throws UnsupportedEncodingException, IOException, ClientProtocolException, JsonParseException,
-			JsonMappingException {
+	private void testAndCheck(String method, Integer total, boolean success) throws UnsupportedEncodingException,
+			IOException, ClientProtocolException, JsonParseException, JsonMappingException {
 		HttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 

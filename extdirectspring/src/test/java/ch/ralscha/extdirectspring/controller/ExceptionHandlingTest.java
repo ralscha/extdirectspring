@@ -151,7 +151,7 @@ public class ExceptionHandlingTest {
 		assertThat(resp.getWhere()).startsWith("java.lang.NumberFormatException");
 	}
 
-	private ExtDirectResponse runTest(final Configuration configuration) throws Exception {
+	private ExtDirectResponse runTest(Configuration configuration) throws Exception {
 		ReflectionTestUtils.setField(controller, "configuration", configuration);
 
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4b", 2,
@@ -174,7 +174,7 @@ public class ExceptionHandlingTest {
 		return resp;
 	}
 
-	private ExtDirectResponse runTest11(final Configuration configuration) throws Exception {
+	private ExtDirectResponse runTest11(Configuration configuration) throws Exception {
 		ReflectionTestUtils.setField(controller, "configuration", configuration);
 
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method11", 3, null);

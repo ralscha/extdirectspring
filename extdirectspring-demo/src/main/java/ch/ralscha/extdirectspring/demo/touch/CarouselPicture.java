@@ -33,7 +33,7 @@ public class CarouselPicture {
 		return id;
 	}
 
-	public void setId(final String id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -41,7 +41,7 @@ public class CarouselPicture {
 		return title;
 	}
 
-	public void setTitle(final String title) {
+	public void setTitle(String title) {
 		this.title = title;
 	}
 
@@ -49,7 +49,7 @@ public class CarouselPicture {
 		return link;
 	}
 
-	public void setLink(final String link) {
+	public void setLink(String link) {
 		this.link = link;
 	}
 
@@ -57,7 +57,7 @@ public class CarouselPicture {
 		return author;
 	}
 
-	public void setAuthor(final String author) {
+	public void setAuthor(String author) {
 		this.author = author;
 	}
 
@@ -65,7 +65,7 @@ public class CarouselPicture {
 		return content;
 	}
 
-	public void setContent(final String content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 
@@ -73,7 +73,7 @@ public class CarouselPicture {
 		return image;
 	}
 
-	public void setImage(final String image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 

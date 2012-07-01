@@ -35,13 +35,13 @@ public class UserService {
 	private SimpleUserDb userDb;
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "simpleapp")
-	public ExtDirectStoreResponse<User> load(final ExtDirectStoreReadRequest request) {
+	public ExtDirectStoreResponse<User> load(ExtDirectStoreReadRequest request) {
 		List<User> users = userDb.getAll();
-		return new ExtDirectStorePagingResponse<User>(request, users);
+		return new ExtDirectStorePagingResponse<>(request, users);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "simpleapp")
-	public List<User> create(final List<User> newUsers) {
+	public List<User> create(List<User> newUsers) {
 		List<User> insertedUsers = Lists.newArrayList();
 
 		for (User newUser : newUsers) {
@@ -53,7 +53,7 @@ public class UserService {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "simpleapp")
-	public List<User> update(final List<User> modifiedUsers) {
+	public List<User> update(List<User> modifiedUsers) {
 		List<User> updatedRecords = Lists.newArrayList();
 		for (User modifiedUser : modifiedUsers) {
 			User u = userDb.findUser(modifiedUser.getId());
@@ -66,7 +66,7 @@ public class UserService {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "simpleapp")
-	public void destroy(final List<User> destroyUsers) {
+	public void destroy(List<User> destroyUsers) {
 		for (User user : destroyUsers) {
 			userDb.deleteUser(user);
 		}

@@ -38,15 +38,15 @@ public class ExtDirectRawJsonStoreResponse extends ExtDirectStoreResponse<String
 		// default constructor
 	}
 
-	public ExtDirectRawJsonStoreResponse(final Collection<String> records) {
+	public ExtDirectRawJsonStoreResponse(Collection<String> records) {
 		super(null, records, true);
 	}
 
-	public ExtDirectRawJsonStoreResponse(final Integer total, final Collection<String> records) {
+	public ExtDirectRawJsonStoreResponse(Integer total, Collection<String> records) {
 		super(total, records, true);
 	}
 
-	public ExtDirectRawJsonStoreResponse(final Integer total, final Collection<String> records, final Boolean success) {
+	public ExtDirectRawJsonStoreResponse(Integer total, Collection<String> records, Boolean success) {
 		super(total, records, success);
 	}
 
@@ -65,8 +65,8 @@ public class ExtDirectRawJsonStoreResponse extends ExtDirectStoreResponse<String
 	private final static class CollectionStringSerializer extends JsonSerializer<Collection<String>> {
 
 		@Override
-		public void serialize(final Collection<String> values, final JsonGenerator jgen,
-				final SerializerProvider provider) throws IOException, JsonProcessingException {
+		public void serialize(Collection<String> values, JsonGenerator jgen, final SerializerProvider provider)
+				throws IOException, JsonProcessingException {
 
 			StringBuilder sb = new StringBuilder();
 			sb.append("[");

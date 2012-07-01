@@ -20,7 +20,7 @@ public class Restaurant {
 
 	private final String cuisine;
 
-	public Restaurant(final String name, final String cuisine) {
+	public Restaurant(String name, String cuisine) {
 		this.name = name;
 		this.cuisine = cuisine;
 	}

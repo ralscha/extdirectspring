@@ -192,7 +192,7 @@ public class ApiControllerTest {
 		ReflectionTestUtils.setField(routerController, "configuration", new Configuration());
 	}
 
-	private void testGroup1(final Configuration config) throws IOException {
+	private void testGroup1(Configuration config) throws IOException {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", false, null, request,
@@ -352,19 +352,19 @@ public class ApiControllerTest {
 
 	}
 
-	private RemotingApi noApis(final String namespace) {
+	private RemotingApi noApis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		return remotingApi;
 	}
 
-	static RemotingApi group1Apis(final String namespace) {
+	static RemotingApi group1Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0, false));
 		remotingApi.addAction("remoteProviderTreeLoad", new Action("method1", 1, false));
 		return remotingApi;
 	}
 
-	private static RemotingApi group2Apis(final String namespace, final String url) {
+	private static RemotingApi group2Apis(String namespace, String url) {
 		RemotingApi remotingApi = new RemotingApi(url, namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
@@ -381,7 +381,7 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	private RemotingApi group1and2Apis(final String namespace) {
+	private RemotingApi group1and2Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0, false));
 		remotingApi.addAction("remoteProviderTreeLoad", new Action("method1", 1, false));
@@ -401,11 +401,11 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	static RemotingApi group2Apis(final String namespace) {
+	static RemotingApi group2Apis(String namespace) {
 		return group2Apis(namespace, "/action/router");
 	}
 
-	private RemotingApi group3Apis(final String namespace) {
+	private RemotingApi group3Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method9", 0, false));
@@ -423,13 +423,13 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	private RemotingApi group4Apis(final String namespace) {
+	private RemotingApi group4Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage3", "message3"));
 		return remotingApi;
 	}
 
-	private RemotingApi interfaceApis(final String namespace) {
+	private RemotingApi interfaceApis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		remotingApi.addAction("remoteProviderImplementation", new Action("storeRead", 1, false));
 		remotingApi.addAction("remoteProviderImplementation", new Action("method2", 0, false));
@@ -437,7 +437,7 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	private RemotingApi allApis(final String namespace) {
+	private RemotingApi allApis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method2", 0, false));
@@ -596,7 +596,7 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	private void compareJson(final MockHttpServletResponse response, final RemotingApi remotingApi, final String apiNs,
+	private void compareJson(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs,
 			final String remotingApiVar) throws JsonParseException, JsonMappingException, IOException {
 		String content = response.getContentAsString();
 		assertThat(response.getContentType()).isEqualTo("application/json;charset=UTF-8");
@@ -635,15 +635,15 @@ public class ApiControllerTest {
 
 	}
 
-	static void compare(final MockHttpServletResponse response, final RemotingApi remotingApi, final String apiNs,
-			final String remotingApiVar, final String pollingUrlsVar) throws JsonParseException, JsonMappingException,
+	static void compare(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs,
+			final String remotingApiVar, String pollingUrlsVar) throws JsonParseException, JsonMappingException,
 			IOException {
 		compare(response, remotingApi, apiNs, remotingApiVar, pollingUrlsVar, null);
 	}
 
-	static void compare(final MockHttpServletResponse response, final RemotingApi remotingApi, final String apiNs,
-			final String remotingApiVar, final String pollingUrlsVar, final Configuration config)
-			throws JsonParseException, JsonMappingException, IOException {
+	static void compare(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs,
+			final String remotingApiVar, String pollingUrlsVar, Configuration config) throws JsonParseException,
+			JsonMappingException, IOException {
 		String content = response.getContentAsString();
 		content = content.replace(";", ";\n");
 		content = content.replace("{", "{\n");
@@ -776,7 +776,7 @@ public class ApiControllerTest {
 		}
 	}
 
-	private static void compare(final List<Action> expectedActions, final List<Map<String, Object>> actions) {
+	private static void compare(List<Action> expectedActions, List<Map<String, Object>> actions) {
 		assertThat(actions).hasSize(expectedActions.size());
 		for (Action expectedAction : expectedActions) {
 			Map<String, Object> action = null;
@@ -808,7 +808,7 @@ public class ApiControllerTest {
 		}
 	}
 
-	private static int assertContains(final String extNsLine, final String[] lines) {
+	private static int assertContains(String extNsLine, String[] lines) {
 		if (lines == null) {
 			fail("no lines");
 		}

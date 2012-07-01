@@ -66,35 +66,32 @@ public class CompanyDataBean {
 		Random rand = new Random();
 
 		companies = Maps.newHashMap();
-		InputStream is = randomdata.getInputStream();
+		try (InputStream is = randomdata.getInputStream();
+				BufferedReader br = new BufferedReader(new InputStreamReader(is));
+				CSVReader reader = new CSVReader(br, '|')) {
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			String[] nextLine;
+			while ((nextLine = reader.readNext()) != null) {
+				Company company = new Company();
+				company.setId(Integer.parseInt(nextLine[0]));
+				company.setCompany(nextLine[2]);
 
-		CSVReader reader = new CSVReader(br, '|');
-		String[] nextLine;
-		while ((nextLine = reader.readNext()) != null) {
-			Company company = new Company();
-			company.setId(Integer.parseInt(nextLine[0]));
-			company.setCompany(nextLine[2]);
+				company.setDate(new GregorianCalendar(rand.nextInt(50) + 1950, rand.nextInt(12), rand.nextInt(28))
+						.getTime());
+				company.setPrice(new BigDecimal(rand.nextFloat() * 100).setScale(2, RoundingMode.HALF_EVEN));
+				company.setSize(SizeEnum.values()[rand.nextInt(4)]);
+				company.setVisible(rand.nextBoolean());
 
-			company.setDate(new GregorianCalendar(rand.nextInt(50) + 1950, rand.nextInt(12), rand.nextInt(28))
-					.getTime());
-			company.setPrice(new BigDecimal(rand.nextFloat() * 100).setScale(2, RoundingMode.HALF_EVEN));
-			company.setSize(SizeEnum.values()[rand.nextInt(4)]);
-			company.setVisible(rand.nextBoolean());
-
-			companies.put(company.getId(), company);
+				companies.put(company.getId(), company);
+			}
 		}
-
-		br.close();
-		is.close();
 	}
 
 	public List<Company> findAllCompanies() {
 		return ImmutableList.copyOf(companies.values());
 	}
 
-	public List<Company> findCompanies(final Collection<Filter> filters) {
+	public List<Company> findCompanies(Collection<Filter> filters) {
 
 		List<Predicate<Company>> predicates = Lists.newArrayList();
 		for (Filter filter : filters) {
@@ -133,12 +130,12 @@ public class CompanyDataBean {
 
 		private final String value;
 
-		CompanyPredicate(final String value) {
+		CompanyPredicate(String value) {
 			this.value = value;
 		}
 
 		@Override
-		public boolean apply(final Company company) {
+		public boolean apply(Company company) {
 			return company.getCompany().toLowerCase().startsWith(value.trim().toLowerCase());
 		}
 
@@ -147,12 +144,12 @@ public class CompanyDataBean {
 	private static class VisiblePredicate implements Predicate<Company> {
 		private final boolean flag;
 
-		VisiblePredicate(final boolean flag) {
+		VisiblePredicate(boolean flag) {
 			this.flag = flag;
 		}
 
 		@Override
-		public boolean apply(final Company company) {
+		public boolean apply(Company company) {
 			return company.isVisible() == flag;
 		}
 
@@ -161,12 +158,12 @@ public class CompanyDataBean {
 	private static class SizePredicate implements Predicate<Company> {
 		private final List<String> values;
 
-		SizePredicate(final List<String> values) {
+		SizePredicate(List<String> values) {
 			this.values = values;
 		}
 
 		@Override
-		public boolean apply(final Company company) {
+		public boolean apply(Company company) {
 			return values.contains(company.getSize().getLabel());
 		}
 
@@ -177,13 +174,13 @@ public class CompanyDataBean {
 
 		private final Number value;
 
-		IdPredicate(final Comparison comparison, final Number value) {
+		IdPredicate(Comparison comparison, Number value) {
 			this.comparison = comparison;
 			this.value = value;
 		}
 
 		@Override
-		public boolean apply(final Company company) {
+		public boolean apply(Company company) {
 			switch (comparison) {
 			case EQUAL:
 				return company.getId() == value.intValue();
@@ -201,13 +198,13 @@ public class CompanyDataBean {
 
 		private final Number value;
 
-		PricePredicate(final Comparison comparison, final Number value) {
+		PricePredicate(Comparison comparison, Number value) {
 			this.comparison = comparison;
 			this.value = value;
 		}
 
 		@Override
-		public boolean apply(final Company company) {
+		public boolean apply(Company company) {
 			switch (comparison) {
 			case EQUAL:
 				return company.getPrice().compareTo(
@@ -228,13 +225,13 @@ public class CompanyDataBean {
 
 		private final Date value;
 
-		DatePredicate(final Comparison comparison, final Date value) {
+		DatePredicate(Comparison comparison, Date value) {
 			this.comparison = comparison;
 			this.value = value;
 		}
 
 		@Override
-		public boolean apply(final Company company) {
+		public boolean apply(Company company) {
 			switch (comparison) {
 			case EQUAL:
 				return company.getDate().compareTo(value) == 0;

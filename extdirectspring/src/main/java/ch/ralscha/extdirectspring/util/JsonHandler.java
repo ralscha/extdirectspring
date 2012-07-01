@@ -39,7 +39,7 @@ public class JsonHandler {
 	 * 
 	 * @param mapper a new object mapper. must not be <code>null</code>
 	 */
-	public void setMapper(final ObjectMapper mapper) {
+	public void setMapper(ObjectMapper mapper) {
 		if (mapper == null) {
 			throw new IllegalArgumentException("ObjectMapper must not be null");
 		}
@@ -61,7 +61,7 @@ public class JsonHandler {
 	 * @param obj the source object
 	 * @return obj JSON string, <code>null</code> if an exception occured
 	 */
-	public String writeValueAsString(final Object obj) {
+	public String writeValueAsString(Object obj) {
 		return writeValueAsString(obj, false);
 	}
 
@@ -74,7 +74,7 @@ public class JsonHandler {
 	 * false JSON is written on one line
 	 * @return obj JSON string, <code>null</code> if an exception occured
 	 */
-	public String writeValueAsString(final Object obj, final boolean indent) {
+	public String writeValueAsString(Object obj, boolean indent) {
 		try {
 			if (indent) {
 				return mapper.writer().withDefaultPrettyPrinter().writeValueAsString(obj);
@@ -97,7 +97,7 @@ public class JsonHandler {
 	 * @return the created object, null if there was an exception
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T readValue(final String json, final TypeReference<T> typeReference) {
+	public <T> T readValue(String json, TypeReference<T> typeReference) {
 		try {
 			return (T) mapper.readValue(json, typeReference);
 		} catch (Exception e) {
@@ -115,7 +115,7 @@ public class JsonHandler {
 	 * @param clazz class of object to create
 	 * @return the converted object, null if there is an exception
 	 */
-	public <T> T readValue(final String json, final Class<T> clazz) {
+	public <T> T readValue(String json, Class<T> clazz) {
 		try {
 			return mapper.readValue(json, clazz);
 		} catch (Exception e) {
@@ -132,7 +132,7 @@ public class JsonHandler {
 	 * @param clazz class of object to create
 	 * @return the converted object, null if there is an exception
 	 */
-	public Object readValue(final InputStream is, final Class<Object> clazz) {
+	public Object readValue(InputStream is, Class<Object> clazz) {
 		try {
 			return mapper.readValue(is, clazz);
 		} catch (Exception e) {
@@ -148,7 +148,7 @@ public class JsonHandler {
 	 * @param clazz the type of the target
 	 * @return the converted object
 	 */
-	public <T> T convertValue(final Object object, final Class<T> clazz) {
+	public <T> T convertValue(Object object, Class<T> clazz) {
 		return mapper.convertValue(object, clazz);
 	}
 

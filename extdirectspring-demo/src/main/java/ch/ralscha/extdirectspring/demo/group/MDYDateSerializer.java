@@ -27,8 +27,8 @@ import org.codehaus.jackson.map.SerializerProvider;
 
 public class MDYDateSerializer extends JsonSerializer<Date> {
 	@Override
-	public void serialize(final Date value, final JsonGenerator jgen, final SerializerProvider provider)
-			throws IOException, JsonProcessingException {
+	public void serialize(Date value, JsonGenerator jgen, SerializerProvider provider) throws IOException,
+			JsonProcessingException {
 
 		DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 		jgen.writeString(formatter.format(value.getTime()));

@@ -33,7 +33,7 @@ public class GroupAction {
 	private static List<Task> tasks;
 
 	static {
-		ImmutableList.Builder<Task> builder = new ImmutableList.Builder<Task>();
+		ImmutableList.Builder<Task> builder = new ImmutableList.Builder<>();
 		builder.add(new Task(100, "Ext Forms: Field Anchoring", 112, "Integrate 2.0 Forms with 2.0 Layouts",
 				new BigDecimal(6), new BigDecimal(150), 2010, 6, 24));
 		builder.add(new Task(100, "Ext Forms: Field Anchoring", 113, "Implement AnchorLayout", new BigDecimal(4),
@@ -72,17 +72,17 @@ public class GroupAction {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "total")
-	public List<Task> load(final ExtDirectStoreReadRequest request) {
+	public List<Task> load(ExtDirectStoreReadRequest request) {
 		return tasks;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "hybrid")
-	public List<Task> loadHybrid(final ExtDirectStoreReadRequest request) {
+	public List<Task> loadHybrid(ExtDirectStoreReadRequest request) {
 		return tasks;
 	}
 
 	@ExtDirectMethod(group = "hybrid")
-	public Summary updateSummary(final String groupValue) {
+	public Summary updateSummary(String groupValue) {
 		Summary summary = new Summary();
 		summary.setDescription("22");
 		summary.setEstimate(new BigDecimal(888));

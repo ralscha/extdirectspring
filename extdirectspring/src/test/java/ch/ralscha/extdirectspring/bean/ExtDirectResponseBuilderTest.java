@@ -175,7 +175,7 @@ public class ExtDirectResponseBuilderTest {
 		return request;
 	}
 
-	private void checkResponse(final MockHttpServletResponse servletResponse, final boolean flag) {
+	private void checkResponse(MockHttpServletResponse servletResponse, boolean flag) {
 		ExtDirectResponse response = ControllerUtil.readDirectResponse(servletResponse.getContentAsByteArray());
 		assertThat(response.getAction()).isEqualTo("action");
 		assertThat(response.getMethod()).isEqualTo("method");

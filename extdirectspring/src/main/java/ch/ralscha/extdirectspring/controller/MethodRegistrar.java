@@ -38,7 +38,7 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 
 	private static final Log log = LogFactory.getLog(RouterController.class);
 
-	public void onApplicationEvent(final ContextRefreshedEvent event) {
+	public void onApplicationEvent(ContextRefreshedEvent event) {
 
 		ApplicationContext context = (ApplicationContext) event.getSource();
 
@@ -50,7 +50,7 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 			final Class<?> userType = ClassUtils.getUserClass(handlerType);
 
 			Set<Method> methods = ExtDirectSpringUtil.selectMethods(userType, new MethodFilter() {
-				public boolean matches(final Method method) {
+				public boolean matches(Method method) {
 					return AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) != null;
 				}
 			});

@@ -41,14 +41,14 @@ public class ExtDirectResponse extends BaseResponse {
 		// needs a default constructor for testing
 	}
 
-	public ExtDirectResponse(final ExtDirectRequest directRequest) {
+	public ExtDirectResponse(ExtDirectRequest directRequest) {
 		action = directRequest.getAction();
 		method = directRequest.getMethod();
 		tid = directRequest.getTid();
 		setType(directRequest.getType());
 	}
 
-	public ExtDirectResponse(final HttpServletRequest request) {
+	public ExtDirectResponse(HttpServletRequest request) {
 		action = request.getParameter("extAction");
 		method = request.getParameter("extMethod");
 		tid = Integer.parseInt(request.getParameter("extTID"));
@@ -67,7 +67,7 @@ public class ExtDirectResponse extends BaseResponse {
 		return result;
 	}
 
-	public void setResult(final Object result) {
+	public void setResult(Object result) {
 		this.result = result;
 	}
 

@@ -39,7 +39,7 @@ public class Sale {
 		// no action here
 	}
 
-	public Sale(final String[] line) {
+	public Sale(String[] line) {
 		this.id = Integer.parseInt(line[0]);
 		this.product = line[1];
 		this.city = line[2];
@@ -55,7 +55,7 @@ public class Sale {
 		return id;
 	}
 
-	public void setId(final int id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -63,7 +63,7 @@ public class Sale {
 		return product;
 	}
 
-	public void setProduct(final String product) {
+	public void setProduct(String product) {
 		this.product = product;
 	}
 
@@ -71,7 +71,7 @@ public class Sale {
 		return city;
 	}
 
-	public void setCity(final String city) {
+	public void setCity(String city) {
 		this.city = city;
 	}
 
@@ -79,7 +79,7 @@ public class Sale {
 		return quantity;
 	}
 
-	public void setQuantity(final int quantity) {
+	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
 
@@ -87,7 +87,7 @@ public class Sale {
 		return value;
 	}
 
-	public void setValue(final int value) {
+	public void setValue(int value) {
 		this.value = value;
 	}
 
@@ -95,7 +95,7 @@ public class Sale {
 		return month;
 	}
 
-	public void setMonth(final int month) {
+	public void setMonth(int month) {
 		this.month = month;
 	}
 
@@ -103,7 +103,7 @@ public class Sale {
 		return quarter;
 	}
 
-	public void setQuarter(final int quarter) {
+	public void setQuarter(int quarter) {
 		this.quarter = quarter;
 	}
 
@@ -111,7 +111,7 @@ public class Sale {
 		return year;
 	}
 
-	public void setYear(final int year) {
+	public void setYear(int year) {
 		this.year = year;
 	}
 
@@ -119,7 +119,7 @@ public class Sale {
 		return person;
 	}
 
-	public void setPerson(final String person) {
+	public void setPerson(String person) {
 		this.person = person;
 	}
 

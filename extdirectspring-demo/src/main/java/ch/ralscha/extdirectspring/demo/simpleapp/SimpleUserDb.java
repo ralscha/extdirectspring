@@ -47,35 +47,32 @@ public class SimpleUserDb {
 	@PostConstruct
 	public void readData() throws IOException {
 		users = Maps.newHashMap();
-		InputStream is = userdata.getInputStream();
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(is, Charsets.UTF_8.name()));
-
-		CSVReader reader = new CSVReader(br, '|');
-		String[] nextLine;
-		while ((nextLine = reader.readNext()) != null) {
-			User u = new User(nextLine);
-			users.put(u.getId(), u);
-			maxId = Math.max(maxId, Integer.valueOf(u.getId()));
+		try (InputStream is = userdata.getInputStream();
+				BufferedReader br = new BufferedReader(new InputStreamReader(is, Charsets.UTF_8.name()));
+				CSVReader reader = new CSVReader(br, '|')) {
+			String[] nextLine;
+			while ((nextLine = reader.readNext()) != null) {
+				User u = new User(nextLine);
+				users.put(u.getId(), u);
+				maxId = Math.max(maxId, Integer.valueOf(u.getId()));
+			}
 		}
 
-		br.close();
-		is.close();
 	}
 
 	public List<User> getAll() {
 		return ImmutableList.copyOf(users.values());
 	}
 
-	public User findUser(final String id) {
+	public User findUser(String id) {
 		return users.get(id);
 	}
 
-	public void deleteUser(final User user) {
+	public void deleteUser(User user) {
 		users.remove(user.getId());
 	}
 
-	public User insert(final User p) {
+	public User insert(User p) {
 		maxId = maxId + 1;
 		p.setId(String.valueOf(maxId));
 		users.put(String.valueOf(maxId), p);

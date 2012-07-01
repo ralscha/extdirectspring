@@ -20,7 +20,7 @@ public enum SizeEnum {
 
 	private String label;
 
-	private SizeEnum(final String label) {
+	private SizeEnum(String label) {
 		this.label = label;
 	}
 
@@ -28,7 +28,7 @@ public enum SizeEnum {
 		return label;
 	}
 
-	public static SizeEnum find(final String label) {
+	public static SizeEnum find(String label) {
 		for (SizeEnum sizeEnum : SizeEnum.values()) {
 			if (sizeEnum.getLabel().equals(label)) {
 				return sizeEnum;

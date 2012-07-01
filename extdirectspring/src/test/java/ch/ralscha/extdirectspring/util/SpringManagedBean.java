@@ -29,7 +29,7 @@ public class SpringManagedBean {
 	}
 
 	@ExtDirectMethod
-	public int sum(final int a, final int b) {
+	public int sum(int a, int b) {
 		return a + b;
 	}
 }

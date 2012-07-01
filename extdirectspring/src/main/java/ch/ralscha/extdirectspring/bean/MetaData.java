@@ -39,23 +39,23 @@ public class MetaData {
 		metaData.put("successProperty", "success");
 	}
 
-	public void setPagingParameter(final int start, final int limit) {
+	public void setPagingParameter(int start, int limit) {
 		metaData.put("start", start);
 		metaData.put("limit", limit);
 	}
 
-	public void setIdProperty(final String idProperty) {
+	public void setIdProperty(String idProperty) {
 		metaData.put("idProperty", idProperty);
 	}
 
-	public void setSortInfo(final String field, final SortDirection direction) {
+	public void setSortInfo(String field, SortDirection direction) {
 		Map<String, String> sortInfo = new LinkedHashMap<String, String>();
 		sortInfo.put("field", field);
 		sortInfo.put("direction", direction.getName());
 		metaData.put("sortInfo", sortInfo);
 	}
 
-	public void addFields(final List<Field> fields) {
+	public void addFields(List<Field> fields) {
 		if (fields != null) {
 			for (Field field : fields) {
 				addField(field);
@@ -64,7 +64,7 @@ public class MetaData {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void addField(final Field field) {
+	public void addField(Field field) {
 
 		List<Map<String, Object>> fields = (List<Map<String, Object>>) metaData.get("fields");
 		if (fields == null) {
@@ -75,7 +75,7 @@ public class MetaData {
 		fields.add(field.getFieldData());
 	}
 
-	public void addCustomProperty(final String key, final Object value) {
+	public void addCustomProperty(String key, Object value) {
 		metaData.put(key, value);
 	}
 

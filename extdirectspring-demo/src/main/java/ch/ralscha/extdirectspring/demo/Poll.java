@@ -39,7 +39,7 @@ public class Poll {
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "pollWithParams", group = "example")
 	public String pollingWithParams(@RequestParam(value = "no") final int no,
 			@RequestParam(value = "name") final String name,
-			@RequestParam(value = "dummy", defaultValue = "CH") final String dummy, final HttpServletRequest request) {
+			@RequestParam(value = "dummy", defaultValue = "CH") final String dummy, HttpServletRequest request) {
 		return request.getRequestURI() + ":  POST PARAMETERS: no=" + no + ", name=" + name + ", dummy=" + dummy;
 	}
 }

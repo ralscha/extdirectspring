@@ -37,7 +37,7 @@ public enum SupportedParameters {
 
 	private final Class<?> clazz;
 
-	private SupportedParameters(final Class<?> clazz) {
+	private SupportedParameters(Class<?> clazz) {
 		this.clazz = clazz;
 	}
 
@@ -54,7 +54,7 @@ public enum SupportedParameters {
 	 * @param clazz
 	 * @return true if is supported, else false
 	 */
-	public static boolean isSupported(final Class<?> clazz) {
+	public static boolean isSupported(Class<?> clazz) {
 		if (clazz != null) {
 			for (SupportedParameters supportedParameter : SupportedParameters.values()) {
 				if (supportedParameter.clazz.isAssignableFrom(clazz)) {
@@ -65,8 +65,8 @@ public enum SupportedParameters {
 		return false;
 	}
 
-	public static Object resolveParameter(final Class<?> parameterType, final HttpServletRequest request,
-			final HttpServletResponse response, final Locale locale) {
+	public static Object resolveParameter(Class<?> parameterType, HttpServletRequest request,
+			final HttpServletResponse response, Locale locale) {
 
 		if (SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
 			return request;

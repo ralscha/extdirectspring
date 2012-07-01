@@ -22,7 +22,7 @@ public class BooleanFilter extends Filter {
 
 	private final boolean value;
 
-	public BooleanFilter(final String field, final boolean value) {
+	public BooleanFilter(String field, boolean value) {
 		super(field);
 		this.value = value;
 	}

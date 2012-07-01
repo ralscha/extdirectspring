@@ -29,8 +29,8 @@ public class DMYDateSerializer extends JsonSerializer<Date> {
 	private static final FastDateFormat DATE_FORMAT = FastDateFormat.getInstance("dd.MM.yyyy");
 
 	@Override
-	public void serialize(final Date value, final JsonGenerator jgen, final SerializerProvider provider)
-			throws IOException, JsonProcessingException {
+	public void serialize(Date value, JsonGenerator jgen, SerializerProvider provider) throws IOException,
+			JsonProcessingException {
 
 		jgen.writeString(DATE_FORMAT.format(value));
 	}

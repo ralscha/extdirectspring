@@ -71,7 +71,7 @@ public class Configuration {
 	 * 
 	 * @param defaultExceptionMessage new default exception message
 	 */
-	public void setDefaultExceptionMessage(final String defaultExceptionMessage) {
+	public void setDefaultExceptionMessage(String defaultExceptionMessage) {
 		this.defaultExceptionMessage = defaultExceptionMessage;
 	}
 
@@ -94,7 +94,7 @@ public class Configuration {
 	 * 
 	 * @param sendExceptionMessage new flag
 	 */
-	public void setSendExceptionMessage(final boolean sendExceptionMessage) {
+	public void setSendExceptionMessage(boolean sendExceptionMessage) {
 		this.sendExceptionMessage = sendExceptionMessage;
 	}
 
@@ -113,7 +113,7 @@ public class Configuration {
 	 * 
 	 * @param sendStacktrace new flag
 	 */
-	public void setSendStacktrace(final boolean sendStacktrace) {
+	public void setSendStacktrace(boolean sendStacktrace) {
 		this.sendStacktrace = sendStacktrace;
 	}
 
@@ -143,7 +143,7 @@ public class Configuration {
 	 * 
 	 * @param exceptionToMessage new mapping from exception to message
 	 */
-	public void setExceptionToMessage(final Map<Class<?>, String> exceptionToMessage) {
+	public void setExceptionToMessage(Map<Class<?>, String> exceptionToMessage) {
 		this.exceptionToMessage = exceptionToMessage;
 	}
 
@@ -158,7 +158,7 @@ public class Configuration {
 	 * 
 	 * @param alwaysWrapStoreResponse new flag
 	 */
-	public void setAlwaysWrapStoreResponse(final boolean alwaysWrapStoreResponse) {
+	public void setAlwaysWrapStoreResponse(boolean alwaysWrapStoreResponse) {
 		this.alwaysWrapStoreResponse = alwaysWrapStoreResponse;
 	}
 
@@ -177,7 +177,7 @@ public class Configuration {
 	 * 
 	 * @param synchronizeOnSession new flag
 	 */
-	public void setSynchronizeOnSession(final boolean synchronizeOnSession) {
+	public void setSynchronizeOnSession(boolean synchronizeOnSession) {
 		this.synchronizeOnSession = synchronizeOnSession;
 	}
 
@@ -194,7 +194,7 @@ public class Configuration {
 	 * 
 	 * @param timeout new timeout value
 	 */
-	public void setTimeout(final Integer timeout) {
+	public void setTimeout(Integer timeout) {
 		this.timeout = timeout;
 	}
 
@@ -212,7 +212,7 @@ public class Configuration {
 	 * 
 	 * @param maxRetries new number of max retries
 	 */
-	public void setMaxRetries(final Integer maxRetries) {
+	public void setMaxRetries(Integer maxRetries) {
 		this.maxRetries = maxRetries;
 	}
 
@@ -237,7 +237,7 @@ public class Configuration {
 	 * 
 	 * @param enableBuffer new enableBuffer value
 	 */
-	public void setEnableBuffer(final Object enableBuffer) {
+	public void setEnableBuffer(Object enableBuffer) {
 		this.enableBuffer = enableBuffer;
 	}
 
@@ -252,7 +252,7 @@ public class Configuration {
 	 * @param exception the thrown exception
 	 * @return exception message
 	 */
-	public String getMessage(final Throwable exception) {
+	public String getMessage(Throwable exception) {
 		String message = null;
 		if (getExceptionToMessage() != null) {
 			message = getExceptionToMessage().get(exception.getClass());
@@ -293,7 +293,7 @@ public class Configuration {
 	 * 
 	 * @param streamResponse new flag
 	 */
-	public void setStreamResponse(final boolean streamResponse) {
+	public void setStreamResponse(boolean streamResponse) {
 		this.streamResponse = streamResponse;
 	}
 }

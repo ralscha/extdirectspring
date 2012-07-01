@@ -22,7 +22,7 @@ public class Info {
 		return userName;
 	}
 
-	public void setUserName(final String userName) {
+	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 

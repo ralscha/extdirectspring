@@ -58,7 +58,7 @@ public class RouterControllerSimpleTest {
 		Locale.setDefault(Locale.US);
 	}
 
-	public Object[] a(final Object... r) {
+	public Object[] a(Object... r) {
 		return r;
 	}
 

@@ -65,7 +65,7 @@ public class ExtDirectResponseBuilder {
 	 * @param request the current http servlet request object
 	 * @param response the current http servlet response object
 	 */
-	public ExtDirectResponseBuilder(final HttpServletRequest request, final HttpServletResponse response) {
+	public ExtDirectResponseBuilder(HttpServletRequest request, HttpServletResponse response) {
 		this.request = request;
 		this.response = response;
 
@@ -85,7 +85,7 @@ public class ExtDirectResponseBuilder {
 	 * 
 	 * @return the created builder instance
 	 */
-	public static ExtDirectResponseBuilder create(final HttpServletRequest request, final HttpServletResponse response) {
+	public static ExtDirectResponseBuilder create(HttpServletRequest request, HttpServletResponse response) {
 		return new ExtDirectResponseBuilder(request, response);
 	}
 
@@ -102,7 +102,7 @@ public class ExtDirectResponseBuilder {
 	 * @param exception the exception that was thrown.
 	 * @return this instance
 	 */
-	public ExtDirectResponseBuilder setException(final Exception exception) {
+	public ExtDirectResponseBuilder setException(Exception exception) {
 		unsuccessful();
 
 		WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
@@ -132,7 +132,7 @@ public class ExtDirectResponseBuilder {
 	 * @param bindingResult
 	 * @return this instance
 	 */
-	public ExtDirectResponseBuilder addErrors(final BindingResult bindingResult) {
+	public ExtDirectResponseBuilder addErrors(BindingResult bindingResult) {
 		addErrors(null, null, bindingResult);
 		return this;
 	}
@@ -146,7 +146,7 @@ public class ExtDirectResponseBuilder {
 	 * @param bindingResult
 	 * @return this instance
 	 */
-	public ExtDirectResponseBuilder addErrors(final Locale locale, final MessageSource messageSource,
+	public ExtDirectResponseBuilder addErrors(Locale locale, MessageSource messageSource,
 			final BindingResult bindingResult) {
 		if (bindingResult != null && bindingResult.hasFieldErrors()) {
 			Map<String, List<String>> errorMap = new HashMap<String, List<String>>();
@@ -182,7 +182,7 @@ public class ExtDirectResponseBuilder {
 	 * @param value the value of this property
 	 * @return this instance
 	 */
-	public ExtDirectResponseBuilder addResultProperty(final String key, final Object value) {
+	public ExtDirectResponseBuilder addResultProperty(String key, Object value) {
 		result.put(key, value);
 		return this;
 	}
@@ -210,7 +210,7 @@ public class ExtDirectResponseBuilder {
 	 * @param flag the new success value
 	 * @return this instance
 	 */
-	public ExtDirectResponseBuilder setSuccess(final boolean flag) {
+	public ExtDirectResponseBuilder setSuccess(boolean flag) {
 		result.put("success", flag);
 		return this;
 	}

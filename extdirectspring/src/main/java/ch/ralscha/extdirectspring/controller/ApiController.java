@@ -81,7 +81,7 @@ public class ApiController {
 			@RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS") final String pollingUrlsVar,
 			@RequestParam(value = "group", required = false) final String group,
 			@RequestParam(value = "fullRouterUrl", required = false, defaultValue = "false") final boolean fullRouterUrl,
-			@RequestParam(value = "format", required = false) final String format, final HttpServletRequest request,
+			@RequestParam(value = "format", required = false) final String format, HttpServletRequest request,
 			final HttpServletResponse response) throws IOException {
 
 		final ServletOutputStream outputStream = response.getOutputStream();
@@ -145,9 +145,8 @@ public class ApiController {
 		outputStream.flush();
 	}
 
-	private String buildApiString(final String apiNs, final String actionNs, final String remotingApiVar,
-			final String pollingUrlsVar, final String routerUrl, final String basePollUrl, final String group,
-			final boolean debug) {
+	private String buildApiString(String apiNs, String actionNs, String remotingApiVar, final String pollingUrlsVar,
+			String routerUrl, String basePollUrl, String group, final boolean debug) {
 
 		RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
 
@@ -248,8 +247,8 @@ public class ApiController {
 		return sb.toString();
 	}
 
-	private String buildApiJson(final String apiNs, final String actionNs, final String remotingApiVar,
-			final String routerUrl, final String group, final boolean debug) {
+	private String buildApiJson(String apiNs, String actionNs, String remotingApiVar, final String routerUrl,
+			String group, boolean debug) {
 
 		RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
 
@@ -265,7 +264,7 @@ public class ApiController {
 
 	}
 
-	private void buildRemotingApi(final RemotingApi remotingApi, final String group) {
+	private void buildRemotingApi(RemotingApi remotingApi, String group) {
 
 		for (Map.Entry<MethodInfoCache.Key, MethodInfo> entry : MethodInfoCache.INSTANCE) {
 			final MethodInfo methodInfo = entry.getValue();
@@ -279,7 +278,7 @@ public class ApiController {
 		}
 	}
 
-	private boolean isSameGroup(final String requestedGroupString, final String annotationGroupString) {
+	private boolean isSameGroup(String requestedGroupString, String annotationGroupString) {
 		if (requestedGroupString != null) {
 			if (annotationGroupString != null) {
 				for (String requestedGroup : requestedGroupString.split(",")) {

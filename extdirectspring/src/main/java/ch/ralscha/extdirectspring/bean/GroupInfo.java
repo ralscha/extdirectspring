@@ -29,7 +29,7 @@ public class GroupInfo {
 
 	private final SortDirection direction;
 
-	public GroupInfo(final String property, final SortDirection direction) {
+	public GroupInfo(String property, SortDirection direction) {
 		this.property = property;
 		this.direction = direction;
 	}
@@ -42,7 +42,7 @@ public class GroupInfo {
 		return direction;
 	}
 
-	public static GroupInfo create(final Map<String, Object> jsonData) {
+	public static GroupInfo create(Map<String, Object> jsonData) {
 		String property = (String) jsonData.get("property");
 		String direction = (String) jsonData.get("direction");
 

@@ -39,7 +39,7 @@ public class TreeProvider {
 	public List<Node> getTree(@RequestParam(value = "id", required = false) final String id,
 			@RequestParam(value = "foo", required = false, defaultValue = "defaultValue") final String foo) {
 
-		List<Node> result = new ArrayList<Node>();
+		List<Node> result = new ArrayList<>();
 		if (id == null || id.equals("root")) {
 			for (int i = 1; i <= 5; ++i) {
 				Node node = new Node();

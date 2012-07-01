@@ -38,7 +38,7 @@ public class ExtDirectPollResponse extends BaseResponse {
 		return name;
 	}
 
-	public void setName(final String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -46,7 +46,7 @@ public class ExtDirectPollResponse extends BaseResponse {
 		return data;
 	}
 
-	public void setData(final Object data) {
+	public void setData(Object data) {
 		this.data = data;
 	}
 

@@ -32,7 +32,7 @@ public class ContactService {
 
 	@ResponseBody
 	@RequestMapping(value = "/postContact", method = RequestMethod.POST)
-	public Map<String, Object> postContact(final Locale locale, final HttpServletRequest request, final Contact contact) {
+	public Map<String, Object> postContact(Locale locale, HttpServletRequest request, Contact contact) {
 		System.out.println(contact);
 		Map<String, Object> result = Maps.newHashMap();
 		result.put("success", true);

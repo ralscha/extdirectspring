@@ -22,7 +22,7 @@ public class StringFilter extends Filter {
 
 	private final String value;
 
-	public StringFilter(final String field, final String value) {
+	public StringFilter(String field, String value) {
 		super(field);
 		this.value = value;
 	}

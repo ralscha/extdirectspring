@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TransactionalServiceImpl implements TransactionalServiceInterface {
 
 	@Transactional
-	public String update(final Integer id, final String userName) {
+	public String update(Integer id, String userName) {
 		return id + ":" + userName;
 	}
 }

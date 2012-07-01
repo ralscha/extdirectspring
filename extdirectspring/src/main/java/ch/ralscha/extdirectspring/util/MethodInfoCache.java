@@ -47,7 +47,7 @@ public enum MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, M
 	 * @param clazz the class of the bean
 	 * @param method the method
 	 */
-	public void put(final String beanName, final Class<?> clazz, final Method method) {
+	public void put(String beanName, Class<?> clazz, Method method) {
 		MethodInfo info = new MethodInfo(clazz, beanName, method);
 		cache.put(new Key(beanName, method.getName()), info);
 	}
@@ -60,7 +60,7 @@ public enum MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, M
 	 * @return the found methodInfo object, null if there is no method found in
 	 * the cache
 	 */
-	public MethodInfo get(final String beanName, final String methodName) {
+	public MethodInfo get(String beanName, String methodName) {
 		return cache.get(new Key(beanName, methodName));
 	}
 
@@ -70,7 +70,7 @@ public enum MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, M
 
 		private final String methodName;
 
-		public Key(final String beanName, final String methodName) {
+		public Key(String beanName, String methodName) {
 			this.beanName = beanName;
 			this.methodName = methodName;
 		}
@@ -80,7 +80,7 @@ public enum MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, M
 		}
 
 		@Override
-		public boolean equals(final Object o) {
+		public boolean equals(Object o) {
 			if (!(o instanceof Key)) {
 				return false;
 			}

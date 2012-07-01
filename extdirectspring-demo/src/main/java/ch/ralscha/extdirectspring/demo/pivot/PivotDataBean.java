@@ -43,18 +43,14 @@ public class PivotDataBean {
 	public void readData() throws IOException {
 		ImmutableList.Builder<Sale> builder = ImmutableList.builder();
 
-		InputStream is = pivotdata.getInputStream();
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-		CSVReader reader = new CSVReader(br, '|');
-		String[] nextLine;
-		while ((nextLine = reader.readNext()) != null) {
-			builder.add(new Sale(nextLine));
+		try (InputStream is = pivotdata.getInputStream();
+				BufferedReader br = new BufferedReader(new InputStreamReader(is));
+				CSVReader reader = new CSVReader(br, '|')) {
+			String[] nextLine;
+			while ((nextLine = reader.readNext()) != null) {
+				builder.add(new Sale(nextLine));
+			}
 		}
-
-		br.close();
-		is.close();
 
 		sales = builder.build();
 	}

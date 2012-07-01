@@ -36,13 +36,13 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 public class RemoteProviderStoreModifySingle {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public Row create1(final Row row) {
+	public Row create1(Row row) {
 		return row;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public Row create2(final Row row, final HttpServletResponse response, final HttpServletRequest request,
-			final HttpSession session, final Locale locale) {
+	public Row create2(Row row, HttpServletResponse response, HttpServletRequest request, final HttpSession session,
+			Locale locale) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
@@ -52,19 +52,19 @@ public class RemoteProviderStoreModifySingle {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public Row update1(final Row row) {
+	public Row update1(Row row) {
 		return row;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public Row update2(final Locale locale, @RequestParam(value = "aParam") final int aParam, final Row row) {
+	public Row update2(Locale locale, @RequestParam(value = "aParam") final int aParam, Row row) {
 		assertThat(aParam).isEqualTo(42);
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 		return row;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public Row update3(final Row row, @RequestParam(value = "aParam", defaultValue = "1") final int aParam,
+	public Row update3(Row row, @RequestParam(value = "aParam", defaultValue = "1") final int aParam,
 			final HttpServletRequest servletRequest) {
 		assertThat(aParam).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
@@ -73,7 +73,7 @@ public class RemoteProviderStoreModifySingle {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group2")
 	public Row update4(@RequestParam(value = "aParam", required = false) final Integer aParam,
-			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) final LocalDate yesterday, final Row row) {
+			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) final LocalDate yesterday, Row row) {
 
 		if (aParam == null) {
 			assertThat(aParam).isNull();
@@ -87,7 +87,7 @@ public class RemoteProviderStoreModifySingle {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group3")
-	public Integer destroy(final Integer rowId) {
+	public Integer destroy(Integer rowId) {
 		return rowId;
 	}
 

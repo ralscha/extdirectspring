@@ -38,7 +38,7 @@ public class FormInfo {
 		return name;
 	}
 
-	public void setName(final String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -46,7 +46,7 @@ public class FormInfo {
 		return age;
 	}
 
-	public void setAge(final int age) {
+	public void setAge(int age) {
 		this.age = age;
 	}
 
@@ -54,7 +54,7 @@ public class FormInfo {
 		return admin;
 	}
 
-	public void setAdmin(final boolean admin) {
+	public void setAdmin(boolean admin) {
 		this.admin = admin;
 	}
 
@@ -62,7 +62,7 @@ public class FormInfo {
 		return birthday;
 	}
 
-	public void setBirthday(final Date birthday) {
+	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
 
@@ -70,7 +70,7 @@ public class FormInfo {
 		return salary;
 	}
 
-	public void setSalary(final BigDecimal salary) {
+	public void setSalary(BigDecimal salary) {
 		this.salary = salary;
 	}
 
@@ -78,7 +78,7 @@ public class FormInfo {
 		return back;
 	}
 
-	public void setBack(final double back) {
+	public void setBack(double back) {
 		this.back = back;
 	}
 
@@ -86,7 +86,7 @@ public class FormInfo {
 		return result;
 	}
 
-	public void setResult(final String result) {
+	public void setResult(String result) {
 		this.result = result;
 	}
 

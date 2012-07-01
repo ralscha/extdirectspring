@@ -73,7 +73,7 @@ public class ExtDirectStoreReadRequest {
 		return query;
 	}
 
-	public void setQuery(final String query) {
+	public void setQuery(String query) {
 		this.query = query;
 	}
 
@@ -84,7 +84,7 @@ public class ExtDirectStoreReadRequest {
 		return limit;
 	}
 
-	public void setLimit(final Integer limit) {
+	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
 
@@ -96,7 +96,7 @@ public class ExtDirectStoreReadRequest {
 		return start;
 	}
 
-	public void setStart(final Integer start) {
+	public void setStart(Integer start) {
 		this.start = start;
 	}
 
@@ -111,7 +111,7 @@ public class ExtDirectStoreReadRequest {
 		return dir;
 	}
 
-	public void setDir(final String dir) {
+	public void setDir(String dir) {
 		this.dir = dir;
 	}
 
@@ -144,7 +144,7 @@ public class ExtDirectStoreReadRequest {
 		return sort;
 	}
 
-	public void setSort(final String sort) {
+	public void setSort(String sort) {
 		this.sort = sort;
 	}
 
@@ -157,7 +157,7 @@ public class ExtDirectStoreReadRequest {
 		return groupBy;
 	}
 
-	public void setGroupBy(final String groupBy) {
+	public void setGroupBy(String groupBy) {
 		this.groupBy = groupBy;
 	}
 
@@ -170,7 +170,7 @@ public class ExtDirectStoreReadRequest {
 		return groupDir;
 	}
 
-	public void setGroupDir(final String groupDir) {
+	public void setGroupDir(String groupDir) {
 		this.groupDir = groupDir;
 	}
 
@@ -206,7 +206,7 @@ public class ExtDirectStoreReadRequest {
 		return Collections.unmodifiableList(filters);
 	}
 
-	public void setFilters(final List<Filter> filters) {
+	public void setFilters(List<Filter> filters) {
 		this.filters = filters;
 	}
 
@@ -218,7 +218,7 @@ public class ExtDirectStoreReadRequest {
 		return page;
 	}
 
-	public void setPage(final Integer page) {
+	public void setPage(Integer page) {
 		this.page = page;
 	}
 
@@ -226,7 +226,7 @@ public class ExtDirectStoreReadRequest {
 		return Collections.unmodifiableList(sorters);
 	}
 
-	public void setSorters(final List<SortInfo> sorters) {
+	public void setSorters(List<SortInfo> sorters) {
 		this.sorters = sorters;
 	}
 
@@ -234,7 +234,7 @@ public class ExtDirectStoreReadRequest {
 		return Collections.unmodifiableList(groups);
 	}
 
-	public void setGroups(final List<GroupInfo> groups) {
+	public void setGroups(List<GroupInfo> groups) {
 		this.groups = groups;
 	}
 
@@ -245,7 +245,7 @@ public class ExtDirectStoreReadRequest {
 		return Collections.unmodifiableMap(params);
 	}
 
-	public void setParams(final Map<String, Object> params) {
+	public void setParams(Map<String, Object> params) {
 		this.params = params;
 	}
 

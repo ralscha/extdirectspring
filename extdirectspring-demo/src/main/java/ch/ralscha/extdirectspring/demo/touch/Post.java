@@ -26,7 +26,7 @@ public class Post {
 		return title;
 	}
 
-	public void setTitle(final String title) {
+	public void setTitle(String title) {
 		this.title = title;
 	}
 
@@ -34,7 +34,7 @@ public class Post {
 		return leaf;
 	}
 
-	public void setLeaf(final boolean leaf) {
+	public void setLeaf(boolean leaf) {
 		this.leaf = leaf;
 	}
 
@@ -42,7 +42,7 @@ public class Post {
 		return content;
 	}
 
-	public void setContent(final String content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 

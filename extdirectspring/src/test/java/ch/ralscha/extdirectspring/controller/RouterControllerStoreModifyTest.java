@@ -60,7 +60,7 @@ public class RouterControllerStoreModifyTest {
 		testCreateNoData("remoteProviderStoreModifyInterface");
 	}
 
-	private void testCreateNoData(final String action) throws IOException {
+	private void testCreateNoData(String action) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		storeRequest.put("records", new ArrayList<Row>());
 
@@ -78,7 +78,7 @@ public class RouterControllerStoreModifyTest {
 		testCreateWithData("remoteProviderStoreModifyInterface");
 	}
 
-	private void testCreateWithData(final String action) throws IOException {
+	private void testCreateWithData(String action) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
@@ -110,7 +110,7 @@ public class RouterControllerStoreModifyTest {
 		testCreateWithDataAndSupportedArguments("remoteProviderStoreModifyInterface");
 	}
 
-	private void testCreateWithDataAndSupportedArguments(final String action) throws IOException {
+	private void testCreateWithDataAndSupportedArguments(String action) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", false, "109.55"));
@@ -139,7 +139,7 @@ public class RouterControllerStoreModifyTest {
 		testUpdate("remoteProviderStoreModifyInterface");
 	}
 
-	private void testUpdate(final String action) throws IOException {
+	private void testUpdate(String action) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
@@ -154,7 +154,7 @@ public class RouterControllerStoreModifyTest {
 		testUpdateWithRequestParam("remoteProviderStoreModifyInterface");
 	}
 
-	private void testUpdateWithRequestParam(final String action) throws IOException {
+	private void testUpdateWithRequestParam(String action) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
@@ -170,7 +170,7 @@ public class RouterControllerStoreModifyTest {
 		testUpdateWithRequestParamDefaultValue("remoteProviderStoreModifyInterface");
 	}
 
-	private void testUpdateWithRequestParamDefaultValue(final String action) throws IOException {
+	private void testUpdateWithRequestParamDefaultValue(String action) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
@@ -185,7 +185,7 @@ public class RouterControllerStoreModifyTest {
 		testUpdateWithRequestParamOptional("remoteProviderStoreModifyInterface");
 	}
 
-	private void testUpdateWithRequestParamOptional(final String action) throws IOException {
+	private void testUpdateWithRequestParamOptional(String action) throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
@@ -240,8 +240,7 @@ public class RouterControllerStoreModifyTest {
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update4");
 	}
 
-	private void executeUpdate(final String action, final Map<String, Object> storeRequest, final String method)
-			throws IOException {
+	private void executeUpdate(String action, Map<String, Object> storeRequest, String method) throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson(action, method, 1, storeRequest);
 
 		MockHttpServletRequest request = new MockHttpServletRequest();

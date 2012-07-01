@@ -40,7 +40,7 @@ public class ExtDirectRequest {
 		return action;
 	}
 
-	public void setAction(final String action) {
+	public void setAction(String action) {
 		this.action = action;
 	}
 
@@ -51,7 +51,7 @@ public class ExtDirectRequest {
 		return data;
 	}
 
-	public void setData(final Object data) {
+	public void setData(Object data) {
 		this.data = data;
 	}
 
@@ -62,7 +62,7 @@ public class ExtDirectRequest {
 		return method;
 	}
 
-	public void setMethod(final String method) {
+	public void setMethod(String method) {
 		this.method = method;
 	}
 
@@ -74,7 +74,7 @@ public class ExtDirectRequest {
 		return tid;
 	}
 
-	public void setTid(final int tid) {
+	public void setTid(int tid) {
 		this.tid = tid;
 	}
 
@@ -86,7 +86,7 @@ public class ExtDirectRequest {
 		return type;
 	}
 
-	public void setType(final String type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 

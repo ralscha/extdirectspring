@@ -16,6 +16,7 @@
 package ch.ralscha.extdirectspring.demo.upload;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,14 +37,13 @@ public class UploadController {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "upload")
 	@RequestMapping(value = "/uploadTest", method = RequestMethod.POST)
-	public void uploadTest(final Locale locale, final HttpServletRequest request,
-			@RequestParam("fileUpload") final MultipartFile file, final HttpServletResponse response)
-			throws IOException {
+	public void uploadTest(Locale locale, HttpServletRequest request,
+			@RequestParam("fileUpload") final MultipartFile file, HttpServletResponse response) throws IOException {
 
 		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request, response);
 
 		if (file != null && !file.isEmpty()) {
-			builder.addResultProperty("fileContents", new String(file.getBytes()));
+			builder.addResultProperty("fileContents", new String(file.getBytes(), StandardCharsets.ISO_8859_1));
 		}
 		builder.successful();
 		builder.buildAndWrite();
@@ -51,10 +51,9 @@ public class UploadController {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "upload4")
 	@RequestMapping(value = "/uploadTest4", method = RequestMethod.POST)
-	public void uploadTest4(final Locale locale, final HttpServletRequest request,
+	public void uploadTest4(Locale locale, HttpServletRequest request,
 			@RequestParam("fileUpload1") final MultipartFile file1,
-			@RequestParam("fileUpload2") final MultipartFile file2, final HttpServletResponse response)
-			throws IOException {
+			@RequestParam("fileUpload2") final MultipartFile file2, HttpServletResponse response) throws IOException {
 
 		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request, response);
 
@@ -67,7 +66,9 @@ public class UploadController {
 			System.out.println("File2 Name : " + file2.getName());
 			System.out.println("File2 Bytes: " + file2.getSize());
 
-			builder.addResultProperty("fileContents", new String(file2.getBytes()));
+			String txt = new String(file2.getBytes(), StandardCharsets.ISO_8859_1);
+			System.out.println(txt);
+			builder.addResultProperty("fileContents", txt);
 		}
 
 		builder.successful();

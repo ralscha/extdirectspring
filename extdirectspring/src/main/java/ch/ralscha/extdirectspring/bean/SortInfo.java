@@ -29,7 +29,7 @@ public class SortInfo {
 
 	private final SortDirection direction;
 
-	public SortInfo(final String property, final SortDirection direction) {
+	public SortInfo(String property, SortDirection direction) {
 		this.property = property;
 		this.direction = direction;
 	}
@@ -42,7 +42,7 @@ public class SortInfo {
 		return direction;
 	}
 
-	public static SortInfo create(final Map<String, Object> jsonData) {
+	public static SortInfo create(Map<String, Object> jsonData) {
 		String property = (String) jsonData.get("property");
 		String direction = (String) jsonData.get("direction");
 

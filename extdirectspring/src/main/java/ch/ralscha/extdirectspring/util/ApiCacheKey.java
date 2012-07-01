@@ -34,8 +34,8 @@ public final class ApiCacheKey {
 
 	private final boolean debug;
 
-	public ApiCacheKey(final String apiNs, final String actionNs, final String remotingApiVar,
-			final String pollingUrlsVar, final String group, final boolean debug) {
+	public ApiCacheKey(String apiNs, String actionNs, String remotingApiVar, final String pollingUrlsVar, String group,
+			boolean debug) {
 		this.apiNs = apiNs;
 		this.actionNs = actionNs;
 		this.remotingApiVar = remotingApiVar;
@@ -45,7 +45,7 @@ public final class ApiCacheKey {
 	}
 
 	@Override
-	public boolean equals(final Object o) {
+	public boolean equals(Object o) {
 		if (!(o instanceof ApiCacheKey)) {
 			return false;
 		}

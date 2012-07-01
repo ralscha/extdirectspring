@@ -24,11 +24,9 @@ import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import ch.ralscha.extdirectspring.controller.RouterController;
-
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses = RouterController.class, basePackages = "ch.ralscha.extdirectspring.demo")
+@ComponentScan(basePackages = { "ch.ralscha.extdirectspring" })
 public class SpringConfig {
 
 	/*

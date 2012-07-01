@@ -94,8 +94,8 @@ public class MyModelControlerTest extends JettyTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void callMethod(final String method) throws UnsupportedEncodingException, IOException,
-			ClientProtocolException, JsonParseException, JsonMappingException {
+	private void callMethod(String method) throws UnsupportedEncodingException, IOException, ClientProtocolException,
+			JsonParseException, JsonMappingException {
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
 		formparams.add(new BasicNameValuePair("extAction", "myModelController"));

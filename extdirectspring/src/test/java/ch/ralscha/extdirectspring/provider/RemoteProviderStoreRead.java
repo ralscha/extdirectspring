@@ -69,18 +69,18 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
-	public List<Row> method3(final HttpServletResponse response, final HttpServletRequest request,
-			final HttpSession session, final Locale locale) {
+	public List<Row> method3(HttpServletResponse response, HttpServletRequest request, final HttpSession session,
+			Locale locale) {
 		return createRows(":" + (response != null) + ";" + (request != null) + ";" + (session != null) + ";" + locale);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, entryClass = String.class)
-	public ExtDirectStoreResponse<Row> method4(final ExtDirectStoreReadRequest request) {
+	public ExtDirectStoreResponse<Row> method4(ExtDirectStoreReadRequest request) {
 		return createExtDirectStoreResponse(request, "");
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group3")
-	public ExtDirectStoreResponse<Row> method5(final ExtDirectStoreReadRequest request, final Locale locale,
+	public ExtDirectStoreResponse<Row> method5(ExtDirectStoreReadRequest request, Locale locale,
 			@RequestParam(value = "id") final int id) {
 		assertThat(id).isEqualTo(10);
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
@@ -93,7 +93,7 @@ public class RemoteProviderStoreRead {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
 	public ExtDirectStoreResponse<Row> method6(@RequestParam(value = "id", defaultValue = "1") final int id,
-			final HttpServletRequest servletRequest, final ExtDirectStoreReadRequest request) {
+			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
 		return createExtDirectStoreResponse(request, ":" + id + ";" + (servletRequest != null));
@@ -111,13 +111,13 @@ public class RemoteProviderStoreRead {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
 	public ExtDirectStoreResponse<Row> method8(@DateTimeFormat(iso = ISO.DATE_TIME) final Date endDate,
-			final HttpServletRequest servletRequest, final ExtDirectStoreReadRequest request) {
+			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(endDate).isNotNull();
 		assertThat(servletRequest).isNotNull();
 		return createExtDirectStoreResponse(request, ":" + endDate.toString() + ";" + (servletRequest != null));
 	}
 
-	private ExtDirectStoreResponse<Row> createExtDirectStoreResponse(final ExtDirectStoreReadRequest request,
+	private ExtDirectStoreResponse<Row> createExtDirectStoreResponse(ExtDirectStoreReadRequest request,
 			final String appendix) {
 		List<Row> rows = createRows(appendix);
 
@@ -155,7 +155,7 @@ public class RemoteProviderStoreRead {
 					Collections.sort(rows, new Comparator<Row>() {
 
 						// @Override
-						public int compare(final Row o1, final Row o2) {
+						public int compare(Row o1, Row o2) {
 							return o2.getId() - o1.getId();
 						}
 					});
@@ -169,7 +169,7 @@ public class RemoteProviderStoreRead {
 					Collections.sort(rows, new Comparator<Row>() {
 
 						// @Override
-						public int compare(final Row o1, final Row o2) {
+						public int compare(Row o1, Row o2) {
 							return o2.getId() - o1.getId();
 						}
 					});
@@ -187,7 +187,7 @@ public class RemoteProviderStoreRead {
 					Collections.sort(rows, new Comparator<Row>() {
 
 						// @Override
-						public int compare(final Row o1, final Row o2) {
+						public int compare(Row o1, Row o2) {
 							return o2.getId() - o1.getId();
 						}
 					});
@@ -202,7 +202,7 @@ public class RemoteProviderStoreRead {
 					Collections.sort(rows, new Comparator<Row>() {
 
 						// @Override
-						public int compare(final Row o1, final Row o2) {
+						public int compare(Row o1, Row o2) {
 							return o2.getId() - o1.getId();
 						}
 					});
@@ -221,7 +221,7 @@ public class RemoteProviderStoreRead {
 
 	}
 
-	private List<Row> createRows(final String appendix) {
+	private List<Row> createRows(String appendix) {
 		List<Row> rows = new ArrayList<Row>();
 		for (int i = 0; i < 100; i += 2) {
 			rows.add(new Row(i, "name: " + i + appendix, true, "" + (1000 + i)));
@@ -231,7 +231,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
-	public ExtDirectStoreResponse<Row> methodMetadata(final ExtDirectStoreReadRequest request) {
+	public ExtDirectStoreResponse<Row> methodMetadata(ExtDirectStoreReadRequest request) {
 		ExtDirectStoreResponse<Row> response = createExtDirectStoreResponse(request, "");
 
 		if (request.getStart() == null && request.getSort() == null) {
@@ -283,7 +283,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
-	public List<Row> methodFilter(@RequestParam("type") final int type, final ExtDirectStoreReadRequest request) {
+	public List<Row> methodFilter(@RequestParam("type") final int type, ExtDirectStoreReadRequest request) {
 
 		List<Filter> filters = new ArrayList<Filter>(request.getFilters());
 		switch (type) {
@@ -447,7 +447,7 @@ public class RemoteProviderStoreRead {
 		return Collections.emptyList();
 	}
 
-	private List<Row> createResult(final int i) {
+	private List<Row> createResult(int i) {
 		Row r = new Row(i, null, false, null);
 		List<Row> result = new ArrayList<Row>();
 		result.add(r);

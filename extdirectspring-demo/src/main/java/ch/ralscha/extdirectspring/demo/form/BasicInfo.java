@@ -34,7 +34,7 @@ public class BasicInfo {
 		return foo;
 	}
 
-	public void setFoo(final String foo) {
+	public void setFoo(String foo) {
 		this.foo = foo;
 	}
 
@@ -42,7 +42,7 @@ public class BasicInfo {
 		return name;
 	}
 
-	public void setName(final String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -50,7 +50,7 @@ public class BasicInfo {
 		return company;
 	}
 
-	public void setCompany(final String company) {
+	public void setCompany(String company) {
 		this.company = company;
 	}
 
@@ -58,7 +58,7 @@ public class BasicInfo {
 		return email;
 	}
 
-	public void setEmail(final String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 

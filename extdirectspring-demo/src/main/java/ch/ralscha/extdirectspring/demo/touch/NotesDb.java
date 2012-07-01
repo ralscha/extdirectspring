@@ -31,9 +31,9 @@ public class NotesDb {
 
 	private final AtomicInteger lastId = new AtomicInteger(0);
 
-	private final ConcurrentHashMap<Integer, Note> map = new ConcurrentHashMap<Integer, Note>();
+	private final ConcurrentHashMap<Integer, Note> map = new ConcurrentHashMap<>();
 
-	public void addOrUpdate(final Note note) {
+	public void addOrUpdate(Note note) {
 		if (note.getId() == null || note.getId() < 0) {
 			int id = lastId.incrementAndGet();
 			note.setId(id);
@@ -43,7 +43,7 @@ public class NotesDb {
 		}
 	}
 
-	public void delete(final Note note) {
+	public void delete(Note note) {
 		map.remove(note.getId());
 	}
 

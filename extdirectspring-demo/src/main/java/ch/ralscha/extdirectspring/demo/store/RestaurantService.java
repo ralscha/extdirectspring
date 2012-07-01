@@ -36,7 +36,7 @@ public class RestaurantService {
 
 	static {
 
-		ImmutableList.Builder<Restaurant> builder = new ImmutableList.Builder<Restaurant>();
+		ImmutableList.Builder<Restaurant> builder = new ImmutableList.Builder<>();
 
 		builder.add(new Restaurant("Cheesecake Factory", "American"));
 		builder.add(new Restaurant("University Cafe", "American"));
@@ -111,7 +111,7 @@ public class RestaurantService {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "grouping")
-	public List<Restaurant> getRestaurants(final ExtDirectStoreReadRequest request) {
+	public List<Restaurant> getRestaurants(ExtDirectStoreReadRequest request) {
 
 		if (!request.getGroups().isEmpty()) {
 

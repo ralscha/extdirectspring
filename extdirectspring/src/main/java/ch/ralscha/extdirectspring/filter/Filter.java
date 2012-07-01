@@ -35,7 +35,7 @@ import org.springframework.core.convert.ConversionService;
 public class Filter {
 	private final String field;
 
-	public Filter(final String field) {
+	public Filter(String field) {
 		this.field = field;
 	}
 
@@ -44,7 +44,7 @@ public class Filter {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Filter createFilter(final Map<String, Object> jsonData, final ConversionService conversionService) {
+	public static Filter createFilter(Map<String, Object> jsonData, ConversionService conversionService) {
 		String type = (String) jsonData.get("type");
 		Object source = jsonData.get("value");
 

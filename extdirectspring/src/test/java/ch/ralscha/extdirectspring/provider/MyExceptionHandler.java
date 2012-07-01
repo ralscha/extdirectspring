@@ -27,8 +27,8 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 @Component
 public class MyExceptionHandler implements HandlerExceptionResolver {
 
-	public ModelAndView resolveException(final HttpServletRequest request, final HttpServletResponse response,
-			final Object handler, final Exception ex) {
+	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response,
+			final Object handler, Exception ex) {
 		ExtDirectResponseBuilder.create(request, response).setException(ex).buildAndWrite();
 		return null;
 	}

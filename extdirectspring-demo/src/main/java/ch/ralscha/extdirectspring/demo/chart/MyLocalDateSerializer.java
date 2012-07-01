@@ -26,8 +26,8 @@ import org.joda.time.LocalDate;
 public class MyLocalDateSerializer extends JsonSerializer<LocalDate> {
 
 	@Override
-	public void serialize(final LocalDate value, final JsonGenerator jgen, final SerializerProvider provider)
-			throws IOException, JsonProcessingException {
+	public void serialize(LocalDate value, JsonGenerator jgen, SerializerProvider provider) throws IOException,
+			JsonProcessingException {
 		jgen.writeString(value.toString("yyyy-MM-dd"));
 	}
 }

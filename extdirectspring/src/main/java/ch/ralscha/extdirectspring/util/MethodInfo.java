@@ -57,7 +57,7 @@ public final class MethodInfo {
 
 	private PollingProvider pollingProvider;
 
-	public MethodInfo(final Class<?> clazz, final String beanName, final Method method) {
+	public MethodInfo(Class<?> clazz, String beanName, Method method) {
 
 		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 		this.type = extDirectMethodAnnotation.value();
@@ -151,12 +151,12 @@ public final class MethodInfo {
 		}
 	}
 
-	private boolean hasValue(final RequestMapping requestMapping) {
+	private boolean hasValue(RequestMapping requestMapping) {
 		return (requestMapping != null && requestMapping.value() != null && requestMapping.value().length > 0 && StringUtils
 				.hasText(requestMapping.value()[0]));
 	}
 
-	private static List<ParameterInfo> buildParameterList(final Method method) {
+	private static List<ParameterInfo> buildParameterList(Method method) {
 		List<ParameterInfo> params = new ArrayList<ParameterInfo>();
 
 		Class<?>[] parameterTypes = method.getParameterTypes();
@@ -189,7 +189,7 @@ public final class MethodInfo {
 		return collectionType;
 	}
 
-	public boolean isType(final ExtDirectMethodType methodType) {
+	public boolean isType(ExtDirectMethodType methodType) {
 		return this.type == methodType;
 	}
 
@@ -221,7 +221,7 @@ public final class MethodInfo {
 	 * @param annotation the annotation to look for
 	 * @return the method if there is a annotated method, else null
 	 */
-	public static Method findMethodWithAnnotation(final Method method, final Class<? extends Annotation> annotation) {
+	public static Method findMethodWithAnnotation(Method method, Class<? extends Annotation> annotation) {
 		if (method.isAnnotationPresent(annotation)) {
 			return method;
 		}

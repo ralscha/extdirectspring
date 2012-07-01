@@ -35,13 +35,12 @@ public class RemoteProviderImplementation implements RemoteProviderInterface {
 		return "method2() called";
 	}
 
-	public String method3(final long i, final Double d, final String s) {
+	public String method3(long i, Double d, String s) {
 		return String.format("method3() called-%d-%.1f-%s", i, d, s);
 	}
 
-	public List<Row> storeRead(final ExtDirectStoreReadRequest request,
-			@RequestParam(value = "lastName") final String name,
-			@RequestParam(value = "theAge", defaultValue = "40") final Integer age, final Boolean active,
+	public List<Row> storeRead(ExtDirectStoreReadRequest request, @RequestParam(value = "lastName") final String name,
+			@RequestParam(value = "theAge", defaultValue = "40") final Integer age, Boolean active,
 			final HttpServletRequest httpRequest) {
 
 		assertThat(age.intValue()).isEqualTo(40);

@@ -31,11 +31,11 @@ public class ExtDirectFormLoadResult {
 		this(null, true);
 	}
 
-	public ExtDirectFormLoadResult(final Object data) {
+	public ExtDirectFormLoadResult(Object data) {
 		this(data, true);
 	}
 
-	public ExtDirectFormLoadResult(final Object data, final boolean success) {
+	public ExtDirectFormLoadResult(Object data, boolean success) {
 		this.data = data;
 		this.success = success;
 	}
@@ -44,7 +44,7 @@ public class ExtDirectFormLoadResult {
 		return data;
 	}
 
-	public void setData(final Object data) {
+	public void setData(Object data) {
 		this.data = data;
 	}
 
@@ -52,7 +52,7 @@ public class ExtDirectFormLoadResult {
 		return success;
 	}
 
-	public void setSuccess(final boolean success) {
+	public void setSuccess(boolean success) {
 		this.success = success;
 	}
 

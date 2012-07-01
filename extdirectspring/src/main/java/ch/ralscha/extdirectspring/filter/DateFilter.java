@@ -24,7 +24,7 @@ public class DateFilter extends Filter {
 
 	private final Comparison comparison;
 
-	public DateFilter(final String field, final String value, final Comparison comparison) {
+	public DateFilter(String field, String value, Comparison comparison) {
 		super(field);
 		this.value = value;
 		this.comparison = comparison;

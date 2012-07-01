@@ -43,8 +43,8 @@ public class PollProvider {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message2", group = "group2", entryClass = String.class)
-	public String handleMessage2(final HttpServletResponse response, final HttpServletRequest request,
-			final HttpSession session, final Locale locale) {
+	public String handleMessage2(HttpServletResponse response, HttpServletRequest request, final HttpSession session,
+			Locale locale) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
@@ -56,7 +56,7 @@ public class PollProvider {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message3", group = "group4")
-	public String handleMessage3(final Locale locale, @RequestParam(value = "id") final int id) {
+	public String handleMessage3(Locale locale, @RequestParam(value = "id") final int id) {
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 		return "Result: " + id;
 	}
@@ -69,7 +69,7 @@ public class PollProvider {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message5", group = "group3")
-	public Integer handleMessage5(@RequestParam(value = "id", required = false) final Integer id, final String dummy) {
+	public Integer handleMessage5(@RequestParam(value = "id", required = false) final Integer id, String dummy) {
 		assertThat(dummy).isNull();
 		if (id != null) {
 			return id * 2;
@@ -87,7 +87,7 @@ public class PollProvider {
 	/* Request Header */
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
-	public String message7(@RequestParam(value = "id", required = false) final Integer id, final String dummy,
+	public String message7(@RequestParam(value = "id", required = false) final Integer id, String dummy,
 			@RequestHeader final String header) {
 		return id + ";" + dummy + ";" + header;
 	}

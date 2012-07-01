@@ -37,7 +37,7 @@ public class BookSubAopService extends BaseService<Book> {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")
-	public ExtDirectStoreResponse<Book> readWithPaging(final ExtDirectStoreReadRequest request) {
+	public ExtDirectStoreResponse<Book> readWithPaging(ExtDirectStoreReadRequest request) {
 		int total = request.getPage() + request.getLimit() + request.getStart();
 		ExtDirectStoreResponse<Book> response = new ExtDirectStoreResponse<Book>(total, read());
 		return response;

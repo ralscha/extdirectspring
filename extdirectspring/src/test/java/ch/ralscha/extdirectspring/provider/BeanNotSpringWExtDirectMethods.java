@@ -34,7 +34,7 @@ public class BeanNotSpringWExtDirectMethods {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public List<Integer> methodC(final List<Integer> ids) {
+	public List<Integer> methodC(List<Integer> ids) {
 		// a dummy method
 		return null;
 	}

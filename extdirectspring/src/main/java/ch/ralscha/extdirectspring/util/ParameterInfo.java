@@ -51,7 +51,7 @@ public final class ParameterInfo {
 
 	private String defaultValue;
 
-	public ParameterInfo(final Method method, final int paramIndex) {
+	public ParameterInfo(Method method, int paramIndex) {
 
 		MethodParameter methodParam = new MethodParameter(method, paramIndex);
 		methodParam.initParameterNameDiscovery(discoverer);

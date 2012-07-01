@@ -194,7 +194,7 @@ public class RouterControllerFormLoadTest {
 		checkIntParameterResult(responses.get(5), 6, 40);
 	}
 
-	private void checkIntParameterResult(final ExtDirectResponse resp, final int tid, final int result) {
+	private void checkIntParameterResult(ExtDirectResponse resp, int tid, int result) {
 		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
 		assertThat(resp.getMethod()).isEqualTo("method6");
 		assertThat(resp.getTid()).isEqualTo(tid);
@@ -204,7 +204,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(resp.getResult()).isEqualTo(result);
 	}
 
-	private void checkMethodNotFoundResponse(final ExtDirectResponse resp) {
+	private void checkMethodNotFoundResponse(ExtDirectResponse resp) {
 		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
 		assertThat(resp.getMethod()).isEqualTo("method4");
 		assertThat(resp.getType()).isEqualTo("exception");
@@ -214,7 +214,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(resp.getWhere()).isNull();
 	}
 
-	private void checkFormLoadResult(final ExtDirectResponse resp, final double back, final int tid) {
+	private void checkFormLoadResult(ExtDirectResponse resp, double back, int tid) {
 		assertThat(resp.getAction()).isEqualTo("remoteProviderFormLoad");
 		assertThat(resp.getMethod()).isEqualTo("method1");
 		assertThat(resp.getTid()).isEqualTo(tid);
@@ -237,7 +237,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(info.getBirthday()).isEqualTo(new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime());
 	}
 
-	private void checkNoParametersResponse(final ExtDirectResponse resp, final int tid) {
+	private void checkNoParametersResponse(ExtDirectResponse resp, int tid) {
 		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
 		assertThat(resp.getMethod()).isEqualTo("method1");
 		assertThat(resp.getTid()).isEqualTo(tid);

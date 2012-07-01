@@ -30,7 +30,7 @@ public class SecuredService {
 
 	@ExtDirectMethod(group = "secured")
 	@PreAuthorize("isAnonymous()")
-	public String setDate(final String id, @DateTimeFormat(pattern = "dd/MM/yyyy") final Date date) {
+	public String setDate(String id, @DateTimeFormat(pattern = "dd/MM/yyyy") final Date date) {
 		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		return id + "," + dateFormat.format(date);
 	}

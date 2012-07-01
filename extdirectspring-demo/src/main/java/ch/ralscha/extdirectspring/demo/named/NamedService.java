@@ -24,7 +24,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 public class NamedService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public String showDetails(final String firstName, final String lastName, final int age) {
+	public String showDetails(String firstName, String lastName, int age) {
 		return String.format("Hi %s %s, you are %d years old.", firstName, lastName, age);
 	}
 }

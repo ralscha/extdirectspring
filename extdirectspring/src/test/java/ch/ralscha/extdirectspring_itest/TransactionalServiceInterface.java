@@ -20,5 +20,5 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 public interface TransactionalServiceInterface {
 
 	@ExtDirectMethod(group = "transactional")
-	public String update(final Integer id, String userName);
+	public String update(Integer id, String userName);
 }
