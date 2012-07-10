@@ -19,7 +19,7 @@
 
 	<name>Ext.Direct Spring</name>
 	<description>Implements the Ext.Direct specification with Java/Spring 3</description>
-	<url>http://code.google.com/p/extdirectspring/</url>
+	<url>https://github.com/ralscha/extdirectspring/</url>
 
 	<developers>
 		<developer>
@@ -37,14 +37,14 @@
 	</licenses>
 
 	<issueManagement>
-		<system>Google Code</system>
-		<url>http://code.google.com/p/extdirectspring/issues</url>
+		<system>GitHub</system>
+		<url>https://github.com/ralscha/extdirectspring/issues</url>
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:http://extdirectspring.googlecode.com/svn/trunk/extdirectspring</connection>
-		<developerConnection>scm:svn:https://extdirectspring.googlecode.com/svn/trunk/extdirectspring</developerConnection>
-		<url>http://extdirectspring.googlecode.com/svn/trunk/extdirectspring</url>
+		<connection>scm:git:git@github.com:ralscha/extdirectspring.git</connection>
+		<developerConnection>scm:git:git@github.com:ralscha/extdirectspring.git</developerConnection>
+		<url>https://github.com/ralscha/extdirectspring.git</url>
 	</scm>
 
 	<properties>
