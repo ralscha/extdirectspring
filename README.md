@@ -24,17 +24,17 @@ ExtDirectSpring is available from the Central Maven Repository.
 
 There are two *Archetypes* available. Run the following commands in a shell.
 
-Simple project with Spring and ExtDirectSpring ([http://e4ds.rasc.ch/eds-starter-simple/ Online] / [https://github.com/ralscha/archetypes/tree/master/eds-starter-simple-app Sourcecode]):
+Simple project with Spring and ExtDirectSpring [Online](http://e4ds.rasc.ch/eds-starter-simple/) / [Sourcecode](https://github.com/ralscha/archetypes/tree/master/eds-starter-simple-app):
 ```
 mvn archetype:generate -DarchetypeArtifactId=eds-starter-simple-archetype -DarchetypeGroupId=ch.rasc -DarchetypeVersion=1.0.3 -DarchetypeRepository=http://rasc.ch/archetypes  -DgroupId=com.mycompany -DartifactId=mynewapp -Dversion=0.0.1
 ```
 
-Complete project with Spring, ExtDirectSpring, Spring Security, JPA (Hibernate), Spring Data JPA and I18n ([http://e4ds.rasc.ch/ Online] / [https://github.com/ralscha/e4ds-template Sourcecode]): 
+Complete project with Spring, ExtDirectSpring, Spring Security, JPA (Hibernate), Spring Data JPA and I18n [Online](http://e4ds.rasc.ch/) / [Sourcecode](https://github.com/ralscha/e4ds-template): 
 ```
 mvn archetype:generate -DarchetypeArtifactId=eds-starter-archetype -DarchetypeGroupId=ch.rasc -DarchetypeVersion=1.0.3 -DarchetypeRepository=http://rasc.ch/archetypes  -DgroupId=com.mycompany -DartifactId=mynewapp -Dversion=0.0.1
 ```
 
-After the generate command is finished, change into the project directory, type {{{mvn tomcat7:run }}} and open a browser with the URL: http://localhost:8080
+After the generate command is finished, change into the project directory, type `mvn tomcat7:run` and open a browser with the URL: `http://localhost:8080`
 
 
 ##Minimal Requirements
