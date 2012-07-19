@@ -97,6 +97,7 @@ public enum MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, M
 
 	}
 
+	@Override
 	public Iterator<Entry<Key, MethodInfo>> iterator() {
 		return cache.entrySet().iterator();
 	}

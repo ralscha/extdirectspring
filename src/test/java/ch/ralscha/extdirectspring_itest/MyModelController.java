@@ -33,7 +33,7 @@ public class MyModelController extends BaseController<MyModel> {
 
 	@Override
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_base")
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "/method1", method = RequestMethod.POST)
 	public void method1(HttpServletRequest request, HttpServletResponse response, MyModel model,
 			final BindingResult result) {
 		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();

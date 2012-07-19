@@ -31,14 +31,17 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 @Service
 public class RemoteProviderImplementation implements RemoteProviderInterface {
 
+	@Override
 	public String method2() {
 		return "method2() called";
 	}
 
+	@Override
 	public String method3(long i, Double d, String s) {
 		return String.format("method3() called-%d-%.1f-%s", i, d, s);
 	}
 
+	@Override
 	public List<Row> storeRead(ExtDirectStoreReadRequest request, @RequestParam(value = "lastName") final String name,
 			@RequestParam(value = "theAge", defaultValue = "40") final Integer age, Boolean active,
 			final HttpServletRequest httpRequest) {

@@ -19,14 +19,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 import ch.ralscha.extdirectspring.filter.BooleanFilter;
 import ch.ralscha.extdirectspring.filter.DateFilter;
 import ch.ralscha.extdirectspring.filter.Filter;
 import ch.ralscha.extdirectspring.filter.ListFilter;
 import ch.ralscha.extdirectspring.filter.NumericFilter;
 import ch.ralscha.extdirectspring.filter.StringFilter;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Class representing the request of a DirectStore read call.

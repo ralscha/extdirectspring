@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +45,8 @@ import ch.ralscha.extdirectspring.bean.GroupInfo;
 import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.bean.SortInfo;
 import ch.ralscha.extdirectspring.filter.Filter;
+
+import com.fasterxml.jackson.core.type.TypeReference;
 
 /**
  * Resolver of ExtDirectRequest parameters.
@@ -63,6 +64,7 @@ public final class ParametersResolver implements InitializingBean {
 	@Autowired(required = false)
 	private JsonHandler jsonHandler;
 
+	@Override
 	public void afterPropertiesSet() throws Exception {
 		if (jsonHandler == null) {
 			jsonHandler = new JsonHandler();

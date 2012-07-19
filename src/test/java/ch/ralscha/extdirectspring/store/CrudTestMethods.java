@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.codehaus.jackson.type.TypeReference;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -35,6 +34,8 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
 import ch.ralscha.extdirectspring.controller.ControllerUtil;
 import ch.ralscha.extdirectspring.controller.RouterController;
+
+import com.fasterxml.jackson.core.type.TypeReference;
 
 @SuppressWarnings("all")
 public class CrudTestMethods {

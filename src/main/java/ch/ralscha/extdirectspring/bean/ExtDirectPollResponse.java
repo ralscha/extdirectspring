@@ -15,15 +15,15 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * Class representing the response of a poll request.
  * 
  * @author Ralph Schaer
  */
-@JsonSerialize(include = Inclusion.NON_NULL)
+@JsonInclude(Include.NON_NULL)
 public class ExtDirectPollResponse extends BaseResponse {
 
 	private String name;

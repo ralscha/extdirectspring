@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TransactionalServiceImpl implements TransactionalServiceInterface {
 
+	@Override
 	@Transactional
 	public String update(Integer id, String userName) {
 		return id + ":" + userName;
