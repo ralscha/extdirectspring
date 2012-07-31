@@ -18,8 +18,9 @@ package ch.ralscha.extdirectspring.util;
 import java.io.InputStream;
 
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Object contains an {@link ObjectMapper} and provides convenient methods.
@@ -93,7 +94,7 @@ public class JsonHandler {
 	 * @param <T> type of the object to create
 	 * @param json string with the JSON
 	 * @param typeReference {@link TypeReference} instance of the desired result
-	 * type {@link org.codehaus.jackson.type.TypeReference}
+	 * type {@link com.fasterxml.jackson.core.type.TypeReference}
 	 * @return the created object, null if there was an exception
 	 */
 	@SuppressWarnings("unchecked")

@@ -19,9 +19,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * Class representing the response of a DirectStore request.
@@ -29,7 +29,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
  * @author Ralph Schaer
  * @param <T> Type of the entry inside the collection
  */
-@JsonSerialize(include = Inclusion.NON_NULL)
+@JsonInclude(Include.NON_NULL)
 @JsonPropertyOrder(value = { "metaData", "success", "total", "records" })
 public class ExtDirectStoreResponse<T> {
 

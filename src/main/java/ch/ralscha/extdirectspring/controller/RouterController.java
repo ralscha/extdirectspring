@@ -32,11 +32,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.jackson.JsonEncoding;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -62,6 +57,12 @@ import ch.ralscha.extdirectspring.util.MethodInfoCache;
 import ch.ralscha.extdirectspring.util.ParameterInfo;
 import ch.ralscha.extdirectspring.util.ParametersResolver;
 import ch.ralscha.extdirectspring.util.SupportedParameters;
+
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Main router controller that handles polling, form handler and normal Ext
@@ -100,6 +101,7 @@ public class RouterController implements InitializingBean {
 		return jsonHandler;
 	}
 
+	@Override
 	public void afterPropertiesSet() {
 
 		if (configuration == null) {

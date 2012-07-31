@@ -21,14 +21,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class FactoryBeanReturnsObjectTypeNull implements FactoryBean<Info> {
 
+	@Override
 	public Info getObject() throws Exception {
 		return new Info();
 	}
 
+	@Override
 	public Class<?> getObjectType() {
 		return null;
 	}
 
+	@Override
 	public boolean isSingleton() {
 		return false;
 	}

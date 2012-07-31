@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 import org.junit.BeforeClass;
@@ -43,6 +42,8 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.FormInfo;
 import ch.ralscha.extdirectspring.provider.RemoteProviderSimpleNamed.ResultObject;
 import ch.ralscha.extdirectspring.provider.Row;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Tests for {@link RouterController}.
@@ -228,10 +229,10 @@ public class RouterControllerSimpleNamedTest {
 		assertThat(resultMap.get("endDate")).isEqualTo(today.getMillis());
 		ObjectMapper mapper = new ObjectMapper();
 
-		List<Object> expectedValue = mapper.readValue(mapper.writeValueAsString(today.toLocalDate()), List.class);
+		Map<String, Object> expectedValue = mapper.readValue(mapper.writeValueAsString(today.toLocalDate()), Map.class);
 		Object actualValue = resultMap.get("jodaLocalDate");
 
-		assertThat((List<Object>) resultMap.get("jodaLocalDate")).isEqualTo(expectedValue);
+		assertThat((Map<String, Object>) resultMap.get("jodaLocalDate")).isEqualTo(expectedValue);
 		assertThat(resultMap.get("percent")).isEqualTo(0.999);
 		assertThat(resultMap.get("normalParameter")).isEqualTo("normalParameter");
 		assertThat(resultMap.get("remoteAddr")).isEqualTo("127.0.0.1");

@@ -19,19 +19,13 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.LinkedHashSet;
 import java.util.Locale;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.BridgeMethodResolver;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.util.ReflectionUtils.MethodFilter;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 
@@ -96,49 +90,6 @@ public final class ExtDirectSpringUtil {
 		pw.flush();
 		sw.flush();
 		return sw.toString();
-	}
-
-	/**
-	 * Selects handler methods for the given handler type. Callers of this
-	 * method define handler methods of interest through the
-	 * {@link MethodFilter} parameter.
-	 * 
-	 * From the Spring 3.1 Source Code. We can delete this method as soon we
-	 * update the library to Spring 3.1
-	 * 
-	 * @param handlerType the handler type to search handler methods on
-	 * @param handlerMethodFilter a {@link MethodFilter} to help recognize
-	 * handler methods of interest
-	 * @return the selected methods, or an empty set
-	 */
-	public static Set<Method> selectMethods(Class<?> handlerType, final MethodFilter handlerMethodFilter) {
-		final Set<Method> handlerMethods = new LinkedHashSet<Method>();
-		Set<Class<?>> handlerTypes = new LinkedHashSet<Class<?>>();
-
-		Class<?> specificHandlerType = null;
-		if (!Proxy.isProxyClass(handlerType)) {
-			handlerTypes.add(handlerType);
-			specificHandlerType = handlerType;
-		}
-
-		for (Class<?> handlerTypeInterface : handlerType.getInterfaces()) {
-			handlerTypes.add(handlerTypeInterface);
-		}
-
-		for (Class<?> currentHandlerType : handlerTypes) {
-			final Class<?> targetClass = (specificHandlerType != null ? specificHandlerType : currentHandlerType);
-			ReflectionUtils.doWithMethods(currentHandlerType, new ReflectionUtils.MethodCallback() {
-				public void doWith(Method method) {
-					Method specificMethod = ClassUtils.getMostSpecificMethod(method, targetClass);
-					Method bridgedMethod = BridgeMethodResolver.findBridgedMethod(specificMethod);
-					if (handlerMethodFilter.matches(specificMethod)
-							&& (bridgedMethod == specificMethod || !handlerMethodFilter.matches(bridgedMethod))) {
-						handlerMethods.add(specificMethod);
-					}
-				}
-			}, ReflectionUtils.USER_DECLARED_METHODS);
-		}
-		return handlerMethods;
 	}
 
 }

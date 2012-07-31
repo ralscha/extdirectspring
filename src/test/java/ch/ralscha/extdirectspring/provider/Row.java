@@ -17,7 +17,7 @@ package ch.ralscha.extdirectspring.provider;
 
 import java.math.BigDecimal;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Row implements Comparable<Row>, RowInterface {
@@ -44,6 +44,7 @@ public class Row implements Comparable<Row>, RowInterface {
 		}
 	}
 
+	@Override
 	public int getId() {
 		return id;
 	}
@@ -52,6 +53,7 @@ public class Row implements Comparable<Row>, RowInterface {
 		this.id = id;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -60,6 +62,7 @@ public class Row implements Comparable<Row>, RowInterface {
 		this.name = name;
 	}
 
+	@Override
 	public boolean isAdmin() {
 		return admin;
 	}
@@ -68,6 +71,7 @@ public class Row implements Comparable<Row>, RowInterface {
 		this.admin = admin;
 	}
 
+	@Override
 	public BigDecimal getSalary() {
 		return salary;
 	}
@@ -103,6 +107,7 @@ public class Row implements Comparable<Row>, RowInterface {
 	}
 
 	// @Override
+	@Override
 	public int compareTo(Row o) {
 		return id - o.id;
 	}

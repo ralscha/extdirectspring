@@ -28,9 +28,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils.MethodFilter;
 import org.springframework.util.StringUtils;
+import org.springframework.web.method.HandlerMethodSelector;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
-import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
 
 @Service
@@ -38,6 +38,7 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 
 	private static final Log log = LogFactory.getLog(RouterController.class);
 
+	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 
 		ApplicationContext context = (ApplicationContext) event.getSource();
@@ -49,7 +50,8 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 			Class<?> handlerType = context.getType(beanName);
 			final Class<?> userType = ClassUtils.getUserClass(handlerType);
 
-			Set<Method> methods = ExtDirectSpringUtil.selectMethods(userType, new MethodFilter() {
+			Set<Method> methods = HandlerMethodSelector.selectMethods(userType, new MethodFilter() {
+				@Override
 				public boolean matches(Method method) {
 					return AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) != null;
 				}
