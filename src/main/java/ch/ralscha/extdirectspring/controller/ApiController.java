@@ -87,7 +87,7 @@ public class ApiController {
 		final ServletOutputStream outputStream = response.getOutputStream();
 
 		if (format == null) {
-			response.setContentType("application/x-javascript");
+			response.setContentType(routerController.getConfiguration().getJsContentType());
 
 			String requestUrlString;
 

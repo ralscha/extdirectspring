@@ -650,7 +650,11 @@ public class ApiControllerTest {
 		content = content.replace("{", "{\n");
 		content = content.replace("}", "}\n");
 
-		assertThat(response.getContentType()).isEqualTo("application/x-javascript");
+		if (config != null) {
+			assertThat(response.getContentType()).isEqualTo(config.getJsContentType());
+		} else {
+			assertThat(response.getContentType()).isEqualTo("application/javascript");
+		}
 		assertThat(content).isNotEmpty();
 
 		String[] lines = content.split("\n");

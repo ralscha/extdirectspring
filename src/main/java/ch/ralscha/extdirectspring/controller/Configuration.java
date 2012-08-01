@@ -52,6 +52,8 @@ public class Configuration {
 
 	private boolean streamResponse = false;
 
+	private String jsContentType = "application/javascript";
+
 	public String getDefaultExceptionMessage() {
 		return defaultExceptionMessage;
 	}
@@ -296,4 +298,24 @@ public class Configuration {
 	public void setStreamResponse(boolean streamResponse) {
 		this.streamResponse = streamResponse;
 	}
+
+	/**
+	 * Specifies the Content-Type for api.js and api-debug.js.
+	 * <p>
+	 * Until version 1.2.1 extdirectspring sends "application/x-javascript". But
+	 * according to <a
+	 * href="http://www.rfc-editor.org/rfc/rfc4329.txt">RFC4329</a> the official
+	 * mime type is 'application/javascript'.
+	 * <p>
+	 * Default value is "application/javascript"
+	 * @param jsContentType new Content-type
+	 */
+	public void setJsContentType(String jsContentType) {
+		this.jsContentType = jsContentType;
+	}
+
+	public String getJsContentType() {
+		return jsContentType;
+	}
+
 }

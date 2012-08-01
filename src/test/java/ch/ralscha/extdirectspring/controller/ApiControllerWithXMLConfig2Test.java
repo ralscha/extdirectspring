@@ -57,6 +57,7 @@ public class ApiControllerWithXMLConfig2Test {
 		ApiCache.INSTANCE.clear();
 
 		config = new Configuration();
+		config.setJsContentType("application/x-javascript");
 		config.setTimeout(15111);
 		config.setEnableBuffer(10);
 		config.setMaxRetries(6);
