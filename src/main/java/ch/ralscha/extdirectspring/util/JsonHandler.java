@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.util;
 import java.io.InputStream;
 
 import org.apache.commons.logging.LogFactory;
+import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,9 +42,7 @@ public class JsonHandler {
 	 * @param mapper a new object mapper. must not be <code>null</code>
 	 */
 	public void setMapper(ObjectMapper mapper) {
-		if (mapper == null) {
-			throw new IllegalArgumentException("ObjectMapper must not be null");
-		}
+		Assert.notNull(mapper, "ObjectMapper must not be null");
 
 		this.mapper = mapper;
 	}
