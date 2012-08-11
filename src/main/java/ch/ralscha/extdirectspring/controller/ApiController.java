@@ -75,52 +75,27 @@ public class ApiController {
 	 */
 	@RequestMapping(value = { "/api.js", "/api-debug.js" }, method = RequestMethod.GET)
 	public void api(
-			@RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app") final String apiNs,
-			@RequestParam(value = "actionNs", required = false) final String actionNs,
-			@RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API") final String remotingApiVar,
-			@RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS") final String pollingUrlsVar,
-			@RequestParam(value = "group", required = false) final String group,
-			@RequestParam(value = "fullRouterUrl", required = false, defaultValue = "false") final boolean fullRouterUrl,
-			@RequestParam(value = "format", required = false) final String format, HttpServletRequest request,
-			final HttpServletResponse response) throws IOException {
-
-		final ServletOutputStream outputStream = response.getOutputStream();
+			@RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app") String apiNs,
+			@RequestParam(value = "actionNs", required = false) String actionNs,
+			@RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API") String remotingApiVar,
+			@RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS") String pollingUrlsVar,
+			@RequestParam(value = "group", required = false) String group,
+			@RequestParam(value = "fullRouterUrl", required = false, defaultValue = "false") boolean fullRouterUrl,
+			@RequestParam(value = "format", required = false) String format, HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
 
 		if (format == null) {
 			response.setContentType(routerController.getConfiguration().getJsContentType());
 
-			String requestUrlString;
-
-			if (fullRouterUrl) {
-				requestUrlString = request.getRequestURL().toString();
-			} else {
-				requestUrlString = request.getRequestURI();
-			}
-
-			boolean debug = requestUrlString.contains("api-debug.js");
-
-			ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group, debug);
-			String apiString = ApiCache.INSTANCE.get(apiKey);
-			if (apiString == null) {
-
-				String routerUrl;
-				String basePollUrl;
-
-				if (!debug) {
-					routerUrl = requestUrlString.replace("api.js", "router");
-					basePollUrl = requestUrlString.replace("api.js", "poll");
-				} else {
-					routerUrl = requestUrlString.replace("api-debug.js", "router");
-					basePollUrl = requestUrlString.replace("api-debug.js", "poll");
-				}
-				apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, basePollUrl,
-						group, debug);
-				ApiCache.INSTANCE.put(apiKey, apiString);
-			}
+			String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group,
+					fullRouterUrl, request);
 
 			byte[] outputBytes = apiString.getBytes("UTF-8");
 			response.setContentLength(outputBytes.length);
+
+			ServletOutputStream outputStream = response.getOutputStream();
 			outputStream.write(outputBytes);
+			outputStream.flush();
 		} else {
 			response.setContentType(RouterController.APPLICATION_JSON.toString());
 			response.setCharacterEncoding(RouterController.APPLICATION_JSON.getCharSet().name());
@@ -139,14 +114,66 @@ public class ApiController {
 			String apiString = buildApiJson(apiNs, actionNs, remotingApiVar, routerUrl, group, debug);
 			byte[] outputBytes = apiString.getBytes("UTF-8");
 			response.setContentLength(outputBytes.length);
-			outputStream.write(outputBytes);
-		}
 
-		outputStream.flush();
+			ServletOutputStream outputStream = response.getOutputStream();
+			outputStream.write(outputBytes);
+			outputStream.flush();
+		}
 	}
 
-	private String buildApiString(String apiNs, String actionNs, String remotingApiVar, final String pollingUrlsVar,
-			String routerUrl, String basePollUrl, String group, final boolean debug) {
+	@RequestMapping(value = "/api-{fingerprint}.js", method = RequestMethod.GET)
+	public void api(
+			@RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app") String apiNs,
+			@RequestParam(value = "actionNs", required = false) String actionNs,
+			@RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API") String remotingApiVar,
+			@RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS") String pollingUrlsVar,
+			@RequestParam(value = "group", required = false) String group,
+			@RequestParam(value = "fullRouterUrl", required = false, defaultValue = "false") boolean fullRouterUrl,
+			HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group,
+				fullRouterUrl, request);
+
+		byte[] outputBytes = apiString.getBytes("UTF-8");
+		ExtDirectSpringUtil.handleCacheableResponse(request, response, outputBytes, routerController.getConfiguration()
+				.getJsContentType());
+	}
+
+	private String buildAndCacheApiString(String apiNs, String actionNs, String remotingApiVar, String pollingUrlsVar,
+			String group, boolean fullRouterUrl, HttpServletRequest request) {
+		String requestUrlString;
+
+		if (fullRouterUrl) {
+			requestUrlString = request.getRequestURL().toString();
+		} else {
+			requestUrlString = request.getRequestURI();
+		}
+
+		boolean debug = requestUrlString.contains("api-debug.js");
+
+		ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group, debug);
+		String apiString = ApiCache.INSTANCE.get(apiKey);
+		if (apiString == null) {
+
+			String routerUrl;
+			String basePollUrl;
+
+			if (!debug) {
+				routerUrl = requestUrlString.replace("api.js", "router");
+				basePollUrl = requestUrlString.replace("api.js", "poll");
+			} else {
+				routerUrl = requestUrlString.replace("api-debug.js", "router");
+				basePollUrl = requestUrlString.replace("api-debug.js", "poll");
+			}
+			apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, basePollUrl, group,
+					debug);
+			ApiCache.INSTANCE.put(apiKey, apiString);
+		}
+		return apiString;
+	}
+
+	private String buildApiString(String apiNs, String actionNs, String remotingApiVar, String pollingUrlsVar,
+			String routerUrl, String basePollUrl, String group, boolean debug) {
 
 		RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
 
@@ -247,8 +274,8 @@ public class ApiController {
 		return sb.toString();
 	}
 
-	private String buildApiJson(String apiNs, String actionNs, String remotingApiVar, final String routerUrl,
-			String group, boolean debug) {
+	private String buildApiJson(String apiNs, String actionNs, String remotingApiVar, String routerUrl, String group,
+			boolean debug) {
 
 		RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
 
@@ -267,7 +294,7 @@ public class ApiController {
 	private void buildRemotingApi(RemotingApi remotingApi, String group) {
 
 		for (Map.Entry<MethodInfoCache.Key, MethodInfo> entry : MethodInfoCache.INSTANCE) {
-			final MethodInfo methodInfo = entry.getValue();
+			MethodInfo methodInfo = entry.getValue();
 			if (isSameGroup(group, methodInfo.getGroup())) {
 				if (methodInfo.getAction() != null) {
 					remotingApi.addAction(entry.getKey().getBeanName(), methodInfo.getAction());

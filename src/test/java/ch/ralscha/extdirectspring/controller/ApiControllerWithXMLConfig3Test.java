@@ -69,8 +69,8 @@ public class ApiControllerWithXMLConfig3Test {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "group2", false, null, request,
 				response);
-		ApiControllerTest.compare(response, ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API",
-				"TEST_POLLING_URLS", config);
+		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(),
+				ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
 
 		assertThat(response.getContentLength()).isEqualTo(response.getContentAsByteArray().length);
 
@@ -78,8 +78,8 @@ public class ApiControllerWithXMLConfig3Test {
 		response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "group2", false, null, request,
 				response);
-		ApiControllerTest.compare(response, ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API",
-				"TEST_POLLING_URLS", config);
+		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(),
+				ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
 
 		assertThat(response.getContentLength()).isEqualTo(response.getContentAsByteArray().length);
 	}

@@ -19,6 +19,8 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.http.HttpEntity;
@@ -32,31 +34,100 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.junit.ContiPerfRule;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Rule;
 import org.junit.Test;
+
+import ch.ralscha.extdirectspring.bean.api.Action;
+import ch.ralscha.extdirectspring.bean.api.RemotingApi;
+import ch.ralscha.extdirectspring.controller.ApiControllerTest;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class SimpleServiceTest extends JettyTest {
+public class SimpleServiceTest extends JettyTest2 {
 
 	@Rule
 	public ContiPerfRule i = new ContiPerfRule();
 
+	private static RemotingApi api() {
+		RemotingApi remotingApi = new RemotingApi("/controller/router", null);
+		remotingApi.addAction("simpleService", new Action("toUpperCase", 1, false));
+		remotingApi.addAction("simpleService", new Action("echo", Arrays.asList("userId", "logLevel")));
+		return remotingApi;
+	}
+
+	@Test
+	@PerfTest(invocations = 200, threads = 10)
+	public void testSimpleApiDebug() throws IllegalStateException, IOException {
+		HttpClient client = new DefaultHttpClient();
+		HttpGet get = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_simple");
+		handleApi(client, get, false);
+	}
+
 	@Test
 	@PerfTest(invocations = 200, threads = 10)
 	public void testSimpleApi() throws IllegalStateException, IOException {
-
 		HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_simple");
+		HttpGet get = new HttpGet("http://localhost:9998/controller/api.js?group=itest_simple");
+		handleApi(client, get, false);
+	}
+
+	@Test
+	@PerfTest(invocations = 200, threads = 10)
+	public void testSimpleApiFingerprinted() throws IllegalStateException, IOException {
+		HttpClient client = new DefaultHttpClient();
+		HttpGet get = new HttpGet("http://localhost:9998/controller/api-1.0.0.js?group=itest_simple");
+		handleApi(client, get, true);
+	}
+
+	private void handleApi(HttpClient client, HttpGet get, boolean fingerprinted) throws IOException,
+			ClientProtocolException, JsonParseException, JsonMappingException {
 		HttpResponse response = client.execute(get);
 		HttpEntity entity = response.getEntity();
 		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
-		EntityUtils.consume(entity);
-		assertThat(responseString).contains("\"name\" : \"toUpperCase\"");
-		assertThat(responseString).contains("\"name\" : \"echo\"");
+
+		String contentType = response.getFirstHeader("Content-Type").getValue();
+		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS");
+
+		assertCacheHeaders(response, fingerprinted);
+	}
+
+	public static void assertCacheHeaders(HttpResponse response, boolean fingerprinted) {
+		if (fingerprinted) {
+			assertThat(response.getFirstHeader("Content-Type").getValue()).isEqualTo(
+					"application/javascript;charset=UTF-8");
+			assertThat(response.getFirstHeader("Content-Length")).isNotNull();
+			assertThat(response.getFirstHeader("Vary").getValue()).isEqualTo("Accept-Encoding");
+
+			String expiresString = response.getFirstHeader("Expires").getValue();
+			DateTimeFormatter fmt = DateTimeFormat.forPattern("E, dd MMM yyyy HH:mm:ss ZZZ").withLocale(Locale.ENGLISH);
+
+			DateTime expires = DateTime.parse(expiresString, fmt);
+			DateTime inSixMonths = DateTime.now(DateTimeZone.UTC).plusSeconds(6 * 30 * 24 * 60 * 60);
+			assertThat(expires.getYear()).isEqualTo(inSixMonths.getYear());
+			assertThat(expires.getMonthOfYear()).isEqualTo(inSixMonths.getMonthOfYear());
+			assertThat(expires.getDayOfMonth()).isEqualTo(inSixMonths.getDayOfMonth());
+			assertThat(expires.getHourOfDay()).isEqualTo(inSixMonths.getHourOfDay());
+			assertThat(expires.getMinuteOfDay()).isEqualTo(inSixMonths.getMinuteOfDay());
+
+			assertThat(response.getFirstHeader("ETag").getValue()).isNotNull();
+			assertThat(response.getFirstHeader("Cache-Control").getValue()).isEqualTo("public, max-age=15552000");
+
+		} else {
+			assertThat(response.getFirstHeader("Content-Type").getValue()).isEqualTo(
+					"application/javascript;charset=UTF-8");
+			assertThat(response.getFirstHeader("Content-Length")).isNotNull();
+			assertThat(response.getFirstHeader("Vary")).isNull();
+			assertThat(response.getFirstHeader("Expires")).isNull();
+			assertThat(response.getFirstHeader("ETag")).isNull();
+			assertThat(response.getFirstHeader("Cache-Control")).isNull();
+		}
 	}
 
 	@Test

@@ -28,15 +28,59 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
+import ch.ralscha.extdirectspring.bean.api.Action;
+import ch.ralscha.extdirectspring.bean.api.RemotingApi;
+import ch.ralscha.extdirectspring.controller.ApiControllerTest;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class InfoControllerTest extends JettyTest {
+
+	private static RemotingApi api() {
+		RemotingApi remotingApi = new RemotingApi("/controller/router", null);
+		remotingApi.addAction("infoController", new Action("updateInfo", 0, true));
+		return remotingApi;
+	}
+
+	@Test
+	public void testApi() throws ClientProtocolException, IOException {
+		HttpClient client = new DefaultHttpClient();
+		HttpGet g = new HttpGet("http://localhost:9998/controller/api.js?group=itest_info");
+		HttpResponse response = client.execute(g);
+		String responseString = EntityUtils.toString(response.getEntity());
+		String contentType = response.getFirstHeader("Content-Type").getValue();
+		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS");
+		SimpleServiceTest.assertCacheHeaders(response, false);
+	}
+
+	@Test
+	public void testApiDebug() throws ClientProtocolException, IOException {
+		HttpClient client = new DefaultHttpClient();
+		HttpGet g = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_info");
+		HttpResponse response = client.execute(g);
+		String responseString = EntityUtils.toString(response.getEntity());
+		String contentType = response.getFirstHeader("Content-Type").getValue();
+		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS");
+		SimpleServiceTest.assertCacheHeaders(response, false);
+	}
+
+	@Test
+	public void testApiFingerprinted() throws ClientProtocolException, IOException {
+		HttpClient client = new DefaultHttpClient();
+		HttpGet g = new HttpGet("http://localhost:9998/controller/api-1.2.1.js?group=itest_info");
+		HttpResponse response = client.execute(g);
+		String responseString = EntityUtils.toString(response.getEntity());
+		String contentType = response.getFirstHeader("Content-Type").getValue();
+		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS");
+		SimpleServiceTest.assertCacheHeaders(response, true);
+	}
 
 	@Test
 	@SuppressWarnings("unchecked")

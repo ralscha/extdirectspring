@@ -17,7 +17,14 @@ package ch.ralscha.extdirectspring.util;
 
 import static org.fest.assertions.Assertions.assertThat;
 
+import java.io.IOException;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Test;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.util.DigestUtils;
 
 /**
  * Tests for {@link ExtDirectSpringUtil}.
@@ -45,4 +52,82 @@ public class ExtDirectSpringUtilTest {
 		assertThat(ExtDirectSpringUtil.equal(null, null)).isTrue();
 	}
 
+	@Test
+	public void testAddCacheHeaders() {
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		ExtDirectSpringUtil.addCacheHeaders(response, "1", null);
+		assertResponse(response, 4, "1", 6);
+
+		response = new MockHttpServletResponse();
+		ExtDirectSpringUtil.addCacheHeaders(response, "2", 1);
+		assertResponse(response, 4, "2", 1);
+
+		response = new MockHttpServletResponse();
+		ExtDirectSpringUtil.addCacheHeaders(response, "3", 12);
+		assertResponse(response, 4, "3", 12);
+	}
+
+	private void assertResponse(MockHttpServletResponse response, int noOfHeaders, String etag, int month) {
+		assertThat(response.getHeaderNames()).hasSize(noOfHeaders);
+		assertThat(response.getHeader("Vary")).isEqualTo("Accept-Encoding");
+		assertThat(response.getHeader("ETag")).isEqualTo(etag);
+		assertThat(response.getHeader("Cache-Control")).isEqualTo("public, max-age=" + (month * 30 * 24 * 60 * 60));
+
+		Long expiresMillis = (Long) response.getHeaderValue("Expires");
+		DateTime expires = new DateTime(expiresMillis, DateTimeZone.UTC);
+		DateTime inSixMonths = DateTime.now(DateTimeZone.UTC).plusSeconds(month * 30 * 24 * 60 * 60);
+		assertThat(expires.getYear()).isEqualTo(inSixMonths.getYear());
+		assertThat(expires.getMonthOfYear()).isEqualTo(inSixMonths.getMonthOfYear());
+		assertThat(expires.getDayOfMonth()).isEqualTo(inSixMonths.getDayOfMonth());
+		assertThat(expires.getHourOfDay()).isEqualTo(inSixMonths.getHourOfDay());
+		assertThat(expires.getMinuteOfDay()).isEqualTo(inSixMonths.getMinuteOfDay());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddCacheHeadersWithNullEtag() {
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		ExtDirectSpringUtil.addCacheHeaders(response, null, null);
+	}
+
+	@Test
+	public void testHandleCacheableResponseWithoutIfNoneMatch() throws IOException {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		byte[] data = "the response data".getBytes();
+		String etag = '"' + DigestUtils.md5DigestAsHex(data) + '"';
+		String contentType = "application/javascript;charset=UTF-8";
+		ExtDirectSpringUtil.handleCacheableResponse(request, response, data, contentType);
+
+		assertThat(response.getStatus()).isEqualTo(200);
+		assertResponse(response, 6, etag, 6);
+		assertThat(response.getContentLength()).isEqualTo(data.length);
+		assertThat(response.getContentType()).isEqualTo(contentType);
+		assertThat(response.getContentAsByteArray()).isEqualTo(data);
+	}
+
+	@Test
+	public void testHandleCacheableResponseWithIfNoneMatch() throws IOException {
+		byte[] data = "the response data".getBytes();
+		String etag = '"' + DigestUtils.md5DigestAsHex(data) + '"';
+		String contentType = "application/javascript;charset=UTF-8";
+
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.addHeader("If-None-Match", etag);
+		MockHttpServletResponse response = new MockHttpServletResponse();
+
+		ExtDirectSpringUtil.handleCacheableResponse(request, response, data, contentType);
+		assertThat(response.getStatus()).isEqualTo(304);
+
+		request = new MockHttpServletRequest();
+		request.addHeader("If-None-Match", etag);
+		response = new MockHttpServletResponse();
+		data = "new response data".getBytes();
+		etag = '"' + DigestUtils.md5DigestAsHex(data) + '"';
+		ExtDirectSpringUtil.handleCacheableResponse(request, response, data, contentType);
+		assertThat(response.getStatus()).isEqualTo(200);
+		assertResponse(response, 6, etag, 6);
+		assertThat(response.getContentLength()).isEqualTo(data.length);
+		assertThat(response.getContentType()).isEqualTo(contentType);
+		assertThat(response.getContentAsByteArray()).isEqualTo(data);
+	}
 }

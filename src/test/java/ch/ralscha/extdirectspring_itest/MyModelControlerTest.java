@@ -16,7 +16,6 @@
 package ch.ralscha.extdirectspring_itest;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.MapAssert.entry;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -38,6 +37,10 @@ import org.apache.http.util.EntityUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import ch.ralscha.extdirectspring.bean.api.Action;
+import ch.ralscha.extdirectspring.bean.api.RemotingApi;
+import ch.ralscha.extdirectspring.controller.ApiControllerTest;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,37 +57,42 @@ public class MyModelControlerTest extends JettyTest {
 		post = new HttpPost("http://localhost:9998/controller/router");
 	}
 
-	@SuppressWarnings("unchecked")
+	private static RemotingApi api() {
+		RemotingApi remotingApi = new RemotingApi("/controller/router", null);
+		remotingApi.addAction("myModelController", new Action("method1", 0, true));
+		remotingApi.addAction("myModelController", new Action("method2", 0, true));
+		remotingApi.addAction("myModelController", new Action("update", 0, true));
+		return remotingApi;
+	}
+
 	@Test
 	public void testApi() throws ClientProtocolException, IOException {
 		HttpGet g = new HttpGet("http://localhost:9998/controller/api.js?group=itest_base");
 		HttpResponse response = client.execute(g);
-
 		String responseString = EntityUtils.toString(response.getEntity());
+		String contentType = response.getFirstHeader("Content-Type").getValue();
+		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS");
+		SimpleServiceTest.assertCacheHeaders(response, false);
+	}
 
-		assertThat(responseString).startsWith("Ext.ns('Ext.app');");
+	@Test
+	public void testApiDebug() throws ClientProtocolException, IOException {
+		HttpGet g = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_base");
+		HttpResponse response = client.execute(g);
+		String responseString = EntityUtils.toString(response.getEntity());
+		String contentType = response.getFirstHeader("Content-Type").getValue();
+		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS");
+		SimpleServiceTest.assertCacheHeaders(response, false);
+	}
 
-		int openBracePos = responseString.indexOf("{");
-		int closeBracePos = responseString.lastIndexOf("}");
-
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> api = mapper
-				.readValue(responseString.substring(openBracePos, closeBracePos + 1), Map.class);
-
-		assertThat(api).hasSize(3);
-		assertThat(api).includes(entry("type", "remoting"));
-		assertThat(api).includes(entry("url", "/controller/router"));
-
-		Map<String, Object> actions = (Map<String, Object>) api.get("actions");
-		assertThat(actions).hasSize(1);
-		List<Map<String, Object>> actionList = (List<Map<String, Object>>) actions.get("myModelController");
-		assertThat(actionList).hasSize(3);
-
-		for (Map<String, Object> map : actionList) {
-			assertThat((Boolean) map.get("formHandler")).isTrue();
-			assertThat((Integer) map.get("len")).isZero();
-			assertThat((String) map.get("name")).isIn("method1", "method2", "update");
-		}
+	@Test
+	public void testApiFingerprinted() throws ClientProtocolException, IOException {
+		HttpGet g = new HttpGet("http://localhost:9998/controller/api-1.1.1.js?group=itest_base");
+		HttpResponse response = client.execute(g);
+		String responseString = EntityUtils.toString(response.getEntity());
+		String contentType = response.getFirstHeader("Content-Type").getValue();
+		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS");
+		SimpleServiceTest.assertCacheHeaders(response, true);
 	}
 
 	@Test
