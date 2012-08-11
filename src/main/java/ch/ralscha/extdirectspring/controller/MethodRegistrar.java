@@ -61,7 +61,7 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 				ExtDirectMethod directMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 				final String beanMethodName = beanName + "." + method.getName();
 				if (directMethodAnnotation.value().isValid(beanMethodName, userType, method)) {
-					MethodInfoCache.INSTANCE.put(beanName, handlerType, method);
+					MethodInfoCache.INSTANCE.put(beanName, handlerType, method, event.getApplicationContext());
 
 					if (log.isDebugEnabled()) {
 						String info = "Register " + beanMethodName + "(" + directMethodAnnotation.value();

@@ -48,7 +48,7 @@ public class MethodInfoCacheTest {
 		assertThat(MethodInfoCache.INSTANCE).isNotNull();
 		Method thisMethod = getClass().getMethod("testPutAndGet", null);
 
-		MethodInfoCache.INSTANCE.put("methodCacheTest", getClass(), thisMethod);
+		MethodInfoCache.INSTANCE.put("methodCacheTest", getClass(), thisMethod, null);
 		assertThat(MethodInfoCache.INSTANCE.get("methodCacheTest", "testPu")).isNull();
 		assertThat(MethodInfoCache.INSTANCE.get("methodCacheTes", "testPut")).isNull();
 		assertThat(MethodInfoCache.INSTANCE.get("methodCacheTest", "testPutAndGet").getMethod()).isEqualTo(thisMethod);

@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.springframework.context.ApplicationContext;
+
 /**
  * A simple cache for methods with key beanName/methodName
  * 
@@ -46,9 +48,10 @@ public enum MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, M
 	 * @param beanName the name of the bean
 	 * @param clazz the class of the bean
 	 * @param method the method
+	 * @param context the Spring application context
 	 */
-	public void put(String beanName, Class<?> clazz, Method method) {
-		MethodInfo info = new MethodInfo(clazz, beanName, method);
+	public void put(String beanName, Class<?> clazz, Method method, ApplicationContext context) {
+		MethodInfo info = new MethodInfo(clazz, context, beanName, method);
 		cache.put(new Key(beanName, method.getName()), info);
 	}
 

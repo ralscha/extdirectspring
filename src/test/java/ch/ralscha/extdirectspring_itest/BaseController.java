@@ -25,15 +25,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
+import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResponse;
 
 public abstract class BaseController<T> {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_base")
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public void update(HttpServletRequest request, HttpServletResponse response,
-			@SuppressWarnings("unused") @Valid final T model, BindingResult result) {
-		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();
+	// @RequestMapping(value = "/update", method = RequestMethod.POST)
+	public ExtDirectFormPostResponse update(@SuppressWarnings("unused") @Valid final T model, BindingResult result) {
+
+		return new ExtDirectFormPostResponse(result);
 	}
 
 	public abstract void method1(HttpServletRequest request, HttpServletResponse response, @Valid T model,

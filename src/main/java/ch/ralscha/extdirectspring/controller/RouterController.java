@@ -37,15 +37,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.util.WebUtils;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.BaseResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
+import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
@@ -93,6 +98,9 @@ public class RouterController implements InitializingBean {
 	@Autowired
 	private ParametersResolver parametersResolver;
 
+	@Autowired
+	private RequestMappingHandlerAdapter handlerAdapter;
+
 	public Configuration getConfiguration() {
 		return configuration;
 	}
@@ -115,9 +123,9 @@ public class RouterController implements InitializingBean {
 	}
 
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
-	public void poll(@PathVariable("beanName") final String beanName, @PathVariable("method") final String method,
-			@PathVariable("event") final String event, HttpServletRequest request, final HttpServletResponse response,
-			Locale locale) throws Exception {
+	public void poll(@PathVariable("beanName") String beanName, @PathVariable("method") String method,
+			@PathVariable("event") String event, HttpServletRequest request, HttpServletResponse response, Locale locale)
+			throws Exception {
 
 		ExtDirectPollResponse directPollResponse = new ExtDirectPollResponse();
 		directPollResponse.setName(event);
@@ -180,24 +188,51 @@ public class RouterController implements InitializingBean {
 		}
 
 		writeJsonResponse(response, directPollResponse, streamResponse);
-
 	}
 
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "extAction")
 	public String router(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("extAction") final String extAction, @RequestParam("extMethod") final String extMethod)
+			@RequestParam("extAction") String extAction, @RequestParam("extMethod") String extMethod)
 			throws IOException {
 
+		ExtDirectResponse directResponse = new ExtDirectResponse(request);
 		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(extAction, extMethod);
+		boolean streamResponse = configuration.isStreamResponse() || methodInfo.isStreamResponse();
 
 		if (methodInfo != null && methodInfo.getForwardPath() != null) {
 			return methodInfo.getForwardPath();
-		}
+		} else if (methodInfo != null && methodInfo.getHandlerMethod() != null) {
+			HandlerMethod handlerMethod = methodInfo.getHandlerMethod();
+			try {
 
-		log.error("Error invoking method '" + extAction + "." + extMethod + "'. Method  or Bean not found");
-		ExtDirectResponse directResponse = new ExtDirectResponse(request);
-		handleMethodNotFoundError(directResponse, extAction, extMethod);
-		writeJsonResponse(response, directResponse, configuration.isStreamResponse());
+				ModelAndView modelAndView = null;
+
+				if (configuration.isSynchronizeOnSession() || methodInfo.isSynchronizeOnSession()) {
+					HttpSession session = request.getSession(false);
+					if (session != null) {
+						Object mutex = WebUtils.getSessionMutex(session);
+						synchronized (mutex) {
+							modelAndView = handlerAdapter.handle(request, response, handlerMethod);
+						}
+					} else {
+						modelAndView = handlerAdapter.handle(request, response, handlerMethod);
+					}
+				} else {
+					modelAndView = handlerAdapter.handle(request, response, handlerMethod);
+				}
+
+				ExtDirectFormPostResponse formPostResponse = (ExtDirectFormPostResponse) modelAndView.getModel().get(
+						"extDirectFormPostResponse");
+				directResponse.setResult(formPostResponse.getResult());
+			} catch (Exception e) {
+				log.error("Error calling method: " + extMethod, e.getCause() != null ? e.getCause() : e);
+				handleException(directResponse, e);
+			}
+		} else {
+			log.error("Error invoking method '" + extAction + "." + extMethod + "'. Method  or Bean not found");
+			handleMethodNotFoundError(directResponse, extAction, extMethod);
+		}
+		writeJsonResponse(response, directResponse, streamResponse, ExtDirectSpringUtil.isMultipart(request));
 
 		return null;
 	}
@@ -274,31 +309,55 @@ public class RouterController implements InitializingBean {
 		writeJsonResponse(response, directResponses, streamResponse);
 	}
 
-	public void writeJsonResponse(HttpServletResponse response, Object responseObject, final boolean streamResponse)
+	public void writeJsonResponse(HttpServletResponse response, Object responseObject, boolean streamResponse)
 			throws IOException, JsonGenerationException, JsonMappingException {
-		response.setContentType(APPLICATION_JSON.toString());
-		response.setCharacterEncoding(APPLICATION_JSON.getCharSet().name());
-
-		final ObjectMapper objectMapper = jsonHandler.getMapper();
-		final ServletOutputStream outputStream = response.getOutputStream();
-
-		if (!streamResponse) {
-			ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
-			JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(bos, JsonEncoding.UTF8);
-			objectMapper.writeValue(jsonGenerator, responseObject);
-			response.setContentLength(bos.size());
-			outputStream.write(bos.toByteArray());
-		} else {
-			JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(outputStream,
-					JsonEncoding.UTF8);
-			objectMapper.writeValue(jsonGenerator, responseObject);
-		}
-
-		outputStream.flush();
+		writeJsonResponse(response, responseObject, streamResponse, false);
 	}
 
-	private Object processRemotingRequest(HttpServletRequest request, HttpServletResponse response,
-			final Locale locale, ExtDirectRequest directRequest, MethodInfo methodInfo) throws Exception {
+	public void writeJsonResponse(HttpServletResponse response, Object responseObject, boolean streamResponse,
+			boolean isMultipart) throws IOException, JsonGenerationException, JsonMappingException {
+
+		if (isMultipart) {
+			response.setContentType(RouterController.TEXT_HTML.toString());
+			response.setCharacterEncoding(RouterController.TEXT_HTML.getCharSet().name());
+
+			ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
+			bos.write("<html><body><textarea>".getBytes("UTF-8"));
+
+			String responseJson = jsonHandler.getMapper().writeValueAsString(responseObject);
+
+			responseJson = responseJson.replace("&quot;", "\\&quot;");
+			bos.write(responseJson.getBytes("UTF-8"));
+			bos.write("</textarea></body></html>".getBytes("UTF-8"));
+
+			response.setContentLength(bos.size());
+			FileCopyUtils.copy(bos.toByteArray(), response.getOutputStream());
+		} else {
+
+			response.setContentType(APPLICATION_JSON.toString());
+			response.setCharacterEncoding(APPLICATION_JSON.getCharSet().name());
+
+			ObjectMapper objectMapper = jsonHandler.getMapper();
+			ServletOutputStream outputStream = response.getOutputStream();
+
+			if (!streamResponse) {
+				ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
+				JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(bos, JsonEncoding.UTF8);
+				objectMapper.writeValue(jsonGenerator, responseObject);
+				response.setContentLength(bos.size());
+				outputStream.write(bos.toByteArray());
+			} else {
+				JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(outputStream,
+						JsonEncoding.UTF8);
+				objectMapper.writeValue(jsonGenerator, responseObject);
+			}
+
+			outputStream.flush();
+		}
+	}
+
+	private Object processRemotingRequest(HttpServletRequest request, HttpServletResponse response, Locale locale,
+			ExtDirectRequest directRequest, MethodInfo methodInfo) throws Exception {
 
 		Object[] parameters = parametersResolver
 				.resolveParameters(request, response, locale, directRequest, methodInfo);

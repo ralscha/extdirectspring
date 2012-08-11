@@ -16,39 +16,35 @@
 package ch.ralscha.extdirectspring_itest;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
+import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResponse;
 
-@Controller
-@RequestMapping("/user")
+//@Controller
+//@RequestMapping("/user")
+@Service
 public class UserController {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_user")
-	@RequestMapping(method = RequestMethod.POST)
-	public void updateUser(HttpServletRequest request, HttpServletResponse response, @Valid final User user,
-			BindingResult result) {
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request, response);
+	// @RequestMapping(method = RequestMethod.POST)
+	public ExtDirectFormPostResponse updateUser(HttpServletRequest request, @Valid final User user, BindingResult result) {
 
 		if (request.getParameter("addemailerror") != null) {
 			result.rejectValue("email", "", "another email error");
 			result.rejectValue("name", "", "a name error");
 		}
 
-		builder.addErrors(result);
+		ExtDirectFormPostResponse edfpResponse = new ExtDirectFormPostResponse(result);
 
-		builder.addResultProperty("name", user.getName());
-		builder.addResultProperty("age", user.getAge());
+		edfpResponse.addResultProperty("name", user.getName());
+		edfpResponse.addResultProperty("age", user.getAge());
 
-		builder.buildAndWrite();
+		return edfpResponse;
 	}
 
 }

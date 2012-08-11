@@ -56,6 +56,14 @@ public final class ExtDirectSpringUtil {
 		return a == b || (a != null && a.equals(b));
 	}
 
+	public static boolean isMultipart(HttpServletRequest request) {
+		if (!"post".equals(request.getMethod().toLowerCase())) {
+			return false;
+		}
+		String contentType = request.getContentType();
+		return (contentType != null && contentType.toLowerCase().startsWith("multipart/"));
+	}
+
 	/**
 	 * Invokes a method on a Spring managed bean.
 	 * 

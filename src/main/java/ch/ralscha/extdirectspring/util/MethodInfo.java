@@ -20,9 +20,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.method.HandlerMethod;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
@@ -51,13 +53,15 @@ public final class MethodInfo {
 
 	private String forwardPath;
 
+	private HandlerMethod handlerMethod;
+
 	private Class<?> collectionType;
 
 	private Action action;
 
 	private PollingProvider pollingProvider;
 
-	public MethodInfo(Class<?> clazz, String beanName, Method method) {
+	public MethodInfo(Class<?> clazz, ApplicationContext context, String beanName, Method method) {
 
 		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 		this.type = extDirectMethodAnnotation.value();
@@ -113,6 +117,8 @@ public final class MethodInfo {
 					}
 					this.forwardPath = "forward:" + path;
 				}
+			} else {
+				this.handlerMethod = new HandlerMethod(beanName, context, method).createWithResolvedBean();
 			}
 
 		}
@@ -179,6 +185,10 @@ public final class MethodInfo {
 
 	public String getForwardPath() {
 		return forwardPath;
+	}
+
+	public HandlerMethod getHandlerMethod() {
+		return handlerMethod;
 	}
 
 	public List<ParameterInfo> getParameters() {
