@@ -65,7 +65,7 @@ public class ExtDirectRawJsonStoreResponse extends ExtDirectStoreResponse<String
 	private final static class CollectionStringSerializer extends JsonSerializer<Collection<String>> {
 
 		@Override
-		public void serialize(Collection<String> values, JsonGenerator jgen, final SerializerProvider provider)
+		public void serialize(Collection<String> values, JsonGenerator jgen, SerializerProvider provider)
 				throws IOException, JsonProcessingException {
 
 			StringBuilder sb = new StringBuilder();
