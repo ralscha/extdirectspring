@@ -87,8 +87,8 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public long method6(HttpServletResponse response, HttpServletRequest request, final HttpSession session,
-			Locale locale, Principal principal) {
+	public long method6(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale,
+			Principal principal) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
@@ -98,7 +98,7 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public String method7(boolean flag, char aCharacter, Workflow workflow, int aInt, final long aLong, double aDouble,
+	public String method7(boolean flag, char aCharacter, Workflow workflow, int aInt, long aLong, double aDouble,
 			float aFloat, short aShort, byte aByte) {
 		assertThat(flag).isTrue();
 		assertThat(aCharacter).isEqualTo('c');
@@ -125,8 +125,8 @@ public class RemoteProviderSimpleNamed {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public String method10(boolean flag, HttpServletResponse response, char aCharacter,
-			final HttpServletRequest request, short aShort, byte aByte, Workflow workflow, final HttpSession session,
-			int aInt, long aLong, Locale locale, double aDouble, final float aFloat, Principal principal) {
+			final HttpServletRequest request, short aShort, byte aByte, Workflow workflow, HttpSession session,
+			int aInt, long aLong, Locale locale, double aDouble, float aFloat, Principal principal) {
 
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
@@ -147,10 +147,9 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public Map<String, Object> method11(@DateTimeFormat(iso = ISO.DATE_TIME) final Date endDate,
-			final String normalParameter, HttpServletRequest request,
-			@DateTimeFormat(iso = ISO.DATE) final LocalDate aDate,
-			@NumberFormat(style = NumberFormat.Style.PERCENT) final BigDecimal percent) {
+	public Map<String, Object> method11(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
+			final String normalParameter, HttpServletRequest request, @DateTimeFormat(iso = ISO.DATE) LocalDate aDate,
+			@NumberFormat(style = NumberFormat.Style.PERCENT) BigDecimal percent) {
 
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("endDate", endDate);
@@ -162,26 +161,25 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public ResultObject methodRP1(@RequestParam(value = "lastName") final String name,
-			@RequestParam(value = "theAge") final Integer age, Boolean active, HttpServletRequest request) {
+	public ResultObject methodRP1(@RequestParam(value = "lastName") String name,
+			@RequestParam(value = "theAge") Integer age, Boolean active, HttpServletRequest request) {
 		assertThat(request).isNotNull();
 		return new ResultObject(name, age, active);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public ResultObject methodRP2(HttpSession session,
-			@RequestParam(value = "lastName", required = false, defaultValue = "myName") final String name,
-			@RequestParam(value = "theAge", defaultValue = "20") final Integer age,
-			@RequestParam(defaultValue = "true") final Boolean active) {
+			@RequestParam(value = "lastName", required = false, defaultValue = "myName") String name,
+			@RequestParam(value = "theAge", defaultValue = "20") Integer age,
+			@RequestParam(defaultValue = "true") Boolean active) {
 		assertThat(session).isNotNull();
 		return new ResultObject(name, age, active);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public ResultObject methodRP3(HttpSession session,
-			@RequestParam(value = "lastName", required = false) final String name,
-			@RequestParam(value = "theAge", required = false) final Integer age,
-			@RequestParam(required = false) final Boolean active) {
+	public ResultObject methodRP3(HttpSession session, @RequestParam(value = "lastName", required = false) String name,
+			@RequestParam(value = "theAge", required = false) Integer age,
+			@RequestParam(required = false) Boolean active) {
 		assertThat(session).isNotNull();
 		return new ResultObject(name, age, active);
 	}

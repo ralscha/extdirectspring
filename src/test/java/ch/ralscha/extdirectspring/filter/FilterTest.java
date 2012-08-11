@@ -23,12 +23,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.core.convert.support.GenericConversionService;
+import org.springframework.format.support.DefaultFormattingConversionService;
 
 public class FilterTest {
 
-	private static final GenericConversionService genericConversionService = new DefaultConversionService();
+	private static final GenericConversionService genericConversionService = new DefaultFormattingConversionService();
 
 	@Test
 	public void testNumericFilter() {

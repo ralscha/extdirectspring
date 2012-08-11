@@ -35,7 +35,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 public class RemoteProviderFormLoad {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3", event = "test")
-	public FormInfo method1(@RequestParam(value = "d") final double d) {
+	public FormInfo method1(@RequestParam(value = "d") double d) {
 		FormInfo info = new FormInfo();
 		info.setBack(d);
 		info.setAdmin(true);
@@ -52,22 +52,21 @@ public class RemoteProviderFormLoad {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-	public FormInfo method3(HttpServletResponse response, HttpServletRequest request, final HttpSession session,
-			Locale locale) {
+	public FormInfo method3(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale) {
 		FormInfo fi = new FormInfo();
 		fi.setResult((response != null) + ";" + (request != null) + ";" + (session != null) + ";" + locale);
 		return fi;
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-	public FormInfo method4(Locale locale, @RequestParam(value = "id") final int id) {
+	public FormInfo method4(Locale locale, @RequestParam(value = "id") int id) {
 		FormInfo fi = new FormInfo();
 		fi.setResult("id=" + id + ";" + locale);
 		return fi;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3", entryClass = String.class)
-	public ExtDirectFormLoadResult method5(@RequestParam(value = "id", defaultValue = "1") final int id,
+	public ExtDirectFormLoadResult method5(@RequestParam(value = "id", defaultValue = "1") int id,
 			final HttpServletRequest servletRequest) {
 		FormInfo fi = new FormInfo();
 		fi.setResult(id + ";" + (servletRequest != null));
@@ -75,7 +74,7 @@ public class RemoteProviderFormLoad {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-	public ExtDirectFormLoadResult method6(@RequestParam(value = "id", required = false) final Integer id) {
+	public ExtDirectFormLoadResult method6(@RequestParam(value = "id", required = false) Integer id) {
 		return new ExtDirectFormLoadResult("TEST:" + id);
 	}
 

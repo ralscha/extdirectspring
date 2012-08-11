@@ -34,7 +34,7 @@ public final class ApiCacheKey {
 
 	private final boolean debug;
 
-	public ApiCacheKey(String apiNs, String actionNs, String remotingApiVar, final String pollingUrlsVar, String group,
+	public ApiCacheKey(String apiNs, String actionNs, String remotingApiVar, String pollingUrlsVar, String group,
 			boolean debug) {
 		this.apiNs = apiNs;
 		this.actionNs = actionNs;

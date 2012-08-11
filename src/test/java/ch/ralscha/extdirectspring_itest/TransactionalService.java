@@ -30,7 +30,7 @@ public class TransactionalService {
 
 	@ExtDirectMethod(group = "transactional")
 	@Transactional
-	public String setDate(String id, @DateTimeFormat(pattern = "dd/MM/yyyy") final Date date) {
+	public String setDate(String id, @DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
 		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		return id + "," + dateFormat.format(date);
 	}

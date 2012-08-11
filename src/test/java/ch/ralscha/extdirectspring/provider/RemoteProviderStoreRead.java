@@ -69,7 +69,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
-	public List<Row> method3(HttpServletResponse response, HttpServletRequest request, final HttpSession session,
+	public List<Row> method3(HttpServletResponse response, HttpServletRequest request, HttpSession session,
 			Locale locale) {
 		return createRows(":" + (response != null) + ";" + (request != null) + ";" + (session != null) + ";" + locale);
 	}
@@ -81,7 +81,7 @@ public class RemoteProviderStoreRead {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group3")
 	public ExtDirectStoreResponse<Row> method5(ExtDirectStoreReadRequest request, Locale locale,
-			@RequestParam(value = "id") final int id) {
+			@RequestParam(value = "id") int id) {
 		assertThat(id).isEqualTo(10);
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
@@ -92,7 +92,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
-	public ExtDirectStoreResponse<Row> method6(@RequestParam(value = "id", defaultValue = "1") final int id,
+	public ExtDirectStoreResponse<Row> method6(@RequestParam(value = "id", defaultValue = "1") int id,
 			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
@@ -100,7 +100,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
-	public List<Row> method7(@RequestParam(value = "id", required = false) final Integer id) {
+	public List<Row> method7(@RequestParam(value = "id", required = false) Integer id) {
 		if (id == null) {
 			assertThat(id).isNull();
 		} else {
@@ -110,7 +110,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
-	public ExtDirectStoreResponse<Row> method8(@DateTimeFormat(iso = ISO.DATE_TIME) final Date endDate,
+	public ExtDirectStoreResponse<Row> method8(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
 			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(endDate).isNotNull();
 		assertThat(servletRequest).isNotNull();
@@ -287,7 +287,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
-	public List<Row> methodFilter(@RequestParam("type") final int type, ExtDirectStoreReadRequest request) {
+	public List<Row> methodFilter(@RequestParam("type") int type, ExtDirectStoreReadRequest request) {
 
 		List<Filter> filters = new ArrayList<Filter>(request.getFilters());
 		switch (type) {

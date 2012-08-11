@@ -49,7 +49,7 @@ public class FormInfoController2 {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
-	public void invalidMethod(Locale locale, HttpServletRequest request, final HttpServletResponse response,
+	public void invalidMethod(Locale locale, HttpServletRequest request, HttpServletResponse response,
 			FormInfo formInfo, BindingResult result) {
 		// dummy test method
 	}

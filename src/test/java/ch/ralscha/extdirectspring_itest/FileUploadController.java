@@ -38,8 +38,8 @@ public class FileUploadController {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_upload", event = "test", entryClass = String.class, synchronizeOnSession = true)
 	@RequestMapping(value = "/test", method = RequestMethod.POST)
-	public void uploadTest(HttpServletRequest request, @RequestParam("fileUpload") final MultipartFile file,
-			final HttpServletResponse response, @Valid final User user, BindingResult result) throws IOException {
+	public void uploadTest(HttpServletRequest request, @RequestParam("fileUpload") MultipartFile file,
+			final HttpServletResponse response, @Valid User user, BindingResult result) throws IOException {
 
 		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request, response);
 

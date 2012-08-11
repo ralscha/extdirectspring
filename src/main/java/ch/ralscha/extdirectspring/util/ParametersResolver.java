@@ -72,7 +72,7 @@ public final class ParametersResolver implements InitializingBean {
 	}
 
 	@SuppressWarnings({ "unchecked" })
-	public Object[] resolveParameters(HttpServletRequest request, HttpServletResponse response, final Locale locale,
+	public Object[] resolveParameters(HttpServletRequest request, HttpServletResponse response, Locale locale,
 			ExtDirectRequest directRequest, MethodInfo methodInfo) throws Exception {
 
 		int jsonParamIndex = 0;
@@ -247,7 +247,7 @@ public final class ParametersResolver implements InitializingBean {
 		return value;
 	}
 
-	private Map<String, Object> fillReadRequestFromMap(ExtDirectStoreReadRequest to, final Map<String, Object> from) {
+	private Map<String, Object> fillReadRequestFromMap(ExtDirectStoreReadRequest to, Map<String, Object> from) {
 		Set<String> foundParameters = new HashSet<String>();
 
 		for (Entry<String, Object> entry : from.entrySet()) {

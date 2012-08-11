@@ -43,9 +43,9 @@ public final class MethodInfo {
 
 	private final ExtDirectMethodType type;
 
-	private boolean synchronizeOnSession;
+	private final boolean synchronizeOnSession;
 
-	private boolean streamResponse;
+	private final boolean streamResponse;
 
 	private List<ParameterInfo> parameters;
 
@@ -64,6 +64,7 @@ public final class MethodInfo {
 	public MethodInfo(Class<?> clazz, ApplicationContext context, String beanName, Method method) {
 
 		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+
 		this.type = extDirectMethodAnnotation.value();
 
 		if (StringUtils.hasText(extDirectMethodAnnotation.group())) {
@@ -72,11 +73,11 @@ public final class MethodInfo {
 			this.group = null;
 		}
 
+		this.synchronizeOnSession = extDirectMethodAnnotation.synchronizeOnSession();
+		this.streamResponse = extDirectMethodAnnotation.streamResponse();
+
 		if (type != ExtDirectMethodType.FORM_POST) {
 			this.method = method;
-			this.synchronizeOnSession = extDirectMethodAnnotation.synchronizeOnSession();
-			this.streamResponse = extDirectMethodAnnotation.streamResponse();
-
 			this.parameters = buildParameterList(method);
 
 			this.collectionType = (extDirectMethodAnnotation.entryClass() == Object.class) ? null
@@ -90,11 +91,10 @@ public final class MethodInfo {
 					}
 				}
 			}
-
 		} else {
-			RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-			if (methodAnnotation != null) {
+			if (method.getReturnType().equals(Void.TYPE)) {
 
+				RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
 				RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
 
 				String path = null;
@@ -120,7 +120,6 @@ public final class MethodInfo {
 			} else {
 				this.handlerMethod = new HandlerMethod(beanName, context, method).createWithResolvedBean();
 			}
-
 		}
 
 		switch (type) {
@@ -155,6 +154,7 @@ public final class MethodInfo {
 			this.pollingProvider = new PollingProvider(beanName, method.getName(), extDirectMethodAnnotation.event());
 			break;
 		}
+
 	}
 
 	private boolean hasValue(RequestMapping requestMapping) {

@@ -101,20 +101,19 @@ public class RemoteProviderTreeLoad {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "group1", event = "test")
-	public List<Node> method1(@RequestParam("node") final String node) {
+	public List<Node> method1(@RequestParam("node") String node) {
 		return createTreeList(node);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, entryClass = String.class)
-	public List<Node> method2(@RequestParam("node") final String node,
-			@RequestParam(defaultValue = "defaultValue") final String foo,
-			@DateTimeFormat(iso = ISO.DATE) final LocalDate today) {
+	public List<Node> method2(@RequestParam("node") String node,
+			@RequestParam(defaultValue = "defaultValue") String foo, @DateTimeFormat(iso = ISO.DATE) LocalDate today) {
 		return createTreeList(node, ":" + foo + ";" + today.toString());
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "group3")
-	public List<Node> method3(@RequestParam("node") final String node, HttpServletResponse response,
-			final HttpServletRequest request, @RequestParam(defaultValue = "defaultValue") final String foo,
+	public List<Node> method3(@RequestParam("node") String node, HttpServletResponse response,
+			final HttpServletRequest request, @RequestParam(defaultValue = "defaultValue") String foo,
 			final HttpSession session, Locale locale, Principal principal) {
 
 		return createTreeList(node, ":" + foo + ";" + (response != null) + ";" + (request != null) + ";"
@@ -122,22 +121,22 @@ public class RemoteProviderTreeLoad {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.TREE_LOAD)
-	public List<Node> method4(@RequestParam("node") final String node, HttpServletResponse response,
-			@RequestHeader final Boolean aHeader, HttpServletRequest request) {
+	public List<Node> method4(@RequestParam("node") String node, HttpServletResponse response,
+			@RequestHeader Boolean aHeader, HttpServletRequest request) {
 
 		return createTreeList(node, ":" + aHeader + ";" + (response != null) + ";" + (request != null));
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.TREE_LOAD)
-	public Node[] method5(@RequestParam("node") final String node, HttpServletResponse response,
-			@RequestHeader final Boolean aHeader, HttpServletRequest request) {
+	public Node[] method5(@RequestParam("node") String node, HttpServletResponse response,
+			@RequestHeader Boolean aHeader, HttpServletRequest request) {
 
 		List<Node> result = createTreeList(node, ":" + aHeader + ";" + (response != null) + ";" + (request != null));
 		return result.toArray(new Node[result.size()]);
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.TREE_LOAD)
-	public Node method6(@RequestParam("node") final String node, HttpServletResponse response,
+	public Node method6(@RequestParam("node") String node, HttpServletResponse response,
 			final HttpServletRequest request) {
 
 		List<Node> result = createTreeList(node, ";" + (response != null) + ";" + (request != null));

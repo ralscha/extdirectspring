@@ -41,7 +41,7 @@ public class RemoteProviderStoreModifySingle {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public Row create2(Row row, HttpServletResponse response, HttpServletRequest request, final HttpSession session,
+	public Row create2(Row row, HttpServletResponse response, HttpServletRequest request, HttpSession session,
 			Locale locale) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
@@ -57,14 +57,14 @@ public class RemoteProviderStoreModifySingle {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public Row update2(Locale locale, @RequestParam(value = "aParam") final int aParam, Row row) {
+	public Row update2(Locale locale, @RequestParam(value = "aParam") int aParam, Row row) {
 		assertThat(aParam).isEqualTo(42);
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 		return row;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public Row update3(Row row, @RequestParam(value = "aParam", defaultValue = "1") final int aParam,
+	public Row update3(Row row, @RequestParam(value = "aParam", defaultValue = "1") int aParam,
 			final HttpServletRequest servletRequest) {
 		assertThat(aParam).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
@@ -72,8 +72,8 @@ public class RemoteProviderStoreModifySingle {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group2")
-	public Row update4(@RequestParam(value = "aParam", required = false) final Integer aParam,
-			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) final LocalDate yesterday, Row row) {
+	public Row update4(@RequestParam(value = "aParam", required = false) Integer aParam,
+			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate yesterday, Row row) {
 
 		if (aParam == null) {
 			assertThat(aParam).isNull();
