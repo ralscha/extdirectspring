@@ -34,6 +34,9 @@ public class SortInfo {
 		this.direction = direction;
 	}
 
+	/**
+	 * @return the property/field on which to sort
+	 */
 	public String getProperty() {
 		return property;
 	}

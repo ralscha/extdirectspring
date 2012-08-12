@@ -316,7 +316,7 @@ public class RouterController implements InitializingBean {
 		writeJsonResponse(response, directResponses, streamResponse);
 	}
 
-	public void writeJsonResponse(HttpServletResponse response, Object responseObject, boolean streamResponse)
+	private void writeJsonResponse(HttpServletResponse response, Object responseObject, boolean streamResponse)
 			throws IOException, JsonGenerationException, JsonMappingException {
 		writeJsonResponse(response, responseObject, streamResponse, false);
 	}

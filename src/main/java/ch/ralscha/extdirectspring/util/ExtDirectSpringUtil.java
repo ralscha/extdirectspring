@@ -56,6 +56,12 @@ public final class ExtDirectSpringUtil {
 		return a == b || (a != null && a.equals(b));
 	}
 
+	/**
+	 * Checks if the request is a multipart request
+	 * 
+	 * @param request the HTTP servlet request
+	 * @return true if request is a Multipart request (file upload)
+	 */
 	public static boolean isMultipart(HttpServletRequest request) {
 		if (!"post".equals(request.getMethod().toLowerCase())) {
 			return false;
@@ -95,6 +101,12 @@ public final class ExtDirectSpringUtil {
 		return invoke(context, directRequest.getAction(), methodInfo, resolvedParams);
 	}
 
+	/**
+	 * Converts a stacktrace into a String
+	 * 
+	 * @param t a Throwable
+	 * @return the whole stacktrace in a String
+	 */
 	public static String getStackTrace(Throwable t) {
 		StringWriter sw = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw, true);

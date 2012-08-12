@@ -33,6 +33,15 @@ import org.springframework.web.method.HandlerMethodSelector;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
 
+/**
+ * Spring application listener that listens for ContextRefreshedEvent events. If
+ * such an event is received the listener will scan for ExtDirectMethod
+ * annotated methods in the current ApplicationContext. Found methods will be
+ * cached in the {@link MethodInfoCache}. The class also reports warnings and
+ * errors of misconfigured methods.
+ * 
+ * @author Ralph Schaer
+ */
 @Service
 public class MethodRegistrar implements ApplicationListener<ContextRefreshedEvent> {
 

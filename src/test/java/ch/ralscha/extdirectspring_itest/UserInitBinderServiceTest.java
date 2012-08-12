@@ -95,7 +95,6 @@ public class UserInitBinderServiceTest extends JettyTest {
 		assertThat(result.get("success")).isEqualTo(true);
 	}
 
-
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testPostWithDate() throws ClientProtocolException, IOException {
