@@ -24,7 +24,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResponse;
 @Service
 public class InfoService {
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_info_service")
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_info_service", streamResponse = true)
 	public ExtDirectFormPostResponse updateInfo(Info info) {
 		ExtDirectFormPostResponse resp = new ExtDirectFormPostResponse();
 		resp.addResultProperty("user-name-lower-case", info.getUserName().toLowerCase());
