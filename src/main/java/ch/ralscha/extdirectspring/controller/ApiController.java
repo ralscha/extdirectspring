@@ -93,6 +93,7 @@ public class ApiController {
 			byte[] outputBytes = apiString.getBytes("UTF-8");
 			response.setContentLength(outputBytes.length);
 
+			@SuppressWarnings("resource")
 			ServletOutputStream outputStream = response.getOutputStream();
 			outputStream.write(outputBytes);
 			outputStream.flush();
@@ -115,6 +116,7 @@ public class ApiController {
 			byte[] outputBytes = apiString.getBytes("UTF-8");
 			response.setContentLength(outputBytes.length);
 
+			@SuppressWarnings("resource")
 			ServletOutputStream outputStream = response.getOutputStream();
 			outputStream.write(outputBytes);
 			outputStream.flush();
@@ -291,7 +293,7 @@ public class ApiController {
 
 	}
 
-	private void buildRemotingApi(RemotingApi remotingApi, String group) {
+	private static void buildRemotingApi(RemotingApi remotingApi, String group) {
 
 		for (Map.Entry<MethodInfoCache.Key, MethodInfo> entry : MethodInfoCache.INSTANCE) {
 			MethodInfo methodInfo = entry.getValue();
@@ -305,7 +307,7 @@ public class ApiController {
 		}
 	}
 
-	private boolean isSameGroup(String requestedGroupString, String annotationGroupString) {
+	private static boolean isSameGroup(String requestedGroupString, String annotationGroupString) {
 		if (requestedGroupString != null) {
 			if (annotationGroupString != null) {
 				for (String requestedGroup : requestedGroupString.split(",")) {
