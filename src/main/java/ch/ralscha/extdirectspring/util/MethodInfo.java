@@ -153,11 +153,13 @@ public final class MethodInfo {
 		case POLL:
 			this.pollingProvider = new PollingProvider(beanName, method.getName(), extDirectMethodAnnotation.event());
 			break;
+		default:
+			throw new IllegalStateException("ExtDirectMethodType: " + type + " does not exists");
 		}
 
 	}
 
-	private boolean hasValue(RequestMapping requestMapping) {
+	private static boolean hasValue(RequestMapping requestMapping) {
 		return (requestMapping != null && requestMapping.value() != null && requestMapping.value().length > 0 && StringUtils
 				.hasText(requestMapping.value()[0]));
 	}
