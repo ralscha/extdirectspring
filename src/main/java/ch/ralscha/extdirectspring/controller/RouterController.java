@@ -198,11 +198,13 @@ public class RouterController implements InitializingBean {
 
 		ExtDirectResponse directResponse = new ExtDirectResponse(request);
 		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(extAction, extMethod);
-		boolean streamResponse = configuration.isStreamResponse() || methodInfo.isStreamResponse();
+		boolean streamResponse;
 
 		if (methodInfo != null && methodInfo.getForwardPath() != null) {
 			return methodInfo.getForwardPath();
 		} else if (methodInfo != null && methodInfo.getHandlerMethod() != null) {
+			streamResponse = configuration.isStreamResponse() || methodInfo.isStreamResponse();
+
 			HandlerMethod handlerMethod = methodInfo.getHandlerMethod();
 			try {
 
@@ -233,6 +235,7 @@ public class RouterController implements InitializingBean {
 				directResponse.setResult(result);
 			}
 		} else {
+			streamResponse = configuration.isStreamResponse();
 			log.error("Error invoking method '" + extAction + "." + extMethod + "'. Method  or Bean not found");
 			handleMethodNotFoundError(directResponse, extAction, extMethod);
 		}
@@ -241,7 +244,6 @@ public class RouterController implements InitializingBean {
 		return null;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction")
 	public void router(HttpServletRequest request, HttpServletResponse response, Locale locale) throws IOException {
 
@@ -251,7 +253,7 @@ public class RouterController implements InitializingBean {
 		if (requestData instanceof Map) {
 			directRequests.add(jsonHandler.convertValue(requestData, ExtDirectRequest.class));
 		} else if (requestData instanceof List) {
-			for (Object oneRequest : (List) requestData) {
+			for (Object oneRequest : (List<?>) requestData) {
 				directRequests.add(jsonHandler.convertValue(oneRequest, ExtDirectRequest.class));
 			}
 		}
@@ -282,9 +284,9 @@ public class RouterController implements InitializingBean {
 								&& !ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())
 								&& configuration.isAlwaysWrapStoreResponse()) {
 							if (result instanceof Collection) {
-								result = new ExtDirectStoreResponse((Collection) result);
+								result = new ExtDirectStoreResponse<Collection<?>>((Collection<?>) result);
 							} else {
-								result = new ExtDirectStoreResponse(result);
+								result = new ExtDirectStoreResponse<Object>(result);
 							}
 						}
 
@@ -342,6 +344,8 @@ public class RouterController implements InitializingBean {
 			response.setCharacterEncoding(APPLICATION_JSON.getCharSet().name());
 
 			ObjectMapper objectMapper = jsonHandler.getMapper();
+
+			@SuppressWarnings("resource")
 			ServletOutputStream outputStream = response.getOutputStream();
 
 			if (!streamResponse) {
@@ -350,10 +354,12 @@ public class RouterController implements InitializingBean {
 				objectMapper.writeValue(jsonGenerator, responseObject);
 				response.setContentLength(bos.size());
 				outputStream.write(bos.toByteArray());
+				jsonGenerator.close();
 			} else {
 				JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(outputStream,
 						JsonEncoding.UTF8);
 				objectMapper.writeValue(jsonGenerator, responseObject);
+				jsonGenerator.close();
 			}
 
 			outputStream.flush();
