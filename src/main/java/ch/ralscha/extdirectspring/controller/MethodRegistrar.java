@@ -72,6 +72,7 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 				if (directMethodAnnotation.value().isValid(beanMethodName, userType, method)) {
 					MethodInfoCache.INSTANCE.put(beanName, handlerType, method, event.getApplicationContext());
 
+					// /CLOVER:OFF
 					if (log.isDebugEnabled()) {
 						String info = "Register " + beanMethodName + "(" + directMethodAnnotation.value();
 						if (StringUtils.hasText(directMethodAnnotation.group())) {
@@ -80,6 +81,7 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 						info += ")";
 						log.debug(info);
 					}
+					// /CLOVER:ON
 				}
 			}
 

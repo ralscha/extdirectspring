@@ -35,7 +35,7 @@ public class FileUploadService {
 	public ExtDirectFormPostResponse uploadTest(@RequestParam("fileUpload") MultipartFile file, @Valid User user,
 			BindingResult result) throws IOException {
 
-		ExtDirectFormPostResponse resp = new ExtDirectFormPostResponse(result);
+		ExtDirectFormPostResponse resp = new ExtDirectFormPostResponse(result, false);
 
 		if (file != null && !file.isEmpty()) {
 			resp.addResultProperty("fileContents", new String(file.getBytes()));

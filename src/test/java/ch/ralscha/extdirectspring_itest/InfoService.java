@@ -26,7 +26,7 @@ public class InfoService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_info_service", streamResponse = true)
 	public ExtDirectFormPostResponse updateInfo(Info info) {
-		ExtDirectFormPostResponse resp = new ExtDirectFormPostResponse();
+		ExtDirectFormPostResponse resp = new ExtDirectFormPostResponse(true);
 		resp.addResultProperty("user-name-lower-case", info.getUserName().toLowerCase());
 		return resp;
 	}
