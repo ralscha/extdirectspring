@@ -244,6 +244,7 @@ public class RouterController implements InitializingBean {
 		return null;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction")
 	public void router(HttpServletRequest request, HttpServletResponse response, Locale locale) throws IOException {
 
@@ -284,9 +285,9 @@ public class RouterController implements InitializingBean {
 								&& !ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())
 								&& configuration.isAlwaysWrapStoreResponse()) {
 							if (result instanceof Collection) {
-								result = new ExtDirectStoreResponse<Collection<?>>((Collection<?>) result);
+								result = new ExtDirectStoreResponse((Collection) result);
 							} else {
-								result = new ExtDirectStoreResponse<Object>(result);
+								result = new ExtDirectStoreResponse(result);
 							}
 						}
 
