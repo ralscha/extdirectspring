@@ -20,7 +20,6 @@ import java.util.List;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
-@SuppressWarnings("all")
 public class BeanNotSpringWExtDirectMethods {
 
 	@ExtDirectMethod
@@ -34,7 +33,7 @@ public class BeanNotSpringWExtDirectMethods {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public List<Integer> methodC(List<Integer> ids) {
+	public List<Integer> methodC(@SuppressWarnings("unused") List<Integer> ids) {
 		// a dummy method
 		return null;
 	}

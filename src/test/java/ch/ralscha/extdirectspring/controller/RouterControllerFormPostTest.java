@@ -38,7 +38,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
  * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all")
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerFormPostTest {
@@ -125,6 +125,7 @@ public class RouterControllerFormPostTest {
 		assertThat(edsResponse.getAction()).isEqualTo("formInfoController");
 		assertThat(edsResponse.getMethod()).isEqualTo("updateInfoDirect");
 
+		@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
 		assertThat(result).hasSize(6).includes(entry("name", "RALPH"), entry("age", 30), entry("admin", false),
 				entry("salary", 1012.3), entry("result", "theResultRESULT"), entry("success", true));

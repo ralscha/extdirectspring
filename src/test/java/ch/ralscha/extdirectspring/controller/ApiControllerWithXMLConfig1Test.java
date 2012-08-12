@@ -34,7 +34,6 @@ import ch.ralscha.extdirectspring.util.ApiCache;
  * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext1.xml")
 public class ApiControllerWithXMLConfig1Test {

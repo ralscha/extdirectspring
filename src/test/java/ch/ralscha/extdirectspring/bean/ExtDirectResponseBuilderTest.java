@@ -41,7 +41,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ExtDirectResponseBuilderTest {
@@ -49,6 +48,7 @@ public class ExtDirectResponseBuilderTest {
 	@Autowired
 	private DefaultListableBeanFactory applicationContext;
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testBuilder() {
 
@@ -110,6 +110,7 @@ public class ExtDirectResponseBuilderTest {
 		assertThat(json).contains("\\&quot;");
 		json = json.replace("\\&quot;", "\'");
 		ObjectMapper mapper = new ObjectMapper();
+		@SuppressWarnings("unchecked")
 		Map<String, Object> header = mapper.readValue(json, Map.class);
 
 		assertThat(header.get("action")).isEqualTo("action");
@@ -117,6 +118,7 @@ public class ExtDirectResponseBuilderTest {
 		assertThat(header.get("type")).isEqualTo("type");
 		assertThat(header.get("tid")).isEqualTo(1);
 
+		@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>) header.get("result");
 		assertThat(result).hasSize(3);
 		assertThat((Boolean) result.get("success")).isTrue();
@@ -176,7 +178,7 @@ public class ExtDirectResponseBuilderTest {
 		return request;
 	}
 
-	private void checkResponse(MockHttpServletResponse servletResponse, boolean flag) {
+	private static void checkResponse(MockHttpServletResponse servletResponse, boolean flag) {
 		ExtDirectResponse response = ControllerUtil.readDirectResponse(servletResponse.getContentAsByteArray());
 		assertThat(response.getAction()).isEqualTo("action");
 		assertThat(response.getMethod()).isEqualTo("method");
@@ -187,6 +189,7 @@ public class ExtDirectResponseBuilderTest {
 		assertThat(response.getWhere()).isNull();
 		assertThat(response.getMessage()).isNull();
 
+		@SuppressWarnings("unchecked")
 		Map<String, Object> data = (Map<String, Object>) response.getResult();
 		assertThat(data).hasSize(1);
 		assertThat(data.get("success")).isEqualTo(flag);

@@ -117,7 +117,7 @@ public class RemoteProviderStoreRead {
 		return createExtDirectStoreResponse(request, ":" + endDate.toString() + ";" + (servletRequest != null));
 	}
 
-	private ExtDirectStoreResponse<Row> createExtDirectStoreResponse(ExtDirectStoreReadRequest request,
+	private static ExtDirectStoreResponse<Row> createExtDirectStoreResponse(ExtDirectStoreReadRequest request,
 			final String appendix) {
 		List<Row> rows = createRows(appendix);
 
@@ -225,7 +225,7 @@ public class RemoteProviderStoreRead {
 
 	}
 
-	private List<Row> createRows(String appendix) {
+	private static List<Row> createRows(String appendix) {
 		List<Row> rows = new ArrayList<Row>();
 		for (int i = 0; i < 100; i += 2) {
 			rows.add(new Row(i, "name: " + i + appendix, true, "" + (1000 + i)));
@@ -446,12 +446,14 @@ public class RemoteProviderStoreRead {
 			assertThat(lf.getField()).isEqualTo("size");
 
 			return createResult(14);
+
+		default: // do nothing
 		}
 
 		return Collections.emptyList();
 	}
 
-	private List<Row> createResult(int i) {
+	private static List<Row> createResult(int i) {
 		Row r = new Row(i, null, false, null);
 		List<Row> result = new ArrayList<Row>();
 		result.add(r);

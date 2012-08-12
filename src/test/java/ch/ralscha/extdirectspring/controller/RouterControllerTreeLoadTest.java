@@ -17,7 +17,6 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +39,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
  * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all")
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerTreeLoadTest {
@@ -48,8 +47,9 @@ public class RouterControllerTreeLoadTest {
 	@Autowired
 	private RouterController controller;
 
+	@SuppressWarnings("unchecked")
 	@Test
-	public void testNoAdditionalParameters() throws IOException {
+	public void testNoAdditionalParameters() {
 
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
@@ -79,8 +79,9 @@ public class RouterControllerTreeLoadTest {
 				new Node("id4", "Node 1.4", true), new Node("id5", "Node 1.5", true));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
-	public void testAdditionalParameters() throws IOException {
+	public void testAdditionalParameters() {
 
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
@@ -116,8 +117,9 @@ public class RouterControllerTreeLoadTest {
 				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
-	public void testSupportedParameters() throws IOException {
+	public void testSupportedParameters() {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 
@@ -153,15 +155,16 @@ public class RouterControllerTreeLoadTest {
 	}
 
 	@Test
-	public void testWithHeader() throws IOException {
+	public void testWithHeader() {
 		callTreeLoadAndCheckResult("method4");
 	}
 
 	@Test
-	public void testWithArrayAsReturnType() throws IOException {
+	public void testWithArrayAsReturnType() {
 		callTreeLoadAndCheckResult("method5");
 	}
 
+	@SuppressWarnings("unchecked")
 	private void callTreeLoadAndCheckResult(String method) {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("aHeader", "true");
@@ -199,7 +202,7 @@ public class RouterControllerTreeLoadTest {
 	}
 
 	@Test
-	public void testWithSingleObjectAsReturnType() throws IOException {
+	public void testWithSingleObjectAsReturnType() {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
@@ -207,8 +210,6 @@ public class RouterControllerTreeLoadTest {
 
 		Node node = (Node) ControllerUtil.sendAndReceive(controller, request, "remoteProviderTreeLoad", "method6",
 				requestParameters, Node.class);
-
-		String appendix = ";true;true";
 
 		assertThat(node.id).isEqualTo("n1");
 		assertThat(node.text).isEqualTo("Node 1;true;true");

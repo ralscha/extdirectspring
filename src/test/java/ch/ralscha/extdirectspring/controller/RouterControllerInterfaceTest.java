@@ -17,7 +17,6 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +39,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
  * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all")
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerInterfaceTest {
@@ -54,23 +53,24 @@ public class RouterControllerInterfaceTest {
 	}
 
 	@Test
-	public void testNoParameters() throws IOException {
+	public void testNoParameters() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderImplementation", "method2", null, "method2() called");
 	}
 
 	@Test
-	public void testNoParameterAnnotation() throws IOException {
+	public void testNoParameterAnnotation() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderImplementation", "method3", new Object[] { 21, 3.1,
 				"aString2" }, "method3() called-21-3.1-aString2");
 	}
 
 	@Test
-	public void testWithRequestParamAnnotation() throws IOException {
+	public void testWithRequestParamAnnotation() {
 
 		Map<String, Object> readRequest = new HashMap<String, Object>();
 		readRequest.put("lastName", "Smith");
 		readRequest.put("active", true);
 
+		@SuppressWarnings("unchecked")
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderImplementation",
 				"storeRead", readRequest, new TypeReference<List<Row>>() {/* nothing_here */
 				});

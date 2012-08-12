@@ -17,34 +17,20 @@ package ch.ralscha.extdirectspring.store;
 
 import java.io.IOException;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.controller.RouterController;
 
-@SuppressWarnings("all")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/teststore.xml")
 public class BookServiceTest {
 
 	@Autowired
 	private RouterController controller;
-
-	private MockHttpServletResponse response;
-
-	private MockHttpServletRequest request;
-
-	@Before
-	public void beforeTest() {
-		response = new MockHttpServletResponse();
-		request = new MockHttpServletRequest();
-	}
 
 	@Test
 	public void testCreate() throws IOException {

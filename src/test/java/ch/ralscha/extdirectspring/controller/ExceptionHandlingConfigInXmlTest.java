@@ -38,7 +38,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
  * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all")
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testExceptionHandlingConfig.xml")
 public class ExceptionHandlingConfigInXmlTest {

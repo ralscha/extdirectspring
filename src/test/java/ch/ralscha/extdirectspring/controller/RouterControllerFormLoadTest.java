@@ -45,7 +45,7 @@ import ch.ralscha.extdirectspring.provider.FormInfo;
  * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all")
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerFormLoadTest {
@@ -59,7 +59,7 @@ public class RouterControllerFormLoadTest {
 	}
 
 	@Test
-	public void testFormLoad() throws IOException {
+	public void testFormLoad() {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("d", 3.141);
 		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
@@ -78,12 +78,12 @@ public class RouterControllerFormLoadTest {
 	}
 
 	@Test
-	public void testFormLoadReturnsNull() throws IOException {
+	public void testFormLoadReturnsNull() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderFormLoad", "method2", null, Void.TYPE);
 	}
 
 	@Test
-	public void testWithSupportedArguments() throws IOException {
+	public void testWithSupportedArguments() {
 		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
 				"remoteProviderFormLoad", "method3", null, ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
@@ -93,7 +93,7 @@ public class RouterControllerFormLoadTest {
 	}
 
 	@Test
-	public void testWithRequestParam() throws IOException {
+	public void testWithRequestParam() {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("id", 12);
 		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
@@ -106,7 +106,7 @@ public class RouterControllerFormLoadTest {
 	}
 
 	@Test
-	public void testWithRequestParamDefaultValue() throws IOException {
+	public void testWithRequestParamDefaultValue() {
 		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
 				"remoteProviderFormLoad", "method5", null, ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
@@ -116,7 +116,7 @@ public class RouterControllerFormLoadTest {
 	}
 
 	@Test
-	public void testWithRequestParamOptional() throws IOException {
+	public void testWithRequestParamOptional() {
 
 		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
 				"remoteProviderFormLoad", "method6", null, ExtDirectFormLoadResult.class);
@@ -132,7 +132,7 @@ public class RouterControllerFormLoadTest {
 	}
 
 	@Test
-	public void testResult() throws IOException {
+	public void testResult() {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("data", "one");
 		data.put("success", true);
@@ -194,7 +194,7 @@ public class RouterControllerFormLoadTest {
 		checkIntParameterResult(responses.get(5), 6, 40);
 	}
 
-	private void checkIntParameterResult(ExtDirectResponse resp, int tid, int result) {
+	private static void checkIntParameterResult(ExtDirectResponse resp, int tid, int result) {
 		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
 		assertThat(resp.getMethod()).isEqualTo("method6");
 		assertThat(resp.getTid()).isEqualTo(tid);
@@ -204,7 +204,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(resp.getResult()).isEqualTo(result);
 	}
 
-	private void checkMethodNotFoundResponse(ExtDirectResponse resp) {
+	private static void checkMethodNotFoundResponse(ExtDirectResponse resp) {
 		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
 		assertThat(resp.getMethod()).isEqualTo("method4");
 		assertThat(resp.getType()).isEqualTo("exception");
@@ -214,7 +214,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(resp.getWhere()).isNull();
 	}
 
-	private void checkFormLoadResult(ExtDirectResponse resp, double back, int tid) {
+	private static void checkFormLoadResult(ExtDirectResponse resp, double back, int tid) {
 		assertThat(resp.getAction()).isEqualTo("remoteProviderFormLoad");
 		assertThat(resp.getMethod()).isEqualTo("method1");
 		assertThat(resp.getTid()).isEqualTo(tid);
@@ -237,7 +237,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(info.getBirthday()).isEqualTo(new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime());
 	}
 
-	private void checkNoParametersResponse(ExtDirectResponse resp, int tid) {
+	private static void checkNoParametersResponse(ExtDirectResponse resp, int tid) {
 		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
 		assertThat(resp.getMethod()).isEqualTo("method1");
 		assertThat(resp.getTid()).isEqualTo(tid);

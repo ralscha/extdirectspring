@@ -33,9 +33,9 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 @Controller
-@SuppressWarnings("all")
 public class FormInfoController {
 
+	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
 	@RequestMapping(value = "/updateInfo", method = RequestMethod.POST)
 	public void updateInfo(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
@@ -43,6 +43,7 @@ public class FormInfoController {
 		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();
 	}
 
+	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2")
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public void upload(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
@@ -50,12 +51,14 @@ public class FormInfoController {
 		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();
 	}
 
+	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2")
 	public void invalidMethod1(Locale locale, HttpServletRequest request, HttpServletResponse response,
 			FormInfo formInfo, BindingResult result) {
 		// dummy test method
 	}
 
+	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2")
 	@RequestMapping(value = "/upload", method = RequestMethod.GET)
 	public void invalidMethod2(Locale locale, HttpServletRequest request, HttpServletResponse response,
@@ -64,9 +67,7 @@ public class FormInfoController {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
-	public ExtDirectFormPostResponse updateInfoDirect(Locale locale, HttpServletRequest request,
-			HttpServletResponse response, FormInfo formInfo, BindingResult result) {
-
+	public ExtDirectFormPostResponse updateInfoDirect(FormInfo formInfo, BindingResult result) {
 		ExtDirectFormPostResponse e = new ExtDirectFormPostResponse(result);
 		e.addResultProperty("name", formInfo.getName().toUpperCase());
 		e.addResultProperty("age", formInfo.getAge() + 10);

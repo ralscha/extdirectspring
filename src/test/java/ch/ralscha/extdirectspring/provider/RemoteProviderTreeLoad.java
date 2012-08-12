@@ -143,11 +143,11 @@ public class RemoteProviderTreeLoad {
 		return result.get(0);
 	}
 
-	private List<Node> createTreeList(String id) {
+	private static List<Node> createTreeList(String id) {
 		return createTreeList(id, "");
 	}
 
-	private List<Node> createTreeList(String id, String appendix) {
+	private static List<Node> createTreeList(String id, String appendix) {
 		List<Node> result = new ArrayList<Node>();
 		if (id.equals("root")) {
 			for (int i = 1; i <= 5; ++i) {

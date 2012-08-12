@@ -67,7 +67,7 @@ public class ExtDirectSpringUtilTest {
 		assertResponse(response, 4, "3", 12);
 	}
 
-	private void assertResponse(MockHttpServletResponse response, int noOfHeaders, String etag, int month) {
+	private static void assertResponse(MockHttpServletResponse response, int noOfHeaders, String etag, int month) {
 		assertThat(response.getHeaderNames()).hasSize(noOfHeaders);
 		assertThat(response.getHeader("Vary")).isEqualTo("Accept-Encoding");
 		assertThat(response.getHeader("ETag")).isEqualTo(etag);

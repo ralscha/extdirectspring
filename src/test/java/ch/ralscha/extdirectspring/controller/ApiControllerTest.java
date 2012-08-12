@@ -45,15 +45,11 @@ import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.util.ApiCache;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 /**
  * Tests for {@link ApiController}.
  * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ApiControllerTest {
@@ -388,7 +384,7 @@ public class ApiControllerTest {
 
 	}
 
-	private RemotingApi noApis(String namespace) {
+	private static RemotingApi noApis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		return remotingApi;
 	}
@@ -417,7 +413,7 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	private RemotingApi group1and2Apis(String namespace) {
+	private static RemotingApi group1and2Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0, false));
 		remotingApi.addAction("remoteProviderTreeLoad", new Action("method1", 1, false));
@@ -441,7 +437,7 @@ public class ApiControllerTest {
 		return group2Apis(namespace, "/action/router");
 	}
 
-	private RemotingApi group3Apis(String namespace) {
+	private static RemotingApi group3Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method9", 0, false));
@@ -460,13 +456,13 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	private RemotingApi group4Apis(String namespace) {
+	private static RemotingApi group4Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage3", "message3"));
 		return remotingApi;
 	}
 
-	private RemotingApi interfaceApis(String namespace) {
+	private static RemotingApi interfaceApis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		remotingApi.addAction("remoteProviderImplementation", new Action("storeRead", 1, false));
 		remotingApi.addAction("remoteProviderImplementation", new Action("method2", 0, false));
@@ -474,7 +470,7 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	private RemotingApi allApis(String namespace) {
+	private static RemotingApi allApis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method2", 0, false));
@@ -592,12 +588,12 @@ public class ApiControllerTest {
 		remotingApi.addAction("bookSubService", new Action("create3", 1, false));
 		remotingApi.addAction("bookSubService", new Action("create4", 1, false));
 
-		remotingApi.addAction("remoteProviderSimpleNamed", new Action("method1", new ArrayList()));
+		remotingApi.addAction("remoteProviderSimpleNamed", new Action("method1", new ArrayList<String>()));
 		remotingApi.addAction("remoteProviderSimpleNamed", new Action("method2", Arrays.asList("i", "d", "s")));
 		remotingApi.addAction("remoteProviderSimpleNamed", new Action("method3", Arrays.asList("userName")));
 		remotingApi.addAction("remoteProviderSimpleNamed", new Action("method4", Arrays.asList("a", "b")));
 		remotingApi.addAction("remoteProviderSimpleNamed", new Action("method5", Arrays.asList("d")));
-		remotingApi.addAction("remoteProviderSimpleNamed", new Action("method6", new ArrayList()));
+		remotingApi.addAction("remoteProviderSimpleNamed", new Action("method6", new ArrayList<String>()));
 		remotingApi.addAction(
 				"remoteProviderSimpleNamed",
 				new Action("method7", Arrays.asList("flag", "aCharacter", "workflow", "aInt", "aLong", "aDouble",
@@ -634,8 +630,8 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	private void compareJson(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs,
-			String remotingApiVar) throws JsonParseException, JsonMappingException, IOException {
+	private static void compareJson(MockHttpServletResponse response, RemotingApi remotingApi, String apiNs,
+			String remotingApiVar) throws IOException {
 		String content = response.getContentAsString();
 		assertThat(response.getContentType()).isEqualTo("application/json;charset=UTF-8");
 		assertThat(content).isNotEmpty();
@@ -662,10 +658,12 @@ public class ApiControllerTest {
 			assertThat(rootAsMap.get("namespace")).isEqualTo(remotingApi.getNamespace());
 		}
 
+		@SuppressWarnings("unchecked")
 		Map<String, Object> beans = (Map<String, Object>) rootAsMap.get("actions");
 
 		assertThat(beans).hasSize(remotingApi.getActions().size());
 		for (String beanName : remotingApi.getActions().keySet()) {
+			@SuppressWarnings("unchecked")
 			List<Map<String, Object>> actions = (List<Map<String, Object>>) beans.get(beanName);
 			List<Action> expectedActions = remotingApi.getActions().get(beanName);
 			compare(expectedActions, actions);
@@ -673,19 +671,19 @@ public class ApiControllerTest {
 
 	}
 
-	public static void compare(String content, String contentType, RemotingApi remotingApi, String apiNs,
-			String remotingApiVar, String pollingUrlsVar) throws JsonParseException, JsonMappingException, IOException {
-		compare(content, contentType, remotingApi, apiNs, remotingApiVar, pollingUrlsVar, null);
+	public static void compare(String responseString, String responseContentType, RemotingApi remotingApi,
+			String apiNs, String remotingApiVar, String pollingUrlsVar) {
+		compare(responseString, responseContentType, remotingApi, apiNs, remotingApiVar, pollingUrlsVar, null);
 	}
 
-	static void compare(String content, String contentType, RemotingApi remotingApi, String apiNs,
-			String remotingApiVar, String pollingUrlsVar, Configuration config) throws JsonParseException,
-			JsonMappingException, IOException {
+	static void compare(String responseString, String responseContentType, RemotingApi remotingApi, String apiNs,
+			String remotingApiVar, String pollingUrlsVar, Configuration config) {
 
-		content = content.replace(";", ";\n");
+		String content = responseString.replace(";", ";\n");
 		content = content.replace("{", "{\n");
 		content = content.replace("}", "}\n");
 
+		String contentType = responseContentType;
 		int cs = contentType.indexOf(';');
 		if (cs != -1) {
 			contentType = contentType.substring(0, cs);
@@ -801,10 +799,12 @@ public class ApiControllerTest {
 			assertThat(rootAsMap.get("maxRetries")).isNull();
 		}
 
+		@SuppressWarnings("unchecked")
 		Map<String, Object> beans = (Map<String, Object>) rootAsMap.get("actions");
 
 		assertThat(beans.size()).isEqualTo(remotingApi.getActions().size());
 		for (String beanName : remotingApi.getActions().keySet()) {
+			@SuppressWarnings("unchecked")
 			List<Map<String, Object>> actions = (List<Map<String, Object>>) beans.get(beanName);
 			List<Action> expectedActions = remotingApi.getActions().get(beanName);
 			compare(expectedActions, actions);
@@ -822,6 +822,7 @@ public class ApiControllerTest {
 		}
 	}
 
+	@SuppressWarnings("null")
 	private static void compare(List<Action> expectedActions, List<Map<String, Object>> actions) {
 		assertThat(actions).hasSize(expectedActions.size());
 		for (Action expectedAction : expectedActions) {
@@ -841,6 +842,7 @@ public class ApiControllerTest {
 				assertThat(action.containsKey("formHandler")).isFalse();
 			}
 
+			@SuppressWarnings("unchecked")
 			List<String> params = (List<String>) action.get("params");
 			assertTrue((params != null && expectedAction.getParams() != null)
 					|| (params == null && expectedAction.getParams() == null));
@@ -854,6 +856,7 @@ public class ApiControllerTest {
 		}
 	}
 
+	@SuppressWarnings("null")
 	private static int assertContains(String extNsLine, String[] lines) {
 		if (lines == null) {
 			fail("no lines");
