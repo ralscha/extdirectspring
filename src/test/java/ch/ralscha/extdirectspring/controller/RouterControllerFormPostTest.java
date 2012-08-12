@@ -16,8 +16,10 @@
 package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.MapAssert.entry;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -59,6 +61,8 @@ public class RouterControllerFormPostTest {
 		request.setParameter("extTID", "11");
 		request.setParameter("extAction", "remoteProviderSimple");
 		request.setParameter("extMethod", "method1");
+		request.setParameter("extType", "rpc");
+
 		controller.router(request, response, "remoteProviderSimple", "method1");
 		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(response.getContentAsByteArray());
 
@@ -80,6 +84,7 @@ public class RouterControllerFormPostTest {
 		request.setParameter("extTID", "12");
 		request.setParameter("extAction", "remoteProviderSimple");
 		request.setParameter("extMethod", "method1");
+		request.setParameter("extType", "rpc");
 		controller.router(request, response, "remoteProviderSimple", "method1");
 		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(response.getContentAsByteArray());
 
@@ -97,6 +102,32 @@ public class RouterControllerFormPostTest {
 	public void testCallExistsFormPostMethod() throws IOException {
 		String redirect = controller.router(request, response, "formInfoController", "updateInfo");
 		assertThat(redirect).isEqualTo("forward:updateInfo");
+	}
+
+	@Test
+	public void testCallDirectWay() throws IOException {
+		request.setParameter("extTID", "12");
+		request.setParameter("extAction", "formInfoController");
+		request.setParameter("extMethod", "updateInfoDirect");
+		request.setParameter("extType", "rpc");
+		request.setParameter("name", "Ralph");
+		request.setParameter("age", "20");
+		request.setParameter("admin", "true");
+		request.setParameter("salary", "12.3");
+		request.setParameter("result", "theResult");
+		controller.router(request, response, "formInfoController", "updateInfoDirect");
+		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(response.getContentAsByteArray());
+
+		assertThat(edsResponse.getType()).isEqualTo("rpc");
+		assertThat(edsResponse.getMessage()).isNull();
+		assertThat(edsResponse.getWhere()).isNull();
+		assertThat(edsResponse.getTid()).isEqualTo(12);
+		assertThat(edsResponse.getAction()).isEqualTo("formInfoController");
+		assertThat(edsResponse.getMethod()).isEqualTo("updateInfoDirect");
+
+		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
+		assertThat(result).hasSize(6).includes(entry("name", "RALPH"), entry("age", 30), entry("admin", false),
+				entry("salary", 1012.3), entry("result", "theResultRESULT"), entry("success", true));
 	}
 
 }

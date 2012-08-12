@@ -452,6 +452,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderFormLoad", new Action("method1", 1, false));
 		remotingApi.addAction("remoteProviderFormLoad", new Action("method5", 1, false));
 		remotingApi.addAction("formInfoController", new Action("updateInfo", 0, true));
+		remotingApi.addAction("formInfoController", new Action("updateInfoDirect", 0, true));
 		remotingApi.addAction("formInfoController2", new Action("updateInfo1", 0, true));
 		remotingApi.addAction("formInfoController2", new Action("updateInfo2", 0, true));
 		remotingApi.addAction("remoteProviderTreeLoad", new Action("method3", 1, false));
@@ -549,6 +550,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderFormLoad", new Action("method7", 1, false));
 
 		remotingApi.addAction("formInfoController", new Action("updateInfo", 0, true));
+		remotingApi.addAction("formInfoController", new Action("updateInfoDirect", 0, true));
 		remotingApi.addAction("formInfoController", new Action("upload", 0, true));
 
 		remotingApi.addAction("formInfoController2", new Action("updateInfo1", 0, true));
