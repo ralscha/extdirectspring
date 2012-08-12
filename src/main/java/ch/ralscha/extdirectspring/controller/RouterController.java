@@ -21,6 +21,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -227,6 +228,9 @@ public class RouterController implements InitializingBean {
 			} catch (Exception e) {
 				log.error("Error calling method: " + extMethod, e.getCause() != null ? e.getCause() : e);
 				handleException(directResponse, e);
+				Map<String, Object> result = new HashMap<String, Object>();
+				result.put("success", false);
+				directResponse.setResult(result);
 			}
 		} else {
 			log.error("Error invoking method '" + extAction + "." + extMethod + "'. Method  or Bean not found");
