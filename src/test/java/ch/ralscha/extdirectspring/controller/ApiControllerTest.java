@@ -26,6 +26,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -187,7 +189,9 @@ public class ApiControllerTest {
 	public void testGroup1() throws IOException {
 		testGroup1(null, null);
 		testGroup1(null, null);
+		ApiCache.INSTANCE.clear();
 		testGroup1(null, "-1.0.0");
+		ApiCache.INSTANCE.clear();
 		testGroup1(null, "-fingerprinted");
 	}
 
@@ -199,6 +203,7 @@ public class ApiControllerTest {
 
 		testGroup1(config, null);
 		testGroup1(config, null);
+		ApiCache.INSTANCE.clear();
 		testGroup1(config, "-1.0.0");
 
 		ReflectionTestUtils.setField(routerController, "configuration", new Configuration());
@@ -220,7 +225,21 @@ public class ApiControllerTest {
 		} else {
 			request = new MockHttpServletRequest("GET", "/action/api" + fingerprint + ".js");
 			apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", false, request, response);
-			// todo assert headers
+
+			assertThat(response.getHeaderNames()).hasSize(6);
+			assertThat(response.getHeader("Vary")).isEqualTo("Accept-Encoding");
+			assertThat(response.getHeader("ETag")).isNotNull();
+			assertThat(response.getHeader("Cache-Control")).isEqualTo("public, max-age=" + (6 * 30 * 24 * 60 * 60));
+
+			Long expiresMillis = (Long) response.getHeaderValue("Expires");
+			DateTime expires = new DateTime(expiresMillis, DateTimeZone.UTC);
+			DateTime inSixMonths = DateTime.now(DateTimeZone.UTC).plusSeconds(6 * 30 * 24 * 60 * 60);
+			assertThat(expires.getYear()).isEqualTo(inSixMonths.getYear());
+			assertThat(expires.getMonthOfYear()).isEqualTo(inSixMonths.getMonthOfYear());
+			assertThat(expires.getDayOfMonth()).isEqualTo(inSixMonths.getDayOfMonth());
+			assertThat(expires.getHourOfDay()).isEqualTo(inSixMonths.getHourOfDay());
+			assertThat(expires.getMinuteOfDay()).isEqualTo(inSixMonths.getMinuteOfDay());
+
 		}
 		compare(response.getContentAsString(), response.getContentType(), group1Apis("actionns"), "Ext.ns",
 				"REMOTING_API", "POLLING_URLS", config);

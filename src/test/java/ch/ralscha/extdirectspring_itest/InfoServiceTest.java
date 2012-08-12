@@ -38,6 +38,7 @@ import org.junit.Test;
 import ch.ralscha.extdirectspring.bean.api.Action;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.controller.ApiControllerTest;
+import ch.ralscha.extdirectspring.util.ApiCache;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -58,6 +59,7 @@ public class InfoServiceTest extends JettyTest {
 		String contentType = response.getFirstHeader("Content-Type").getValue();
 		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS");
 		SimpleServiceTest.assertCacheHeaders(response, false);
+		ApiCache.INSTANCE.clear();
 	}
 
 	@Test
@@ -69,6 +71,7 @@ public class InfoServiceTest extends JettyTest {
 		String contentType = response.getFirstHeader("Content-Type").getValue();
 		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS");
 		SimpleServiceTest.assertCacheHeaders(response, false);
+		ApiCache.INSTANCE.clear();
 	}
 
 	@Test
@@ -80,6 +83,7 @@ public class InfoServiceTest extends JettyTest {
 		String contentType = response.getFirstHeader("Content-Type").getValue();
 		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS");
 		SimpleServiceTest.assertCacheHeaders(response, true);
+		ApiCache.INSTANCE.clear();
 	}
 
 	@Test

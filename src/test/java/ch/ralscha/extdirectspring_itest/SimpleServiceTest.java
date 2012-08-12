@@ -38,12 +38,14 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 
 import ch.ralscha.extdirectspring.bean.api.Action;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.controller.ApiControllerTest;
+import ch.ralscha.extdirectspring.util.ApiCache;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -59,6 +61,11 @@ public class SimpleServiceTest extends JettyTest2 {
 		remotingApi.addAction("simpleService", new Action("toUpperCase", 1, false));
 		remotingApi.addAction("simpleService", new Action("echo", Arrays.asList("userId", "logLevel")));
 		return remotingApi;
+	}
+
+	@After
+	public void clearApiCache() {
+		ApiCache.INSTANCE.clear();
 	}
 
 	@Test

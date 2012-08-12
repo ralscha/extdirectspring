@@ -104,13 +104,7 @@ public class ApiController {
 			String requestUrlString = request.getRequestURL().toString();
 
 			boolean debug = requestUrlString.contains("api-debug.js");
-
-			String routerUrl;
-			if (!debug) {
-				routerUrl = requestUrlString.replace("api.js", "router");
-			} else {
-				routerUrl = requestUrlString.replace("api-debug.js", "router");
-			}
+			String routerUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "router");
 
 			String apiString = buildApiJson(apiNs, actionNs, remotingApiVar, routerUrl, group, debug);
 			byte[] outputBytes = apiString.getBytes("UTF-8");
@@ -160,13 +154,9 @@ public class ApiController {
 			String routerUrl;
 			String basePollUrl;
 
-			if (!debug) {
-				routerUrl = requestUrlString.replace("api.js", "router");
-				basePollUrl = requestUrlString.replace("api.js", "poll");
-			} else {
-				routerUrl = requestUrlString.replace("api-debug.js", "router");
-				basePollUrl = requestUrlString.replace("api-debug.js", "poll");
-			}
+			routerUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "router");
+			basePollUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "poll");
+
 			apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, basePollUrl, group,
 					debug);
 			ApiCache.INSTANCE.put(apiKey, apiString);
