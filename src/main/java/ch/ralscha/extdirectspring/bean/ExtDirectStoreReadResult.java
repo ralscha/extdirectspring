@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * Class representing the result of a DirectStore request.
+ * Class representing the result of a STORE_READ method call.
  * 
  * @author Ralph Schaer
  * @param <T> Type of the entry inside the collection

@@ -25,6 +25,11 @@ import org.springframework.context.MessageSource;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+/**
+ * Class representing the result of a FORM_POST method call.
+ * 
+ * @author Ralph Schaer
+ */
 public class ExtDirectFormPostResult {
 
 	private final Map<String, Object> result = new HashMap<String, Object>();

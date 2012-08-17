@@ -16,7 +16,7 @@
 package ch.ralscha.extdirectspring.bean;
 
 /**
- * Class representing the result of a form load request.
+ * Class representing the result of a FORM_LOAD method call.
  * 
  * @author mansari
  * @author Ralph Schaer
