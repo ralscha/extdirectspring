@@ -29,7 +29,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
 import ch.ralscha.extdirectspring.provider.Row;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -50,8 +50,8 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 	@Test
 	public void testNoArgumentsNoRequestParameters() {
 		@SuppressWarnings("unchecked")
-		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderStoreRead", "method1", null, new TypeReference<ExtDirectStoreResult<Row>>() {// nothing
+		ExtDirectStoreReadResult<Row> rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderStoreRead", "method1", null, new TypeReference<ExtDirectStoreReadResult<Row>>() {// nothing
 					// here
 				});
 		RouterControllerStoreReadTest.assert100Rows(new ArrayList<Row>(rows.getRecords()), "");
@@ -64,8 +64,8 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		storeRead.setQuery("ralph");
 
 		@SuppressWarnings("unchecked")
-		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderStoreRead", "method1", storeRead, new TypeReference<ExtDirectStoreResult<Row>>() {// nothing
+		ExtDirectStoreReadResult<Row> rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderStoreRead", "method1", storeRead, new TypeReference<ExtDirectStoreReadResult<Row>>() {// nothing
 					// here
 				});
 		RouterControllerStoreReadTest.assert100Rows(new ArrayList<Row>(rows.getRecords()), "");
@@ -75,8 +75,8 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 	public void testSupportedArguments() {
 
 		@SuppressWarnings("unchecked")
-		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderStoreRead", "method3", null, new TypeReference<ExtDirectStoreResult<Row>>() {// nothing
+		ExtDirectStoreReadResult<Row> rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderStoreRead", "method3", null, new TypeReference<ExtDirectStoreReadResult<Row>>() {// nothing
 					// here
 				});
 
@@ -87,8 +87,8 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testWithAdditionalParametersOptional() {
-		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderStoreRead", "method7", null, new TypeReference<ExtDirectStoreResult<Row>>() {// nothing
+		ExtDirectStoreReadResult<Row> rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderStoreRead", "method7", null, new TypeReference<ExtDirectStoreReadResult<Row>>() {// nothing
 					// here
 				});
 		RouterControllerStoreReadTest.assert100Rows(new ArrayList<Row>(rows.getRecords()), ":null");
@@ -97,8 +97,8 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		readRequest.put("id", 11);
 		readRequest.put("query", "");
 
-		rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead",
-				"method7", readRequest, new TypeReference<ExtDirectStoreResult<Row>>() {// nothing
+		rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead",
+				"method7", readRequest, new TypeReference<ExtDirectStoreReadResult<Row>>() {// nothing
 																						// here
 				});
 		RouterControllerStoreReadTest.assert100Rows(new ArrayList<Row>(rows.getRecords()), ":11");
@@ -107,9 +107,9 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 	@Test
 	public void testCreateWithDataSingle() {
 		@SuppressWarnings("unchecked")
-		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(controller,
+		ExtDirectStoreReadResult<Row> rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
 				"remoteProviderStoreModifySingle", "create1", new Row(10, "Ralph", true, "109.55"),
-				new TypeReference<ExtDirectStoreResult<Row>>() {
+				new TypeReference<ExtDirectStoreReadResult<Row>>() {
 					/* nothing here */
 				});
 		assertThat(rows.getRecords()).hasSize(1);

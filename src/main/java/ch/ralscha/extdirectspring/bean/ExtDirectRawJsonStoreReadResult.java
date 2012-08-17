@@ -32,21 +32,21 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * 
  * @author Ralph Schaer
  */
-public class ExtDirectRawJsonStoreResult extends ExtDirectStoreResult<String> {
+public class ExtDirectRawJsonStoreReadResult extends ExtDirectStoreReadResult<String> {
 
-	public ExtDirectRawJsonStoreResult() {
+	public ExtDirectRawJsonStoreReadResult() {
 		// default constructor
 	}
 
-	public ExtDirectRawJsonStoreResult(Collection<String> records) {
+	public ExtDirectRawJsonStoreReadResult(Collection<String> records) {
 		super(null, records, true);
 	}
 
-	public ExtDirectRawJsonStoreResult(Integer total, Collection<String> records) {
+	public ExtDirectRawJsonStoreReadResult(Integer total, Collection<String> records) {
 		super(total, records, true);
 	}
 
-	public ExtDirectRawJsonStoreResult(Integer total, Collection<String> records, Boolean success) {
+	public ExtDirectRawJsonStoreReadResult(Integer total, Collection<String> records, Boolean success) {
 		super(total, records, success);
 	}
 

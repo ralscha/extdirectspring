@@ -18,11 +18,11 @@ package ch.ralscha.extdirectspring.bean;
 import java.util.Collection;
 
 /**
- * {@link Deprecated} use {@link ExtDirectStoreResult} instead
+ * {@link Deprecated} use {@link ExtDirectStoreReadResult} instead
  * @param <T> Type of the entry inside the collection
  */
 @Deprecated
-public class ExtDirectStoreResponse<T> extends ExtDirectStoreResult<T> {
+public class ExtDirectStoreResponse<T> extends ExtDirectStoreReadResult<T> {
 
 	public ExtDirectStoreResponse() {
 		// default constructor

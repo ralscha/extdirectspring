@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  */
 @JsonInclude(Include.NON_NULL)
 @JsonPropertyOrder(value = { "metaData", "success", "total", "records" })
-public class ExtDirectStoreResult<T> {
+public class ExtDirectStoreReadResult<T> {
 
 	private Integer total;
 
@@ -41,28 +41,28 @@ public class ExtDirectStoreResult<T> {
 
 	private MetaData metaData;
 
-	public ExtDirectStoreResult() {
+	public ExtDirectStoreReadResult() {
 		// default constructor
 	}
 
 	@SuppressWarnings("unchecked")
-	public ExtDirectStoreResult(T record) {
+	public ExtDirectStoreReadResult(T record) {
 		init(null, Arrays.asList(record), true);
 	}
 
-	public ExtDirectStoreResult(T[] record) {
+	public ExtDirectStoreReadResult(T[] record) {
 		init(null, Arrays.asList(record), true);
 	}
 
-	public ExtDirectStoreResult(Collection<T> records) {
+	public ExtDirectStoreReadResult(Collection<T> records) {
 		init(null, records, true);
 	}
 
-	public ExtDirectStoreResult(Integer total, Collection<T> records) {
+	public ExtDirectStoreReadResult(Integer total, Collection<T> records) {
 		init(total, records, true);
 	}
 
-	public ExtDirectStoreResult(Integer total, Collection<T> records, Boolean success) {
+	public ExtDirectStoreReadResult(Integer total, Collection<T> records, Boolean success) {
 		init(total, records, success);
 	}
 
@@ -97,7 +97,7 @@ public class ExtDirectStoreResult<T> {
 
 	@Override
 	public String toString() {
-		return "ExtDirectStoreResult [total=" + total + ", records=" + records + ", success=" + success + ", metaData="
+		return "ExtDirectStoreReadResult [total=" + total + ", records=" + records + ", success=" + success + ", metaData="
 				+ metaData + "]";
 	}
 

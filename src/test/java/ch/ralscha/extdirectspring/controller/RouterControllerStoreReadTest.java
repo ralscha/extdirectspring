@@ -38,7 +38,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
 import ch.ralscha.extdirectspring.bean.GroupInfo;
 import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.bean.SortInfo;
@@ -108,7 +108,7 @@ public class RouterControllerStoreReadTest {
 	public void testWithExtDirectStoreReadRequest() throws IOException {
 		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
 		storeRead.setQuery("name");
-		ExtDirectStoreResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
+		ExtDirectStoreReadResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(50));
 		assertThat(storeResponse.getRecords()).hasSize(50);
 		for (Row row : storeResponse.getRecords()) {
@@ -244,7 +244,7 @@ public class RouterControllerStoreReadTest {
 		storeRead.setGroups(groups);
 		storeRead.setLimit(10);
 		storeRead.setStart(10);
-		ExtDirectStoreResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
+		ExtDirectStoreReadResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
 		assertThat(storeResponse.getRecords()).hasSize(10);
@@ -284,7 +284,7 @@ public class RouterControllerStoreReadTest {
 		storeRead.setLimit(10);
 		storeRead.setStart(10);
 		storeRead.setPage(2);
-		ExtDirectStoreResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
+		ExtDirectStoreReadResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
 		assertThat(storeResponse.getRecords()).hasSize(10);
@@ -385,7 +385,7 @@ public class RouterControllerStoreReadTest {
 		}
 	}
 
-	private ExtDirectStoreResult<Row> executeWithExtDirectStoreReadRequest(ExtDirectStoreReadRequest storeRead)
+	private ExtDirectStoreReadResult<Row> executeWithExtDirectStoreReadRequest(ExtDirectStoreReadRequest storeRead)
 			throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method4", 1,
 				storeRead);
@@ -438,7 +438,7 @@ public class RouterControllerStoreReadTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		return ControllerUtil.convertValue(resp.getResult(), new TypeReference<ExtDirectStoreResult<Row>>() {/*
+		return ControllerUtil.convertValue(resp.getResult(), new TypeReference<ExtDirectStoreReadResult<Row>>() {/*
 																											 * nothing
 																											 * here
 																											 */
@@ -452,8 +452,8 @@ public class RouterControllerStoreReadTest {
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
-		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderStoreRead", "method5", readRequest, new TypeReference<ExtDirectStoreResult<Row>>() {
+		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderStoreRead", "method5", readRequest, new TypeReference<ExtDirectStoreReadResult<Row>>() {
 					// nothing here
 				});
 
@@ -466,7 +466,7 @@ public class RouterControllerStoreReadTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(controller,
+		storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
 				"remoteProviderStoreRead", "method5", readRequest, null);
 	}
 
@@ -476,8 +476,8 @@ public class RouterControllerStoreReadTest {
 		readRequest.put("query", "firstname");
 
 		@SuppressWarnings("unchecked")
-		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderStoreRead", "method6", readRequest, new TypeReference<ExtDirectStoreResult<Row>>() {
+		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderStoreRead", "method6", readRequest, new TypeReference<ExtDirectStoreReadResult<Row>>() {
 					// nothing here
 				});
 
@@ -519,8 +519,8 @@ public class RouterControllerStoreReadTest {
 		readRequest.put("endDate", ISODateTimeFormat.dateTime().print(today));
 
 		@SuppressWarnings("unchecked")
-		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderStoreRead", "method8", readRequest, new TypeReference<ExtDirectStoreResult<Row>>() {
+		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
+				"remoteProviderStoreRead", "method8", readRequest, new TypeReference<ExtDirectStoreReadResult<Row>>() {
 					// nothing here
 				});
 

@@ -18,10 +18,10 @@ package ch.ralscha.extdirectspring.bean;
 import java.util.Collection;
 
 /**
- * {@link Deprecated} use {@link ExtDirectRawJsonStoreResult} instead
+ * {@link Deprecated} use {@link ExtDirectRawJsonStoreReadResult} instead
  */
 @Deprecated
-public class ExtDirectRawJsonStoreResponse extends ExtDirectRawJsonStoreResult {
+public class ExtDirectRawJsonStoreResponse extends ExtDirectRawJsonStoreReadResult {
 
 	public ExtDirectRawJsonStoreResponse() {
 		// default constructor

@@ -31,7 +31,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
 import ch.ralscha.extdirectspring.controller.ControllerUtil;
 import ch.ralscha.extdirectspring.controller.RouterController;
 
@@ -85,8 +85,8 @@ public class CrudTestMethods {
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "readWithPaging");
-		ExtDirectStoreResult<Book> storeResponse = ControllerUtil.convertValue(resp.getResult(),
-				new TypeReference<ExtDirectStoreResult<Book>>() {// nothing
+		ExtDirectStoreReadResult<Book> storeResponse = ControllerUtil.convertValue(resp.getResult(),
+				new TypeReference<ExtDirectStoreReadResult<Book>>() {// nothing
 																	// here
 				});
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(51));
@@ -203,8 +203,8 @@ public class CrudTestMethods {
 
 		Iterator<Book> it = null;
 		if (version == 3) {
-			ExtDirectStoreResult<Book> storeResponse = ControllerUtil.convertValue(resp.getResult(),
-					new TypeReference<ExtDirectStoreResult<Book>>() {
+			ExtDirectStoreReadResult<Book> storeResponse = ControllerUtil.convertValue(resp.getResult(),
+					new TypeReference<ExtDirectStoreReadResult<Book>>() {
 						// nothing here
 					});
 			assertThat(storeResponse.getTotal()).isNull();
@@ -317,8 +317,8 @@ public class CrudTestMethods {
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "delete3");
 
-		ExtDirectStoreResult<Integer> storeResponse = ControllerUtil.convertValue(resp.getResult(),
-				new TypeReference<ExtDirectStoreResult<Integer>>() {
+		ExtDirectStoreReadResult<Integer> storeResponse = ControllerUtil.convertValue(resp.getResult(),
+				new TypeReference<ExtDirectStoreReadResult<Integer>>() {
 					// nothing here
 				});
 		assertThat(storeResponse.getTotal()).isNull();
@@ -346,8 +346,8 @@ public class CrudTestMethods {
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "delete3");
 
-		ExtDirectStoreResult<Integer> storeResponse = ControllerUtil.convertValue(resp.getResult(),
-				new TypeReference<ExtDirectStoreResult<Integer>>() {
+		ExtDirectStoreReadResult<Integer> storeResponse = ControllerUtil.convertValue(resp.getResult(),
+				new TypeReference<ExtDirectStoreReadResult<Integer>>() {
 					// nothing here
 				});
 		assertThat(storeResponse.getTotal()).isNull();
@@ -424,8 +424,8 @@ public class CrudTestMethods {
 
 		Iterator<Book> it = null;
 		if (version == 3) {
-			ExtDirectStoreResult<Book> storeResponse = ControllerUtil.convertValue(resp.getResult(),
-					new TypeReference<ExtDirectStoreResult<Book>>() {
+			ExtDirectStoreReadResult<Book> storeResponse = ControllerUtil.convertValue(resp.getResult(),
+					new TypeReference<ExtDirectStoreReadResult<Book>>() {
 						// nothing here
 					});
 			assertThat(storeResponse.getTotal()).isNull();
