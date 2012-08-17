@@ -41,7 +41,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.DataType;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.bean.Field;
 import ch.ralscha.extdirectspring.bean.GroupInfo;
 import ch.ralscha.extdirectspring.bean.MetaData;
@@ -75,12 +75,12 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, entryClass = String.class)
-	public ExtDirectStoreResponse<Row> method4(ExtDirectStoreReadRequest request) {
-		return createExtDirectStoreResponse(request, "");
+	public ExtDirectStoreResult<Row> method4(ExtDirectStoreReadRequest request) {
+		return createExtDirectStoreResult(request, "");
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group3")
-	public ExtDirectStoreResponse<Row> method5(ExtDirectStoreReadRequest request, Locale locale,
+	public ExtDirectStoreResult<Row> method5(ExtDirectStoreReadRequest request, Locale locale,
 			@RequestParam(value = "id") int id) {
 		assertThat(id).isEqualTo(10);
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
@@ -88,15 +88,15 @@ public class RemoteProviderStoreRead {
 		assertThat(request.getParams().size()).isEqualTo(1);
 		assertThat(request.getParams()).includes(entry("id", 10));
 
-		return createExtDirectStoreResponse(request, ":" + id + ";" + locale);
+		return createExtDirectStoreResult(request, ":" + id + ";" + locale);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
-	public ExtDirectStoreResponse<Row> method6(@RequestParam(value = "id", defaultValue = "1") int id,
+	public ExtDirectStoreResult<Row> method6(@RequestParam(value = "id", defaultValue = "1") int id,
 			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
-		return createExtDirectStoreResponse(request, ":" + id + ";" + (servletRequest != null));
+		return createExtDirectStoreResult(request, ":" + id + ";" + (servletRequest != null));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
@@ -110,14 +110,14 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
-	public ExtDirectStoreResponse<Row> method8(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
+	public ExtDirectStoreResult<Row> method8(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
 			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(endDate).isNotNull();
 		assertThat(servletRequest).isNotNull();
-		return createExtDirectStoreResponse(request, ":" + endDate.toString() + ";" + (servletRequest != null));
+		return createExtDirectStoreResult(request, ":" + endDate.toString() + ";" + (servletRequest != null));
 	}
 
-	private static ExtDirectStoreResponse<Row> createExtDirectStoreResponse(ExtDirectStoreReadRequest request,
+	private static ExtDirectStoreResult<Row> createExtDirectStoreResult(ExtDirectStoreReadRequest request,
 			final String appendix) {
 		List<Row> rows = createRows(appendix);
 
@@ -221,7 +221,7 @@ public class RemoteProviderStoreRead {
 
 		}
 
-		return new ExtDirectStoreResponse<Row>(totalSize, rows);
+		return new ExtDirectStoreResult<Row>(totalSize, rows);
 
 	}
 
@@ -235,8 +235,8 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
-	public ExtDirectStoreResponse<Row> methodMetadata(ExtDirectStoreReadRequest request) {
-		ExtDirectStoreResponse<Row> response = createExtDirectStoreResponse(request, "");
+	public ExtDirectStoreResult<Row> methodMetadata(ExtDirectStoreReadRequest request) {
+		ExtDirectStoreResult<Row> response = createExtDirectStoreResult(request, "");
 
 		if (request.getStart() == null && request.getSort() == null) {
 			MetaData metaData = new MetaData();

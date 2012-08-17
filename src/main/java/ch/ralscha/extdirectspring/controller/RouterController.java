@@ -55,7 +55,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.JsonHandler;
 import ch.ralscha.extdirectspring.util.MethodInfo;
@@ -282,12 +282,12 @@ public class RouterController implements InitializingBean {
 							result = new ExtDirectFormLoadResult(result);
 						} else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo
 								.isType(ExtDirectMethodType.STORE_READ))
-								&& !ExtDirectStoreResponse.class.isAssignableFrom(result.getClass())
+								&& !ExtDirectStoreResult.class.isAssignableFrom(result.getClass())
 								&& configuration.isAlwaysWrapStoreResponse()) {
 							if (result instanceof Collection) {
-								result = new ExtDirectStoreResponse((Collection) result);
+								result = new ExtDirectStoreResult((Collection) result);
 							} else {
-								result = new ExtDirectStoreResponse(result);
+								result = new ExtDirectStoreResult(result);
 							}
 						}
 
