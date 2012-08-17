@@ -21,13 +21,13 @@ import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 
 @Service
 public class ExceptionFormPostService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_upload_service")
-	public ExtDirectFormPostResponse throwAException(@SuppressWarnings("unused") HttpServletRequest request) {
+	public ExtDirectFormPostResult throwAException(@SuppressWarnings("unused") HttpServletRequest request) {
 		throw new NullPointerException("a null pointer");
 	}
 

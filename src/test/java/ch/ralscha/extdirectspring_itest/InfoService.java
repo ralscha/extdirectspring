@@ -19,14 +19,14 @@ import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 
 @Service
 public class InfoService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_info_service", streamResponse = true)
-	public ExtDirectFormPostResponse updateInfo(Info info) {
-		ExtDirectFormPostResponse resp = new ExtDirectFormPostResponse(true);
+	public ExtDirectFormPostResult updateInfo(Info info) {
+		ExtDirectFormPostResult resp = new ExtDirectFormPostResult(true);
 		resp.addResultProperty("user-name-lower-case", info.getUserName().toLowerCase());
 		return resp;
 	}

@@ -28,15 +28,15 @@ import org.springframework.web.bind.annotation.InitBinder;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 
 @Service
 public class UserServiceInitBinderService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_userib_service")
-	public ExtDirectFormPostResponse updateUser(@Valid UserExtended user, BindingResult result) {
+	public ExtDirectFormPostResult updateUser(@Valid UserExtended user, BindingResult result) {
 
-		ExtDirectFormPostResponse resp = new ExtDirectFormPostResponse(result);
+		ExtDirectFormPostResult resp = new ExtDirectFormPostResult(result);
 		resp.addResultProperty("name", user.getName());
 		resp.addResultProperty("firstName", user.getFirstName());
 		resp.addResultProperty("email", user.getEmail());

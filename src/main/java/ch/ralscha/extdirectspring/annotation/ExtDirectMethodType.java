@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 
 /**
  * Enumeration of all possible remote method types.
@@ -167,7 +167,7 @@ public enum ExtDirectMethodType {
 
 			boolean isValid = true;
 
-			if (method.getReturnType().equals(ExtDirectFormPostResponse.class)) {
+			if (method.getReturnType().equals(ExtDirectFormPostResult.class)) {
 				ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method,
 						ExtDirectMethod.class);
 				if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
@@ -257,7 +257,7 @@ public enum ExtDirectMethodType {
 
 			} else {
 				log.error("FORM_POST method '" + methodName
-						+ "' must return void or an instance of ExtDirectFormPostResponse");
+						+ "' must return void or an instance of ExtDirectFormPostResult");
 				isValid = false;
 			}
 

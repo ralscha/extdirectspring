@@ -25,32 +25,32 @@ import org.springframework.context.MessageSource;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-public class ExtDirectFormPostResponse {
+public class ExtDirectFormPostResult {
 
 	private final Map<String, Object> result = new HashMap<String, Object>();
 
-	public ExtDirectFormPostResponse() {
+	public ExtDirectFormPostResult() {
 		setSuccess(true);
 	}
 
-	public ExtDirectFormPostResponse(boolean success) {
+	public ExtDirectFormPostResult(boolean success) {
 		setSuccess(success);
 	}
 
-	public ExtDirectFormPostResponse(BindingResult bindingResult) {
+	public ExtDirectFormPostResult(BindingResult bindingResult) {
 		addErrors(null, null, bindingResult);
 	}
 
-	public ExtDirectFormPostResponse(BindingResult bindingResult, boolean success) {
+	public ExtDirectFormPostResult(BindingResult bindingResult, boolean success) {
 		addErrors(null, null, bindingResult);
 		setSuccess(success);
 	}
 
-	public ExtDirectFormPostResponse(Locale locale, MessageSource messageSource, BindingResult bindingResult) {
+	public ExtDirectFormPostResult(Locale locale, MessageSource messageSource, BindingResult bindingResult) {
 		addErrors(locale, messageSource, bindingResult);
 	}
 
-	public ExtDirectFormPostResponse(Locale locale, MessageSource messageSource, BindingResult bindingResult,
+	public ExtDirectFormPostResult(Locale locale, MessageSource messageSource, BindingResult bindingResult,
 			boolean success) {
 		addErrors(locale, messageSource, bindingResult);
 		setSuccess(success);

@@ -26,16 +26,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 
 @Service
 public class FileUploadService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_upload_service", event = "test", entryClass = String.class, synchronizeOnSession = true)
-	public ExtDirectFormPostResponse uploadTest(@RequestParam("fileUpload") MultipartFile file, @Valid User user,
+	public ExtDirectFormPostResult uploadTest(@RequestParam("fileUpload") MultipartFile file, @Valid User user,
 			BindingResult result) throws IOException {
 
-		ExtDirectFormPostResponse resp = new ExtDirectFormPostResponse(result, false);
+		ExtDirectFormPostResult resp = new ExtDirectFormPostResult(result, false);
 
 		if (file != null && !file.isEmpty()) {
 			resp.addResultProperty("fileContents", new String(file.getBytes()));

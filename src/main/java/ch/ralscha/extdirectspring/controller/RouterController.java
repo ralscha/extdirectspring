@@ -51,7 +51,7 @@ import org.springframework.web.util.WebUtils;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.BaseResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
-import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
@@ -224,9 +224,9 @@ public class RouterController implements InitializingBean {
 					modelAndView = handlerAdapter.handle(request, response, handlerMethod);
 				}
 
-				ExtDirectFormPostResponse formPostResponse = (ExtDirectFormPostResponse) modelAndView.getModel().get(
-						"extDirectFormPostResponse");
-				directResponse.setResult(formPostResponse.getResult());
+				ExtDirectFormPostResult formPostResult = (ExtDirectFormPostResult) modelAndView.getModel().get(
+						"extDirectFormPostResult");
+				directResponse.setResult(formPostResult.getResult());
 			} catch (Exception e) {
 				log.error("Error calling method: " + extMethod, e.getCause() != null ? e.getCause() : e);
 				handleException(directResponse, e);

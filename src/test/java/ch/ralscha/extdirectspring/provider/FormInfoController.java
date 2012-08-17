@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
 @Controller
@@ -67,8 +67,8 @@ public class FormInfoController {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
-	public ExtDirectFormPostResponse updateInfoDirect(FormInfo formInfo, BindingResult result) {
-		ExtDirectFormPostResponse e = new ExtDirectFormPostResponse(result);
+	public ExtDirectFormPostResult updateInfoDirect(FormInfo formInfo, BindingResult result) {
+		ExtDirectFormPostResult e = new ExtDirectFormPostResult(result);
 		e.addResultProperty("name", formInfo.getName().toUpperCase());
 		e.addResultProperty("age", formInfo.getAge() + 10);
 		e.addResultProperty("admin", !formInfo.isAdmin());

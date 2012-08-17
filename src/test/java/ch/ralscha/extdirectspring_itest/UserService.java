@@ -23,20 +23,20 @@ import org.springframework.validation.BindingResult;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 
 @Service
 public class UserService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_user_service", synchronizeOnSession = true)
-	public ExtDirectFormPostResponse updateUser(HttpServletRequest request, @Valid User user, BindingResult result) {
+	public ExtDirectFormPostResult updateUser(HttpServletRequest request, @Valid User user, BindingResult result) {
 
 		if (request.getParameter("addemailerror") != null) {
 			result.rejectValue("email", "", "another email error");
 			result.rejectValue("name", "", "a name error");
 		}
 
-		ExtDirectFormPostResponse resp = new ExtDirectFormPostResponse(result);
+		ExtDirectFormPostResult resp = new ExtDirectFormPostResult(result);
 
 		resp.addResultProperty("name", user.getName());
 		resp.addResultProperty("age", user.getAge());

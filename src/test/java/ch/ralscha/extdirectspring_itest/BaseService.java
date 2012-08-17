@@ -23,20 +23,20 @@ import org.springframework.validation.BindingResult;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 
 public abstract class BaseService<T> {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_base_service")
-	public ExtDirectFormPostResponse update(@SuppressWarnings("unused") @Valid T model, BindingResult result) {
-		return new ExtDirectFormPostResponse(result);
+	public ExtDirectFormPostResult update(@SuppressWarnings("unused") @Valid T model, BindingResult result) {
+		return new ExtDirectFormPostResult(result);
 	}
 
-	public abstract ExtDirectFormPostResponse method1(HttpServletRequest request, HttpServletResponse response,
+	public abstract ExtDirectFormPostResult method1(HttpServletRequest request, HttpServletResponse response,
 			@Valid T model, BindingResult result);
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_base_service")
-	public abstract ExtDirectFormPostResponse method2(HttpServletRequest request, HttpServletResponse response,
+	public abstract ExtDirectFormPostResult method2(HttpServletRequest request, HttpServletResponse response,
 			@Valid T model, BindingResult result);
 
 }

@@ -23,21 +23,21 @@ import org.springframework.validation.BindingResult;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 
 @Service
 public class MyModelService extends BaseService<MyModel> {
 
 	@Override
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_base_service")
-	public ExtDirectFormPostResponse method1(HttpServletRequest request, HttpServletResponse response, MyModel model,
+	public ExtDirectFormPostResult method1(HttpServletRequest request, HttpServletResponse response, MyModel model,
 			final BindingResult result) {
-		return new ExtDirectFormPostResponse(result);
+		return new ExtDirectFormPostResult(result);
 	}
 
 	@Override
-	public ExtDirectFormPostResponse method2(HttpServletRequest request, HttpServletResponse response, MyModel model,
+	public ExtDirectFormPostResult method2(HttpServletRequest request, HttpServletResponse response, MyModel model,
 			final BindingResult result) {
-		return new ExtDirectFormPostResponse(result);
+		return new ExtDirectFormPostResult(result);
 	}
 }
