@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.bean;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -36,6 +37,8 @@ public class ExtDirectResponse extends BaseResponse {
 	private String method;
 
 	private Object result;
+
+	private boolean streamResponse;
 
 	public ExtDirectResponse() {
 		// needs a default constructor for testing
@@ -73,6 +76,15 @@ public class ExtDirectResponse extends BaseResponse {
 
 	public int getTid() {
 		return tid;
+	}
+
+	@JsonIgnore
+	public boolean isStreamResponse() {
+		return streamResponse;
+	}
+
+	public void setStreamResponse(boolean streamResponse) {
+		this.streamResponse = streamResponse;
 	}
 
 	@Override

@@ -16,9 +16,12 @@
 package ch.ralscha.extdirectspring.controller;
 
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
@@ -53,6 +56,10 @@ public class Configuration {
 	private boolean streamResponse = false;
 
 	private String jsContentType = "application/javascript";
+
+	private BatchedMethodsExecutionPolicy batchedMethodsExecutionPolicy = BatchedMethodsExecutionPolicy.SEQUENTIAL;
+
+	private ExecutorService batchedMethodsExecutorService = null;
 
 	public String getDefaultExceptionMessage() {
 		return defaultExceptionMessage;
@@ -316,6 +323,44 @@ public class Configuration {
 
 	public String getJsContentType() {
 		return jsContentType;
+	}
+
+	public BatchedMethodsExecutionPolicy getBatchedMethodsExecutionPolicy() {
+		return batchedMethodsExecutionPolicy;
+	}
+
+	/**
+	 * Specifies how batched methods sent from the client should be executed on
+	 * the server. {@link BatchedMethodsExecutionPolicy#SEQUENTIAL} executes
+	 * methods one after the other.
+	 * {@link BatchedMethodsExecutionPolicy#CONCURRENT} executes methods
+	 * concurrently with the help of a thread pool.
+	 * 
+	 * <p>
+	 * Default value is {@link BatchedMethodsExecutionPolicy#SEQUENTIAL}
+	 * @param batchedMethodsExecutionPolicy new policy
+	 */
+	public void setBatchedMethodsExecutionPolicy(BatchedMethodsExecutionPolicy batchedMethodsExecutionPolicy) {
+		Assert.notNull(batchedMethodsExecutionPolicy, "batchedMethodsExecutionPolicy must not be null");
+		this.batchedMethodsExecutionPolicy = batchedMethodsExecutionPolicy;
+	}
+
+	public ExecutorService getBatchedMethodsExecutorService() {
+		return batchedMethodsExecutorService;
+	}
+
+	/**
+	 * Sets the thread pool used for executing batch methods concurrently.
+	 * <p>
+	 * If batchedMethodsExecutionPolicy is set to
+	 * {@link BatchedMethodsExecutionPolicy#CONCURRENT} but no
+	 * batchedMethodsExecutorService is specified the library creates a
+	 * {@link Executors#newFixedThreadPool(int)} with 5 threads.
+	 * 
+	 * @param batchedMethodsExecutorService the new thread pool
+	 */
+	public void setBatchedMethodsExecutorService(ExecutorService batchedMethodsExecutorService) {
+		this.batchedMethodsExecutorService = batchedMethodsExecutorService;
 	}
 
 }
