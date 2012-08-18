@@ -439,9 +439,9 @@ public class RouterControllerStoreReadTest {
 		assertThat(resp.getResult()).isNotNull();
 
 		return ControllerUtil.convertValue(resp.getResult(), new TypeReference<ExtDirectStoreReadResult<Row>>() {/*
-																											 * nothing
-																											 * here
-																											 */
+																												 * nothing
+																												 * here
+																												 */
 		});
 	}
 
@@ -452,8 +452,9 @@ public class RouterControllerStoreReadTest {
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
-		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderStoreRead", "method5", readRequest, new TypeReference<ExtDirectStoreReadResult<Row>>() {
+		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(
+				controller, "remoteProviderStoreRead", "method5", readRequest,
+				new TypeReference<ExtDirectStoreReadResult<Row>>() {
 					// nothing here
 				});
 
@@ -476,8 +477,9 @@ public class RouterControllerStoreReadTest {
 		readRequest.put("query", "firstname");
 
 		@SuppressWarnings("unchecked")
-		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderStoreRead", "method6", readRequest, new TypeReference<ExtDirectStoreReadResult<Row>>() {
+		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(
+				controller, "remoteProviderStoreRead", "method6", readRequest,
+				new TypeReference<ExtDirectStoreReadResult<Row>>() {
 					// nothing here
 				});
 
@@ -519,8 +521,9 @@ public class RouterControllerStoreReadTest {
 		readRequest.put("endDate", ISODateTimeFormat.dateTime().print(today));
 
 		@SuppressWarnings("unchecked")
-		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderStoreRead", "method8", readRequest, new TypeReference<ExtDirectStoreReadResult<Row>>() {
+		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(
+				controller, "remoteProviderStoreRead", "method8", readRequest,
+				new TypeReference<ExtDirectStoreReadResult<Row>>() {
 					// nothing here
 				});
 

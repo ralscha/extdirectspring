@@ -97,8 +97,8 @@ public class ExtDirectStoreReadResult<T> {
 
 	@Override
 	public String toString() {
-		return "ExtDirectStoreReadResult [total=" + total + ", records=" + records + ", success=" + success + ", metaData="
-				+ metaData + "]";
+		return "ExtDirectStoreReadResult [total=" + total + ", records=" + records + ", success=" + success
+				+ ", metaData=" + metaData + "]";
 	}
 
 }

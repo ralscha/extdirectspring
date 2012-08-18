@@ -87,7 +87,7 @@ public class CrudTestMethods {
 		assertResponse(resp, "readWithPaging");
 		ExtDirectStoreReadResult<Book> storeResponse = ControllerUtil.convertValue(resp.getResult(),
 				new TypeReference<ExtDirectStoreReadResult<Book>>() {// nothing
-																	// here
+																		// here
 				});
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(51));
 		assertThat(storeResponse.isSuccess()).isTrue();
