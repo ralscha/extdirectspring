@@ -13,16 +13,19 @@
 
 	<bean id="simpleService" class="ch.ralscha.extdirectspring_itest.SimpleService" />
 
-	<bean id="extDirectSpringConfiguration" class="ch.ralscha.extdirectspring.controller.Configuration">
-		<property name="exceptionToMessage">
-			<map>
-				<entry key="java.lang.NullPointerException">
-					<null />
-				</entry>
-			</map>
-		</property>
+
+	<bean id="threadPool" class="org.springframework.scheduling.concurrent.ThreadPoolExecutorFactoryBean">
+	  <property name="corePoolSize" value="50" />
+	  <property name="maxPoolSize" value="200" />
+	  <property name="queueCapacity" value="5000" />
 	</bean>
 
+	<bean id="extDirectSpringConfiguration" class="ch.ralscha.extdirectspring.controller.Configuration">
+	    <property name="batchedMethodsExecutionPolicy" value="CONCURRENT" />
+	    <property name="batchedMethodsExecutorService" ref="threadPool"/>
+	</bean>
+
+ 
 	<mvc:annotation-driven />
 
 </beans>

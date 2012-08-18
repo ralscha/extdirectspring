@@ -20,6 +20,8 @@ import static org.fest.assertions.Assertions.assertThat;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -181,20 +183,55 @@ public class SimpleServiceTest extends JettyTest2 {
 	@PerfTest(invocations = 200, threads = 10)
 	public void testSimpleNamedCall() throws IllegalStateException, IOException {
 		HttpClient client = new DefaultHttpClient();
-		postToEcho("\"userId\":\"ralph\", \"logLevel\": 100", "UserId: ralph LogLevel: 100", client);
-		postToEcho("\"userId\":\"tom\"", "UserId: tom LogLevel: 10", client);
-		postToEcho("\"userId\":\"renee\", \"logLevel\": 1", "UserId: renee LogLevel: 1", client);
-		postToEcho("\"userId\":\"andrea\"", "UserId: andrea LogLevel: 10", client);
+		postToEcho(Collections.singletonList("\"userId\":\"ralph\", \"logLevel\": 100"),
+				Collections.singletonList("UserId: ralph LogLevel: 100"), client);
+		postToEcho(Collections.singletonList("\"userId\":\"tom\""),
+				Collections.singletonList("UserId: tom LogLevel: 10"), client);
+		postToEcho(Collections.singletonList("\"userId\":\"renee\", \"logLevel\": 1"),
+				Collections.singletonList("UserId: renee LogLevel: 1"), client);
+		postToEcho(Collections.singletonList("\"userId\":\"andrea\""),
+				Collections.singletonList("UserId: andrea LogLevel: 10"), client);
 	}
 
-	private static void postToEcho(String data, String expectedResult, HttpClient client)
+	@Test
+	@PerfTest(invocations = 20, threads = 10)
+	public void testSimpleNamedCallBatched() throws IllegalStateException, IOException {
+		HttpClient client = new DefaultHttpClient();
+		postToEcho(Arrays.asList("\"userId\":\"Ralph\", \"logLevel\": 100", "\"userId\":\"Tom\"",
+				"\"userId\":\"Renee\", \"logLevel\": 1", "\"userId\":\"Andrea\""), Arrays.asList(
+				"UserId: Ralph LogLevel: 100", "UserId: Tom LogLevel: 10", "UserId: Renee LogLevel: 1",
+				"UserId: Andrea LogLevel: 10"), client);
+
+	}
+
+	private static void postToEcho(List<String> datas, List<String> expectedResult, HttpClient client)
 			throws UnsupportedEncodingException, IOException, ClientProtocolException, JsonParseException,
 			JsonMappingException {
 
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
-		StringEntity postEntity = new StringEntity("{\"action\":\"simpleService\",\"method\":\"echo\",\"data\":{"
-				+ data + "},\"type\":\"rpc\",\"tid\":1}", "UTF-8");
+		StringBuilder postData = new StringBuilder();
+
+		if (datas.size() > 1) {
+			postData.append("[");
+		}
+
+		for (int i = 0; i < datas.size(); i++) {
+			postData.append("{\"action\":\"simpleService\",\"method\":\"echo\",\"data\":{");
+			postData.append(datas.get(i));
+			postData.append("},\"type\":\"rpc\",\"tid\":");
+			postData.append(i+1);
+			postData.append("}");
+			if (i < datas.size()-1) {
+				postData.append(",");
+			}
+		}
+			
+		if (datas.size() > 1) {
+			postData.append("]");
+		}
+
+		StringEntity postEntity = new StringEntity(postData.toString(), "UTF-8");
 
 		post.setEntity(postEntity);
 		post.setHeader("Content-Type", "application/json; charset=UTF-8");
@@ -211,14 +248,18 @@ public class SimpleServiceTest extends JettyTest2 {
 		assertThat(responseString).startsWith("[").endsWith("]");
 		ObjectMapper mapper = new ObjectMapper();
 		@SuppressWarnings("unchecked")
-		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
-				Map.class);
-		assertThat(rootAsMap).hasSize(5);
-		assertThat(rootAsMap.get("result")).isEqualTo(expectedResult);
-		assertThat(rootAsMap.get("method")).isEqualTo("echo");
-		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
-		assertThat(rootAsMap.get("action")).isEqualTo("simpleService");
-		assertThat(rootAsMap.get("tid")).isEqualTo(1);
+		List<Map<String, Object>> results = mapper.readValue(responseString, List.class);
+		assertThat(results).hasSize(expectedResult.size());
+		int tid = 1;
+		for (Map<String, Object> map : results) {
+			assertThat(map).hasSize(5);
+			assertThat(map.get("result")).isEqualTo(expectedResult.get(tid - 1));
+			assertThat(map.get("method")).isEqualTo("echo");
+			assertThat(map.get("type")).isEqualTo("rpc");
+			assertThat(map.get("action")).isEqualTo("simpleService");
+			assertThat(map.get("tid")).isEqualTo(tid++);
+		}
+
 	}
 
 }
