@@ -16,17 +16,18 @@
 package ch.ralscha.extdirectspring.controller;
 
 /**
- * Policies how batched methods sent from the client should be executed on the server
+ * Policies how batched methods sent from the client should be executed on the
+ * server
  * 
  * @author Ralph Schaer
  */
 public enum BatchedMethodsExecutionPolicy {
-	
+
 	/*
-	 * Executes methods one after the other. 
+	 * Executes methods one after the other.
 	 */
-	SEQUENTIAL, 
-	
+	SEQUENTIAL,
+
 	/**
 	 * Executes methods concurrently in a thread pool
 	 */

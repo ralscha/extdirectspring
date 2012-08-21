@@ -36,11 +36,11 @@ public class SimpleService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "itest_simple", streamResponse = true)
 	public String echo(String userId, @RequestParam(defaultValue = "10") int logLevel) {
-		//Simulate some work
+		// Simulate some work
 		try {
 			TimeUnit.MILLISECONDS.sleep(200);
 		} catch (InterruptedException e) {
-			//do nothing here
+			// do nothing here
 		}
 		return String.format("UserId: %s LogLevel: %d", userId, logLevel);
 	}

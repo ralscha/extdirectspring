@@ -220,13 +220,13 @@ public class SimpleServiceTest extends JettyTest2 {
 			postData.append("{\"action\":\"simpleService\",\"method\":\"echo\",\"data\":{");
 			postData.append(datas.get(i));
 			postData.append("},\"type\":\"rpc\",\"tid\":");
-			postData.append(i+1);
+			postData.append(i + 1);
 			postData.append("}");
-			if (i < datas.size()-1) {
+			if (i < datas.size() - 1) {
 				postData.append(",");
 			}
 		}
-			
+
 		if (datas.size() > 1) {
 			postData.append("]");
 		}
