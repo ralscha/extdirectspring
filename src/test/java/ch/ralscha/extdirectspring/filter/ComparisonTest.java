@@ -27,11 +27,16 @@ public class ComparisonTest {
 	public void testFromString() {
 		assertSame(Comparison.LESS_THAN, Comparison.fromString("lt"));
 		assertSame(Comparison.GREATER_THAN, Comparison.fromString("gt"));
-		assertSame(Comparison.EQUAL, Comparison.fromString("eq"));
+		assertSame(Comparison.EQUAL, Comparison.fromString("eq"));		
+		assertSame(Comparison.IN, Comparison.fromString("in"));
+		assertSame(Comparison.LIKE, Comparison.fromString("like"));
 
 		assertSame(Comparison.LESS_THAN, Comparison.fromString("LT"));
 		assertSame(Comparison.GREATER_THAN, Comparison.fromString("GT"));
 		assertSame(Comparison.EQUAL, Comparison.fromString("EQ"));
+		assertSame(Comparison.IN, Comparison.fromString("IN"));
+		assertSame(Comparison.LIKE, Comparison.fromString("LIKE"));
+
 	}
 
 	@Test(expected = NoSuchElementException.class)
