@@ -194,7 +194,7 @@ public class SimpleServiceTest extends JettyTest2 {
 	}
 
 	@Test
-	@PerfTest(invocations = 20, threads = 10)
+	@PerfTest(invocations = 200, threads = 10)
 	public void testSimpleNamedCallBatched() throws IllegalStateException, IOException {
 		HttpClient client = new DefaultHttpClient();
 		postToEcho(Arrays.asList("\"userId\":\"Ralph\", \"logLevel\": 100", "\"userId\":\"Tom\"",
