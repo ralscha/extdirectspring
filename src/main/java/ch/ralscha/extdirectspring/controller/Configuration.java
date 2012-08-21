@@ -338,6 +338,7 @@ public class Configuration {
 	 * 
 	 * <p>
 	 * Default value is {@link BatchedMethodsExecutionPolicy#SEQUENTIAL}
+	 * @see #setBatchedMethodsExecutorService(ExecutorService)
 	 * @param batchedMethodsExecutionPolicy new policy
 	 */
 	public void setBatchedMethodsExecutionPolicy(BatchedMethodsExecutionPolicy batchedMethodsExecutionPolicy) {
@@ -350,13 +351,13 @@ public class Configuration {
 	}
 
 	/**
-	 * Sets the thread pool used for executing batch methods concurrently.
+	 * Sets the thread pool used for executing batched methods concurrently.
 	 * <p>
 	 * If batchedMethodsExecutionPolicy is set to
 	 * {@link BatchedMethodsExecutionPolicy#CONCURRENT} but no
 	 * batchedMethodsExecutorService is specified the library creates a
 	 * {@link Executors#newFixedThreadPool(int)} with 5 threads.
-	 * 
+	 * @see #setBatchedMethodsExecutionPolicy(BatchedMethodsExecutionPolicy)
 	 * @param batchedMethodsExecutorService the new thread pool
 	 */
 	public void setBatchedMethodsExecutorService(ExecutorService batchedMethodsExecutorService) {
