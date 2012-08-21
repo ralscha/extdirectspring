@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
  * @author Ralph Schaer
  */
 public enum Comparison {
-	LESS_THAN("lt"), GREATER_THAN("gt"), EQUAL("eq");
+	LESS_THAN("lt"), GREATER_THAN("gt"), EQUAL("eq"), LIKE("like"), IN("in");
 
 	private final String name;
 
