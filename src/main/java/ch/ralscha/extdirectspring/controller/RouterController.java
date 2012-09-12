@@ -86,9 +86,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 public class RouterController implements InitializingBean, DisposableBean {
 
-	public static final MediaType APPLICATION_JSON = new MediaType("application", "json", Charset.forName("UTF-8"));
+	public static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
+	
+	public static final MediaType APPLICATION_JSON = new MediaType("application", "json", UTF8_CHARSET);
 
-	public static final MediaType TEXT_HTML = new MediaType("text", "html", Charset.forName("UTF-8"));
+	public static final MediaType TEXT_HTML = new MediaType("text", "html", UTF8_CHARSET);
 
 	private static final Log log = LogFactory.getLog(RouterController.class);
 
@@ -398,13 +400,13 @@ public class RouterController implements InitializingBean, DisposableBean {
 			response.setCharacterEncoding(RouterController.TEXT_HTML.getCharSet().name());
 
 			ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
-			bos.write("<html><body><textarea>".getBytes("UTF-8"));
+			bos.write("<html><body><textarea>".getBytes(UTF8_CHARSET));
 
 			String responseJson = jsonHandler.getMapper().writeValueAsString(responseObject);
 
 			responseJson = responseJson.replace("&quot;", "\\&quot;");
-			bos.write(responseJson.getBytes("UTF-8"));
-			bos.write("</textarea></body></html>".getBytes("UTF-8"));
+			bos.write(responseJson.getBytes(UTF8_CHARSET));
+			bos.write("</textarea></body></html>".getBytes(UTF8_CHARSET));
 
 			response.setContentLength(bos.size());
 			FileCopyUtils.copy(bos.toByteArray(), response.getOutputStream());

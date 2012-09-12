@@ -16,6 +16,7 @@
 package ch.ralscha.extdirectspring.controller;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
@@ -87,11 +88,12 @@ public class ApiController {
 
 		if (format == null) {
 			response.setContentType(routerController.getConfiguration().getJsContentType());
-
+			response.setCharacterEncoding(RouterController.UTF8_CHARSET.name());
+			
 			String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group,
 					fullRouterUrl, request);
-
-			byte[] outputBytes = apiString.getBytes("UTF-8");
+			
+			byte[] outputBytes = apiString.getBytes(RouterController.UTF8_CHARSET);
 			response.setContentLength(outputBytes.length);
 
 			@SuppressWarnings("resource")
@@ -108,7 +110,7 @@ public class ApiController {
 			String routerUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "router");
 
 			String apiString = buildApiJson(apiNs, actionNs, remotingApiVar, routerUrl, group, debug);
-			byte[] outputBytes = apiString.getBytes("UTF-8");
+			byte[] outputBytes = apiString.getBytes(RouterController.UTF8_CHARSET);
 			response.setContentLength(outputBytes.length);
 
 			@SuppressWarnings("resource")
@@ -152,7 +154,7 @@ public class ApiController {
 		String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group,
 				fullRouterUrl, request);
 
-		byte[] outputBytes = apiString.getBytes("UTF-8");
+		byte[] outputBytes = apiString.getBytes(RouterController.UTF8_CHARSET);
 		ExtDirectSpringUtil.handleCacheableResponse(request, response, outputBytes, routerController.getConfiguration()
 				.getJsContentType());
 	}
