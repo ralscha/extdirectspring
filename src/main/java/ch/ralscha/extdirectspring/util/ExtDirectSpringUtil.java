@@ -159,7 +159,7 @@ public final class ExtDirectSpringUtil {
 	public static void handleCacheableResponse(HttpServletRequest request, HttpServletResponse response, byte[] data,
 			String contentType) throws IOException {
 		String ifNoneMatch = request.getHeader("If-None-Match");
-		String etag = "\"" + DigestUtils.md5DigestAsHex(data) + "\"";
+		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + "\"";
 
 		if (etag.equals(ifNoneMatch)) {
 			response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
