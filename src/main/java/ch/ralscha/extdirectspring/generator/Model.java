@@ -7,6 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
+
 /**
  * Annotation to configure different aspects of a model object
  * 
@@ -36,8 +38,15 @@ public @interface Model {
 	String idProperty() default "id";
 
 	/**
-	 * If true a writer config will be added to the model object.
+	 * If true a reader config with root : 'records' will be added to the model object.
+	 * This configuration is needef it the STORE_READ method return an instance of
+	 * {@link ExtDirectStoreReadResult}
 	 * 
+	 * <pre>
+	 * reader : {
+	 *   root : 'records'
+	 * }
+	 * </pre>
 	 * Default value is false if not specified
 	 */
 	boolean paging() default false;
