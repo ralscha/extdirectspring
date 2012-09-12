@@ -16,9 +16,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.util.DigestUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.ReflectionUtils.FieldCallback;
 import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.support.RequestContextUtils;
+
+import ch.ralscha.extdirectspring.controller.RouterController;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -34,9 +42,49 @@ public abstract class ModelGenerator {
 
 	private static final Map<String, SoftReference<ModelBean>> modelCache = new ConcurrentHashMap<String, SoftReference<ModelBean>>();
 
-	public static String generateJavascript(Class<?> clazz, OutputFormat format) {
+	public static void writeModel(HttpServletRequest request, HttpServletResponse response, Class<?> clazz, OutputFormat format) throws IOException {
+		writeModel(request, response, clazz, format, false);		
+	}
+	
+	public static void writeModel(HttpServletRequest request, HttpServletResponse response, Class<?> clazz, OutputFormat format, boolean debug) throws IOException {
 		ModelBean model = createModel(clazz);
-		return generateJavascript(model, format);
+		writeModel(request, response, model, format, debug);		
+	}
+	
+	public static void writeModel(HttpServletRequest request, HttpServletResponse response, ModelBean model, OutputFormat format) throws IOException {
+		writeModel(request, response, model, format, false);		
+	}
+	
+	public static void writeModel(HttpServletRequest request, HttpServletResponse response, ModelBean model, OutputFormat format, boolean debug) throws IOException {
+
+		RouterController routerController = RequestContextUtils.getWebApplicationContext(request).getBean(
+				RouterController.class);
+	
+		byte[] data = generateJavascript(model, format, debug).getBytes(RouterController.UTF8_CHARSET);
+		String ifNoneMatch = request.getHeader("If-None-Match");
+		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + "\"";
+
+		if (etag.equals(ifNoneMatch)) {
+			response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+			return;
+		}
+
+		response.setContentType(routerController.getConfiguration().getJsContentType());
+		response.setCharacterEncoding(RouterController.UTF8_CHARSET.name());
+		response.setContentLength(data.length);
+
+		response.setHeader("ETag", etag);
+
+		@SuppressWarnings("resource")
+		ServletOutputStream out = response.getOutputStream();
+		out.write(data);
+		out.flush();
+		
+	}
+	
+	public static String generateJavascript(Class<?> clazz, OutputFormat format, boolean debug) {
+		ModelBean model = createModel(clazz);
+		return generateJavascript(model, format, debug);
 	}
 
 	public static ModelBean createModel(Class<?> clazz) {
@@ -165,7 +213,7 @@ public abstract class ModelGenerator {
 		return model;
 	}
 
-	public static String generateJavascript(ModelBean model, OutputFormat format) {
+	public static String generateJavascript(ModelBean model, OutputFormat format, boolean debug) {
 
 		JsCacheKey key = new JsCacheKey(model, format);
 
@@ -236,11 +284,19 @@ public abstract class ModelGenerator {
 		}
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("Ext.define('").append(model.getName()).append("',\n");
+		sb.append("Ext.define('").append(model.getName()).append("',");
+		if (debug) {
+			sb.append("\n");
+		}
 
 		String configObjectString;
 		try {
-			configObjectString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(modelObject);
+			if (debug) {
+				configObjectString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(modelObject);
+			} else {
+				configObjectString = mapper.writeValueAsString(modelObject);
+			}
+			
 		} catch (JsonGenerationException e) {
 			throw new RuntimeException(e);
 		} catch (JsonMappingException e) {
