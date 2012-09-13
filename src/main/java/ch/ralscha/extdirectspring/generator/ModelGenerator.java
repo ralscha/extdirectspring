@@ -111,10 +111,22 @@ public abstract class ModelGenerator {
 		if (modelAnnotation != null) {
 			model.setIdProperty(modelAnnotation.idProperty());
 			model.setPageing(modelAnnotation.paging());
-			model.setCreateMethod(modelAnnotation.createMethod());
-			model.setReadMethod(modelAnnotation.readMethod());
-			model.setUpdateMethod(modelAnnotation.updateMethod());
-			model.setDestroyMethod(modelAnnotation.destroyMethod());
+
+			if (StringUtils.hasText(modelAnnotation.createMethod())) {
+				model.setCreateMethod(modelAnnotation.createMethod());
+			}
+
+			if (StringUtils.hasText(modelAnnotation.readMethod())) {
+				model.setReadMethod(modelAnnotation.readMethod());
+			}
+
+			if (StringUtils.hasText(modelAnnotation.updateMethod())) {
+				model.setUpdateMethod(modelAnnotation.updateMethod());
+			}
+
+			if (StringUtils.hasText(modelAnnotation.destroyMethod())) {
+				model.setDestroyMethod(modelAnnotation.destroyMethod());
+			}
 		}
 
 		final Set<String> hasReadMethod = new HashSet<String>();
