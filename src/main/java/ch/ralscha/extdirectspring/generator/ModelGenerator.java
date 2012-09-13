@@ -219,7 +219,7 @@ public abstract class ModelGenerator {
 
 	public static String generateJavascript(ModelBean model, OutputFormat format, boolean debug) {
 
-		JsCacheKey key = new JsCacheKey(model, format);
+		JsCacheKey key = new JsCacheKey(model, format, debug);
 
 		SoftReference<String> jsReference = jsCache.get(key);
 		if (jsReference != null && jsReference.get() != null) {
@@ -328,15 +328,19 @@ public abstract class ModelGenerator {
 
 		private final OutputFormat format;
 
-		JsCacheKey(ModelBean modelBean, OutputFormat format) {
+		private final boolean debug;
+
+		JsCacheKey(ModelBean modelBean, OutputFormat format, boolean debug) {
 			this.modelBean = modelBean;
 			this.format = format;
+			this.debug = debug;
 		}
 
 		@Override
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
+			result = prime * result + (debug ? 1231 : 1237);
 			result = prime * result + ((format == null) ? 0 : format.hashCode());
 			result = prime * result + ((modelBean == null) ? 0 : modelBean.hashCode());
 			return result;
@@ -354,6 +358,9 @@ public abstract class ModelGenerator {
 				return false;
 			}
 			JsCacheKey other = (JsCacheKey) obj;
+			if (debug != other.debug) {
+				return false;
+			}
 			if (format != other.format) {
 				return false;
 			}
