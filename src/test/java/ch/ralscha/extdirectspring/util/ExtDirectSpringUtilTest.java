@@ -138,7 +138,7 @@ public class ExtDirectSpringUtilTest {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		byte[] data = "the response data".getBytes();
-		String etag = '"' + DigestUtils.md5DigestAsHex(data) + '"';
+		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + '"';
 		String contentType = "application/javascript;charset=UTF-8";
 		ExtDirectSpringUtil.handleCacheableResponse(request, response, data, contentType);
 
@@ -152,7 +152,7 @@ public class ExtDirectSpringUtilTest {
 	@Test
 	public void testHandleCacheableResponseWithIfNoneMatch() throws IOException {
 		byte[] data = "the response data".getBytes();
-		String etag = '"' + DigestUtils.md5DigestAsHex(data) + '"';
+		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + '"';
 		String contentType = "application/javascript;charset=UTF-8";
 
 		MockHttpServletRequest request = new MockHttpServletRequest();
@@ -166,7 +166,7 @@ public class ExtDirectSpringUtilTest {
 		request.addHeader("If-None-Match", etag);
 		response = new MockHttpServletResponse();
 		data = "new response data".getBytes();
-		etag = '"' + DigestUtils.md5DigestAsHex(data) + '"';
+		etag = "\"0" + DigestUtils.md5DigestAsHex(data) + '"';
 		ExtDirectSpringUtil.handleCacheableResponse(request, response, data, contentType);
 		assertThat(response.getStatus()).isEqualTo(200);
 		assertResponse(response, 6, etag, 6);
