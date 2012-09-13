@@ -149,51 +149,51 @@ public abstract class ModelGenerator {
 						Class<?> javaType = field.getType();
 
 						ModelType modelType = null;
-						for (ModelType t : ModelType.values()) {
-							if (t.supports(javaType)) {
-								modelType = t;
+						for (ModelType mt : ModelType.values()) {
+							if (mt.supports(javaType)) {
+								modelType = mt;
 								break;
 							}
 						}
 
 						if (modelType != null) {
 
-							ModelField mf = field.getAnnotation(ModelField.class);
-							if (mf != null) {
+							ModelField modelField = field.getAnnotation(ModelField.class);
+							if (modelField != null) {
 
 								String name;
-								if (StringUtils.hasText(mf.value())) {
-									name = mf.value();
+								if (StringUtils.hasText(modelField.value())) {
+									name = modelField.value();
 								} else {
 									name = field.getName();
 								}
 
 								ModelType type;
-								if (mf.type() != ModelType.AUTO) {
-									type = mf.type();
+								if (modelField.type() != ModelType.AUTO) {
+									type = modelField.type();
 								} else {
 									type = modelType;
 								}
 
 								ModelFieldBean modelFieldBean = new ModelFieldBean(name, type);
 
-								if (StringUtils.hasText(mf.dateFormat()) && type == ModelType.DATE) {
-									modelFieldBean.setDateFormat(mf.dateFormat());
+								if (StringUtils.hasText(modelField.dateFormat()) && type == ModelType.DATE) {
+									modelFieldBean.setDateFormat(modelField.dateFormat());
 								}
 
-								if (StringUtils.hasText(mf.defaultValue())) {
+								if (StringUtils.hasText(modelField.defaultValue())) {
 									if (type == ModelType.BOOLEAN) {
-										modelFieldBean.setDefaultValue(Boolean.parseBoolean(mf.defaultValue()));
+										modelFieldBean.setDefaultValue(Boolean.parseBoolean(modelField.defaultValue()));
 									} else if (type == ModelType.INTEGER) {
-										modelFieldBean.setDefaultValue(Long.valueOf(mf.defaultValue()));
+										modelFieldBean.setDefaultValue(Long.valueOf(modelField.defaultValue()));
 									} else if (type == ModelType.FLOAT) {
-										modelFieldBean.setDefaultValue(Double.valueOf(mf.defaultValue()));
+										modelFieldBean.setDefaultValue(Double.valueOf(modelField.defaultValue()));
 									} else {
-										modelFieldBean.setDefaultValue(mf.defaultValue());
+										modelFieldBean.setDefaultValue(modelField.defaultValue());
 									}
 								}
 
-								if (mf.useNull()
+								if (modelField.useNull()
 										&& (type == ModelType.INTEGER || type == ModelType.FLOAT
 												|| type == ModelType.STRING || type == ModelType.BOOLEAN)) {
 									modelFieldBean.setUseNull(true);
@@ -310,11 +310,11 @@ public abstract class ModelGenerator {
 		}
 
 		configObjectString = configObjectString.replace("\"", "'");
-		configObjectString = configObjectString.replaceAll("directFn : '([^']+)'", "directFn : $1");
-		configObjectString = configObjectString.replaceAll("read : '([^']+)'", "read : $1");
-		configObjectString = configObjectString.replaceAll("create : '([^']+)'", "create : $1");
-		configObjectString = configObjectString.replaceAll("update : '([^']+)'", "update : $1");
-		configObjectString = configObjectString.replaceAll("destroy : '([^']+)'", "destroy : $1");
+		configObjectString = configObjectString.replaceAll("directFn( ?: ?)'([^']+)'", "directFn$1$2");
+		configObjectString = configObjectString.replaceAll("read( ?: ?)'([^']+)'", "read$1$2");
+		configObjectString = configObjectString.replaceAll("create( ?: ?)'([^']+)'", "create$1$2");
+		configObjectString = configObjectString.replaceAll("update( ?: ?)'([^']+)'", "update$1$2");
+		configObjectString = configObjectString.replaceAll("destroy( ?: ?)'([^']+)'", "destroy$1$2");
 		sb.append(configObjectString);
 		sb.append(");");
 
