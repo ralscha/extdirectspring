@@ -87,8 +87,7 @@ public class FilterTest {
 		assertThat(numericFilter.getValue().intValue()).isEqualTo(0);
 		assertSame(Comparison.EQUAL, numericFilter.getComparison());
 	}
-	
-	
+
 	@Test
 	public void testNumericFilterWithoutType() {
 		Map<String, Object> json = new HashMap<String, Object>();
@@ -101,7 +100,6 @@ public class FilterTest {
 		assertThat(numericFilter.getField()).isEqualTo("aField");
 		assertThat(numericFilter.getValue()).isEqualTo(10);
 	}
-	
 
 	@Test
 	public void testStringFilter() {
@@ -116,7 +114,7 @@ public class FilterTest {
 		assertThat(stringFilter.getField()).isEqualTo("aField");
 		assertThat(stringFilter.getValue()).isEqualTo("aString");
 	}
-	
+
 	@Test
 	public void testStringPropertyFilter() {
 		Map<String, Object> json = new HashMap<String, Object>();
@@ -129,7 +127,7 @@ public class FilterTest {
 		StringFilter stringFilter = (StringFilter) filter;
 		assertThat(stringFilter.getField()).isEqualTo("aField");
 		assertThat(stringFilter.getValue()).isEqualTo("aString");
-	}	
+	}
 
 	@Test
 	public void testStringFilterWithoutType() {
@@ -159,7 +157,7 @@ public class FilterTest {
 		assertThat(dateFilter.getValue()).isEqualTo("12.12.2010");
 		assertSame(Comparison.GREATER_THAN, dateFilter.getComparison());
 	}
-	
+
 	@Test
 	public void testDatePropertyFilter() {
 		Map<String, Object> json = new HashMap<String, Object>();
@@ -174,7 +172,7 @@ public class FilterTest {
 		assertThat(dateFilter.getField()).isEqualTo("aField");
 		assertThat(dateFilter.getValue()).isEqualTo("12.12.2010");
 		assertSame(Comparison.GREATER_THAN, dateFilter.getComparison());
-	}	
+	}
 
 	@Test
 	public void testListFilter() {
@@ -192,7 +190,7 @@ public class FilterTest {
 		assertThat(list).hasSize(3);
 		assertThat(list).contains("one", "two", "three");
 	}
-	
+
 	@Test
 	public void testListPropertyFilter() {
 		Map<String, Object> json = new HashMap<String, Object>();
@@ -208,7 +206,7 @@ public class FilterTest {
 		List<String> list = listFilter.getValue();
 		assertThat(list).hasSize(3);
 		assertThat(list).contains("one", "two", "three");
-	}	
+	}
 
 	@Test
 	public void testBooleanFilter() {
@@ -223,7 +221,7 @@ public class FilterTest {
 		assertThat(booleanFilter.getField()).isEqualTo("aField");
 		assertThat(booleanFilter.getValue()).isEqualTo(false);
 	}
-	
+
 	@Test
 	public void testBooleanPropertyFilter() {
 		Map<String, Object> json = new HashMap<String, Object>();
@@ -236,7 +234,7 @@ public class FilterTest {
 		BooleanFilter booleanFilter = (BooleanFilter) filter;
 		assertThat(booleanFilter.getField()).isEqualTo("aField");
 		assertThat(booleanFilter.getValue()).isEqualTo(false);
-	}	
+	}
 
 	@Test
 	public void testBooleanFilterWithoutType() {
@@ -261,7 +259,7 @@ public class FilterTest {
 		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertThat(filter).isNull();
 	}
-	
+
 	@Test
 	public void testNotExistsPropertyFilter() {
 		Map<String, Object> json = new HashMap<String, Object>();
@@ -271,7 +269,7 @@ public class FilterTest {
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertThat(filter).isNull();
-	}	
+	}
 
 	@Test
 	public void testNoValue() {

@@ -27,7 +27,7 @@ public class ComparisonTest {
 	public void testFromString() {
 		assertSame(Comparison.LESS_THAN, Comparison.fromString("lt"));
 		assertSame(Comparison.GREATER_THAN, Comparison.fromString("gt"));
-		assertSame(Comparison.EQUAL, Comparison.fromString("eq"));		
+		assertSame(Comparison.EQUAL, Comparison.fromString("eq"));
 		assertSame(Comparison.IN, Comparison.fromString("in"));
 		assertSame(Comparison.LIKE, Comparison.fromString("like"));
 

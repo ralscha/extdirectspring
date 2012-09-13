@@ -16,7 +16,6 @@
 package ch.ralscha.extdirectspring.controller;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
@@ -89,10 +88,10 @@ public class ApiController {
 		if (format == null) {
 			response.setContentType(routerController.getConfiguration().getJsContentType());
 			response.setCharacterEncoding(RouterController.UTF8_CHARSET.name());
-			
+
 			String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group,
 					fullRouterUrl, request);
-			
+
 			byte[] outputBytes = apiString.getBytes(RouterController.UTF8_CHARSET);
 			response.setContentLength(outputBytes.length);
 

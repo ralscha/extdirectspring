@@ -87,7 +87,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class RouterController implements InitializingBean, DisposableBean {
 
 	public static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
-	
+
 	public static final MediaType APPLICATION_JSON = new MediaType("application", "json", UTF8_CHARSET);
 
 	public static final MediaType TEXT_HTML = new MediaType("text", "html", UTF8_CHARSET);

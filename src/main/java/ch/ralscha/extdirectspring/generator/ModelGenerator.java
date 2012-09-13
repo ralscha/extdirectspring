@@ -42,24 +42,28 @@ public abstract class ModelGenerator {
 
 	private static final Map<String, SoftReference<ModelBean>> modelCache = new ConcurrentHashMap<String, SoftReference<ModelBean>>();
 
-	public static void writeModel(HttpServletRequest request, HttpServletResponse response, Class<?> clazz, OutputFormat format) throws IOException {
-		writeModel(request, response, clazz, format, false);		
+	public static void writeModel(HttpServletRequest request, HttpServletResponse response, Class<?> clazz,
+			OutputFormat format) throws IOException {
+		writeModel(request, response, clazz, format, false);
 	}
-	
-	public static void writeModel(HttpServletRequest request, HttpServletResponse response, Class<?> clazz, OutputFormat format, boolean debug) throws IOException {
+
+	public static void writeModel(HttpServletRequest request, HttpServletResponse response, Class<?> clazz,
+			OutputFormat format, boolean debug) throws IOException {
 		ModelBean model = createModel(clazz);
-		writeModel(request, response, model, format, debug);		
+		writeModel(request, response, model, format, debug);
 	}
-	
-	public static void writeModel(HttpServletRequest request, HttpServletResponse response, ModelBean model, OutputFormat format) throws IOException {
-		writeModel(request, response, model, format, false);		
+
+	public static void writeModel(HttpServletRequest request, HttpServletResponse response, ModelBean model,
+			OutputFormat format) throws IOException {
+		writeModel(request, response, model, format, false);
 	}
-	
-	public static void writeModel(HttpServletRequest request, HttpServletResponse response, ModelBean model, OutputFormat format, boolean debug) throws IOException {
+
+	public static void writeModel(HttpServletRequest request, HttpServletResponse response, ModelBean model,
+			OutputFormat format, boolean debug) throws IOException {
 
 		RouterController routerController = RequestContextUtils.getWebApplicationContext(request).getBean(
 				RouterController.class);
-	
+
 		byte[] data = generateJavascript(model, format, debug).getBytes(RouterController.UTF8_CHARSET);
 		String ifNoneMatch = request.getHeader("If-None-Match");
 		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + "\"";
@@ -79,9 +83,9 @@ public abstract class ModelGenerator {
 		ServletOutputStream out = response.getOutputStream();
 		out.write(data);
 		out.flush();
-		
+
 	}
-	
+
 	public static String generateJavascript(Class<?> clazz, OutputFormat format, boolean debug) {
 		ModelBean model = createModel(clazz);
 		return generateJavascript(model, format, debug);
@@ -296,7 +300,7 @@ public abstract class ModelGenerator {
 			} else {
 				configObjectString = mapper.writeValueAsString(modelObject);
 			}
-			
+
 		} catch (JsonGenerationException e) {
 			throw new RuntimeException(e);
 		} catch (JsonMappingException e) {

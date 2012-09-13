@@ -38,15 +38,16 @@ public @interface Model {
 	String idProperty() default "id";
 
 	/**
-	 * If true a reader config with root : 'records' will be added to the model object.
-	 * This configuration is needef it the STORE_READ method return an instance of
-	 * {@link ExtDirectStoreReadResult}
+	 * If true a reader config with root : 'records' will be added to the model
+	 * object. This configuration is needef it the STORE_READ method return an
+	 * instance of {@link ExtDirectStoreReadResult}
 	 * 
 	 * <pre>
 	 * reader : {
 	 *   root : 'records'
 	 * }
 	 * </pre>
+	 * 
 	 * Default value is false if not specified
 	 */
 	boolean paging() default false;
