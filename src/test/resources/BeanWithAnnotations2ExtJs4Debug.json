@@ -1,0 +1,19 @@
+Ext.define('Sch.Bean2',
+{
+  extend : 'Ext.data.Model',
+  fields : [ {
+    name : 'name',
+    type : 'string'
+  }, {
+    name : 'dob',
+    type : 'date',
+    dateFormat : 'c'
+  }, {
+    name : 'id',
+    type : 'int'
+  } ],
+  proxy : {
+    type : 'direct',
+    directFn : read
+  }
+});
