@@ -156,54 +156,57 @@ public abstract class ModelGenerator {
 							}
 						}
 
-						if (modelType != null) {
+						ModelField modelFieldAnnotation = field.getAnnotation(ModelField.class);
+						if (modelFieldAnnotation != null) {
 
-							ModelField modelField = field.getAnnotation(ModelField.class);
-							if (modelField != null) {
-
-								String name;
-								if (StringUtils.hasText(modelField.value())) {
-									name = modelField.value();
-								} else {
-									name = field.getName();
-								}
-
-								ModelType type;
-								if (modelField.type() != ModelType.AUTO) {
-									type = modelField.type();
-								} else {
-									type = modelType;
-								}
-
-								ModelFieldBean modelFieldBean = new ModelFieldBean(name, type);
-
-								if (StringUtils.hasText(modelField.dateFormat()) && type == ModelType.DATE) {
-									modelFieldBean.setDateFormat(modelField.dateFormat());
-								}
-
-								if (StringUtils.hasText(modelField.defaultValue())) {
-									if (type == ModelType.BOOLEAN) {
-										modelFieldBean.setDefaultValue(Boolean.parseBoolean(modelField.defaultValue()));
-									} else if (type == ModelType.INTEGER) {
-										modelFieldBean.setDefaultValue(Long.valueOf(modelField.defaultValue()));
-									} else if (type == ModelType.FLOAT) {
-										modelFieldBean.setDefaultValue(Double.valueOf(modelField.defaultValue()));
-									} else {
-										modelFieldBean.setDefaultValue(modelField.defaultValue());
-									}
-								}
-
-								if (modelField.useNull()
-										&& (type == ModelType.INTEGER || type == ModelType.FLOAT
-												|| type == ModelType.STRING || type == ModelType.BOOLEAN)) {
-									modelFieldBean.setUseNull(true);
-								}
-
-								modelFields.add(modelFieldBean);
+							String name;
+							if (StringUtils.hasText(modelFieldAnnotation.value())) {
+								name = modelFieldAnnotation.value();
 							} else {
-								modelFields.add(new ModelFieldBean(field.getName(), modelType));
+								name = field.getName();
 							}
 
+							ModelType type;
+							if (modelFieldAnnotation.type() != ModelType.AUTO) {
+								type = modelFieldAnnotation.type();
+							} else {
+								if (modelType != null) {
+									type = modelType;
+								} else {
+									type = ModelType.AUTO;
+								}
+							}
+
+							ModelFieldBean modelFieldBean = new ModelFieldBean(name, type);
+
+							if (StringUtils.hasText(modelFieldAnnotation.dateFormat()) && type == ModelType.DATE) {
+								modelFieldBean.setDateFormat(modelFieldAnnotation.dateFormat());
+							}
+
+							if (StringUtils.hasText(modelFieldAnnotation.defaultValue())) {
+								if (type == ModelType.BOOLEAN) {
+									modelFieldBean.setDefaultValue(Boolean.parseBoolean(modelFieldAnnotation
+											.defaultValue()));
+								} else if (type == ModelType.INTEGER) {
+									modelFieldBean.setDefaultValue(Long.valueOf(modelFieldAnnotation.defaultValue()));
+								} else if (type == ModelType.FLOAT) {
+									modelFieldBean.setDefaultValue(Double.valueOf(modelFieldAnnotation.defaultValue()));
+								} else {
+									modelFieldBean.setDefaultValue(modelFieldAnnotation.defaultValue());
+								}
+							}
+
+							if (modelFieldAnnotation.useNull()
+									&& (type == ModelType.INTEGER || type == ModelType.FLOAT
+											|| type == ModelType.STRING || type == ModelType.BOOLEAN)) {
+								modelFieldBean.setUseNull(true);
+							}
+
+							modelFields.add(modelFieldBean);
+						} else {
+							if (modelType != null) {
+								modelFields.add(new ModelFieldBean(field.getName(), modelType));
+							}
 						}
 
 					}
@@ -233,11 +236,11 @@ public abstract class ModelGenerator {
 
 		Map<String, Object> configObject = new LinkedHashMap<String, Object>();
 
-		configObject.put("fields", model.getFields().values());
-
 		if (StringUtils.hasText(model.getIdProperty()) && !model.getIdProperty().equals("id")) {
 			configObject.put("idProperty", model.getIdProperty());
 		}
+
+		configObject.put("fields", model.getFields().values());
 
 		Map<String, Object> proxyObject = new LinkedHashMap<String, Object>();
 		proxyObject.put("type", "direct");
