@@ -22,7 +22,7 @@ import ch.ralscha.extdirectspring.controller.RouterController;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
-public class ModelGeneratorTest {
+public class ModelGeneratorBeanWithoutAnnotationsTest {
 
 	@Autowired
 	private RouterController controller;
@@ -40,7 +40,8 @@ public class ModelGeneratorTest {
 
 	private void compareExtJs4Model(String value, boolean debug) {
 		try {
-			String expectedValue = IOUtils.toString(getClass().getResourceAsStream("/BeanWithoutAnnotationsExtJs4Debug.json"));
+			String expectedValue = IOUtils.toString(getClass().getResourceAsStream(
+					"/BeanWithoutAnnotationsExtJs4Debug.json"));
 			compareModelString(expectedValue, value, debug);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -49,7 +50,8 @@ public class ModelGeneratorTest {
 
 	private void compareTouch2Model(String value, boolean debug) {
 		try {
-			String expectedValue = IOUtils.toString(getClass().getResourceAsStream("/BeanWithoutAnnotationsTouch2Debug.json"));
+			String expectedValue = IOUtils.toString(getClass().getResourceAsStream(
+					"/BeanWithoutAnnotationsTouch2Debug.json"));
 			compareModelString(expectedValue, value, debug);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -59,11 +61,11 @@ public class ModelGeneratorTest {
 	@Test
 	public void testWriteModelHttpServletRequestHttpServletResponseClassOfQOutputFormat() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, BeanWithoutAnnotations.class, OutputFormat.EXTJS4, false);
+		ModelGenerator.writeModel(createRequest(), response, BeanWithoutAnnotations.class, OutputFormat.EXTJS4);
 		compareExtJs4Model(response.getContentAsString(), false);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, BeanWithoutAnnotations.class, OutputFormat.TOUCH2, false);
+		ModelGenerator.writeModel(createRequest(), response, BeanWithoutAnnotations.class, OutputFormat.TOUCH2);
 		compareTouch2Model(response.getContentAsString(), false);
 	}
 
@@ -146,6 +148,7 @@ public class ModelGeneratorTest {
 		assertThat(modelBean.getUpdateMethod()).isNull();
 		assertThat(modelBean.getDestroyMethod()).isNull();
 		assertThat(modelBean.getIdProperty()).isNull();
+		assertThat(modelBean.isPageing()).isFalse();
 		assertThat(modelBean.getName()).isEqualTo("ch.ralscha.extdirectspring.generator.BeanWithoutAnnotations");
 		assertThat(modelBean.getFields()).hasSize(22);
 		assertThat(BeanWithoutAnnotations.expectedFields).hasSize(22);
