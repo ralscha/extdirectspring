@@ -50,6 +50,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
+ * Generator for creating ExtJS and Touch Model objects (JS code) based on a
+ * provided class or {@link ModelBean}.
+ * 
  * @author Ralph Schaer
  */
 public abstract class ModelGenerator {
@@ -58,22 +61,73 @@ public abstract class ModelGenerator {
 
 	private static final Map<String, SoftReference<ModelBean>> modelCache = new ConcurrentHashMap<String, SoftReference<ModelBean>>();
 
+	/**
+	 * Instrospects the provided class, creates a model object (JS code) and
+	 * writes it into the response. Creates compressed JS code.
+	 * 
+	 * @param request the http servlet request
+	 * @param response the http servlet response
+	 * @param clazz class that the generator should introspect
+	 * @param format specifies which code (ExtJS or Touch) the generator should
+	 * create.
+	 * @throws IOException
+	 * 
+	 * @see #writeModel(HttpServletRequest, HttpServletResponse, Class,
+	 * OutputFormat, boolean)
+	 */
 	public static void writeModel(HttpServletRequest request, HttpServletResponse response, Class<?> clazz,
 			OutputFormat format) throws IOException {
 		writeModel(request, response, clazz, format, false);
 	}
 
+	/**
+	 * Instrospects the provided class, creates a model object (JS code) and
+	 * writes it into the response.
+	 * 
+	 * @param request the http servlet request
+	 * @param response the http servlet response
+	 * @param clazz class that the generator should introspect
+	 * @param format specifies which code (ExtJS or Touch) the generator should
+	 * create
+	 * @param debug if true the generator creates the output in pretty format,
+	 * false the output is compressed
+	 * @throws IOException
+	 */
 	public static void writeModel(HttpServletRequest request, HttpServletResponse response, Class<?> clazz,
 			OutputFormat format, boolean debug) throws IOException {
 		ModelBean model = createModel(clazz);
 		writeModel(request, response, model, format, debug);
 	}
 
+	/**
+	 * Creates a model object (JS code) based on the provided {@link ModelBean}
+	 * and writes it into the response. Creates compressed JS code.
+	 * 
+	 * @param request the http servlet request
+	 * @param response the http servlet response
+	 * @param model {@link ModelBean} describing the model to be generated
+	 * @param format specifies which code (ExtJS or Touch) the generator should
+	 * create.
+	 * @throws IOException
+	 */
 	public static void writeModel(HttpServletRequest request, HttpServletResponse response, ModelBean model,
 			OutputFormat format) throws IOException {
 		writeModel(request, response, model, format, false);
 	}
 
+	/**
+	 * Creates a model object (JS code) based on the provided ModelBean and
+	 * writes it into the response.
+	 * 
+	 * @param request the http servlet request
+	 * @param response the http servlet response
+	 * @param model {@link ModelBean} describing the model to be generated
+	 * @param format specifies which code (ExtJS or Touch) the generator should
+	 * create.
+	 * @param debug if true the generator creates the output in pretty format,
+	 * false the output is compressed
+	 * @throws IOException
+	 */
 	public static void writeModel(HttpServletRequest request, HttpServletResponse response, ModelBean model,
 			OutputFormat format, boolean debug) throws IOException {
 
@@ -102,11 +156,17 @@ public abstract class ModelGenerator {
 
 	}
 
-	public static String generateJavascript(Class<?> clazz, OutputFormat format, boolean debug) {
-		ModelBean model = createModel(clazz);
-		return generateJavascript(model, format, debug);
-	}
-
+	/**
+	 * Instrospects the provided class and creates a {@link ModelBean} instance.
+	 * A program could customize this and call
+	 * {@link #generateJavascript(ModelBean, OutputFormat, boolean)} or
+	 * {@link #writeModel(HttpServletRequest, HttpServletResponse, ModelBean, OutputFormat)}
+	 * to create JS code.
+	 * 
+	 * @param clazz the model will be created based on this class.
+	 * @return a instance of {@link ModelBean} that describes the provided class
+	 * and can be used for Javascript generation.
+	 */
 	public static ModelBean createModel(Class<?> clazz) {
 
 		SoftReference<ModelBean> modelReference = modelCache.get(clazz.getName());
@@ -126,7 +186,7 @@ public abstract class ModelGenerator {
 
 		if (modelAnnotation != null) {
 			model.setIdProperty(modelAnnotation.idProperty());
-			model.setPageing(modelAnnotation.paging());
+			model.setPaging(modelAnnotation.paging());
 
 			if (StringUtils.hasText(modelAnnotation.createMethod())) {
 				model.setCreateMethod(modelAnnotation.createMethod());
@@ -167,7 +227,8 @@ public abstract class ModelGenerator {
 
 			@Override
 			public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
-				if ((Modifier.isPublic(field.getModifiers()) || hasReadMethod.contains(field.getName())) && field.getAnnotation(JsonIgnore.class) == null) {
+				if ((Modifier.isPublic(field.getModifiers()) || hasReadMethod.contains(field.getName()))
+						&& field.getAnnotation(JsonIgnore.class) == null) {
 					if (fields.contains(field.getName())) {
 						// ignore superclass declarations of fields already
 						// found in a subclass
@@ -248,6 +309,34 @@ public abstract class ModelGenerator {
 		return model;
 	}
 
+	/**
+	 * Instrospects the provided class, creates a model object (JS code) and
+	 * returns it.
+	 * 
+	 * @param clazz class that the generator should introspect
+	 * @param format specifies which code (ExtJS or Touch) the generator should
+	 * create
+	 * @param debug if true the generator creates the output in pretty format,
+	 * false the output is compressed
+	 * @return the generated model object (JS code)
+	 */
+	public static String generateJavascript(Class<?> clazz, OutputFormat format, boolean debug) {
+		ModelBean model = createModel(clazz);
+		return generateJavascript(model, format, debug);
+	}
+
+	/**
+	 * Creates JS code based on the provided {@link ModelBean} in the specified
+	 * {@link OutputFormat}. Code can be generated in pretty or compressed
+	 * format.
+	 * 
+	 * @param model generate code based on this {@link ModelBean}
+	 * @param format specifies which code (ExtJS or Touch) the generator should
+	 * create
+	 * @param debug if true the generator creates the output in pretty format,
+	 * false the output is compressed
+	 * @return the generated model object (JS code)
+	 */
 	public static String generateJavascript(ModelBean model, OutputFormat format, boolean debug) {
 
 		JsCacheKey key = new JsCacheKey(model, format, debug);
@@ -302,7 +391,7 @@ public abstract class ModelGenerator {
 			}
 		}
 
-		if (model.isPageing()) {
+		if (model.isPaging()) {
 			Map<String, Object> readerObject = new LinkedHashMap<String, Object>();
 			readerObject.put("root", "records");
 			proxyObject.put("reader", readerObject);

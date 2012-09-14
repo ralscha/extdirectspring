@@ -63,7 +63,7 @@ public @interface Model {
 	 * }
 	 * </pre>
 	 * 
-	 * Default value is false if not specified
+	 * Default value is false
 	 */
 	boolean paging() default false;
 

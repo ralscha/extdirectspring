@@ -163,7 +163,7 @@ public class ModelGeneratorBeanWithoutAnnotationsTest {
 		assertThat(modelBean.getUpdateMethod()).isNull();
 		assertThat(modelBean.getDestroyMethod()).isNull();
 		assertThat(modelBean.getIdProperty()).isNull();
-		assertThat(modelBean.isPageing()).isFalse();
+		assertThat(modelBean.isPaging()).isFalse();
 		assertThat(modelBean.getName()).isEqualTo("ch.ralscha.extdirectspring.generator.BeanWithoutAnnotations");
 		assertThat(modelBean.getFields()).hasSize(22);
 		assertThat(BeanWithoutAnnotations.expectedFields).hasSize(22);

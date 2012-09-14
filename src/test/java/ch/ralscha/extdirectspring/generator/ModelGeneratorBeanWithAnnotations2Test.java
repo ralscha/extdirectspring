@@ -163,7 +163,7 @@ public class ModelGeneratorBeanWithAnnotations2Test {
 		assertThat(modelBean.getUpdateMethod()).isNull();
 		assertThat(modelBean.getDestroyMethod()).isNull();
 		assertThat(modelBean.getIdProperty()).isEqualTo("id");
-		assertThat(modelBean.isPageing()).isFalse();
+		assertThat(modelBean.isPaging()).isFalse();
 		assertThat(modelBean.getName()).isEqualTo("Sch.Bean2");
 		assertThat(modelBean.getFields()).hasSize(3);
 		assertThat(BeanWithAnnotations2.expectedFields).hasSize(3);

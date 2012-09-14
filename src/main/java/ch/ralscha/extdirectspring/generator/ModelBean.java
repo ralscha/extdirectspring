@@ -19,8 +19,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
+
 /**
- * Represents the model.
+ * Represents a model. This object can be used to create JS code with
+ * {@link ModelGenerator#writeModel(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, ModelBean, OutputFormat, boolean)}
+ * or
+ * {@link ModelGenerator#generateJavascript(ModelBean, OutputFormat, boolean)}.
  * 
  * @author Ralph Schaer
  */
@@ -31,7 +36,7 @@ public class ModelBean {
 
 	private Map<String, ModelFieldBean> fields = new LinkedHashMap<String, ModelFieldBean>();
 
-	private boolean pageing;
+	private boolean paging;
 
 	private String readMethod;
 
@@ -45,6 +50,13 @@ public class ModelBean {
 		return name;
 	}
 
+	/**
+	 * "Classname" of the model. See <a
+	 * href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Model"
+	 * >Ext.data.Model</a>.
+	 * 
+	 * @param name new name for the model object
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -53,6 +65,13 @@ public class ModelBean {
 		return idProperty;
 	}
 
+	/**
+	 * Name of the id property. See <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Model-cfg-idProperty"
+	 * >Ext.data.Model#idProperty</a>.
+	 * 
+	 * @param idProperty new value for the idProperty config option
+	 */
 	public void setIdProperty(String idProperty) {
 		this.idProperty = idProperty;
 	}
@@ -61,36 +80,85 @@ public class ModelBean {
 		return fields;
 	}
 
+	/**
+	 * Overwrites all fields with the provided map.
+	 * 
+	 * @param fields new collection of {@link ModelFieldBean}
+	 */
 	public void setFields(Map<String, ModelFieldBean> fields) {
 		this.fields = fields;
 	}
 
+	/**
+	 * Add all provided fields the internal collection of fields
+	 * 
+	 * @param modelFields collection of {@link ModelFieldBean}
+	 */
 	public void addFields(List<ModelFieldBean> modelFields) {
 		for (ModelFieldBean bean : modelFields) {
 			fields.put(bean.getName(), bean);
 		}
 	}
 
+	/**
+	 * Looks for the {@link ModelFieldBean} with the provided name and returns
+	 * it.
+	 * 
+	 * @param fieldName name of a field
+	 * @return a {@link ModelFieldBean} or null if not found
+	 */
 	public ModelFieldBean getField(String fieldName) {
 		return fields.get(fieldName);
 	}
 
+	/**
+	 * Add one instance of {@link ModelFieldBean} to the internal collection of
+	 * fields
+	 * 
+	 * @param bean one {@link ModelFieldBean}
+	 */
 	public void addField(ModelFieldBean bean) {
 		fields.put(bean.getName(), bean);
 	}
 
-	public boolean isPageing() {
-		return pageing;
+	public boolean isPaging() {
+		return paging;
 	}
 
-	public void setPageing(boolean pageing) {
-		this.pageing = pageing;
+	/**
+	 * If true a reader config with root : 'records' will be added to the model
+	 * object. This configuration is needef it the STORE_READ method return an
+	 * instance of {@link ExtDirectStoreReadResult}
+	 * 
+	 * <pre>
+	 * reader : {
+	 *   root : 'records'
+	 * }
+	 * </pre>
+	 * 
+	 * @param paging new value for paging
+	 */
+	public void setPaging(boolean paging) {
+		this.paging = paging;
 	}
 
 	public String getReadMethod() {
 		return readMethod;
 	}
 
+	/**
+	 * Specifies the read method. This is a ExtDirect reference in the form
+	 * action.methodName. See <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.proxy.Direct-cfg-api"
+	 * >Ext.data.proxy.Direct#api</a>.
+	 * <p>
+	 * If only the readMethod is specified generator will write property <a
+	 * href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.proxy.Direct-cfg-directFn"
+	 * >directFn</a> instead.
+	 * 
+	 * @param readMethod new value for read method
+	 */
 	public void setReadMethod(String readMethod) {
 		this.readMethod = readMethod;
 	}
@@ -99,6 +167,14 @@ public class ModelBean {
 		return createMethod;
 	}
 
+	/**
+	 * Specifies the create method. This is a ExtDirect reference in the form
+	 * action.methodName. See <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.proxy.Direct-cfg-api"
+	 * >Ext.data.proxy.Direct#api</a>.
+	 * 
+	 * @param createMethod new value for create method
+	 */
 	public void setCreateMethod(String createMethod) {
 		this.createMethod = createMethod;
 	}
@@ -107,6 +183,14 @@ public class ModelBean {
 		return updateMethod;
 	}
 
+	/**
+	 * Specifies the update method. This is a ExtDirect reference in the form
+	 * action.methodName. See <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.proxy.Direct-cfg-api"
+	 * >Ext.data.proxy.Direct#api</a>.
+	 * 
+	 * @param updateMethod new value for update method
+	 */
 	public void setUpdateMethod(String updateMethod) {
 		this.updateMethod = updateMethod;
 	}
@@ -115,6 +199,14 @@ public class ModelBean {
 		return destroyMethod;
 	}
 
+	/**
+	 * Specifies the destroy method. This is a ExtDirect reference in the form
+	 * action.methodName. See <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.proxy.Direct-cfg-api"
+	 * >Ext.data.proxy.Direct#api</a>.
+	 * 
+	 * @param destroyMethod new value for destroy method
+	 */
 	public void setDestroyMethod(String destroyMethod) {
 		this.destroyMethod = destroyMethod;
 	}
@@ -128,7 +220,7 @@ public class ModelBean {
 		result = prime * result + ((fields == null) ? 0 : fields.hashCode());
 		result = prime * result + ((idProperty == null) ? 0 : idProperty.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + (pageing ? 1231 : 1237);
+		result = prime * result + (paging ? 1231 : 1237);
 		result = prime * result + ((readMethod == null) ? 0 : readMethod.hashCode());
 		result = prime * result + ((updateMethod == null) ? 0 : updateMethod.hashCode());
 		return result;
@@ -181,7 +273,7 @@ public class ModelBean {
 		} else if (!name.equals(other.name)) {
 			return false;
 		}
-		if (pageing != other.pageing) {
+		if (paging != other.paging) {
 			return false;
 		}
 		if (readMethod == null) {

@@ -42,6 +42,12 @@ public class ModelFieldBean {
 
 	private Boolean useNull;
 
+	/**
+	 * Creates a new ModelFieldBean with name and type
+	 * 
+	 * @param name name of the field
+	 * @param type type of the field
+	 */
 	public ModelFieldBean(String name, ModelType type) {
 		this.name = name;
 		this.type = type;
@@ -51,6 +57,13 @@ public class ModelFieldBean {
 		return name;
 	}
 
+	/**
+	 * Name of the field. Property '<a
+	 * href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-name"
+	 * >name</a>' in JS.
+	 * 
+	 * @param name new name for the field
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -60,6 +73,13 @@ public class ModelFieldBean {
 		return type;
 	}
 
+	/**
+	 * Type of the field. Property '<a
+	 * href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-type"
+	 * >type</a>' in JS.
+	 * 
+	 * @param type new type for the field
+	 */
 	public void setType(ModelType type) {
 		this.type = type;
 	}
@@ -68,6 +88,13 @@ public class ModelFieldBean {
 		return defaultValue;
 	}
 
+	/**
+	 * The default value. Property '<a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-defaultValue"
+	 * >defaultValue</a>' in JS.
+	 * 
+	 * @param defaultValue new defaultValue
+	 */
 	public void setDefaultValue(Object defaultValue) {
 		this.defaultValue = defaultValue;
 	}
@@ -76,6 +103,17 @@ public class ModelFieldBean {
 		return dateFormat;
 	}
 
+	/**
+	 * Specifies format of date. Property '<a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-dateFormat"
+	 * >dateFormat</a>' in JS.<br>
+	 * For a list of all supported formats see Sencha Doc: <a
+	 * href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.Date">Ext.Date</a>
+	 * <p>
+	 * Will be ignored if the field is not a {@link ModelType#DATE} field.
+	 * 
+	 * @param dateFormat new dateFormat String
+	 */
 	public void setDateFormat(String dateFormat) {
 		this.dateFormat = dateFormat;
 	}
@@ -84,6 +122,20 @@ public class ModelFieldBean {
 		return useNull;
 	}
 
+	/**
+	 * If true null value is used if value cannot be parsed. If false default
+	 * values are used (0 for integer and float, "" for string and false for
+	 * boolean).<br>
+	 * Property '<a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-useNull"
+	 * >useNull</a>' in JS.<br>
+	 * <p>
+	 * Only used if type of field is {@link ModelType#INTEGER},
+	 * {@link ModelType#FLOAT}, {@link ModelType#STRING} or
+	 * {@link ModelType#BOOLEAN}.
+	 * 
+	 * @param useNull new value for useNull
+	 */
 	public void setUseNull(Boolean useNull) {
 		this.useNull = useNull;
 	}
