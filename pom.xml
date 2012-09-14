@@ -406,8 +406,12 @@
 				    <methodContexts>
 				        <toString>(.* )?public String toString\(\).*</toString>
 				        <extDirectSpringUtilConstructor>.*private ExtDirectSpringUtil\(\).*</extDirectSpringUtilConstructor>
-				        <extDirectSpringUtilinvoke>.*public static Object invoke\(HttpServletRequest request.*</extDirectSpringUtilinvoke>				        
+				        <extDirectSpringUtilinvoke>.*public static Object invoke\(HttpServletRequest request.*</extDirectSpringUtilinvoke>
                     </methodContexts>
+                    <excludes>
+                      <exclude>**/ch/ralscha/extdirectspring/bean/ExtDirectStoreResponse.java</exclude>
+                      <exclude>**/ch/ralscha/extdirectspring/bean/ExtDirectRawJsonStoreResponse.java</exclude>
+                    </excludes>
 				    <contextFilters>toString,extDirectSpringUtilConstructor,extDirectSpringUtilinvoke</contextFilters>
 					<license><![CDATA[
 					nqnMRdMcPMnTVgXvLUhKHiOBOMpPaqbbGHWgAhuMntGQiDC
