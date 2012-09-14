@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 @Model(value = "Sch.Bean2", idProperty = "id", paging = false, readMethod = "read")
 public class BeanWithAnnotations2 extends Base {
 
@@ -26,6 +29,11 @@ public class BeanWithAnnotations2 extends Base {
 
 	@ModelField(dateFormat = "c")
 	private Date dob;
+	
+	@JsonIgnore
+	private String password;
+	
+	private String accountNo;
 
 	public String getName() {
 		return name;
@@ -41,6 +49,23 @@ public class BeanWithAnnotations2 extends Base {
 
 	public void setDob(Date dob) {
 		this.dob = dob;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@JsonIgnore
+	public String getAccountNo() {
+		return accountNo;
+	}
+
+	public void setAccountNo(String accountNo) {
+		this.accountNo = accountNo;
 	}
 
 	public static List<ModelFieldBean> expectedFields = new ArrayList<ModelFieldBean>();

@@ -43,6 +43,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import ch.ralscha.extdirectspring.controller.RouterController;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -154,7 +155,7 @@ public abstract class ModelGenerator {
 		}
 
 		for (PropertyDescriptor pd : bi.getPropertyDescriptors()) {
-			if (pd.getReadMethod() != null) {
+			if (pd.getReadMethod() != null && pd.getReadMethod().getAnnotation(JsonIgnore.class) == null) {
 				hasReadMethod.add(pd.getName());
 			}
 		}
@@ -166,7 +167,7 @@ public abstract class ModelGenerator {
 
 			@Override
 			public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
-				if (Modifier.isPublic(field.getModifiers()) || hasReadMethod.contains(field.getName())) {
+				if ((Modifier.isPublic(field.getModifiers()) || hasReadMethod.contains(field.getName())) && field.getAnnotation(JsonIgnore.class) == null) {
 					if (fields.contains(field.getName())) {
 						// ignore superclass declarations of fields already
 						// found in a subclass
