@@ -19,13 +19,13 @@ import java.util.List;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
 
 public class BaseService<T extends BaseModel> {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
-	public ExtDirectStoreResponse<Book> update3(List<Book> updates) {
-		return new ExtDirectStoreResponse<Book>(update4(updates));
+	public ExtDirectStoreReadResult<Book> update3(List<Book> updates) {
+		return new ExtDirectStoreReadResult<Book>(update4(updates));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
@@ -37,8 +37,8 @@ public class BaseService<T extends BaseModel> {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
-	public ExtDirectStoreResponse<Integer> delete3(List<Integer> deletes) {
-		return new ExtDirectStoreResponse<Integer>(deletes);
+	public ExtDirectStoreReadResult<Integer> delete3(List<Integer> deletes) {
+		return new ExtDirectStoreReadResult<Integer>(deletes);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
@@ -51,8 +51,8 @@ public class BaseService<T extends BaseModel> {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
-	public ExtDirectStoreResponse<Book> create3(List<Book> inserts) {
-		return new ExtDirectStoreResponse<Book>(create4(inserts));
+	public ExtDirectStoreReadResult<Book> create3(List<Book> inserts) {
+		return new ExtDirectStoreReadResult<Book>(create4(inserts));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")

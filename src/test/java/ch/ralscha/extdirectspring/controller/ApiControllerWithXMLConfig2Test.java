@@ -36,7 +36,7 @@ import ch.ralscha.extdirectspring.util.ApiCache;
  * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all")
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext2.xml")
 public class ApiControllerWithXMLConfig2Test {
@@ -57,6 +57,7 @@ public class ApiControllerWithXMLConfig2Test {
 		ApiCache.INSTANCE.clear();
 
 		config = new Configuration();
+		config.setJsContentType("application/x-javascript");
 		config.setTimeout(15111);
 		config.setEnableBuffer(10);
 		config.setMaxRetries(6);
@@ -69,8 +70,8 @@ public class ApiControllerWithXMLConfig2Test {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "group2", false, null, request,
 				response);
-		ApiControllerTest.compare(response, ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API",
-				"TEST_POLLING_URLS", config);
+		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(),
+				ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
 
 		assertThat(response.getContentLength()).isEqualTo(response.getContentAsByteArray().length);
 
@@ -78,8 +79,8 @@ public class ApiControllerWithXMLConfig2Test {
 		response = new MockHttpServletResponse();
 		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "group2", false, null, request,
 				response);
-		ApiControllerTest.compare(response, ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API",
-				"TEST_POLLING_URLS", config);
+		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(),
+				ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
 
 		assertThat(response.getContentLength()).isEqualTo(response.getContentAsByteArray().length);
 	}

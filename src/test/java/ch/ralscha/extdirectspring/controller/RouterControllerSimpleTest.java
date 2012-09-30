@@ -45,7 +45,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all")
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerSimpleTest {
@@ -63,81 +63,81 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testBeanNotFound() throws IOException {
+	public void testBeanNotFound() {
 		ControllerUtil.sendAndReceive(controller, "remoteProvider", "method1", a(3, 2.5, "string.param"), null);
 	}
 
 	@Test
-	public void testMethodNotFound() throws IOException {
+	public void testMethodNotFound() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method4", a(3, 2.5, "string.param"), null);
 	}
 
 	@Test
-	public void testNoParameters() throws IOException {
+	public void testNoParameters() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method1", null, "method1() called");
 	}
 
 	@Test
-	public void testNoParametersWithRequestParameter() throws IOException {
+	public void testNoParametersWithRequestParameter() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method1", a(1, "requestparameter"),
 				"method1() called");
 	}
 
 	@Test
-	public void testNoParameters2() throws IOException {
+	public void testNoParameters2() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method2", null, "method2() called");
 	}
 
 	@Test
-	public void testWithParameters() throws IOException {
+	public void testWithParameters() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method3", a(1, 3.1, "requestParameter"),
 				"method3() called-1-3.1-requestParameter");
 	}
 
 	@Test
-	public void testWithParametersWithTypeConversion() throws IOException {
+	public void testWithParametersWithTypeConversion() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method3", a("10", "4.2", 20),
 				"method3() called-10-4.2-20");
 	}
 
 	@Test
-	public void testWithParametersNoRequestParameter() throws IOException {
+	public void testWithParametersNoRequestParameter() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method3", null, null);
 	}
 
 	@Test
-	public void testResultTrue() throws IOException {
+	public void testResultTrue() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method5", a("ralph"), true);
 	}
 
 	@Test
-	public void testResultFalse() throws IOException {
+	public void testResultFalse() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method5", a("joe"), false);
 	}
 
 	@Test
-	public void testResultNull() throws IOException {
+	public void testResultNull() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method5", a("martin"), Void.TYPE);
 
 	}
 
 	@Test
-	public void testIntParameterAndResult() throws IOException {
+	public void testIntParameterAndResult() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method6", a(10, 20), 30);
 	}
 
 	@Test
-	public void testIntParameterAndResultWithTypeConversion() throws IOException {
+	public void testIntParameterAndResultWithTypeConversion() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method6", a("30", "40"), 70);
 	}
 
 	@Test
-	public void testResultStringNull() throws IOException {
+	public void testResultStringNull() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method7", null, Void.TYPE);
 	}
 
 	@Test
-	public void testReturnsObject() throws IOException {
+	public void testReturnsObject() {
 		FormInfo info = (FormInfo) ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method8",
 				a(7.34), FormInfo.class);
 
@@ -150,24 +150,25 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testSupportedArguments() throws IOException {
+	public void testSupportedArguments() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method9", null, 42);
 	}
 
 	@Test
-	public void testTypeConversion() throws IOException {
+	public void testTypeConversion() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method10",
 				a("true", "c", "ACTIVE", "14", "21", "3.14", "10.01", "1", "2"),
 				"method10() called-true-c-ACTIVE-14-21-3.14-10.01-1-2");
 	}
 
 	@Test
-	public void testMixParameterAndSupportedParameters() throws IOException {
+	public void testMixParameterAndSupportedParameters() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method13",
 				a("true", "c", "ACTIVE", "14", "21", "3.14", "10.01", "1", "2"),
 				"method13() called-true-c-ACTIVE-14-21-3.14-10.01-1-2");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testWithConversion() throws IOException {
 
@@ -184,7 +185,6 @@ public class RouterControllerSimpleTest {
 		ObjectMapper mapper = new ObjectMapper();
 
 		Map<String, Object> expectedValue = mapper.readValue(mapper.writeValueAsString(today.toLocalDate()), Map.class);
-		Object actualValue = resultMap.get("jodaLocalDate");
 
 		assertThat((Map<String, Object>) resultMap.get("jodaLocalDate")).isEqualTo(expectedValue);
 		assertThat(resultMap.get("percent")).isEqualTo(0.999);
@@ -193,7 +193,7 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
-	public void testTypeConversionWithObjects() throws IOException {
+	public void testTypeConversionWithObjects() {
 		Row aRow = new Row(104, "myRow", true, "100.45");
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimple", "method12", a(aRow),
 				"Row [id=104, name=myRow, admin=true, salary=100.45]");

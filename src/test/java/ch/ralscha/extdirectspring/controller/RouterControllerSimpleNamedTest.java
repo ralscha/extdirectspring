@@ -50,7 +50,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all")
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerSimpleNamedTest {
@@ -64,13 +64,13 @@ public class RouterControllerSimpleNamedTest {
 	}
 
 	@Test
-	public void testNoParameters() throws IOException {
+	public void testNoParameters() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method1", true, null,
 				"method1() called");
 	}
 
 	@Test
-	public void testNoParametersWithRequestParameter() throws IOException {
+	public void testNoParametersWithRequestParameter() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("requestparameter", "aValue");
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method1", true, params,
@@ -78,7 +78,7 @@ public class RouterControllerSimpleNamedTest {
 	}
 
 	@Test
-	public void testWithParameters() throws IOException {
+	public void testWithParameters() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("d", 2.1);
 		params.put("s", "aString");
@@ -88,7 +88,7 @@ public class RouterControllerSimpleNamedTest {
 	}
 
 	@Test
-	public void testWithWrongParameters() throws IOException {
+	public void testWithWrongParameters() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("i", 20);
 		params.put("de", 2.1);
@@ -97,7 +97,7 @@ public class RouterControllerSimpleNamedTest {
 	}
 
 	@Test
-	public void testWithMissingParameters() throws IOException {
+	public void testWithMissingParameters() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("i", 20);
 		params.put("s", "aString");
@@ -105,7 +105,7 @@ public class RouterControllerSimpleNamedTest {
 	}
 
 	@Test
-	public void testWithParametersWithTypeConversion() throws IOException {
+	public void testWithParametersWithTypeConversion() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("i", "30");
 		params.put("s", 100.45);
@@ -115,28 +115,28 @@ public class RouterControllerSimpleNamedTest {
 	}
 
 	@Test
-	public void testResultTrue() throws IOException {
+	public void testResultTrue() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("userName", "ralph");
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method3", true, params, true);
 	}
 
 	@Test
-	public void testResultFalse() throws IOException {
+	public void testResultFalse() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("userName", "joe");
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method3", true, params, false);
 	}
 
 	@Test
-	public void testResultNull() throws IOException {
+	public void testResultNull() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("userName", "martin");
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method3", true, params, Void.TYPE);
 	}
 
 	@Test
-	public void testIntParameterAndResult() throws IOException {
+	public void testIntParameterAndResult() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("a", 10);
 		params.put("b", 20);
@@ -144,7 +144,7 @@ public class RouterControllerSimpleNamedTest {
 	}
 
 	@Test
-	public void testIntParameterAndResultWithTypeConversion() throws IOException {
+	public void testIntParameterAndResultWithTypeConversion() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("b", "40");
 		params.put("a", "30");
@@ -152,7 +152,7 @@ public class RouterControllerSimpleNamedTest {
 	}
 
 	@Test
-	public void testReturnsObject() throws IOException {
+	public void testReturnsObject() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("d", 7.34);
 		FormInfo info = (FormInfo) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method5",
@@ -167,12 +167,12 @@ public class RouterControllerSimpleNamedTest {
 	}
 
 	@Test
-	public void testSupportedArguments() throws IOException {
+	public void testSupportedArguments() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "method6", true, null, 42);
 	}
 
 	@Test
-	public void testTypeConversion() throws IOException {
+	public void testTypeConversion() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("flag", "true");
 		params.put("aCharacter", "c");
@@ -188,7 +188,7 @@ public class RouterControllerSimpleNamedTest {
 	}
 
 	@Test
-	public void testMixParameterAndSupportedParameters() throws IOException {
+	public void testMixParameterAndSupportedParameters() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("aLong", "21");
 		params.put("aDouble", "3.14");
@@ -204,7 +204,7 @@ public class RouterControllerSimpleNamedTest {
 	}
 
 	@Test
-	public void testTypeConversionWithObjects() throws IOException {
+	public void testTypeConversionWithObjects() {
 		Row aRow = new Row(104, "myRow", true, "100.45");
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("aRow", aRow);
@@ -212,6 +212,7 @@ public class RouterControllerSimpleNamedTest {
 				"Row [id=104, name=myRow, admin=true, salary=100.45]");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testWithConversion() throws IOException {
 
@@ -230,7 +231,6 @@ public class RouterControllerSimpleNamedTest {
 		ObjectMapper mapper = new ObjectMapper();
 
 		Map<String, Object> expectedValue = mapper.readValue(mapper.writeValueAsString(today.toLocalDate()), Map.class);
-		Object actualValue = resultMap.get("jodaLocalDate");
 
 		assertThat((Map<String, Object>) resultMap.get("jodaLocalDate")).isEqualTo(expectedValue);
 		assertThat(resultMap.get("percent")).isEqualTo(0.999);
@@ -240,7 +240,7 @@ public class RouterControllerSimpleNamedTest {
 	}
 
 	@Test
-	public void testDifferentParameterNames() throws IOException {
+	public void testDifferentParameterNames() {
 		ResultObject expectedResult = new ResultObject("Miller", 10, true);
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("lastName", expectedResult.getName());
@@ -509,7 +509,7 @@ public class RouterControllerSimpleNamedTest {
 				responses.subList(7, 8));
 	}
 
-	private void assertResponse(String bean, String method, int tid, final ResultObject expectedResult,
+	private static void assertResponse(String bean, String method, int tid, ResultObject expectedResult,
 			List<ExtDirectResponse> responses) {
 
 		assertThat(responses).hasSize(1);

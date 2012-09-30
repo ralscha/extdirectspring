@@ -20,9 +20,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.method.HandlerMethod;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
@@ -41,9 +43,9 @@ public final class MethodInfo {
 
 	private final ExtDirectMethodType type;
 
-	private boolean synchronizeOnSession;
+	private final boolean synchronizeOnSession;
 
-	private boolean streamResponse;
+	private final boolean streamResponse;
 
 	private List<ParameterInfo> parameters;
 
@@ -51,15 +53,18 @@ public final class MethodInfo {
 
 	private String forwardPath;
 
+	private HandlerMethod handlerMethod;
+
 	private Class<?> collectionType;
 
 	private Action action;
 
 	private PollingProvider pollingProvider;
 
-	public MethodInfo(Class<?> clazz, String beanName, Method method) {
+	public MethodInfo(Class<?> clazz, ApplicationContext context, String beanName, Method method) {
 
 		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+
 		this.type = extDirectMethodAnnotation.value();
 
 		if (StringUtils.hasText(extDirectMethodAnnotation.group())) {
@@ -68,11 +73,11 @@ public final class MethodInfo {
 			this.group = null;
 		}
 
+		this.synchronizeOnSession = extDirectMethodAnnotation.synchronizeOnSession();
+		this.streamResponse = extDirectMethodAnnotation.streamResponse();
+
 		if (type != ExtDirectMethodType.FORM_POST) {
 			this.method = method;
-			this.synchronizeOnSession = extDirectMethodAnnotation.synchronizeOnSession();
-			this.streamResponse = extDirectMethodAnnotation.streamResponse();
-
 			this.parameters = buildParameterList(method);
 
 			this.collectionType = (extDirectMethodAnnotation.entryClass() == Object.class) ? null
@@ -86,11 +91,10 @@ public final class MethodInfo {
 					}
 				}
 			}
-
 		} else {
-			RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-			if (methodAnnotation != null) {
+			if (method.getReturnType().equals(Void.TYPE)) {
 
+				RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
 				RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
 
 				String path = null;
@@ -113,8 +117,9 @@ public final class MethodInfo {
 					}
 					this.forwardPath = "forward:" + path;
 				}
+			} else {
+				this.handlerMethod = new HandlerMethod(beanName, context, method).createWithResolvedBean();
 			}
-
 		}
 
 		switch (type) {
@@ -148,10 +153,13 @@ public final class MethodInfo {
 		case POLL:
 			this.pollingProvider = new PollingProvider(beanName, method.getName(), extDirectMethodAnnotation.event());
 			break;
+		default:
+			throw new IllegalStateException("ExtDirectMethodType: " + type + " does not exists");
 		}
+
 	}
 
-	private boolean hasValue(RequestMapping requestMapping) {
+	private static boolean hasValue(RequestMapping requestMapping) {
 		return (requestMapping != null && requestMapping.value() != null && requestMapping.value().length > 0 && StringUtils
 				.hasText(requestMapping.value()[0]));
 	}
@@ -179,6 +187,10 @@ public final class MethodInfo {
 
 	public String getForwardPath() {
 		return forwardPath;
+	}
+
+	public HandlerMethod getHandlerMethod() {
+		return handlerMethod;
 	}
 
 	public List<ParameterInfo> getParameters() {

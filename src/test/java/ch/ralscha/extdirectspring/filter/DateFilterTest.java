@@ -33,5 +33,17 @@ public class DateFilterTest {
 		assertThat(filter.getValue()).isEqualTo("01.01.2000");
 		assertThat(filter.getField()).isEqualTo("xy");
 		assertThat(filter.toString()).isEqualTo("DateFilter [value=01.01.2000, comparison=EQUAL, getField()=xy]");
+
+		filter = new DateFilter("field2", "13.12.2010", Comparison.GREATER_THAN);
+		assertThat(filter.getValue()).isEqualTo("13.12.2010");
+		assertThat(filter.getField()).isEqualTo("field2");
+		assertThat(filter.toString()).isEqualTo(
+				"DateFilter [value=13.12.2010, comparison=GREATER_THAN, getField()=field2]");
+
+		filter = new DateFilter("field3", "14.12.2010", Comparison.GREATER_THAN_OR_EQUAL);
+		assertThat(filter.getValue()).isEqualTo("14.12.2010");
+		assertThat(filter.getField()).isEqualTo("field3");
+		assertThat(filter.toString()).isEqualTo(
+				"DateFilter [value=14.12.2010, comparison=GREATER_THAN_OR_EQUAL, getField()=field3]");
 	}
 }

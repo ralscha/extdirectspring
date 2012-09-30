@@ -32,7 +32,7 @@ public abstract class BaseController<T> {
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_base")
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public void update(HttpServletRequest request, HttpServletResponse response,
-			@SuppressWarnings("unused") @Valid final T model, BindingResult result) {
+			@SuppressWarnings("unused") @Valid T model, BindingResult result) {
 		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();
 	}
 

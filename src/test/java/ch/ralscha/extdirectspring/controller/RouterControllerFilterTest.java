@@ -45,7 +45,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
  * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all")
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerFilterTest {
@@ -92,6 +92,7 @@ public class RouterControllerFilterTest {
 			assertThat(resp.getResult()).isNotNull();
 
 			List<Row> rows = ControllerUtil.convertValue(resp.getResult(), new TypeReference<List<Row>>() {
+				// nothing here
 			});
 
 			assertThat(rows).hasSize(1);

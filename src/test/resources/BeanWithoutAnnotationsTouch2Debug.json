@@ -1,0 +1,73 @@
+Ext.define('ch.ralscha.extdirectspring.generator.BeanWithoutAnnotations',
+{
+  extend : 'Ext.data.Model',
+  config : {
+    fields : [ {
+      name : 'aByte',
+      type : 'int'
+    }, {
+      name : 'aShort',
+      type : 'int'
+    }, {
+      name : 'aInt',
+      type : 'int'
+    }, {
+      name : 'aLong',
+      type : 'int'
+    }, {
+      name : 'aByteObject',
+      type : 'int'
+    }, {
+      name : 'aShortObject',
+      type : 'int'
+    }, {
+      name : 'aIntObject',
+      type : 'int'
+    }, {
+      name : 'aLongObject',
+      type : 'int'
+    }, {
+      name : 'aBigDecimal',
+      type : 'float'
+    }, {
+      name : 'aBigInteger',
+      type : 'int'
+    }, {
+      name : 'aFloat',
+      type : 'float'
+    }, {
+      name : 'aDouble',
+      type : 'float'
+    }, {
+      name : 'aFloatObject',
+      type : 'float'
+    }, {
+      name : 'aDoubleObject',
+      type : 'float'
+    }, {
+      name : 'aString',
+      type : 'string'
+    }, {
+      name : 'aBoolean',
+      type : 'boolean'
+    }, {
+      name : 'aBooleanObject',
+      type : 'boolean'
+    }, {
+      name : 'aDate',
+      type : 'date'
+    }, {
+      name : 'aSqlDate',
+      type : 'date'
+    }, {
+      name : 'aTimestamp',
+      type : 'date'
+    }, {
+      name : 'aDateTime',
+      type : 'date'
+    }, {
+      name : 'aLocalDate',
+      type : 'date'
+    } ]
+  }
+});

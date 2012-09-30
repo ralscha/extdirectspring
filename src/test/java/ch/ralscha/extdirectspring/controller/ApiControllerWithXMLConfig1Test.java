@@ -34,7 +34,6 @@ import ch.ralscha.extdirectspring.util.ApiCache;
  * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext1.xml")
 public class ApiControllerWithXMLConfig1Test {
@@ -68,15 +67,15 @@ public class ApiControllerWithXMLConfig1Test {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", false, null, request,
 				response);
-		ApiControllerTest.compare(response, ApiControllerTest.group1Apis("actionns"), "Ext.ns", "REMOTING_API",
-				"POLLING_URLS", config);
+		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(),
+				ApiControllerTest.group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", config);
 
 		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "group1", false, null, request,
 				response);
-		ApiControllerTest.compare(response, ApiControllerTest.group1Apis("actionns"), "Ext.ns", "REMOTING_API",
-				"POLLING_URLS", config);
+		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(),
+				ApiControllerTest.group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", config);
 	}
 
 }

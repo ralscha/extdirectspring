@@ -16,15 +16,18 @@
 package ch.ralscha.extdirectspring.controller;
 
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.bean.BaseResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
 
 /**
  * Configuration class to configure different aspects of extdirectspring.
@@ -51,6 +54,12 @@ public class Configuration {
 	private Object enableBuffer = null;
 
 	private boolean streamResponse = false;
+
+	private String jsContentType = "application/javascript";
+
+	private BatchedMethodsExecutionPolicy batchedMethodsExecutionPolicy = BatchedMethodsExecutionPolicy.SEQUENTIAL;
+
+	private ExecutorService batchedMethodsExecutorService = null;
 
 	public String getDefaultExceptionMessage() {
 		return defaultExceptionMessage;
@@ -154,7 +163,7 @@ public class Configuration {
 	/**
 	 * If alwaysWrapStoreResponse is true, responses of STORE_READ and
 	 * STORE_MODIFY methods are always wrapped in an
-	 * {@link ExtDirectStoreResponse} object.
+	 * {@link ExtDirectStoreReadResult} object.
 	 * 
 	 * @param alwaysWrapStoreResponse new flag
 	 */
@@ -296,4 +305,63 @@ public class Configuration {
 	public void setStreamResponse(boolean streamResponse) {
 		this.streamResponse = streamResponse;
 	}
+
+	/**
+	 * Specifies the Content-Type for api.js and api-debug.js.
+	 * <p>
+	 * Until version 1.2.1 extdirectspring sends "application/x-javascript". But
+	 * according to <a
+	 * href="http://www.rfc-editor.org/rfc/rfc4329.txt">RFC4329</a> the official
+	 * mime type is 'application/javascript'.
+	 * <p>
+	 * Default value is "application/javascript"
+	 * @param jsContentType new Content-type
+	 */
+	public void setJsContentType(String jsContentType) {
+		this.jsContentType = jsContentType;
+	}
+
+	public String getJsContentType() {
+		return jsContentType;
+	}
+
+	public BatchedMethodsExecutionPolicy getBatchedMethodsExecutionPolicy() {
+		return batchedMethodsExecutionPolicy;
+	}
+
+	/**
+	 * Specifies how batched methods sent from the client should be executed on
+	 * the server. {@link BatchedMethodsExecutionPolicy#SEQUENTIAL} executes
+	 * methods one after the other.
+	 * {@link BatchedMethodsExecutionPolicy#CONCURRENT} executes methods
+	 * concurrently with the help of a thread pool.
+	 * 
+	 * <p>
+	 * Default value is {@link BatchedMethodsExecutionPolicy#SEQUENTIAL}
+	 * @see #setBatchedMethodsExecutorService(ExecutorService)
+	 * @param batchedMethodsExecutionPolicy new policy
+	 */
+	public void setBatchedMethodsExecutionPolicy(BatchedMethodsExecutionPolicy batchedMethodsExecutionPolicy) {
+		Assert.notNull(batchedMethodsExecutionPolicy, "batchedMethodsExecutionPolicy must not be null");
+		this.batchedMethodsExecutionPolicy = batchedMethodsExecutionPolicy;
+	}
+
+	public ExecutorService getBatchedMethodsExecutorService() {
+		return batchedMethodsExecutorService;
+	}
+
+	/**
+	 * Sets the thread pool used for executing batched methods concurrently.
+	 * <p>
+	 * If batchedMethodsExecutionPolicy is set to
+	 * {@link BatchedMethodsExecutionPolicy#CONCURRENT} but no
+	 * batchedMethodsExecutorService is specified the library creates a
+	 * {@link Executors#newFixedThreadPool(int)} with 5 threads.
+	 * @see #setBatchedMethodsExecutionPolicy(BatchedMethodsExecutionPolicy)
+	 * @param batchedMethodsExecutorService the new thread pool
+	 */
+	public void setBatchedMethodsExecutorService(ExecutorService batchedMethodsExecutorService) {
+		this.batchedMethodsExecutorService = batchedMethodsExecutorService;
+	}
+
 }

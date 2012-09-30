@@ -15,24 +15,13 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import java.io.IOException;
 import java.util.Collection;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 /**
- * Special response of a DirectStore request. This class is useful if your data
- * is already in JSON format. Add the JSON to the records collection and the
- * response will contain the unfiltered JSON. There is no validation that the
- * added JSON string is valid.
- * 
- * @author Ralph Schaer
+ * {@link Deprecated} use {@link ExtDirectRawJsonStoreReadResult} instead
  */
-public class ExtDirectRawJsonStoreResponse extends ExtDirectStoreResponse<String> {
+@Deprecated
+public class ExtDirectRawJsonStoreResponse extends ExtDirectRawJsonStoreReadResult {
 
 	public ExtDirectRawJsonStoreResponse() {
 		// default constructor
@@ -48,40 +37,6 @@ public class ExtDirectRawJsonStoreResponse extends ExtDirectStoreResponse<String
 
 	public ExtDirectRawJsonStoreResponse(Integer total, Collection<String> records, Boolean success) {
 		super(total, records, success);
-	}
-
-	@Override
-	@JsonSerialize(using = CollectionStringSerializer.class)
-	public Collection<String> getRecords() {
-		return super.getRecords();
-	}
-
-	@Override
-	public String toString() {
-		return "ExtDirectRawJsonStoreResponse [getRecords()=" + getRecords() + ", getTotal()=" + getTotal()
-				+ ", isSuccess()=" + isSuccess() + ", getMetaData()=" + getMetaData() + "]";
-	}
-
-	private final static class CollectionStringSerializer extends JsonSerializer<Collection<String>> {
-
-		@Override
-		public void serialize(Collection<String> values, JsonGenerator jgen, final SerializerProvider provider)
-				throws IOException, JsonProcessingException {
-
-			StringBuilder sb = new StringBuilder();
-			sb.append("[");
-			if (values != null) {
-				for (String value : values) {
-					if (sb.length() > 1) {
-						sb.append(",");
-					}
-					sb.append(value);
-				}
-			}
-			sb.append("]");
-			jgen.writeRawValue(sb.toString());
-		}
-
 	}
 
 }

@@ -67,8 +67,14 @@ public class Filter {
 		}
 
 		String field = (String) jsonData.get("field");
-		if (type.equals("numeric")) {
+		if (field == null) {
+			field = (String) jsonData.get("property");
+		}
+		if (type.equals("numeric") || type.equals("int") || type.equals("float")) {
 			String comparison = (String) jsonData.get("comparison");
+			if (comparison == null) {
+				comparison = (String) jsonData.get("operator");
+			}
 			Number value = conversionService.convert(source, Number.class);
 			return new NumericFilter(field, value, Comparison.fromString(comparison));
 		} else if (type.equals("string")) {
@@ -76,9 +82,12 @@ public class Filter {
 			return new StringFilter(field, value);
 		} else if (type.equals("date")) {
 			String comparison = (String) jsonData.get("comparison");
+			if (comparison == null) {
+				comparison = (String) jsonData.get("operator");
+			}
 			String value = (String) source;
 			return new DateFilter(field, value, Comparison.fromString(comparison));
-		} else if (type.equals("list")) {
+		} else if (type.equals("list") || type.equals("combo")) {
 			Object value = source;
 			if (value instanceof String) {
 				String[] values = ((String) value).split(",");

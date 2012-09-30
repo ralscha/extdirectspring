@@ -46,7 +46,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
  * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all")
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerStoreModifyTest {
@@ -55,16 +55,17 @@ public class RouterControllerStoreModifyTest {
 	private RouterController controller;
 
 	@Test
-	public void testCreateNoData() throws IOException {
+	public void testCreateNoData() {
 		testCreateNoData("remoteProviderStoreModify");
 		testCreateNoData("remoteProviderStoreModifyArray");
 		testCreateNoData("remoteProviderStoreModifyInterface");
 	}
 
-	private void testCreateNoData(String action) throws IOException {
+	private void testCreateNoData(String action) {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		storeRequest.put("records", new ArrayList<Row>());
 
+		@SuppressWarnings("unchecked")
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, action, "create1", storeRequest,
 				new TypeReference<List<Row>>() {/* nothing here */
 				});
@@ -73,19 +74,20 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	@Test
-	public void testCreateWithData() throws IOException {
+	public void testCreateWithData() {
 		testCreateWithData("remoteProviderStoreModify");
 		testCreateWithData("remoteProviderStoreModifyArray");
 		testCreateWithData("remoteProviderStoreModifyInterface");
 	}
 
-	private void testCreateWithData(String action) throws IOException {
+	private void testCreateWithData(String action) {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
 		rowsToUpdate.add(new Row(23, "John", false, "23.12"));
 		storeRequest.put("records", rowsToUpdate);
 
+		@SuppressWarnings("unchecked")
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, action, "create1", storeRequest,
 				new TypeReference<List<Row>>() {/* nothing here */
 				});
@@ -98,26 +100,27 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	@Test
-	public void testCreateWithDataSingle() throws IOException {
+	public void testCreateWithDataSingle() {
 		Row row = (Row) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreModifySingle", "create1",
 				new Row(10, "Ralph", true, "109.55"), Row.class);
 		assertThat(row.getId()).isEqualTo(10);
 	}
 
 	@Test
-	public void testCreateWithDataAndSupportedArguments() throws IOException {
+	public void testCreateWithDataAndSupportedArguments() {
 		testCreateWithDataAndSupportedArguments("remoteProviderStoreModify");
 		testCreateWithDataAndSupportedArguments("remoteProviderStoreModifyArray");
 		testCreateWithDataAndSupportedArguments("remoteProviderStoreModifyInterface");
 	}
 
-	private void testCreateWithDataAndSupportedArguments(String action) throws IOException {
+	private void testCreateWithDataAndSupportedArguments(String action) {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Row> rowsToUpdate = new ArrayList<Row>();
 		rowsToUpdate.add(new Row(10, "Ralph", false, "109.55"));
 
 		storeRequest.put("records", rowsToUpdate);
 
+		@SuppressWarnings("unchecked")
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, action, "create2", storeRequest,
 				new TypeReference<List<Row>>() {/* nothing here */
 				});
@@ -127,7 +130,7 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	@Test
-	public void testCreateWithDataAndSupportedArgumentsSingle() throws IOException {
+	public void testCreateWithDataAndSupportedArgumentsSingle() {
 		Row row = (Row) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreModifySingle", "create2",
 				new Row(10, "Ralph", false, "109.55"), Row.class);
 		assertThat(row.getId()).isEqualTo(10);
@@ -202,6 +205,7 @@ public class RouterControllerStoreModifyTest {
 		executeUpdate(action, storeRequest, "update4");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testUpdateSingle() throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
@@ -210,6 +214,7 @@ public class RouterControllerStoreModifyTest {
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update1");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testUpdateWithRequestParamSingle() throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
@@ -219,6 +224,7 @@ public class RouterControllerStoreModifyTest {
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update2");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testUpdateWithRequestParamDefaultValueSingle() throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
@@ -227,6 +233,7 @@ public class RouterControllerStoreModifyTest {
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update3");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testUpdateWithRequestParamOptionalSingle() throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
@@ -263,7 +270,10 @@ public class RouterControllerStoreModifyTest {
 
 		Object result = resp.getResult();
 		if (result instanceof List) {
-			List<Row> storeResponse = ControllerUtil.convertValue(result, new TypeReference<List<Row>>() {
+			List<Row> storeResponse = ControllerUtil.convertValue(result, new TypeReference<List<Row>>() {/*
+																										 * nothing
+																										 * here
+																										 */
 			});
 			assertThat(storeResponse).hasSize(1);
 			assertThat(storeResponse.get(0).getId()).isEqualTo(10);
@@ -280,12 +290,13 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	@Test
-	public void testDestroy() throws IOException {
+	public void testDestroy() {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Integer> rowsToUpdate = new ArrayList<Integer>();
 		rowsToUpdate.add(10);
 		storeRequest.put("records", rowsToUpdate);
 
+		@SuppressWarnings("unchecked")
 		List<Integer> rows = (List<Integer>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreModify",
 				"destroy", storeRequest, new TypeReference<List<Integer>>() {/*
 																			 * nothing
@@ -298,12 +309,13 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	@Test
-	public void testDestroyArray() throws IOException {
+	public void testDestroyArray() {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Integer> rowsToUpdate = new ArrayList<Integer>();
 		rowsToUpdate.add(10);
 		storeRequest.put("records", rowsToUpdate);
 
+		@SuppressWarnings("unchecked")
 		List<Integer> rows = (List<Integer>) ControllerUtil.sendAndReceive(controller,
 				"remoteProviderStoreModifyArray", "destroy", storeRequest, new TypeReference<List<Integer>>() {/*
 																												 * nothing
@@ -316,7 +328,7 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	@Test
-	public void testDestroySingle() throws IOException {
+	public void testDestroySingle() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderStoreModifySingle", "destroy", new Object[] { 1 }, 1);
 	}
 

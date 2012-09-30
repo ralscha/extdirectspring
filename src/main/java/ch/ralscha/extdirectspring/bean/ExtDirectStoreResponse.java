@@ -15,90 +15,37 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * Class representing the response of a DirectStore request.
- * 
- * @author Ralph Schaer
+ * {@link Deprecated} use {@link ExtDirectStoreReadResult} instead
  * @param <T> Type of the entry inside the collection
  */
-@JsonInclude(Include.NON_NULL)
-@JsonPropertyOrder(value = { "metaData", "success", "total", "records" })
-public class ExtDirectStoreResponse<T> {
-
-	private Integer total;
-
-	private Collection<T> records;
-
-	private Boolean success;
-
-	private MetaData metaData;
+@Deprecated
+public class ExtDirectStoreResponse<T> extends ExtDirectStoreReadResult<T> {
 
 	public ExtDirectStoreResponse() {
 		// default constructor
 	}
 
-	@SuppressWarnings("unchecked")
 	public ExtDirectStoreResponse(T record) {
-		init(null, Arrays.asList(record), true);
+		super(record);
 	}
 
 	public ExtDirectStoreResponse(T[] record) {
-		init(null, Arrays.asList(record), true);
+		super(record);
 	}
 
 	public ExtDirectStoreResponse(Collection<T> records) {
-		init(null, records, true);
+		super(records);
 	}
 
 	public ExtDirectStoreResponse(Integer total, Collection<T> records) {
-		init(total, records, true);
+		super(total, records);
 	}
 
 	public ExtDirectStoreResponse(Integer total, Collection<T> records, Boolean success) {
-		init(total, records, success);
-	}
-
-	protected void init(Integer _total, Collection<T> _records, Boolean _success) {
-		this.total = _total;
-		this.records = _records;
-		this.success = _success;
-	}
-
-	public Integer getTotal() {
-		return total;
-	}
-
-	public Collection<T> getRecords() {
-		return records;
-	}
-
-	public Boolean isSuccess() {
-		return success;
-	}
-
-	public Map<String, Object> getMetaData() {
-		if (metaData != null) {
-			return metaData.getMetaData();
-		}
-		return null;
-	}
-
-	public void setMetaData(MetaData metaData) {
-		this.metaData = metaData;
-	}
-
-	@Override
-	public String toString() {
-		return "ExtDirectStoreResponse [total=" + total + ", records=" + records + ", success=" + success
-				+ ", metaData=" + metaData + "]";
+		super(total, records, success);
 	}
 
 }

@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
+
 /**
  * Enumeration of all possible remote method types.
  * 
@@ -165,73 +167,98 @@ public enum ExtDirectMethodType {
 
 			boolean isValid = true;
 
-			if (!method.getReturnType().equals(Void.TYPE)) {
-				log.error("FORM_POST method '" + methodName + "' must return void");
-				isValid = false;
-			}
+			if (method.getReturnType().equals(ExtDirectFormPostResult.class)) {
+				ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method,
+						ExtDirectMethod.class);
+				if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
+					log.warn("FORM_POST method '" + methodName
+							+ "' does not support event attribute of @ExtDirectMethod");
+				}
 
-			if (AnnotationUtils.findAnnotation(method, ResponseBody.class) != null) {
-				log.warn("FORM_POST method '" + methodName + "' should not have a @ResponseBody annotation");
-			}
+				if (extDirectMethodAnnotation.entryClass() != Object.class) {
+					log.warn("FORM_POST method '" + methodName
+							+ "' does not support entryClass attribute of @ExtDirectMethod");
+				}
 
-			if (AnnotationUtils.findAnnotation(clazz, Controller.class) == null) {
-				log.error("FORM_POST method '" + methodName + "' must be a member of a @Controller bean");
-				isValid = false;
-			}
+				isValid = true;
+			} else if (method.getReturnType().equals(Void.TYPE)) {
 
-			final RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
+				if (AnnotationUtils.findAnnotation(method, ResponseBody.class) != null) {
+					log.warn("FORM_POST method '" + methodName + "' should not have a @ResponseBody annotation");
+				}
 
-			if (methodAnnotation == null) {
-				log.error("FORM_POST method '" + methodName + "' must be annotated with @RequestMapping");
-				isValid = false;
-			}
+				if (AnnotationUtils.findAnnotation(clazz, Controller.class) == null) {
+					log.error("FORM_POST method '" + methodName + "' must be a member of a @Controller bean");
+					isValid = false;
+				}
 
-			RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
+				final RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
 
-			boolean hasValue = false;
+				if (methodAnnotation == null) {
+					log.error("FORM_POST method '" + methodName + "' must be annotated with @RequestMapping");
+					isValid = false;
+				}
 
-			if (classAnnotation != null) {
-				hasValue = (classAnnotation.value() != null && classAnnotation.value().length > 0);
-			}
+				RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
 
-			if (methodAnnotation != null && !hasValue) {
-				hasValue = (methodAnnotation.value() != null && methodAnnotation.value().length > 0);
-			}
+				boolean hasValue = false;
 
-			if (!hasValue) {
-				log.error("FORM_POST method '" + methodName + "' must have a @RequestMapping annotation with a value");
-				isValid = false;
-			}
+				if (classAnnotation != null) {
+					hasValue = (classAnnotation.value() != null && classAnnotation.value().length > 0);
+				}
 
-			if (methodAnnotation != null) {
-				boolean hasPostRequestMethod = false;
-				for (RequestMethod requestMethod : methodAnnotation.method()) {
-					if (requestMethod.equals(RequestMethod.POST)) {
-						hasPostRequestMethod = true;
-						break;
+				if (methodAnnotation != null && !hasValue) {
+					hasValue = (methodAnnotation.value() != null && methodAnnotation.value().length > 0);
+				}
+
+				if (!hasValue) {
+					log.error("FORM_POST method '" + methodName
+							+ "' must have a @RequestMapping annotation with a value");
+					isValid = false;
+				}
+
+				if (methodAnnotation != null) {
+					boolean hasPostRequestMethod = false;
+					for (RequestMethod requestMethod : methodAnnotation.method()) {
+						if (requestMethod.equals(RequestMethod.POST)) {
+							hasPostRequestMethod = true;
+							break;
+						}
+					}
+
+					if (!hasPostRequestMethod) {
+						log.error("FORM_POST method '" + methodName
+								+ "' must have a @RequestMapping annotation with method = RequestMethod.POST");
+						isValid = false;
 					}
 				}
 
-				if (!hasPostRequestMethod) {
-					log.error("FORM_POST method '" + methodName
-							+ "' must have a @RequestMapping annotation with method = RequestMethod.POST");
-					isValid = false;
+				ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method,
+						ExtDirectMethod.class);
+				if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
+					log.warn("FORM_POST method '" + methodName
+							+ "' does not support event attribute of @ExtDirectMethod");
 				}
-			}
 
-			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
-			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
-				log.warn("FORM_POST method '" + methodName + "' does not support event attribute of @ExtDirectMethod");
-			}
+				if (extDirectMethodAnnotation.entryClass() != Object.class) {
+					log.warn("FORM_POST method '" + methodName
+							+ "' does not support entryClass attribute of @ExtDirectMethod");
+				}
 
-			if (extDirectMethodAnnotation.entryClass() != Object.class) {
-				log.warn("FORM_POST method '" + methodName
-						+ "' does not support entryClass attribute of @ExtDirectMethod");
-			}
+				if (extDirectMethodAnnotation.synchronizeOnSession()) {
+					log.warn("FORM_POST method '" + methodName
+							+ "' does not support synchronizeOnSession attribute of @ExtDirectMethod");
+				}
 
-			if (extDirectMethodAnnotation.synchronizeOnSession()) {
-				log.warn("FORM_POST method '" + methodName
-						+ "' does not support synchronizeOnSession attribute of @ExtDirectMethod");
+				if (extDirectMethodAnnotation.streamResponse()) {
+					log.warn("FORM_POST method '" + methodName
+							+ "' does not support streamResponse attribute of @ExtDirectMethod");
+				}
+
+			} else {
+				log.error("FORM_POST method '" + methodName
+						+ "' must return void or an instance of ExtDirectFormPostResult");
+				isValid = false;
 			}
 
 			return isValid;

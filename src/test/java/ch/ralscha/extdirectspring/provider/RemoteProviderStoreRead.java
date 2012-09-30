@@ -41,7 +41,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.DataType;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
 import ch.ralscha.extdirectspring.bean.Field;
 import ch.ralscha.extdirectspring.bean.GroupInfo;
 import ch.ralscha.extdirectspring.bean.MetaData;
@@ -69,38 +69,38 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
-	public List<Row> method3(HttpServletResponse response, HttpServletRequest request, final HttpSession session,
+	public List<Row> method3(HttpServletResponse response, HttpServletRequest request, HttpSession session,
 			Locale locale) {
 		return createRows(":" + (response != null) + ";" + (request != null) + ";" + (session != null) + ";" + locale);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, entryClass = String.class)
-	public ExtDirectStoreResponse<Row> method4(ExtDirectStoreReadRequest request) {
-		return createExtDirectStoreResponse(request, "");
+	public ExtDirectStoreReadResult<Row> method4(ExtDirectStoreReadRequest request) {
+		return createExtDirectStoreReadResult(request, "");
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group3")
-	public ExtDirectStoreResponse<Row> method5(ExtDirectStoreReadRequest request, Locale locale,
-			@RequestParam(value = "id") final int id) {
+	public ExtDirectStoreReadResult<Row> method5(ExtDirectStoreReadRequest request, Locale locale,
+			@RequestParam(value = "id") int id) {
 		assertThat(id).isEqualTo(10);
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
 		assertThat(request.getParams().size()).isEqualTo(1);
 		assertThat(request.getParams()).includes(entry("id", 10));
 
-		return createExtDirectStoreResponse(request, ":" + id + ";" + locale);
+		return createExtDirectStoreReadResult(request, ":" + id + ";" + locale);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
-	public ExtDirectStoreResponse<Row> method6(@RequestParam(value = "id", defaultValue = "1") final int id,
+	public ExtDirectStoreReadResult<Row> method6(@RequestParam(value = "id", defaultValue = "1") int id,
 			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
-		return createExtDirectStoreResponse(request, ":" + id + ";" + (servletRequest != null));
+		return createExtDirectStoreReadResult(request, ":" + id + ";" + (servletRequest != null));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
-	public List<Row> method7(@RequestParam(value = "id", required = false) final Integer id) {
+	public List<Row> method7(@RequestParam(value = "id", required = false) Integer id) {
 		if (id == null) {
 			assertThat(id).isNull();
 		} else {
@@ -110,14 +110,14 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
-	public ExtDirectStoreResponse<Row> method8(@DateTimeFormat(iso = ISO.DATE_TIME) final Date endDate,
+	public ExtDirectStoreReadResult<Row> method8(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
 			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(endDate).isNotNull();
 		assertThat(servletRequest).isNotNull();
-		return createExtDirectStoreResponse(request, ":" + endDate.toString() + ";" + (servletRequest != null));
+		return createExtDirectStoreReadResult(request, ":" + endDate.toString() + ";" + (servletRequest != null));
 	}
 
-	private ExtDirectStoreResponse<Row> createExtDirectStoreResponse(ExtDirectStoreReadRequest request,
+	private static ExtDirectStoreReadResult<Row> createExtDirectStoreReadResult(ExtDirectStoreReadRequest request,
 			final String appendix) {
 		List<Row> rows = createRows(appendix);
 
@@ -221,11 +221,11 @@ public class RemoteProviderStoreRead {
 
 		}
 
-		return new ExtDirectStoreResponse<Row>(totalSize, rows);
+		return new ExtDirectStoreReadResult<Row>(totalSize, rows);
 
 	}
 
-	private List<Row> createRows(String appendix) {
+	private static List<Row> createRows(String appendix) {
 		List<Row> rows = new ArrayList<Row>();
 		for (int i = 0; i < 100; i += 2) {
 			rows.add(new Row(i, "name: " + i + appendix, true, "" + (1000 + i)));
@@ -235,8 +235,8 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
-	public ExtDirectStoreResponse<Row> methodMetadata(ExtDirectStoreReadRequest request) {
-		ExtDirectStoreResponse<Row> response = createExtDirectStoreResponse(request, "");
+	public ExtDirectStoreReadResult<Row> methodMetadata(ExtDirectStoreReadRequest request) {
+		ExtDirectStoreReadResult<Row> response = createExtDirectStoreReadResult(request, "");
 
 		if (request.getStart() == null && request.getSort() == null) {
 			MetaData metaData = new MetaData();
@@ -287,7 +287,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
-	public List<Row> methodFilter(@RequestParam("type") final int type, ExtDirectStoreReadRequest request) {
+	public List<Row> methodFilter(@RequestParam("type") int type, ExtDirectStoreReadRequest request) {
 
 		List<Filter> filters = new ArrayList<Filter>(request.getFilters());
 		switch (type) {
@@ -446,12 +446,14 @@ public class RemoteProviderStoreRead {
 			assertThat(lf.getField()).isEqualTo("size");
 
 			return createResult(14);
+
+		default: // do nothing
 		}
 
 		return Collections.emptyList();
 	}
 
-	private List<Row> createResult(int i) {
+	private static List<Row> createResult(int i) {
 		Row r = new Row(i, null, false, null);
 		List<Row> result = new ArrayList<Row>();
 		result.add(r);

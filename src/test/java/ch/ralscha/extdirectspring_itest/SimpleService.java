@@ -15,6 +15,8 @@
  */
 package ch.ralscha.extdirectspring_itest;
 
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -33,7 +35,13 @@ public class SimpleService {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "itest_simple", streamResponse = true)
-	public String echo(String userId, @RequestParam(defaultValue = "10") final int logLevel) {
+	public String echo(String userId, @RequestParam(defaultValue = "10") int logLevel) {
+		// Simulate some work
+		try {
+			TimeUnit.MILLISECONDS.sleep(200);
+		} catch (InterruptedException e) {
+			// do nothing here
+		}
 		return String.format("UserId: %s LogLevel: %d", userId, logLevel);
 	}
 }

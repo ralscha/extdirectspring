@@ -34,7 +34,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
  * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all")
+
 public class MethodInfoCacheTest {
 
 	@Test
@@ -46,9 +46,9 @@ public class MethodInfoCacheTest {
 	@ExtDirectMethod
 	public void testPutAndGet() throws SecurityException, NoSuchMethodException {
 		assertThat(MethodInfoCache.INSTANCE).isNotNull();
-		Method thisMethod = getClass().getMethod("testPutAndGet", null);
+		Method thisMethod = getClass().getMethod("testPutAndGet", (Class<?>[]) null);
 
-		MethodInfoCache.INSTANCE.put("methodCacheTest", getClass(), thisMethod);
+		MethodInfoCache.INSTANCE.put("methodCacheTest", getClass(), thisMethod, null);
 		assertThat(MethodInfoCache.INSTANCE.get("methodCacheTest", "testPu")).isNull();
 		assertThat(MethodInfoCache.INSTANCE.get("methodCacheTes", "testPut")).isNull();
 		assertThat(MethodInfoCache.INSTANCE.get("methodCacheTest", "testPutAndGet").getMethod()).isEqualTo(thisMethod);
@@ -70,6 +70,7 @@ public class MethodInfoCacheTest {
 		assertThat(key1.equals("test")).isFalse();
 	}
 
+	@SuppressWarnings("unused")
 	@Test
 	public void testFindMethodWithAnnotation() {
 		new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
@@ -84,6 +85,7 @@ public class MethodInfoCacheTest {
 		assertThat(methodBInfo.getMethod().equals(methodBWithAnnotation)).isTrue();
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = NullPointerException.class)
 	public void testInvokeWithNull() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		new ClassPathXmlApplicationContext("/testApplicationContextB.xml");

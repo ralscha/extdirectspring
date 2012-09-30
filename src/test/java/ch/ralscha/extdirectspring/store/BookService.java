@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
 
 @Service
 public class BookService {
@@ -37,15 +37,15 @@ public class BookService {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")
-	public ExtDirectStoreResponse<Book> readWithPaging(ExtDirectStoreReadRequest request) {
+	public ExtDirectStoreReadResult<Book> readWithPaging(ExtDirectStoreReadRequest request) {
 		int total = request.getPage() + request.getLimit() + request.getStart();
-		ExtDirectStoreResponse<Book> response = new ExtDirectStoreResponse<Book>(total, read());
+		ExtDirectStoreReadResult<Book> response = new ExtDirectStoreReadResult<Book>(total, read());
 		return response;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
-	public ExtDirectStoreResponse<Book> update3(List<Book> updates) {
-		return new ExtDirectStoreResponse<Book>(update4(updates));
+	public ExtDirectStoreReadResult<Book> update3(List<Book> updates) {
+		return new ExtDirectStoreReadResult<Book>(update4(updates));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
@@ -57,8 +57,8 @@ public class BookService {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
-	public ExtDirectStoreResponse<Integer> delete3(List<Integer> deletes) {
-		return new ExtDirectStoreResponse<Integer>(deletes);
+	public ExtDirectStoreReadResult<Integer> delete3(List<Integer> deletes) {
+		return new ExtDirectStoreReadResult<Integer>(deletes);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
@@ -71,8 +71,8 @@ public class BookService {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
-	public ExtDirectStoreResponse<Book> create3(List<Book> inserts) {
-		return new ExtDirectStoreResponse<Book>(create4(inserts));
+	public ExtDirectStoreReadResult<Book> create3(List<Book> inserts) {
+		return new ExtDirectStoreReadResult<Book>(create4(inserts));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")

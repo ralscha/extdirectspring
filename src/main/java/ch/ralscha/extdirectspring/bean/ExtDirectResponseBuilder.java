@@ -15,7 +15,6 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.MessageSource;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.context.WebApplicationContext;
@@ -226,26 +224,9 @@ public class ExtDirectResponseBuilder {
 			RouterController routerController = RequestContextUtils.getWebApplicationContext(request).getBean(
 					RouterController.class);
 
-			if (isMultipart()) {
-				response.setContentType(RouterController.TEXT_HTML.toString());
-				response.setCharacterEncoding(RouterController.TEXT_HTML.getCharSet().name());
+			routerController.writeJsonResponse(response, extDirectResponse, routerController.getConfiguration()
+					.isStreamResponse(), ExtDirectSpringUtil.isMultipart(request));
 
-				ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
-				bos.write("<html><body><textarea>".getBytes("UTF-8"));
-
-				String responseJson = routerController.getJsonHandler().getMapper()
-						.writeValueAsString(extDirectResponse);
-
-				responseJson = responseJson.replace("&quot;", "\\&quot;");
-				bos.write(responseJson.getBytes("UTF-8"));
-				bos.write("</textarea></body></html>".getBytes("UTF-8"));
-
-				response.setContentLength(bos.size());
-				FileCopyUtils.copy(bos.toByteArray(), response.getOutputStream());
-			} else {
-				routerController.writeJsonResponse(response, extDirectResponse, routerController.getConfiguration()
-						.isStreamResponse());
-			}
 		} catch (IOException e) {
 			LogFactory.getLog(getClass()).error("buildAndWrite", e);
 			throw new RuntimeException(e);
@@ -253,11 +234,4 @@ public class ExtDirectResponseBuilder {
 
 	}
 
-	private boolean isMultipart() {
-		if (!"post".equals(request.getMethod().toLowerCase())) {
-			return false;
-		}
-		String contentType = request.getContentType();
-		return (contentType != null && contentType.toLowerCase().startsWith("multipart/"));
-	}
 }

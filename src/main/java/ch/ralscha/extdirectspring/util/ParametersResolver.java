@@ -71,13 +71,13 @@ public final class ParametersResolver implements InitializingBean {
 		}
 	}
 
-	@SuppressWarnings({ "unchecked" })
-	public Object[] resolveParameters(HttpServletRequest request, HttpServletResponse response, final Locale locale,
+	@SuppressWarnings("unchecked")
+	public Object[] resolveParameters(HttpServletRequest request, HttpServletResponse response, Locale locale,
 			ExtDirectRequest directRequest, MethodInfo methodInfo) throws Exception {
 
 		int jsonParamIndex = 0;
 		Map<String, Object> remainingParameters = null;
-		ExtDirectStoreReadRequest ExtDirectStoreReadRequest = null;
+		ExtDirectStoreReadRequest extDirectStoreReadRequest = null;
 
 		List<Object> directStoreModifyRecords = null;
 		Class<?> directStoreEntryClass;
@@ -89,8 +89,8 @@ public final class ParametersResolver implements InitializingBean {
 
 			if (data != null && data.size() > 0) {
 				if (methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
-					ExtDirectStoreReadRequest = new ExtDirectStoreReadRequest();
-					remainingParameters = fillReadRequestFromMap(ExtDirectStoreReadRequest,
+					extDirectStoreReadRequest = new ExtDirectStoreReadRequest();
+					remainingParameters = fillReadRequestFromMap(extDirectStoreReadRequest,
 							(Map<String, Object>) data.get(0));
 				} else {
 					remainingParameters = (Map<String, Object>) data.get(0);
@@ -157,7 +157,7 @@ public final class ParametersResolver implements InitializingBean {
 					parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(), request,
 							response, locale);
 				} else if (ExtDirectStoreReadRequest.class.isAssignableFrom(methodParameter.getType())) {
-					parameters[paramIndex] = ExtDirectStoreReadRequest;
+					parameters[paramIndex] = extDirectStoreReadRequest;
 				} else if (directStoreModifyRecords != null && methodParameter.getCollectionType() != null) {
 					parameters[paramIndex] = directStoreModifyRecords;
 				} else if (methodParameter.isHasRequestParamAnnotation()) {
@@ -247,7 +247,7 @@ public final class ParametersResolver implements InitializingBean {
 		return value;
 	}
 
-	private Map<String, Object> fillReadRequestFromMap(ExtDirectStoreReadRequest to, final Map<String, Object> from) {
+	private Map<String, Object> fillReadRequestFromMap(ExtDirectStoreReadRequest to, Map<String, Object> from) {
 		Set<String> foundParameters = new HashSet<String>();
 
 		for (Entry<String, Object> entry : from.entrySet()) {

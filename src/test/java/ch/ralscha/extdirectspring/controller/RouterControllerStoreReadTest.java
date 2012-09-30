@@ -38,7 +38,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
 import ch.ralscha.extdirectspring.bean.GroupInfo;
 import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.bean.SortInfo;
@@ -51,7 +51,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
  * 
  * @author Ralph Schaer
  */
-@SuppressWarnings("all")
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerStoreReadTest {
@@ -70,7 +70,8 @@ public class RouterControllerStoreReadTest {
 	}
 
 	@Test
-	public void testNoArgumentsNoRequestParameters() throws IOException {
+	public void testNoArgumentsNoRequestParameters() {
+		@SuppressWarnings("unchecked")
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method1",
 				null, new TypeReference<List<Row>>() {/* nothing here */
 				});
@@ -78,10 +79,11 @@ public class RouterControllerStoreReadTest {
 	}
 
 	@Test
-	public void testNoArgumentsWithRequestParameters() throws IOException {
+	public void testNoArgumentsWithRequestParameters() {
 		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
 		storeRead.setQuery("ralph");
 
+		@SuppressWarnings("unchecked")
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method1",
 				storeRead, new TypeReference<List<Row>>() {/* nothing here */
 				});
@@ -89,12 +91,13 @@ public class RouterControllerStoreReadTest {
 	}
 
 	@Test
-	public void testReturnsNull() throws IOException {
+	public void testReturnsNull() {
 		ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method2", null, Collections.emptyList());
 	}
 
 	@Test
-	public void testSupportedArguments() throws IOException {
+	public void testSupportedArguments() {
+		@SuppressWarnings("unchecked")
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method3",
 				null, new TypeReference<List<Row>>() {/* nothing here */
 				});
@@ -105,7 +108,7 @@ public class RouterControllerStoreReadTest {
 	public void testWithExtDirectStoreReadRequest() throws IOException {
 		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
 		storeRead.setQuery("name");
-		ExtDirectStoreResponse<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
+		ExtDirectStoreReadResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(50));
 		assertThat(storeResponse.getRecords()).hasSize(50);
 		for (Row row : storeResponse.getRecords()) {
@@ -241,7 +244,7 @@ public class RouterControllerStoreReadTest {
 		storeRead.setGroups(groups);
 		storeRead.setLimit(10);
 		storeRead.setStart(10);
-		ExtDirectStoreResponse<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
+		ExtDirectStoreReadResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
 		assertThat(storeResponse.getRecords()).hasSize(10);
@@ -281,7 +284,7 @@ public class RouterControllerStoreReadTest {
 		storeRead.setLimit(10);
 		storeRead.setStart(10);
 		storeRead.setPage(2);
-		ExtDirectStoreResponse<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
+		ExtDirectStoreReadResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
 		assertThat(storeResponse.getRecords()).hasSize(10);
@@ -382,11 +385,14 @@ public class RouterControllerStoreReadTest {
 		}
 	}
 
-	private ExtDirectStoreResponse<Row> executeWithExtDirectStoreReadRequest(ExtDirectStoreReadRequest storeRead)
+	private ExtDirectStoreReadResult<Row> executeWithExtDirectStoreReadRequest(ExtDirectStoreReadRequest storeRead)
 			throws IOException {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method4", 1,
 				storeRead);
+
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		Map<String, Object> data = (Map<String, Object>) ((List) edRequest.get("data")).get(0);
+		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> sorters = (List<Map<String, Object>>) data.get("sorters");
 
 		if (sorters != null && !sorters.isEmpty()) {
@@ -401,6 +407,7 @@ public class RouterControllerStoreReadTest {
 			data.put("sort", sorters);
 		}
 
+		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> groups = (List<Map<String, Object>>) data.get("groups");
 		if (groups != null && !groups.isEmpty()) {
 			for (Map<String, Object> map : groups) {
@@ -431,22 +438,24 @@ public class RouterControllerStoreReadTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		return ControllerUtil.convertValue(resp.getResult(), new TypeReference<ExtDirectStoreResponse<Row>>() {/*
+		return ControllerUtil.convertValue(resp.getResult(), new TypeReference<ExtDirectStoreReadResult<Row>>() {/*
 																												 * nothing
 																												 * here
 																												 */
 		});
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
-	public void testWithAdditionalParameters() throws IOException {
+	public void testWithAdditionalParameters() {
 		Map<String, Object> readRequest = new HashMap<String, Object>();
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
-		ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) ControllerUtil.sendAndReceive(
+		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(
 				controller, "remoteProviderStoreRead", "method5", readRequest,
-				new TypeReference<ExtDirectStoreResponse<Row>>() {
+				new TypeReference<ExtDirectStoreReadResult<Row>>() {
+					// nothing here
 				});
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(50));
@@ -458,18 +467,20 @@ public class RouterControllerStoreReadTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResponse<Row>) ControllerUtil.sendAndReceive(controller,
+		storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
 				"remoteProviderStoreRead", "method5", readRequest, null);
 	}
 
 	@Test
-	public void testWithAdditionalParametersDefaultValue() throws IOException {
+	public void testWithAdditionalParametersDefaultValue() {
 		Map<String, Object> readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "firstname");
 
-		ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) ControllerUtil.sendAndReceive(
+		@SuppressWarnings("unchecked")
+		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(
 				controller, "remoteProviderStoreRead", "method6", readRequest,
-				new TypeReference<ExtDirectStoreResponse<Row>>() {
+				new TypeReference<ExtDirectStoreReadResult<Row>>() {
+					// nothing here
 				});
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(50));
@@ -481,11 +492,13 @@ public class RouterControllerStoreReadTest {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
-	public void testWithAdditionalParametersOptional() throws IOException {
+	public void testWithAdditionalParametersOptional() {
 
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method7",
 				null, new TypeReference<List<Row>>() {
+					// nothing here
 				});
 		assert100Rows(rows, ":null");
 
@@ -495,26 +508,30 @@ public class RouterControllerStoreReadTest {
 
 		rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method7", readRequest,
 				new TypeReference<List<Row>>() {
+					// nothing here
 				});
 		assert100Rows(rows, ":11");
 
 	}
 
 	@Test
-	public void testWithAdditionalParametersAndConversion() throws IOException {
+	public void testWithAdditionalParametersAndConversion() {
 		DateTime today = new DateTime();
 		Map<String, Object> readRequest = new HashMap<String, Object>();
 		readRequest.put("endDate", ISODateTimeFormat.dateTime().print(today));
 
-		ExtDirectStoreResponse<Row> storeResponse = (ExtDirectStoreResponse<Row>) ControllerUtil.sendAndReceive(
+		@SuppressWarnings("unchecked")
+		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(
 				controller, "remoteProviderStoreRead", "method8", readRequest,
-				new TypeReference<ExtDirectStoreResponse<Row>>() {
+				new TypeReference<ExtDirectStoreReadResult<Row>>() {
+					// nothing here
 				});
 
 		assertThat(storeResponse.getRecords()).hasSize(50);
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testMetadata() throws IOException {
 
