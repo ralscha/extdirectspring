@@ -32,5 +32,11 @@ public class NumericFilterTest {
 		assertThat(filter.getValue()).isEqualTo(23);
 		assertThat(filter.getField()).isEqualTo("xy");
 		assertThat(filter.toString()).isEqualTo("NumericFilter [value=23, comparison=EQUAL, getField()=xy]");
+
+		filter = new NumericFilter("field", 44, Comparison.LESS_THAN_OR_EQUAL);
+		assertThat(filter.getValue()).isEqualTo(44);
+		assertThat(filter.getField()).isEqualTo("field");
+		assertThat(filter.toString()).isEqualTo(
+				"NumericFilter [value=44, comparison=LESS_THAN_OR_EQUAL, getField()=field]");
 	}
 }

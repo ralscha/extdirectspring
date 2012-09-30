@@ -28,12 +28,18 @@ public class ComparisonTest {
 		assertSame(Comparison.LESS_THAN, Comparison.fromString("lt"));
 		assertSame(Comparison.GREATER_THAN, Comparison.fromString("gt"));
 		assertSame(Comparison.EQUAL, Comparison.fromString("eq"));
+		assertSame(Comparison.LESS_THAN_OR_EQUAL, Comparison.fromString("lte"));
+		assertSame(Comparison.GREATER_THAN_OR_EQUAL, Comparison.fromString("gte"));
+		assertSame(Comparison.NOT_EQUAL, Comparison.fromString("ne"));
 		assertSame(Comparison.IN, Comparison.fromString("in"));
 		assertSame(Comparison.LIKE, Comparison.fromString("like"));
 
 		assertSame(Comparison.LESS_THAN, Comparison.fromString("LT"));
 		assertSame(Comparison.GREATER_THAN, Comparison.fromString("GT"));
 		assertSame(Comparison.EQUAL, Comparison.fromString("EQ"));
+		assertSame(Comparison.LESS_THAN_OR_EQUAL, Comparison.fromString("LTE"));
+		assertSame(Comparison.GREATER_THAN_OR_EQUAL, Comparison.fromString("GTE"));
+		assertSame(Comparison.NOT_EQUAL, Comparison.fromString("NE"));
 		assertSame(Comparison.IN, Comparison.fromString("IN"));
 		assertSame(Comparison.LIKE, Comparison.fromString("LIKE"));
 
