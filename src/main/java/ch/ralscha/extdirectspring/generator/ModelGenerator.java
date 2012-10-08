@@ -69,11 +69,11 @@ public abstract class ModelGenerator {
 	 * @param response the http servlet response
 	 * @param clazz class that the generator should introspect
 	 * @param format specifies which code (ExtJS or Touch) the generator should
-	 * create.
+	 *        create.
 	 * @throws IOException
 	 * 
 	 * @see #writeModel(HttpServletRequest, HttpServletResponse, Class,
-	 * OutputFormat, boolean)
+	 *      OutputFormat, boolean)
 	 */
 	public static void writeModel(HttpServletRequest request, HttpServletResponse response, Class<?> clazz,
 			OutputFormat format) throws IOException {
@@ -88,9 +88,9 @@ public abstract class ModelGenerator {
 	 * @param response the http servlet response
 	 * @param clazz class that the generator should introspect
 	 * @param format specifies which code (ExtJS or Touch) the generator should
-	 * create
+	 *        create
 	 * @param debug if true the generator creates the output in pretty format,
-	 * false the output is compressed
+	 *        false the output is compressed
 	 * @throws IOException
 	 */
 	public static void writeModel(HttpServletRequest request, HttpServletResponse response, Class<?> clazz,
@@ -107,7 +107,7 @@ public abstract class ModelGenerator {
 	 * @param response the http servlet response
 	 * @param model {@link ModelBean} describing the model to be generated
 	 * @param format specifies which code (ExtJS or Touch) the generator should
-	 * create.
+	 *        create.
 	 * @throws IOException
 	 */
 	public static void writeModel(HttpServletRequest request, HttpServletResponse response, ModelBean model,
@@ -123,9 +123,9 @@ public abstract class ModelGenerator {
 	 * @param response the http servlet response
 	 * @param model {@link ModelBean} describing the model to be generated
 	 * @param format specifies which code (ExtJS or Touch) the generator should
-	 * create.
+	 *        create.
 	 * @param debug if true the generator creates the output in pretty format,
-	 * false the output is compressed
+	 *        false the output is compressed
 	 * @throws IOException
 	 */
 	public static void writeModel(HttpServletRequest request, HttpServletResponse response, ModelBean model,
@@ -165,7 +165,7 @@ public abstract class ModelGenerator {
 	 * 
 	 * @param clazz the model will be created based on this class.
 	 * @return a instance of {@link ModelBean} that describes the provided class
-	 * and can be used for Javascript generation.
+	 *         and can be used for Javascript generation.
 	 */
 	public static ModelBean createModel(Class<?> clazz) {
 
@@ -315,9 +315,9 @@ public abstract class ModelGenerator {
 	 * 
 	 * @param clazz class that the generator should introspect
 	 * @param format specifies which code (ExtJS or Touch) the generator should
-	 * create
+	 *        create
 	 * @param debug if true the generator creates the output in pretty format,
-	 * false the output is compressed
+	 *        false the output is compressed
 	 * @return the generated model object (JS code)
 	 */
 	public static String generateJavascript(Class<?> clazz, OutputFormat format, boolean debug) {
@@ -332,9 +332,9 @@ public abstract class ModelGenerator {
 	 * 
 	 * @param model generate code based on this {@link ModelBean}
 	 * @param format specifies which code (ExtJS or Touch) the generator should
-	 * create
+	 *        create
 	 * @param debug if true the generator creates the output in pretty format,
-	 * false the output is compressed
+	 *        false the output is compressed
 	 * @return the generated model object (JS code)
 	 */
 	public static String generateJavascript(ModelBean model, OutputFormat format, boolean debug) {

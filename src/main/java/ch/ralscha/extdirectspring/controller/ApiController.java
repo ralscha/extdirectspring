@@ -57,19 +57,19 @@ public class ApiController {
 	 * with the necessary code for Ext Direct.
 	 * 
 	 * @param apiNs name of the namespace the variable remotingApiVar will live
-	 * in. Defaults to Ext.app
+	 *        in. Defaults to Ext.app
 	 * @param actionNs name of the namespace the action will live in.
 	 * @param remotingApiVar name of the remoting api variable. Defaults to
-	 * REMOTING_API
+	 *        REMOTING_API
 	 * @param pollingUrlsVar name of the polling urls object. Defaults to
-	 * POLLING_URLS
+	 *        POLLING_URLS
 	 * @param group name of the api group. Multiple groups delimited with comma
 	 * @param fullRouterUrl if true the router property contains the full
-	 * request URL with method, server and port. Defaults to false returns only
-	 * the URL without method, server and port
+	 *        request URL with method, server and port. Defaults to false
+	 *        returns only the URL without method, server and port
 	 * @param format only valid value is "json2. Ext Designer sends this
-	 * parameter and the response is a JSON. Defaults to null and response is
-	 * Javascript.
+	 *        parameter and the response is a JSON. Defaults to null and
+	 *        response is Javascript.
 	 * @param request the HTTP servlet request
 	 * @param response the HTTP servlet response
 	 * @throws IOException
@@ -125,16 +125,16 @@ public class ApiController {
 	 * necessary code for Ext Direct.
 	 * 
 	 * @param apiNs name of the namespace the variable remotingApiVar will live
-	 * in. Defaults to Ext.app
+	 *        in. Defaults to Ext.app
 	 * @param actionNs name of the namespace the action will live in.
 	 * @param remotingApiVar name of the remoting api variable. Defaults to
-	 * REMOTING_API
+	 *        REMOTING_API
 	 * @param pollingUrlsVar name of the polling urls object. Defaults to
-	 * POLLING_URLS
+	 *        POLLING_URLS
 	 * @param group name of the api group. Multiple groups delimited with comma
 	 * @param fullRouterUrl if true the router property contains the full
-	 * request URL with method, server and port. Defaults to false returns only
-	 * the URL without method, server and port
+	 *        request URL with method, server and port. Defaults to false
+	 *        returns only the URL without method, server and port
 	 * @param request the HTTP servlet request
 	 * @param response the HTTP servlet response
 	 * @throws IOException

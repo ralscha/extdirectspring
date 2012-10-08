@@ -90,7 +90,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return the start row from where to send records back for a paging
-	 * request. start = {@link #getLimit()} * ({@link #getPage()}-1)
+	 *         request. start = {@link #getLimit()} * ({@link #getPage()}-1)
 	 */
 	public Integer getStart() {
 		return start;
@@ -102,8 +102,8 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return sorting order. "ASC" or "DESC".<br>
-	 * ExtJs 4.x and Touch 2 can send more than one sorters. Use
-	 * {@link #getSorters()} instead.
+	 *         ExtJs 4.x and Touch 2 can send more than one sorters. Use
+	 *         {@link #getSorters()} instead.
 	 * @see #isAscendingSort()
 	 * @see #isDescendingSort()
 	 */
@@ -117,8 +117,8 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return true if sorting order is ascending.<br>
-	 * ExtJs 4.x and Touch 2 can send more than one sorters. Use
-	 * {@link #getSorters()} instead.
+	 *         ExtJs 4.x and Touch 2 can send more than one sorters. Use
+	 *         {@link #getSorters()} instead.
 	 */
 	@JsonIgnore
 	public boolean isAscendingSort() {
@@ -127,8 +127,8 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return true if sorting order is descending.<br>
-	 * ExtJs 4.x and Touch 2 can send more than one sorters. Use
-	 * {@link #getSorters()} instead.
+	 *         ExtJs 4.x and Touch 2 can send more than one sorters. Use
+	 *         {@link #getSorters()} instead.
 	 */
 	@JsonIgnore
 	public boolean isDescendingSort() {
@@ -137,8 +137,8 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return the field/property on which the sort should be applied.<br>
-	 * ExtJs 4.x and Touch 2 can send more than one sorters. Use
-	 * {@link #getSorters()} instead.
+	 *         ExtJs 4.x and Touch 2 can send more than one sorters. Use
+	 *         {@link #getSorters()} instead.
 	 */
 	public String getSort() {
 		return sort;
@@ -150,8 +150,8 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return the field/property name on which the grouping should occur.<br>
-	 * ExtJs 4.x and Touch 2 can send more than one group infos. Use
-	 * {@link #getGroups()} instead.
+	 *         ExtJs 4.x and Touch 2 can send more than one group infos. Use
+	 *         {@link #getGroups()} instead.
 	 */
 	public String getGroupBy() {
 		return groupBy;
@@ -163,8 +163,8 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return sorting order for a grouping request. "ASC" or "DESC".<br>
-	 * ExtJs 4.x and Touch 2 can send more than one group info. Use
-	 * {@link #getGroups()} instead.
+	 *         ExtJs 4.x and Touch 2 can send more than one group info. Use
+	 *         {@link #getGroups()} instead.
 	 */
 	public String getGroupDir() {
 		return groupDir;
@@ -176,8 +176,8 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return true if grouping sorting order is ascending.<br>
-	 * ExtJs 4.x and Touch 2 can send more than one group info. Use
-	 * {@link #getGroups()} instead.
+	 *         ExtJs 4.x and Touch 2 can send more than one group info. Use
+	 *         {@link #getGroups()} instead.
 	 */
 	@JsonIgnore
 	public boolean isAscendingGroupSort() {
@@ -186,8 +186,8 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return true if grouping sorting order is descending.<br>
-	 * ExtJs 4.x and Touch 2 can send more than one group info. Use
-	 * {@link #getGroups()} instead.
+	 *         ExtJs 4.x and Touch 2 can send more than one group info. Use
+	 *         {@link #getGroups()} instead.
 	 */
 	@JsonIgnore
 	public boolean isDescendingGroupSort() {
@@ -212,7 +212,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return page number of a paging request. page = ({@link #getStart()} /
-	 * {@link #getLimit()}) + 1
+	 *         {@link #getLimit()}) + 1
 	 */
 	public Integer getPage() {
 		return page;
