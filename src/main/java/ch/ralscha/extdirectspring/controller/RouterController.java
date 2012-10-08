@@ -44,6 +44,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,6 +62,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
+import ch.ralscha.extdirectspring.bean.SSEvent;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.JsonHandler;
 import ch.ralscha.extdirectspring.util.MethodInfo;
@@ -87,6 +89,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class RouterController implements InitializingBean, DisposableBean {
 
 	public static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
+
+	private static final MediaType EVENT_STREAM = new MediaType("text", "event-stream", UTF8_CHARSET);
 
 	public static final MediaType APPLICATION_JSON = new MediaType("application", "json", UTF8_CHARSET);
 
@@ -208,6 +212,121 @@ public class RouterController implements InitializingBean, DisposableBean {
 		}
 
 		writeJsonResponse(response, directPollResponse, streamResponse);
+	}
+
+	@RequestMapping(value = "/sse/{beanName}/{method}")
+	public void sse(@PathVariable("beanName") String beanName, @PathVariable("method") String method,
+			HttpServletRequest request, HttpServletResponse response, Locale locale) throws Exception {
+
+		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(beanName, method);
+
+		SSEvent result = null;
+
+		if (methodInfo != null) {
+
+			try {
+
+				List<ParameterInfo> methodParameters = methodInfo.getParameters();
+				Object[] parameters = null;
+				if (!methodParameters.isEmpty()) {
+					parameters = new Object[methodParameters.size()];
+
+					for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
+						ParameterInfo methodParameter = methodParameters.get(paramIndex);
+
+						if (methodParameter.isSupportedParameter()) {
+							parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(),
+									request, response, locale);
+						} else if (methodParameter.isHasRequestHeaderAnnotation()) {
+							parameters[paramIndex] = parametersResolver.resolveRequestHeader(request, methodParameter);
+						} else {
+							parameters[paramIndex] = parametersResolver.resolveRequestParam(request, null,
+									methodParameter);
+						}
+
+					}
+				}
+
+				Object methodReturnValue = null;
+
+				if (configuration.isSynchronizeOnSession() || methodInfo.isSynchronizeOnSession()) {
+					HttpSession session = request.getSession(false);
+					if (session != null) {
+						Object mutex = WebUtils.getSessionMutex(session);
+						synchronized (mutex) {
+							methodReturnValue = ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters);
+						}
+					} else {
+						methodReturnValue = ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters);
+					}
+				} else {
+					methodReturnValue = ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters);
+				}
+
+				if (methodReturnValue instanceof SSEvent) {
+					result = (SSEvent) methodReturnValue;
+				} else {
+					result = new SSEvent();
+					if (methodReturnValue != null) {
+						result.setData(methodReturnValue.toString());
+					}
+				}
+
+			} catch (Exception e) {
+				log.error("Error polling method '" + beanName + "." + method + "'", e.getCause() != null ? e.getCause()
+						: e);
+
+				Throwable cause;
+				if (e.getCause() != null) {
+					cause = e.getCause();
+				} else {
+					cause = e;
+				}
+
+				result = new SSEvent();
+				result.setEvent("exception");
+				result.setData(configuration.getMessage(cause));
+
+				if (configuration.isSendStacktrace()) {
+					// todo handle multiline
+					result.setComment(ExtDirectSpringUtil.getStackTrace(cause));
+				}
+			}
+		} else {
+			log.error("Error invoking method '" + beanName + "." + method + "'. Method or Bean not found");
+
+			result = new SSEvent();
+			result.setEvent("exception");
+			result.setData(configuration.getDefaultExceptionMessage());
+
+			if (configuration.isSendStacktrace()) {
+				result.setComment("Bean or Method '" + beanName + "." + method + "' not found");
+			}
+		}
+
+		response.setContentType(EVENT_STREAM.toString());
+		response.setCharacterEncoding(EVENT_STREAM.getCharSet().name());
+
+		StringBuilder sb = new StringBuilder(32);
+
+		if (StringUtils.hasText(result.getComment())) {
+			sb.append(":").append(result.getComment()).append("\n");
+		}
+		if (StringUtils.hasText(result.getId())) {
+			sb.append("id:").append(result.getId()).append("\n");
+		}
+		if (StringUtils.hasText(result.getEvent())) {
+			sb.append("event").append(result.getEvent()).append("\n");
+		}
+		if (StringUtils.hasText(result.getData())) {
+			sb.append("data:").append(result.getData()).append("\n");
+		}
+		if (result.getRetry() != null) {
+			sb.append("retry:").append(result.getRetry()).append("\n");
+		}
+
+		sb.append("\n");
+		FileCopyUtils.copy(sb.toString().getBytes(UTF8_CHARSET), response.getOutputStream());
 	}
 
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "extAction")

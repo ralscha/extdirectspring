@@ -301,6 +301,27 @@ public enum ExtDirectMethodType {
 
 			return true;
 		}
+	},
+	/**
+	 * Method that handles Server-Sent Events requests (EventSource)
+	 */
+	SSE {
+		@Override
+		public boolean isValid(String methodName, Class<?> clazz, Method method) {
+
+			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+
+			if (extDirectMethodAnnotation.entryClass() != Object.class) {
+				log.warn("SSE method '" + methodName + "' does not support entryClass attribute of @ExtDirectMethod");
+			}
+			
+			if (extDirectMethodAnnotation.streamResponse()) {
+				log.warn("SSE method '" + methodName
+						+ "' does not support streamResponse attribute of @ExtDirectMethod");
+			}			
+
+			return true;
+		}
 	};
 
 	static final Log log = LogFactory.getLog(ExtDirectMethodType.class);
