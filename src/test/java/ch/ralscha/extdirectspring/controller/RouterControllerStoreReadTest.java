@@ -71,7 +71,6 @@ public class RouterControllerStoreReadTest {
 
 	@Test
 	public void testNoArgumentsNoRequestParameters() {
-		@SuppressWarnings("unchecked")
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method1",
 				null, new TypeReference<List<Row>>() {/* nothing here */
 				});
@@ -83,7 +82,6 @@ public class RouterControllerStoreReadTest {
 		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
 		storeRead.setQuery("ralph");
 
-		@SuppressWarnings("unchecked")
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method1",
 				storeRead, new TypeReference<List<Row>>() {/* nothing here */
 				});
@@ -97,7 +95,6 @@ public class RouterControllerStoreReadTest {
 
 	@Test
 	public void testSupportedArguments() {
-		@SuppressWarnings("unchecked")
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method3",
 				null, new TypeReference<List<Row>>() {/* nothing here */
 				});
@@ -390,9 +387,8 @@ public class RouterControllerStoreReadTest {
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method4", 1,
 				storeRead);
 
-		@SuppressWarnings({ "rawtypes", "unchecked" })
+		@SuppressWarnings("rawtypes")
 		Map<String, Object> data = (Map<String, Object>) ((List) edRequest.get("data")).get(0);
-		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> sorters = (List<Map<String, Object>>) data.get("sorters");
 
 		if (sorters != null && !sorters.isEmpty()) {
@@ -407,7 +403,6 @@ public class RouterControllerStoreReadTest {
 			data.put("sort", sorters);
 		}
 
-		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> groups = (List<Map<String, Object>>) data.get("groups");
 		if (groups != null && !groups.isEmpty()) {
 			for (Map<String, Object> map : groups) {
@@ -445,7 +440,6 @@ public class RouterControllerStoreReadTest {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testWithAdditionalParameters() {
 		Map<String, Object> readRequest = new HashMap<String, Object>();
@@ -476,7 +470,6 @@ public class RouterControllerStoreReadTest {
 		Map<String, Object> readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "firstname");
 
-		@SuppressWarnings("unchecked")
 		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(
 				controller, "remoteProviderStoreRead", "method6", readRequest,
 				new TypeReference<ExtDirectStoreReadResult<Row>>() {
@@ -492,7 +485,6 @@ public class RouterControllerStoreReadTest {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testWithAdditionalParametersOptional() {
 
@@ -520,7 +512,6 @@ public class RouterControllerStoreReadTest {
 		Map<String, Object> readRequest = new HashMap<String, Object>();
 		readRequest.put("endDate", ISODateTimeFormat.dateTime().print(today));
 
-		@SuppressWarnings("unchecked")
 		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(
 				controller, "remoteProviderStoreRead", "method8", readRequest,
 				new TypeReference<ExtDirectStoreReadResult<Row>>() {
@@ -531,7 +522,6 @@ public class RouterControllerStoreReadTest {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testMetadata() throws IOException {
 

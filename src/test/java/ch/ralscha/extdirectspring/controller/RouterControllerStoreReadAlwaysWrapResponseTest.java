@@ -49,7 +49,6 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 
 	@Test
 	public void testNoArgumentsNoRequestParameters() {
-		@SuppressWarnings("unchecked")
 		ExtDirectStoreReadResult<Row> rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
 				"remoteProviderStoreRead", "method1", null, new TypeReference<ExtDirectStoreReadResult<Row>>() {// nothing
 					// here
@@ -63,7 +62,6 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
 		storeRead.setQuery("ralph");
 
-		@SuppressWarnings("unchecked")
 		ExtDirectStoreReadResult<Row> rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
 				"remoteProviderStoreRead", "method1", storeRead, new TypeReference<ExtDirectStoreReadResult<Row>>() {// nothing
 					// here
@@ -74,7 +72,6 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 	@Test
 	public void testSupportedArguments() {
 
-		@SuppressWarnings("unchecked")
 		ExtDirectStoreReadResult<Row> rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
 				"remoteProviderStoreRead", "method3", null, new TypeReference<ExtDirectStoreReadResult<Row>>() {// nothing
 					// here
@@ -84,7 +81,6 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testWithAdditionalParametersOptional() {
 		ExtDirectStoreReadResult<Row> rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
@@ -106,7 +102,6 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 
 	@Test
 	public void testCreateWithDataSingle() {
-		@SuppressWarnings("unchecked")
 		ExtDirectStoreReadResult<Row> rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
 				"remoteProviderStoreModifySingle", "create1", new Row(10, "Ralph", true, "109.55"),
 				new TypeReference<ExtDirectStoreReadResult<Row>>() {

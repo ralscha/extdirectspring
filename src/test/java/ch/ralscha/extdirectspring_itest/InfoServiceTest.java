@@ -87,7 +87,6 @@ public class InfoServiceTest extends JettyTest {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testPost() throws ClientProtocolException, IOException {
 		HttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");

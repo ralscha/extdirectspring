@@ -65,7 +65,6 @@ public class RouterControllerStoreModifyTest {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		storeRequest.put("records", new ArrayList<Row>());
 
-		@SuppressWarnings("unchecked")
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, action, "create1", storeRequest,
 				new TypeReference<List<Row>>() {/* nothing here */
 				});
@@ -87,7 +86,6 @@ public class RouterControllerStoreModifyTest {
 		rowsToUpdate.add(new Row(23, "John", false, "23.12"));
 		storeRequest.put("records", rowsToUpdate);
 
-		@SuppressWarnings("unchecked")
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, action, "create1", storeRequest,
 				new TypeReference<List<Row>>() {/* nothing here */
 				});
@@ -120,7 +118,6 @@ public class RouterControllerStoreModifyTest {
 
 		storeRequest.put("records", rowsToUpdate);
 
-		@SuppressWarnings("unchecked")
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, action, "create2", storeRequest,
 				new TypeReference<List<Row>>() {/* nothing here */
 				});
@@ -205,7 +202,6 @@ public class RouterControllerStoreModifyTest {
 		executeUpdate(action, storeRequest, "update4");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testUpdateSingle() throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
@@ -214,7 +210,6 @@ public class RouterControllerStoreModifyTest {
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update1");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testUpdateWithRequestParamSingle() throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
@@ -224,7 +219,6 @@ public class RouterControllerStoreModifyTest {
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update2");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testUpdateWithRequestParamDefaultValueSingle() throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
@@ -233,7 +227,6 @@ public class RouterControllerStoreModifyTest {
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update3");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testUpdateWithRequestParamOptionalSingle() throws IOException {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
@@ -296,7 +289,6 @@ public class RouterControllerStoreModifyTest {
 		rowsToUpdate.add(10);
 		storeRequest.put("records", rowsToUpdate);
 
-		@SuppressWarnings("unchecked")
 		List<Integer> rows = (List<Integer>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreModify",
 				"destroy", storeRequest, new TypeReference<List<Integer>>() {/*
 																			 * nothing
@@ -315,7 +307,6 @@ public class RouterControllerStoreModifyTest {
 		rowsToUpdate.add(10);
 		storeRequest.put("records", rowsToUpdate);
 
-		@SuppressWarnings("unchecked")
 		List<Integer> rows = (List<Integer>) ControllerUtil.sendAndReceive(controller,
 				"remoteProviderStoreModifyArray", "destroy", storeRequest, new TypeReference<List<Integer>>() {/*
 																												 * nothing

@@ -49,7 +49,6 @@ public class ControllerUtil {
 		return createRequestJson(action, method, false, tid, data);
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Map<String, Object> createRequestJson(String action, String method, boolean namedParameter, int tid,
 			Object data) {
 		ExtDirectRequest dr = new ExtDirectRequest();
@@ -130,7 +129,6 @@ public class ControllerUtil {
 		return edResponse.getResult();
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Map<String, Object> createRequestJsonNamedParam(String action, String method, int tid,
 			Map<String, Object> data) {
 		ExtDirectRequest dr = new ExtDirectRequest();
@@ -142,7 +140,6 @@ public class ControllerUtil {
 		return mapper.convertValue(dr, LinkedHashMap.class);
 	}
 
-	@SuppressWarnings("unchecked")
 	public static <T> T readValue(String json, Class<?> clazz) {
 		try {
 			return (T) mapper.readValue(json, clazz);

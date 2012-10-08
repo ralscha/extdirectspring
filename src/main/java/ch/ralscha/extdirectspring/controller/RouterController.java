@@ -417,7 +417,6 @@ public class RouterController implements InitializingBean, DisposableBean {
 
 			ObjectMapper objectMapper = jsonHandler.getMapper();
 
-			@SuppressWarnings("resource")
 			ServletOutputStream outputStream = response.getOutputStream();
 
 			if (!streamResponse) {

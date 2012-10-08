@@ -171,7 +171,6 @@ public final class ExtDirectSpringUtil {
 
 		addCacheHeaders(response, etag, 6);
 
-		@SuppressWarnings("resource")
 		ServletOutputStream out = response.getOutputStream();
 		out.write(data);
 		out.flush();

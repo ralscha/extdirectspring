@@ -677,12 +677,10 @@ public class ApiControllerTest {
 			assertThat(rootAsMap.get("namespace")).isEqualTo(remotingApi.getNamespace());
 		}
 
-		@SuppressWarnings("unchecked")
 		Map<String, Object> beans = (Map<String, Object>) rootAsMap.get("actions");
 
 		assertThat(beans).hasSize(remotingApi.getActions().size());
 		for (String beanName : remotingApi.getActions().keySet()) {
-			@SuppressWarnings("unchecked")
 			List<Map<String, Object>> actions = (List<Map<String, Object>>) beans.get(beanName);
 			List<Action> expectedActions = remotingApi.getActions().get(beanName);
 			compare(expectedActions, actions);
@@ -818,12 +816,10 @@ public class ApiControllerTest {
 			assertThat(rootAsMap.get("maxRetries")).isNull();
 		}
 
-		@SuppressWarnings("unchecked")
 		Map<String, Object> beans = (Map<String, Object>) rootAsMap.get("actions");
 
 		assertThat(beans.size()).isEqualTo(remotingApi.getActions().size());
 		for (String beanName : remotingApi.getActions().keySet()) {
-			@SuppressWarnings("unchecked")
 			List<Map<String, Object>> actions = (List<Map<String, Object>>) beans.get(beanName);
 			List<Action> expectedActions = remotingApi.getActions().get(beanName);
 			compare(expectedActions, actions);
@@ -861,7 +857,6 @@ public class ApiControllerTest {
 				assertThat(action.containsKey("formHandler")).isFalse();
 			}
 
-			@SuppressWarnings("unchecked")
 			List<String> params = (List<String>) action.get("params");
 			assertTrue((params != null && expectedAction.getParams() != null)
 					|| (params == null && expectedAction.getParams() == null));

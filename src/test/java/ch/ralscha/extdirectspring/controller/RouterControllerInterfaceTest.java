@@ -70,7 +70,6 @@ public class RouterControllerInterfaceTest {
 		readRequest.put("lastName", "Smith");
 		readRequest.put("active", true);
 
-		@SuppressWarnings("unchecked")
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderImplementation",
 				"storeRead", readRequest, new TypeReference<List<Row>>() {/* nothing_here */
 				});

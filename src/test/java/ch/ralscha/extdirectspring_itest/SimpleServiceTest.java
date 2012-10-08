@@ -168,7 +168,6 @@ public class SimpleServiceTest extends JettyTest2 {
 		assertThat(responseString).isNotNull();
 		assertThat(responseString).startsWith("[").endsWith("]");
 		ObjectMapper mapper = new ObjectMapper();
-		@SuppressWarnings("unchecked")
 		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
 				Map.class);
 		assertThat(rootAsMap).hasSize(5);
@@ -247,7 +246,6 @@ public class SimpleServiceTest extends JettyTest2 {
 
 		assertThat(responseString).startsWith("[").endsWith("]");
 		ObjectMapper mapper = new ObjectMapper();
-		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> results = mapper.readValue(responseString, List.class);
 		assertThat(results).hasSize(expectedResult.size());
 		int tid = 1;

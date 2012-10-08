@@ -47,7 +47,6 @@ public class RouterControllerTreeLoadTest {
 	@Autowired
 	private RouterController controller;
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testNoAdditionalParameters() {
 
@@ -79,7 +78,6 @@ public class RouterControllerTreeLoadTest {
 				new Node("id4", "Node 1.4", true), new Node("id5", "Node 1.5", true));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testAdditionalParameters() {
 
@@ -117,7 +115,6 @@ public class RouterControllerTreeLoadTest {
 				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testSupportedParameters() {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
@@ -164,7 +161,6 @@ public class RouterControllerTreeLoadTest {
 		callTreeLoadAndCheckResult("method5");
 	}
 
-	@SuppressWarnings("unchecked")
 	private void callTreeLoadAndCheckResult(String method) {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("aHeader", "true");

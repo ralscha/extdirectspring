@@ -71,13 +71,11 @@ public class MetaDataTest {
 		assertThat(meta.containsKey("sortInfo")).isTrue();
 		assertThat(meta.containsKey("fields")).isTrue();
 
-		@SuppressWarnings("unchecked")
 		Map<String, String> sortInfo = (Map<String, String>) meta.get("sortInfo");
 		assertThat(sortInfo).hasSize(2);
 		assertThat(sortInfo).includes(entry("field", "name"));
 		assertThat(sortInfo).includes(entry("direction", "ASC"));
 
-		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> fields = (List<Map<String, Object>>) meta.get("fields");
 		assertThat(fields).hasSize(3);
 

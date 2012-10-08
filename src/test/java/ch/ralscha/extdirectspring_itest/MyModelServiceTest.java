@@ -106,7 +106,6 @@ public class MyModelServiceTest extends JettyTest {
 		callMethod("method2");
 	}
 
-	@SuppressWarnings("unchecked")
 	private void callMethod(String method) throws UnsupportedEncodingException, IOException, ClientProtocolException,
 			JsonParseException, JsonMappingException {
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();

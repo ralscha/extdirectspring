@@ -39,7 +39,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class FileUploadServiceTest extends JettyTest {
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testUpload() throws ClientProtocolException, IOException {
 		HttpClient client = new DefaultHttpClient();

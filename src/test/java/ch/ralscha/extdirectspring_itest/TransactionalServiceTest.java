@@ -60,7 +60,7 @@ public class TransactionalServiceTest extends JettyTest {
 		assertThat(responseString).isNotNull();
 		assertThat(responseString.startsWith("[") && responseString.endsWith("]")).isTrue();
 		ObjectMapper mapper = new ObjectMapper();
-		@SuppressWarnings("unchecked")
+
 		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
 				Map.class);
 		assertThat(rootAsMap).hasSize(5);
@@ -94,7 +94,6 @@ public class TransactionalServiceTest extends JettyTest {
 		assertThat(responseString).isNotNull();
 		assertThat(responseString.startsWith("[") && responseString.endsWith("]")).isTrue();
 		ObjectMapper mapper = new ObjectMapper();
-		@SuppressWarnings("unchecked")
 		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
 				Map.class);
 		assertThat(rootAsMap).hasSize(5);

@@ -168,7 +168,6 @@ public class RouterControllerSimpleTest {
 				"method13() called-true-c-ACTIVE-14-21-3.14-10.01-1-2");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testWithConversion() throws IOException {
 

@@ -95,7 +95,6 @@ public class ApiController {
 			byte[] outputBytes = apiString.getBytes(RouterController.UTF8_CHARSET);
 			response.setContentLength(outputBytes.length);
 
-			@SuppressWarnings("resource")
 			ServletOutputStream outputStream = response.getOutputStream();
 			outputStream.write(outputBytes);
 			outputStream.flush();
@@ -112,7 +111,6 @@ public class ApiController {
 			byte[] outputBytes = apiString.getBytes(RouterController.UTF8_CHARSET);
 			response.setContentLength(outputBytes.length);
 
-			@SuppressWarnings("resource")
 			ServletOutputStream outputStream = response.getOutputStream();
 			outputStream.write(outputBytes);
 			outputStream.flush();
