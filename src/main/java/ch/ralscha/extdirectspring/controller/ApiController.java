@@ -76,6 +76,7 @@ public class ApiController {
 	 * @param response the HTTP servlet response
 	 * @throws IOException
 	 */
+	@SuppressWarnings({ "resource" })
 	@RequestMapping(value = { "/api.js", "/api-debug.js" }, method = RequestMethod.GET)
 	public void api(
 			@RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app") String apiNs,

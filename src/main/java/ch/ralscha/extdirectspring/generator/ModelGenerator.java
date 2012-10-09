@@ -149,6 +149,7 @@ public abstract class ModelGenerator {
 
 		response.setHeader("ETag", etag);
 
+		@SuppressWarnings("resource")
 		ServletOutputStream out = response.getOutputStream();
 		out.write(data);
 		out.flush();

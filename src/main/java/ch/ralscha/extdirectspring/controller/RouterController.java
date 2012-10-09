@@ -518,6 +518,7 @@ public class RouterController implements InitializingBean, DisposableBean {
 		writeJsonResponse(response, responseObject, streamResponse, false);
 	}
 
+	@SuppressWarnings("resource")
 	public void writeJsonResponse(HttpServletResponse response, Object responseObject, boolean streamResponse,
 			boolean isMultipart) throws IOException, JsonGenerationException, JsonMappingException {
 
