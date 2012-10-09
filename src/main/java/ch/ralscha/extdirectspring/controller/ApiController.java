@@ -182,8 +182,8 @@ public class ApiController {
 			String basePollUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "poll");
 			String baseSseUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "sse");
 
-			apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, routerUrl, basePollUrl, baseSseUrl,
-					group, debug);
+			apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, routerUrl, basePollUrl,
+					baseSseUrl, group, debug);
 			ApiCache.INSTANCE.put(apiKey, apiString);
 		}
 		return apiString;
@@ -290,19 +290,19 @@ public class ApiController {
 
 		Map<String, List<String>> sseProviders = remotingApi.getSseProviders();
 		if (!sseProviders.isEmpty()) {
-			
+
 			Map<String, Map<String, String>> sseconfig = new HashMap<String, Map<String, String>>();
 			for (Entry<String, List<String>> entry : sseProviders.entrySet()) {
 				String bean = entry.getKey();
-				
-				Map<String,String> methods = new HashMap<String,String>();				
+
+				Map<String, String> methods = new HashMap<String, String>();
 				sseconfig.put(bean, methods);
-				
+
 				for (String method : entry.getValue()) {
 					methods.put(method, baseSseUrl + "/" + bean + "/" + method);
 				}
 			}
-			
+
 			String sseConfig = routerController.getJsonHandler().writeValueAsString(sseconfig, debug);
 
 			if (StringUtils.hasText(apiNs)) {

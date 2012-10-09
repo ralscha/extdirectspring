@@ -758,7 +758,7 @@ public class ApiControllerTest {
 		if (!remotingApi.getPollingProviders().isEmpty()) {
 			startPollingApi = assertContains(pollingApiLine, lines);
 		}
-		
+
 		int startSseApi = lines.length;
 		if (!remotingApi.getSseProviders().isEmpty()) {
 			startSseApi = assertContains(sseApiLine, lines);
@@ -780,7 +780,7 @@ public class ApiControllerTest {
 				pollingJson += lines[i];
 			}
 		}
-		
+
 		String sseJson = "{";
 		if (!remotingApi.getSseProviders().isEmpty()) {
 			for (int i = startSseApi + 1; i < lines.length; i++) {
@@ -870,7 +870,7 @@ public class ApiControllerTest {
 						pp.getBeanName(), pp.getMethod(), pp.getEvent()), url);
 			}
 		}
-		
+
 		if (!remotingApi.getSseProviders().isEmpty()) {
 			Map<String, Object> sseMap = ControllerUtil.readValue(sseJson, Map.class);
 			assertThat(sseMap).hasSize(remotingApi.getSseProviders().size());

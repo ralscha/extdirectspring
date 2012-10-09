@@ -32,6 +32,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
+import ch.ralscha.extdirectspring.bean.SSEvent;
 import ch.ralscha.extdirectspring.util.JsonHandler;
 
 import com.fasterxml.jackson.core.JsonEncoding;
@@ -210,6 +211,43 @@ public class ControllerUtil {
 			throw new RuntimeException(e);
 		}
 
+	}
+
+	public static SSEvent readDirectSseResponse(byte[] contentAsByteArray) {
+		SSEvent event = new SSEvent();
+		StringBuilder commentLines = new StringBuilder(32);
+		StringBuilder dataLines = new StringBuilder(32);
+
+		String content = new String(contentAsByteArray, RouterController.UTF8_CHARSET);
+		for (String line : content.split("\\n")) {
+			if (line.startsWith(":")) {
+				if (commentLines.length() > 0) {
+					commentLines.append("\n");
+				}
+				commentLines.append(line.substring(1).trim());
+			} else if (line.startsWith("data:")) {
+				if (dataLines.length() > 0) {
+					dataLines.append("\n");
+				}
+				dataLines.append(line.substring(5).trim());
+			} else if (line.startsWith("retry:")) {
+				event.setRetry(Integer.valueOf(line.substring(6).trim()));
+			} else if (line.startsWith("event:")) {
+				event.setEvent(line.substring(6).trim());
+			} else if (line.startsWith("id:")) {
+				event.setId(line.substring(3).trim());
+			}
+		}
+
+		if (dataLines.length() > 0) {
+			event.setData(dataLines.toString());
+		}
+
+		if (commentLines.length() > 0) {
+			event.setComment(commentLines.toString());
+		}
+
+		return event;
 	}
 
 }

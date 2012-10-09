@@ -319,7 +319,7 @@ public class RouterController implements InitializingBean, DisposableBean {
 		}
 
 		if (StringUtils.hasText(result.getEvent())) {
-			sb.append("event").append(result.getEvent()).append("\n");
+			sb.append("event:").append(result.getEvent()).append("\n");
 		}
 
 		if (StringUtils.hasText(result.getData())) {
