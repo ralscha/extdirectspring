@@ -281,7 +281,7 @@ public class RouterControllerSseTest {
 		assertThat(resp.getComment()).isEqualTo("comment of message null");
 		assertThat(resp.getData()).isEqualTo("null;default1;default2;lastHeader");
 		assertThat(resp.getId()).isEqualTo("122");
-		assertThat(resp.getRetry()).isNull();			
+		assertThat(resp.getRetry()).isNull();
 	}
 
 	@Test
@@ -292,12 +292,12 @@ public class RouterControllerSseTest {
 
 		controller.sse("sseProvider", "message11", request, response, Locale.ENGLISH);
 		SSEvent resp = ControllerUtil.readDirectSseResponse(response.getContentAsByteArray());
-		
+
 		assertThat(resp.getEvent()).isEqualTo("message11");
 		assertThat(resp.getComment()).isEqualTo("comment of message 33");
 		assertThat(resp.getData()).isEqualTo("33;default1;2ndHeader;lastHeader");
 		assertThat(resp.getId()).isEqualTo("122");
-		assertThat(resp.getRetry()).isNull();		
+		assertThat(resp.getRetry()).isNull();
 	}
 
 	@Test

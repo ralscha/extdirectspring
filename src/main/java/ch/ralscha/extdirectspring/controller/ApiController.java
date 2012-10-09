@@ -292,6 +292,10 @@ public class ApiController {
 		Map<String, List<String>> sseProviders = remotingApi.getSseProviders();
 		if (!sseProviders.isEmpty()) {
 
+			if (debug) {
+				sb.append("\n\n");
+			}
+			
 			Map<String, Map<String, String>> sseconfig = new HashMap<String, Map<String, String>>();
 			for (Entry<String, List<String>> entry : sseProviders.entrySet()) {
 				String bean = entry.getKey();

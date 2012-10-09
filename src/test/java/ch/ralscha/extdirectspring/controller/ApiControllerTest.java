@@ -875,18 +875,19 @@ public class ApiControllerTest {
 			Map<String, Object> sseMap = ControllerUtil.readValue(sseJson, Map.class);
 			assertThat(sseMap).hasSize(remotingApi.getSseProviders().size());
 			for (String beanName : remotingApi.getSseProviders().keySet()) {
-				List<String> actions = (List<String>) sseMap.get(beanName);
+				Map<String, String> actions = (Map<String, String>) sseMap.get(beanName);
 				List<String> expectedActions = remotingApi.getSseProviders().get(beanName);
 				compareSse(expectedActions, actions);
 			}
 		}
 	}
 
-	private static void compareSse(List<String> expectedActions, List<String> actions) {
+	private static void compareSse(List<String> expectedActions, Map<String, String> actions) {
+		List<String> methods = new ArrayList<String>(actions.keySet());
 		assertThat(actions).hasSize(expectedActions.size());
 		Collections.sort(expectedActions);
-		Collections.sort(actions);
-		assertThat(expectedActions).containsExactly(actions.toArray());
+		Collections.sort(methods);
+		assertThat(expectedActions).isEqualTo(methods);
 	}
 
 	@SuppressWarnings("null")

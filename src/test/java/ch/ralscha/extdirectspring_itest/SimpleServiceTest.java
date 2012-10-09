@@ -45,6 +45,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import ch.ralscha.extdirectspring.bean.api.Action;
+import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.controller.ApiControllerTest;
 import ch.ralscha.extdirectspring.util.ApiCache;
@@ -55,6 +56,35 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SimpleServiceTest extends JettyTest2 {
 
+	//todo call sse and poll
+	/*
+	 * Ext.ns('Ext.app');
+
+Ext.app.REMOTING_API = {
+  "url" : "/controller/router",
+  "type" : "remoting",
+  "actions" : {
+    "simpleService" : [ {
+      "name" : "toUpperCase",
+      "len" : 1
+    }, {
+      "name" : "echo",
+      "params" : [ "userId", "logLevel" ]
+    } ]
+  }
+};
+
+Ext.app.POLLING_URLS = {
+  "poll" : "/controller/poll/simpleService/poll/poll"
+};
+
+Ext.app.SSE = {
+  "simpleService" : {
+    "sse" : "/controller/sse/simpleService/sse"
+  }
+};
+	 */
+	
 	@Rule
 	public ContiPerfRule i = new ContiPerfRule();
 
@@ -62,6 +92,11 @@ public class SimpleServiceTest extends JettyTest2 {
 		RemotingApi remotingApi = new RemotingApi("/controller/router", null);
 		remotingApi.addAction("simpleService", new Action("toUpperCase", 1, false));
 		remotingApi.addAction("simpleService", new Action("echo", Arrays.asList("userId", "logLevel")));
+
+		PollingProvider pollingProvider = new PollingProvider("simpleService", "poll", "poll");
+		remotingApi.addPollingProvider(pollingProvider);
+
+		remotingApi.addSseProvider("simpleService", "sse");
 		return remotingApi;
 	}
 
