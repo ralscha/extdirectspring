@@ -72,7 +72,7 @@ public class MyModelControlerTest extends JettyTest {
 		HttpResponse response = client.execute(g);
 		String responseString = EntityUtils.toString(response.getEntity());
 		String contentType = response.getFirstHeader("Content-Type").getValue();
-		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS");
+		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS", "SSE");
 		SimpleServiceTest.assertCacheHeaders(response, false);
 		ApiCache.INSTANCE.clear();
 	}
@@ -83,7 +83,7 @@ public class MyModelControlerTest extends JettyTest {
 		HttpResponse response = client.execute(g);
 		String responseString = EntityUtils.toString(response.getEntity());
 		String contentType = response.getFirstHeader("Content-Type").getValue();
-		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS");
+		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS", "SSE");
 		SimpleServiceTest.assertCacheHeaders(response, false);
 		ApiCache.INSTANCE.clear();
 	}
@@ -94,7 +94,7 @@ public class MyModelControlerTest extends JettyTest {
 		HttpResponse response = client.execute(g);
 		String responseString = EntityUtils.toString(response.getEntity());
 		String contentType = response.getFirstHeader("Content-Type").getValue();
-		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS");
+		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS", "SSE");
 		SimpleServiceTest.assertCacheHeaders(response, true);
 		ApiCache.INSTANCE.clear();
 	}

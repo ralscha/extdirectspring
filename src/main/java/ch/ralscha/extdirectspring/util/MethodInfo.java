@@ -61,6 +61,8 @@ public final class MethodInfo {
 
 	private PollingProvider pollingProvider;
 
+	private String sseMethod;
+
 	public MethodInfo(Class<?> clazz, ApplicationContext context, String beanName, Method method) {
 
 		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
@@ -153,6 +155,9 @@ public final class MethodInfo {
 		case POLL:
 			this.pollingProvider = new PollingProvider(beanName, method.getName(), extDirectMethodAnnotation.event());
 			break;
+		case SSE:
+			this.sseMethod = method.getName();
+			break;
 		default:
 			throw new IllegalStateException("ExtDirectMethodType: " + type + " does not exists");
 		}
@@ -215,6 +220,10 @@ public final class MethodInfo {
 
 	public PollingProvider getPollingProvider() {
 		return pollingProvider;
+	}
+
+	public String getSseMethod() {
+		return sseMethod;
 	}
 
 	public Action getAction() {

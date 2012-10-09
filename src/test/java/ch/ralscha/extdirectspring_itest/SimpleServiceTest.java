@@ -102,7 +102,7 @@ public class SimpleServiceTest extends JettyTest2 {
 		String responseString = EntityUtils.toString(entity);
 
 		String contentType = response.getFirstHeader("Content-Type").getValue();
-		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS");
+		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS", "SSE");
 
 		assertCacheHeaders(response, fingerprinted);
 	}

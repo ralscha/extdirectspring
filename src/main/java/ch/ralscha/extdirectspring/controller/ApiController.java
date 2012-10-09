@@ -16,8 +16,10 @@
 package ch.ralscha.extdirectspring.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -80,6 +82,7 @@ public class ApiController {
 			@RequestParam(value = "actionNs", required = false) String actionNs,
 			@RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API") String remotingApiVar,
 			@RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS") String pollingUrlsVar,
+			@RequestParam(value = "sseVar", required = false, defaultValue = "SSE") String sseVar,
 			@RequestParam(value = "group", required = false) String group,
 			@RequestParam(value = "fullRouterUrl", required = false, defaultValue = "false") boolean fullRouterUrl,
 			@RequestParam(value = "format", required = false) String format, HttpServletRequest request,
@@ -89,7 +92,7 @@ public class ApiController {
 			response.setContentType(routerController.getConfiguration().getJsContentType());
 			response.setCharacterEncoding(RouterController.UTF8_CHARSET.name());
 
-			String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group,
+			String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, group,
 					fullRouterUrl, request);
 
 			byte[] outputBytes = apiString.getBytes(RouterController.UTF8_CHARSET);
@@ -99,6 +102,8 @@ public class ApiController {
 			outputStream.write(outputBytes);
 			outputStream.flush();
 		} else {
+			// This code create JSON description for Sencha Architect. We can
+			// therefore ignore SSE urls.
 			response.setContentType(RouterController.APPLICATION_JSON.toString());
 			response.setCharacterEncoding(RouterController.APPLICATION_JSON.getCharSet().name());
 
@@ -144,11 +149,12 @@ public class ApiController {
 			@RequestParam(value = "actionNs", required = false) String actionNs,
 			@RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API") String remotingApiVar,
 			@RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS") String pollingUrlsVar,
+			@RequestParam(value = "sseVar", required = false, defaultValue = "SSE") String sseVar,
 			@RequestParam(value = "group", required = false) String group,
 			@RequestParam(value = "fullRouterUrl", required = false, defaultValue = "false") boolean fullRouterUrl,
 			HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group,
+		String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, group,
 				fullRouterUrl, request);
 
 		byte[] outputBytes = apiString.getBytes(RouterController.UTF8_CHARSET);
@@ -157,7 +163,7 @@ public class ApiController {
 	}
 
 	private String buildAndCacheApiString(String apiNs, String actionNs, String remotingApiVar, String pollingUrlsVar,
-			String group, boolean fullRouterUrl, HttpServletRequest request) {
+			String sseVar, String group, boolean fullRouterUrl, HttpServletRequest request) {
 		String requestUrlString;
 
 		if (fullRouterUrl) {
@@ -168,25 +174,23 @@ public class ApiController {
 
 		boolean debug = requestUrlString.contains("api-debug.js");
 
-		ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group, debug);
+		ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, group, debug);
 		String apiString = ApiCache.INSTANCE.get(apiKey);
 		if (apiString == null) {
 
-			String routerUrl;
-			String basePollUrl;
+			String routerUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "router");
+			String basePollUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "poll");
+			String baseSseUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "sse");
 
-			routerUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "router");
-			basePollUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "poll");
-
-			apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, basePollUrl, group,
-					debug);
+			apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, routerUrl, basePollUrl, baseSseUrl,
+					group, debug);
 			ApiCache.INSTANCE.put(apiKey, apiString);
 		}
 		return apiString;
 	}
 
 	private String buildApiString(String apiNs, String actionNs, String remotingApiVar, String pollingUrlsVar,
-			String routerUrl, String basePollUrl, String group, boolean debug) {
+			String sseVar, String routerUrl, String basePollUrl, String baseSseUrl, String group, boolean debug) {
 
 		RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
 
@@ -241,12 +245,12 @@ public class ApiController {
 		sb.append(jsonConfig);
 		sb.append(";");
 
-		if (debug) {
-			sb.append("\n\n");
-		}
-
 		List<PollingProvider> pollingProviders = remotingApi.getPollingProviders();
 		if (!pollingProviders.isEmpty()) {
+
+			if (debug) {
+				sb.append("\n\n");
+			}
 
 			if (StringUtils.hasText(apiNs)) {
 				sb.append(apiNs).append(".");
@@ -284,6 +288,31 @@ public class ApiController {
 			sb.append("};");
 		}
 
+		Map<String, List<String>> sseProviders = remotingApi.getSseProviders();
+		if (!sseProviders.isEmpty()) {
+			
+			Map<String, Map<String, String>> sseconfig = new HashMap<String, Map<String, String>>();
+			for (Entry<String, List<String>> entry : sseProviders.entrySet()) {
+				String bean = entry.getKey();
+				
+				Map<String,String> methods = new HashMap<String,String>();				
+				sseconfig.put(bean, methods);
+				
+				for (String method : entry.getValue()) {
+					methods.put(method, baseSseUrl + "/" + bean + "/" + method);
+				}
+			}
+			
+			String sseConfig = routerController.getJsonHandler().writeValueAsString(sseconfig, debug);
+
+			if (StringUtils.hasText(apiNs)) {
+				sb.append(apiNs).append(".");
+			}
+			sb.append(sseVar).append(" = ");
+			sb.append(sseConfig);
+			sb.append(";");
+		}
+
 		return sb.toString();
 	}
 
@@ -311,8 +340,10 @@ public class ApiController {
 			if (isSameGroup(group, methodInfo.getGroup())) {
 				if (methodInfo.getAction() != null) {
 					remotingApi.addAction(entry.getKey().getBeanName(), methodInfo.getAction());
-				} else {
+				} else if (methodInfo.getPollingProvider() != null) {
 					remotingApi.addPollingProvider(methodInfo.getPollingProvider());
+				} else {
+					remotingApi.addSseProvider(entry.getKey().getBeanName(), methodInfo.getSseMethod());
 				}
 			}
 		}

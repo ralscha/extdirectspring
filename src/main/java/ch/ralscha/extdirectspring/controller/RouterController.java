@@ -284,11 +284,10 @@ public class RouterController implements InitializingBean, DisposableBean {
 				}
 
 				result = new SSEvent();
-				result.setEvent("exception");
+				result.setEvent("error");
 				result.setData(configuration.getMessage(cause));
 
 				if (configuration.isSendStacktrace()) {
-					// todo handle multiline
 					result.setComment(ExtDirectSpringUtil.getStackTrace(cause));
 				}
 			}
@@ -296,7 +295,7 @@ public class RouterController implements InitializingBean, DisposableBean {
 			log.error("Error invoking method '" + beanName + "." + method + "'. Method or Bean not found");
 
 			result = new SSEvent();
-			result.setEvent("exception");
+			result.setEvent("error");
 			result.setData(configuration.getDefaultExceptionMessage());
 
 			if (configuration.isSendStacktrace()) {
@@ -310,17 +309,25 @@ public class RouterController implements InitializingBean, DisposableBean {
 		StringBuilder sb = new StringBuilder(32);
 
 		if (StringUtils.hasText(result.getComment())) {
-			sb.append(":").append(result.getComment()).append("\n");
+			for (String line : result.getComment().split("\\r?\\n|\\r")) {
+				sb.append(":").append(line).append("\n");
+			}
 		}
+
 		if (StringUtils.hasText(result.getId())) {
 			sb.append("id:").append(result.getId()).append("\n");
 		}
+
 		if (StringUtils.hasText(result.getEvent())) {
 			sb.append("event").append(result.getEvent()).append("\n");
 		}
+
 		if (StringUtils.hasText(result.getData())) {
-			sb.append("data:").append(result.getData()).append("\n");
+			for (String line : result.getData().split("\\r?\\n|\\r")) {
+				sb.append("data:").append(line).append("\n");
+			}
 		}
+
 		if (result.getRetry() != null) {
 			sb.append("retry:").append(result.getRetry()).append("\n");
 		}
