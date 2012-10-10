@@ -23,7 +23,6 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -449,6 +448,9 @@ public class ApiControllerTest {
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage1", "message1"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage2", "message2"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message6", "message6"));
+		remotingApi.addSseProvider("sseProvider", "message1");
+		remotingApi.addSseProvider("sseProvider", "message2");
+		remotingApi.addSseProvider("sseProvider", "message6");
 		return remotingApi;
 	}
 
@@ -469,6 +471,9 @@ public class ApiControllerTest {
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage1", "message1"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage2", "message2"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message6", "message6"));
+		remotingApi.addSseProvider("sseProvider", "message1");
+		remotingApi.addSseProvider("sseProvider", "message2");
+		remotingApi.addSseProvider("sseProvider", "message6");
 		return remotingApi;
 	}
 
@@ -492,12 +497,14 @@ public class ApiControllerTest {
 		remotingApi.addAction("formInfoController2", new Action("updateInfo2", 0, true));
 		remotingApi.addAction("remoteProviderTreeLoad", new Action("method3", 1, false));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage5", "message5"));
+		remotingApi.addSseProvider("sseProvider", "message5");
 		return remotingApi;
 	}
 
 	private static RemotingApi group4Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage3", "message3"));
+		remotingApi.addSseProvider("sseProvider", "message3");
 		return remotingApi;
 	}
 
@@ -666,6 +673,18 @@ public class ApiControllerTest {
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message11", "message11"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message12", "message12"));
 
+		remotingApi.addSseProvider("sseProvider", "message1");
+		remotingApi.addSseProvider("sseProvider", "message2");
+		remotingApi.addSseProvider("sseProvider", "message3");
+		remotingApi.addSseProvider("sseProvider", "message4");
+		remotingApi.addSseProvider("sseProvider", "message5");
+		remotingApi.addSseProvider("sseProvider", "message6");
+		remotingApi.addSseProvider("sseProvider", "message7");
+		remotingApi.addSseProvider("sseProvider", "message8");
+		remotingApi.addSseProvider("sseProvider", "message9");
+		remotingApi.addSseProvider("sseProvider", "message10");
+		remotingApi.addSseProvider("sseProvider", "message11");
+		remotingApi.addSseProvider("sseProvider", "message12");
 		return remotingApi;
 	}
 
@@ -747,6 +766,7 @@ public class ApiControllerTest {
 			pollingApiLine = apiNs + "." + pollingUrlsVar + " = {";
 			sseApiLine = apiNs + "." + sseVar + " = {";
 		} else {
+			assertDoesNotContains("Ext.ns(", lines);
 			remotingApiLine = remotingApiVar + " = {";
 			pollingApiLine = pollingUrlsVar + " = {";
 			sseApiLine = sseVar + " = {";
@@ -757,11 +777,15 @@ public class ApiControllerTest {
 		int startPollingApi = lines.length;
 		if (!remotingApi.getPollingProviders().isEmpty()) {
 			startPollingApi = assertContains(pollingApiLine, lines);
+		} else {
+			assertDoesNotContains(pollingApiLine, lines);
 		}
 
 		int startSseApi = lines.length;
 		if (!remotingApi.getSseProviders().isEmpty()) {
 			startSseApi = assertContains(sseApiLine, lines);
+		} else {
+			assertDoesNotContains(sseApiLine, lines);
 		}
 
 		if (remotingApi.getNamespace() != null) {
@@ -872,22 +896,25 @@ public class ApiControllerTest {
 		}
 
 		if (!remotingApi.getSseProviders().isEmpty()) {
+			String sseUrl = remotingApi.getUrl().replace("router", "sse");
 			Map<String, Object> sseMap = ControllerUtil.readValue(sseJson, Map.class);
 			assertThat(sseMap).hasSize(remotingApi.getSseProviders().size());
 			for (String beanName : remotingApi.getSseProviders().keySet()) {
 				Map<String, String> actions = (Map<String, String>) sseMap.get(beanName);
 				List<String> expectedActions = remotingApi.getSseProviders().get(beanName);
-				compareSse(expectedActions, actions);
+				compareSse(expectedActions, actions, beanName, sseUrl);
 			}
 		}
 	}
 
-	private static void compareSse(List<String> expectedActions, Map<String, String> actions) {
-		List<String> methods = new ArrayList<String>(actions.keySet());
+	private static void compareSse(List<String> expectedActions, Map<String, String> actions, String beanName,
+			String url) {
+		assertThat(actions).isNotEmpty();
 		assertThat(actions).hasSize(expectedActions.size());
-		Collections.sort(expectedActions);
-		Collections.sort(methods);
-		assertThat(expectedActions).isEqualTo(methods);
+		for (String expectedAction : expectedActions) {
+			String actionUrl = actions.get(expectedAction);
+			assertThat(actionUrl).isEqualTo(String.format("%s/%s/%s", url, beanName, expectedAction));
+		}
 	}
 
 	@SuppressWarnings("null")
@@ -938,6 +965,19 @@ public class ApiControllerTest {
 		}
 		fail("lines does not contain : " + extNsLine);
 		return -1;
+	}
+
+	private static void assertDoesNotContains(String extNsLine, String[] lines) {
+		if (lines == null) {
+			fail("no lines");
+		}
+
+		for (String line : lines) {
+			if (line.startsWith(extNsLine)) {
+				fail("lines does contain : " + extNsLine);
+			}
+		}
+
 	}
 
 }
