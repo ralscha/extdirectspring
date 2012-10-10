@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -56,37 +57,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SimpleServiceTest extends JettyTest2 {
 
-	//todo call sse and poll
-	/*
-	 * Ext.ns('Ext.app');
-
-Ext.app.REMOTING_API = {
-  "url" : "/controller/router",
-  "type" : "remoting",
-  "actions" : {
-    "simpleService" : [ {
-      "name" : "toUpperCase",
-      "len" : 1
-    }, {
-      "name" : "echo",
-      "params" : [ "userId", "logLevel" ]
-    } ]
-  }
-};
-
-Ext.app.POLLING_URLS = {
-  "poll" : "/controller/poll/simpleService/poll/poll"
-};
-
-Ext.app.SSE = {
-  "simpleService" : {
-    "sse" : "/controller/sse/simpleService/sse"
-  }
-};
-	 */
-	
 	@Rule
 	public ContiPerfRule i = new ContiPerfRule();
+
+	private final static AtomicInteger id = new AtomicInteger();
+
+	private final static ObjectMapper mapper = new ObjectMapper();
 
 	private static RemotingApi api() {
 		RemotingApi remotingApi = new RemotingApi("/controller/router", null);
@@ -183,6 +159,40 @@ Ext.app.SSE = {
 		postToUpperCase("andrea", client);
 	}
 
+	@Test
+	@PerfTest(invocations = 200, threads = 10)
+	public void testPoll() throws ClientProtocolException, IOException {
+		String _id = String.valueOf(id.incrementAndGet());
+		HttpClient client = new DefaultHttpClient();
+		HttpGet get = new HttpGet("http://localhost:9998/controller/poll/simpleService/poll/poll?id=" + _id);
+		HttpResponse response = client.execute(get);
+
+		assertThat(response.getFirstHeader("Content-Type").getValue()).isEqualTo("application/json;charset=UTF-8");
+
+		String responseString = EntityUtils.toString(response.getEntity());
+		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+		assertThat(rootAsMap).hasSize(3);
+		assertThat(rootAsMap.get("type")).isEqualTo("event");
+		assertThat(rootAsMap.get("name")).isEqualTo("poll");
+		assertThat(rootAsMap.get("data")).isEqualTo(_id);
+	}
+	
+	@Test
+	@PerfTest(invocations = 200, threads = 10)
+	public void testSse() throws ClientProtocolException, IOException {
+		String _id = String.valueOf(id.incrementAndGet());
+		HttpClient client = new DefaultHttpClient();
+		HttpGet get = new HttpGet("http://localhost:9998/controller/sse/simpleService/sse?id=" + _id);
+		HttpResponse response = client.execute(get);
+
+		assertThat(response.getFirstHeader("Content-Type").getValue()).isEqualTo("text/event-stream;charset=UTF-8");
+
+		String responseString = EntityUtils.toString(response.getEntity());
+		String[] parts = responseString.split("\\n");
+		assertThat(parts[0]).isEqualTo("id:"+_id);
+		assertThat(parts[1]).isEqualTo("data:d"+_id);
+	}
+
 	private static void postToUpperCase(String text, HttpClient client) throws UnsupportedEncodingException,
 			IOException, ClientProtocolException, JsonParseException, JsonMappingException {
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
@@ -202,7 +212,7 @@ Ext.app.SSE = {
 
 		assertThat(responseString).isNotNull();
 		assertThat(responseString).startsWith("[").endsWith("]");
-		ObjectMapper mapper = new ObjectMapper();
+
 		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
 				Map.class);
 		assertThat(rootAsMap).hasSize(5);
@@ -280,7 +290,7 @@ Ext.app.SSE = {
 		assertThat(responseString).isNotNull();
 
 		assertThat(responseString).startsWith("[").endsWith("]");
-		ObjectMapper mapper = new ObjectMapper();
+
 		List<Map<String, Object>> results = mapper.readValue(responseString, List.class);
 		assertThat(results).hasSize(expectedResult.size());
 		int tid = 1;
