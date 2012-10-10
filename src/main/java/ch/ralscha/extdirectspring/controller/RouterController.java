@@ -163,26 +163,7 @@ public class RouterController implements InitializingBean, DisposableBean {
 
 			try {
 
-				List<ParameterInfo> methodParameters = methodInfo.getParameters();
-				Object[] parameters = null;
-				if (!methodParameters.isEmpty()) {
-					parameters = new Object[methodParameters.size()];
-
-					for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
-						ParameterInfo methodParameter = methodParameters.get(paramIndex);
-
-						if (methodParameter.isSupportedParameter()) {
-							parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(),
-									request, response, locale);
-						} else if (methodParameter.isHasRequestHeaderAnnotation()) {
-							parameters[paramIndex] = parametersResolver.resolveRequestHeader(request, methodParameter);
-						} else {
-							parameters[paramIndex] = parametersResolver.resolveRequestParam(request, null,
-									methodParameter);
-						}
-
-					}
-				}
+				Object[] parameters = prepareParameters(request, response, locale, methodInfo);
 
 				if (configuration.isSynchronizeOnSession() || methodInfo.isSynchronizeOnSession()) {
 					HttpSession session = request.getSession(false);
@@ -226,27 +207,7 @@ public class RouterController implements InitializingBean, DisposableBean {
 
 			try {
 
-				List<ParameterInfo> methodParameters = methodInfo.getParameters();
-				Object[] parameters = null;
-				if (!methodParameters.isEmpty()) {
-					parameters = new Object[methodParameters.size()];
-
-					for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
-						ParameterInfo methodParameter = methodParameters.get(paramIndex);
-
-						if (methodParameter.isSupportedParameter()) {
-							parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(),
-									request, response, locale);
-						} else if (methodParameter.isHasRequestHeaderAnnotation()) {
-							parameters[paramIndex] = parametersResolver.resolveRequestHeader(request, methodParameter);
-						} else {
-							parameters[paramIndex] = parametersResolver.resolveRequestParam(request, null,
-									methodParameter);
-						}
-
-					}
-				}
-
+				Object[] parameters = prepareParameters(request, response, locale, methodInfo);
 				Object methodReturnValue = null;
 
 				if (configuration.isSynchronizeOnSession() || methodInfo.isSynchronizeOnSession()) {
@@ -334,6 +295,30 @@ public class RouterController implements InitializingBean, DisposableBean {
 
 		sb.append("\n");
 		FileCopyUtils.copy(sb.toString().getBytes(UTF8_CHARSET), response.getOutputStream());
+	}
+
+	private Object[] prepareParameters(HttpServletRequest request, HttpServletResponse response, Locale locale,
+			MethodInfo methodInfo) {
+		List<ParameterInfo> methodParameters = methodInfo.getParameters();
+		Object[] parameters = null;
+		if (!methodParameters.isEmpty()) {
+			parameters = new Object[methodParameters.size()];
+
+			for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
+				ParameterInfo methodParameter = methodParameters.get(paramIndex);
+
+				if (methodParameter.isSupportedParameter()) {
+					parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(), request,
+							response, locale);
+				} else if (methodParameter.isHasRequestHeaderAnnotation()) {
+					parameters[paramIndex] = parametersResolver.resolveRequestHeader(request, methodParameter);
+				} else {
+					parameters[paramIndex] = parametersResolver.resolveRequestParam(request, null, methodParameter);
+				}
+
+			}
+		}
+		return parameters;
 	}
 
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "extAction")
