@@ -967,6 +967,7 @@ public class ApiControllerTest {
 		return -1;
 	}
 
+	@SuppressWarnings("null")
 	private static void assertDoesNotContains(String extNsLine, String[] lines) {
 		if (lines == null) {
 			fail("no lines");
