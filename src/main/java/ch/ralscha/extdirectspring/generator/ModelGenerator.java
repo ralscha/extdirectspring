@@ -20,9 +20,11 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.ref.SoftReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -35,6 +37,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.util.Assert;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.ReflectionUtils.FieldCallback;
@@ -77,7 +81,7 @@ public abstract class ModelGenerator {
 	 */
 	public static void writeModel(HttpServletRequest request, HttpServletResponse response, Class<?> clazz,
 			OutputFormat format) throws IOException {
-		writeModel(request, response, clazz, format, false);
+		writeModel(request, response, clazz, format, IncludeValidation.NONE, false);
 	}
 
 	/**
@@ -95,7 +99,25 @@ public abstract class ModelGenerator {
 	 */
 	public static void writeModel(HttpServletRequest request, HttpServletResponse response, Class<?> clazz,
 			OutputFormat format, boolean debug) throws IOException {
-		ModelBean model = createModel(clazz);
+		writeModel(request, response, clazz, format, IncludeValidation.NONE, debug);
+	}
+
+	/**
+	 * Instrospects the provided class, creates a model object (JS code) and
+	 * writes it into the response.
+	 * 
+	 * @param request the http servlet request
+	 * @param response the http servlet response
+	 * @param clazz class that the generator should introspect
+	 * @param format specifies which code (ExtJS or Touch) the generator should
+	 *        create
+	 * @param debug if true the generator creates the output in pretty format,
+	 *        false the output is compressed
+	 * @throws IOException
+	 */
+	public static void writeModel(HttpServletRequest request, HttpServletResponse response, Class<?> clazz,
+			OutputFormat format, IncludeValidation includeValidation, boolean debug) throws IOException {
+		ModelBean model = createModel(clazz, includeValidation);
 		writeModel(request, response, model, format, debug);
 	}
 
@@ -161,13 +183,34 @@ public abstract class ModelGenerator {
 	 * A program could customize this and call
 	 * {@link #generateJavascript(ModelBean, OutputFormat, boolean)} or
 	 * {@link #writeModel(HttpServletRequest, HttpServletResponse, ModelBean, OutputFormat)}
-	 * to create JS code.
+	 * to create the JS code. Calling this method does not add any validation
+	 * configuration.
 	 * 
 	 * @param clazz the model will be created based on this class.
 	 * @return a instance of {@link ModelBean} that describes the provided class
 	 *         and can be used for Javascript generation.
 	 */
 	public static ModelBean createModel(Class<?> clazz) {
+		return createModel(clazz, IncludeValidation.NONE);
+	}
+
+	/**
+	 * Instrospects the provided class and creates a {@link ModelBean} instance.
+	 * A program could customize this and call
+	 * {@link #generateJavascript(ModelBean, OutputFormat, boolean)} or
+	 * {@link #writeModel(HttpServletRequest, HttpServletResponse, ModelBean, OutputFormat)}
+	 * to create the JS code.
+	 * 
+	 * @param clazz the model will be created based on this class.
+	 * @param includeValidation specifies what validation configuration should
+	 *        be added
+	 * @return a instance of {@link ModelBean} that describes the provided class
+	 *         and can be used for Javascript generation.
+	 */
+	public static ModelBean createModel(Class<?> clazz, final IncludeValidation includeValidation) {
+
+		Assert.notNull(clazz, "clazz must not be null");
+		Assert.notNull(includeValidation, "includeValidation must not be null");
 
 		SoftReference<ModelBean> modelReference = modelCache.get(clazz.getName());
 		if (modelReference != null && modelReference.get() != null) {
@@ -245,6 +288,8 @@ public abstract class ModelGenerator {
 							}
 						}
 
+						ModelFieldBean modelFieldBean = null;
+
 						ModelField modelFieldAnnotation = field.getAnnotation(ModelField.class);
 						if (modelFieldAnnotation != null) {
 
@@ -266,7 +311,7 @@ public abstract class ModelGenerator {
 								}
 							}
 
-							ModelFieldBean modelFieldBean = new ModelFieldBean(name, type);
+							modelFieldBean = new ModelFieldBean(name, type);
 
 							if (StringUtils.hasText(modelFieldAnnotation.dateFormat()) && type == ModelType.DATE) {
 								modelFieldBean.setDateFormat(modelFieldAnnotation.dateFormat());
@@ -294,10 +339,144 @@ public abstract class ModelGenerator {
 							modelFields.add(modelFieldBean);
 						} else {
 							if (modelType != null) {
-								modelFields.add(new ModelFieldBean(field.getName(), modelType));
+								modelFieldBean = new ModelFieldBean(field.getName(), modelType);
+								modelFields.add(modelFieldBean);
 							}
 						}
 
+						if (modelFieldBean != null && includeValidation != IncludeValidation.NONE) {
+							Annotation[] fieldAnnotations = field.getAnnotations();
+
+							for (Annotation fieldAnnotation : fieldAnnotations) {
+								String annotationClassName = fieldAnnotation.getClass().getName();
+
+								if (includeValidation == IncludeValidation.BUILTIN
+										|| includeValidation == IncludeValidation.ALL) {
+
+									if (annotationClassName.equals("javax.validation.constraints.NotNull")) {
+										model.addValidation(new ModelFieldValidationBean("presence", modelFieldBean
+												.getName()));
+									} else if (annotationClassName.equals("javax.validation.constraints.Size")
+											|| (annotationClassName
+													.equals("org.hibernate.validator.constraints.Length"))) {
+										ModelFieldValidationBean lengthValidation = new ModelFieldValidationBean(
+												"length", modelFieldBean.getName());
+
+										Integer min = (Integer) AnnotationUtils.getValue(fieldAnnotation, "min");
+										Integer max = (Integer) AnnotationUtils.getValue(fieldAnnotation, "max");
+										if (min > 0) {
+											lengthValidation.addOption("min", min);
+										}
+										if (max < Integer.MAX_VALUE) {
+											lengthValidation.addOption("max", max);
+										}
+
+										model.addValidation(lengthValidation);
+									} else if (annotationClassName
+											.equals("org.hibernate.validator.constraints.NotEmpty")) {
+										model.addValidation(new ModelFieldValidationBean("presence", modelFieldBean
+												.getName()));
+									} else if (annotationClassName.equals("javax.validation.constraints.Pattern")) {
+										ModelFieldValidationBean formatConstraint = new ModelFieldValidationBean(
+												"format", modelFieldBean.getName());
+										String regexp = (String) AnnotationUtils.getValue(fieldAnnotation, "regexp");
+										formatConstraint.addOption("matcher", "/" + regexp + "/");
+										model.addValidation(formatConstraint);
+									} else if (annotationClassName.equals("org.hibernate.validator.constraints.Email")) {
+										model.addValidation(new ModelFieldValidationBean("email", modelFieldBean
+												.getName()));
+									}
+								}
+
+								if (includeValidation == IncludeValidation.ALL) {
+
+									if (annotationClassName.equals("javax.validation.constraints.DecimalMax")) {
+										String value = (String) AnnotationUtils.getValue(fieldAnnotation);
+										if (StringUtils.hasText(value)) {
+											ModelFieldValidationBean rangeValidation = new ModelFieldValidationBean(
+													"range", modelFieldBean.getName());
+											rangeValidation.addOption("max", new BigDecimal(value));
+											model.addValidation(rangeValidation);
+										}
+									} else if (annotationClassName.equals("javax.validation.constraints.DecimalMin")) {
+										String value = (String) AnnotationUtils.getValue(fieldAnnotation);
+										if (StringUtils.hasText(value)) {
+											ModelFieldValidationBean rangeValidation = new ModelFieldValidationBean(
+													"range", modelFieldBean.getName());
+											rangeValidation.addOption("min", new BigDecimal(value));
+											model.addValidation(rangeValidation);
+										}
+									} else if (annotationClassName.equals("javax.validation.constraints.Digits")) {
+										model.addValidation(new ModelFieldValidationBean("digites", modelFieldBean
+												.getName()));
+									} else if (annotationClassName.equals("javax.validation.constraints.Future")) {
+										model.addValidation(new ModelFieldValidationBean("future", modelFieldBean
+												.getName()));
+									} else if (annotationClassName.equals("javax.validation.constraints.Max")) {
+										Long value = (Long) AnnotationUtils.getValue(fieldAnnotation);
+										if (value != null && value > 0) {
+											ModelFieldValidationBean rangeValidation = new ModelFieldValidationBean(
+													"range", modelFieldBean.getName());
+											rangeValidation.addOption("max", value);
+											model.addValidation(rangeValidation);
+										}
+									} else if (annotationClassName.equals("javax.validation.constraints.Min")) {
+										Long value = (Long) AnnotationUtils.getValue(fieldAnnotation);
+										if (value != null && value > 0) {
+											ModelFieldValidationBean rangeValidation = new ModelFieldValidationBean(
+													"range", modelFieldBean.getName());
+											rangeValidation.addOption("min", value);
+											model.addValidation(rangeValidation);
+										}
+
+									} else if (annotationClassName.equals("javax.validation.constraints.Null")) {
+										model.addValidation(new ModelFieldValidationBean("null", modelFieldBean
+												.getName()));
+									} else if (annotationClassName.equals("javax.validation.constraints.Past")) {
+										model.addValidation(new ModelFieldValidationBean("past", modelFieldBean
+												.getName()));
+
+									} else if (annotationClassName
+											.equals("org.hibernate.validator.constraints.CreditCardNumber")) {
+										model.addValidation(new ModelFieldValidationBean("creditCardNumber",
+												modelFieldBean.getName()));
+
+									} else if (annotationClassName
+											.equals("org.hibernate.validator.constraints.ModCheck")) {
+										// todo implement this
+									} else if (annotationClassName
+											.equals("org.hibernate.validator.constraints.NotBlank")) {
+										model.addValidation(new ModelFieldValidationBean("notBlank", modelFieldBean
+												.getName()));
+
+									} else if (annotationClassName.equals("org.hibernate.validator.constraints.Range")) {
+										ModelFieldValidationBean rangeValidation = new ModelFieldValidationBean(
+												"range", modelFieldBean.getName());
+
+										Long min = (Long) AnnotationUtils.getValue(fieldAnnotation, "min");
+										Long max = (Long) AnnotationUtils.getValue(fieldAnnotation, "max");
+										if (min > 0) {
+											rangeValidation.addOption("min", min);
+										}
+										if (max < Integer.MAX_VALUE) {
+											rangeValidation.addOption("max", max);
+										}
+
+										model.addValidation(rangeValidation);
+									} else if (annotationClassName
+											.equals("org.hibernate.validator.constraints.SafeHtml")) {
+										// todo implement this
+									} else if (annotationClassName
+											.equals("org.hibernate.validator.constraints.ScriptAssert")) {
+										// todo implement this
+									} else if (annotationClassName.equals("org.hibernate.validator.constraints.URL")) {
+										// todo implement this
+									}
+								}
+
+							}
+
+						}
 					}
 				}
 			}
@@ -321,7 +500,24 @@ public abstract class ModelGenerator {
 	 * @return the generated model object (JS code)
 	 */
 	public static String generateJavascript(Class<?> clazz, OutputFormat format, boolean debug) {
-		ModelBean model = createModel(clazz);
+		ModelBean model = createModel(clazz, IncludeValidation.NONE);
+		return generateJavascript(model, format, debug);
+	}
+
+	/**
+	 * Instrospects the provided class, creates a model object (JS code) and
+	 * returns it.
+	 * 
+	 * @param clazz class that the generator should introspect
+	 * @param format specifies which code (ExtJS or Touch) the generator should
+	 *        create
+	 * @param debug if true the generator creates the output in pretty format,
+	 *        false the output is compressed
+	 * @return the generated model object (JS code)
+	 */
+	public static String generateJavascript(Class<?> clazz, OutputFormat format, IncludeValidation includeValidation,
+			boolean debug) {
+		ModelBean model = createModel(clazz, includeValidation);
 		return generateJavascript(model, format, debug);
 	}
 
