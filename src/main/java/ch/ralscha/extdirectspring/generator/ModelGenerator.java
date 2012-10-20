@@ -348,12 +348,14 @@ public abstract class ModelGenerator {
 							Annotation[] fieldAnnotations = field.getAnnotations();
 
 							for (Annotation fieldAnnotation : fieldAnnotations) {
-								String annotationClassName = fieldAnnotation.getClass().getName();
+								String annotationClassName = fieldAnnotation.annotationType().getName();
 
 								if (includeValidation == IncludeValidation.BUILTIN
 										|| includeValidation == IncludeValidation.ALL) {
 
-									if (annotationClassName.equals("javax.validation.constraints.NotNull")) {
+									if (annotationClassName.equals("javax.validation.constraints.NotNull") ||
+											(annotationClassName
+													.equals("org.hibernate.validator.constraints.NotEmpty"))) {
 										model.addValidation(new ModelFieldValidationBean("presence", modelFieldBean
 												.getName()));
 									} else if (annotationClassName.equals("javax.validation.constraints.Size")
@@ -372,10 +374,6 @@ public abstract class ModelGenerator {
 										}
 
 										model.addValidation(lengthValidation);
-									} else if (annotationClassName
-											.equals("org.hibernate.validator.constraints.NotEmpty")) {
-										model.addValidation(new ModelFieldValidationBean("presence", modelFieldBean
-												.getName()));
 									} else if (annotationClassName.equals("javax.validation.constraints.Pattern")) {
 										ModelFieldValidationBean formatConstraint = new ModelFieldValidationBean(
 												"format", modelFieldBean.getName());
@@ -442,9 +440,6 @@ public abstract class ModelGenerator {
 												modelFieldBean.getName()));
 
 									} else if (annotationClassName
-											.equals("org.hibernate.validator.constraints.ModCheck")) {
-										// todo implement this
-									} else if (annotationClassName
 											.equals("org.hibernate.validator.constraints.NotBlank")) {
 										model.addValidation(new ModelFieldValidationBean("notBlank", modelFieldBean
 												.getName()));
@@ -463,14 +458,6 @@ public abstract class ModelGenerator {
 										}
 
 										model.addValidation(rangeValidation);
-									} else if (annotationClassName
-											.equals("org.hibernate.validator.constraints.SafeHtml")) {
-										// todo implement this
-									} else if (annotationClassName
-											.equals("org.hibernate.validator.constraints.ScriptAssert")) {
-										// todo implement this
-									} else if (annotationClassName.equals("org.hibernate.validator.constraints.URL")) {
-										// todo implement this
 									}
 								}
 
