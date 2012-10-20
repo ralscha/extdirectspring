@@ -554,6 +554,10 @@ public abstract class ModelGenerator {
 		}
 
 		configObject.put("fields", model.getFields().values());
+		
+		if (!model.getValidations().isEmpty()) {
+			configObject.put("validations", model.getValidations());
+		}
 
 		Map<String, Object> proxyObject = new LinkedHashMap<String, Object>();
 		proxyObject.put("type", "direct");
@@ -631,6 +635,10 @@ public abstract class ModelGenerator {
 		configObjectString = configObjectString.replaceAll("create( ?: ?)'([^']+)'", "create$1$2");
 		configObjectString = configObjectString.replaceAll("update( ?: ?)'([^']+)'", "update$1$2");
 		configObjectString = configObjectString.replaceAll("destroy( ?: ?)'([^']+)'", "destroy$1$2");
+		
+		configObjectString = configObjectString.replaceAll("matcher( ?: ?)'(/[^']+/)'", "matcher$1$2");
+		configObjectString = configObjectString.replace("\\\\", "\\");
+		
 		sb.append(configObjectString);
 		sb.append(");");
 
