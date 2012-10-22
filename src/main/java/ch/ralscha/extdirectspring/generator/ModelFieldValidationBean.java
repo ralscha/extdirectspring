@@ -34,6 +34,15 @@ public class ModelFieldValidationBean {
 
 	private Map<String, Object> options = new LinkedHashMap<String, Object>();
 
+	/**
+	 * Creates a validation configuration for a Model class.
+	 * 
+	 * @param type name of the validator. Ext JS has the following validators
+	 *        built in the library: 'email', 'exclusion', 'inclusion', 'format',
+	 *        'length' and 'presence'
+	 * @param field name of the field
+	 * @param options options for the validator
+	 */
 	public ModelFieldValidationBean(String type, String field, Map<String, Object> options) {
 
 		Assert.notNull(type, "type must not be null");
@@ -47,6 +56,14 @@ public class ModelFieldValidationBean {
 		}
 	}
 
+	/**
+	 * Creates a validation configuration for a Model class.
+	 * 
+	 * @param type name of the validator. Ext JS has the following validators
+	 *        built in the library: 'email', 'exclusion', 'inclusion', 'format',
+	 *        'length' and 'presence'
+	 * @param field name of the field
+	 */
 	public ModelFieldValidationBean(String type, String field) {
 		this(type, field, null);
 	}

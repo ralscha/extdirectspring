@@ -67,7 +67,8 @@ public abstract class ModelGenerator {
 
 	/**
 	 * Instrospects the provided class, creates a model object (JS code) and
-	 * writes it into the response. Creates compressed JS code.
+	 * writes it into the response. Creates compressed JS code. Method ignores
+	 * any validation annotations.
 	 * 
 	 * @param request the http servlet request
 	 * @param response the http servlet response
@@ -86,7 +87,7 @@ public abstract class ModelGenerator {
 
 	/**
 	 * Instrospects the provided class, creates a model object (JS code) and
-	 * writes it into the response.
+	 * writes it into the response. Method ignores any validation annotations.
 	 * 
 	 * @param request the http servlet request
 	 * @param response the http servlet response
@@ -111,6 +112,8 @@ public abstract class ModelGenerator {
 	 * @param clazz class that the generator should introspect
 	 * @param format specifies which code (ExtJS or Touch) the generator should
 	 *        create
+	 * @param includeValidation specifies if any validation configurations
+	 *        should be added to the model code
 	 * @param debug if true the generator creates the output in pretty format,
 	 *        false the output is compressed
 	 * @throws IOException
@@ -490,7 +493,7 @@ public abstract class ModelGenerator {
 
 	/**
 	 * Instrospects the provided class, creates a model object (JS code) and
-	 * returns it.
+	 * returns it. This method does not add any validation configuration.
 	 * 
 	 * @param clazz class that the generator should introspect
 	 * @param format specifies which code (ExtJS or Touch) the generator should
@@ -511,6 +514,8 @@ public abstract class ModelGenerator {
 	 * @param clazz class that the generator should introspect
 	 * @param format specifies which code (ExtJS or Touch) the generator should
 	 *        create
+	 * @param includeValidation specifies what validation configuration should
+	 *        be added to the mode code
 	 * @param debug if true the generator creates the output in pretty format,
 	 *        false the output is compressed
 	 * @return the generated model object (JS code)

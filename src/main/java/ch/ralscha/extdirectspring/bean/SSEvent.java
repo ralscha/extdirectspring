@@ -15,6 +15,17 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
+/**
+ * Class represents a response in a Server-Sent Event roundtrip. A SSE method
+ * can either return a String or an instance of this class.
+ * <p>
+ * The library maps every property to the corresponding keyword in a Server-Sent
+ * Event response. If a property in this class is null it will be ignored.
+ * <p>
+ * See <a href="http://www.w3.org/TR/eventsource/">Server-Sent Specification</a>
+ * 
+ * @author Ralph Schaer
+ */
 public class SSEvent {
 
 	private String id;
@@ -31,6 +42,13 @@ public class SSEvent {
 		return id;
 	}
 
+	/**
+	 * Sets the event source's last event ID. Next time the client reconnects to
+	 * the server it will send a HTTP Header Last-Event-ID with the current last
+	 * event ID. This value does not have to be a number it can be any string.
+	 * 
+	 * @param id new event source's last event id
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -39,6 +57,11 @@ public class SSEvent {
 		return data;
 	}
 
+	/**
+	 * Sets the data part of the Server-Sent Event response.
+	 * 
+	 * @param data actual payload of the reponse
+	 */
 	public void setData(String data) {
 		this.data = data;
 	}
@@ -47,6 +70,14 @@ public class SSEvent {
 		return retry;
 	}
 
+	/**
+	 * Sets the retry value. This specifies how long the client is waiting after
+	 * a disconnect before he tries to open a new connection to the server.
+	 * <p>
+	 * Default value is 3000 (3 seconds).
+	 * 
+	 * @param retry new retry value in milliseconds
+	 */
 	public void setRetry(Integer retry) {
 		this.retry = retry;
 	}
@@ -55,6 +86,13 @@ public class SSEvent {
 		return event;
 	}
 
+	/**
+	 * Name of the event. On the client side the corresponding event is fired
+	 * after receiving this response. If empty the default event 'message' will
+	 * be fired
+	 * 
+	 * @param event new name of the event
+	 */
 	public void setEvent(String event) {
 		this.event = event;
 	}
@@ -63,6 +101,13 @@ public class SSEvent {
 		return comment;
 	}
 
+	/**
+	 * Adds a comment to this event. In the response this is a line starting
+	 * with : (colon) following by the text from this property. Comments will be
+	 * ignored by the client but may be useful for debugging.
+	 * 
+	 * @param comment new comment for this event
+	 */
 	public void setComment(String comment) {
 		this.comment = comment;
 	}

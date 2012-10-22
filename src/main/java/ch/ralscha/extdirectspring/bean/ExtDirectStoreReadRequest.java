@@ -102,7 +102,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return sorting order. "ASC" or "DESC".<br>
-	 *         ExtJs 4.x and Touch 2 can send more than one sorters. Use
+	 *         Ext JS 4.x and Touch 2 can send more than one sorters. Use
 	 *         {@link #getSorters()} instead.
 	 * @see #isAscendingSort()
 	 * @see #isDescendingSort()
@@ -117,7 +117,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return true if sorting order is ascending.<br>
-	 *         ExtJs 4.x and Touch 2 can send more than one sorters. Use
+	 *         Ext JS 4.x and Touch 2 can send more than one sorters. Use
 	 *         {@link #getSorters()} instead.
 	 */
 	@JsonIgnore
@@ -127,7 +127,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return true if sorting order is descending.<br>
-	 *         ExtJs 4.x and Touch 2 can send more than one sorters. Use
+	 *         Ext JS 4.x and Touch 2 can send more than one sorters. Use
 	 *         {@link #getSorters()} instead.
 	 */
 	@JsonIgnore
@@ -137,7 +137,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return the field/property on which the sort should be applied.<br>
-	 *         ExtJs 4.x and Touch 2 can send more than one sorters. Use
+	 *         Ext JS 4.x and Touch 2 can send more than one sorters. Use
 	 *         {@link #getSorters()} instead.
 	 */
 	public String getSort() {
@@ -150,7 +150,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return the field/property name on which the grouping should occur.<br>
-	 *         ExtJs 4.x and Touch 2 can send more than one group infos. Use
+	 *         Ext JS 4.x and Touch 2 can send more than one group infos. Use
 	 *         {@link #getGroups()} instead.
 	 */
 	public String getGroupBy() {
@@ -163,7 +163,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return sorting order for a grouping request. "ASC" or "DESC".<br>
-	 *         ExtJs 4.x and Touch 2 can send more than one group info. Use
+	 *         Ext JS 4.x and Touch 2 can send more than one group info. Use
 	 *         {@link #getGroups()} instead.
 	 */
 	public String getGroupDir() {
@@ -176,7 +176,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return true if grouping sorting order is ascending.<br>
-	 *         ExtJs 4.x and Touch 2 can send more than one group info. Use
+	 *         Ext JS 4.x and Touch 2 can send more than one group info. Use
 	 *         {@link #getGroups()} instead.
 	 */
 	@JsonIgnore
@@ -186,7 +186,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return true if grouping sorting order is descending.<br>
-	 *         ExtJs 4.x and Touch 2 can send more than one group info. Use
+	 *         Ext JS 4.x and Touch 2 can send more than one group info. Use
 	 *         {@link #getGroups()} instead.
 	 */
 	@JsonIgnore
