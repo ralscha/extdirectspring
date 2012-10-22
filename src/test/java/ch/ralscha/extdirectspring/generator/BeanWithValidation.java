@@ -25,7 +25,6 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Past;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
