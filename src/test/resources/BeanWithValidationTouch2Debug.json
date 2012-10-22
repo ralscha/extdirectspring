@@ -24,9 +24,6 @@ Ext.define('ch.ralscha.extdirectspring.generator.BeanWithValidation',
       name : 'past',
       type : 'date'
     }, {
-      name : 'nullable',
-      type : 'string'
-    }, {
       name : 'notBlank',
       type : 'string'
     }, {
@@ -64,9 +61,6 @@ Ext.define('ch.ralscha.extdirectspring.generator.BeanWithValidation',
     }, {
       type : 'past',
       field : 'past'
-    }, {
-      type : 'null',
-      field : 'nullable'
     }, {
       type : 'notBlank',
       field : 'notBlank'

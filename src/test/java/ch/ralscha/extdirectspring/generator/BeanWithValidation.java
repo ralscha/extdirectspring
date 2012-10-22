@@ -57,9 +57,6 @@ public class BeanWithValidation {
 	@Past
 	public Date past;
 
-	@Null
-	public String nullable;
-
 	@NotBlank
 	public String notBlank;
 
@@ -88,9 +85,6 @@ public class BeanWithValidation {
 		expectedFields.add(field);
 
 		field = new ModelFieldBean("past", ModelType.DATE);
-		expectedFields.add(field);
-
-		field = new ModelFieldBean("nullable", ModelType.STRING);
 		expectedFields.add(field);
 
 		field = new ModelFieldBean("notBlank", ModelType.STRING);

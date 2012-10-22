@@ -443,9 +443,6 @@ public abstract class ModelGenerator {
 											model.addValidation(rangeValidation);
 										}
 
-									} else if (annotationClassName.equals("javax.validation.constraints.Null")) {
-										model.addValidation(new ModelFieldValidationBean("null", modelFieldBean
-												.getName()));
 									} else if (annotationClassName.equals("javax.validation.constraints.Past")) {
 										model.addValidation(new ModelFieldValidationBean("past", modelFieldBean
 												.getName()));

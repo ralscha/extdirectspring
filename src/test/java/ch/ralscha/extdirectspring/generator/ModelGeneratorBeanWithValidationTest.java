@@ -137,8 +137,8 @@ public class ModelGeneratorBeanWithValidationTest {
 		assertThat(modelBean.getIdProperty()).isNull();
 		assertThat(modelBean.isPaging()).isFalse();
 		assertThat(modelBean.getName()).isEqualTo("ch.ralscha.extdirectspring.generator.BeanWithValidation");
-		assertThat(modelBean.getFields()).hasSize(10);
-		assertThat(BeanWithValidation.expectedFields).hasSize(10);
+		assertThat(modelBean.getFields()).hasSize(9);
+		assertThat(BeanWithValidation.expectedFields).hasSize(9);
 
 		for (ModelFieldBean expectedField : BeanWithValidation.expectedFields) {
 			ModelFieldBean field = modelBean.getFields().get(expectedField.getName());
@@ -150,7 +150,7 @@ public class ModelGeneratorBeanWithValidationTest {
 			assertThat(field).isEqualTo(expectedField);
 		}
 
-		assertThat(modelBean.getValidations()).hasSize(11);
+		assertThat(modelBean.getValidations()).hasSize(10);
 		assertThat(modelBean.getValidations().get(0).getType()).isEqualTo("email");
 		assertThat(modelBean.getValidations().get(0).getField()).isEqualTo("email");
 
@@ -187,12 +187,10 @@ public class ModelGeneratorBeanWithValidationTest {
 		assertThat(modelBean.getValidations().get(6).getField()).isEqualTo("future");
 		assertThat(modelBean.getValidations().get(7).getType()).isEqualTo("past");
 		assertThat(modelBean.getValidations().get(7).getField()).isEqualTo("past");
-		assertThat(modelBean.getValidations().get(8).getType()).isEqualTo("null");
-		assertThat(modelBean.getValidations().get(8).getField()).isEqualTo("nullable");
-		assertThat(modelBean.getValidations().get(9).getType()).isEqualTo("notBlank");
-		assertThat(modelBean.getValidations().get(9).getField()).isEqualTo("notBlank");
-		assertThat(modelBean.getValidations().get(10).getType()).isEqualTo("creditCardNumber");
-		assertThat(modelBean.getValidations().get(10).getField()).isEqualTo("creditCardNumber");
+		assertThat(modelBean.getValidations().get(8).getType()).isEqualTo("notBlank");
+		assertThat(modelBean.getValidations().get(8).getField()).isEqualTo("notBlank");
+		assertThat(modelBean.getValidations().get(9).getType()).isEqualTo("creditCardNumber");
+		assertThat(modelBean.getValidations().get(9).getField()).isEqualTo("creditCardNumber");
 
 	}
 
