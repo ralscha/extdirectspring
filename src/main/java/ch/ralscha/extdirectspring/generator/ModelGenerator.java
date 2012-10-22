@@ -354,8 +354,8 @@ public abstract class ModelGenerator {
 								if (includeValidation == IncludeValidation.BUILTIN
 										|| includeValidation == IncludeValidation.ALL) {
 
-									if (annotationClassName.equals("javax.validation.constraints.NotNull") ||
-											(annotationClassName
+									if (annotationClassName.equals("javax.validation.constraints.NotNull")
+											|| (annotationClassName
 													.equals("org.hibernate.validator.constraints.NotEmpty"))) {
 										model.addValidation(new ModelFieldValidationBean("presence", modelFieldBean
 												.getName()));
@@ -406,8 +406,23 @@ public abstract class ModelGenerator {
 											model.addValidation(rangeValidation);
 										}
 									} else if (annotationClassName.equals("javax.validation.constraints.Digits")) {
-										model.addValidation(new ModelFieldValidationBean("digites", modelFieldBean
-												.getName()));
+										ModelFieldValidationBean digitValidation = new ModelFieldValidationBean(
+												"digits", modelFieldBean.getName());
+
+										Integer integer = (Integer) AnnotationUtils
+												.getValue(fieldAnnotation, "integer");
+										Integer fraction = (Integer) AnnotationUtils.getValue(fieldAnnotation,
+												"fraction");
+
+										if (integer > 0) {
+											digitValidation.addOption("integer", integer);
+										}
+
+										if (fraction > 0) {
+											digitValidation.addOption("fraction", fraction);
+										}
+
+										model.addValidation(digitValidation);
 									} else if (annotationClassName.equals("javax.validation.constraints.Future")) {
 										model.addValidation(new ModelFieldValidationBean("future", modelFieldBean
 												.getName()));
@@ -542,7 +557,7 @@ public abstract class ModelGenerator {
 		}
 
 		configObject.put("fields", model.getFields().values());
-		
+
 		if (!model.getValidations().isEmpty()) {
 			configObject.put("validations", model.getValidations());
 		}
@@ -623,10 +638,10 @@ public abstract class ModelGenerator {
 		configObjectString = configObjectString.replaceAll("create( ?: ?)'([^']+)'", "create$1$2");
 		configObjectString = configObjectString.replaceAll("update( ?: ?)'([^']+)'", "update$1$2");
 		configObjectString = configObjectString.replaceAll("destroy( ?: ?)'([^']+)'", "destroy$1$2");
-		
+
 		configObjectString = configObjectString.replaceAll("matcher( ?: ?)'(/[^']+/)'", "matcher$1$2");
 		configObjectString = configObjectString.replace("\\\\", "\\");
-		
+
 		sb.append(configObjectString);
 		sb.append(");");
 
@@ -637,6 +652,7 @@ public abstract class ModelGenerator {
 
 	private static class ModelCacheKey {
 		private final String className;
+
 		private final IncludeValidation includeValidation;
 
 		public ModelCacheKey(String className, IncludeValidation includeValidation) {
@@ -678,10 +694,8 @@ public abstract class ModelGenerator {
 			return true;
 		}
 
-	
-		
 	}
-	
+
 	private static class JsCacheKey {
 		private final ModelBean modelBean;
 
