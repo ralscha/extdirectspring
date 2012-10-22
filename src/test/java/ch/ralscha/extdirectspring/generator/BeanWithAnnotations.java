@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Email;
@@ -59,6 +61,7 @@ public class BeanWithAnnotations {
 
 	@ModelField(defaultValue = "1")
 	@NotNull
+	@DecimalMax("500000")
 	private BigInteger aBigInteger;
 
 	@ModelField(defaultValue = "1.1")
@@ -84,6 +87,7 @@ public class BeanWithAnnotations {
 	private Boolean aBooleanObject;
 
 	@ModelField(dateFormat = "c")
+	@Future
 	private Date aDate;
 
 	private java.sql.Date aSqlDate;

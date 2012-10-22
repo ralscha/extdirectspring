@@ -63,7 +63,7 @@ public abstract class ModelGenerator {
 
 	private static final Map<JsCacheKey, SoftReference<String>> jsCache = new ConcurrentHashMap<JsCacheKey, SoftReference<String>>();
 
-	private static final Map<String, SoftReference<ModelBean>> modelCache = new ConcurrentHashMap<String, SoftReference<ModelBean>>();
+	private static final Map<ModelCacheKey, SoftReference<ModelBean>> modelCache = new ConcurrentHashMap<ModelCacheKey, SoftReference<ModelBean>>();
 
 	/**
 	 * Instrospects the provided class, creates a model object (JS code) and
@@ -212,7 +212,8 @@ public abstract class ModelGenerator {
 		Assert.notNull(clazz, "clazz must not be null");
 		Assert.notNull(includeValidation, "includeValidation must not be null");
 
-		SoftReference<ModelBean> modelReference = modelCache.get(clazz.getName());
+		ModelCacheKey key = new ModelCacheKey(clazz.getName(), includeValidation);
+		SoftReference<ModelBean> modelReference = modelCache.get(key);
 		if (modelReference != null && modelReference.get() != null) {
 			return modelReference.get();
 		}
@@ -471,7 +472,7 @@ public abstract class ModelGenerator {
 
 		model.addFields(modelFields);
 
-		modelCache.put(clazz.getName(), new SoftReference<ModelBean>(model));
+		modelCache.put(key, new SoftReference<ModelBean>(model));
 		return model;
 	}
 
@@ -634,6 +635,53 @@ public abstract class ModelGenerator {
 		return result;
 	}
 
+	private static class ModelCacheKey {
+		private final String className;
+		private final IncludeValidation includeValidation;
+
+		public ModelCacheKey(String className, IncludeValidation includeValidation) {
+			this.className = className;
+			this.includeValidation = includeValidation;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((className == null) ? 0 : className.hashCode());
+			result = prime * result + ((includeValidation == null) ? 0 : includeValidation.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			ModelCacheKey other = (ModelCacheKey) obj;
+			if (className == null) {
+				if (other.className != null) {
+					return false;
+				}
+			} else if (!className.equals(other.className)) {
+				return false;
+			}
+			if (includeValidation != other.includeValidation) {
+				return false;
+			}
+			return true;
+		}
+
+	
+		
+	}
+	
 	private static class JsCacheKey {
 		private final ModelBean modelBean;
 
