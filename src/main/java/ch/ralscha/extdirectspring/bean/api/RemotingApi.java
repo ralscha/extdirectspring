@@ -38,7 +38,7 @@ public final class RemotingApi {
 
 	private final String namespace;
 
-	private final String type = "remoting";
+	private final String type;
 
 	private final Map<String, List<Action>> actions;
 
@@ -52,7 +52,8 @@ public final class RemotingApi {
 
 	private final Map<String, List<String>> sseProviders;
 
-	public RemotingApi(String url, String namespace) {
+	public RemotingApi(String type, String url, String namespace) {
+		this.type = type;
 		this.descriptor = null;
 		this.actions = new HashMap<String, List<Action>>();
 		this.pollingProviders = new ArrayList<PollingProvider>();

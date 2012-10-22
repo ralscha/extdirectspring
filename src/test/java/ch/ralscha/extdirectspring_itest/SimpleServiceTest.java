@@ -65,7 +65,7 @@ public class SimpleServiceTest extends JettyTest2 {
 	private final static ObjectMapper mapper = new ObjectMapper();
 
 	private static RemotingApi api() {
-		RemotingApi remotingApi = new RemotingApi("/controller/router", null);
+		RemotingApi remotingApi = new RemotingApi("remoting", "/controller/router", null);
 		remotingApi.addAction("simpleService", new Action("toUpperCase", 1, false));
 		remotingApi.addAction("simpleService", new Action("echo", Arrays.asList("userId", "logLevel")));
 

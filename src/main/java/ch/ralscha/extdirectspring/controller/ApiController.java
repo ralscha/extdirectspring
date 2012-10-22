@@ -193,7 +193,8 @@ public class ApiController {
 	private String buildApiString(String apiNs, String actionNs, String remotingApiVar, String pollingUrlsVar,
 			String sseVar, String routerUrl, String basePollUrl, String baseSseUrl, String group, boolean debug) {
 
-		RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
+		RemotingApi remotingApi = new RemotingApi(routerController.getConfiguration().getProviderType(), routerUrl,
+				actionNs);
 
 		remotingApi.setTimeout(routerController.getConfiguration().getTimeout());
 		remotingApi.setMaxRetries(routerController.getConfiguration().getMaxRetries());
@@ -324,7 +325,8 @@ public class ApiController {
 	private String buildApiJson(String apiNs, String actionNs, String remotingApiVar, String routerUrl, String group,
 			boolean debug) {
 
-		RemotingApi remotingApi = new RemotingApi(routerUrl, actionNs);
+		RemotingApi remotingApi = new RemotingApi(routerController.getConfiguration().getProviderType(), routerUrl,
+				actionNs);
 
 		if (StringUtils.hasText(apiNs)) {
 			remotingApi.setDescriptor(apiNs + "." + remotingApiVar);

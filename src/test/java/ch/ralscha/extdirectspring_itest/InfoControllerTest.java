@@ -45,7 +45,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class InfoControllerTest extends JettyTest {
 
 	private static RemotingApi api() {
-		RemotingApi remotingApi = new RemotingApi("/controller/router", null);
+		RemotingApi remotingApi = new RemotingApi("remoting", "/controller/router", null);
 		remotingApi.addAction("infoController", new Action("updateInfo", 0, true));
 		return remotingApi;
 	}

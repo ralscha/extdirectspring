@@ -423,19 +423,19 @@ public class ApiControllerTest {
 	}
 
 	private static RemotingApi noApis(String namespace) {
-		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
+		RemotingApi remotingApi = new RemotingApi("remoting", "/action/router", namespace);
 		return remotingApi;
 	}
 
 	static RemotingApi group1Apis(String namespace) {
-		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
+		RemotingApi remotingApi = new RemotingApi("remoting", "/action/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0, false));
 		remotingApi.addAction("remoteProviderTreeLoad", new Action("method1", 1, false));
 		return remotingApi;
 	}
 
 	private static RemotingApi group2Apis(String namespace, String url) {
-		RemotingApi remotingApi = new RemotingApi(url, namespace);
+		RemotingApi remotingApi = new RemotingApi("remoting", url, namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method6", 1, false));
@@ -455,7 +455,7 @@ public class ApiControllerTest {
 	}
 
 	private static RemotingApi group1and2Apis(String namespace) {
-		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
+		RemotingApi remotingApi = new RemotingApi("remoting", "/action/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0, false));
 		remotingApi.addAction("remoteProviderTreeLoad", new Action("method1", 1, false));
 
@@ -482,7 +482,7 @@ public class ApiControllerTest {
 	}
 
 	private static RemotingApi group3Apis(String namespace) {
-		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
+		RemotingApi remotingApi = new RemotingApi("remoting", "/action/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method9", 0, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method5", 1, false));
@@ -502,14 +502,14 @@ public class ApiControllerTest {
 	}
 
 	private static RemotingApi group4Apis(String namespace) {
-		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
+		RemotingApi remotingApi = new RemotingApi("remoting", "/action/router", namespace);
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage3", "message3"));
 		remotingApi.addSseProvider("sseProvider", "message3");
 		return remotingApi;
 	}
 
 	private static RemotingApi interfaceApis(String namespace) {
-		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
+		RemotingApi remotingApi = new RemotingApi("remoting", "/action/router", namespace);
 		remotingApi.addAction("remoteProviderImplementation", new Action("storeRead", 1, false));
 		remotingApi.addAction("remoteProviderImplementation", new Action("method2", 0, false));
 		remotingApi.addAction("remoteProviderImplementation", new Action("method3", 3, false));
@@ -517,7 +517,7 @@ public class ApiControllerTest {
 	}
 
 	private static RemotingApi allApis(String namespace) {
-		RemotingApi remotingApi = new RemotingApi("/action/router", namespace);
+		RemotingApi remotingApi = new RemotingApi("remoting", "/action/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method2", 0, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3, false));

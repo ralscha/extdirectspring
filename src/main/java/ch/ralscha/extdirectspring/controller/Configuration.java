@@ -61,6 +61,8 @@ public class Configuration {
 
 	private ExecutorService batchedMethodsExecutorService = null;
 
+	private String providerType = "remoting";
+
 	public String getDefaultExceptionMessage() {
 		return defaultExceptionMessage;
 	}
@@ -362,6 +364,23 @@ public class Configuration {
 	 */
 	public void setBatchedMethodsExecutorService(ExecutorService batchedMethodsExecutorService) {
 		this.batchedMethodsExecutorService = batchedMethodsExecutorService;
+	}
+
+	public String getProviderType() {
+		return providerType;
+	}
+
+	/**
+	 * Sets the type of the provider. The type is sent to the client in the api
+	 * configuration.
+	 * <p>
+	 * Default value is "remoting" and it creates an Ext.direct.RemotingProvider
+	 * on the client side.
+	 * 
+	 * @param providerType new provider type
+	 */
+	public void setProviderType(String providerType) {
+		this.providerType = providerType;
 	}
 
 }
