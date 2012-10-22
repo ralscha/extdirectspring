@@ -1,0 +1,78 @@
+Ext.define('ch.ralscha.extdirectspring.generator.BeanWithValidation',
+{
+  extend : 'Ext.data.Model',
+  config : {
+    fields : [ {
+      name : 'email',
+      type : 'string'
+    }, {
+      name : 'minMax1',
+      type : 'float'
+    }, {
+      name : 'minMax2',
+      type : 'int'
+    }, {
+      name : 'minMax3',
+      type : 'int'
+    }, {
+      name : 'digits',
+      type : 'string'
+    }, {
+      name : 'future',
+      type : 'date'
+    }, {
+      name : 'past',
+      type : 'date'
+    }, {
+      name : 'nullable',
+      type : 'string'
+    }, {
+      name : 'notBlank',
+      type : 'string'
+    }, {
+      name : 'creditCardNumber',
+      type : 'string'
+    } ],
+    validations : [ {
+      type : 'email',
+      field : 'email'
+    }, {
+      type : 'range',
+      field : 'minMax1',
+      max : 100
+    }, {
+      type : 'range',
+      field : 'minMax1',
+      min : 1
+    }, {
+      type : 'range',
+      field : 'minMax2',
+      max : 10000
+    }, {
+      type : 'range',
+      field : 'minMax3',
+      min : 20,
+      max : 50
+    }, {
+      type : 'digits',
+      field : 'digits',
+      integer : 10,
+      fraction : 2
+    }, {
+      type : 'future',
+      field : 'future'
+    }, {
+      type : 'past',
+      field : 'past'
+    }, {
+      type : 'null',
+      field : 'nullable'
+    }, {
+      type : 'notBlank',
+      field : 'notBlank'
+    }, {
+      type : 'creditCardNumber',
+      field : 'creditCardNumber'
+    } ]
+  }
+});

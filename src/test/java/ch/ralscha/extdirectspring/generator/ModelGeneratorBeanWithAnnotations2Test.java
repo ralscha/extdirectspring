@@ -151,7 +151,7 @@ public class ModelGeneratorBeanWithAnnotations2Test {
 			ModelFieldBean field = modelBean.getFields().get(expectedField.getName());
 
 			if (!field.equals(expectedField)) {
-				System.out.println();
+				System.out.println(field.getName() + "-->" + expectedField.getName());
 			}
 
 			Assert.assertTrue(field.equals(expectedField));

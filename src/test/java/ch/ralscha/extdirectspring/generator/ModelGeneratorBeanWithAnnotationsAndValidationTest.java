@@ -15,8 +15,9 @@
  */
 package ch.ralscha.extdirectspring.generator;
 
-import java.io.IOException;
 import static org.fest.assertions.Assertions.assertThat;
+
+import java.io.IOException;
 
 import org.fest.assertions.MapAssert;
 import org.junit.Test;
@@ -72,7 +73,6 @@ public class ModelGeneratorBeanWithAnnotationsAndValidationTest {
 				IncludeValidation.BUILTIN, true);
 		compareTouch2Model(response.getContentAsString(), true);
 	}
-
 
 	@Test
 	public void testWriteModelHttpServletRequestHttpServletResponseModelBeanOutputFormat() throws IOException {
@@ -138,29 +138,33 @@ public class ModelGeneratorBeanWithAnnotationsAndValidationTest {
 		assertThat(modelBean.getName()).isEqualTo("Sch.Bean");
 		assertThat(modelBean.getFields()).hasSize(22);
 		assertThat(BeanWithAnnotations.expectedFields).hasSize(22);
-		
 
 		for (ModelFieldBean expectedField : BeanWithAnnotations.expectedFields) {
 			ModelFieldBean field = modelBean.getFields().get(expectedField.getName());
 
 			if (!field.equals(expectedField)) {
-				System.out.println();
+				System.out.println(field.getName() + "-->" + expectedField.getName());
 			}
 
 			assertThat(field).isEqualTo(expectedField);
 		}
-		
-		assertThat(modelBean.getValidations()).hasSize(4);
+
+		assertThat(modelBean.getValidations()).hasSize(5);
 		assertThat(modelBean.getValidations().get(0).getType()).isEqualTo("presence");
 		assertThat(modelBean.getValidations().get(0).getField()).isEqualTo("aBigInteger");
 		assertThat(modelBean.getValidations().get(1).getType()).isEqualTo("presence");
 		assertThat(modelBean.getValidations().get(1).getField()).isEqualTo("aDouble");
 		assertThat(modelBean.getValidations().get(2).getType()).isEqualTo("email");
-		assertThat(modelBean.getValidations().get(2).getField()).isEqualTo("aString");		
+		assertThat(modelBean.getValidations().get(2).getField()).isEqualTo("aString");
 		assertThat(modelBean.getValidations().get(3).getType()).isEqualTo("length");
-		assertThat(modelBean.getValidations().get(3).getField()).isEqualTo("aString");	
+		assertThat(modelBean.getValidations().get(3).getField()).isEqualTo("aString");
 		assertThat(modelBean.getValidations().get(3).getOptions()).hasSize(1);
 		assertThat(modelBean.getValidations().get(3).getOptions()).includes(MapAssert.entry("max", 255));
+		assertThat(modelBean.getValidations().get(4).getType()).isEqualTo("format");
+		assertThat(modelBean.getValidations().get(4).getField()).isEqualTo("aString");
+		assertThat(modelBean.getValidations().get(4).getOptions()).hasSize(1);
+		assertThat(modelBean.getValidations().get(4).getOptions()).includes(
+				MapAssert.entry("matcher", "/\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\]/"));
 	}
 
 	@Test

@@ -147,12 +147,12 @@ public class ModelGeneratorBeanWithAnnotationsTest {
 		assertThat(modelBean.getFields()).hasSize(22);
 		assertThat(BeanWithAnnotations.expectedFields).hasSize(22);
 		assertThat(modelBean.getValidations()).isEmpty();
-		
+
 		for (ModelFieldBean expectedField : BeanWithAnnotations.expectedFields) {
 			ModelFieldBean field = modelBean.getFields().get(expectedField.getName());
 
 			if (!field.equals(expectedField)) {
-				System.out.println();
+				System.out.println(field.getName() + "-->" + expectedField.getName());
 			}
 
 			Assert.assertTrue(field.equals(expectedField));

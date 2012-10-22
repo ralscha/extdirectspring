@@ -91,6 +91,10 @@ Ext.define('Sch.Bean',
     type : 'length',
     field : 'aString',
     max : 255
+  }, {
+    type : 'format',
+    field : 'aString',
+    matcher : /\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\]/
   } ],
   proxy : {
     type : 'direct',

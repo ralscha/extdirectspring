@@ -61,7 +61,6 @@ public class ModelGeneratorWithValidationTest {
 		model.addValidation(salaryValidator);
 
 		String code = ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false);
-		System.out.println(code);
 		assertThat(code)
 				.isEqualTo(
 						"Ext.define('App.User',{extend:'Ext.data.Model',fields:[{name:'id',type:'int'},{name:'email',type:'string'},{name:'salary',type:'float',useNull:true}],validations:[{type:'presence',field:'id'},{type:'email',field:'email'},{type:'format',field:'salary',matcher:/[0-9]*\\.[0-9]*/}]});");
