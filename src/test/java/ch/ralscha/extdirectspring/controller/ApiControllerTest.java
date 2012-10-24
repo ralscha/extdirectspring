@@ -732,8 +732,14 @@ public class ApiControllerTest {
 		compare(responseString, responseContentType, remotingApi, apiNs, remotingApiVar, pollingUrlsVar, sseVar, null);
 	}
 
+	public static void compare(String responseString, String responseContentType, RemotingApi remotingApi,
+			String apiNs, String remotingApiVar, String pollingUrlsVar, String sseVar, Configuration config) {
+		compare(responseString, responseContentType, remotingApi, apiNs, remotingApiVar, pollingUrlsVar, sseVar,
+				config, "remoting");
+	}
+
 	static void compare(String responseString, String responseContentType, RemotingApi remotingApi, String apiNs,
-			String remotingApiVar, String pollingUrlsVar, String sseVar, Configuration config) {
+			String remotingApiVar, String pollingUrlsVar, String sseVar, Configuration config, String providerType) {
 
 		String content = responseString.replace(";", ";\n");
 		content = content.replace("{", "{\n");
@@ -844,7 +850,7 @@ public class ApiControllerTest {
 		}
 
 		assertThat(rootAsMap.get("url")).isEqualTo(remotingApi.getUrl());
-		assertThat(rootAsMap.get("type")).isEqualTo("remoting");
+		assertThat(rootAsMap.get("type")).isEqualTo(providerType);
 		assertThat(rootAsMap.containsKey("actions")).isTrue();
 
 		if (remotingApi.getNamespace() != null) {
