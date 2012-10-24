@@ -36,7 +36,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 public class FormInfoController {
 
 	@SuppressWarnings("unused")
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3", streamResponse = true)
 	@RequestMapping(value = "/updateInfo", method = RequestMethod.POST)
 	public void updateInfo(Locale locale, HttpServletRequest request, HttpServletResponse response, FormInfo formInfo,
 			BindingResult result) {

@@ -319,10 +319,10 @@ public enum ExtDirectMethodType {
 				log.warn("SSE method '" + methodName
 						+ "' does not support streamResponse attribute of @ExtDirectMethod");
 			}
-			
+
 			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
 				log.warn("SSE method '" + methodName + "' does not support event attribute of @ExtDirectMethod");
-			}			
+			}
 
 			return true;
 		}

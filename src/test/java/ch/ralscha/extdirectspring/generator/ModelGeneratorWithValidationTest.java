@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.generator;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -53,8 +54,10 @@ public class ModelGeneratorWithValidationTest {
 		field.setUseNull(true);
 		model.addField(field);
 
-		model.addValidation(new ModelFieldValidationBean("presence", "id"));
-		model.addValidation(new ModelFieldValidationBean("email", "email"));
+		List<ModelFieldValidationBean> validations = new ArrayList<ModelFieldValidationBean>();
+		validations.add(new ModelFieldValidationBean("presence", "id"));
+		validations.add(new ModelFieldValidationBean("email", "email"));
+		model.setValidations(validations);
 
 		ModelFieldValidationBean salaryValidator = new ModelFieldValidationBean("format", "salary");
 		salaryValidator.addOption("matcher", "/[0-9]*\\.[0-9]*/");
@@ -104,7 +107,7 @@ public class ModelGeneratorWithValidationTest {
 		model.addField(field);
 
 		model.addValidation(new ModelFieldValidationBean("presence", "id"));
-		model.addValidation(new ModelFieldValidationBean("email", "email"));
+		model.addValidations(Collections.singletonList(new ModelFieldValidationBean("email", "email")));
 
 		ModelFieldValidationBean salaryValidator = new ModelFieldValidationBean("format", "salary");
 		salaryValidator.addOption("matcher", "/[0-9]*\\.[0-9]*/");

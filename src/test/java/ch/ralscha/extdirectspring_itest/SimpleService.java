@@ -51,7 +51,7 @@ public class SimpleService {
 		return id;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "itest_simple")
+	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "itest_simple", streamResponse = true)
 	public SSEvent sse(@RequestParam String id) {
 		SSEvent event = new SSEvent();
 		event.setId(id);
