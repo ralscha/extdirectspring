@@ -33,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(value = { "metaData", "success", "total", "records" })
 public class ExtDirectStoreReadResult<T> {
 
-	private Integer total;
+	private Long total;
 
 	private Collection<T> records;
 
@@ -47,32 +47,36 @@ public class ExtDirectStoreReadResult<T> {
 
 	@SuppressWarnings("unchecked")
 	public ExtDirectStoreReadResult(T record) {
-		init(null, Arrays.asList(record), true);
+		this((Long) null, Arrays.asList(record), true);
 	}
 
 	public ExtDirectStoreReadResult(T[] record) {
-		init(null, Arrays.asList(record), true);
+		this((Long) null, Arrays.asList(record), true);
 	}
 
 	public ExtDirectStoreReadResult(Collection<T> records) {
-		init(null, records, true);
+		this((Long) null, records, true);
 	}
 
 	public ExtDirectStoreReadResult(Integer total, Collection<T> records) {
-		init(total, records, true);
+		this(total, records, true);
 	}
 
 	public ExtDirectStoreReadResult(Integer total, Collection<T> records, Boolean success) {
-		init(total, records, success);
+		this(total != null ? Long.valueOf(total) : null, records, success);
 	}
 
-	protected void init(Integer _total, Collection<T> _records, Boolean _success) {
-		this.total = _total;
-		this.records = _records;
-		this.success = _success;
+	public ExtDirectStoreReadResult(Long total, Collection<T> records) {
+		this(total, records, true);
 	}
 
-	public Integer getTotal() {
+	public ExtDirectStoreReadResult(Long total, Collection<T> records, Boolean success) {
+		this.total = total;
+		this.records = records;
+		this.success = success;
+	}
+
+	public Long getTotal() {
 		return total;
 	}
 
