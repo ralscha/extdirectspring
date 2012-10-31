@@ -39,8 +39,7 @@ public enum ModelType {
 		public boolean supports(Class<?> type) {
 			return type.equals(Byte.class) || type.equals(Short.class) || type.equals(Integer.class)
 					|| type.equals(Long.class) || type.equals(BigInteger.class) || type.equals(Byte.TYPE)
-					|| type.equals(Short.TYPE) || type.equals(Integer.TYPE) || type.equals(Long.TYPE)
-					|| type.equals(BigInteger.class);
+					|| type.equals(Short.TYPE) || type.equals(Integer.TYPE) || type.equals(Long.TYPE);
 		}
 	},
 	FLOAT("float") {

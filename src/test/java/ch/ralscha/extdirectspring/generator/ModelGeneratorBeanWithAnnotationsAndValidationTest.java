@@ -19,8 +19,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.io.IOException;
 
-import junit.framework.Assert;
-
+import org.fest.assertions.MapAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ import ch.ralscha.extdirectspring.controller.RouterController;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
-public class ModelGeneratorBeanWithAnnotations2Test {
+public class ModelGeneratorBeanWithAnnotationsAndValidationTest {
 
 	@Autowired
 	private RouterController controller;
@@ -45,47 +44,40 @@ public class ModelGeneratorBeanWithAnnotations2Test {
 	private DefaultListableBeanFactory applicationContext;
 
 	private static void compareExtJs4Model(String value, boolean debug) {
-		GeneratorTestUtil.compareExtJs4Model("/BeanWithAnnotations2ExtJs4Debug.json", value, debug);
+		GeneratorTestUtil.compareExtJs4Model("/BeanWithAnnotationsValidationExtJs4Debug.json", value, debug);
 	}
 
 	private static void compareTouch2Model(String value, boolean debug) {
-		GeneratorTestUtil.compareTouch2Model("/BeanWithAnnotations2Touch2Debug.json", value, debug);
+		GeneratorTestUtil.compareTouch2Model("/BeanWithAnnotationsValidationTouch2Debug.json", value, debug);
 	}
 
 	@Test
 	public void testWriteModelHttpServletRequestHttpServletResponseClassOfQOutputFormatBoolean() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, BeanWithAnnotations2.class, OutputFormat.EXTJS4, true);
+		ModelGenerator.writeModel(createRequest(), response, BeanWithAnnotations.class, OutputFormat.EXTJS4,
+				IncludeValidation.BUILTIN, true);
 		compareExtJs4Model(response.getContentAsString(), true);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, BeanWithAnnotations2.class, OutputFormat.TOUCH2, false);
+		ModelGenerator.writeModel(createRequest(), response, BeanWithAnnotations.class, OutputFormat.TOUCH2,
+				IncludeValidation.BUILTIN, false);
 		compareTouch2Model(response.getContentAsString(), false);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, BeanWithAnnotations2.class, OutputFormat.EXTJS4, true);
+		ModelGenerator.writeModel(createRequest(), response, BeanWithAnnotations.class, OutputFormat.EXTJS4,
+				IncludeValidation.BUILTIN, true);
 		compareExtJs4Model(response.getContentAsString(), true);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, BeanWithAnnotations2.class, OutputFormat.TOUCH2, true);
+		ModelGenerator.writeModel(createRequest(), response, BeanWithAnnotations.class, OutputFormat.TOUCH2,
+				IncludeValidation.BUILTIN, true);
 		compareTouch2Model(response.getContentAsString(), true);
-	}
-
-	@Test
-	public void testWriteModelHttpServletRequestHttpServletResponseClassOfQOutputFormat() throws IOException {
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, BeanWithAnnotations2.class, OutputFormat.EXTJS4);
-		compareExtJs4Model(response.getContentAsString(), false);
-
-		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, BeanWithAnnotations2.class, OutputFormat.TOUCH2);
-		compareTouch2Model(response.getContentAsString(), false);
 	}
 
 	@Test
 	public void testWriteModelHttpServletRequestHttpServletResponseModelBeanOutputFormat() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		ModelBean model = ModelGenerator.createModel(BeanWithAnnotations2.class);
+		ModelBean model = ModelGenerator.createModel(BeanWithAnnotations.class, IncludeValidation.BUILTIN);
 		ModelGenerator.writeModel(createRequest(), response, model, OutputFormat.EXTJS4);
 		compareExtJs4Model(response.getContentAsString(), false);
 
@@ -97,7 +89,7 @@ public class ModelGeneratorBeanWithAnnotations2Test {
 	@Test
 	public void testWriteModelHttpServletRequestHttpServletResponseModelBeanOutputFormatBoolean() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		ModelBean model = ModelGenerator.createModel(BeanWithAnnotations2.class);
+		ModelBean model = ModelGenerator.createModel(BeanWithAnnotations.class, IncludeValidation.BUILTIN);
 		ModelGenerator.writeModel(createRequest(), response, model, OutputFormat.EXTJS4, false);
 		compareExtJs4Model(response.getContentAsString(), false);
 
@@ -123,44 +115,61 @@ public class ModelGeneratorBeanWithAnnotations2Test {
 
 	@Test
 	public void testGenerateJavascriptClassOfQOutputFormatBoolean() {
-		compareExtJs4Model(ModelGenerator.generateJavascript(BeanWithAnnotations2.class, OutputFormat.EXTJS4, true),
-				true);
-		compareExtJs4Model(ModelGenerator.generateJavascript(BeanWithAnnotations2.class, OutputFormat.EXTJS4, false),
-				false);
+		compareExtJs4Model(ModelGenerator.generateJavascript(BeanWithAnnotations.class, OutputFormat.EXTJS4,
+				IncludeValidation.BUILTIN, true), true);
+		compareExtJs4Model(ModelGenerator.generateJavascript(BeanWithAnnotations.class, OutputFormat.EXTJS4,
+				IncludeValidation.BUILTIN, false), false);
 
-		compareTouch2Model(ModelGenerator.generateJavascript(BeanWithAnnotations2.class, OutputFormat.TOUCH2, true),
-				true);
-		compareTouch2Model(ModelGenerator.generateJavascript(BeanWithAnnotations2.class, OutputFormat.TOUCH2, false),
-				false);
+		compareTouch2Model(ModelGenerator.generateJavascript(BeanWithAnnotations.class, OutputFormat.TOUCH2,
+				IncludeValidation.BUILTIN, true), true);
+		compareTouch2Model(ModelGenerator.generateJavascript(BeanWithAnnotations.class, OutputFormat.TOUCH2,
+				IncludeValidation.BUILTIN, false), false);
 	}
 
 	@Test
 	public void testCreateModel() {
-		ModelBean modelBean = ModelGenerator.createModel(BeanWithAnnotations2.class);
+		ModelBean modelBean = ModelGenerator.createModel(BeanWithAnnotations.class, IncludeValidation.BUILTIN);
 		assertThat(modelBean.getReadMethod()).isEqualTo("read");
-		assertThat(modelBean.getCreateMethod()).isNull();
-		assertThat(modelBean.getUpdateMethod()).isNull();
-		assertThat(modelBean.getDestroyMethod()).isNull();
-		assertThat(modelBean.getIdProperty()).isEqualTo("id");
-		assertThat(modelBean.isPaging()).isFalse();
-		assertThat(modelBean.getName()).isEqualTo("Sch.Bean2");
-		assertThat(modelBean.getFields()).hasSize(3);
-		assertThat(BeanWithAnnotations2.expectedFields).hasSize(3);
+		assertThat(modelBean.getCreateMethod()).isEqualTo("create");
+		assertThat(modelBean.getUpdateMethod()).isEqualTo("update");
+		assertThat(modelBean.getDestroyMethod()).isEqualTo("destroy");
+		assertThat(modelBean.getIdProperty()).isEqualTo("aInt");
+		assertThat(modelBean.isPaging()).isTrue();
+		assertThat(modelBean.getName()).isEqualTo("Sch.Bean");
+		assertThat(modelBean.getFields()).hasSize(22);
+		assertThat(BeanWithAnnotations.expectedFields).hasSize(22);
 
-		for (ModelFieldBean expectedField : BeanWithAnnotations2.expectedFields) {
+		for (ModelFieldBean expectedField : BeanWithAnnotations.expectedFields) {
 			ModelFieldBean field = modelBean.getFields().get(expectedField.getName());
 
 			if (!field.equals(expectedField)) {
 				System.out.println(field.getName() + "-->" + expectedField.getName());
 			}
 
-			Assert.assertTrue(field.equals(expectedField));
+			assertThat(field).isEqualTo(expectedField);
 		}
+
+		assertThat(modelBean.getValidations()).hasSize(5);
+		assertThat(modelBean.getValidations().get(0).getType()).isEqualTo("presence");
+		assertThat(modelBean.getValidations().get(0).getField()).isEqualTo("aBigInteger");
+		assertThat(modelBean.getValidations().get(1).getType()).isEqualTo("presence");
+		assertThat(modelBean.getValidations().get(1).getField()).isEqualTo("aDouble");
+		assertThat(modelBean.getValidations().get(2).getType()).isEqualTo("email");
+		assertThat(modelBean.getValidations().get(2).getField()).isEqualTo("aString");
+		assertThat(modelBean.getValidations().get(3).getType()).isEqualTo("length");
+		assertThat(modelBean.getValidations().get(3).getField()).isEqualTo("aString");
+		assertThat(modelBean.getValidations().get(3).getOptions()).hasSize(1);
+		assertThat(modelBean.getValidations().get(3).getOptions()).includes(MapAssert.entry("max", 255));
+		assertThat(modelBean.getValidations().get(4).getType()).isEqualTo("format");
+		assertThat(modelBean.getValidations().get(4).getField()).isEqualTo("aString");
+		assertThat(modelBean.getValidations().get(4).getOptions()).hasSize(1);
+		assertThat(modelBean.getValidations().get(4).getOptions()).includes(
+				MapAssert.entry("matcher", "/\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\]/"));
 	}
 
 	@Test
 	public void testGenerateJavascriptModelBeanOutputFormatBoolean() {
-		ModelBean model = ModelGenerator.createModel(BeanWithAnnotations2.class);
+		ModelBean model = ModelGenerator.createModel(BeanWithAnnotations.class, IncludeValidation.BUILTIN);
 		compareExtJs4Model(ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, true), true);
 		compareExtJs4Model(ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false), false);
 

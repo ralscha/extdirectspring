@@ -39,7 +39,7 @@ public class ExtDirectRawJsonStoreReadResult extends ExtDirectStoreReadResult<St
 	}
 
 	public ExtDirectRawJsonStoreReadResult(Collection<String> records) {
-		super(null, records, true);
+		super((Long) null, records, true);
 	}
 
 	public ExtDirectRawJsonStoreReadResult(Integer total, Collection<String> records) {
@@ -47,6 +47,14 @@ public class ExtDirectRawJsonStoreReadResult extends ExtDirectStoreReadResult<St
 	}
 
 	public ExtDirectRawJsonStoreReadResult(Integer total, Collection<String> records, Boolean success) {
+		super(total, records, success);
+	}
+
+	public ExtDirectRawJsonStoreReadResult(Long total, Collection<String> records) {
+		super(total, records, true);
+	}
+
+	public ExtDirectRawJsonStoreReadResult(Long total, Collection<String> records, Boolean success) {
 		super(total, records, success);
 	}
 

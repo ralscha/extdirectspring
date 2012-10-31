@@ -15,9 +15,12 @@
  */
 package ch.ralscha.extdirectspring.generator;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.util.Assert;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
 
@@ -35,6 +38,8 @@ public class ModelBean {
 	private String idProperty;
 
 	private Map<String, ModelFieldBean> fields = new LinkedHashMap<String, ModelFieldBean>();
+
+	private List<ModelFieldValidationBean> validations = new ArrayList<ModelFieldValidationBean>();
 
 	private boolean paging;
 
@@ -81,7 +86,7 @@ public class ModelBean {
 	}
 
 	/**
-	 * Overwrites all fields with the provided map.
+	 * Overwrites all field definitions with the provided map.
 	 * 
 	 * @param fields new collection of {@link ModelFieldBean}
 	 */
@@ -89,15 +94,31 @@ public class ModelBean {
 		this.fields = fields;
 	}
 
+	public List<ModelFieldValidationBean> getValidations() {
+		return validations;
+	}
+
+	public void setValidations(List<ModelFieldValidationBean> validations) {
+		this.validations = validations;
+	}
+
 	/**
-	 * Add all provided fields the internal collection of fields
+	 * Add all provided fields to the collection of fields
 	 * 
 	 * @param modelFields collection of {@link ModelFieldBean}
 	 */
 	public void addFields(List<ModelFieldBean> modelFields) {
+		Assert.notNull(modelFields, "modelFields must not be null");
+
 		for (ModelFieldBean bean : modelFields) {
 			fields.put(bean.getName(), bean);
 		}
+	}
+
+	public void addValidations(List<ModelFieldValidationBean> fieldValidations) {
+		Assert.notNull(fieldValidations, "fieldValidations must not be null");
+
+		validations.addAll(fieldValidations);
 	}
 
 	/**
@@ -118,7 +139,15 @@ public class ModelBean {
 	 * @param bean one {@link ModelFieldBean}
 	 */
 	public void addField(ModelFieldBean bean) {
+		Assert.notNull(bean, "ModelFieldBean must not be null");
+
 		fields.put(bean.getName(), bean);
+	}
+
+	public void addValidation(ModelFieldValidationBean bean) {
+		Assert.notNull(bean, "ModelFieldValidationBean must not be null");
+
+		validations.add(bean);
 	}
 
 	public boolean isPaging() {
@@ -223,6 +252,7 @@ public class ModelBean {
 		result = prime * result + (paging ? 1231 : 1237);
 		result = prime * result + ((readMethod == null) ? 0 : readMethod.hashCode());
 		result = prime * result + ((updateMethod == null) ? 0 : updateMethod.hashCode());
+		result = prime * result + ((validations == null) ? 0 : validations.hashCode());
 		return result;
 	}
 
@@ -288,6 +318,13 @@ public class ModelBean {
 				return false;
 			}
 		} else if (!updateMethod.equals(other.updateMethod)) {
+			return false;
+		}
+		if (validations == null) {
+			if (other.validations != null) {
+				return false;
+			}
+		} else if (!validations.equals(other.validations)) {
 			return false;
 		}
 		return true;

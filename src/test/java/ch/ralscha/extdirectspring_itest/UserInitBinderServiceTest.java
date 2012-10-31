@@ -53,7 +53,6 @@ public class UserInitBinderServiceTest extends JettyTest {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testPostWithoutDate() throws ClientProtocolException, IOException {
 		Locale.setDefault(Locale.ENGLISH);
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
@@ -96,7 +95,6 @@ public class UserInitBinderServiceTest extends JettyTest {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testPostWithDate() throws ClientProtocolException, IOException {
 		Locale.setDefault(Locale.ENGLISH);
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();

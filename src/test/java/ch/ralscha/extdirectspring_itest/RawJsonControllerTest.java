@@ -46,7 +46,6 @@ public class RawJsonControllerTest extends JettyTest {
 		testAndCheck("listUsers3", 2, false);
 	}
 
-	@SuppressWarnings("unchecked")
 	private static void testAndCheck(String method, Integer total, boolean success)
 			throws UnsupportedEncodingException, IOException, ClientProtocolException, JsonParseException,
 			JsonMappingException {

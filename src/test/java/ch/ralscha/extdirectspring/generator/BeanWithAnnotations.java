@@ -22,6 +22,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
@@ -53,12 +61,15 @@ public class BeanWithAnnotations {
 	private BigDecimal aBigDecimal;
 
 	@ModelField(defaultValue = "1")
+	@NotNull
+	@DecimalMax("500000")
 	private BigInteger aBigInteger;
 
 	@ModelField(defaultValue = "1.1")
 	private float aFloat;
 
 	@ModelField(dateFormat = "c")
+	@NotEmpty
 	private double aDouble;
 
 	private Float aFloatObject;
@@ -66,6 +77,9 @@ public class BeanWithAnnotations {
 	private Double aDoubleObject;
 
 	@ModelField(useNull = true)
+	@Email
+	@Length(max = 255)
+	@Pattern(regexp = "\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\]")
 	private String aString;
 
 	@ModelField(defaultValue = "true")
@@ -75,6 +89,7 @@ public class BeanWithAnnotations {
 	private Boolean aBooleanObject;
 
 	@ModelField(dateFormat = "c")
+	@Future
 	private Date aDate;
 
 	private java.sql.Date aSqlDate;

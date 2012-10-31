@@ -156,7 +156,6 @@ public class JsonHandlerTest {
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testJsonUtilObject() {
 		JsonHandler jsonHandler = new JsonHandler();
@@ -181,7 +180,6 @@ public class JsonHandlerTest {
 		assertEquals(req.getType(), desReq.getType());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testJsonList() throws JsonGenerationException, JsonMappingException, IOException {
 		JsonHandler jsonHandler = new JsonHandler();

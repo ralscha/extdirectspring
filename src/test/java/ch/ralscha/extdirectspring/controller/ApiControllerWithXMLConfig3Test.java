@@ -67,19 +67,21 @@ public class ApiControllerWithXMLConfig3Test {
 	public void testGroup2() throws IOException {
 		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "group2", false, null, request,
-				response);
+		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "TEST_SSE", "group2", false, null,
+				request, response);
 		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(),
-				ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
+				ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", "TEST_SSE",
+				config);
 
 		assertThat(response.getContentLength()).isEqualTo(response.getContentAsByteArray().length);
 
 		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
-		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "group2", false, null, request,
-				response);
+		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "TEST_SSE", "group2", false, null,
+				request, response);
 		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(),
-				ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", config);
+				ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", "TEST_SSE",
+				config);
 
 		assertThat(response.getContentLength()).isEqualTo(response.getContentAsByteArray().length);
 	}

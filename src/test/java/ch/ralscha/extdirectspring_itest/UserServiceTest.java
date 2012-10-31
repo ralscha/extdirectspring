@@ -53,7 +53,6 @@ public class UserServiceTest extends JettyTest {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testPostWithErrors() throws ClientProtocolException, IOException {
 		Locale.setDefault(Locale.ENGLISH);
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
@@ -92,7 +91,6 @@ public class UserServiceTest extends JettyTest {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testPostWithMoreErrors() throws ClientProtocolException, IOException {
 		Locale.setDefault(Locale.ENGLISH);
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
@@ -133,7 +131,6 @@ public class UserServiceTest extends JettyTest {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testPostWithoutErrors() throws ClientProtocolException, IOException {
 
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();

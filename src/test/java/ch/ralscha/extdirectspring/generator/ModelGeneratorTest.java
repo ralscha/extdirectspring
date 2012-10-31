@@ -30,13 +30,21 @@ public class ModelGeneratorTest {
 	public void testFromModelBeanExtJS1() {
 		ModelBean model = new ModelBean();
 		model.setName("App.User");
-		model.addField(new ModelFieldBean("id", ModelType.INTEGER));
-		model.addField(new ModelFieldBean("name", ModelType.STRING));
+		ModelFieldBean idField = new ModelFieldBean("id", ModelType.INTEGER);
+		model.addField(idField);
+		ModelFieldBean nameField = new ModelFieldBean("name", ModelType.STRING);
+		model.addField(nameField);
 
 		String code = ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false);
 		assertThat(code)
 				.isEqualTo(
 						"Ext.define('App.User',{extend:'Ext.data.Model',fields:[{name:'id',type:'int'},{name:'name',type:'string'}]});");
+
+		ModelFieldBean getIdField = model.getField("id");
+		assertThat(getIdField).isEqualTo(idField);
+
+		ModelFieldBean getNameField = model.getField("name");
+		assertThat(getNameField).isEqualTo(nameField);
 	}
 
 	@Test

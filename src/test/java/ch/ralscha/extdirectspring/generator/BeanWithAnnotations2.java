@@ -19,11 +19,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Model(value = "Sch.Bean2", idProperty = "id", paging = false, readMethod = "read")
 public class BeanWithAnnotations2 extends Base {
 
+	@Pattern(regexp = "[a-zA-Z]*")
 	private String name;
 
 	@ModelField(dateFormat = "c")
@@ -32,6 +36,7 @@ public class BeanWithAnnotations2 extends Base {
 	@JsonIgnore
 	private String password;
 
+	@Size(max = 10, min = 2)
 	private String accountNo;
 
 	public String getName() {

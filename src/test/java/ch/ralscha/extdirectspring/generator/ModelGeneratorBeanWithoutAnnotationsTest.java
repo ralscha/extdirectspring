@@ -21,7 +21,6 @@ import java.io.IOException;
 
 import junit.framework.Assert;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,32 +44,12 @@ public class ModelGeneratorBeanWithoutAnnotationsTest {
 	@Autowired
 	private DefaultListableBeanFactory applicationContext;
 
-	private void compareModelString(String expectedValue, String value, boolean debug) {
-		if (debug) {
-			assertThat(value.replaceAll("\\r?\\n", "\n")).isEqualTo(expectedValue.replaceAll("\\r?\\n", "\n"));
-		} else {
-			assertThat(value).isEqualTo(expectedValue.replaceAll("\\r?\\n", "").replace(" ", ""));
-		}
+	private static void compareExtJs4Model(String value, boolean debug) {
+		GeneratorTestUtil.compareExtJs4Model("/BeanWithoutAnnotationsExtJs4Debug.json", value, debug);
 	}
 
-	private void compareExtJs4Model(String value, boolean debug) {
-		try {
-			String expectedValue = IOUtils.toString(getClass().getResourceAsStream(
-					"/BeanWithoutAnnotationsExtJs4Debug.json"));
-			compareModelString(expectedValue, value, debug);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private void compareTouch2Model(String value, boolean debug) {
-		try {
-			String expectedValue = IOUtils.toString(getClass().getResourceAsStream(
-					"/BeanWithoutAnnotationsTouch2Debug.json"));
-			compareModelString(expectedValue, value, debug);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+	private static void compareTouch2Model(String value, boolean debug) {
+		GeneratorTestUtil.compareTouch2Model("/BeanWithoutAnnotationsTouch2Debug.json", value, debug);
 	}
 
 	@Test
