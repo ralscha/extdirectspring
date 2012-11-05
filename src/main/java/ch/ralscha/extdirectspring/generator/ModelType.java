@@ -61,8 +61,7 @@ public enum ModelType {
 		public boolean supports(Class<?> type) {
 			return type.equals(Date.class) || type.equals(java.sql.Date.class) || type.equals(Timestamp.class)
 					|| type.getName().equals("org.joda.time.DateTime")
-					|| type.getName().equals("org.joda.time.LocalDate")
-					|| Calendar.class.isAssignableFrom(type);
+					|| type.getName().equals("org.joda.time.LocalDate") || Calendar.class.isAssignableFrom(type);
 		}
 	},
 	BOOLEAN("boolean") {
