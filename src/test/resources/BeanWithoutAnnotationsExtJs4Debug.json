@@ -32,6 +32,12 @@ Ext.define('ch.ralscha.extdirectspring.generator.BeanWithoutAnnotations',
     name : 'aBigInteger',
     type : 'int'
   }, {
+    name : 'aCalendar',
+    type : 'date'
+  }, {
+    name : 'aSecondCalendar',
+    type : 'date'
+  }, {
     name : 'aFloat',
     type : 'float'
   }, {

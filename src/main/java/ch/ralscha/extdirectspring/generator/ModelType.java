@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.generator;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -60,7 +61,8 @@ public enum ModelType {
 		public boolean supports(Class<?> type) {
 			return type.equals(Date.class) || type.equals(java.sql.Date.class) || type.equals(Timestamp.class)
 					|| type.getName().equals("org.joda.time.DateTime")
-					|| type.getName().equals("org.joda.time.LocalDate");
+					|| type.getName().equals("org.joda.time.LocalDate")
+					|| Calendar.class.isAssignableFrom(type);
 		}
 	},
 	BOOLEAN("boolean") {

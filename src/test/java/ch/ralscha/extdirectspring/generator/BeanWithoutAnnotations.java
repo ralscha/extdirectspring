@@ -19,7 +19,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -46,6 +48,10 @@ public class BeanWithoutAnnotations {
 	private BigDecimal aBigDecimal;
 
 	private BigInteger aBigInteger;
+
+	private Calendar aCalendar;
+
+	private GregorianCalendar aSecondCalendar;
 
 	private float aFloat;
 
@@ -247,6 +253,22 @@ public class BeanWithoutAnnotations {
 		this.aLocalDate = aLocalDate;
 	}
 
+	public Calendar getaCalendar() {
+		return aCalendar;
+	}
+
+	public void setaCalendar(Calendar aCalendar) {
+		this.aCalendar = aCalendar;
+	}
+
+	public GregorianCalendar getaSecondCalendar() {
+		return aSecondCalendar;
+	}
+
+	public void setaSecondCalendar(GregorianCalendar aSecondCalendar) {
+		this.aSecondCalendar = aSecondCalendar;
+	}
+
 	public static List<ModelFieldBean> expectedFields = new ArrayList<ModelFieldBean>();
 	static {
 		expectedFields.add(new ModelFieldBean("aByte", ModelType.INTEGER));
@@ -259,6 +281,8 @@ public class BeanWithoutAnnotations {
 		expectedFields.add(new ModelFieldBean("aLongObject", ModelType.INTEGER));
 		expectedFields.add(new ModelFieldBean("aBigDecimal", ModelType.FLOAT));
 		expectedFields.add(new ModelFieldBean("aBigInteger", ModelType.INTEGER));
+		expectedFields.add(new ModelFieldBean("aCalendar", ModelType.DATE));
+		expectedFields.add(new ModelFieldBean("aSecondCalendar", ModelType.DATE));
 		expectedFields.add(new ModelFieldBean("aFloat", ModelType.FLOAT));
 		expectedFields.add(new ModelFieldBean("aDouble", ModelType.FLOAT));
 		expectedFields.add(new ModelFieldBean("aFloatObject", ModelType.FLOAT));
