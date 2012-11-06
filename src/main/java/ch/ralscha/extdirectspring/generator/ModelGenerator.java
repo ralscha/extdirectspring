@@ -43,7 +43,6 @@ import org.springframework.util.DigestUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.ReflectionUtils.FieldCallback;
 import org.springframework.util.StringUtils;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import ch.ralscha.extdirectspring.controller.RouterController;
 
@@ -156,9 +155,6 @@ public abstract class ModelGenerator {
 	public static void writeModel(HttpServletRequest request, HttpServletResponse response, ModelBean model,
 			OutputFormat format, boolean debug) throws IOException {
 
-		RouterController routerController = RequestContextUtils.getWebApplicationContext(request).getBean(
-				RouterController.class);
-
 		byte[] data = generateJavascript(model, format, debug).getBytes(RouterController.UTF8_CHARSET);
 		String ifNoneMatch = request.getHeader("If-None-Match");
 		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + "\"";
@@ -168,7 +164,7 @@ public abstract class ModelGenerator {
 			return;
 		}
 
-		response.setContentType(routerController.getConfiguration().getJsContentType());
+		response.setContentType("application/javascript");
 		response.setCharacterEncoding(RouterController.UTF8_CHARSET.name());
 		response.setContentLength(data.length);
 
