@@ -41,6 +41,8 @@ public class ModelBean {
 
 	private List<ModelFieldValidationBean> validations = new ArrayList<ModelFieldValidationBean>();
 
+	private List<ModelAssociation> associations = new ArrayList<ModelAssociation>();
+
 	private boolean paging;
 
 	private String readMethod;
@@ -102,6 +104,14 @@ public class ModelBean {
 		this.validations = validations;
 	}
 
+	public List<ModelAssociation> getAssociations() {
+		return associations;
+	}
+
+	public void setAssociations(List<ModelAssociation> associations) {
+		this.associations = associations;
+	}
+
 	/**
 	 * Add all provided fields to the collection of fields
 	 * 
@@ -119,6 +129,12 @@ public class ModelBean {
 		Assert.notNull(fieldValidations, "fieldValidations must not be null");
 
 		validations.addAll(fieldValidations);
+	}
+
+	public void addAssociations(List<ModelAssociation> associationsList) {
+		Assert.notNull(associationsList, "associations must not be null");
+
+		associations.addAll(associationsList);
 	}
 
 	/**
@@ -244,6 +260,7 @@ public class ModelBean {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((associations == null) ? 0 : associations.hashCode());
 		result = prime * result + ((createMethod == null) ? 0 : createMethod.hashCode());
 		result = prime * result + ((destroyMethod == null) ? 0 : destroyMethod.hashCode());
 		result = prime * result + ((fields == null) ? 0 : fields.hashCode());
@@ -268,6 +285,13 @@ public class ModelBean {
 			return false;
 		}
 		ModelBean other = (ModelBean) obj;
+		if (associations == null) {
+			if (other.associations != null) {
+				return false;
+			}
+		} else if (!associations.equals(other.associations)) {
+			return false;
+		}
 		if (createMethod == null) {
 			if (other.createMethod != null) {
 				return false;
