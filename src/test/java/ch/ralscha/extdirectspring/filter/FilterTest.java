@@ -211,7 +211,7 @@ public class FilterTest {
 		Map<String, Object> json = new HashMap<String, Object>();
 		json.put("property", "aField6");
 		json.put("type", "numeric");
-		json.put("comparison", "lte");
+		json.put("operator", "lte");
 		json.put("value", "5");
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
@@ -394,7 +394,7 @@ public class FilterTest {
 		json.put("property", "aField3");
 		json.put("type", "date");
 		json.put("value", "11.12.2010");
-		json.put("comparison", "lte");
+		json.put("operator", "lte");
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertThat(filter).isInstanceOf(DateFilter.class);

@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -45,6 +46,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import ch.ralscha.extdirectspring.bean.api.Action;
+import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.controller.ApiControllerTest;
 import ch.ralscha.extdirectspring.util.ApiCache;
@@ -58,10 +60,19 @@ public class SimpleServiceTest extends JettyTest2 {
 	@Rule
 	public ContiPerfRule i = new ContiPerfRule();
 
+	private final static AtomicInteger id = new AtomicInteger();
+
+	private final static ObjectMapper mapper = new ObjectMapper();
+
 	private static RemotingApi api() {
-		RemotingApi remotingApi = new RemotingApi("/controller/router", null);
+		RemotingApi remotingApi = new RemotingApi("remoting", "/controller/router", null);
 		remotingApi.addAction("simpleService", new Action("toUpperCase", 1, false));
 		remotingApi.addAction("simpleService", new Action("echo", Arrays.asList("userId", "logLevel")));
+
+		PollingProvider pollingProvider = new PollingProvider("simpleService", "poll", "poll");
+		remotingApi.addPollingProvider(pollingProvider);
+
+		remotingApi.addSseProvider("simpleService", "sse");
 		return remotingApi;
 	}
 
@@ -102,7 +113,7 @@ public class SimpleServiceTest extends JettyTest2 {
 		String responseString = EntityUtils.toString(entity);
 
 		String contentType = response.getFirstHeader("Content-Type").getValue();
-		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS");
+		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS", "SSE");
 
 		assertCacheHeaders(response, fingerprinted);
 	}
@@ -148,6 +159,40 @@ public class SimpleServiceTest extends JettyTest2 {
 		postToUpperCase("andrea", client);
 	}
 
+	@Test
+	@PerfTest(invocations = 200, threads = 10)
+	public void testPoll() throws ClientProtocolException, IOException {
+		String _id = String.valueOf(id.incrementAndGet());
+		HttpClient client = new DefaultHttpClient();
+		HttpGet get = new HttpGet("http://localhost:9998/controller/poll/simpleService/poll/poll?id=" + _id);
+		HttpResponse response = client.execute(get);
+
+		assertThat(response.getFirstHeader("Content-Type").getValue()).isEqualTo("application/json;charset=UTF-8");
+
+		String responseString = EntityUtils.toString(response.getEntity());
+		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+		assertThat(rootAsMap).hasSize(3);
+		assertThat(rootAsMap.get("type")).isEqualTo("event");
+		assertThat(rootAsMap.get("name")).isEqualTo("poll");
+		assertThat(rootAsMap.get("data")).isEqualTo(_id);
+	}
+
+	@Test
+	@PerfTest(invocations = 200, threads = 10)
+	public void testSse() throws ClientProtocolException, IOException {
+		String _id = String.valueOf(id.incrementAndGet());
+		HttpClient client = new DefaultHttpClient();
+		HttpGet get = new HttpGet("http://localhost:9998/controller/sse/simpleService/sse?id=" + _id);
+		HttpResponse response = client.execute(get);
+
+		assertThat(response.getFirstHeader("Content-Type").getValue()).isEqualTo("text/event-stream;charset=UTF-8");
+
+		String responseString = EntityUtils.toString(response.getEntity());
+		String[] parts = responseString.split("\\n");
+		assertThat(parts[0]).isEqualTo("id:" + _id);
+		assertThat(parts[1]).isEqualTo("data:d" + _id);
+	}
+
 	private static void postToUpperCase(String text, HttpClient client) throws UnsupportedEncodingException,
 			IOException, ClientProtocolException, JsonParseException, JsonMappingException {
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
@@ -167,8 +212,7 @@ public class SimpleServiceTest extends JettyTest2 {
 
 		assertThat(responseString).isNotNull();
 		assertThat(responseString).startsWith("[").endsWith("]");
-		ObjectMapper mapper = new ObjectMapper();
-		@SuppressWarnings("unchecked")
+
 		Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
 				Map.class);
 		assertThat(rootAsMap).hasSize(5);
@@ -246,8 +290,7 @@ public class SimpleServiceTest extends JettyTest2 {
 		assertThat(responseString).isNotNull();
 
 		assertThat(responseString).startsWith("[").endsWith("]");
-		ObjectMapper mapper = new ObjectMapper();
-		@SuppressWarnings("unchecked")
+
 		List<Map<String, Object>> results = mapper.readValue(responseString, List.class);
 		assertThat(results).hasSize(expectedResult.size());
 		int tid = 1;

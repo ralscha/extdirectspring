@@ -38,7 +38,7 @@ public class BookService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")
 	public ExtDirectStoreReadResult<Book> readWithPaging(ExtDirectStoreReadRequest request) {
-		int total = request.getPage() + request.getLimit() + request.getStart();
+		long total = request.getPage() + request.getLimit() + request.getStart();
 		ExtDirectStoreReadResult<Book> response = new ExtDirectStoreReadResult<Book>(total, read());
 		return response;
 	}

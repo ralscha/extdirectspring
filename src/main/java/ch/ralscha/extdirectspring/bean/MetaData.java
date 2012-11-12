@@ -65,7 +65,6 @@ public class MetaData {
 
 	public void addField(Field field) {
 
-		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> fields = (List<Map<String, Object>>) metaData.get("fields");
 
 		if (fields == null) {

@@ -68,7 +68,7 @@ public class ExceptionFormPostServiceTest extends JettyTest {
 		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
 		ObjectMapper mapper = new ObjectMapper();
-		@SuppressWarnings("unchecked")
+
 		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
 		assertThat(rootAsMap).hasSize(6);
 		assertThat(rootAsMap.get("method")).isEqualTo("throwAException");
@@ -77,7 +77,6 @@ public class ExceptionFormPostServiceTest extends JettyTest {
 		assertThat(rootAsMap.get("tid")).isEqualTo(3);
 		assertThat(rootAsMap.get("message")).isEqualTo("a null pointer");
 
-		@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 		assertThat(result).hasSize(1);
 		assertThat((Boolean) result.get("success")).isFalse();
@@ -103,7 +102,7 @@ public class ExceptionFormPostServiceTest extends JettyTest {
 		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
 		ObjectMapper mapper = new ObjectMapper();
-		@SuppressWarnings("unchecked")
+
 		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
 		assertThat(rootAsMap).hasSize(5);
 		assertThat(rootAsMap.get("method")).isEqualTo("throwAExceptionNotExists");

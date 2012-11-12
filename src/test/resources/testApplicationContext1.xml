@@ -16,6 +16,7 @@
 	      p:enableBuffer="false"
 		  p:maxRetries="5" 
 		  p:streamResponse="true" 
-		  p:timeout="15000" />
+		  p:timeout="15000"
+		  p:providerType="websocket" />
 
 </beans>

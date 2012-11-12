@@ -212,7 +212,6 @@ public class RouterControllerSimpleNamedTest {
 				"Row [id=104, name=myRow, admin=true, salary=100.45]");
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testWithConversion() throws IOException {
 
