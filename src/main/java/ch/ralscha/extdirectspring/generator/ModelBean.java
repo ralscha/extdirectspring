@@ -149,10 +149,10 @@ public class ModelBean {
 	}
 
 	/**
-	 * Add one instance of {@link ModelFieldBean} to the internal collection of
+	 * Adds one instance of {@link ModelFieldBean} to the internal collection of
 	 * fields
 	 * 
-	 * @param bean one {@link ModelFieldBean}
+	 * @param bean instance of {@link ModelFieldBean}
 	 */
 	public void addField(ModelFieldBean bean) {
 		Assert.notNull(bean, "ModelFieldBean must not be null");
@@ -160,10 +160,28 @@ public class ModelBean {
 		fields.put(bean.getName(), bean);
 	}
 
+	/**
+	 * Adds one instance of {@link ModelFieldValidationBean} to the internal
+	 * collection of validations
+	 * 
+	 * @param bean instance of {@link ModelFieldValidationBean}
+	 */
 	public void addValidation(ModelFieldValidationBean bean) {
 		Assert.notNull(bean, "ModelFieldValidationBean must not be null");
 
 		validations.add(bean);
+	}
+
+	/**
+	 * Adds one instance of {@link ModelAssociationBean} to the internal
+	 * collection of associations
+	 * 
+	 * @param bean instance of {@link ModelAssociationBean}
+	 */
+	public void addAssociation(ModelAssociationBean bean) {
+		Assert.notNull(bean, "ModelAssociationBean must not be null");
+
+		associations.add(bean);
 	}
 
 	public boolean isPaging() {

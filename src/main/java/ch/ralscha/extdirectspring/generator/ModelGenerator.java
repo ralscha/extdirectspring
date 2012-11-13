@@ -37,6 +37,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.LogFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.DigestUtils;
@@ -264,6 +265,7 @@ public abstract class ModelGenerator {
 		}
 
 		final List<ModelFieldBean> modelFields = new ArrayList<ModelFieldBean>();
+		final List<ModelAssociationBean> associations = new ArrayList<ModelAssociationBean>();
 
 		ReflectionUtils.doWithFields(clazz, new FieldCallback() {
 			private final Set<String> fields = new HashSet<String>();
@@ -344,144 +346,81 @@ public abstract class ModelGenerator {
 							}
 						}
 
+						ModelAssociation modelAssociation = field.getAnnotation(ModelAssociation.class);
+						if (modelAssociation != null) {
+
+							ModelAssociationType type = modelAssociation.value();
+							ModelAssociationBean modelAssociationBean = new ModelAssociationBean(type, modelAssociation
+									.model());
+
+
+							if (StringUtils.hasText(modelAssociation.foreignKey())) {
+								modelAssociationBean.setForeignKey(modelAssociation.foreignKey());
+							}
+
+							if (StringUtils.hasText(modelAssociation.primaryKey())) {
+								modelAssociationBean.setPrimaryKey(modelAssociation.primaryKey());
+							}
+
+							if (type == ModelAssociationType.HAS_MANY) {
+
+								if (StringUtils.hasText(modelAssociation.setterName())) {
+									LogFactory.getLog(ModelGenerator.class).warn(
+											getWarningText(field, modelAssociation.value().getJsName(), "setterName"));
+								}
+
+								if (StringUtils.hasText(modelAssociation.getterName())) {
+									LogFactory.getLog(ModelGenerator.class).warn(
+											getWarningText(field, modelAssociation.value().getJsName(), "getterName"));
+								}
+
+								if (modelAssociation.autoLoad()) {
+									modelAssociationBean.setAutoLoad(true);
+								}
+								if (StringUtils.hasText(modelAssociation.name())) {
+									modelAssociationBean.setName(modelAssociation.name());
+								} else {
+									modelAssociationBean.setName(field.getName());
+								}
+
+							} else {
+
+								if (StringUtils.hasText(modelAssociation.setterName())) {
+									modelAssociationBean.setSetterName(modelAssociation.setterName());
+								}
+
+								if (StringUtils.hasText(modelAssociation.getterName())) {
+									modelAssociationBean.setGetterName(modelAssociation.getterName());
+								}
+
+								if (modelAssociation.autoLoad()) {
+									LogFactory.getLog(ModelGenerator.class).warn(
+											getWarningText(field, modelAssociation.value().getJsName(), "autoLoad"));
+								}
+								if (StringUtils.hasText(modelAssociation.name())) {
+									LogFactory.getLog(ModelGenerator.class).warn(
+											getWarningText(field, modelAssociation.value().getJsName(), "name"));
+								}
+							}
+
+							associations.add(modelAssociationBean);
+						}
+
 						if (modelFieldBean != null && includeValidation != IncludeValidation.NONE) {
 							Annotation[] fieldAnnotations = field.getAnnotations();
 
 							for (Annotation fieldAnnotation : fieldAnnotations) {
-								String annotationClassName = fieldAnnotation.annotationType().getName();
-
-								if (includeValidation == IncludeValidation.BUILTIN
-										|| includeValidation == IncludeValidation.ALL) {
-
-									if (annotationClassName.equals("javax.validation.constraints.NotNull")
-											|| (annotationClassName
-													.equals("org.hibernate.validator.constraints.NotEmpty"))) {
-										model.addValidation(new ModelFieldValidationBean("presence", modelFieldBean
-												.getName()));
-									} else if (annotationClassName.equals("javax.validation.constraints.Size")
-											|| (annotationClassName
-													.equals("org.hibernate.validator.constraints.Length"))) {
-										ModelFieldValidationBean lengthValidation = new ModelFieldValidationBean(
-												"length", modelFieldBean.getName());
-
-										Integer min = (Integer) AnnotationUtils.getValue(fieldAnnotation, "min");
-										Integer max = (Integer) AnnotationUtils.getValue(fieldAnnotation, "max");
-										if (min > 0) {
-											lengthValidation.addOption("min", min);
-										}
-										if (max < Integer.MAX_VALUE) {
-											lengthValidation.addOption("max", max);
-										}
-
-										model.addValidation(lengthValidation);
-									} else if (annotationClassName.equals("javax.validation.constraints.Pattern")) {
-										ModelFieldValidationBean formatConstraint = new ModelFieldValidationBean(
-												"format", modelFieldBean.getName());
-										String regexp = (String) AnnotationUtils.getValue(fieldAnnotation, "regexp");
-										formatConstraint.addOption("matcher", "/" + regexp + "/");
-										model.addValidation(formatConstraint);
-									} else if (annotationClassName.equals("org.hibernate.validator.constraints.Email")) {
-										model.addValidation(new ModelFieldValidationBean("email", modelFieldBean
-												.getName()));
-									}
-								}
-
-								if (includeValidation == IncludeValidation.ALL) {
-
-									if (annotationClassName.equals("javax.validation.constraints.DecimalMax")) {
-										String value = (String) AnnotationUtils.getValue(fieldAnnotation);
-										if (StringUtils.hasText(value)) {
-											ModelFieldValidationBean rangeValidation = new ModelFieldValidationBean(
-													"range", modelFieldBean.getName());
-											rangeValidation.addOption("max", new BigDecimal(value));
-											model.addValidation(rangeValidation);
-										}
-									} else if (annotationClassName.equals("javax.validation.constraints.DecimalMin")) {
-										String value = (String) AnnotationUtils.getValue(fieldAnnotation);
-										if (StringUtils.hasText(value)) {
-											ModelFieldValidationBean rangeValidation = new ModelFieldValidationBean(
-													"range", modelFieldBean.getName());
-											rangeValidation.addOption("min", new BigDecimal(value));
-											model.addValidation(rangeValidation);
-										}
-									} else if (annotationClassName.equals("javax.validation.constraints.Digits")) {
-										ModelFieldValidationBean digitValidation = new ModelFieldValidationBean(
-												"digits", modelFieldBean.getName());
-
-										Integer integer = (Integer) AnnotationUtils
-												.getValue(fieldAnnotation, "integer");
-										Integer fraction = (Integer) AnnotationUtils.getValue(fieldAnnotation,
-												"fraction");
-
-										if (integer > 0) {
-											digitValidation.addOption("integer", integer);
-										}
-
-										if (fraction > 0) {
-											digitValidation.addOption("fraction", fraction);
-										}
-
-										model.addValidation(digitValidation);
-									} else if (annotationClassName.equals("javax.validation.constraints.Future")) {
-										model.addValidation(new ModelFieldValidationBean("future", modelFieldBean
-												.getName()));
-									} else if (annotationClassName.equals("javax.validation.constraints.Max")) {
-										Long value = (Long) AnnotationUtils.getValue(fieldAnnotation);
-										if (value != null && value > 0) {
-											ModelFieldValidationBean rangeValidation = new ModelFieldValidationBean(
-													"range", modelFieldBean.getName());
-											rangeValidation.addOption("max", value);
-											model.addValidation(rangeValidation);
-										}
-									} else if (annotationClassName.equals("javax.validation.constraints.Min")) {
-										Long value = (Long) AnnotationUtils.getValue(fieldAnnotation);
-										if (value != null && value > 0) {
-											ModelFieldValidationBean rangeValidation = new ModelFieldValidationBean(
-													"range", modelFieldBean.getName());
-											rangeValidation.addOption("min", value);
-											model.addValidation(rangeValidation);
-										}
-
-									} else if (annotationClassName.equals("javax.validation.constraints.Past")) {
-										model.addValidation(new ModelFieldValidationBean("past", modelFieldBean
-												.getName()));
-
-									} else if (annotationClassName
-											.equals("org.hibernate.validator.constraints.CreditCardNumber")) {
-										model.addValidation(new ModelFieldValidationBean("creditCardNumber",
-												modelFieldBean.getName()));
-
-									} else if (annotationClassName
-											.equals("org.hibernate.validator.constraints.NotBlank")) {
-										model.addValidation(new ModelFieldValidationBean("notBlank", modelFieldBean
-												.getName()));
-
-									} else if (annotationClassName.equals("org.hibernate.validator.constraints.Range")) {
-										ModelFieldValidationBean rangeValidation = new ModelFieldValidationBean(
-												"range", modelFieldBean.getName());
-
-										Long min = (Long) AnnotationUtils.getValue(fieldAnnotation, "min");
-										Long max = (Long) AnnotationUtils.getValue(fieldAnnotation, "max");
-										if (min > 0) {
-											rangeValidation.addOption("min", min);
-										}
-										if (max < Integer.MAX_VALUE) {
-											rangeValidation.addOption("max", max);
-										}
-
-										model.addValidation(rangeValidation);
-									}
-								}
-
+								processValidationAnnotations(model, modelFieldBean, fieldAnnotation, includeValidation);
 							}
-
 						}
 					}
 				}
 			}
+
 		});
 
 		model.addFields(modelFields);
+		model.addAssociations(associations);
 
 		modelCache.put(key, new SoftReference<ModelBean>(model));
 		return model;
@@ -555,6 +494,10 @@ public abstract class ModelGenerator {
 		}
 
 		configObject.put("fields", model.getFields().values());
+
+		if (!model.getAssociations().isEmpty()) {
+			configObject.put("associations", model.getAssociations());
+		}
 
 		if (!model.getValidations().isEmpty()) {
 			configObject.put("validations", model.getValidations());
@@ -646,6 +589,130 @@ public abstract class ModelGenerator {
 		String result = sb.toString();
 		jsCache.put(key, new SoftReference<String>(result));
 		return result;
+	}
+
+	private static String getWarningText(Field field, String type, String propertyName) {
+		String warning = "Field ";
+		warning += field.getDeclaringClass().getName();
+		warning += ".";
+		warning += field.getName();
+		return warning + ": A '" + type + "' association does not support property '" + propertyName
+				+ "'. Property will be ignored.";
+	}
+
+	private static void processValidationAnnotations(ModelBean model, ModelFieldBean modelFieldBean,
+			Annotation fieldAnnotation, IncludeValidation includeValidation) {
+		String annotationClassName = fieldAnnotation.annotationType().getName();
+
+		if (includeValidation == IncludeValidation.BUILTIN || includeValidation == IncludeValidation.ALL) {
+
+			if (annotationClassName.equals("javax.validation.constraints.NotNull")
+					|| (annotationClassName.equals("org.hibernate.validator.constraints.NotEmpty"))) {
+				model.addValidation(new ModelFieldValidationBean("presence", modelFieldBean.getName()));
+			} else if (annotationClassName.equals("javax.validation.constraints.Size")
+					|| (annotationClassName.equals("org.hibernate.validator.constraints.Length"))) {
+				ModelFieldValidationBean lengthValidation = new ModelFieldValidationBean("length",
+						modelFieldBean.getName());
+
+				Integer min = (Integer) AnnotationUtils.getValue(fieldAnnotation, "min");
+				Integer max = (Integer) AnnotationUtils.getValue(fieldAnnotation, "max");
+				if (min > 0) {
+					lengthValidation.addOption("min", min);
+				}
+				if (max < Integer.MAX_VALUE) {
+					lengthValidation.addOption("max", max);
+				}
+
+				model.addValidation(lengthValidation);
+			} else if (annotationClassName.equals("javax.validation.constraints.Pattern")) {
+				ModelFieldValidationBean formatConstraint = new ModelFieldValidationBean("format",
+						modelFieldBean.getName());
+				String regexp = (String) AnnotationUtils.getValue(fieldAnnotation, "regexp");
+				formatConstraint.addOption("matcher", "/" + regexp + "/");
+				model.addValidation(formatConstraint);
+			} else if (annotationClassName.equals("org.hibernate.validator.constraints.Email")) {
+				model.addValidation(new ModelFieldValidationBean("email", modelFieldBean.getName()));
+			}
+		}
+
+		if (includeValidation == IncludeValidation.ALL) {
+
+			if (annotationClassName.equals("javax.validation.constraints.DecimalMax")) {
+				String value = (String) AnnotationUtils.getValue(fieldAnnotation);
+				if (StringUtils.hasText(value)) {
+					ModelFieldValidationBean rangeValidation = new ModelFieldValidationBean("range",
+							modelFieldBean.getName());
+					rangeValidation.addOption("max", new BigDecimal(value));
+					model.addValidation(rangeValidation);
+				}
+			} else if (annotationClassName.equals("javax.validation.constraints.DecimalMin")) {
+				String value = (String) AnnotationUtils.getValue(fieldAnnotation);
+				if (StringUtils.hasText(value)) {
+					ModelFieldValidationBean rangeValidation = new ModelFieldValidationBean("range",
+							modelFieldBean.getName());
+					rangeValidation.addOption("min", new BigDecimal(value));
+					model.addValidation(rangeValidation);
+				}
+			} else if (annotationClassName.equals("javax.validation.constraints.Digits")) {
+				ModelFieldValidationBean digitValidation = new ModelFieldValidationBean("digits",
+						modelFieldBean.getName());
+
+				Integer integer = (Integer) AnnotationUtils.getValue(fieldAnnotation, "integer");
+				Integer fraction = (Integer) AnnotationUtils.getValue(fieldAnnotation, "fraction");
+
+				if (integer > 0) {
+					digitValidation.addOption("integer", integer);
+				}
+
+				if (fraction > 0) {
+					digitValidation.addOption("fraction", fraction);
+				}
+
+				model.addValidation(digitValidation);
+			} else if (annotationClassName.equals("javax.validation.constraints.Future")) {
+				model.addValidation(new ModelFieldValidationBean("future", modelFieldBean.getName()));
+			} else if (annotationClassName.equals("javax.validation.constraints.Max")) {
+				Long value = (Long) AnnotationUtils.getValue(fieldAnnotation);
+				if (value != null && value > 0) {
+					ModelFieldValidationBean rangeValidation = new ModelFieldValidationBean("range",
+							modelFieldBean.getName());
+					rangeValidation.addOption("max", value);
+					model.addValidation(rangeValidation);
+				}
+			} else if (annotationClassName.equals("javax.validation.constraints.Min")) {
+				Long value = (Long) AnnotationUtils.getValue(fieldAnnotation);
+				if (value != null && value > 0) {
+					ModelFieldValidationBean rangeValidation = new ModelFieldValidationBean("range",
+							modelFieldBean.getName());
+					rangeValidation.addOption("min", value);
+					model.addValidation(rangeValidation);
+				}
+
+			} else if (annotationClassName.equals("javax.validation.constraints.Past")) {
+				model.addValidation(new ModelFieldValidationBean("past", modelFieldBean.getName()));
+
+			} else if (annotationClassName.equals("org.hibernate.validator.constraints.CreditCardNumber")) {
+				model.addValidation(new ModelFieldValidationBean("creditCardNumber", modelFieldBean.getName()));
+
+			} else if (annotationClassName.equals("org.hibernate.validator.constraints.NotBlank")) {
+				model.addValidation(new ModelFieldValidationBean("notBlank", modelFieldBean.getName()));
+
+			} else if (annotationClassName.equals("org.hibernate.validator.constraints.Range")) {
+				ModelFieldValidationBean rangeValidation = new ModelFieldValidationBean("range",
+						modelFieldBean.getName());
+
+				Long min = (Long) AnnotationUtils.getValue(fieldAnnotation, "min");
+				Long max = (Long) AnnotationUtils.getValue(fieldAnnotation, "max");
+				if (min > 0) {
+					rangeValidation.addOption("min", min);
+				}
+				if (max < Integer.MAX_VALUE) {
+					rangeValidation.addOption("max", max);
+				}
+
+				model.addValidation(rangeValidation);
+			}
+		}
 	}
 
 	private static class ModelCacheKey {

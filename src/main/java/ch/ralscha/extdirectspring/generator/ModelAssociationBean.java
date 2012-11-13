@@ -15,10 +15,17 @@
  */
 package ch.ralscha.extdirectspring.generator;
 
+import java.io.IOException;
+
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @JsonInclude(Include.NON_NULL)
 public class ModelAssociationBean {
@@ -48,23 +55,14 @@ public class ModelAssociationBean {
 
 	public ModelAssociationBean(ModelAssociationType type, Class<?> model) {
 		this.type = type;
-		
+
 		Model modelAnnotation = model.getAnnotation(Model.class);
-		
+
 		if (modelAnnotation != null && StringUtils.hasText(modelAnnotation.value())) {
 			this.model = modelAnnotation.value();
 		} else {
 			this.model = model.getName();
 		}
-
-		if (modelAnnotation != null) {
-			primaryKey = modelAnnotation.idProperty();
-		}
-		
-		if (this.type == ModelAssociationType.HAS_MANY) {
-			//todo set name here
-		}
-		
 	}
 
 	public String getAssociationKey() {
@@ -123,12 +121,112 @@ public class ModelAssociationBean {
 		this.getterName = getterName;
 	}
 
+	@JsonSerialize(using = ModelAssociationTypeSerializer.class)
 	public ModelAssociationType getType() {
 		return type;
 	}
 
 	public String getModel() {
 		return model;
+	}
+
+	private final static class ModelAssociationTypeSerializer extends JsonSerializer<ModelAssociationType> {
+		@Override
+		public void serialize(ModelAssociationType value, JsonGenerator jgen, SerializerProvider provider)
+				throws IOException, JsonProcessingException {
+			jgen.writeString(value.getJsName());
+
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((associationKey == null) ? 0 : associationKey.hashCode());
+		result = prime * result + ((autoLoad == null) ? 0 : autoLoad.hashCode());
+		result = prime * result + ((foreignKey == null) ? 0 : foreignKey.hashCode());
+		result = prime * result + ((getterName == null) ? 0 : getterName.hashCode());
+		result = prime * result + ((model == null) ? 0 : model.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((primaryKey == null) ? 0 : primaryKey.hashCode());
+		result = prime * result + ((setterName == null) ? 0 : setterName.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		ModelAssociationBean other = (ModelAssociationBean) obj;
+		if (associationKey == null) {
+			if (other.associationKey != null) {
+				return false;
+			}
+		} else if (!associationKey.equals(other.associationKey)) {
+			return false;
+		}
+		if (autoLoad == null) {
+			if (other.autoLoad != null) {
+				return false;
+			}
+		} else if (!autoLoad.equals(other.autoLoad)) {
+			return false;
+		}
+		if (foreignKey == null) {
+			if (other.foreignKey != null) {
+				return false;
+			}
+		} else if (!foreignKey.equals(other.foreignKey)) {
+			return false;
+		}
+		if (getterName == null) {
+			if (other.getterName != null) {
+				return false;
+			}
+		} else if (!getterName.equals(other.getterName)) {
+			return false;
+		}
+		if (model == null) {
+			if (other.model != null) {
+				return false;
+			}
+		} else if (!model.equals(other.model)) {
+			return false;
+		}
+		if (name == null) {
+			if (other.name != null) {
+				return false;
+			}
+		} else if (!name.equals(other.name)) {
+			return false;
+		}
+		if (primaryKey == null) {
+			if (other.primaryKey != null) {
+				return false;
+			}
+		} else if (!primaryKey.equals(other.primaryKey)) {
+			return false;
+		}
+		if (setterName == null) {
+			if (other.setterName != null) {
+				return false;
+			}
+		} else if (!setterName.equals(other.setterName)) {
+			return false;
+		}
+		if (type != other.type) {
+			return false;
+		}
+		return true;
 	}
 
 }
