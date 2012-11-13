@@ -41,7 +41,7 @@ public class ModelBean {
 
 	private List<ModelFieldValidationBean> validations = new ArrayList<ModelFieldValidationBean>();
 
-	private List<ModelAssociation> associations = new ArrayList<ModelAssociation>();
+	private List<ModelAssociationBean> associations = new ArrayList<ModelAssociationBean>();
 
 	private boolean paging;
 
@@ -104,11 +104,11 @@ public class ModelBean {
 		this.validations = validations;
 	}
 
-	public List<ModelAssociation> getAssociations() {
+	public List<ModelAssociationBean> getAssociations() {
 		return associations;
 	}
 
-	public void setAssociations(List<ModelAssociation> associations) {
+	public void setAssociations(List<ModelAssociationBean> associations) {
 		this.associations = associations;
 	}
 
@@ -131,7 +131,7 @@ public class ModelBean {
 		validations.addAll(fieldValidations);
 	}
 
-	public void addAssociations(List<ModelAssociation> associationsList) {
+	public void addAssociations(List<ModelAssociationBean> associationsList) {
 		Assert.notNull(associationsList, "associations must not be null");
 
 		associations.addAll(associationsList);
