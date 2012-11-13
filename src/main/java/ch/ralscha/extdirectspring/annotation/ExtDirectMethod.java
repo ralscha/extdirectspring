@@ -81,6 +81,6 @@ public @interface ExtDirectMethod {
 	 * <p/>
 	 * Defaults to no documentation.
 	 */
-	ExtDirectMethodDocumentation[] documentation() default { }; 
+	ExtDirectMethodDocumentation documentation() default @ExtDirectMethodDocumentation; 
 
 }

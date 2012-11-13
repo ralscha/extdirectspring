@@ -26,9 +26,13 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.method.HandlerMethod;
 
+import ch.ralscha.extdirectspring.annotation.ExtDirectDocParameters;
+import ch.ralscha.extdirectspring.annotation.ExtDirectDocReturn;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodDocumentation;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.api.Action;
+import ch.ralscha.extdirectspring.bean.api.ActionDoc;
 import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 
 /**
@@ -58,6 +62,8 @@ public final class MethodInfo {
 	private Class<?> collectionType;
 
 	private Action action;
+	
+	private ActionDoc actionDoc;
 
 	private PollingProvider pollingProvider;
 
@@ -161,7 +167,47 @@ public final class MethodInfo {
 		default:
 			throw new IllegalStateException("ExtDirectMethodType: " + type + " does not exists");
 		}
+		
+		this.actionDoc = extractDocumentationAnnotations(extDirectMethodAnnotation.documentation());
 
+	}
+
+	/**
+	 * The rule is: whatever has been given is taken as is
+	 * the API documentation is non critical, so any discrepancies will be silently ignored
+	 * @param documentation
+	 * @return ActionDoc
+	 */
+	private ActionDoc extractDocumentationAnnotations(ExtDirectMethodDocumentation documentation) {
+		if(null != documentation) {
+			ActionDoc actionDoc = new ActionDoc(documentation.value() , documentation.author(), documentation.version());
+			ExtDirectDocParameters parameters = documentation.parameters();
+			if(null != parameters) {
+				String[] params = parameters.params();
+				String[] descriptions = parameters.descriptions() == null ? new String[params.length] : parameters.descriptions();
+				if(params.length == descriptions.length) {
+					for (int i = 0; i < params.length; i++) {
+						actionDoc.getParameters().put(params[i], descriptions[i] == null ? "No description": descriptions[i]);
+					}
+				}else {
+					//looger.warn("skip generation of parameters, params size is different from descriptions size");
+				}
+			}
+			ExtDirectDocReturn docReturn = documentation.returnMethod();
+			if(null != docReturn) {
+				String[] properties = docReturn.properties();
+				String[] descriptions = docReturn.descriptions() == null ? new String[properties.length] : docReturn.descriptions();
+				if(properties.length == descriptions.length) {
+					for (int i = 0; i < properties.length; i++) {
+						actionDoc.getParameters().put(properties[i], descriptions[i] == null ? "No description": descriptions[i]);
+					}
+				}else {
+					//looger.warn("skip generation of return method properties, properties size is different from descriptions size");
+				}
+			}
+			return actionDoc;
+		}
+		return null;
 	}
 
 	private static boolean hasValue(RequestMapping requestMapping) {
