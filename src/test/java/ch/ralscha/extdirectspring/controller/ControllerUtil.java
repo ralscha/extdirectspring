@@ -38,6 +38,7 @@ import ch.ralscha.extdirectspring.util.JsonHandler;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,6 +46,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ControllerUtil {
 
 	private static ObjectMapper mapper = new ObjectMapper();
+	
+	static {
+		mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
+	}
 
 	public static Map<String, Object> createRequestJson(String action, String method, int tid, Object data) {
 		return createRequestJson(action, method, false, tid, data);
