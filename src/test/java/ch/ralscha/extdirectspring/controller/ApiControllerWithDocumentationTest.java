@@ -16,10 +16,13 @@
 package ch.ralscha.extdirectspring.controller;
 
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -27,7 +30,12 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+
 import ch.ralscha.extdirectspring.util.ApiCache;
+import ch.ralscha.extdirectspring.util.JsonHandler;
 
 /**
  * Tests for {@link ApiController}.
@@ -38,6 +46,7 @@ import ch.ralscha.extdirectspring.util.ApiCache;
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ApiControllerWithDocumentationTest {
 
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	@Autowired
 	private ApplicationContext applicationContext;
 
@@ -58,8 +67,17 @@ public class ApiControllerWithDocumentationTest {
 		config.setEnableBuffer(false);
 		config.setMaxRetries(5);
 		config.setStreamResponse(true);
+		//config.setApiDocumentation(true);
 	}
 
+	/**
+	 * to test the following 
+	 * need to activate Feature 'ALLOW_COMMENTS' for jackson parser
+	 * <p>
+	 * typical error is com.fasterxml.jackson.core.JsonParseException: Unexpected character ('/' (code 47)): maybe a (non-standard) comment?
+	 * 
+	 * @throws IOException
+	 */
 	@Test
 	public void testGroupDoc() throws IOException {
 
@@ -67,14 +85,15 @@ public class ApiControllerWithDocumentationTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		//apiController.api(null, null, null, null, null, "groupdoc", false, null, request, response);
 		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "groupdoc", false, null, request, response);
-		System.out.print(response.getContentAsString());
+		logger.info("\n\n"+response.getContentAsString()+"\n\n");
 		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(),
 				ApiControllerTest.group1ApisWithDoc("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", config, "websocket");
 
-		//request = new MockHttpServletRequest("GET", "/action/api.js");
-		//response = new MockHttpServletResponse();
-		//apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "group1", false, null, request, response);
-		//ApiControllerTest.compare(response.getContentAsString(), response.getContentType(), ApiControllerTest.group1Apis("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", config, "websocket");
+		request = new MockHttpServletRequest("GET", "/action/api.js");
+		response = new MockHttpServletResponse();
+		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "groupdoc", false, null, request, response);
+		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(), 
+				ApiControllerTest.group1ApisWithDoc("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", config, "websocket");
 	}
 	
 	

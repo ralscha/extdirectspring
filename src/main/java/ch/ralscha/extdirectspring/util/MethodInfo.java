@@ -197,7 +197,7 @@ public final class MethodInfo {
 				String[] descriptions = docReturn.descriptions() == null ? new String[properties.length] : docReturn.descriptions();
 				if(properties.length == descriptions.length) {
 					for (int i = 0; i < properties.length; i++) {
-						actionDoc.getParameters().put(properties[i], descriptions[i] == null ? "No description": descriptions[i]);
+						actionDoc.getReturnMethod().put(properties[i], descriptions[i] == null ? "No description": descriptions[i]);
 					}
 				}else {
 					//looger.warn("skip generation of return method properties, properties size is different from descriptions size");

@@ -4,6 +4,7 @@
 package ch.ralscha.extdirectspring.util;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -25,22 +26,33 @@ public class MapActionSerializer extends JsonSerializer<Map<String, List<Action>
 	@Override
 	public void serialize(Map<String, List<Action>> value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
 		if(null != value){
-			StringBuffer apiStringDoc = new StringBuffer(2048);//doc may be very verbose 
+			jgen.writeStartObject();
 			for (Entry<String, List<Action>> entry : value.entrySet()) {
 				String key = entry.getKey();
 				jgen.writeArrayFieldStart(key);
 				List<Action> actions = entry.getValue();
 				for (Action action : actions) {
 					if(action instanceof ActionDoc) {//insertion of doc here
-						jgen.writeRaw("/**");
-						jgen.writeRaw("*/");
+						ActionDoc actionDoc = (ActionDoc) action; 
+						jgen.writeRaw("\n\t/**");
+						jgen.writeRaw("\n\t* " + actionDoc.getName() + ": " + actionDoc.getMethodComment());
+						jgen.writeRaw("\n\t* @author: " + actionDoc.getAuthor());
+						jgen.writeRaw("\n\t* @version: " + actionDoc.getVersion());
+						jgen.writeRaw("\n\t*");
+						for (Entry<String, String> entry2 : actionDoc.getParameters().entrySet()) {
+							jgen.writeRaw("\n\t* @param: [" + entry2.getKey()+"] " + entry2.getValue());
+						}
+						jgen.writeRaw("\n\t* @return");
+						for (Entry<String, String> entry2 : actionDoc.getReturnMethod().entrySet()) {
+							jgen.writeRaw("\n\t*\t [" + entry2.getKey()+"] " + entry2.getValue());
+						}
+						jgen.writeRaw("\n\t*/\n");
 					}
 					jgen.writeObject(action);
 				}
 				jgen.writeEndArray();
 			}
-		
-			jgen.writeString(apiStringDoc.toString());
+			jgen.writeEndObject();
 		}
 	}
 
