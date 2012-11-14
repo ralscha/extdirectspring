@@ -27,9 +27,9 @@ public @interface ExtDirectMethodDocumentation {
 	
 	/**
 	 * (Optional) the method comment
-	 * TODO should it be required instead of optional?
+	 * if method description is empty, the documentation for this method will be skipped
 	 */
-	String value() default "method purpose: please fill in";
+	String value() default "";
 	
 	/**
     * (Optional) method author

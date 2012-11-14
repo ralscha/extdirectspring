@@ -42,6 +42,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.StringUtils;
 
 import ch.ralscha.extdirectspring.bean.api.Action;
+import ch.ralscha.extdirectspring.bean.api.ActionDoc;
 import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.util.ApiCache;
@@ -431,6 +432,12 @@ public class ApiControllerTest {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/action/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0, false));
 		remotingApi.addAction("remoteProviderTreeLoad", new Action("method1", 1, false));
+		return remotingApi;
+	}
+	
+	static RemotingApi group1ApisWithDoc(String namespace) {
+		RemotingApi remotingApi = new RemotingApi("remoting", "/action/router", namespace);
+		remotingApi.addAction("remoteProviderSimple", new ActionDoc("methodDoc", 0, false, "method comment", "anonymous", "version 1.0" ));
 		return remotingApi;
 	}
 

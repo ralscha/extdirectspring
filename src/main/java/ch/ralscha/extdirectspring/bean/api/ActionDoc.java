@@ -3,10 +3,12 @@
  */
 package ch.ralscha.extdirectspring.bean.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -15,24 +17,34 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  *
  */
 @JsonInclude(Include.NON_NULL)
-public class ActionDoc {
+public class ActionDoc extends Action{
 	
+	@JsonIgnore
 	protected String methodComment ;
-	
+	@JsonIgnore
 	protected String author;
-	
+	@JsonIgnore
 	protected String version;
 	
 	/**
 	 * map of method parameter names and descriptions
 	 */
+	@JsonIgnore
 	protected Map<String, String> parameters;
 	
 	/**
 	 * map of method return properties names and descriptions
 	 */
+	@JsonIgnore
 	protected Map<String, String> returnMethod;
 
+	public ActionDoc(String name, Integer len, Boolean formHandler) {
+		super(name, len, formHandler);
+	}
+
+	public ActionDoc(String name, List<String> params) {
+		super(name, params);
+	}
 	
 	/**
 	 * @param name
@@ -44,20 +56,27 @@ public class ActionDoc {
 	 * @param parameters
 	 * @param returnMethod
 	 */
-	public ActionDoc(String methodComment, String author, String version, Map<String, String> parameters,
-			Map<String, String> returnMethod) {
+	public ActionDoc(String name, Integer len, Boolean formHandler, String methodComment, String author, String version) {
+		this(name, len, formHandler);
 		this.methodComment = methodComment;
 		this.author = author;
 		this.version = version;
-		this.parameters = parameters;
-		this.returnMethod = returnMethod;
 	}
 	
-	public ActionDoc(String methodComment, String author, String version) {
+	public ActionDoc(String name, List<String> params, String methodComment, String author, String version) {
+		this(name, params);
 		this.methodComment = methodComment;
 		this.author = author;
 		this.version = version;
 	}
+	
+	public ActionDoc(Action toCopy, String methodComment, String author, String version) {
+		super(toCopy);
+		this.methodComment = methodComment;
+		this.author = author;
+		this.version = version;
+	}
+	
 
 	/**
 	 * @return the methodComment

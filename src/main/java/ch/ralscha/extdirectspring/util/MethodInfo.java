@@ -63,8 +63,6 @@ public final class MethodInfo {
 
 	private Action action;
 	
-	private ActionDoc actionDoc;
-
 	private PollingProvider pollingProvider;
 
 	private String sseMethod;
@@ -168,7 +166,7 @@ public final class MethodInfo {
 			throw new IllegalStateException("ExtDirectMethodType: " + type + " does not exists");
 		}
 		
-		this.actionDoc = extractDocumentationAnnotations(extDirectMethodAnnotation.documentation());
+		this.action = extractDocumentationAnnotations(extDirectMethodAnnotation.documentation());
 
 	}
 
@@ -178,9 +176,9 @@ public final class MethodInfo {
 	 * @param documentation
 	 * @return ActionDoc
 	 */
-	private ActionDoc extractDocumentationAnnotations(ExtDirectMethodDocumentation documentation) {
-		if(null != documentation) {
-			ActionDoc actionDoc = new ActionDoc(documentation.value() , documentation.author(), documentation.version());
+	private Action extractDocumentationAnnotations(ExtDirectMethodDocumentation documentation) {
+		if(!documentation.value().isEmpty()) {
+			ActionDoc actionDoc = new ActionDoc(getAction(), documentation.value() , documentation.author(), documentation.version());
 			ExtDirectDocParameters parameters = documentation.parameters();
 			if(null != parameters) {
 				String[] params = parameters.params();
@@ -207,7 +205,7 @@ public final class MethodInfo {
 			}
 			return actionDoc;
 		}
-		return null;
+		return this.action;
 	}
 
 	private static boolean hasValue(RequestMapping requestMapping) {

@@ -22,9 +22,12 @@ import java.util.Map;
 
 import org.springframework.util.StringUtils;
 
+import ch.ralscha.extdirectspring.util.MapActionSerializer;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * @author Ralph Schaer
@@ -40,6 +43,7 @@ public final class RemotingApi {
 
 	private final String type;
 
+	@JsonSerialize(using= MapActionSerializer.class)
 	private final Map<String, List<Action>> actions;
 
 	private Integer timeout;
