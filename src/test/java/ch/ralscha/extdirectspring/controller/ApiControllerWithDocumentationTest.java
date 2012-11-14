@@ -16,7 +16,6 @@
 package ch.ralscha.extdirectspring.controller;
 
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,12 +29,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-
 import ch.ralscha.extdirectspring.util.ApiCache;
-import ch.ralscha.extdirectspring.util.JsonHandler;
 
 /**
  * Tests for {@link ApiController}.
@@ -46,7 +40,7 @@ import ch.ralscha.extdirectspring.util.JsonHandler;
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ApiControllerWithDocumentationTest {
 
-	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	private final static Logger logger = LoggerFactory.getLogger(ApiControllerWithDocumentationTest.class);
 	@Autowired
 	private ApplicationContext applicationContext;
 
@@ -82,6 +76,7 @@ public class ApiControllerWithDocumentationTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		//apiController.api(null, null, null, null, null, "groupdoc", false, null, request, response);
 		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "groupdoc", false, null, request, response);
+		System.out.println(response.getContentAsString());
 		logger.info("\n\n"+response.getContentAsString()+"\n\n");
 		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(),
 				ApiControllerTest.group1ApisWithDoc("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", routerController.getConfiguration(), "remoting");

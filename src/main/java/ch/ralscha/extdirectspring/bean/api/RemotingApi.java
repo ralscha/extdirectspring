@@ -43,7 +43,6 @@ public final class RemotingApi {
 
 	private final String type;
 
-	@JsonSerialize(using= MapActionSerializer.class)
 	private final Map<String, List<Action>> actions;
 
 	private Integer timeout;
