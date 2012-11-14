@@ -437,7 +437,7 @@ public class ApiControllerTest {
 	
 	static RemotingApi group1ApisWithDoc(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/action/router", namespace);
-		remotingApi.addAction("remoteProviderSimple", new ActionDoc("methodDoc", 0, false, "method comment", "anonymous", "version 1.0" ));
+		remotingApi.addAction("remoteProviderSimple", new ActionDoc("methodDoc", 0, false, "method comment", "anonymous", "version 1.0", true ));
 		return remotingApi;
 	}
 

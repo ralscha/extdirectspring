@@ -22,12 +22,9 @@ import java.util.Map;
 
 import org.springframework.util.StringUtils;
 
-import ch.ralscha.extdirectspring.util.MapActionSerializer;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * @author Ralph Schaer

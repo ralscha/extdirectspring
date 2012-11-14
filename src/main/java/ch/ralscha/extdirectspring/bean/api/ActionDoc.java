@@ -3,7 +3,6 @@
  */
 package ch.ralscha.extdirectspring.bean.api;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +36,9 @@ public class ActionDoc extends Action{
 	 */
 	@JsonIgnore
 	protected Map<String, String> returnMethod;
+	
+	@JsonIgnore
+	protected boolean deprecated;
 
 	public ActionDoc(String name, Integer len, Boolean formHandler) {
 		super(name, len, formHandler);
@@ -56,25 +58,28 @@ public class ActionDoc extends Action{
 	 * @param parameters
 	 * @param returnMethod
 	 */
-	public ActionDoc(String name, Integer len, Boolean formHandler, String methodComment, String author, String version) {
+	public ActionDoc(String name, Integer len, Boolean formHandler, String methodComment, String author, String version, boolean deprecated) {
 		this(name, len, formHandler);
 		this.methodComment = methodComment;
 		this.author = author;
 		this.version = version;
+		this.deprecated = deprecated;
 	}
 	
-	public ActionDoc(String name, List<String> params, String methodComment, String author, String version) {
+	public ActionDoc(String name, List<String> params, String methodComment, String author, String version, boolean deprecated) {
 		this(name, params);
 		this.methodComment = methodComment;
 		this.author = author;
 		this.version = version;
+		this.deprecated = deprecated;
 	}
 	
-	public ActionDoc(Action toCopy, String methodComment, String author, String version) {
+	public ActionDoc(Action toCopy, String methodComment, String author, String version, boolean deprecated) {
 		super(toCopy);
 		this.methodComment = methodComment;
 		this.author = author;
 		this.version = version;
+		this.deprecated = deprecated;
 	}
 	
 
@@ -150,5 +155,19 @@ public class ActionDoc extends Action{
 	 */
 	public void setReturnMethod(Map<String, String> returnMethod) {
 		this.returnMethod = returnMethod;
+	}
+
+	/**
+	 * @return the deprecated
+	 */
+	public boolean isDeprecated() {
+		return deprecated;
+	}
+
+	/**
+	 * @param deprecated the deprecated to set
+	 */
+	public void setDeprecated(boolean deprecated) {
+		this.deprecated = deprecated;
 	}
 }

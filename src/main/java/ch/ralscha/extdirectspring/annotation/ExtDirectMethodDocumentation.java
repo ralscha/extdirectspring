@@ -6,19 +6,45 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+/* Example:
+  An annotation like following
+
+ 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE, group = "groupdoc", documentation=
+		@ExtDirectMethodDocumentation(value="this method is used to test the documentation generation",
+				author="dbs",
+				version="0.1",
+				deprecated = true,
+				returnMethod=@ExtDirectDocReturn(properties= {"success", "errors"}, descriptions= {"true for success, false otherwise", "list of failed fields"}),
+				parameters=@ExtDirectDocParameters(params = {"a", "b", "c", "d", "e"},descriptions= {"property a integer", "property b string", "property c string", "property d boolean", "array of integers"}))
+	)
+	public String methodDoc() {
+		return "methodDoc() called";
+	}
+ 
+ 	will produce this comment inserted in api-debug-doc.js 
+
+  /**
+   * @deprecated 
+	* methodDoc: this method is used to test the documentation generation
+	* @author: dbs
+	* @version: 0.1
+	*
+	* @param: [d] property d boolean
+	* @param: [e] array of integers
+	* @param: [b] property b string
+	* @param: [c] property c string
+	* @param: [a] property a integer
+	* @return
+	*	 [errors] list of failed fields
+	*	 [success] true for success, false otherwise
+	*\/
+*/  
 /**
- * 
  * These are only used for api-debug.js generation to self 
  * documents the client server interface.
- * TODO comment
-  method to ...
-  @param blah
-  @param blah
-  @return blah
-  
-  <p/>
+ * <p/>
+ * see example above
  * @author dbs
- *
  */
 @Target({ })
 @Retention(RUNTIME)

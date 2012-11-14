@@ -28,6 +28,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
 
 import ch.ralscha.extdirectspring.util.ApiCache;
 
@@ -72,23 +73,42 @@ public class ApiControllerWithDocumentationTest {
 	@Test
 	public void testGroupDoc() throws IOException {
 
-		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug-doc.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		//apiController.api(null, null, null, null, null, "groupdoc", false, null, request, response);
 		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "groupdoc", false, null, request, response);
-		System.out.println(response.getContentAsString());
-		logger.info("\n\n"+response.getContentAsString()+"\n\n");
-		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(),
+		String content = response.getContentAsString();
+		logger.info("\n\n"+content+"\n\n");
+		ApiControllerTest.compare(content, response.getContentType(),
 				ApiControllerTest.group1ApisWithDoc("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", routerController.getConfiguration(), "remoting");
-
+		Assert.isTrue(content.contains("/**"));
+		Assert.isTrue(content.contains("@deprecated"));
+		Assert.isTrue(content.contains("methodDoc"));
+		Assert.isTrue(content.contains("@author"));
+		Assert.isTrue(content.contains("@param: [d]"));
+		Assert.isTrue(content.contains("@param: [e]"));
+		Assert.isTrue(content.contains("@param: [b]"));
+		Assert.isTrue(content.contains("@param: [a]"));
+		Assert.isTrue(content.contains("@return"));
+		Assert.isTrue(content.contains("*/"));
+		
+		request = new MockHttpServletRequest("GET", "/action/api-debug.js");
+		response = new MockHttpServletResponse();
+		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "groupdoc", false, null, request, response);
+		content = response.getContentAsString();
+		logger.info("\n\n"+content+"\n\n");
+		ApiControllerTest.compare(content, response.getContentType(),
+				ApiControllerTest.group1ApisWithDoc("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", routerController.getConfiguration(), "remoting");
+		Assert.doesNotContain("/**", content, "generation of api-debug.js should not contain method documentation");
+		
+		
 		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "groupdoc", false, null, request, response);
-		logger.info("\n\n"+response.getContentAsString()+"\n\n");
-		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(), 
+		content = response.getContentAsString();
+		logger.info("\n\n"+content+"\n\n");
+		ApiControllerTest.compare(content, response.getContentType(), 
 				ApiControllerTest.group1ApisWithDoc("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", routerController.getConfiguration(), "remoting");
+		Assert.doesNotContain("/**", content, "generation of api.js should not contain method documentation");
 	}
-	
-	
 
 }

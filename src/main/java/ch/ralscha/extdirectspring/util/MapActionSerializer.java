@@ -35,6 +35,8 @@ public class MapActionSerializer extends JsonSerializer<Map<String, List<Action>
 					if(jgen.getPrettyPrinter() != null && action instanceof ActionDoc) {//insertion of doc here
 						ActionDoc actionDoc = (ActionDoc) action; 
 						jgen.writeRaw("\n\t/**");
+						if(actionDoc.isDeprecated())
+							jgen.writeRaw("\n\t* @deprecated");
 						jgen.writeRaw("\n\t* " + actionDoc.getName() + ": " + actionDoc.getMethodComment());
 						jgen.writeRaw("\n\t* @author: " + actionDoc.getAuthor());
 						jgen.writeRaw("\n\t* @version: " + actionDoc.getVersion());

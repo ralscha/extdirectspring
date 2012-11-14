@@ -235,6 +235,7 @@ public class RemoteProviderSimple {
 		@ExtDirectMethodDocumentation(value="this method is used to test the documentation generation",
 				author="dbs",
 				version="0.1",
+				deprecated = true,
 				returnMethod=@ExtDirectDocReturn(properties= {"success", "errors"}, descriptions= {"true for success, false otherwise", "list of failed fields"}),
 				parameters=@ExtDirectDocParameters(params = {"a", "b", "c", "d", "e"},descriptions= {"property a integer", "property b string", "property c string", "property d boolean", "array of integers"}))
 )

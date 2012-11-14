@@ -178,7 +178,7 @@ public final class MethodInfo {
 	 */
 	private Action extractDocumentationAnnotations(ExtDirectMethodDocumentation documentation) {
 		if(!documentation.value().isEmpty()) {
-			ActionDoc actionDoc = new ActionDoc(getAction(), documentation.value() , documentation.author(), documentation.version());
+			ActionDoc actionDoc = new ActionDoc(getAction(), documentation.value() , documentation.author(), documentation.version(), documentation.deprecated());
 			ExtDirectDocParameters parameters = documentation.parameters();
 			if(null != parameters) {
 				String[] params = parameters.params();
