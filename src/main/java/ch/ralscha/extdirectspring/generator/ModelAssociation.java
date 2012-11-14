@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 /**
  * Annotation that configures the association to another object. If this
  * annotation is present the generator creates an associations config object in
- * the Model.
+ * the model.
  * 
  * @author Ralph Schaer
  */
@@ -40,6 +40,7 @@ public @interface ModelAssociation {
 	 */
 	ModelAssociationType value();
 
+	
 	Class<?> model(); // hasMany, belongsTo, hasOne
 
 	boolean autoLoad() default false; // hasMany
