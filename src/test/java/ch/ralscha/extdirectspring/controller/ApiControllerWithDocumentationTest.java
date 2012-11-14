@@ -56,18 +56,15 @@ public class ApiControllerWithDocumentationTest {
 	@Autowired
 	private RouterController routerController;
 
-	private Configuration config;
-
 	@Before
 	public void setupApiController() throws Exception {
 		ApiCache.INSTANCE.clear();
 
-		config = new Configuration();
-		config.setTimeout(15000);
-		config.setEnableBuffer(false);
-		config.setMaxRetries(5);
-		config.setStreamResponse(true);
-		//config.setApiDocumentation(true);
+		routerController.getConfiguration().setTimeout(15000);
+		routerController.getConfiguration().setEnableBuffer(false);
+		routerController.getConfiguration().setMaxRetries(5);
+		routerController.getConfiguration().setStreamResponse(true);
+		//routerController.getConfiguration().setApiDocumentation(true);
 	}
 
 	/**
@@ -87,13 +84,14 @@ public class ApiControllerWithDocumentationTest {
 		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "groupdoc", false, null, request, response);
 		logger.info("\n\n"+response.getContentAsString()+"\n\n");
 		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(),
-				ApiControllerTest.group1ApisWithDoc("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", config, "websocket");
+				ApiControllerTest.group1ApisWithDoc("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", routerController.getConfiguration(), "remoting");
 
 		request = new MockHttpServletRequest("GET", "/action/api.js");
 		response = new MockHttpServletResponse();
 		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "groupdoc", false, null, request, response);
+		logger.info("\n\n"+response.getContentAsString()+"\n\n");
 		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(), 
-				ApiControllerTest.group1ApisWithDoc("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", config, "websocket");
+				ApiControllerTest.group1ApisWithDoc("actionns"), "Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", routerController.getConfiguration(), "remoting");
 	}
 	
 	

@@ -4,7 +4,6 @@
 package ch.ralscha.extdirectspring.util;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -32,7 +31,8 @@ public class MapActionSerializer extends JsonSerializer<Map<String, List<Action>
 				jgen.writeArrayFieldStart(key);
 				List<Action> actions = entry.getValue();
 				for (Action action : actions) {
-					if(action instanceof ActionDoc) {//insertion of doc here
+					//PrettyPrinter is not set the generator is on one line mode
+					if(jgen.getPrettyPrinter() != null && action instanceof ActionDoc) {//insertion of doc here
 						ActionDoc actionDoc = (ActionDoc) action; 
 						jgen.writeRaw("\n\t/**");
 						jgen.writeRaw("\n\t* " + actionDoc.getName() + ": " + actionDoc.getMethodComment());
