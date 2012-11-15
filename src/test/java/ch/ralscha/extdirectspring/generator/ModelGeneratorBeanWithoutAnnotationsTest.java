@@ -19,7 +19,7 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import java.io.IOException;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
