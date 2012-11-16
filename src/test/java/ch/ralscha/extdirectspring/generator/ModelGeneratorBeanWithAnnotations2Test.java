@@ -31,14 +31,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import ch.ralscha.extdirectspring.controller.RouterController;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ModelGeneratorBeanWithAnnotations2Test {
-
-	@Autowired
-	private RouterController controller;
 
 	@Autowired
 	private DefaultListableBeanFactory applicationContext;
