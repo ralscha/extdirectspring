@@ -28,4 +28,7 @@ public class Author {
 
 	public int book_id;
 
+	@ModelAssociation(value = ModelAssociationType.BELONGS_TO)
+	public Book book;
+
 }

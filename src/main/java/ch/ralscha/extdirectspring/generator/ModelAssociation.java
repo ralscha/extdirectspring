@@ -104,7 +104,7 @@ public @interface ModelAssociation {
 
 	/**
 	 * The name of the setter function that will be added to the local model's
-	 * prototype. Defaults to 'set' + the name of the foreign model, e.g.
+	 * prototype. Defaults to 'set' + name of the field, e.g.
 	 * setCategory.
 	 * <p>
 	 * Corresponds to the <a href=
@@ -118,7 +118,7 @@ public @interface ModelAssociation {
 
 	/**
 	 * The name of the getter function that will be added to the local model's
-	 * prototype. Defaults to 'get' + the name of the foreign model, e.g.
+	 * prototype. Defaults to 'get' + name of the field, e.g.
 	 * getCategory.
 	 * <p>
 	 * Corresponds to the <a href=

@@ -391,10 +391,14 @@ public abstract class ModelGenerator {
 
 								if (StringUtils.hasText(modelAssociation.setterName())) {
 									modelAssociationBean.setSetterName(modelAssociation.setterName());
+								} else {
+									modelAssociationBean.setSetterName("set" + StringUtils.capitalize(field.getName()));
 								}
 
 								if (StringUtils.hasText(modelAssociation.getterName())) {
 									modelAssociationBean.setGetterName(modelAssociation.getterName());
+								} else {
+									modelAssociationBean.setGetterName("get" + StringUtils.capitalize(field.getName()));
 								}
 
 								if (modelAssociation.autoLoad()) {
@@ -509,6 +513,10 @@ public abstract class ModelGenerator {
 
 		Map<String, Object> proxyObject = new LinkedHashMap<String, Object>();
 		proxyObject.put("type", "direct");
+		
+		if (StringUtils.hasText(model.getIdProperty()) && !model.getIdProperty().equals("id")) {
+			proxyObject.put("idParam", model.getIdProperty());
+		}		
 
 		Map<String, Object> apiObject = new LinkedHashMap<String, Object>();
 
