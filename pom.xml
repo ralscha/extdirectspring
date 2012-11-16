@@ -301,7 +301,7 @@
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.16.1-GA</version>
+			<version>3.17.0-GA</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -315,14 +315,14 @@
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
-			<version>7.6.7.v20120910</version>
+			<version>7.6.8.v20121106</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-webapp</artifactId>
-			<version>7.6.7.v20120910</version>
+			<version>7.6.8.v20121106</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -492,7 +492,7 @@
 			<plugin>
 				<groupId>org.pitest</groupId>
 				<artifactId>pitest-maven</artifactId>
-				<version>0.28</version>
+				<version>0.29</version>
 			</plugin>
 
 			<plugin>
