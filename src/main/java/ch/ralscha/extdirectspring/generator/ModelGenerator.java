@@ -363,7 +363,7 @@ public abstract class ModelGenerator {
 							} else if (type == ModelAssociationType.HAS_MANY) {
 								modelAssociationBean.setForeignKey(StringUtils.uncapitalize(field.getDeclaringClass()
 										.getSimpleName()) + "_id");
-							} else if (type == ModelAssociationType.BELONGS_TO) {
+							} else if (type == ModelAssociationType.BELONGS_TO || type == ModelAssociationType.HAS_ONE) {
 								modelAssociationBean.setForeignKey(StringUtils.uncapitalize(associationClass
 										.getSimpleName()) + "_id");
 							}
@@ -374,7 +374,7 @@ public abstract class ModelGenerator {
 									&& StringUtils.hasText(model.getIdProperty())
 									&& !model.getIdProperty().equals("id")) {
 								modelAssociationBean.setPrimaryKey(model.getIdProperty());
-							} else if (type == ModelAssociationType.BELONGS_TO) {
+							} else if (type == ModelAssociationType.BELONGS_TO || type == ModelAssociationType.HAS_ONE) {
 								Model associationModelAnnotation = associationClass.getAnnotation(Model.class);
 								if (associationModelAnnotation != null
 										&& StringUtils.hasText(associationModelAnnotation.idProperty())
