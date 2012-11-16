@@ -70,7 +70,7 @@ public @interface ModelAssociation {
 
 	/**
 	 * The name of the foreign key on the associated model that links it to the
-	 * owner model. Defaults to the lowercased name of the owner model plus
+	 * owner model. Defaults to the lowercased name of the owner class plus
 	 * "_id".
 	 * <p>
 	 * Corresponds to the <a href=

@@ -360,10 +360,16 @@ public abstract class ModelGenerator {
 
 							if (StringUtils.hasText(modelAssociation.foreignKey())) {
 								modelAssociationBean.setForeignKey(modelAssociation.foreignKey());
+							} else if (type == ModelAssociationType.HAS_MANY) {
+								modelAssociationBean.setForeignKey(StringUtils.uncapitalize(field.getDeclaringClass().getSimpleName()) + "_id");
 							}
 
 							if (StringUtils.hasText(modelAssociation.primaryKey())) {
 								modelAssociationBean.setPrimaryKey(modelAssociation.primaryKey());
+							} else if (type == ModelAssociationType.HAS_MANY
+									&& StringUtils.hasText(model.getIdProperty())
+									&& !model.getIdProperty().equals("id")) {
+								modelAssociationBean.setPrimaryKey(model.getIdProperty());
 							}
 
 							if (type == ModelAssociationType.HAS_MANY) {
@@ -513,10 +519,10 @@ public abstract class ModelGenerator {
 
 		Map<String, Object> proxyObject = new LinkedHashMap<String, Object>();
 		proxyObject.put("type", "direct");
-		
+
 		if (StringUtils.hasText(model.getIdProperty()) && !model.getIdProperty().equals("id")) {
 			proxyObject.put("idParam", model.getIdProperty());
-		}		
+		}
 
 		Map<String, Object> apiObject = new LinkedHashMap<String, Object>();
 
