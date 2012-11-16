@@ -46,7 +46,9 @@ public @interface Model {
 	/**
 	 * Name of the id property. See <a href=
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Model-cfg-idProperty"
-	 * >Ext.data.Model#idProperty</a>.
+	 * >Ext.data.Model#idProperty</a>. This also sets the <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.proxy.Server-cfg-idParam"
+	 * >idParam</a> property on the proxy.
 	 * <p>
 	 * If not present default value of 'id' is used.
 	 */

@@ -80,6 +80,7 @@ Ext.define('Sch.Bean',
   } ],
   proxy : {
     type : 'direct',
+    idParam : 'aInt',
     api : {
       read : read,
       create : create,
