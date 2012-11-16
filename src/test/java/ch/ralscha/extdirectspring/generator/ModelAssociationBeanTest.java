@@ -87,13 +87,13 @@ public class ModelAssociationBeanTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void belongsToAutoLoad() {
+	public void belongsToSetAutoLoad() {
 		ModelAssociationBean mab = new ModelAssociationBean(ModelAssociationType.BELONGS_TO, "User");
 		mab.setAutoLoad(true);
 	}
 
 	@Test
-	public void hasManyAutoLoad() {
+	public void hasManySetAutoLoad() {
 		ModelAssociationBean mab = new ModelAssociationBean(ModelAssociationType.HAS_MANY, "User");
 		mab.setAutoLoad(true);
 		assertThat(mab.getAutoLoad()).isTrue();
