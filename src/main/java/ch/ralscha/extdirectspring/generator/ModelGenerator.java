@@ -350,12 +350,12 @@ public abstract class ModelGenerator {
 						if (modelAssociation != null) {
 
 							ModelAssociationType type = modelAssociation.value();
-							
+
 							Class<?> associationClass = modelAssociation.model();
 							if (associationClass == Object.class) {
 								associationClass = field.getType();
 							}
-							
+
 							ModelAssociationBean modelAssociationBean = new ModelAssociationBean(type, associationClass);
 
 							if (StringUtils.hasText(modelAssociation.foreignKey())) {
