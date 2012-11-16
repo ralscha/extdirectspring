@@ -76,7 +76,7 @@ public @interface ExtDirectMethod {
 	
 	/**
 	 * (Optional) Documentation that are to be placed on
-	 * the api method. These are only used for api-debug.js generation to self 
+	 * the api method. These are only used for api-debug-doc.js generation to self 
 	 * documents the client server interface.
 	 * <p/>
 	 * Defaults to no documentation.

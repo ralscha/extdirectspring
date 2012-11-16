@@ -40,7 +40,7 @@ import java.lang.annotation.Target;
 	*\/
 */  
 /**
- * These are only used for api-debug.js generation to self 
+ * These are only used for api-debug-doc.js generation to self 
  * documents the client server interface.
  * <p/>
  * see example above
