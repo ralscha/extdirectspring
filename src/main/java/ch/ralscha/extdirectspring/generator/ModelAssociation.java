@@ -23,9 +23,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation that configures the association to another object. If this
- * annotation is present the generator creates an associations config object in
- * the model.
+ * Annotation that configures an association to another object. If this
+ * annotation is present on a field the generator creates an associations config
+ * object in the model.
  * 
  * @author Ralph Schaer
  */
@@ -36,23 +36,95 @@ import java.lang.annotation.Target;
 public @interface ModelAssociation {
 
 	/**
-	 * Type of the association.
+	 * The type of the association.
+	 * <p>
+	 * Corresponds to the <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-type"
+	 * >type</a> config object.
 	 */
 	ModelAssociationType value();
 
-	
-	Class<?> model(); // hasMany, belongsTo, hasOne
+	/**
+	 * The class of the model that is being associated with.
+	 * <p>
+	 * Corresponds to the <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.Association-cfg-model"
+	 * >model</a> config object. The generated Javascript code contains either
+	 * the full qualified class name of the class or the string from
+	 * {@link Model#value()} if present on the class.
+	 */
+	Class<?> model() default Object.class;
 
-	boolean autoLoad() default false; // hasMany
+	/**
+	 * True to automatically load the related store from a remote source when
+	 * instantiated. Defaults to false.
+	 * <p>
+	 * Corresponds to the <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-autoLoad"
+	 * >autoLoad</a> config object.
+	 * <p>
+	 * Only hasMany association support this property.
+	 */
+	boolean autoLoad() default false;
 
-	String foreignKey() default ""; // hasMany, belongsTo, hasOne
+	/**
+	 * The name of the foreign key on the associated model that links it to the
+	 * owner model. Defaults to the lowercased name of the owner model plus
+	 * "_id".
+	 * <p>
+	 * Corresponds to the <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-foreignKey"
+	 * >foreignKey</a> config object.
+	 */
+	String foreignKey() default "";
 
-	String name() default ""; // hasMany
+	/**
+	 * The name of the function to create on the owner model to retrieve the
+	 * child store. If not specified, the pluralized name of the child model is
+	 * used. Always specify this if the class name contains a package component.
+	 * <p>
+	 * Corresponds to the <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-name"
+	 * >name</a> config object.
+	 * <p>
+	 * Only hasMany association support this property.
+	 */
+	String name() default "";
 
-	String primaryKey() default "";// hasMany, belongsTo, hasOne
+	/**
+	 * The name of the primary key on the associated model. <br>
+	 * In general this will be the value of {@link Model#idProperty()}.
+	 * <p>
+	 * Corresponds to the <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.Association-cfg-primaryKey"
+	 * >primaryKey</a> config object.
+	 */
+	String primaryKey() default "";
 
-	String setterName() default ""; // belongTo, hasOne
+	/**
+	 * The name of the setter function that will be added to the local model's
+	 * prototype. Defaults to 'set' + the name of the foreign model, e.g.
+	 * setCategory.
+	 * <p>
+	 * Corresponds to the <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.BelongsTo-cfg-setterName"
+	 * >setterName</a> config object.
+	 * <p>
+	 * Only belongTo and hasOne associations support this property.
+	 */
+	String setterName() default "";
 
-	String getterName() default ""; // belongTo, hasOne
+	/**
+	 * The name of the getter function that will be added to the local model's
+	 * prototype. Defaults to 'get' + the name of the foreign model, e.g.
+	 * getCategory.
+	 * <p>
+	 * Corresponds to the <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.BelongsTo-cfg-getterName"
+	 * >getterName</a> config object.
+	 * <p>
+	 * Only belongTo and hasOne associations support this property.
+	 */
+	String getterName() default "";
 
 }
