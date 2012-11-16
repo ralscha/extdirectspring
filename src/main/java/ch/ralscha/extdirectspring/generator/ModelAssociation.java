@@ -81,8 +81,7 @@ public @interface ModelAssociation {
 
 	/**
 	 * The name of the function to create on the owner model to retrieve the
-	 * child store. If not specified, the pluralized name of the child model is
-	 * used. Always specify this if the class name contains a package component.
+	 * child store. If not specified, the name of the field is used.
 	 * <p>
 	 * Corresponds to the <a href=
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-name"
