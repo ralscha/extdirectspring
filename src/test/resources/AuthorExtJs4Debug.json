@@ -20,6 +20,8 @@ Ext.define('MyApp.Author',
   associations : [ {
     type : 'belongsTo',
     model : 'MyApp.Book',
+    foreignKey : 'book_id',
+    primaryKey : 'isbn',
     setterName : 'setBook',
     getterName : 'getBook'
   } ]
