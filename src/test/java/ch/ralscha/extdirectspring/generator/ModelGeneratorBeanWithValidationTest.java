@@ -116,7 +116,7 @@ public class ModelGeneratorBeanWithValidationTest {
 		assertThat(modelBean.getDestroyMethod()).isNull();
 		assertThat(modelBean.getIdProperty()).isNull();
 		assertThat(modelBean.isPaging()).isFalse();
-		assertThat(modelBean.getName()).isEqualTo("ch.ralscha.extdirectspring.generator.BeanWithValidation");
+		assertThat(modelBean.getName()).isEqualTo("ch.ralscha.extdirectspring.generator.bean.BeanWithValidation");
 		assertThat(modelBean.getFields()).hasSize(9);
 		assertThat(BeanWithValidation.expectedFields).hasSize(9);
 

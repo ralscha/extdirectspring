@@ -1,4 +1,4 @@
-Ext.define('ch.ralscha.extdirectspring.generator.BeanWithoutAnnotations',
+Ext.define('ch.ralscha.extdirectspring.generator.bean.BeanWithoutAnnotations',
 {
   extend : 'Ext.data.Model',
   fields : [ {

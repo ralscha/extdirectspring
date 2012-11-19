@@ -1,4 +1,4 @@
-Ext.define('ch.ralscha.extdirectspring.generator.BeanWithValidation',
+Ext.define('ch.ralscha.extdirectspring.generator.bean.BeanWithValidation',
 {
   extend : 'Ext.data.Model',
   config : {
