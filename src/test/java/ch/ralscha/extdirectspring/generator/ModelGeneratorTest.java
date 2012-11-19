@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.generator;
 import static org.fest.assertions.Assertions.assertThat;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -260,7 +261,7 @@ public class ModelGeneratorTest {
 		model.setFields(fields);
 
 		ModelAssociationBean association = new ModelAssociationBean(ModelAssociationType.BELONGS_TO, "User");
-		model.addAssociation(association);
+		model.setAssociations(Collections.singletonList(association));
 
 		String code = ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false);
 		assertThat(code)
