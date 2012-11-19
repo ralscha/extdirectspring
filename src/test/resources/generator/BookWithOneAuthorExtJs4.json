@@ -1,0 +1,18 @@
+Ext.define('ch.ralscha.extdirectspring.generator.BookWithOneAuthor',
+{
+  extend : 'Ext.data.Model',
+  fields : [ {
+    name : 'id',
+    type : 'int'
+  }, {
+    name : 'author_id',
+    type : 'int'
+  } ],
+  associations : [ {
+    type : 'hasOne',
+    model : 'MyApp.Author',
+    foreignKey : 'author_id',
+    setterName : 'setAuthor',
+    getterName : 'getAuthor'
+  } ]
+});

@@ -1,0 +1,112 @@
+Ext.define('Sch.Bean',
+{
+  extend : 'Ext.data.Model',
+  idProperty : 'aInt',
+  fields : [ {
+    name : 'by',
+    type : 'int'
+  }, {
+    name : 'aShort',
+    type : 'int'
+  }, {
+    name : 'aInt',
+    type : 'int'
+  }, {
+    name : 'lo',
+    type : 'int',
+    defaultValue : -1
+  }, {
+    name : 'aByteObject',
+    type : 'string'
+  }, {
+    name : 'aShortObject',
+    type : 'float'
+  }, {
+    name : 'aIntObject',
+    type : 'int'
+  }, {
+    name : 'aLongObject',
+    type : 'int',
+    useNull : true
+  }, {
+    name : 'aBigDecimal',
+    type : 'float'
+  }, {
+    name : 'aBigInteger',
+    type : 'int',
+    defaultValue : 1
+  }, {
+    name : 'aFloat',
+    type : 'float',
+    defaultValue : 1.1
+  }, {
+    name : 'aDouble',
+    type : 'float'
+  }, {
+    name : 'aFloatObject',
+    type : 'float'
+  }, {
+    name : 'aDoubleObject',
+    type : 'float'
+  }, {
+    name : 'aString',
+    type : 'string',
+    useNull : true
+  }, {
+    name : 'aBoolean',
+    type : 'boolean',
+    defaultValue : true
+  }, {
+    name : 'aBooleanObject',
+    type : 'boolean',
+    defaultValue : false
+  }, {
+    name : 'aDate',
+    type : 'date',
+    dateFormat : 'c'
+  }, {
+    name : 'aSqlDate',
+    type : 'date'
+  }, {
+    name : 'aTimestamp',
+    type : 'date'
+  }, {
+    name : 'aDateTime',
+    type : 'date',
+    dateFormat : 'd.m.y'
+  }, {
+    name : 'aLocalDate',
+    type : 'date'
+  } ],
+  validations : [ {
+    type : 'presence',
+    field : 'aBigInteger'
+  }, {
+    type : 'presence',
+    field : 'aDouble'
+  }, {
+    type : 'email',
+    field : 'aString'
+  }, {
+    type : 'length',
+    field : 'aString',
+    max : 255
+  }, {
+    type : 'format',
+    field : 'aString',
+    matcher : /\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\]/
+  } ],
+  proxy : {
+    type : 'direct',
+    idParam : 'aInt',
+    api : {
+      read : read,
+      create : create,
+      update : update,
+      destroy : destroy
+    },
+    reader : {
+      root : 'records'
+    }
+  }
+});
