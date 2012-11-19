@@ -13,66 +13,95 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.generator;
+package ch.ralscha.extdirectspring.generator.bean;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
-public class BeanWithoutAnnotations {
+import ch.ralscha.extdirectspring.generator.Model;
+import ch.ralscha.extdirectspring.generator.ModelField;
+import ch.ralscha.extdirectspring.generator.ModelFieldBean;
+import ch.ralscha.extdirectspring.generator.ModelType;
 
+@Model(value = "Sch.Bean", idProperty = "aInt", paging = true, readMethod = "read", createMethod = "create", updateMethod = "update", destroyMethod = "destroy")
+public class BeanWithAnnotations {
+
+	@ModelField("by")
 	private byte aByte;
 
 	private short aShort;
 
 	private int aInt;
 
+	@ModelField(value = "lo", defaultValue = "-1")
 	private long aLong;
 
+	@ModelField(type = ModelType.STRING)
 	private Byte aByteObject;
 
+	@ModelField(type = ModelType.FLOAT)
 	private Short aShortObject;
 
+	@ModelField(useNull = false)
 	private Integer aIntObject;
 
+	@ModelField(useNull = true)
 	private Long aLongObject;
 
 	private BigDecimal aBigDecimal;
 
+	@ModelField(defaultValue = "1")
+	@NotNull
+	@DecimalMax("500000")
 	private BigInteger aBigInteger;
 
-	private Calendar aCalendar;
-
-	private GregorianCalendar aSecondCalendar;
-
+	@ModelField(defaultValue = "1.1")
 	private float aFloat;
 
+	@ModelField(dateFormat = "c")
+	@NotEmpty
 	private double aDouble;
 
 	private Float aFloatObject;
 
 	private Double aDoubleObject;
 
+	@ModelField(useNull = true)
+	@Email
+	@Length(max = 255)
+	@Pattern(regexp = "\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\]")
 	private String aString;
 
+	@ModelField(defaultValue = "true")
 	private boolean aBoolean;
 
+	@ModelField(defaultValue = "false")
 	private Boolean aBooleanObject;
 
+	@ModelField(dateFormat = "c")
+	@Future
 	private Date aDate;
 
 	private java.sql.Date aSqlDate;
 
 	private Timestamp aTimestamp;
 
+	@ModelField(dateFormat = "d.m.y", useNull = true)
 	private DateTime aDateTime;
 
 	private LocalDate aLocalDate;
@@ -253,48 +282,83 @@ public class BeanWithoutAnnotations {
 		this.aLocalDate = aLocalDate;
 	}
 
-	public Calendar getaCalendar() {
-		return aCalendar;
-	}
-
-	public void setaCalendar(Calendar aCalendar) {
-		this.aCalendar = aCalendar;
-	}
-
-	public GregorianCalendar getaSecondCalendar() {
-		return aSecondCalendar;
-	}
-
-	public void setaSecondCalendar(GregorianCalendar aSecondCalendar) {
-		this.aSecondCalendar = aSecondCalendar;
-	}
-
 	public static List<ModelFieldBean> expectedFields = new ArrayList<ModelFieldBean>();
 	static {
-		expectedFields.add(new ModelFieldBean("aByte", ModelType.INTEGER));
-		expectedFields.add(new ModelFieldBean("aShort", ModelType.INTEGER));
-		expectedFields.add(new ModelFieldBean("aInt", ModelType.INTEGER));
-		expectedFields.add(new ModelFieldBean("aLong", ModelType.INTEGER));
-		expectedFields.add(new ModelFieldBean("aByteObject", ModelType.INTEGER));
-		expectedFields.add(new ModelFieldBean("aShortObject", ModelType.INTEGER));
-		expectedFields.add(new ModelFieldBean("aIntObject", ModelType.INTEGER));
-		expectedFields.add(new ModelFieldBean("aLongObject", ModelType.INTEGER));
-		expectedFields.add(new ModelFieldBean("aBigDecimal", ModelType.FLOAT));
-		expectedFields.add(new ModelFieldBean("aBigInteger", ModelType.INTEGER));
-		expectedFields.add(new ModelFieldBean("aCalendar", ModelType.DATE));
-		expectedFields.add(new ModelFieldBean("aSecondCalendar", ModelType.DATE));
-		expectedFields.add(new ModelFieldBean("aFloat", ModelType.FLOAT));
-		expectedFields.add(new ModelFieldBean("aDouble", ModelType.FLOAT));
-		expectedFields.add(new ModelFieldBean("aFloatObject", ModelType.FLOAT));
-		expectedFields.add(new ModelFieldBean("aDoubleObject", ModelType.FLOAT));
-		expectedFields.add(new ModelFieldBean("aString", ModelType.STRING));
-		expectedFields.add(new ModelFieldBean("aBoolean", ModelType.BOOLEAN));
-		expectedFields.add(new ModelFieldBean("aBooleanObject", ModelType.BOOLEAN));
-		expectedFields.add(new ModelFieldBean("aDate", ModelType.DATE));
-		expectedFields.add(new ModelFieldBean("aSqlDate", ModelType.DATE));
-		expectedFields.add(new ModelFieldBean("aTimestamp", ModelType.DATE));
-		expectedFields.add(new ModelFieldBean("aDateTime", ModelType.DATE));
-		expectedFields.add(new ModelFieldBean("aLocalDate", ModelType.DATE));
+
+		ModelFieldBean field = new ModelFieldBean("by", ModelType.INTEGER);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aShort", ModelType.INTEGER);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aInt", ModelType.INTEGER);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("lo", ModelType.INTEGER);
+		field.setDefaultValue(-1l);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aByteObject", ModelType.STRING);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aShortObject", ModelType.FLOAT);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aIntObject", ModelType.INTEGER);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aLongObject", ModelType.INTEGER);
+		field.setUseNull(true);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aBigDecimal", ModelType.FLOAT);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aBigInteger", ModelType.INTEGER);
+		field.setDefaultValue(1l);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aFloat", ModelType.FLOAT);
+		field.setDefaultValue(1.1);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aDouble", ModelType.FLOAT);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aFloatObject", ModelType.FLOAT);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aDoubleObject", ModelType.FLOAT);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aString", ModelType.STRING);
+		field.setUseNull(true);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aBoolean", ModelType.BOOLEAN);
+		field.setDefaultValue(true);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aBooleanObject", ModelType.BOOLEAN);
+		field.setDefaultValue(false);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aDate", ModelType.DATE);
+		field.setDateFormat("c");
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aSqlDate", ModelType.DATE);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aTimestamp", ModelType.DATE);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aDateTime", ModelType.DATE);
+		field.setDateFormat("d.m.y");
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("aLocalDate", ModelType.DATE);
+		expectedFields.add(field);
 	}
 
 }

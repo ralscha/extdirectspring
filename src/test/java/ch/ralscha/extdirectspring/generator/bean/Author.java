@@ -13,18 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.generator;
+package ch.ralscha.extdirectspring.generator.bean;
 
-public class Base {
+import ch.ralscha.extdirectspring.generator.Model;
+import ch.ralscha.extdirectspring.generator.ModelAssociation;
+import ch.ralscha.extdirectspring.generator.ModelAssociationType;
 
-	private int id;
+@Model(value = "MyApp.Author", idProperty = "id")
+public class Author {
 
-	public int getId() {
-		return id;
-	}
+	public String id;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+	public String title;
+
+	public String firstName;
+
+	public String lastName;
+
+	public int book_id;
+
+	@ModelAssociation(value = ModelAssociationType.BELONGS_TO)
+	public Book book;
 
 }

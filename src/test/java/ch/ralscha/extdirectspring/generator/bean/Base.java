@@ -13,29 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.generator;
+package ch.ralscha.extdirectspring.generator.bean;
 
-import java.util.List;
+public class Base {
 
-import org.joda.time.LocalDate;
+	private int id;
 
-@Model(value = "MyApp.Book", idProperty = "isbn")
-public class Book {
+	public int getId() {
+		return id;
+	}
 
-	public String title;
-
-	public String publisher;
-
-	public String isbn;
-
-	@ModelField(dateFormat = "d-m-Y")
-	public LocalDate publishDate;
-
-	public int numberOfPages;
-
-	public boolean read;
-
-	@ModelAssociation(value = ModelAssociationType.HAS_MANY, model = Author.class, autoLoad = true)
-	public List<Author> authors;
+	public void setId(int id) {
+		this.id = id;
+	}
 
 }

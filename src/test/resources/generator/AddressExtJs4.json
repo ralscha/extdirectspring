@@ -1,0 +1,19 @@
+Ext.define('ch.ralscha.extdirectspring.generator.bean.Address',
+{
+  extend : 'Ext.data.Model',
+  fields : [ {
+    name : 'id',
+    type : 'int'
+  }, {
+    name : 'e_id',
+    type : 'int'
+  } ],
+  associations : [ {
+    type : 'hasOne',
+    model : 'MyApp.Employee',
+    foreignKey : 'e_id',
+    primaryKey : 'eId',
+    setterName : 'setE',
+    getterName : 'getE'
+  } ]
+});

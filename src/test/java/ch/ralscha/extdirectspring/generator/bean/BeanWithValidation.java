@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.generator;
+package ch.ralscha.extdirectspring.generator.bean;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -31,6 +31,9 @@ import org.hibernate.validator.constraints.CreditCardNumber;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
+
+import ch.ralscha.extdirectspring.generator.ModelFieldBean;
+import ch.ralscha.extdirectspring.generator.ModelType;
 
 public class BeanWithValidation {
 

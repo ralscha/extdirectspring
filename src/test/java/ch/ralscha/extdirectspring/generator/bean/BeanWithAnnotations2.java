@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.generator;
+package ch.ralscha.extdirectspring.generator.bean;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +21,11 @@ import java.util.List;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import ch.ralscha.extdirectspring.generator.Model;
+import ch.ralscha.extdirectspring.generator.ModelField;
+import ch.ralscha.extdirectspring.generator.ModelFieldBean;
+import ch.ralscha.extdirectspring.generator.ModelType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
