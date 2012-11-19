@@ -25,8 +25,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.context.support.GenericWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
@@ -35,57 +33,65 @@ public class ModelGeneratorBeansWithAssociationTest {
 	@Autowired
 	private DefaultListableBeanFactory applicationContext;
 
-	private static void compareExtJs4Model(String model, String value, boolean debug) {
-		GeneratorTestUtil.compareExtJs4Model("/"+model+"ExtJs4Debug.json", value, debug);
-	}
-
-	private static void compareTouch2Model(String model, String value, boolean debug) {
-		GeneratorTestUtil.compareTouch2Model("/"+model+"Touch2Debug.json", value, debug);
-	}
-
-	private MockHttpServletRequest createRequest() {
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, new GenericWebApplicationContext(
-				applicationContext));
-		return request;
-	}
-	
 	@Test
 	public void testBook() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, Book.class, OutputFormat.EXTJS4, true);
-		compareExtJs4Model("Book", response.getContentAsString(), true);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Book.class, OutputFormat.EXTJS4, true);
+		GeneratorTestUtil.compareExtJs4Code("Book", response.getContentAsString(), true);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, Book.class, OutputFormat.TOUCH2, false);
-		compareTouch2Model("Book", response.getContentAsString(), false);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Book.class, OutputFormat.TOUCH2, false);
+		GeneratorTestUtil.compareTouch2Code("Book", response.getContentAsString(), false);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, Book.class, OutputFormat.EXTJS4, true);
-		compareExtJs4Model("Book", response.getContentAsString(), true);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Book.class, OutputFormat.EXTJS4, true);
+		GeneratorTestUtil.compareExtJs4Code("Book", response.getContentAsString(), true);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, Book.class, OutputFormat.TOUCH2, true);
-		compareTouch2Model("Book", response.getContentAsString(), true);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Book.class, OutputFormat.TOUCH2, true);
+		GeneratorTestUtil.compareTouch2Code("Book", response.getContentAsString(), true);
 	}
 
 	@Test
 	public void testAuthor() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, Author.class, OutputFormat.EXTJS4, true);
-		compareExtJs4Model("Author", response.getContentAsString(), true);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Author.class, OutputFormat.EXTJS4, true);
+		GeneratorTestUtil.compareExtJs4Code("Author", response.getContentAsString(), true);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, Author.class, OutputFormat.TOUCH2, false);
-		compareTouch2Model("Author", response.getContentAsString(), false);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Author.class, OutputFormat.TOUCH2, false);
+		GeneratorTestUtil.compareTouch2Code("Author", response.getContentAsString(), false);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, Author.class, OutputFormat.EXTJS4, true);
-		compareExtJs4Model("Author", response.getContentAsString(), true);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Author.class, OutputFormat.EXTJS4, true);
+		GeneratorTestUtil.compareExtJs4Code("Author", response.getContentAsString(), true);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, Author.class, OutputFormat.TOUCH2, true);
-		compareTouch2Model("Author", response.getContentAsString(), true);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Author.class, OutputFormat.TOUCH2, true);
+		GeneratorTestUtil.compareTouch2Code("Author", response.getContentAsString(), true);
+	}
+
+	@Test
+	public void testBookWithOneAuthor() throws IOException {
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BookWithOneAuthor.class, OutputFormat.EXTJS4,
+				true);
+		GeneratorTestUtil.compareExtJs4Code("BookWithOneAuthor", response.getContentAsString(), true);
+
+		response = new MockHttpServletResponse();
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BookWithOneAuthor.class, OutputFormat.TOUCH2,
+				false);
+		GeneratorTestUtil.compareTouch2Code("BookWithOneAuthor", response.getContentAsString(), false);
+
+		response = new MockHttpServletResponse();
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BookWithOneAuthor.class, OutputFormat.EXTJS4,
+				true);
+		GeneratorTestUtil.compareExtJs4Code("BookWithOneAuthor", response.getContentAsString(), true);
+
+		response = new MockHttpServletResponse();
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BookWithOneAuthor.class, OutputFormat.TOUCH2,
+				true);
+		GeneratorTestUtil.compareTouch2Code("BookWithOneAuthor", response.getContentAsString(), true);
 	}
 
 }

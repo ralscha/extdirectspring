@@ -23,7 +23,7 @@ import org.apache.commons.io.IOUtils;
 
 public class GeneratorTestUtil {
 
-	public static void compareModelString(String expectedValue, String value, boolean debug) {
+	private static void compareModelString(String expectedValue, String value, boolean debug) {
 		if (debug) {
 			assertThat(value.replaceAll("\\r?\\n", "\n")).isEqualTo(expectedValue.replaceAll("\\r?\\n", "\n"));
 		} else {
@@ -31,18 +31,21 @@ public class GeneratorTestUtil {
 		}
 	}
 
-	public static void compareExtJs4Model(String expectedFile, String value, boolean debug) {
+	public static void compareExtJs4Code(String model, String value, boolean debug) {
 		try {
-			String expectedValue = IOUtils.toString(GeneratorTestUtil.class.getResourceAsStream(expectedFile));
+			String expectedValue = IOUtils.toString(GeneratorTestUtil.class.getResourceAsStream("/generator/" + model
+					+ "ExtJs4.json"));
 			compareModelString(expectedValue, value, debug);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+
 	}
 
-	public static void compareTouch2Model(String expectedFile, String value, boolean debug) {
+	public static void compareTouch2Code(String model, String value, boolean debug) {
 		try {
-			String expectedValue = IOUtils.toString(GeneratorTestUtil.class.getResourceAsStream(expectedFile));
+			String expectedValue = IOUtils.toString(GeneratorTestUtil.class.getResourceAsStream("/generator/" + model
+					+ "Touch2.json"));
 			compareModelString(expectedValue, value, debug);
 		} catch (IOException e) {
 			throw new RuntimeException(e);

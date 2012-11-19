@@ -28,8 +28,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.context.support.GenericWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
@@ -38,94 +36,85 @@ public class ModelGeneratorBeanWithoutAnnotationsTest {
 	@Autowired
 	private DefaultListableBeanFactory applicationContext;
 
-	private static void compareExtJs4Model(String value, boolean debug) {
-		GeneratorTestUtil.compareExtJs4Model("/BeanWithoutAnnotationsExtJs4Debug.json", value, debug);
-	}
-
-	private static void compareTouch2Model(String value, boolean debug) {
-		GeneratorTestUtil.compareTouch2Model("/BeanWithoutAnnotationsTouch2Debug.json", value, debug);
-	}
-
 	@Test
 	public void testWriteModelHttpServletRequestHttpServletResponseClassOfQOutputFormat() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, BeanWithoutAnnotations.class, OutputFormat.EXTJS4);
-		compareExtJs4Model(response.getContentAsString(), false);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithoutAnnotations.class,
+				OutputFormat.EXTJS4);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithoutAnnotations", response.getContentAsString(), false);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, BeanWithoutAnnotations.class, OutputFormat.TOUCH2);
-		compareTouch2Model(response.getContentAsString(), false);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithoutAnnotations.class,
+				OutputFormat.TOUCH2);
+		GeneratorTestUtil.compareTouch2Code("BeanWithoutAnnotations", response.getContentAsString(), false);
 	}
 
 	@Test
 	public void testWriteModelHttpServletRequestHttpServletResponseClassOfQOutputFormatBoolean() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, BeanWithoutAnnotations.class, OutputFormat.EXTJS4, false);
-		compareExtJs4Model(response.getContentAsString(), false);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithoutAnnotations.class,
+				OutputFormat.EXTJS4, false);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithoutAnnotations", response.getContentAsString(), false);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, BeanWithoutAnnotations.class, OutputFormat.TOUCH2, false);
-		compareTouch2Model(response.getContentAsString(), false);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithoutAnnotations.class,
+				OutputFormat.TOUCH2, false);
+		GeneratorTestUtil.compareTouch2Code("BeanWithoutAnnotations", response.getContentAsString(), false);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, BeanWithoutAnnotations.class, OutputFormat.EXTJS4, true);
-		compareExtJs4Model(response.getContentAsString(), true);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithoutAnnotations.class,
+				OutputFormat.EXTJS4, true);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithoutAnnotations", response.getContentAsString(), true);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, BeanWithoutAnnotations.class, OutputFormat.TOUCH2, true);
-		compareTouch2Model(response.getContentAsString(), true);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithoutAnnotations.class,
+				OutputFormat.TOUCH2, true);
+		GeneratorTestUtil.compareTouch2Code("BeanWithoutAnnotations", response.getContentAsString(), true);
 	}
 
 	@Test
 	public void testWriteModelHttpServletRequestHttpServletResponseModelBeanOutputFormat() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelBean model = ModelGenerator.createModel(BeanWithoutAnnotations.class);
-		ModelGenerator.writeModel(createRequest(), response, model, OutputFormat.EXTJS4);
-		compareExtJs4Model(response.getContentAsString(), false);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.EXTJS4);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithoutAnnotations", response.getContentAsString(), false);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, model, OutputFormat.TOUCH2);
-		compareTouch2Model(response.getContentAsString(), false);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.TOUCH2);
+		GeneratorTestUtil.compareTouch2Code("BeanWithoutAnnotations", response.getContentAsString(), false);
 	}
 
 	@Test
 	public void testWriteModelHttpServletRequestHttpServletResponseModelBeanOutputFormatBoolean() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelBean model = ModelGenerator.createModel(BeanWithoutAnnotations.class);
-		ModelGenerator.writeModel(createRequest(), response, model, OutputFormat.EXTJS4, false);
-		compareExtJs4Model(response.getContentAsString(), false);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.EXTJS4, false);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithoutAnnotations", response.getContentAsString(), false);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, model, OutputFormat.TOUCH2, false);
-		compareTouch2Model(response.getContentAsString(), false);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.TOUCH2, false);
+		GeneratorTestUtil.compareTouch2Code("BeanWithoutAnnotations", response.getContentAsString(), false);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, model, OutputFormat.EXTJS4, true);
-		compareExtJs4Model(response.getContentAsString(), true);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.EXTJS4, true);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithoutAnnotations", response.getContentAsString(), true);
 
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(createRequest(), response, model, OutputFormat.TOUCH2, true);
-		compareTouch2Model(response.getContentAsString(), true);
-	}
-
-	private MockHttpServletRequest createRequest() {
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, new GenericWebApplicationContext(
-				applicationContext));
-		return request;
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.TOUCH2, true);
+		GeneratorTestUtil.compareTouch2Code("BeanWithoutAnnotations", response.getContentAsString(), true);
 	}
 
 	@Test
 	public void testGenerateJavascriptClassOfQOutputFormatBoolean() {
-		compareExtJs4Model(ModelGenerator.generateJavascript(BeanWithoutAnnotations.class, OutputFormat.EXTJS4, true),
-				true);
-		compareExtJs4Model(ModelGenerator.generateJavascript(BeanWithoutAnnotations.class, OutputFormat.EXTJS4, false),
-				false);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithoutAnnotations",
+				ModelGenerator.generateJavascript(BeanWithoutAnnotations.class, OutputFormat.EXTJS4, true), true);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithoutAnnotations",
+				ModelGenerator.generateJavascript(BeanWithoutAnnotations.class, OutputFormat.EXTJS4, false), false);
 
-		compareTouch2Model(ModelGenerator.generateJavascript(BeanWithoutAnnotations.class, OutputFormat.TOUCH2, true),
-				true);
-		compareTouch2Model(ModelGenerator.generateJavascript(BeanWithoutAnnotations.class, OutputFormat.TOUCH2, false),
-				false);
+		GeneratorTestUtil.compareTouch2Code("BeanWithoutAnnotations",
+				ModelGenerator.generateJavascript(BeanWithoutAnnotations.class, OutputFormat.TOUCH2, true), true);
+		GeneratorTestUtil.compareTouch2Code("BeanWithoutAnnotations",
+				ModelGenerator.generateJavascript(BeanWithoutAnnotations.class, OutputFormat.TOUCH2, false), false);
 	}
 
 	@Test
@@ -150,11 +139,15 @@ public class ModelGeneratorBeanWithoutAnnotationsTest {
 	@Test
 	public void testGenerateJavascriptModelBeanOutputFormatBoolean() {
 		ModelBean model = ModelGenerator.createModel(BeanWithoutAnnotations.class);
-		compareExtJs4Model(ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, true), true);
-		compareExtJs4Model(ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false), false);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithoutAnnotations",
+				ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, true), true);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithoutAnnotations",
+				ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false), false);
 
-		compareTouch2Model(ModelGenerator.generateJavascript(model, OutputFormat.TOUCH2, true), true);
-		compareTouch2Model(ModelGenerator.generateJavascript(model, OutputFormat.TOUCH2, false), false);
+		GeneratorTestUtil.compareTouch2Code("BeanWithoutAnnotations",
+				ModelGenerator.generateJavascript(model, OutputFormat.TOUCH2, true), true);
+		GeneratorTestUtil.compareTouch2Code("BeanWithoutAnnotations",
+				ModelGenerator.generateJavascript(model, OutputFormat.TOUCH2, false), false);
 	}
 
 }
