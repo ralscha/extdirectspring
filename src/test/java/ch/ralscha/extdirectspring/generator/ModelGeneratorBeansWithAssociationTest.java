@@ -163,7 +163,7 @@ public class ModelGeneratorBeansWithAssociationTest {
 	public void testAddress() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Address.class, OutputFormat.EXTJS4, true);
-		System.out.println(response.getContentAsString());
+		
 		GeneratorTestUtil.compareExtJs4Code("Address", response.getContentAsString(), true);
 
 		response = new MockHttpServletResponse();
