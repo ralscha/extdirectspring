@@ -21,6 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -151,4 +152,14 @@ public class JsonHandler {
 		return mapper.convertValue(object, clazz);
 	}
 
+	/**
+	 * Converts one object into another.
+	 * 
+	 * @param object the source
+	 * @param toValueTypeRef the type of the target
+	 * @return the converted object
+	 */	
+	public <T> T convertValue(Object object, JavaType toValueTypeRef) {
+		return mapper.convertValue(object, toValueTypeRef);
+	}
 }

@@ -34,6 +34,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.stereotype.Component;
@@ -47,6 +48,9 @@ import ch.ralscha.extdirectspring.bean.SortInfo;
 import ch.ralscha.extdirectspring.filter.Filter;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 /**
  * Resolver of ExtDirectRequest parameters.
@@ -238,11 +242,32 @@ public final class ParametersResolver implements InitializingBean {
 				return value;
 			} else if (conversionService.canConvert(TypeDescriptor.forObject(value),
 					methodParameter.getTypeDescriptor())) {
-				return conversionService.convert(value, TypeDescriptor.forObject(value),
-						methodParameter.getTypeDescriptor());
+
+				try {
+					return conversionService.convert(value, TypeDescriptor.forObject(value),
+							methodParameter.getTypeDescriptor());
+				} catch (ConversionFailedException e) {
+					// ignore this exception for collections and arrays.
+					// try to convert the value with jackson
+					TypeFactory typeFactory = jsonHandler.getMapper().getTypeFactory();
+					if (methodParameter.getTypeDescriptor().isCollection()) {
+						JavaType type = CollectionType.construct(
+								methodParameter.getType(),
+								typeFactory.constructType(methodParameter.getTypeDescriptor()
+										.getElementTypeDescriptor().getType()));
+						return jsonHandler.convertValue(value, type);
+					} else if (methodParameter.getTypeDescriptor().isArray()) {
+						JavaType type = typeFactory.constructArrayType(methodParameter.getTypeDescriptor()
+								.getElementTypeDescriptor().getType());
+						return jsonHandler.convertValue(value, type);
+					}
+
+					throw e;
+				}
 			} else {
 				return jsonHandler.convertValue(value, methodParameter.getType());
 			}
+
 		}
 		return value;
 	}
