@@ -23,6 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -183,7 +184,124 @@ public class RemoteProviderSimpleNamed {
 		assertThat(session).isNotNull();
 		return new ResultObject(name, age, active);
 	}
+	
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public String methodCollection1(String name, List<TestObject> collections) {
+		return String.format("1->%s;%s", name, collections);
+	}
 
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public String methodCollection2(String name, @RequestParam(required = false) List<TestObject> collections) {
+		return String.format("2->%s;%s", name, collections);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public String methodArray1(String name, TestObject[] array) {
+		StringBuilder sb = new StringBuilder();
+		if (array != null) {
+			for (int i = 0; i < array.length; i++) {
+				sb.append(array[i].toString());
+				sb.append("-");
+			}
+		}
+		return String.format("3->%s;%s", name, sb.toString());
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public String methodArray2(String name, @RequestParam(required = false) TestObject[] array) {
+		StringBuilder sb = new StringBuilder();
+		if (array != null) {
+			for (int i = 0; i < array.length; i++) {
+				sb.append(array[i].toString());
+			}
+		}
+		return String.format("4->%s;%s", name, sb.toString());
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public String methodArray3(String name, TestObject... array) {
+		StringBuilder sb = new StringBuilder();
+		if (array != null) {
+			for (int i = 0; i < array.length; i++) {
+				sb.append(array[i].toString());
+				sb.append("-");
+			}
+		}
+		return String.format("5->%s;%s", name, sb.toString());
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public String methodArray4(String name, @RequestParam(required = false) TestObject... array) {
+		StringBuilder sb = new StringBuilder();
+		if (array != null) {
+			for (int i = 0; i < array.length; i++) {
+				sb.append(array[i].toString());
+			}
+		}
+		return String.format("6->%s;%s", name, sb.toString());
+	}
+	
+	public static class TestObject {
+		private int id;
+		
+		private String name;
+		
+		private Boolean active;
+		
+		private BigDecimal amount;
+		
+		public TestObject() {
+			//default constructor
+		}
+		
+		public TestObject(int id, String name, Boolean active, BigDecimal amount) {
+			super();
+			this.id = id;
+			this.name = name;
+			this.active = active;
+			this.amount = amount;
+		}
+
+		public int getId() {
+			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public Boolean getActive() {
+			return active;
+		}
+
+		public void setActive(Boolean active) {
+			this.active = active;
+		}
+
+		public BigDecimal getAmount() {
+			return amount;
+		}
+
+		public void setAmount(BigDecimal amount) {
+			this.amount = amount;
+		}
+
+		@Override
+		public String toString() {
+			return "TestObject [id=" + id + ", name=" + name + ", active=" + active + ", amount=" + amount + "]";
+		}
+		
+		
+	}
+	
 	public static class ResultObject {
 		private String name;
 
