@@ -23,8 +23,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -227,4 +231,124 @@ public class RemoteProviderSimple {
 		return intHeader + ";" + booleanHeader;
 	}
 
+	@ExtDirectMethod
+	public String method21(String name, List<String> strings, int id) {
+		StringBuilder sb = new StringBuilder();
+		if (strings != null) {
+			for (String str : strings) {
+				sb.append(str);
+				sb.append("-");
+			}
+		}
+		return name + ";" + sb.toString() + ";" + id;
+	}
+	
+	@ExtDirectMethod
+	public String method22(String name, Set<Integer> ids, int id) {
+		StringBuilder sb = new StringBuilder();
+		if (ids != null) {
+			SortedSet<Integer> sorted = new TreeSet<Integer>(ids);
+			for (int i : sorted) {
+				sb.append(i);
+				sb.append("+");
+			}
+		}
+		return name + ";" + sb.toString() + ";" + id;
+	}	
+	
+	@ExtDirectMethod
+	public String method23(String name, String[] strings, int id) {
+		StringBuilder sb = new StringBuilder();
+		if (strings != null) {
+			for (String str : strings) {
+				sb.append(str);
+				sb.append("-");
+			}
+		}
+		return name + ";" + sb.toString() + ";" + id;
+	}
+	
+	@ExtDirectMethod
+	public String method24(String name, int id, int... ids) {
+		StringBuilder sb = new StringBuilder();
+		if (ids != null) {
+			for (int i : ids) {
+				sb.append(i);
+				sb.append("+");
+			}
+		}
+		return name + ";" + sb.toString() + ";" + id;
+	}		
+	
+	
+	@ExtDirectMethod
+	public String method25(String name, List<BusinessObject> bos, int id) {
+		StringBuilder sb = new StringBuilder();
+		if (bos != null) {
+			for (BusinessObject bo : bos) {
+				sb.append(bo);
+				sb.append("-");
+			}
+		}
+		return name + ";" + sb.toString() + ";" + id;
+	}
+	
+	@ExtDirectMethod
+	public String method26(String name, BusinessObject[] bos, int id) {
+		StringBuilder sb = new StringBuilder();
+		if (bos != null) {
+			for (BusinessObject bo : bos) {
+				sb.append(bo);
+				sb.append("-");
+			}
+		}
+		return name + ";" + sb.toString() + ";" + id;
+	}	
+	
+	public static final class BusinessObject {
+		private int id;
+		private String name;
+		private BigDecimal bd;
+		
+		public BusinessObject() {
+			//default constructor for jackson
+		}
+		
+		public BusinessObject(int id, String name, BigDecimal bd) {
+			this.id = id;
+			this.name = name;
+			this.bd = bd;
+		}
+
+		public int getId() {
+			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public BigDecimal getBd() {
+			return bd;
+		}
+
+		public void setBd(BigDecimal bd) {
+			this.bd = bd;
+		}
+
+		@Override
+		public String toString() {
+			return "BusinessObject [id=" + id + ", name=" + name + ", bd=" + bd + "]";
+		}
+		
+		
+	}
 }
