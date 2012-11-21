@@ -294,6 +294,36 @@ public class RouterControllerSimpleNamedTest {
 		assertThat(result).isEqualTo("2->4;null");
 	}
 
+	@Test
+	public void testCollectionsWithoutGeneric() {
+		Map<String, Object> params = new LinkedHashMap<String, Object>();
+		params.put("name", "Joan1");		
+		TestObject ce = new TestObject(33, "Meier", true, new BigDecimal("33.334"));		
+		params.put("collections", Collections.singleton(ce));
+		String result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
+				"methodCollection3", true, params, String.class);
+		assertThat(result).isEqualTo("3->Joan1;[{id=33, name=Meier, active=true, amount=33.334}]");
+				
+		params = new LinkedHashMap<String, Object>();
+		params.put("name", "Joan2");		
+		List<TestObject> list = new ArrayList<TestObject>();
+		list.add(new TestObject(1, "1", true, new BigDecimal("1.1")));		
+		list.add(new TestObject(2, "2", false, new BigDecimal("1.2")));
+		list.add(new TestObject(3, "3", true, new BigDecimal("1.3")));
+		
+		params.put("collections", list);
+		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
+				"methodCollection3", true, params, String.class);
+		assertThat(result).isEqualTo("3->Joan2;[{id=1, name=1, active=true, amount=1.1}, {id=2, name=2, active=false, amount=1.2}, {id=3, name=3, active=true, amount=1.3}]");
+
+		params = new LinkedHashMap<String, Object>();
+		params.put("name", "Joan3");				
+		params.put("collections", Collections.emptyList());
+		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
+				"methodCollection3", true, params, String.class);
+		assertThat(result).isEqualTo("3->Joan3;[]");	
+	}
+
 	
 	@Test
 	public void testArrays() {

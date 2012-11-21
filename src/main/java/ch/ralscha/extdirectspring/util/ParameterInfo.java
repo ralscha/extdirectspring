@@ -96,10 +96,8 @@ public final class ParameterInfo {
 	}
 
 	public Class<?> getCollectionType() {
-		if (typeDescriptor.isCollection()) {
-			if (typeDescriptor.getElementTypeDescriptor() != null) {
-				return typeDescriptor.getElementTypeDescriptor().getType();
-			}
+		if (typeDescriptor.isCollection() && typeDescriptor.getElementTypeDescriptor() != null) {
+			return typeDescriptor.getElementTypeDescriptor().getType();
 		}
 		return null;
 	}

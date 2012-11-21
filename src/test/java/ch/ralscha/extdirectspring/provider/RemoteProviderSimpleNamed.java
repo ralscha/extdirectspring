@@ -196,6 +196,11 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public String methodCollection3(String name, @SuppressWarnings("rawtypes") List collections) {
+		return String.format("3->%s;%s", name, collections);
+	}
+	
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public String methodArray1(String name, TestObject[] array) {
 		StringBuilder sb = new StringBuilder();
 		if (array != null) {

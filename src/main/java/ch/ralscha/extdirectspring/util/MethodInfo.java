@@ -87,8 +87,9 @@ public final class MethodInfo {
 
 			if (this.collectionType == null) {
 				for (ParameterInfo parameter : parameters) {
-					if (parameter.getCollectionType() != null) {
-						this.collectionType = parameter.getCollectionType();
+					Class<?> collType = parameter.getCollectionType();
+					if (collType != null) {
+						this.collectionType = collType;
 						break;
 					}
 				}

@@ -655,6 +655,9 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimpleNamed",
 				new Action("methodCollection2", Arrays.asList("name", "collections")));
 		remotingApi.addAction("remoteProviderSimpleNamed",
+				new Action("methodCollection3", Arrays.asList("name", "collections")));
+		
+		remotingApi.addAction("remoteProviderSimpleNamed",
 				new Action("methodArray1", Arrays.asList("name", "array")));
 		remotingApi.addAction("remoteProviderSimpleNamed",
 				new Action("methodArray2", Arrays.asList("name", "array")));
