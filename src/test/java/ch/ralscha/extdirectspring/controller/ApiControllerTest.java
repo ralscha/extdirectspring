@@ -656,15 +656,11 @@ public class ApiControllerTest {
 				new Action("methodCollection2", Arrays.asList("name", "collections")));
 		remotingApi.addAction("remoteProviderSimpleNamed",
 				new Action("methodCollection3", Arrays.asList("name", "collections")));
-		
-		remotingApi.addAction("remoteProviderSimpleNamed",
-				new Action("methodArray1", Arrays.asList("name", "array")));
-		remotingApi.addAction("remoteProviderSimpleNamed",
-				new Action("methodArray2", Arrays.asList("name", "array")));
-		remotingApi.addAction("remoteProviderSimpleNamed",
-				new Action("methodArray3", Arrays.asList("name", "array")));
-		remotingApi.addAction("remoteProviderSimpleNamed",
-				new Action("methodArray4", Arrays.asList("name", "array")));
+
+		remotingApi.addAction("remoteProviderSimpleNamed", new Action("methodArray1", Arrays.asList("name", "array")));
+		remotingApi.addAction("remoteProviderSimpleNamed", new Action("methodArray2", Arrays.asList("name", "array")));
+		remotingApi.addAction("remoteProviderSimpleNamed", new Action("methodArray3", Arrays.asList("name", "array")));
+		remotingApi.addAction("remoteProviderSimpleNamed", new Action("methodArray4", Arrays.asList("name", "array")));
 
 		remotingApi.addAction("remoteProviderSimpleNamed",
 				new Action("methodRP1", Arrays.asList("lastName", "theAge", "active")));
@@ -676,7 +672,6 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimpleNamed",
 				new Action("methodRP3", Arrays.asList("lastName", "theAge", "active")));
 
-		
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage1", "message1"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage2", "message2"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage3", "message3"));

@@ -255,158 +255,161 @@ public class RouterControllerSimpleNamedTest {
 	@Test
 	public void testCollections() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
-		params.put("name", "first");		
-		TestObject ce = new TestObject(23, "Meier", false, new BigDecimal("100.23"));		
+		params.put("name", "first");
+		TestObject ce = new TestObject(23, "Meier", false, new BigDecimal("100.23"));
 		params.put("collections", Collections.singleton(ce));
 		String result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
 				"methodCollection1", true, params, String.class);
 		assertThat(result).isEqualTo("1->first;[TestObject [id=23, name=Meier, active=false, amount=100.23]]");
-		
-		
-		params = new LinkedHashMap<String, Object>();
-		params.put("name", "2nd");		
-		List<TestObject> list = new ArrayList<TestObject>();
-		list.add(new TestObject(1, "One", true, new BigDecimal("1.1")));		
-		list.add(new TestObject(2, "Two", false, new BigDecimal("1.2")));
-		list.add(new TestObject(3, "Three", true, new BigDecimal("1.3")));
-		
-		params.put("collections", list);
-		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
-				"methodCollection1", true, params, String.class);
-		assertThat(result).isEqualTo("1->2nd;[TestObject [id=1, name=One, active=true, amount=1.1], TestObject [id=2, name=Two, active=false, amount=1.2], TestObject [id=3, name=Three, active=true, amount=1.3]]");
 
 		params = new LinkedHashMap<String, Object>();
-		params.put("name", "3rd");				
+		params.put("name", "2nd");
+		List<TestObject> list = new ArrayList<TestObject>();
+		list.add(new TestObject(1, "One", true, new BigDecimal("1.1")));
+		list.add(new TestObject(2, "Two", false, new BigDecimal("1.2")));
+		list.add(new TestObject(3, "Three", true, new BigDecimal("1.3")));
+
+		params.put("collections", list);
+		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "methodCollection1",
+				true, params, String.class);
+		assertThat(result)
+				.isEqualTo(
+						"1->2nd;[TestObject [id=1, name=One, active=true, amount=1.1], TestObject [id=2, name=Two, active=false, amount=1.2], TestObject [id=3, name=Three, active=true, amount=1.3]]");
+
+		params = new LinkedHashMap<String, Object>();
+		params.put("name", "3rd");
 		params.put("collections", Collections.emptyList());
-		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
-				"methodCollection1", true, params, String.class);
+		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "methodCollection1",
+				true, params, String.class);
 		assertThat(result).isEqualTo("1->3rd;[]");
 
 		params = new LinkedHashMap<String, Object>();
-		params.put("name", "4");				
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
-				"methodCollection1", true, params, null);
-		
+		params.put("name", "4");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "methodCollection1", true, params, null);
+
 		params = new LinkedHashMap<String, Object>();
-		params.put("name", "4");				
-		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
-				"methodCollection2", true, params, String.class);
+		params.put("name", "4");
+		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "methodCollection2",
+				true, params, String.class);
 		assertThat(result).isEqualTo("2->4;null");
 	}
 
 	@Test
 	public void testCollectionsWithoutGeneric() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
-		params.put("name", "Joan1");		
-		TestObject ce = new TestObject(33, "Meier", true, new BigDecimal("33.334"));		
+		params.put("name", "Joan1");
+		TestObject ce = new TestObject(33, "Meier", true, new BigDecimal("33.334"));
 		params.put("collections", Collections.singleton(ce));
 		String result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
 				"methodCollection3", true, params, String.class);
 		assertThat(result).isEqualTo("3->Joan1;[{id=33, name=Meier, active=true, amount=33.334}]");
-				
+
 		params = new LinkedHashMap<String, Object>();
-		params.put("name", "Joan2");		
+		params.put("name", "Joan2");
 		List<TestObject> list = new ArrayList<TestObject>();
-		list.add(new TestObject(1, "1", true, new BigDecimal("1.1")));		
+		list.add(new TestObject(1, "1", true, new BigDecimal("1.1")));
 		list.add(new TestObject(2, "2", false, new BigDecimal("1.2")));
 		list.add(new TestObject(3, "3", true, new BigDecimal("1.3")));
-		
+
 		params.put("collections", list);
-		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
-				"methodCollection3", true, params, String.class);
-		assertThat(result).isEqualTo("3->Joan2;[{id=1, name=1, active=true, amount=1.1}, {id=2, name=2, active=false, amount=1.2}, {id=3, name=3, active=true, amount=1.3}]");
+		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "methodCollection3",
+				true, params, String.class);
+		assertThat(result)
+				.isEqualTo(
+						"3->Joan2;[{id=1, name=1, active=true, amount=1.1}, {id=2, name=2, active=false, amount=1.2}, {id=3, name=3, active=true, amount=1.3}]");
 
 		params = new LinkedHashMap<String, Object>();
-		params.put("name", "Joan3");				
+		params.put("name", "Joan3");
 		params.put("collections", Collections.emptyList());
-		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
-				"methodCollection3", true, params, String.class);
-		assertThat(result).isEqualTo("3->Joan3;[]");	
+		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "methodCollection3",
+				true, params, String.class);
+		assertThat(result).isEqualTo("3->Joan3;[]");
 	}
 
-	
 	@Test
 	public void testArrays() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
-		params.put("name", "arr1");		
-		TestObject ce = new TestObject(23, "Meier", false, new BigDecimal("100.23"));		
+		params.put("name", "arr1");
+		TestObject ce = new TestObject(23, "Meier", false, new BigDecimal("100.23"));
 		params.put("array", Collections.singleton(ce));
-		String result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
-				"methodArray1", true, params, String.class);
+		String result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "methodArray1",
+				true, params, String.class);
 		assertThat(result).isEqualTo("3->arr1;TestObject [id=23, name=Meier, active=false, amount=100.23]-");
-				
-		params = new LinkedHashMap<String, Object>();
-		params.put("name", "arr2");		
-		List<TestObject> list = new ArrayList<TestObject>();
-		list.add(new TestObject(1, "One", true, new BigDecimal("1.1")));		
-		list.add(new TestObject(2, "Two", false, new BigDecimal("1.2")));
-		list.add(new TestObject(3, "Three", true, new BigDecimal("1.3")));
-		
-		params.put("array", list);
-		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
-				"methodArray1", true, params, String.class);
-		assertThat(result).isEqualTo("3->arr2;TestObject [id=1, name=One, active=true, amount=1.1]-TestObject [id=2, name=Two, active=false, amount=1.2]-TestObject [id=3, name=Three, active=true, amount=1.3]-");
 
 		params = new LinkedHashMap<String, Object>();
-		params.put("name", "arr3");				
+		params.put("name", "arr2");
+		List<TestObject> list = new ArrayList<TestObject>();
+		list.add(new TestObject(1, "One", true, new BigDecimal("1.1")));
+		list.add(new TestObject(2, "Two", false, new BigDecimal("1.2")));
+		list.add(new TestObject(3, "Three", true, new BigDecimal("1.3")));
+
+		params.put("array", list);
+		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "methodArray1", true,
+				params, String.class);
+		assertThat(result)
+				.isEqualTo(
+						"3->arr2;TestObject [id=1, name=One, active=true, amount=1.1]-TestObject [id=2, name=Two, active=false, amount=1.2]-TestObject [id=3, name=Three, active=true, amount=1.3]-");
+
+		params = new LinkedHashMap<String, Object>();
+		params.put("name", "arr3");
 		params.put("array", Collections.emptyList());
-		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
-				"methodArray1", true, params, String.class);
+		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "methodArray1", true,
+				params, String.class);
 		assertThat(result).isEqualTo("3->arr3;");
 
 		params = new LinkedHashMap<String, Object>();
-		params.put("name", "arr4");				
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
-				"methodArray1", true, params, null);
-		
+		params.put("name", "arr4");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "methodArray1", true, params, null);
+
 		params = new LinkedHashMap<String, Object>();
-		params.put("name", "arr4");				
-		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
-				"methodArray2", true, params, String.class);
+		params.put("name", "arr4");
+		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "methodArray2", true,
+				params, String.class);
 		assertThat(result).isEqualTo("4->arr4;");
 	}
 
 	@Test
 	public void testArraysEllipsis() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
-		params.put("name", "arre1");		
-		TestObject ce = new TestObject(24, "Kiere", false, new BigDecimal("1001.23"));		
+		params.put("name", "arre1");
+		TestObject ce = new TestObject(24, "Kiere", false, new BigDecimal("1001.23"));
 		params.put("array", Collections.singleton(ce));
-		String result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
-				"methodArray3", true, params, String.class);
+		String result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "methodArray3",
+				true, params, String.class);
 		assertThat(result).isEqualTo("5->arre1;TestObject [id=24, name=Kiere, active=false, amount=1001.23]-");
-				
-		params = new LinkedHashMap<String, Object>();
-		params.put("name", "arre2");		
-		List<TestObject> list = new ArrayList<TestObject>();
-		list.add(new TestObject(1, "One1", true, new BigDecimal("1.1")));		
-		list.add(new TestObject(2, "Two2", false, new BigDecimal("1.2")));
-		list.add(new TestObject(3, "Three3", true, new BigDecimal("1.3")));
-		
-		params.put("array", list);
-		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
-				"methodArray3", true, params, String.class);
-		assertThat(result).isEqualTo("5->arre2;TestObject [id=1, name=One1, active=true, amount=1.1]-TestObject [id=2, name=Two2, active=false, amount=1.2]-TestObject [id=3, name=Three3, active=true, amount=1.3]-");
 
 		params = new LinkedHashMap<String, Object>();
-		params.put("name", "arre3");				
+		params.put("name", "arre2");
+		List<TestObject> list = new ArrayList<TestObject>();
+		list.add(new TestObject(1, "One1", true, new BigDecimal("1.1")));
+		list.add(new TestObject(2, "Two2", false, new BigDecimal("1.2")));
+		list.add(new TestObject(3, "Three3", true, new BigDecimal("1.3")));
+
+		params.put("array", list);
+		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "methodArray3", true,
+				params, String.class);
+		assertThat(result)
+				.isEqualTo(
+						"5->arre2;TestObject [id=1, name=One1, active=true, amount=1.1]-TestObject [id=2, name=Two2, active=false, amount=1.2]-TestObject [id=3, name=Three3, active=true, amount=1.3]-");
+
+		params = new LinkedHashMap<String, Object>();
+		params.put("name", "arre3");
 		params.put("array", Collections.emptyList());
-		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
-				"methodArray3", true, params, String.class);
+		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "methodArray3", true,
+				params, String.class);
 		assertThat(result).isEqualTo("5->arre3;");
 
 		params = new LinkedHashMap<String, Object>();
-		params.put("name", "arre4");				
-		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
-				"methodArray3", true, params, null);
-		
+		params.put("name", "arre4");
+		ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "methodArray3", true, params, null);
+
 		params = new LinkedHashMap<String, Object>();
-		params.put("name", "arre4");				
-		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed",
-				"methodArray4", true, params, String.class);
+		params.put("name", "arre4");
+		result = (String) ControllerUtil.sendAndReceive(controller, "remoteProviderSimpleNamed", "methodArray4", true,
+				params, String.class);
 		assertThat(result).isEqualTo("6->arre4;");
 	}
-	
+
 	@Test
 	public void testDefaultValues() throws IOException {
 		List<Map<String, Object>> multiRequests = new ArrayList<Map<String, Object>>();
@@ -665,8 +668,6 @@ public class RouterControllerSimpleNamedTest {
 				responses.subList(7, 8));
 	}
 
-	
-	
 	private static void assertResponse(String bean, String method, int tid, ResultObject expectedResult,
 			List<ExtDirectResponse> responses) {
 

@@ -158,7 +158,7 @@ public class JsonHandler {
 	 * @param object the source
 	 * @param toValueTypeRef the type of the target
 	 * @return the converted object
-	 */	
+	 */
 	public <T> T convertValue(Object object, JavaType toValueTypeRef) {
 		return mapper.convertValue(object, toValueTypeRef);
 	}

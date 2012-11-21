@@ -184,7 +184,7 @@ public class RemoteProviderSimpleNamed {
 		assertThat(session).isNotNull();
 		return new ResultObject(name, age, active);
 	}
-	
+
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public String methodCollection1(String name, List<TestObject> collections) {
 		return String.format("1->%s;%s", name, collections);
@@ -199,7 +199,7 @@ public class RemoteProviderSimpleNamed {
 	public String methodCollection3(String name, @SuppressWarnings("rawtypes") List collections) {
 		return String.format("3->%s;%s", name, collections);
 	}
-	
+
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public String methodArray1(String name, TestObject[] array) {
 		StringBuilder sb = new StringBuilder();
@@ -245,20 +245,20 @@ public class RemoteProviderSimpleNamed {
 		}
 		return String.format("6->%s;%s", name, sb.toString());
 	}
-	
+
 	public static class TestObject {
 		private int id;
-		
+
 		private String name;
-		
+
 		private Boolean active;
-		
+
 		private BigDecimal amount;
-		
+
 		public TestObject() {
-			//default constructor
+			// default constructor
 		}
-		
+
 		public TestObject(int id, String name, Boolean active, BigDecimal amount) {
 			super();
 			this.id = id;
@@ -303,10 +303,9 @@ public class RemoteProviderSimpleNamed {
 		public String toString() {
 			return "TestObject [id=" + id + ", name=" + name + ", active=" + active + ", amount=" + amount + "]";
 		}
-		
-		
+
 	}
-	
+
 	public static class ResultObject {
 		private String name;
 
