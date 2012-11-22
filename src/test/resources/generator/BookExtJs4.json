@@ -25,6 +25,7 @@ Ext.define('MyApp.Book',
   associations : [ {
     type : 'hasMany',
     model : 'MyApp.Author',
+    associationKey : 'authors',
     autoLoad : true,
     foreignKey : 'book_id',
     name : 'authors',

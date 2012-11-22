@@ -242,7 +242,7 @@ public class RemoteProviderSimple {
 		}
 		return name + ";" + sb.toString() + ";" + id;
 	}
-	
+
 	@ExtDirectMethod
 	public String method22(String name, Set<Integer> ids, int id) {
 		StringBuilder sb = new StringBuilder();
@@ -254,8 +254,8 @@ public class RemoteProviderSimple {
 			}
 		}
 		return name + ";" + sb.toString() + ";" + id;
-	}	
-	
+	}
+
 	@ExtDirectMethod
 	public String method23(String name, String[] strings, int id) {
 		StringBuilder sb = new StringBuilder();
@@ -267,7 +267,7 @@ public class RemoteProviderSimple {
 		}
 		return name + ";" + sb.toString() + ";" + id;
 	}
-	
+
 	@ExtDirectMethod
 	public String method24(String name, int id, int... ids) {
 		StringBuilder sb = new StringBuilder();
@@ -278,9 +278,8 @@ public class RemoteProviderSimple {
 			}
 		}
 		return name + ";" + sb.toString() + ";" + id;
-	}		
-	
-	
+	}
+
 	@ExtDirectMethod
 	public String method25(String name, List<BusinessObject> bos, int id) {
 		StringBuilder sb = new StringBuilder();
@@ -292,7 +291,7 @@ public class RemoteProviderSimple {
 		}
 		return name + ";" + sb.toString() + ";" + id;
 	}
-	
+
 	@ExtDirectMethod
 	public String method26(String name, BusinessObject[] bos, int id) {
 		StringBuilder sb = new StringBuilder();
@@ -303,17 +302,19 @@ public class RemoteProviderSimple {
 			}
 		}
 		return name + ";" + sb.toString() + ";" + id;
-	}	
-	
+	}
+
 	public static final class BusinessObject {
 		private int id;
+
 		private String name;
+
 		private BigDecimal bd;
-		
+
 		public BusinessObject() {
-			//default constructor for jackson
+			// default constructor for jackson
 		}
-		
+
 		public BusinessObject(int id, String name, BigDecimal bd) {
 			this.id = id;
 			this.name = name;
@@ -348,7 +349,6 @@ public class RemoteProviderSimple {
 		public String toString() {
 			return "BusinessObject [id=" + id + ", name=" + name + ", bd=" + bd + "]";
 		}
-		
-		
+
 	}
 }

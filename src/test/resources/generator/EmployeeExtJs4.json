@@ -12,6 +12,7 @@ Ext.define('MyApp.Employee',
   associations : [ {
     type : 'hasOne',
     model : 'ch.ralscha.extdirectspring.generator.bean.Address',
+    associationKey : 'address',
     foreignKey : 'address_id',
     setterName : 'setAddress',
     getterName : 'getAddress'

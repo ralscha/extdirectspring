@@ -12,6 +12,7 @@ Ext.define('ch.ralscha.extdirectspring.generator.bean.BookWithOneAuthor',
     associations : [ {
       type : 'hasOne',
       model : 'MyApp.Author',
+      associationKey : 'author',
       foreignKey : 'author_id',
       setterName : 'setAuthor',
       getterName : 'getAuthor'

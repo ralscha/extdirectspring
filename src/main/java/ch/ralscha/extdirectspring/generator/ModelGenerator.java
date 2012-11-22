@@ -357,6 +357,7 @@ public abstract class ModelGenerator {
 							}
 
 							ModelAssociationBean modelAssociationBean = new ModelAssociationBean(type, associationClass);
+							modelAssociationBean.setAssociationKey(field.getName());
 
 							if (StringUtils.hasText(modelAssociation.foreignKey())) {
 								modelAssociationBean.setForeignKey(modelAssociation.foreignKey());

@@ -11,6 +11,7 @@ Ext.define('ch.ralscha.extdirectspring.generator.bean.Pos',
   associations : [ {
     type : 'belongsTo',
     model : 'ch.ralscha.extdirectspring.generator.bean.Order',
+    associationKey : 'order',
     foreignKey : 'orderId',
     primaryKey : 'entityId',
     setterName : 'setTheOrder',
