@@ -529,49 +529,9 @@ public abstract class ModelGenerator {
 			configObject.put("validations", model.getValidations());
 		}
 
-		Map<String, Object> proxyObject = new LinkedHashMap<String, Object>();
-		proxyObject.put("type", "direct");
-
-		if (StringUtils.hasText(model.getIdProperty()) && !model.getIdProperty().equals("id")) {
-			proxyObject.put("idParam", model.getIdProperty());
-		}
-
-		Map<String, Object> apiObject = new LinkedHashMap<String, Object>();
-
-		if (StringUtils.hasText(model.getReadMethod()) && !StringUtils.hasText(model.getCreateMethod())
-				&& !StringUtils.hasText(model.getUpdateMethod()) && !StringUtils.hasText(model.getDestroyMethod())) {
-			proxyObject.put("directFn", model.getReadMethod());
-
-		} else {
-
-			if (StringUtils.hasText(model.getReadMethod())) {
-				apiObject.put("read", model.getReadMethod());
-			}
-
-			if (StringUtils.hasText(model.getCreateMethod())) {
-				apiObject.put("create", model.getCreateMethod());
-			}
-
-			if (StringUtils.hasText(model.getUpdateMethod())) {
-				apiObject.put("update", model.getUpdateMethod());
-			}
-
-			if (StringUtils.hasText(model.getDestroyMethod())) {
-				apiObject.put("destroy", model.getDestroyMethod());
-			}
-
-			if (!apiObject.isEmpty()) {
-				proxyObject.put("api", apiObject);
-			}
-		}
-
-		if (model.isPaging()) {
-			Map<String, Object> readerObject = new LinkedHashMap<String, Object>();
-			readerObject.put("root", "records");
-			proxyObject.put("reader", readerObject);
-		}
-
-		if (!apiObject.isEmpty() || proxyObject.containsKey("directFn")) {
+		ProxyObject proxyObject = new ProxyObject(model.getIdProperty(), model.getReadMethod(), model.getCreateMethod(), model.getUpdateMethod(),
+				model.getDestroyMethod(), model.isPaging());		
+		if (proxyObject.hasMethods()) {
 			configObject.put("proxy", proxyObject);
 		}
 
@@ -604,12 +564,6 @@ public abstract class ModelGenerator {
 		}
 
 		configObjectString = configObjectString.replace("\"", "'");
-		configObjectString = configObjectString.replaceAll("directFn( ?: ?)'([^']+)'", "directFn$1$2");
-		configObjectString = configObjectString.replaceAll("read( ?: ?)'([^']+)'", "read$1$2");
-		configObjectString = configObjectString.replaceAll("create( ?: ?)'([^']+)'", "create$1$2");
-		configObjectString = configObjectString.replaceAll("update( ?: ?)'([^']+)'", "update$1$2");
-		configObjectString = configObjectString.replaceAll("destroy( ?: ?)'([^']+)'", "destroy$1$2");
-
 		configObjectString = configObjectString.replaceAll("matcher( ?: ?)'(/[^']+/)'", "matcher$1$2");
 		configObjectString = configObjectString.replace("\\\\", "\\");
 
