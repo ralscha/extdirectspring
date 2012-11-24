@@ -28,6 +28,7 @@ import java.lang.annotation.Target;
  * code. The generator takes all public readable fields into account.
  * 
  * @author Ralph Schaer
+ * @author dbs
  */
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)

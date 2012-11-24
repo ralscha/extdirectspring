@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * Represents one field in a {@link ModelBean}
  * 
  * @author Ralph Schaer
+ * @author dbs
  */
 @JsonInclude(Include.NON_NULL)
 public class ModelFieldBean {

@@ -40,6 +40,7 @@ import ch.ralscha.extdirectspring.bean.api.PollingProvider;
  * parameters.
  * 
  * @author Ralph Schaer
+ * @author dbs
  */
 public final class MethodInfo {
 
