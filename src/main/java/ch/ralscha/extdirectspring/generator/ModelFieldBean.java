@@ -41,6 +41,13 @@ public class ModelFieldBean {
 	private String dateFormat;
 
 	private Boolean useNull;
+	
+	private String mapping;
+	
+	//only a false value will be generated
+	private Boolean persist = null;
+
+	private String convert;
 
 	/**
 	 * Creates a new ModelFieldBean with name and type
@@ -139,6 +146,42 @@ public class ModelFieldBean {
 	public void setUseNull(Boolean useNull) {
 		this.useNull = useNull;
 	}
+	
+	public String getMapping() {
+		return mapping;
+	}
+
+	/**
+	 * TODO doc setMapping
+	 * @param mapping
+	 */
+	public void setMapping(String mapping) {
+		this.mapping = mapping;
+	}
+
+	public Boolean getPersist() {
+		return persist;
+	}
+
+	/**
+	 * TODO doc setPersist
+	 * @param persist
+	 */
+	public void setPersist(Boolean persist) {
+		this.persist = persist;
+	}
+
+	public String getConvert() {
+		return convert;
+	}
+
+	/**
+	 * TODO doc setConvert
+	 * @param convert
+	 */
+	public void setConvert(String convert) {
+		this.convert = convert;
+	}
 
 	private final static class ModelTypeSerializer extends JsonSerializer<ModelType> {
 		@Override
@@ -153,9 +196,12 @@ public class ModelFieldBean {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((convert == null) ? 0 : convert.hashCode());
 		result = prime * result + ((dateFormat == null) ? 0 : dateFormat.hashCode());
 		result = prime * result + ((defaultValue == null) ? 0 : defaultValue.hashCode());
+		result = prime * result + ((mapping == null) ? 0 : mapping.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((persist == null) ? 0 : persist.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + ((useNull == null) ? 0 : useNull.hashCode());
 		return result;
@@ -163,48 +209,50 @@ public class ModelFieldBean {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
 		ModelFieldBean other = (ModelFieldBean) obj;
+		if (convert == null) {
+			if (other.convert != null)
+				return false;
+		} else if (!convert.equals(other.convert))
+			return false;
 		if (dateFormat == null) {
-			if (other.dateFormat != null) {
+			if (other.dateFormat != null)
 				return false;
-			}
-		} else if (!dateFormat.equals(other.dateFormat)) {
+		} else if (!dateFormat.equals(other.dateFormat))
 			return false;
-		}
 		if (defaultValue == null) {
-			if (other.defaultValue != null) {
+			if (other.defaultValue != null)
 				return false;
-			}
-		} else if (!defaultValue.equals(other.defaultValue)) {
+		} else if (!defaultValue.equals(other.defaultValue))
 			return false;
-		}
+		if (mapping == null) {
+			if (other.mapping != null)
+				return false;
+		} else if (!mapping.equals(other.mapping))
+			return false;
 		if (name == null) {
-			if (other.name != null) {
+			if (other.name != null)
 				return false;
-			}
-		} else if (!name.equals(other.name)) {
+		} else if (!name.equals(other.name))
 			return false;
-		}
-		if (type != other.type) {
+		if (persist == null) {
+			if (other.persist != null)
+				return false;
+		} else if (!persist.equals(other.persist))
 			return false;
-		}
+		if (type != other.type)
+			return false;
 		if (useNull == null) {
-			if (other.useNull != null) {
+			if (other.useNull != null)
 				return false;
-			}
-		} else if (!useNull.equals(other.useNull)) {
+		} else if (!useNull.equals(other.useNull))
 			return false;
-		}
 		return true;
 	}
-
 }

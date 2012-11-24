@@ -100,6 +100,13 @@ public class BeanWithAnnotations {
 	private DateTime aDateTime;
 
 	private LocalDate aLocalDate;
+	
+	//virtual field
+	private BigInteger bigValue;
+	//or @ModelField(mapping="bigValue", persist=false, convert="new Function('v', 'record', return (record.raw.bigValue > 1000000);)")
+	@ModelField(mapping="bigValue", persist=false, convert="function(v, record) { return (record.raw.bigValue > 1000000);}")
+	private boolean aBooleanVirtual;
+	
 
 	public byte getaByte() {
 		return aByte;
@@ -277,6 +284,22 @@ public class BeanWithAnnotations {
 		this.aLocalDate = aLocalDate;
 	}
 
+	public BigInteger getBigValue() {
+		return bigValue;
+	}
+
+	public void setBigValue(BigInteger bigValue) {
+		this.bigValue = bigValue;
+	}
+
+	public boolean getaBooleanVirtual() {
+		return aBooleanVirtual;
+	}
+
+	public void setaBooleanVirtual(boolean aBooleanVirtual) {
+		this.aBooleanVirtual = aBooleanVirtual;
+	}
+	
 	public static List<ModelFieldBean> expectedFields = new ArrayList<ModelFieldBean>();
 	static {
 
@@ -354,6 +377,14 @@ public class BeanWithAnnotations {
 
 		field = new ModelFieldBean("aLocalDate", ModelType.DATE);
 		expectedFields.add(field);
+		
+		field = new ModelFieldBean("bigValue", ModelType.INTEGER);
+		expectedFields.add(field);
+		
+		field = new ModelFieldBean("aBooleanVirtual", ModelType.BOOLEAN);
+		field.setMapping("bigValue");
+		field.setPersist(false);
+		field.setConvert("function(v, record) { return (record.raw.bigValue > 1000000);}");
+		expectedFields.add(field);
 	}
-
 }

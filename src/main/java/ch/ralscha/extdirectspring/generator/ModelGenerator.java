@@ -335,6 +335,18 @@ public abstract class ModelGenerator {
 											|| type == ModelType.STRING || type == ModelType.BOOLEAN)) {
 								modelFieldBean.setUseNull(true);
 							}
+							
+							if (StringUtils.hasText(modelFieldAnnotation.mapping())) {
+								modelFieldBean.setMapping(modelFieldAnnotation.mapping());
+							}
+							
+							if (!modelFieldAnnotation.persist()) {
+								modelFieldBean.setPersist(modelFieldAnnotation.persist());
+							}
+							
+							if (StringUtils.hasText(modelFieldAnnotation.convert())) {
+								modelFieldBean.setConvert(modelFieldAnnotation.convert());
+							}
 
 							modelFields.add(modelFieldBean);
 						} else {
