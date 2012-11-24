@@ -96,7 +96,7 @@ public @interface ModelField {
 	
 	/**
 	 * Prevent the value of this field to be serialized or written with  Ext.data.writer.Writer
-	 * <br> typical use for a virtual field
+	 * <br> Typical use for a virtual field
 	 * <br>
 	 * Property '<a href=
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-persist"
