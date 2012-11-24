@@ -102,6 +102,7 @@ public class BeanWithAnnotations {
 	private LocalDate aLocalDate;
 	
 	//virtual field
+	@ModelField(persist = true)
 	private BigInteger bigValue;
 	//or @ModelField(mapping="bigValue", persist=false, convert="new Function('v', 'record', return (record.raw.bigValue > 1000000);)")
 	@ModelField(mapping="bigValue", persist=false, convert="function(v, record) { return (record.raw.bigValue > 1000000);}")

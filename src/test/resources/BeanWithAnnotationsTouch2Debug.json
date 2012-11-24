@@ -78,7 +78,16 @@ Ext.define('Sch.Bean',
     }, {
       name : 'aLocalDate',
       type : 'date'
-    } ],
+    }, {
+      name : 'bigValue',
+      type : 'int'
+  }, {
+      name : 'aBooleanVirtual',
+      type : 'boolean',
+      mapping : 'bigValue',
+      persist : false,
+      convert : function(v, record) { return (record.raw.bigValue > 1000000);}
+  } ],
     proxy : {
       type : 'direct',
       api : {
