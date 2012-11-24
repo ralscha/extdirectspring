@@ -99,6 +99,7 @@ Ext.define('Sch.Bean',
   }, {
     type : 'length',
     field : 'aString',
+    min : 0,
     max : 255
   }, {
     type : 'format',

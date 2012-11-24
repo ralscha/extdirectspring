@@ -23,6 +23,12 @@ import java.util.List;
 
 import org.junit.Test;
 
+import ch.ralscha.extdirectspring.generator.validation.AbstractValidation;
+import ch.ralscha.extdirectspring.generator.validation.EmailValidation;
+import ch.ralscha.extdirectspring.generator.validation.FormatValidation;
+import ch.ralscha.extdirectspring.generator.validation.LengthValidation;
+import ch.ralscha.extdirectspring.generator.validation.PresenceValidation;
+
 public class ModelGeneratorWithValidationTest {
 
 	@Test
@@ -31,11 +37,8 @@ public class ModelGeneratorWithValidationTest {
 		model.setName("App.User");
 		model.addField(new ModelFieldBean("id", ModelType.INTEGER));
 		model.addField(new ModelFieldBean("name", ModelType.STRING));
-		model.addValidation(new ModelFieldValidationBean("presence", "id"));
-
-		ModelFieldValidationBean nameValidation = new ModelFieldValidationBean("length", "name");
-		nameValidation.addOption("min", 2);
-		model.addValidation(nameValidation);
+		model.addValidation(new PresenceValidation("id"));
+		model.addValidation(new LengthValidation("name", 2, null));
 
 		String code = ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false);
 
@@ -54,14 +57,12 @@ public class ModelGeneratorWithValidationTest {
 		field.setUseNull(true);
 		model.addField(field);
 
-		List<ModelFieldValidationBean> validations = new ArrayList<ModelFieldValidationBean>();
-		validations.add(new ModelFieldValidationBean("presence", "id"));
-		validations.add(new ModelFieldValidationBean("email", "email"));
+		List<AbstractValidation> validations = new ArrayList<AbstractValidation>();
+		validations.add(new PresenceValidation("id"));
+		validations.add(new EmailValidation("email"));
 		model.setValidations(validations);
 
-		ModelFieldValidationBean salaryValidator = new ModelFieldValidationBean("format", "salary");
-		salaryValidator.addOption("matcher", "/[0-9]*\\.[0-9]*/");
-		model.addValidation(salaryValidator);
+		model.addValidation(new FormatValidation("salary", "[0-9]*\\.[0-9]*"));
 
 		String code = ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false);
 		assertThat(code)
@@ -84,11 +85,8 @@ public class ModelGeneratorWithValidationTest {
 		fields.add(new ModelFieldBean("name", ModelType.STRING));
 		model.addFields(fields);
 
-		model.addValidation(new ModelFieldValidationBean("presence", "id"));
-
-		ModelFieldValidationBean nameValidation = new ModelFieldValidationBean("length", "name");
-		nameValidation.addOption("min", 2);
-		model.addValidation(nameValidation);
+		model.addValidation(new PresenceValidation("id"));
+		model.addValidation(new LengthValidation("name", 2, null));
 
 		String code = ModelGenerator.generateJavascript(model, OutputFormat.TOUCH2, false);
 		assertThat(code)
@@ -106,12 +104,9 @@ public class ModelGeneratorWithValidationTest {
 		field.setUseNull(true);
 		model.addField(field);
 
-		model.addValidation(new ModelFieldValidationBean("presence", "id"));
-		model.addValidations(Collections.singletonList(new ModelFieldValidationBean("email", "email")));
-
-		ModelFieldValidationBean salaryValidator = new ModelFieldValidationBean("format", "salary");
-		salaryValidator.addOption("matcher", "/[0-9]*\\.[0-9]*/");
-		model.addValidation(salaryValidator);
+		model.addValidation(new PresenceValidation("id"));
+		model.addValidations(Collections.<AbstractValidation> singletonList(new EmailValidation("email")));
+		model.addValidation(new FormatValidation("salary", "[0-9]*\\.[0-9]*"));
 
 		String code = ModelGenerator.generateJavascript(model, OutputFormat.TOUCH2, false);
 		assertThat(code)

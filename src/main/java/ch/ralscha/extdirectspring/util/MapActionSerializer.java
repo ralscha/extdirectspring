@@ -33,7 +33,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 /**
  * @author dbs
- * 
  */
 public class MapActionSerializer extends JsonSerializer<Map<String, List<Action>>> {
 

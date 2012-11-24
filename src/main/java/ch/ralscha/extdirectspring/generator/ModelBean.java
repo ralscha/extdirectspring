@@ -23,6 +23,7 @@ import java.util.Map;
 import org.springframework.util.Assert;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
+import ch.ralscha.extdirectspring.generator.validation.AbstractValidation;
 
 /**
  * Represents a model. This object can be used to create JS code with
@@ -39,7 +40,7 @@ public class ModelBean {
 
 	private Map<String, ModelFieldBean> fields = new LinkedHashMap<String, ModelFieldBean>();
 
-	private List<ModelFieldValidationBean> validations = new ArrayList<ModelFieldValidationBean>();
+	private List<AbstractValidation> validations = new ArrayList<AbstractValidation>();
 
 	private List<ModelAssociationBean> associations = new ArrayList<ModelAssociationBean>();
 
@@ -96,11 +97,11 @@ public class ModelBean {
 		this.fields = fields;
 	}
 
-	public List<ModelFieldValidationBean> getValidations() {
+	public List<AbstractValidation> getValidations() {
 		return validations;
 	}
 
-	public void setValidations(List<ModelFieldValidationBean> validations) {
+	public void setValidations(List<AbstractValidation> validations) {
 		this.validations = validations;
 	}
 
@@ -125,7 +126,7 @@ public class ModelBean {
 		}
 	}
 
-	public void addValidations(List<ModelFieldValidationBean> fieldValidations) {
+	public void addValidations(List<AbstractValidation> fieldValidations) {
 		Assert.notNull(fieldValidations, "fieldValidations must not be null");
 
 		validations.addAll(fieldValidations);
@@ -166,7 +167,7 @@ public class ModelBean {
 	 * 
 	 * @param bean instance of {@link ModelFieldValidationBean}
 	 */
-	public void addValidation(ModelFieldValidationBean bean) {
+	public void addValidation(AbstractValidation bean) {
 		Assert.notNull(bean, "ModelFieldValidationBean must not be null");
 
 		validations.add(bean);
