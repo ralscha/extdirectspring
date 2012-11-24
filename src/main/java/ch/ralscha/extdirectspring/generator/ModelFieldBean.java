@@ -159,7 +159,8 @@ public class ModelFieldBean {
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-mapping"
 	 * >mapping</a>' in JS.<br>
 	 * <p>
-	 * @param mapping
+	 * 
+	 * @param mapping A path expression 
 	 */
 	public void setMapping(String mapping) {
 		this.mapping = mapping;
@@ -178,7 +179,7 @@ public class ModelFieldBean {
 	 * >persist</a>' in JS.<br>
 	 * <p>
 	 * 
-	 * @param persist
+	 * @param persist defaults to true, only a false value will be generated
 	 */
 	public void setPersist(Boolean persist) {
 		this.persist = persist;
@@ -196,7 +197,7 @@ public class ModelFieldBean {
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-convert"
 	 * > Ext.data.Field.convert</a>' in JS.<br>
 	 * 
-	 * @param convert
+	 * @param convert A function. JavaScript Syntax example: function(v, record) { return ... ; }
 	 */
 	public void setConvert(String convert) {
 		this.convert = convert;
