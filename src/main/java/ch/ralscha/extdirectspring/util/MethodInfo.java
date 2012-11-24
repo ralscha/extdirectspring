@@ -181,10 +181,10 @@ public final class MethodInfo {
 		if (!documentation.value().isEmpty()) {
 			ActionDoc actionDoc = new ActionDoc(getAction(), documentation.value(), documentation.author(),
 					documentation.version(), documentation.deprecated());
-			ExtDirectDocParameters parameters = documentation.parameters();
-			if (null != parameters) {
-				String[] params = parameters.params();
-				String[] descriptions = parameters.descriptions() == null ? new String[params.length] : parameters
+			ExtDirectDocParameters docParameters = documentation.parameters();
+			if (null != docParameters) {
+				String[] params = docParameters.params();
+				String[] descriptions = docParameters.descriptions() == null ? new String[params.length] : docParameters
 						.descriptions();
 				if (params.length == descriptions.length) {
 					for (int i = 0; i < params.length; i++) {
