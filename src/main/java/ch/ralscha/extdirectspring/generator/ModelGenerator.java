@@ -338,6 +338,18 @@ public abstract class ModelGenerator {
 								modelFieldBean.setUseNull(true);
 							}
 
+							if (StringUtils.hasText(modelFieldAnnotation.mapping())) {
+								modelFieldBean.setMapping(modelFieldAnnotation.mapping());
+							}
+
+							if (!modelFieldAnnotation.persist()) {
+								modelFieldBean.setPersist(modelFieldAnnotation.persist());
+							}
+
+							if (StringUtils.hasText(modelFieldAnnotation.convert())) {
+								modelFieldBean.setConvert(modelFieldAnnotation.convert());
+							}
+
 							modelFields.add(modelFieldBean);
 						} else {
 							if (modelType != null) {
@@ -529,8 +541,8 @@ public abstract class ModelGenerator {
 			configObject.put("validations", model.getValidations());
 		}
 
-		ProxyObject proxyObject = new ProxyObject(model.getIdProperty(), model.getReadMethod(), model.getCreateMethod(), model.getUpdateMethod(),
-				model.getDestroyMethod(), model.isPaging());		
+		ProxyObject proxyObject = new ProxyObject(model.getIdProperty(), model.getReadMethod(),
+				model.getCreateMethod(), model.getUpdateMethod(), model.getDestroyMethod(), model.isPaging());
 		if (proxyObject.hasMethods()) {
 			configObject.put("proxy", proxyObject);
 		}

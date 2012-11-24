@@ -184,8 +184,8 @@ public final class MethodInfo {
 			ExtDirectDocParameters docParameters = documentation.parameters();
 			if (null != docParameters) {
 				String[] params = docParameters.params();
-				String[] descriptions = docParameters.descriptions() == null ? new String[params.length] : docParameters
-						.descriptions();
+				String[] descriptions = docParameters.descriptions() == null ? new String[params.length]
+						: docParameters.descriptions();
 				if (params.length == descriptions.length) {
 					for (int i = 0; i < params.length; i++) {
 						actionDoc.getParameters().put(params[i],

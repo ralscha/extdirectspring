@@ -99,7 +99,7 @@ class ProxyObject {
 
 	@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 	private final static class ReaderObject {
-		private String root = "records";
+		private final String root = "records";
 	}
 
 	public boolean hasMethods() {

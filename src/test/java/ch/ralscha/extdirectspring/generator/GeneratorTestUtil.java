@@ -27,7 +27,7 @@ public class GeneratorTestUtil {
 		if (debug) {
 			assertThat(value.replaceAll("\\r?\\n", "\n")).isEqualTo(expectedValue.replaceAll("\\r?\\n", "\n"));
 		} else {
-			assertThat(value).isEqualTo(expectedValue.replaceAll("\\r?\\n", "").replace(" ", ""));
+			assertThat(value.replace(" ", "")).isEqualTo(expectedValue.replaceAll("\\r?\\n", "").replace(" ", ""));
 		}
 	}
 

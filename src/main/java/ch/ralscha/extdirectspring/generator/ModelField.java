@@ -85,4 +85,36 @@ public @interface ModelField {
 	 */
 	boolean useNull() default false;
 
+	/**
+	 * Typical use for a virtual field to extract field data from the model
+	 * object <br>
+	 * Property '<a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-mapping"
+	 * >mapping</a>' in JS.<br>
+	 * <p>
+	 */
+	String mapping() default "";
+
+	/**
+	 * Prevent the value of this field to be serialized or written with
+	 * Ext.data.writer.Writer <br>
+	 * Typical use for a virtual field <br>
+	 * Property '<a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-persist"
+	 * >persist</a>' in JS.<br>
+	 * <p>
+	 */
+	boolean persist() default true;
+
+	/**
+	 * function which coerces string values in raw data into the field's type <br>
+	 * Typical use for a virtual field <br>
+	 * http://localhost/ext4.1/docs/index.html#!/api/Ext.data.Field-cfg-convert
+	 * Property '<a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-convert" >
+	 * Ext.data.Field.convert</a>' in JS.<br>
+	 * <p>
+	 */
+	String convert() default "";
+
 }
