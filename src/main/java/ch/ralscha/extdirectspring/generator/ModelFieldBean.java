@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -47,6 +48,7 @@ public class ModelFieldBean {
 	//only a false value will be generated
 	private Boolean persist = null;
 
+	@JsonRawValue
 	private String convert;
 
 	/**
