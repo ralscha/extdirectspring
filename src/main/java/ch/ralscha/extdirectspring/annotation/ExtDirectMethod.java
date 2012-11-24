@@ -74,4 +74,13 @@ public @interface ExtDirectMethod {
 	 */
 	Class<?> entryClass() default Object.class;
 
+	/**
+	 * (Optional) Documentation that are to be placed on the api method. These
+	 * are only used for api-debug-doc.js generation to self documents the
+	 * client server interface.
+	 * <p/>
+	 * Defaults to no documentation.
+	 */
+	ExtDirectMethodDocumentation documentation() default @ExtDirectMethodDocumentation;
+
 }

@@ -63,6 +63,8 @@ public class Configuration {
 
 	private String providerType = "remoting";
 
+	private boolean apiDocumentation = false;
+
 	public String getDefaultExceptionMessage() {
 		return defaultExceptionMessage;
 	}
@@ -381,6 +383,26 @@ public class Configuration {
 	 */
 	public void setProviderType(String providerType) {
 		this.providerType = providerType;
+	}
+
+	/**
+	 * @return the apiDocumentation
+	 */
+	public boolean isApiDocumentation() {
+		return apiDocumentation;
+	}
+
+	/**
+	 * set the flag to activate api documentation feature when querying
+	 * api-debug.js only
+	 * <p>
+	 * default false for production scenario, in development set to true
+	 * <p>
+	 * to generate documentation {@link @ExtDirectMethodDocumentation}
+	 * @param apiDocumentation the apiDocumentation to set
+	 */
+	public void setApiDocumentation(boolean apiDocumentation) {
+		this.apiDocumentation = apiDocumentation;
 	}
 
 }

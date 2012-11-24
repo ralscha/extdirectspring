@@ -42,6 +42,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.StringUtils;
 
 import ch.ralscha.extdirectspring.bean.api.Action;
+import ch.ralscha.extdirectspring.bean.api.ActionDoc;
 import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.util.ApiCache;
@@ -434,6 +435,13 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
+	static RemotingApi group1ApisWithDoc(String namespace) {
+		RemotingApi remotingApi = new RemotingApi("remoting", "/action/router", namespace);
+		remotingApi.addAction("remoteProviderSimple", new ActionDoc("methodDoc", 0, false, "method comment",
+				"anonymous", "version 1.0", true));
+		return remotingApi;
+	}
+
 	private static RemotingApi group2Apis(String namespace, String url) {
 		RemotingApi remotingApi = new RemotingApi("remoting", url, namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3, false));
@@ -547,6 +555,9 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", new Action("method25", 3, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method26", 3, false));
 
+		remotingApi.addAction("remoteProviderSimple", new ActionDoc("methodDoc", 0, false, "method comment",
+				"anonymous", "version 1.0", true));
+
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method1", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method2", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method3", 1, false));
@@ -657,6 +668,9 @@ public class ApiControllerTest {
 						"aFloat", "aShort", "aByte")));
 
 		remotingApi.addAction("remoteProviderSimpleNamed",
+				new Action("method11", Arrays.asList("endDate", "normalParameter", "aDate", "percent")));
+
+		remotingApi.addAction("remoteProviderSimpleNamed",
 				new Action("methodCollection1", Arrays.asList("name", "collections")));
 		remotingApi.addAction("remoteProviderSimpleNamed",
 				new Action("methodCollection2", Arrays.asList("name", "collections")));
@@ -672,9 +686,6 @@ public class ApiControllerTest {
 				new Action("methodRP1", Arrays.asList("lastName", "theAge", "active")));
 		remotingApi.addAction("remoteProviderSimpleNamed",
 				new Action("methodRP2", Arrays.asList("lastName", "theAge", "active")));
-		remotingApi.addAction("remoteProviderSimpleNamed",
-				new Action("methodRP3", Arrays.asList("lastName", "theAge", "active")));
-
 		remotingApi.addAction("remoteProviderSimpleNamed",
 				new Action("methodRP3", Arrays.asList("lastName", "theAge", "active")));
 

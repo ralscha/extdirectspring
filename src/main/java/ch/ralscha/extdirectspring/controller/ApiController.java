@@ -25,6 +25,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.NumberUtils;
@@ -35,11 +36,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
+import ch.ralscha.extdirectspring.bean.api.RemotingApiMixin;
 import ch.ralscha.extdirectspring.util.ApiCache;
 import ch.ralscha.extdirectspring.util.ApiCacheKey;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.MethodInfo;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Spring managed controller that handles /api.jsp, /api-debug.js and
@@ -77,7 +82,7 @@ public class ApiController {
 	 * @throws IOException
 	 */
 	@SuppressWarnings({ "resource" })
-	@RequestMapping(value = { "/api.js", "/api-debug.js" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/api.js", "/api-debug.js", "/api-debug-doc.js" }, method = RequestMethod.GET)
 	public void api(
 			@RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app") String apiNs,
 			@RequestParam(value = "actionNs", required = false) String actionNs,
@@ -173,25 +178,36 @@ public class ApiController {
 			requestUrlString = request.getRequestURI();
 		}
 
-		boolean debug = requestUrlString.contains("api-debug.js");
+		if (!requestUrlString.contains("/api-debug-doc.js")) {
+			boolean debug = requestUrlString.contains("api-debug.js");
 
-		ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, group, debug);
-		String apiString = ApiCache.INSTANCE.get(apiKey);
-		if (apiString == null) {
+			ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, group, debug);
+			String apiString = ApiCache.INSTANCE.get(apiKey);
+			if (apiString == null) {
 
-			String routerUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "router");
-			String basePollUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "poll");
-			String baseSseUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "sse");
+				String routerUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "router");
+				String basePollUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "poll");
+				String baseSseUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "sse");
 
-			apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, routerUrl, basePollUrl,
-					baseSseUrl, group, debug);
-			ApiCache.INSTANCE.put(apiKey, apiString);
+				apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, routerUrl,
+						basePollUrl, baseSseUrl, group, debug, false);
+				ApiCache.INSTANCE.put(apiKey, apiString);
+			}
+			return apiString;
 		}
-		return apiString;
+
+		String routerUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "router");
+		String basePollUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "poll");
+		String baseSseUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "sse");
+
+		return buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, routerUrl, basePollUrl,
+				baseSseUrl, group, true, true);
+
 	}
 
 	private String buildApiString(String apiNs, String actionNs, String remotingApiVar, String pollingUrlsVar,
-			String sseVar, String routerUrl, String basePollUrl, String baseSseUrl, String group, boolean debug) {
+			String sseVar, String routerUrl, String basePollUrl, String baseSseUrl, String group, boolean debug,
+			boolean doc) {
 
 		RemotingApi remotingApi = new RemotingApi(routerController.getConfiguration().getProviderType(), routerUrl,
 				actionNs);
@@ -238,7 +254,19 @@ public class ApiController {
 			}
 		}
 
-		String jsonConfig = routerController.getJsonHandler().writeValueAsString(remotingApi, debug);
+		String jsonConfig;
+		if (!doc) {
+			jsonConfig = routerController.getJsonHandler().writeValueAsString(remotingApi, debug);
+		} else {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.addMixInAnnotations(RemotingApi.class, RemotingApiMixin.class);
+			try {
+				jsonConfig = mapper.writer().withDefaultPrettyPrinter().writeValueAsString(remotingApi);
+			} catch (JsonProcessingException e) {
+				jsonConfig = null;
+				LogFactory.getLog(ApiController.class).info("serialize object to json", e);
+			}
+		}
 
 		if (StringUtils.hasText(apiNs)) {
 			sb.append(apiNs).append(".");

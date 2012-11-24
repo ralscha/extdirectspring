@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  * @author Ralph Schaer
  */
 @JsonInclude(Include.NON_NULL)
-public final class Action {
+public class Action {
 
 	private final String name;
 
@@ -48,6 +48,13 @@ public final class Action {
 		this.len = null;
 		this.formHandler = null;
 		this.params = new ArrayList<String>(params);
+	}
+
+	public Action(Action toCopy) {
+		this.name = toCopy.name;
+		this.len = toCopy.len;
+		this.formHandler = toCopy.formHandler;
+		this.params = toCopy.params;
 	}
 
 	public Boolean isFormHandler() {

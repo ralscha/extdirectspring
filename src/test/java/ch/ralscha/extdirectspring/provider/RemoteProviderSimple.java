@@ -43,7 +43,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ch.ralscha.extdirectspring.annotation.ExtDirectDocParameters;
+import ch.ralscha.extdirectspring.annotation.ExtDirectDocReturn;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodDocumentation;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
 @Service
 @SuppressWarnings("unused")
@@ -229,6 +233,14 @@ public class RemoteProviderSimple {
 	@ExtDirectMethod(synchronizeOnSession = true)
 	public String method20(@RequestHeader Integer intHeader, @RequestHeader Boolean booleanHeader) {
 		return intHeader + ";" + booleanHeader;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE, group = "groupdoc", documentation = @ExtDirectMethodDocumentation(value = "this method is used to test the documentation generation", author = "dbs", version = "0.1", deprecated = true, returnMethod = @ExtDirectDocReturn(properties = {
+			"success", "errors" }, descriptions = { "true for success, false otherwise", "list of failed fields" }), parameters = @ExtDirectDocParameters(params = {
+			"a", "b", "c", "d", "e" }, descriptions = { "property a integer", "property b string", "property c string",
+			"property d boolean", "array of integers" })))
+	public String methodDoc() {
+		return "methodDoc() called";
 	}
 
 	@ExtDirectMethod
