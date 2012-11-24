@@ -21,6 +21,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.Future;
@@ -114,6 +115,12 @@ public class BeanWithAnnotations {
 	// convert="new Function('v', 'record', return (record.raw.bigValue > 1000000);)")
 	@ModelField(mapping = "bigValue", persist = false, convert = "function(v, record) { return (record.raw.bigValue > 1000000);}")
 	private boolean aBooleanVirtual;
+
+	@ModelField(type = ModelType.AUTO)
+	private List<Integer> someIds;
+
+	@ModelField
+	private Set<Long> moreIds;
 
 	public byte getaByte() {
 		return aByte;
@@ -307,6 +314,22 @@ public class BeanWithAnnotations {
 		this.aBooleanVirtual = aBooleanVirtual;
 	}
 
+	public List<Integer> getSomeIds() {
+		return someIds;
+	}
+
+	public void setSomeIds(List<Integer> someIds) {
+		this.someIds = someIds;
+	}
+
+	public Set<Long> getMoreIds() {
+		return moreIds;
+	}
+
+	public void setMoreIds(Set<Long> moreIds) {
+		this.moreIds = moreIds;
+	}
+
 	public static List<ModelFieldBean> expectedFields = new ArrayList<ModelFieldBean>();
 	static {
 
@@ -392,6 +415,12 @@ public class BeanWithAnnotations {
 		field.setMapping("bigValue");
 		field.setPersist(false);
 		field.setConvert("function(v, record) { return (record.raw.bigValue > 1000000);}");
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("someIds", ModelType.AUTO);
+		expectedFields.add(field);
+
+		field = new ModelFieldBean("moreIds", ModelType.AUTO);
 		expectedFields.add(field);
 	}
 }

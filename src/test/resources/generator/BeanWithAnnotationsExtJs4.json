@@ -86,6 +86,12 @@ Ext.define('Sch.Bean',
     mapping : 'bigValue',
     persist : false,
     convert : function(v, record) { return (record.raw.bigValue > 1000000);}
+  }, {
+    name : 'someIds',
+    type : 'auto'
+  }, {
+    name : 'moreIds',
+    type : 'auto'
   } ],
   proxy : {
     type : 'direct',
