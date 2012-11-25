@@ -212,30 +212,31 @@ public class ExtDirectStoreReadRequest {
 	public <T extends Filter> T getFirstFilterForField(String field) {
 		for (Filter filter : filters) {
 			if (filter.getField().equals(field)) {
-				return (T)filter;
+				return (T) filter;
 			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Returns all filters for a field
 	 * 
 	 * @param field name of the field
-	 * @return a collection of filters for the field. Empty collection if no filter exists
+	 * @return a collection of filters for the field. Empty collection if no
+	 *         filter exists
 	 */
 	public List<Filter> getAllFiltersForField(String field) {
 		List<Filter> foundFilters = new ArrayList<Filter>();
-		
+
 		for (Filter filter : foundFilters) {
 			if (filter.getField().equals(field)) {
 				foundFilters.add(filter);
 			}
 		}
-		
+
 		return Collections.unmodifiableList(foundFilters);
 	}
-	
+
 	public void setFilters(List<Filter> filters) {
 		this.filters = filters;
 	}

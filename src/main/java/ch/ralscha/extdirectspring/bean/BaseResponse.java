@@ -15,7 +15,6 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-
 /**
  * Superclass for response object that are sent to an Ext Direct client.
  * 
