@@ -272,8 +272,10 @@ public abstract class ModelGenerator {
 
 			@Override
 			public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
-				if ((Modifier.isPublic(field.getModifiers()) || hasReadMethod.contains(field.getName()))
-						&& field.getAnnotation(JsonIgnore.class) == null) {
+				if (field.getAnnotation(ModelField.class) != null
+						|| field.getAnnotation(ModelAssociation.class) != null
+						|| ((Modifier.isPublic(field.getModifiers()) || hasReadMethod.contains(field.getName())) && field
+								.getAnnotation(JsonIgnore.class) == null)) {
 					if (fields.contains(field.getName())) {
 						// ignore superclass declarations of fields already
 						// found in a subclass
