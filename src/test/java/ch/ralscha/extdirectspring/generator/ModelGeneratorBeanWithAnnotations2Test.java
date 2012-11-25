@@ -139,11 +139,6 @@ public class ModelGeneratorBeanWithAnnotations2Test {
 
 		for (ModelFieldBean expectedField : BeanWithAnnotations2.expectedFields) {
 			ModelFieldBean field = modelBean.getFields().get(expectedField.getName());
-
-			if (!field.equals(expectedField)) {
-				System.out.println(field.getName() + "-->" + expectedField.getName());
-			}
-
 			assertThat(field).isEqualsToByComparingFields(expectedField);
 		}
 	}
