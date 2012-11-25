@@ -63,8 +63,7 @@ public @interface ModelAssociation {
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-autoLoad"
 	 * >autoLoad</a> config property.
 	 * <p>
-	 * Only {@link ModelAssociationType#HAS_MANY} association support this
-	 * property.
+	 * Only {@link AssociationType#HAS_MANY} association support this property.
 	 */
 	boolean autoLoad() default false;
 
@@ -87,8 +86,7 @@ public @interface ModelAssociation {
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-name"
 	 * >name</a> config property.
 	 * <p>
-	 * Only {@link ModelAssociationType#HAS_MANY} association support this
-	 * property.
+	 * Only {@link AssociationType#HAS_MANY} association support this property.
 	 */
 	String name() default "";
 
@@ -110,8 +108,8 @@ public @interface ModelAssociation {
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.BelongsTo-cfg-setterName"
 	 * >setterName</a> config property.
 	 * <p>
-	 * Only {@link ModelAssociationType#BELONGS_TO} and
-	 * {@link ModelAssociationType#HAS_ONE} associations support this property.
+	 * Only {@link AssociationType#BELONGS_TO} and
+	 * {@link AssociationType#HAS_ONE} associations support this property.
 	 */
 	String setterName() default "";
 
@@ -123,8 +121,8 @@ public @interface ModelAssociation {
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.BelongsTo-cfg-getterName"
 	 * >getterName</a> config property.
 	 * <p>
-	 * Only {@link ModelAssociationType#BELONGS_TO} and
-	 * {@link ModelAssociationType#HAS_ONE} associations support this property.
+	 * Only {@link AssociationType#BELONGS_TO} and
+	 * {@link AssociationType#HAS_ONE} associations support this property.
 	 */
 	String getterName() default "";
 

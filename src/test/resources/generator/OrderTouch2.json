@@ -11,8 +11,8 @@ Ext.define('ch.ralscha.extdirectspring.generator.bean.Order',
       model : 'ch.ralscha.extdirectspring.generator.bean.Pos',
       associationKey : 'positions',
       foreignKey : 'orderId',
-      name : 'pos',
-      primaryKey : 'entityId'
+      primaryKey : 'entityId',
+      name : 'pos'
     } ]
   }
 });

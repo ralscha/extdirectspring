@@ -15,7 +15,7 @@
  */
 package ch.ralscha.extdirectspring.util;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.assertThat;
 import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;

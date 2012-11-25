@@ -15,8 +15,8 @@
  */
 package ch.ralscha.extdirectspring.provider;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.MapAssert.entry;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.entry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +53,8 @@ public class RemoteProviderImplementation implements RemoteProviderInterface {
 		assertThat(active).isTrue();
 
 		assertThat(request.getParams()).hasSize(2);
-		assertThat(request.getParams()).includes(entry("lastName", "Smith"));
-		assertThat(request.getParams()).includes(entry("active", true));
+		assertThat(request.getParams()).contains(entry("lastName", "Smith"));
+		assertThat(request.getParams()).contains(entry("active", true));
 
 		List<Row> result = new ArrayList<Row>();
 		result.add(new Row(1, name, active, "" + age));

@@ -15,8 +15,8 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.MapAssert.entry;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.entry;
 
 import java.io.IOException;
 import java.util.Map;
@@ -126,7 +126,7 @@ public class RouterControllerFormPostTest {
 		assertThat(edsResponse.getMethod()).isEqualTo("updateInfoDirect");
 
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
-		assertThat(result).hasSize(6).includes(entry("name", "RALPH"), entry("age", 30), entry("admin", false),
+		assertThat(result).hasSize(6).contains(entry("name", "RALPH"), entry("age", 30), entry("admin", false),
 				entry("salary", 1012.3), entry("result", "theResultRESULT"), entry("success", true));
 	}
 

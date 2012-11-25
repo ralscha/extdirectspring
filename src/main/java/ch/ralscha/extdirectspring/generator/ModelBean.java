@@ -23,6 +23,7 @@ import java.util.Map;
 import org.springframework.util.Assert;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
+import ch.ralscha.extdirectspring.generator.association.AbstractAssociation;
 import ch.ralscha.extdirectspring.generator.validation.AbstractValidation;
 
 /**
@@ -42,7 +43,7 @@ public class ModelBean {
 
 	private List<AbstractValidation> validations = new ArrayList<AbstractValidation>();
 
-	private List<ModelAssociationBean> associations = new ArrayList<ModelAssociationBean>();
+	private List<AbstractAssociation> associations = new ArrayList<AbstractAssociation>();
 
 	private boolean paging;
 
@@ -105,11 +106,11 @@ public class ModelBean {
 		this.validations = validations;
 	}
 
-	public List<ModelAssociationBean> getAssociations() {
+	public List<AbstractAssociation> getAssociations() {
 		return associations;
 	}
 
-	public void setAssociations(List<ModelAssociationBean> associations) {
+	public void setAssociations(List<AbstractAssociation> associations) {
 		this.associations = associations;
 	}
 
@@ -132,7 +133,7 @@ public class ModelBean {
 		validations.addAll(fieldValidations);
 	}
 
-	public void addAssociations(List<ModelAssociationBean> associationsList) {
+	public void addAssociations(List<AbstractAssociation> associationsList) {
 		Assert.notNull(associationsList, "associations must not be null");
 
 		associations.addAll(associationsList);
@@ -174,13 +175,13 @@ public class ModelBean {
 	}
 
 	/**
-	 * Adds one instance of {@link ModelAssociationBean} to the internal
+	 * Adds one instance of {@link AbstractAssociation} to the internal
 	 * collection of associations
 	 * 
-	 * @param bean instance of {@link ModelAssociationBean}
+	 * @param bean instance of {@link AbstractAssociation}
 	 */
-	public void addAssociation(ModelAssociationBean bean) {
-		Assert.notNull(bean, "ModelAssociationBean must not be null");
+	public void addAssociation(AbstractAssociation bean) {
+		Assert.notNull(bean, "AbstractAssociation must not be null");
 
 		associations.add(bean);
 	}
@@ -273,104 +274,6 @@ public class ModelBean {
 	 */
 	public void setDestroyMethod(String destroyMethod) {
 		this.destroyMethod = destroyMethod;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((associations == null) ? 0 : associations.hashCode());
-		result = prime * result + ((createMethod == null) ? 0 : createMethod.hashCode());
-		result = prime * result + ((destroyMethod == null) ? 0 : destroyMethod.hashCode());
-		result = prime * result + ((fields == null) ? 0 : fields.hashCode());
-		result = prime * result + ((idProperty == null) ? 0 : idProperty.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + (paging ? 1231 : 1237);
-		result = prime * result + ((readMethod == null) ? 0 : readMethod.hashCode());
-		result = prime * result + ((updateMethod == null) ? 0 : updateMethod.hashCode());
-		result = prime * result + ((validations == null) ? 0 : validations.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		ModelBean other = (ModelBean) obj;
-		if (associations == null) {
-			if (other.associations != null) {
-				return false;
-			}
-		} else if (!associations.equals(other.associations)) {
-			return false;
-		}
-		if (createMethod == null) {
-			if (other.createMethod != null) {
-				return false;
-			}
-		} else if (!createMethod.equals(other.createMethod)) {
-			return false;
-		}
-		if (destroyMethod == null) {
-			if (other.destroyMethod != null) {
-				return false;
-			}
-		} else if (!destroyMethod.equals(other.destroyMethod)) {
-			return false;
-		}
-		if (fields == null) {
-			if (other.fields != null) {
-				return false;
-			}
-		} else if (!fields.equals(other.fields)) {
-			return false;
-		}
-		if (idProperty == null) {
-			if (other.idProperty != null) {
-				return false;
-			}
-		} else if (!idProperty.equals(other.idProperty)) {
-			return false;
-		}
-		if (name == null) {
-			if (other.name != null) {
-				return false;
-			}
-		} else if (!name.equals(other.name)) {
-			return false;
-		}
-		if (paging != other.paging) {
-			return false;
-		}
-		if (readMethod == null) {
-			if (other.readMethod != null) {
-				return false;
-			}
-		} else if (!readMethod.equals(other.readMethod)) {
-			return false;
-		}
-		if (updateMethod == null) {
-			if (other.updateMethod != null) {
-				return false;
-			}
-		} else if (!updateMethod.equals(other.updateMethod)) {
-			return false;
-		}
-		if (validations == null) {
-			if (other.validations != null) {
-				return false;
-			}
-		} else if (!validations.equals(other.validations)) {
-			return false;
-		}
-		return true;
 	}
 
 }

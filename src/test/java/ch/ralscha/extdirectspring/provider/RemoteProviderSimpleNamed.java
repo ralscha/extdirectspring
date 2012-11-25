@@ -15,7 +15,7 @@
  */
 package ch.ralscha.extdirectspring.provider;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.fest.assertions.Delta;
+import org.fest.assertions.data.Offset;
 import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -107,7 +107,7 @@ public class RemoteProviderSimpleNamed {
 		assertThat(aInt).isEqualTo(14);
 		assertThat(aLong).isEqualTo(21);
 		assertThat(aDouble).isEqualTo(3.14);
-		assertThat(aFloat).isEqualTo(10.01f, Delta.delta(0.01f));
+		assertThat(aFloat).isEqualTo(10.01f, Offset.offset(0.01f));
 		assertThat(aShort).isEqualTo((short) 1);
 		assertThat(aByte).isEqualTo((byte) 2);
 		return String.format("method7() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, workflow, aInt,
@@ -140,7 +140,7 @@ public class RemoteProviderSimpleNamed {
 		assertThat(aInt).isEqualTo(14);
 		assertThat(aLong).isEqualTo(21);
 		assertThat(aDouble).isEqualTo(3.14);
-		assertThat(aFloat).isEqualTo(10.01f, Delta.delta(0.01f));
+		assertThat(aFloat).isEqualTo(10.01f, Offset.offset(0.01f));
 		assertThat(aShort).isEqualTo((short) 1);
 		assertThat(aByte).isEqualTo((byte) 2);
 		return String.format("method10() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, workflow, aInt,

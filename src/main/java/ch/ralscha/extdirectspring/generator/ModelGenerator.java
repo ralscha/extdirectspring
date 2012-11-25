@@ -24,7 +24,6 @@ import java.lang.annotation.Annotation;
 import java.lang.ref.SoftReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -37,8 +36,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.LogFactory;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.ReflectionUtils;
@@ -46,16 +43,8 @@ import org.springframework.util.ReflectionUtils.FieldCallback;
 import org.springframework.util.StringUtils;
 
 import ch.ralscha.extdirectspring.controller.RouterController;
-import ch.ralscha.extdirectspring.generator.validation.CreditCardNumberValidation;
-import ch.ralscha.extdirectspring.generator.validation.DigitsValidation;
-import ch.ralscha.extdirectspring.generator.validation.EmailValidation;
-import ch.ralscha.extdirectspring.generator.validation.FormatValidation;
-import ch.ralscha.extdirectspring.generator.validation.FutureValidation;
-import ch.ralscha.extdirectspring.generator.validation.LengthValidation;
-import ch.ralscha.extdirectspring.generator.validation.NotBlankValidation;
-import ch.ralscha.extdirectspring.generator.validation.PastValidation;
-import ch.ralscha.extdirectspring.generator.validation.PresenceValidation;
-import ch.ralscha.extdirectspring.generator.validation.RangeValidation;
+import ch.ralscha.extdirectspring.generator.association.AbstractAssociation;
+import ch.ralscha.extdirectspring.generator.validation.AbstractValidation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -209,7 +198,8 @@ public abstract class ModelGenerator {
 	 * A program could customize this and call
 	 * {@link #generateJavascript(ModelBean, OutputFormat, boolean)} or
 	 * {@link #writeModel(HttpServletRequest, HttpServletResponse, ModelBean, OutputFormat)}
-	 * to create the JS code.
+	 * to create the JS code. Models are being cached. A second call with the
+	 * same parameters will return the model from the cache.
 	 * 
 	 * @param clazz the model will be created based on this class.
 	 * @param includeValidation specifies what validation configuration should
@@ -275,7 +265,7 @@ public abstract class ModelGenerator {
 		}
 
 		final List<ModelFieldBean> modelFields = new ArrayList<ModelFieldBean>();
-		final List<ModelAssociationBean> associations = new ArrayList<ModelAssociationBean>();
+		final List<AbstractAssociation> associations = new ArrayList<AbstractAssociation>();
 
 		ReflectionUtils.doWithFields(clazz, new FieldCallback() {
 			private final Set<String> fields = new HashSet<String>();
@@ -368,97 +358,18 @@ public abstract class ModelGenerator {
 							}
 						}
 
-						ModelAssociation modelAssociation = field.getAnnotation(ModelAssociation.class);
-						if (modelAssociation != null) {
-
-							ModelAssociationType type = modelAssociation.value();
-
-							Class<?> associationClass = modelAssociation.model();
-							if (associationClass == Object.class) {
-								associationClass = field.getType();
-							}
-
-							ModelAssociationBean modelAssociationBean = new ModelAssociationBean(type, associationClass);
-							modelAssociationBean.setAssociationKey(field.getName());
-
-							if (StringUtils.hasText(modelAssociation.foreignKey())) {
-								modelAssociationBean.setForeignKey(modelAssociation.foreignKey());
-							} else if (type == ModelAssociationType.HAS_MANY) {
-								modelAssociationBean.setForeignKey(StringUtils.uncapitalize(field.getDeclaringClass()
-										.getSimpleName()) + "_id");
-							} else if (type == ModelAssociationType.BELONGS_TO || type == ModelAssociationType.HAS_ONE) {
-								modelAssociationBean.setForeignKey(StringUtils.uncapitalize(associationClass
-										.getSimpleName()) + "_id");
-							}
-
-							if (StringUtils.hasText(modelAssociation.primaryKey())) {
-								modelAssociationBean.setPrimaryKey(modelAssociation.primaryKey());
-							} else if (type == ModelAssociationType.HAS_MANY
-									&& StringUtils.hasText(model.getIdProperty())
-									&& !model.getIdProperty().equals("id")) {
-								modelAssociationBean.setPrimaryKey(model.getIdProperty());
-							} else if (type == ModelAssociationType.BELONGS_TO || type == ModelAssociationType.HAS_ONE) {
-								Model associationModelAnnotation = associationClass.getAnnotation(Model.class);
-								if (associationModelAnnotation != null
-										&& StringUtils.hasText(associationModelAnnotation.idProperty())
-										&& !associationModelAnnotation.idProperty().equals("id")) {
-									modelAssociationBean.setPrimaryKey(associationModelAnnotation.idProperty());
-								}
-							}
-
-							if (type == ModelAssociationType.HAS_MANY) {
-
-								if (StringUtils.hasText(modelAssociation.setterName())) {
-									LogFactory.getLog(ModelGenerator.class).warn(
-											getWarningText(field, modelAssociation.value().getJsName(), "setterName"));
-								}
-
-								if (StringUtils.hasText(modelAssociation.getterName())) {
-									LogFactory.getLog(ModelGenerator.class).warn(
-											getWarningText(field, modelAssociation.value().getJsName(), "getterName"));
-								}
-
-								if (modelAssociation.autoLoad()) {
-									modelAssociationBean.setAutoLoad(true);
-								}
-								if (StringUtils.hasText(modelAssociation.name())) {
-									modelAssociationBean.setName(modelAssociation.name());
-								} else {
-									modelAssociationBean.setName(field.getName());
-								}
-
-							} else {
-
-								if (StringUtils.hasText(modelAssociation.setterName())) {
-									modelAssociationBean.setSetterName(modelAssociation.setterName());
-								} else {
-									modelAssociationBean.setSetterName("set" + StringUtils.capitalize(field.getName()));
-								}
-
-								if (StringUtils.hasText(modelAssociation.getterName())) {
-									modelAssociationBean.setGetterName(modelAssociation.getterName());
-								} else {
-									modelAssociationBean.setGetterName("get" + StringUtils.capitalize(field.getName()));
-								}
-
-								if (modelAssociation.autoLoad()) {
-									LogFactory.getLog(ModelGenerator.class).warn(
-											getWarningText(field, modelAssociation.value().getJsName(), "autoLoad"));
-								}
-								if (StringUtils.hasText(modelAssociation.name())) {
-									LogFactory.getLog(ModelGenerator.class).warn(
-											getWarningText(field, modelAssociation.value().getJsName(), "name"));
-								}
-							}
-
-							associations.add(modelAssociationBean);
+						ModelAssociation modelAssociationAnnotation = field.getAnnotation(ModelAssociation.class);
+						if (modelAssociationAnnotation != null) {
+							associations.add(AbstractAssociation.createAssociation(modelAssociationAnnotation, model,
+									field));
 						}
 
 						if (modelFieldBean != null && includeValidation != IncludeValidation.NONE) {
 							Annotation[] fieldAnnotations = field.getAnnotations();
 
 							for (Annotation fieldAnnotation : fieldAnnotations) {
-								processValidationAnnotations(model, modelFieldBean, fieldAnnotation, includeValidation);
+								AbstractValidation.addValidationToModel(model, modelFieldBean, fieldAnnotation,
+										includeValidation);
 							}
 						}
 					}
@@ -512,7 +423,9 @@ public abstract class ModelGenerator {
 	/**
 	 * Creates JS code based on the provided {@link ModelBean} in the specified
 	 * {@link OutputFormat}. Code can be generated in pretty or compressed
-	 * format.
+	 * format. The generated code is cached unless debug is true. A second call
+	 * to this method with the same model name and format will return the code
+	 * from the cache.
 	 * 
 	 * @param model generate code based on this {@link ModelBean}
 	 * @param format specifies which code (ExtJS or Touch) the generator should
@@ -523,11 +436,13 @@ public abstract class ModelGenerator {
 	 */
 	public static String generateJavascript(ModelBean model, OutputFormat format, boolean debug) {
 
-		JsCacheKey key = new JsCacheKey(model, format, debug);
+		if (!debug) {
+			JsCacheKey key = new JsCacheKey(model, format);
 
-		SoftReference<String> jsReference = jsCache.get(key);
-		if (jsReference != null && jsReference.get() != null) {
-			return jsReference.get();
+			SoftReference<String> jsReference = jsCache.get(key);
+			if (jsReference != null && jsReference.get() != null) {
+				return jsReference.get();
+			}
 		}
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -591,173 +506,18 @@ public abstract class ModelGenerator {
 		sb.append(");");
 
 		String result = sb.toString();
-		jsCache.put(key, new SoftReference<String>(result));
+		if (!debug) {
+			jsCache.put(new JsCacheKey(model, format), new SoftReference<String>(result));
+		}
 		return result;
 	}
 
-	private static String getWarningText(Field field, String type, String propertyName) {
-		String warning = "Field ";
-		warning += field.getDeclaringClass().getName();
-		warning += ".";
-		warning += field.getName();
-		return warning + ": A '" + type + "' association does not support property '" + propertyName
-				+ "'. Property will be ignored.";
+	/**
+	 * Clears the model and Javascript code caches
+	 */
+	public static void clearCaches() {
+		modelCache.clear();
+		jsCache.clear();
 	}
 
-	private static void processValidationAnnotations(ModelBean model, ModelFieldBean modelFieldBean,
-			Annotation fieldAnnotation, IncludeValidation includeValidation) {
-		String annotationClassName = fieldAnnotation.annotationType().getName();
-
-		if (includeValidation == IncludeValidation.BUILTIN || includeValidation == IncludeValidation.ALL) {
-
-			if (annotationClassName.equals("javax.validation.constraints.NotNull")
-					|| (annotationClassName.equals("org.hibernate.validator.constraints.NotEmpty"))) {
-				model.addValidation(new PresenceValidation(modelFieldBean.getName()));
-			} else if (annotationClassName.equals("javax.validation.constraints.Size")
-					|| (annotationClassName.equals("org.hibernate.validator.constraints.Length"))) {
-
-				Integer min = (Integer) AnnotationUtils.getValue(fieldAnnotation, "min");
-				Integer max = (Integer) AnnotationUtils.getValue(fieldAnnotation, "max");
-				model.addValidation(new LengthValidation(modelFieldBean.getName(), min, max));
-
-			} else if (annotationClassName.equals("javax.validation.constraints.Pattern")) {
-				String regexp = (String) AnnotationUtils.getValue(fieldAnnotation, "regexp");
-				model.addValidation(new FormatValidation(modelFieldBean.getName(), regexp));
-			} else if (annotationClassName.equals("org.hibernate.validator.constraints.Email")) {
-				model.addValidation(new EmailValidation(modelFieldBean.getName()));
-			}
-		}
-
-		if (includeValidation == IncludeValidation.ALL) {
-
-			if (annotationClassName.equals("javax.validation.constraints.DecimalMax")) {
-				String value = (String) AnnotationUtils.getValue(fieldAnnotation);
-				model.addValidation(new RangeValidation(modelFieldBean.getName(), null, new BigDecimal(value)));
-			} else if (annotationClassName.equals("javax.validation.constraints.DecimalMin")) {
-				String value = (String) AnnotationUtils.getValue(fieldAnnotation);
-				model.addValidation(new RangeValidation(modelFieldBean.getName(), new BigDecimal(value), null));
-			} else if (annotationClassName.equals("javax.validation.constraints.Digits")) {
-				Integer integer = (Integer) AnnotationUtils.getValue(fieldAnnotation, "integer");
-				Integer fraction = (Integer) AnnotationUtils.getValue(fieldAnnotation, "fraction");
-				model.addValidation(new DigitsValidation(modelFieldBean.getName(), integer, fraction));
-			} else if (annotationClassName.equals("javax.validation.constraints.Future")) {
-				model.addValidation(new FutureValidation(modelFieldBean.getName()));
-			} else if (annotationClassName.equals("javax.validation.constraints.Max")) {
-				Long value = (Long) AnnotationUtils.getValue(fieldAnnotation);
-				model.addValidation(new RangeValidation(modelFieldBean.getName(), null, value));
-			} else if (annotationClassName.equals("javax.validation.constraints.Min")) {
-				Long value = (Long) AnnotationUtils.getValue(fieldAnnotation);
-				model.addValidation(new RangeValidation(modelFieldBean.getName(), value, null));
-			} else if (annotationClassName.equals("javax.validation.constraints.Past")) {
-				model.addValidation(new PastValidation(modelFieldBean.getName()));
-			} else if (annotationClassName.equals("org.hibernate.validator.constraints.CreditCardNumber")) {
-				model.addValidation(new CreditCardNumberValidation(modelFieldBean.getName()));
-			} else if (annotationClassName.equals("org.hibernate.validator.constraints.NotBlank")) {
-				model.addValidation(new NotBlankValidation(modelFieldBean.getName()));
-			} else if (annotationClassName.equals("org.hibernate.validator.constraints.Range")) {
-				Long min = (Long) AnnotationUtils.getValue(fieldAnnotation, "min");
-				Long max = (Long) AnnotationUtils.getValue(fieldAnnotation, "max");
-				model.addValidation(new RangeValidation(modelFieldBean.getName(), min, max));
-			}
-		}
-	}
-
-	private static class ModelCacheKey {
-		private final String className;
-
-		private final IncludeValidation includeValidation;
-
-		public ModelCacheKey(String className, IncludeValidation includeValidation) {
-			this.className = className;
-			this.includeValidation = includeValidation;
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((className == null) ? 0 : className.hashCode());
-			result = prime * result + ((includeValidation == null) ? 0 : includeValidation.hashCode());
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-			if (obj == null) {
-				return false;
-			}
-			if (getClass() != obj.getClass()) {
-				return false;
-			}
-			ModelCacheKey other = (ModelCacheKey) obj;
-			if (className == null) {
-				if (other.className != null) {
-					return false;
-				}
-			} else if (!className.equals(other.className)) {
-				return false;
-			}
-			if (includeValidation != other.includeValidation) {
-				return false;
-			}
-			return true;
-		}
-
-	}
-
-	private static class JsCacheKey {
-		private final ModelBean modelBean;
-
-		private final OutputFormat format;
-
-		private final boolean debug;
-
-		JsCacheKey(ModelBean modelBean, OutputFormat format, boolean debug) {
-			this.modelBean = modelBean;
-			this.format = format;
-			this.debug = debug;
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + (debug ? 1231 : 1237);
-			result = prime * result + ((format == null) ? 0 : format.hashCode());
-			result = prime * result + ((modelBean == null) ? 0 : modelBean.hashCode());
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-			if (obj == null) {
-				return false;
-			}
-			if (getClass() != obj.getClass()) {
-				return false;
-			}
-			JsCacheKey other = (JsCacheKey) obj;
-			if (debug != other.debug) {
-				return false;
-			}
-			if (format != other.format) {
-				return false;
-			}
-			if (modelBean == null) {
-				if (other.modelBean != null) {
-					return false;
-				}
-			} else if (!modelBean.equals(other.modelBean)) {
-				return false;
-			}
-			return true;
-		}
-
-	}
 }

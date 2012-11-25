@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.generator;
 
 import java.io.IOException;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,11 @@ public class ModelGeneratorBeansWithAssociationTest {
 
 	@Autowired
 	private DefaultListableBeanFactory applicationContext;
+
+	@Before
+	public void clearCaches() {
+		ModelGenerator.clearCaches();
+	}
 
 	@Test
 	public void testBook() throws IOException {

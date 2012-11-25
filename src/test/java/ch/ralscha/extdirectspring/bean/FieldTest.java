@@ -15,8 +15,8 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.MapAssert.entry;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.entry;
 
 import java.util.Map;
 
@@ -29,7 +29,7 @@ public class FieldTest {
 		Field aField = new Field("fieldName");
 		Map<String, Object> fieldData = aField.getFieldData();
 		assertThat(fieldData).hasSize(1);
-		assertThat(fieldData).includes(entry("name", "fieldName"));
+		assertThat(fieldData).contains(entry("name", "fieldName"));
 	}
 
 	@Test
@@ -43,12 +43,12 @@ public class FieldTest {
 
 		Map<String, Object> fieldData = aField.getFieldData();
 		assertThat(fieldData).hasSize(6);
-		assertThat(fieldData).includes(entry("name", "fieldName"));
-		assertThat(fieldData).includes(entry("allowBlank", true));
-		assertThat(fieldData).includes(entry("dateFormat", "Y-m-d"));
-		assertThat(fieldData).includes(entry("type", "date"));
-		assertThat(fieldData).includes(entry("customProperty1", 10));
-		assertThat(fieldData).includes(entry("customProperty2", "aValue"));
+		assertThat(fieldData).contains(entry("name", "fieldName"));
+		assertThat(fieldData).contains(entry("allowBlank", true));
+		assertThat(fieldData).contains(entry("dateFormat", "Y-m-d"));
+		assertThat(fieldData).contains(entry("type", "date"));
+		assertThat(fieldData).contains(entry("customProperty1", 10));
+		assertThat(fieldData).contains(entry("customProperty2", "aValue"));
 
 	}
 }

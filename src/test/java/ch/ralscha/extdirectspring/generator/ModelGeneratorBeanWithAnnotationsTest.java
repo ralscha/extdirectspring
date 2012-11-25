@@ -15,11 +15,12 @@
  */
 package ch.ralscha.extdirectspring.generator;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 import java.io.IOException;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,11 @@ public class ModelGeneratorBeanWithAnnotationsTest {
 
 	@Autowired
 	private DefaultListableBeanFactory applicationContext;
+
+	@Before
+	public void clearCaches() {
+		ModelGenerator.clearCaches();
+	}
 
 	@Test
 	public void testWriteModelHttpServletRequestHttpServletResponseClassOfQOutputFormatBoolean() throws IOException {
@@ -140,7 +146,7 @@ public class ModelGeneratorBeanWithAnnotationsTest {
 				System.out.println(field.getName() + "-->" + expectedField.getName());
 			}
 
-			Assert.assertTrue(field.equals(expectedField));
+			assertThat(field).isEqualsToByComparingFields(expectedField);
 		}
 	}
 

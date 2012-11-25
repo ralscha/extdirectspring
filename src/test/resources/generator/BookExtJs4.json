@@ -26,9 +26,9 @@ Ext.define('MyApp.Book',
     type : 'hasMany',
     model : 'MyApp.Author',
     associationKey : 'authors',
-    autoLoad : true,
     foreignKey : 'book_id',
-    name : 'authors',
-    primaryKey : 'isbn'
+    primaryKey : 'isbn',
+    autoLoad : true,
+    name : 'authors'
   } ]
 });

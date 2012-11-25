@@ -15,7 +15,8 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.extractProperty;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -93,8 +94,8 @@ public class RouterControllerStoreModifyTest {
 		assertThat(rows).hasSize(2);
 
 		Collections.sort(rows);
-		assertThat(rows).onProperty("id").containsSequence(10, 23);
-		assertThat(rows).onProperty("name").containsSequence("Ralph", "John");
+		assertThat(extractProperty("id").from(rows)).containsSequence(10, 23);
+		assertThat(extractProperty("name").from(rows)).containsSequence("Ralph", "John");
 	}
 
 	@Test
@@ -123,7 +124,7 @@ public class RouterControllerStoreModifyTest {
 				});
 
 		assertThat(rows).hasSize(1);
-		assertThat(rows).onProperty("id").containsExactly(10);
+		assertThat(extractProperty("id").from(rows)).containsExactly(10);
 	}
 
 	@Test

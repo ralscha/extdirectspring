@@ -15,7 +15,7 @@
  */
 package ch.ralscha.extdirectspring.util;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertSame;
 
 import java.security.Principal;

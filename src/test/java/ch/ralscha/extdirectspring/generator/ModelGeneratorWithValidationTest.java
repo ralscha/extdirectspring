@@ -15,12 +15,13 @@
  */
 package ch.ralscha.extdirectspring.generator;
 
-import static org.fest.assertions.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import ch.ralscha.extdirectspring.generator.validation.AbstractValidation;
@@ -30,6 +31,11 @@ import ch.ralscha.extdirectspring.generator.validation.LengthValidation;
 import ch.ralscha.extdirectspring.generator.validation.PresenceValidation;
 
 public class ModelGeneratorWithValidationTest {
+
+	@Before
+	public void clearCaches() {
+		ModelGenerator.clearCaches();
+	}
 
 	@Test
 	public void testFromModelBeanExtJS1() {

@@ -15,8 +15,8 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static org.fest.assertions.Assertions.assertThat;
-import static org.fest.assertions.MapAssert.entry;
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.entry;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -552,55 +552,55 @@ public class RouterControllerStoreReadTest {
 		Map<String, Object> metadata = (Map<String, Object>) response.get("metaData");
 		assertThat(metadata).isNotNull();
 
-		assertThat(metadata).includes(entry("root", "records"));
-		assertThat(metadata).includes(entry("totalProperty", "total"));
-		assertThat(metadata).includes(entry("successProperty", "success"));
-		assertThat(metadata).includes(entry("start", 0));
-		assertThat(metadata).includes(entry("limit", 50));
+		assertThat(metadata).contains(entry("root", "records"));
+		assertThat(metadata).contains(entry("totalProperty", "total"));
+		assertThat(metadata).contains(entry("successProperty", "success"));
+		assertThat(metadata).contains(entry("start", 0));
+		assertThat(metadata).contains(entry("limit", 50));
 
 		Map<String, String> sortInfo = (Map<String, String>) metadata.get("sortInfo");
 		assertThat(sortInfo).hasSize(2);
-		assertThat(sortInfo).includes(entry("field", "name"));
-		assertThat(sortInfo).includes(entry("direction", "ASC"));
+		assertThat(sortInfo).contains(entry("field", "name"));
+		assertThat(sortInfo).contains(entry("direction", "ASC"));
 
 		List<Map<String, Object>> fields = (List<Map<String, Object>>) metadata.get("fields");
 		assertThat(fields).hasSize(4);
 
 		Map<String, Object> field1 = fields.get(0);
-		assertThat(field1).includes(entry("name", "id"));
-		assertThat(field1).includes(entry("type", "int"));
-		assertThat(field1).includes(entry("header", "ID"));
-		assertThat(field1).includes(entry("width", 20));
-		assertThat(field1).includes(entry("sortable", true));
-		assertThat(field1).includes(entry("resizable", true));
-		assertThat(field1).includes(entry("hideable", false));
+		assertThat(field1).contains(entry("name", "id"));
+		assertThat(field1).contains(entry("type", "int"));
+		assertThat(field1).contains(entry("header", "ID"));
+		assertThat(field1).contains(entry("width", 20));
+		assertThat(field1).contains(entry("sortable", true));
+		assertThat(field1).contains(entry("resizable", true));
+		assertThat(field1).contains(entry("hideable", false));
 
 		Map<String, Object> field2 = fields.get(1);
-		assertThat(field2).includes(entry("name", "name"));
-		assertThat(field2).includes(entry("type", "string"));
-		assertThat(field2).includes(entry("header", "Name"));
-		assertThat(field2).includes(entry("width", 70));
-		assertThat(field2).includes(entry("sortable", true));
-		assertThat(field2).includes(entry("resizable", true));
-		assertThat(field2).includes(entry("hideable", false));
+		assertThat(field2).contains(entry("name", "name"));
+		assertThat(field2).contains(entry("type", "string"));
+		assertThat(field2).contains(entry("header", "Name"));
+		assertThat(field2).contains(entry("width", 70));
+		assertThat(field2).contains(entry("sortable", true));
+		assertThat(field2).contains(entry("resizable", true));
+		assertThat(field2).contains(entry("hideable", false));
 
 		Map<String, Object> field3 = fields.get(2);
-		assertThat(field3).includes(entry("name", "admin"));
-		assertThat(field3).includes(entry("type", "boolean"));
-		assertThat(field3).includes(entry("header", "Administrator"));
-		assertThat(field3).includes(entry("width", 30));
-		assertThat(field3).includes(entry("sortable", true));
-		assertThat(field3).includes(entry("resizable", true));
-		assertThat(field3).includes(entry("hideable", true));
+		assertThat(field3).contains(entry("name", "admin"));
+		assertThat(field3).contains(entry("type", "boolean"));
+		assertThat(field3).contains(entry("header", "Administrator"));
+		assertThat(field3).contains(entry("width", 30));
+		assertThat(field3).contains(entry("sortable", true));
+		assertThat(field3).contains(entry("resizable", true));
+		assertThat(field3).contains(entry("hideable", true));
 
 		Map<String, Object> field4 = fields.get(3);
-		assertThat(field4).includes(entry("name", "salary"));
-		assertThat(field4).includes(entry("type", "float"));
-		assertThat(field4).includes(entry("header", "Salary"));
-		assertThat(field4).includes(entry("width", 50));
-		assertThat(field4).includes(entry("sortable", false));
-		assertThat(field4).includes(entry("resizable", true));
-		assertThat(field4).includes(entry("hideable", true));
+		assertThat(field4).contains(entry("name", "salary"));
+		assertThat(field4).contains(entry("type", "float"));
+		assertThat(field4).contains(entry("header", "Salary"));
+		assertThat(field4).contains(entry("width", 50));
+		assertThat(field4).contains(entry("sortable", false));
+		assertThat(field4).contains(entry("resizable", true));
+		assertThat(field4).contains(entry("hideable", true));
 
 	}
 
