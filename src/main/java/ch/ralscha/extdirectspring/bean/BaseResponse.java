@@ -15,7 +15,6 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import ch.ralscha.extdirectspring.controller.Configuration;
 
 /**
  * Superclass for response object that are sent to an Ext Direct client.

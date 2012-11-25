@@ -15,8 +15,6 @@
  */
 package ch.ralscha.extdirectspring.generator.association;
 
-import ch.ralscha.extdirectspring.generator.Model;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 

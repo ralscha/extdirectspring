@@ -22,8 +22,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
-
 /**
  * Annotation to configure different aspects of a model object
  * 

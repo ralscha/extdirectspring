@@ -22,7 +22,6 @@ import java.util.Map;
 
 import org.springframework.util.Assert;
 
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
 import ch.ralscha.extdirectspring.generator.association.AbstractAssociation;
 import ch.ralscha.extdirectspring.generator.validation.AbstractValidation;
 

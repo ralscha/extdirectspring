@@ -31,7 +31,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import ch.ralscha.extdirectspring.controller.Configuration;
