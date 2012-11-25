@@ -15,6 +15,9 @@
  */
 package ch.ralscha.extdirectspring.generator.validation;
 
+/**
+ * @author Ralph Schaer
+ */
 public class PresenceValidation extends AbstractValidation {
 
 	public PresenceValidation(String field) {

@@ -48,8 +48,8 @@ public abstract class AbstractAssociation {
 	private String primaryKey;
 
 	/**
-	 * Creates an instance of the AbstractAssociation. Sets {@link #type} and
-	 * {@link #model} to the provided parameters.
+	 * Creates an instance of the AbstractAssociation. Sets {@link #getType()}
+	 * and {@link #getModel()} to the provided parameters.
 	 * 
 	 * @param type The type of the association.
 	 * @param model The name of the model that is being associated with.
@@ -60,10 +60,10 @@ public abstract class AbstractAssociation {
 	}
 
 	/**
-	 * Creates an instance of the AbstractAssociation. Sets {@link #type} to the
-	 * provided value and sets {@link #model} to the full qualified name of the
-	 * model class or the string from {@link Model#value()} if present on the
-	 * class.
+	 * Creates an instance of the AbstractAssociation. Sets {@link #getType()}
+	 * to the provided value and sets {@link #getModel()} to the full qualified
+	 * name of the model class or the string from {@link Model#value()} if
+	 * present on the class.
 	 * 
 	 * @param type The type of the association.
 	 * @param model The class of the model that is being associated with.

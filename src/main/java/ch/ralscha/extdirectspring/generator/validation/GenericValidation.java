@@ -20,6 +20,9 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 
+/**
+ * @author Ralph Schaer
+ */
 public class GenericValidation extends AbstractValidation {
 
 	private final Map<String, Object> options;

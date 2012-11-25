@@ -15,6 +15,9 @@
  */
 package ch.ralscha.extdirectspring.generator.validation;
 
+/**
+ * @author Ralph Schaer
+ */
 public class EmailValidation extends AbstractValidation {
 
 	public EmailValidation(String field) {

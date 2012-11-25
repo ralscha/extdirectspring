@@ -24,6 +24,11 @@ import ch.ralscha.extdirectspring.generator.IncludeValidation;
 import ch.ralscha.extdirectspring.generator.ModelBean;
 import ch.ralscha.extdirectspring.generator.ModelFieldBean;
 
+/**
+ * Base class for the validation objects
+ * 
+ * @author Ralph Schaer
+ */
 public abstract class AbstractValidation {
 	private final String type;
 
