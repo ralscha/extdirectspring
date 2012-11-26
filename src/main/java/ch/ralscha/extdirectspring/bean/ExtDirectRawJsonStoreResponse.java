@@ -23,10 +23,6 @@ import java.util.Collection;
 @Deprecated
 public class ExtDirectRawJsonStoreResponse extends ExtDirectRawJsonStoreReadResult {
 
-	public ExtDirectRawJsonStoreResponse() {
-		// default constructor
-	}
-
 	public ExtDirectRawJsonStoreResponse(Collection<String> records) {
 		super((Long) null, records, true);
 	}

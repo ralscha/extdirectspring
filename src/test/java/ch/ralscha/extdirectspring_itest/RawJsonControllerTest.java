@@ -44,6 +44,8 @@ public class RawJsonControllerTest extends JettyTest {
 		testAndCheck("listUsers1", null, true);
 		testAndCheck("listUsers2", 2, true);
 		testAndCheck("listUsers3", 2, false);
+		testAndCheck("listUsers4", 2, true);
+		testAndCheck("listUsers5", 2, true);
 	}
 
 	private static void testAndCheck(String method, Integer total, boolean success)

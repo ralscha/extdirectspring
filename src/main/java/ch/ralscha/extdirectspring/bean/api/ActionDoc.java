@@ -57,31 +57,8 @@ public class ActionDoc extends Action {
 	@JsonIgnore
 	protected boolean deprecated;
 
-	public ActionDoc(String name, Integer len, Boolean formHandler) {
-		super(name, len, formHandler);
-	}
-
 	public ActionDoc(String name, List<String> params) {
 		super(name, params);
-	}
-
-	/**
-	 * @param name
-	 * @param len
-	 * @param formHandler
-	 * @param methodComment
-	 * @param author
-	 * @param version
-	 * @param parameters
-	 * @param returnMethod
-	 */
-	public ActionDoc(String name, Integer len, Boolean formHandler, String methodComment, String author,
-			String version, boolean deprecated) {
-		this(name, len, formHandler);
-		this.methodComment = methodComment;
-		this.author = author;
-		this.version = version;
-		this.deprecated = deprecated;
 	}
 
 	public ActionDoc(Action toCopy, String methodComment, String author, String version, boolean deprecated) {

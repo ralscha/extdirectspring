@@ -34,10 +34,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  */
 public class ExtDirectRawJsonStoreReadResult extends ExtDirectStoreReadResult<String> {
 
-	public ExtDirectRawJsonStoreReadResult() {
-		// default constructor
-	}
-
 	public ExtDirectRawJsonStoreReadResult(Collection<String> records) {
 		super((Long) null, records, true);
 	}
