@@ -16,10 +16,12 @@
 package ch.ralscha.extdirectspring_itest;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.data.MapEntry.entry;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.http.HttpEntity;
@@ -33,6 +35,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.fest.assertions.data.MapEntry;
 import org.junit.Test;
 
 import ch.ralscha.extdirectspring.bean.api.Action;
@@ -47,6 +50,14 @@ public class InfoServiceTest extends JettyTest {
 	private static RemotingApi api() {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/controller/router", null);
 		remotingApi.addAction("infoService", new Action("updateInfo", 0, true));
+		remotingApi.addAction("infoService", new Action("updateInfo2nd", 0, true));
+
+		remotingApi.addAction("infoService", new Action("updateInfoUser1", 0, true));
+		remotingApi.addAction("infoService", new Action("updateInfoUser2", 0, true));
+		remotingApi.addAction("infoService", new Action("updateInfoUser3", 0, true));
+		remotingApi.addAction("infoService", new Action("updateInfoUser4", 0, true));
+		remotingApi.addAction("infoService", new Action("updateInfoUser5", 0, true));
+
 		return remotingApi;
 	}
 
@@ -87,14 +98,108 @@ public class InfoServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void testPost() throws ClientProtocolException, IOException {
+	public void testPostFirst() throws ClientProtocolException, IOException {
+		testInfoPost("updateInfo");
+	}
+
+	@Test
+	public void testPostSecond() throws ClientProtocolException, IOException {
+		testInfoPost("updateInfo2nd");
+	}
+
+	@Test
+	public void testUpdateInfoUser1() throws ClientProtocolException, IOException {
+
+		Locale.setDefault(Locale.US);
+
+		testUserPost("updateInfoUser1", "not a well-formed email address", entry("lc", "ralph"),
+				entry("success", false));
+	}
+
+	@Test
+	public void testUpdateInfoUser2() throws ClientProtocolException, IOException {
+		Locale.setDefault(Locale.GERMAN);
+		testUserPost("updateInfoUser2", "keine gültige E-Mail-Adresse", entry("lc", "ralph"), entry("success", false));
+
+	}
+
+	@Test
+	public void testUpdateInfoUser3() throws ClientProtocolException, IOException {
+		Locale.setDefault(Locale.US);
+		testUserPost("updateInfoUser3", "Wrong E-Mail", entry("lc", "ralph"), entry("success", false));
+	}
+
+	@Test
+	public void testUpdateInfoUser4() throws ClientProtocolException, IOException {
+		Locale.setDefault(Locale.US);
+		testUserPost("updateInfoUser4", "Wrong E-Mail", entry("lc", "ralph"), entry("success", true));
+	}
+
+	@Test
+	public void testUpdateInfoUser5() throws ClientProtocolException, IOException {
+		Locale.setDefault(Locale.US);
+		testUserPost("updateInfoUser5", "Wrong E-Mail", entry("lc", "ralph"), entry("success", false));
+	}
+
+	private static void testUserPost(String method, String errorMsg, MapEntry... entries)
+			throws ClientProtocolException, IOException {
 		HttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "1"));
 		formparams.add(new BasicNameValuePair("extAction", "infoService"));
-		formparams.add(new BasicNameValuePair("extMethod", "updateInfo"));
+		formparams.add(new BasicNameValuePair("extMethod", method));
+		formparams.add(new BasicNameValuePair("extType", "rpc"));
+		formparams.add(new BasicNameValuePair("extUpload", "false"));
+		formparams.add(new BasicNameValuePair("name", "RALPH"));
+		formparams.add(new BasicNameValuePair("firstName", "firstName"));
+		formparams.add(new BasicNameValuePair("age", "1"));
+		formparams.add(new BasicNameValuePair("email", "invalidEmail"));
+
+		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
+
+		post.setEntity(postEntity);
+
+		HttpResponse response = client.execute(post);
+		HttpEntity entity = response.getEntity();
+		assertThat(entity).isNotNull();
+		String responseString = EntityUtils.toString(entity);
+
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+		assertThat(rootAsMap).hasSize(5);
+		assertThat(rootAsMap.get("method")).isEqualTo(method);
+		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
+		assertThat(rootAsMap.get("action")).isEqualTo("infoService");
+		assertThat(rootAsMap.get("tid")).isEqualTo(1);
+
+		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
+
+		int resultSize = entries.length;
+		if (errorMsg != null) {
+			resultSize += 1;
+		}
+		assertThat(result).hasSize(resultSize);
+		assertThat(result).contains(entries);
+
+		Map<String, Object> errors = (Map<String, Object>) result.get("errors");
+		if (errorMsg != null) {
+			assertThat(errors).isNotNull();
+			assertThat(((List<String>) errors.get("email")).get(0)).isEqualTo(errorMsg);
+		} else {
+			assertThat(errors).isNull();
+		}
+	}
+
+	private static void testInfoPost(String method) throws ClientProtocolException, IOException {
+		HttpClient client = new DefaultHttpClient();
+		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
+
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair("extTID", "1"));
+		formparams.add(new BasicNameValuePair("extAction", "infoService"));
+		formparams.add(new BasicNameValuePair("extMethod", method));
 		formparams.add(new BasicNameValuePair("extType", "rpc"));
 		formparams.add(new BasicNameValuePair("extUpload", "false"));
 		formparams.add(new BasicNameValuePair("userName", "RALPH"));
@@ -110,7 +215,7 @@ public class InfoServiceTest extends JettyTest {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
 		assertThat(rootAsMap).hasSize(5);
-		assertThat(rootAsMap.get("method")).isEqualTo("updateInfo");
+		assertThat(rootAsMap.get("method")).isEqualTo(method);
 		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
 		assertThat(rootAsMap.get("action")).isEqualTo("infoService");
 		assertThat(rootAsMap.get("tid")).isEqualTo(1);
@@ -119,7 +224,6 @@ public class InfoServiceTest extends JettyTest {
 		assertThat(result).hasSize(2);
 		assertThat(result.get("user-name-lower-case")).isEqualTo("ralph");
 		assertThat(result.get("success")).isEqualTo(true);
-
 	}
 
 }
