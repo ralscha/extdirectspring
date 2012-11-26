@@ -6,7 +6,8 @@ Ext.define("MyApp.Author",
     type : "string"
   }, {
     name : "title",
-    type : "string"
+    type : "string",
+    defaultValue : "Mr."
   }, {
     name : "firstName",
     type : "string"

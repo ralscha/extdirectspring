@@ -291,22 +291,32 @@ public class RemoteProviderStoreRead {
 
 		List<Filter> filters = new ArrayList<Filter>(request.getFilters());
 		switch (type) {
-		case 1:
-			assertThat(request.getFilters().size()).isEqualTo(1);
-			assertThat(filters.get(0) instanceof NumericFilter).isTrue();
+		case 1: {
+			assertThat(request.getFilters()).hasSize(1);
+			assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
 
 			NumericFilter nf = (NumericFilter) filters.get(0);
 			assertThat(nf.getValue()).isEqualTo(2);
 			assertThat(nf.getField()).isEqualTo("id");
 			assertThat(nf.getComparison()).isEqualTo(Comparison.EQUAL);
 
+			NumericFilter nf2 = request.getFirstFilterForField("id");
+			assertThat(nf2).isSameAs(nf);
+
+			List<Filter> allFiltersForField = request.getAllFiltersForField("id");
+			assertThat(allFiltersForField).hasSize(1);
+			Filter nf3 = allFiltersForField.iterator().next();
+			assertThat(nf3).isInstanceOf(NumericFilter.class);
+			assertThat(nf3).isSameAs(nf);
+
 			return createResult(1);
-		case 2:
-			assertThat(request.getFilters().size()).isEqualTo(2);
+		}
+		case 2: {
+			assertThat(request.getFilters()).hasSize(2);
 			assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
 			assertThat(filters.get(1)).isInstanceOf(NumericFilter.class);
 
-			nf = (NumericFilter) filters.get(0);
+			NumericFilter nf = (NumericFilter) filters.get(0);
 			assertThat(nf.getValue()).isEqualTo(100);
 			assertThat(nf.getField()).isEqualTo("id");
 			assertThat(nf.getComparison()).isEqualTo(Comparison.LESS_THAN);
@@ -315,60 +325,99 @@ public class RemoteProviderStoreRead {
 			assertThat(nf.getValue()).isEqualTo(90);
 			assertThat(nf.getField()).isEqualTo("id");
 			assertThat(nf.getComparison()).isEqualTo(Comparison.GREATER_THAN);
+
+			NumericFilter nf2 = request.getFirstFilterForField("id");
+			assertThat(nf2).isSameAs((NumericFilter) filters.get(0));
+
+			List<Filter> allFiltersForField = request.getAllFiltersForField("id");
+			assertThat(allFiltersForField).containsExactly(filters.get(0), filters.get(1));
+
 			return createResult(2);
-		case 3:
+		}
+		case 3: {
 			assertThat(filters).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(BooleanFilter.class);
 
-			BooleanFilter bf = (BooleanFilter) filters.get(0);
-			assertThat(bf.getValue()).isEqualTo(true);
-			assertThat(bf.getField()).isEqualTo("visible");
+			BooleanFilter bf1 = (BooleanFilter) filters.get(0);
+			assertThat(bf1.getValue()).isEqualTo(true);
+			assertThat(bf1.getField()).isEqualTo("visible");
 
+			BooleanFilter bf2 = request.getFirstFilterForField("visible");
+			assertThat(bf2).isSameAs(bf1);
+			
+			List<Filter> allFiltersForField = request.getAllFiltersForField("visible");
+			assertThat(allFiltersForField).containsExactly(bf1);			
+			
 			return createResult(3);
-		case 4:
+		}
+		case 4: {
 			assertThat(filters).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(BooleanFilter.class);
 
-			bf = (BooleanFilter) filters.get(0);
-			assertThat(bf.getValue()).isEqualTo(false);
-			assertThat(bf.getField()).isEqualTo("visible");
+			BooleanFilter bf1 = (BooleanFilter) filters.get(0);
+			assertThat(bf1.getValue()).isEqualTo(false);
+			assertThat(bf1.getField()).isEqualTo("visible");
 
+			BooleanFilter bf2 = request.getFirstFilterForField("visible");
+			assertThat(bf2).isSameAs(bf1);
+			
+			List<Filter> allFiltersForField = request.getAllFiltersForField("visible");
+			assertThat(allFiltersForField).containsExactly(bf1);	
+			
 			return createResult(4);
-		case 5:
+		}
+		case 5: {
 			assertThat(filters).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(StringFilter.class);
 
-			StringFilter sf = (StringFilter) filters.get(0);
-			assertThat(sf.getValue()).isEqualTo("abb");
-			assertThat(sf.getField()).isEqualTo("company");
+			StringFilter sf1 = (StringFilter) filters.get(0);
+			assertThat(sf1.getValue()).isEqualTo("abb");
+			assertThat(sf1.getField()).isEqualTo("company");
+						
+			StringFilter sf2 = request.getFirstFilterForField("company");
+			assertThat(sf2).isSameAs(sf1);
+			
+			List<Filter> allFiltersForField = request.getAllFiltersForField("company");
+			assertThat(allFiltersForField).containsExactly(sf1);				
 
 			return createResult(5);
-
-		case 6:
+		}
+		case 6: {
 			assertThat(filters).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
-			ListFilter lf = (ListFilter) filters.get(0);
-			assertThat(lf.getValue().size()).isEqualTo(1);
-			assertThat(lf.getValue().get(0)).isEqualTo("small");
-			assertThat(lf.getField()).isEqualTo("size");
+			ListFilter lf1 = (ListFilter) filters.get(0);
+			assertThat(lf1.getValue().size()).isEqualTo(1);
+			assertThat(lf1.getValue().get(0)).isEqualTo("small");
+			assertThat(lf1.getField()).isEqualTo("size");
 
+			ListFilter lf2 = request.getFirstFilterForField("size");
+			assertThat(lf2).isSameAs(lf1);
+			
+			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
+			assertThat(allFiltersForField).containsExactly(lf1);				
+			
 			return createResult(6);
-
-		case 7:
+		}
+		case 7: {
 			assertThat(filters).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
-			lf = (ListFilter) filters.get(0);
-			assertThat(lf.getValue().size()).isEqualTo(2);
-			assertThat(lf.getValue().get(0)).isEqualTo("small");
-			assertThat(lf.getValue().get(1)).isEqualTo("medium");
-			assertThat(lf.getField()).isEqualTo("size");
+			ListFilter lf1 = (ListFilter) filters.get(0);
+			assertThat(lf1.getValue().size()).isEqualTo(2);
+			assertThat(lf1.getValue().get(0)).isEqualTo("small");
+			assertThat(lf1.getValue().get(1)).isEqualTo("medium");
+			assertThat(lf1.getField()).isEqualTo("size");
 
+			ListFilter lf2 = request.getFirstFilterForField("size");
+			assertThat(lf2).isSameAs(lf1);
+			
+			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
+			assertThat(allFiltersForField).containsExactly(lf1);	
+			
 			return createResult(7);
-
-		case 8:
-
+		}
+		case 8: {
 			assertThat(filters).hasSize(2);
 			assertThat(filters.get(0)).isInstanceOf(DateFilter.class);
 			assertThat(filters.get(1)).isInstanceOf(DateFilter.class);
@@ -383,69 +432,116 @@ public class RemoteProviderStoreRead {
 			assertThat(df.getField()).isEqualTo("date");
 			assertThat(df.getComparison()).isEqualTo(Comparison.GREATER_THAN);
 
+			
+			DateFilter df2 = request.getFirstFilterForField("date");
+			assertThat(df2).isSameAs((DateFilter) filters.get(0));
+			
+			List<Filter> allFiltersForField = request.getAllFiltersForField("date");
+			assertThat(allFiltersForField).containsExactly(filters.get(0), filters.get(1));	
+			
 			return createResult(8);
-
-		case 9:
+		}
+		case 9: {
 			assertThat(filters).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(DateFilter.class);
 
-			df = (DateFilter) filters.get(0);
-			assertThat(df.getValue()).isEqualTo("07/01/2010");
-			assertThat(df.getField()).isEqualTo("date");
-			assertThat(df.getComparison()).isEqualTo(Comparison.EQUAL);
+			DateFilter df1 = (DateFilter) filters.get(0);
+			assertThat(df1.getValue()).isEqualTo("07/01/2010");
+			assertThat(df1.getField()).isEqualTo("date");
+			assertThat(df1.getComparison()).isEqualTo(Comparison.EQUAL);
 
+			DateFilter df2 = request.getFirstFilterForField("date");
+			assertThat(df2).isSameAs(df1);
+			
+			List<Filter> allFiltersForField = request.getAllFiltersForField("date");
+			assertThat(allFiltersForField).containsExactly(df1);				
+			
 			return createResult(9);
-
-		case 10:
+		}
+		case 10: {
 			assertThat(filters).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(StringFilter.class);
 
-			sf = (StringFilter) filters.get(0);
-			assertThat(sf.getValue()).isEqualTo("ERROR");
-			assertThat(sf.getField()).isEqualTo("level");
-
+			StringFilter sf1 = (StringFilter) filters.get(0);
+			assertThat(sf1.getValue()).isEqualTo("ERROR");
+			assertThat(sf1.getField()).isEqualTo("level");
+			
+			StringFilter sf2 = request.getFirstFilterForField("level");
+			assertThat(sf2).isSameAs(sf1);
+			
+			List<Filter> allFiltersForField = request.getAllFiltersForField("level");
+			assertThat(allFiltersForField).containsExactly(sf1);		
+			
 			return createResult(10);
-		case 11:
-			assertThat(request.getFilters().size()).isEqualTo(1);
+		}
+		case 11: {
+			assertThat(request.getFilters()).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
 
-			nf = (NumericFilter) filters.get(0);
-			assertThat(nf.getValue()).isEqualTo(1);
-			assertThat(nf.getField()).isEqualTo("level");
-			assertThat(nf.getComparison()).isNull();
+			NumericFilter nf1 = (NumericFilter) filters.get(0);
+			assertThat(nf1.getValue()).isEqualTo(1);
+			assertThat(nf1.getField()).isEqualTo("level");
+			assertThat(nf1.getComparison()).isNull();
 
+			NumericFilter nf2 = request.getFirstFilterForField("level");
+			assertThat(nf2).isSameAs(nf1);
+			
+			List<Filter> allFiltersForField = request.getAllFiltersForField("level");
+			assertThat(allFiltersForField).containsExactly(nf1);	
+			
 			return createResult(11);
-		case 12:
+		}
+		case 12: {
 			assertThat(filters).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(BooleanFilter.class);
 
-			bf = (BooleanFilter) filters.get(0);
-			assertThat(bf.getValue()).isEqualTo(true);
-			assertThat(bf.getField()).isEqualTo("level");
+			BooleanFilter bf1 = (BooleanFilter) filters.get(0);
+			assertThat(bf1.getValue()).isEqualTo(true);
+			assertThat(bf1.getField()).isEqualTo("level");
 
+			BooleanFilter bf2 = request.getFirstFilterForField("level");
+			assertThat(bf2).isSameAs(bf1);
+			
+			List<Filter> allFiltersForField = request.getAllFiltersForField("level");
+			assertThat(allFiltersForField).containsExactly(bf1);				
+			
 			return createResult(12);
-		case 13:
+		}
+		case 13: {
 			assertThat(filters).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
-			lf = (ListFilter) filters.get(0);
-			assertThat(lf.getValue().size()).isEqualTo(1);
-			assertThat(lf.getValue().get(0)).isEqualTo("small");
-			assertThat(lf.getField()).isEqualTo("size");
+			ListFilter lf1 = (ListFilter) filters.get(0);
+			assertThat(lf1.getValue().size()).isEqualTo(1);
+			assertThat(lf1.getValue().get(0)).isEqualTo("small");
+			assertThat(lf1.getField()).isEqualTo("size");
 
+			ListFilter lf2 = request.getFirstFilterForField("size");
+			assertThat(lf2).isSameAs(lf1);
+			
+			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
+			assertThat(allFiltersForField).containsExactly(lf1);				
+			
 			return createResult(13);
-
-		case 14:
+		}
+		case 14: {
 			assertThat(filters).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
-			lf = (ListFilter) filters.get(0);
-			assertThat(lf.getValue().size()).isEqualTo(2);
-			assertThat(lf.getValue().get(0)).isEqualTo("small");
-			assertThat(lf.getValue().get(1)).isEqualTo("medium");
-			assertThat(lf.getField()).isEqualTo("size");
+			ListFilter lf1 = (ListFilter) filters.get(0);
+			assertThat(lf1.getValue().size()).isEqualTo(2);
+			assertThat(lf1.getValue().get(0)).isEqualTo("small");
+			assertThat(lf1.getValue().get(1)).isEqualTo("medium");
+			assertThat(lf1.getField()).isEqualTo("size");
 
+			ListFilter lf2 = request.getFirstFilterForField("size");
+			assertThat(lf2).isSameAs(lf1);
+			
+			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
+			assertThat(allFiltersForField).containsExactly(lf1);			
+			
 			return createResult(14);
+		}
 
 		default: // do nothing
 		}

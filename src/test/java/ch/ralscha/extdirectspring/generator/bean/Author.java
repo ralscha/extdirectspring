@@ -18,12 +18,14 @@ package ch.ralscha.extdirectspring.generator.bean;
 import ch.ralscha.extdirectspring.generator.Model;
 import ch.ralscha.extdirectspring.generator.ModelAssociation;
 import ch.ralscha.extdirectspring.generator.ModelAssociationType;
+import ch.ralscha.extdirectspring.generator.ModelField;
 
 @Model(value = "MyApp.Author", idProperty = "id")
 public class Author {
 
 	public String id;
 
+	@ModelField(defaultValue="Mr.")
 	public String title;
 
 	public String firstName;
