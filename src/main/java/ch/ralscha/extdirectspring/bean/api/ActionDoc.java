@@ -84,15 +84,6 @@ public class ActionDoc extends Action {
 		this.deprecated = deprecated;
 	}
 
-	public ActionDoc(String name, List<String> params, String methodComment, String author, String version,
-			boolean deprecated) {
-		this(name, params);
-		this.methodComment = methodComment;
-		this.author = author;
-		this.version = version;
-		this.deprecated = deprecated;
-	}
-
 	public ActionDoc(Action toCopy, String methodComment, String author, String version, boolean deprecated) {
 		super(toCopy);
 		this.methodComment = methodComment;

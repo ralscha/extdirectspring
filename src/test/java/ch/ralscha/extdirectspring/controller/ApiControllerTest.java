@@ -42,7 +42,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.StringUtils;
 
 import ch.ralscha.extdirectspring.bean.api.Action;
-import ch.ralscha.extdirectspring.bean.api.ActionDoc;
 import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.util.ApiCache;
@@ -435,10 +434,20 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	static RemotingApi group1ApisWithDoc(String namespace) {
+	static RemotingApi groupApisWithDoc(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/action/router", namespace);
-		remotingApi.addAction("remoteProviderSimple", new ActionDoc("methodDoc", 0, false, "method comment",
-				"anonymous", "version 1.0", true));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method1", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method2", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method3", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method4", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method5", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method6", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method7", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method8", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method9", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method10", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method11", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method12", 0, false));
 		return remotingApi;
 	}
 
@@ -555,8 +564,18 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", new Action("method25", 3, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method26", 3, false));
 
-		remotingApi.addAction("remoteProviderSimple", new ActionDoc("methodDoc", 0, false, "method comment",
-				"anonymous", "version 1.0", true));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method1", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method2", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method3", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method4", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method5", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method6", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method7", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method8", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method9", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method10", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method11", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method12", 0, false));
 
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method1", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method2", 1, false));

@@ -15,13 +15,20 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.data.MapEntry.entry;
+
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -30,18 +37,18 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
+import ch.ralscha.extdirectspring.bean.api.ActionDoc;
 import ch.ralscha.extdirectspring.util.ApiCache;
 
 /**
  * Tests for {@link ApiController}.
  * 
  * @author Ralph Schaer
+ * @author dbs
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ApiControllerWithDocumentationTest {
-
-	private final static Logger logger = LoggerFactory.getLogger(ApiControllerWithDocumentationTest.class);
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -60,7 +67,6 @@ public class ApiControllerWithDocumentationTest {
 		routerController.getConfiguration().setEnableBuffer(false);
 		routerController.getConfiguration().setMaxRetries(5);
 		routerController.getConfiguration().setStreamResponse(true);
-		// routerController.getConfiguration().setApiDocumentation(true);
 	}
 
 	/**
@@ -73,46 +79,258 @@ public class ApiControllerWithDocumentationTest {
 	 * @throws IOException
 	 */
 	@Test
-	public void testGroupDoc() throws IOException {
+	public void testDoc1() throws IOException {
+		ActionDoc doc = callApi("method1");
 
-		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug-doc.js");
+		assertThat(doc.isDeprecated()).isTrue();
+		assertThat(doc.getMethodComment()).isEqualTo("this method is used to test the documentation generation");
+		assertThat(doc.getAuthor()).isEqualTo("dbs");
+		assertThat(doc.getVersion()).isEqualTo("0.1");
+		assertThat(doc.getParameters()).hasSize(5);
+		assertThat(doc.getParameters()).contains(entry("a", "property a integer"), entry("b", "property b string"),
+				entry("c", "property c string"), entry("d", "property d boolean"), entry("e", "array of integers"));
+		assertThat(doc.getReturnMethod()).hasSize(2);
+		assertThat(doc.getReturnMethod()).contains(entry("errors", "list of failed fields"),
+				entry("success", "true for success, false otherwise"));
+	}
+
+	@Test
+	public void testDoc2() throws IOException {
+		ActionDoc doc = callApi("method2");
+
+		assertThat(doc.isDeprecated()).isFalse();
+		assertThat(doc.getMethodComment()).isEqualTo("method two doc");
+		assertThat(doc.getAuthor()).isEmpty();
+		assertThat(doc.getVersion()).isEqualTo("1.0");
+		assertThat(doc.getParameters()).isEmpty();
+		assertThat(doc.getReturnMethod()).isEmpty();
+	}
+
+	@Test
+	public void testDoc3() throws IOException {
+		ActionDoc doc = callApi("method3");
+
+		assertThat(doc.isDeprecated()).isFalse();
+		assertThat(doc.getMethodComment()).isEqualTo("method three doc");
+		assertThat(doc.getAuthor()).isEqualTo("dbs");
+		assertThat(doc.getVersion()).isEqualTo("1.0");
+		assertThat(doc.getParameters()).isEmpty();
+		assertThat(doc.getReturnMethod()).isEmpty();
+	}
+
+	@Test
+	public void testDoc4() throws IOException {
+		ActionDoc doc = callApi("method4");
+
+		assertThat(doc.isDeprecated()).isFalse();
+		assertThat(doc.getMethodComment()).isEqualTo("method four doc");
+		assertThat(doc.getAuthor()).isEqualTo("sr");
+		assertThat(doc.getVersion()).isEqualTo("0.4");
+		assertThat(doc.getParameters()).isEmpty();
+		assertThat(doc.getReturnMethod()).isEmpty();
+	}
+
+	@Test
+	public void testDoc5() throws IOException {
+		ActionDoc doc = callApi("method5");
+
+		assertThat(doc.isDeprecated()).isTrue();
+		assertThat(doc.getMethodComment()).isEqualTo("method five doc");
+		assertThat(doc.getAuthor()).isEqualTo("dbs");
+		assertThat(doc.getVersion()).isEqualTo("0.5");
+		assertThat(doc.getParameters()).isEmpty();
+		assertThat(doc.getReturnMethod()).isEmpty();
+	}
+
+	@Test
+	public void testDoc6() throws IOException {
+		ActionDoc doc = callApi("method6");
+
+		assertThat(doc.isDeprecated()).isFalse();
+		assertThat(doc.getMethodComment()).isEqualTo("method six doc");
+		assertThat(doc.getAuthor()).isEqualTo("sr");
+		assertThat(doc.getVersion()).isEqualTo("0.6");
+		assertThat(doc.getParameters()).isEmpty();
+		assertThat(doc.getReturnMethod()).isEmpty();
+	}
+
+	@Test
+	public void testDoc7() throws IOException {
+		ActionDoc doc = callApi("method7");
+
+		assertThat(doc.isDeprecated()).isTrue();
+		assertThat(doc.getMethodComment()).isEqualTo("method seven doc");
+		assertThat(doc.getAuthor()).isEqualTo("sr");
+		assertThat(doc.getVersion()).isEqualTo("0.7");
+		assertThat(doc.getParameters()).isEmpty();
+		assertThat(doc.getReturnMethod()).hasSize(1);
+		assertThat(doc.getReturnMethod()).contains(entry("p1", "p1 desc"));
+	}
+
+	@Test
+	public void testDoc8() throws IOException {
+		ActionDoc doc = callApi("method8");
+
+		assertThat(doc.isDeprecated()).isFalse();
+		assertThat(doc.getMethodComment()).isEqualTo("method eight doc");
+		assertThat(doc.getAuthor()).isEqualTo("sr");
+		assertThat(doc.getVersion()).isEqualTo("0.8");
+		assertThat(doc.getParameters()).isEmpty();
+		assertThat(doc.getReturnMethod()).hasSize(2);
+		assertThat(doc.getReturnMethod()).contains(entry("p1", "p1 desc"), entry("p2", "p2 desc"));
+	}
+
+	@Test
+	public void testDoc9() throws IOException {
+		ActionDoc doc = callApi("method9");
+
+		assertThat(doc.isDeprecated()).isFalse();
+		assertThat(doc.getMethodComment()).isEqualTo("method nine doc");
+		assertThat(doc.getAuthor()).isEqualTo("dbs");
+		assertThat(doc.getVersion()).isEqualTo("0.9");
+		assertThat(doc.getParameters()).isEmpty();
+		assertThat(doc.getReturnMethod()).isEmpty();
+	}
+
+	@Test
+	public void testDoc10() throws IOException {
+		ActionDoc doc = callApi("method10");
+
+		assertThat(doc.isDeprecated()).isFalse();
+		assertThat(doc.getMethodComment()).isEqualTo("method ten doc");
+		assertThat(doc.getAuthor()).isEqualTo("sr");
+		assertThat(doc.getVersion()).isEqualTo("1.0");
+		assertThat(doc.getParameters()).hasSize(1);
+		assertThat(doc.getParameters()).contains(entry("a", "a desc"));
+		assertThat(doc.getReturnMethod()).hasSize(2);
+		assertThat(doc.getReturnMethod()).contains(entry("p1", "p1 desc"), entry("p2", "p2 desc"));
+
+	}
+
+	@Test
+	public void testDoc11() throws IOException {
+		ActionDoc doc = callApi("method11");
+
+		assertThat(doc.isDeprecated()).isFalse();
+		assertThat(doc.getMethodComment()).isEqualTo("method eleven doc");
+		assertThat(doc.getAuthor()).isEmpty();
+		assertThat(doc.getVersion()).isEqualTo("1.0");
+		assertThat(doc.getParameters()).hasSize(2);
+		assertThat(doc.getParameters()).contains(entry("a", "a desc"), entry("b", "b desc"));
+		assertThat(doc.getReturnMethod()).isEmpty();
+	}
+
+	@Test
+	public void testDoc12() throws IOException {
+		ActionDoc doc = callApi("method12");
+
+		assertThat(doc.isDeprecated()).isFalse();
+		assertThat(doc.getMethodComment()).isEqualTo("method twelve doc");
+		assertThat(doc.getAuthor()).isEqualTo("sr");
+		assertThat(doc.getVersion()).isEqualTo("1.0");
+		assertThat(doc.getParameters()).isEmpty();
+		assertThat(doc.getReturnMethod()).isEmpty();
+	}
+
+	public void testRequestToApiDebugDoesNotContainDocs() throws IOException {
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "groupdoc", false, null,
-				request, response);
+		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "doc", false, null, request,
+				response);
 		String content = response.getContentAsString();
-		logger.info("\n\n" + content + "\n\n");
-		ApiControllerTest.compare(content, response.getContentType(), ApiControllerTest.group1ApisWithDoc("actionns"),
-				"Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", routerController.getConfiguration(), "remoting");
-		Assert.isTrue(content.contains("/**"));
-		Assert.isTrue(content.contains("@deprecated"));
-		Assert.isTrue(content.contains("methodDoc"));
-		Assert.isTrue(content.contains("@author"));
-		Assert.isTrue(content.contains("@param: [d]"));
-		Assert.isTrue(content.contains("@param: [e]"));
-		Assert.isTrue(content.contains("@param: [b]"));
-		Assert.isTrue(content.contains("@param: [a]"));
-		Assert.isTrue(content.contains("@return"));
-		Assert.isTrue(content.contains("*/"));
 
-		request = new MockHttpServletRequest("GET", "/action/api-debug.js");
-		response = new MockHttpServletResponse();
-		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "groupdoc", false, null,
-				request, response);
-		content = response.getContentAsString();
-		logger.info("\n\n" + content + "\n\n");
-		ApiControllerTest.compare(content, response.getContentType(), ApiControllerTest.group1ApisWithDoc("actionns"),
+		ApiControllerTest.compare(content, response.getContentType(), ApiControllerTest.groupApisWithDoc("actionns"),
 				"Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", routerController.getConfiguration(), "remoting");
 		Assert.doesNotContain("/**", content, "generation of api-debug.js should not contain method documentation");
+	}
 
-		request = new MockHttpServletRequest("GET", "/action/api.js");
-		response = new MockHttpServletResponse();
-		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "groupdoc", false, null,
-				request, response);
-		content = response.getContentAsString();
-		logger.info("\n\n" + content + "\n\n");
-		ApiControllerTest.compare(content, response.getContentType(), ApiControllerTest.group1ApisWithDoc("actionns"),
+	public void testRequestToApiDoesNotContainDocs() throws IOException {
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api.js");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "doc", false, null, request,
+				response);
+		String content = response.getContentAsString();
+
+		ApiControllerTest.compare(content, response.getContentType(), ApiControllerTest.groupApisWithDoc("actionns"),
 				"Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", routerController.getConfiguration(), "remoting");
 		Assert.doesNotContain("/**", content, "generation of api.js should not contain method documentation");
 	}
 
+	private ActionDoc callApi(String method) throws IOException, UnsupportedEncodingException {
+		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug-doc.js");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "doc", false, null, request,
+				response);
+		String content = response.getContentAsString();
+
+		ApiControllerTest.compare(content, response.getContentType(), ApiControllerTest.groupApisWithDoc("actionns"),
+				"Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", routerController.getConfiguration(), "remoting");
+
+		ActionDoc doc = getCommentForMethod(content, method);
+		return doc;
+	}
+
+	private final static Pattern COMMENT_PATTERN = Pattern.compile("/\\*\\*([^/]*)\\*/", Pattern.MULTILINE);
+
+	private static ActionDoc getCommentForMethod(String apiString, String method) {
+		ActionDoc doc = new ActionDoc(method, Collections.<String> emptyList());
+
+		String block = findCommentBlock(apiString, method);
+		if (block != null) {
+			doc.setDeprecated(block.contains("* @deprecated"));
+
+			int p = block.indexOf("@author:");
+			if (p != -1) {
+				doc.setAuthor(block.substring(p + 9, block.indexOf('\n', p)));
+			}
+
+			p = block.indexOf("@version:");
+			if (p != -1) {
+				doc.setVersion(block.substring(p + 10, block.indexOf('\n', p)));
+			}
+
+			p = block.indexOf(method);
+			if (p != -1) {
+				doc.setMethodComment(block.substring(p + method.length() + 2, block.indexOf('\n', p)));
+			}
+
+			Map<String, String> params = new HashMap<String, String>();
+			p = block.indexOf("@param:");
+			while (p != -1) {
+				int p2 = block.indexOf('\n', p);
+				String pc = block.substring(p + 8, p2);
+				int c1 = pc.indexOf('[');
+				int c2 = pc.indexOf(']');
+				params.put(pc.substring(c1 + 1, c2), pc.substring(c2 + 2));
+				p = block.indexOf("@param:", p2);
+			}
+			doc.setParameters(params);
+
+			Map<String, String> returns = new HashMap<String, String>();
+			p = block.indexOf("@return");
+			if (p != -1) {
+				p = block.indexOf('[', p);
+				while (p != -1) {
+					int p2 = block.indexOf(']', p);
+					returns.put(block.substring(p + 1, p2), block.substring(p2 + 2, block.indexOf('\n', p2)));
+					p = block.indexOf('[', p2);
+				}
+			}
+
+			doc.setReturnMethod(returns);
+		}
+
+		return doc;
+	}
+
+	private static String findCommentBlock(String apiString, String method) {
+		Matcher m = COMMENT_PATTERN.matcher(apiString);
+		while (m.find()) {
+			String block = m.group(1);
+			if (block.contains(method + ":")) {
+				return block;
+			}
+		}
+		return null;
+	}
 }

@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.StringUtils;
@@ -193,7 +194,9 @@ public final class MethodInfo {
 								descriptions[i] == null ? "No description" : descriptions[i]);
 					}
 				} else {
-					// looger.warn("skip generation of parameters, params size is different from descriptions size");
+					LogFactory
+							.getLog(MethodInfo.class)
+							.info("Documentation: skip generation of parameters, params size is different from descriptions size");
 				}
 			}
 			ExtDirectDocReturn docReturn = documentation.returnMethod();
@@ -207,7 +210,9 @@ public final class MethodInfo {
 								descriptions[i] == null ? "No description" : descriptions[i]);
 					}
 				} else {
-					// looger.warn("skip generation of return method properties, properties size is different from descriptions size");
+					LogFactory
+							.getLog(MethodInfo.class)
+							.info("Documentation: skip generation of return method properties, properties size is different from descriptions size");
 				}
 			}
 			return actionDoc;
