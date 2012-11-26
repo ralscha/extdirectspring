@@ -25,7 +25,7 @@ public class Author {
 
 	public String id;
 
-	@ModelField(defaultValue="Mr.")
+	@ModelField(defaultValue = "Mr.")
 	public String title;
 
 	public String firstName;

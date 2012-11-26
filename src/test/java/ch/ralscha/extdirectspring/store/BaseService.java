@@ -38,7 +38,7 @@ public class BaseService<T extends BaseModel> {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
 	public ExtDirectStoreReadResult<Integer> delete3(List<Integer> deletes) {
-		return new ExtDirectStoreReadResult<Integer>(deletes);
+		return new ExtDirectStoreReadResult<Integer>(deletes.toArray(new Integer[deletes.size()]));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")

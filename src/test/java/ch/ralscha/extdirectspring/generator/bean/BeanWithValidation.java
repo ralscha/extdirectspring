@@ -25,6 +25,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Past;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
@@ -45,6 +46,7 @@ public class BeanWithValidation {
 	public BigDecimal minMax1;
 
 	@Max(10000)
+	@Min(20)
 	public int minMax2;
 
 	@Range(min = 20, max = 50)

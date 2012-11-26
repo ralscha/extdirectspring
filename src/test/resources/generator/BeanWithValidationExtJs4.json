@@ -46,6 +46,10 @@ Ext.define("ch.ralscha.extdirectspring.generator.bean.BeanWithValidation",
     max : 10000
   }, {
     type : "range",
+    field : "minMax2",
+    min : 20
+  }, {
+    type : "range",
     field : "minMax3",
     min : 20,
     max : 50

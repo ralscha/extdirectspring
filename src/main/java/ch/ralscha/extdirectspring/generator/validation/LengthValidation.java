@@ -36,7 +36,7 @@ public class LengthValidation extends AbstractValidation {
 		super("length", field);
 
 		if (min == null && max == null) {
-			throw new IllegalArgumentException("At least min and/or max must be set");
+			throw new IllegalArgumentException("At least min or max must be set");
 		}
 
 		this.min = min;

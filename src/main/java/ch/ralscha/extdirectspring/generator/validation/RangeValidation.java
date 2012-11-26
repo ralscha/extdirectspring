@@ -37,6 +37,10 @@ public class RangeValidation extends AbstractValidation {
 	public RangeValidation(String field, BigDecimal min, BigDecimal max) {
 		super("range", field);
 
+		if (min == null && max == null) {
+			throw new IllegalArgumentException("At least min or max must be set");
+		}
+
 		this.min = min;
 		this.max = max;
 	}

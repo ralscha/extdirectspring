@@ -29,7 +29,11 @@ public class GenericValidation extends AbstractValidation {
 
 	public GenericValidation(String type, String field, Map<String, Object> options) {
 		super(type, field);
-		this.options = new LinkedHashMap<String, Object>(options);
+		if (options != null) {
+			this.options = new LinkedHashMap<String, Object>(options);
+		} else {
+			this.options = null;
+		}
 	}
 
 	@JsonAnyGetter

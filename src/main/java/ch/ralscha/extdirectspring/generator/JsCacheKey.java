@@ -15,7 +15,7 @@
  */
 package ch.ralscha.extdirectspring.generator;
 
-class JsCacheKey {
+final class JsCacheKey {
 	private final String modelName;
 
 	private final OutputFormat format;

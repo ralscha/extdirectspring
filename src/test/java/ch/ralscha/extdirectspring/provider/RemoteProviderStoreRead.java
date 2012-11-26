@@ -311,7 +311,7 @@ public class RemoteProviderStoreRead {
 
 			assertThat(request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
-			
+
 			return createResult(1);
 		}
 		case 2: {
@@ -337,7 +337,7 @@ public class RemoteProviderStoreRead {
 
 			assertThat(request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
-			
+
 			return createResult(2);
 		}
 		case 3: {
@@ -350,13 +350,13 @@ public class RemoteProviderStoreRead {
 
 			BooleanFilter bf2 = request.getFirstFilterForField("visible");
 			assertThat(bf2).isSameAs(bf1);
-			
+
 			List<Filter> allFiltersForField = request.getAllFiltersForField("visible");
-			assertThat(allFiltersForField).containsExactly(bf1);			
-			
+			assertThat(allFiltersForField).containsExactly(bf1);
+
 			assertThat(request.getFirstFilterForField("xy")).isNull();
-			assertThat(request.getAllFiltersForField("xy")).isEmpty();			
-			
+			assertThat(request.getAllFiltersForField("xy")).isEmpty();
+
 			return createResult(3);
 		}
 		case 4: {
@@ -369,10 +369,10 @@ public class RemoteProviderStoreRead {
 
 			BooleanFilter bf2 = request.getFirstFilterForField("visible");
 			assertThat(bf2).isSameAs(bf1);
-			
+
 			List<Filter> allFiltersForField = request.getAllFiltersForField("visible");
-			assertThat(allFiltersForField).containsExactly(bf1);	
-			
+			assertThat(allFiltersForField).containsExactly(bf1);
+
 			return createResult(4);
 		}
 		case 5: {
@@ -382,12 +382,12 @@ public class RemoteProviderStoreRead {
 			StringFilter sf1 = (StringFilter) filters.get(0);
 			assertThat(sf1.getValue()).isEqualTo("abb");
 			assertThat(sf1.getField()).isEqualTo("company");
-						
+
 			StringFilter sf2 = request.getFirstFilterForField("company");
 			assertThat(sf2).isSameAs(sf1);
-			
+
 			List<Filter> allFiltersForField = request.getAllFiltersForField("company");
-			assertThat(allFiltersForField).containsExactly(sf1);				
+			assertThat(allFiltersForField).containsExactly(sf1);
 
 			return createResult(5);
 		}
@@ -402,10 +402,10 @@ public class RemoteProviderStoreRead {
 
 			ListFilter lf2 = request.getFirstFilterForField("size");
 			assertThat(lf2).isSameAs(lf1);
-			
+
 			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
-			assertThat(allFiltersForField).containsExactly(lf1);				
-			
+			assertThat(allFiltersForField).containsExactly(lf1);
+
 			return createResult(6);
 		}
 		case 7: {
@@ -420,10 +420,10 @@ public class RemoteProviderStoreRead {
 
 			ListFilter lf2 = request.getFirstFilterForField("size");
 			assertThat(lf2).isSameAs(lf1);
-			
+
 			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
-			assertThat(allFiltersForField).containsExactly(lf1);	
-			
+			assertThat(allFiltersForField).containsExactly(lf1);
+
 			return createResult(7);
 		}
 		case 8: {
@@ -441,13 +441,12 @@ public class RemoteProviderStoreRead {
 			assertThat(df.getField()).isEqualTo("date");
 			assertThat(df.getComparison()).isEqualTo(Comparison.GREATER_THAN);
 
-			
 			DateFilter df2 = request.getFirstFilterForField("date");
 			assertThat(df2).isSameAs((DateFilter) filters.get(0));
-			
+
 			List<Filter> allFiltersForField = request.getAllFiltersForField("date");
-			assertThat(allFiltersForField).containsExactly(filters.get(0), filters.get(1));	
-			
+			assertThat(allFiltersForField).containsExactly(filters.get(0), filters.get(1));
+
 			return createResult(8);
 		}
 		case 9: {
@@ -461,10 +460,10 @@ public class RemoteProviderStoreRead {
 
 			DateFilter df2 = request.getFirstFilterForField("date");
 			assertThat(df2).isSameAs(df1);
-			
+
 			List<Filter> allFiltersForField = request.getAllFiltersForField("date");
-			assertThat(allFiltersForField).containsExactly(df1);				
-			
+			assertThat(allFiltersForField).containsExactly(df1);
+
 			return createResult(9);
 		}
 		case 10: {
@@ -474,13 +473,13 @@ public class RemoteProviderStoreRead {
 			StringFilter sf1 = (StringFilter) filters.get(0);
 			assertThat(sf1.getValue()).isEqualTo("ERROR");
 			assertThat(sf1.getField()).isEqualTo("level");
-			
+
 			StringFilter sf2 = request.getFirstFilterForField("level");
 			assertThat(sf2).isSameAs(sf1);
-			
+
 			List<Filter> allFiltersForField = request.getAllFiltersForField("level");
-			assertThat(allFiltersForField).containsExactly(sf1);		
-			
+			assertThat(allFiltersForField).containsExactly(sf1);
+
 			return createResult(10);
 		}
 		case 11: {
@@ -494,10 +493,10 @@ public class RemoteProviderStoreRead {
 
 			NumericFilter nf2 = request.getFirstFilterForField("level");
 			assertThat(nf2).isSameAs(nf1);
-			
+
 			List<Filter> allFiltersForField = request.getAllFiltersForField("level");
-			assertThat(allFiltersForField).containsExactly(nf1);	
-			
+			assertThat(allFiltersForField).containsExactly(nf1);
+
 			return createResult(11);
 		}
 		case 12: {
@@ -510,10 +509,10 @@ public class RemoteProviderStoreRead {
 
 			BooleanFilter bf2 = request.getFirstFilterForField("level");
 			assertThat(bf2).isSameAs(bf1);
-			
+
 			List<Filter> allFiltersForField = request.getAllFiltersForField("level");
-			assertThat(allFiltersForField).containsExactly(bf1);				
-			
+			assertThat(allFiltersForField).containsExactly(bf1);
+
 			return createResult(12);
 		}
 		case 13: {
@@ -527,10 +526,10 @@ public class RemoteProviderStoreRead {
 
 			ListFilter lf2 = request.getFirstFilterForField("size");
 			assertThat(lf2).isSameAs(lf1);
-			
+
 			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
-			assertThat(allFiltersForField).containsExactly(lf1);				
-			
+			assertThat(allFiltersForField).containsExactly(lf1);
+
 			return createResult(13);
 		}
 		case 14: {
@@ -545,10 +544,10 @@ public class RemoteProviderStoreRead {
 
 			ListFilter lf2 = request.getFirstFilterForField("size");
 			assertThat(lf2).isSameAs(lf1);
-			
+
 			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
-			assertThat(allFiltersForField).containsExactly(lf1);			
-			
+			assertThat(allFiltersForField).containsExactly(lf1);
+
 			return createResult(14);
 		}
 

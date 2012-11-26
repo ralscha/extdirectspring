@@ -59,27 +59,6 @@ public abstract class AbstractAssociation {
 		this.model = model;
 	}
 
-	/**
-	 * Creates an instance of the AbstractAssociation. Sets {@link #getType()}
-	 * to the provided value and sets {@link #getModel()} to the full qualified
-	 * name of the model class or the string from {@link Model#value()} if
-	 * present on the class.
-	 * 
-	 * @param type The type of the association.
-	 * @param model The class of the model that is being associated with.
-	 */
-	public AbstractAssociation(String type, Class<?> model) {
-		this.type = type;
-
-		Model modelAnnotation = model.getAnnotation(Model.class);
-
-		if (modelAnnotation != null && StringUtils.hasText(modelAnnotation.value())) {
-			this.model = modelAnnotation.value();
-		} else {
-			this.model = model.getName();
-		}
-	}
-
 	public String getAssociationKey() {
 		return associationKey;
 	}

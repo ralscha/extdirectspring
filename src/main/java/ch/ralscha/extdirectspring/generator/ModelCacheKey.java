@@ -15,7 +15,7 @@
  */
 package ch.ralscha.extdirectspring.generator;
 
-class ModelCacheKey {
+final class ModelCacheKey {
 	private final String className;
 
 	private final IncludeValidation includeValidation;

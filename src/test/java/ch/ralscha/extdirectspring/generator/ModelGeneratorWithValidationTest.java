@@ -19,7 +19,9 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +29,7 @@ import org.junit.Test;
 import ch.ralscha.extdirectspring.generator.validation.AbstractValidation;
 import ch.ralscha.extdirectspring.generator.validation.EmailValidation;
 import ch.ralscha.extdirectspring.generator.validation.FormatValidation;
+import ch.ralscha.extdirectspring.generator.validation.GenericValidation;
 import ch.ralscha.extdirectspring.generator.validation.LengthValidation;
 import ch.ralscha.extdirectspring.generator.validation.PresenceValidation;
 
@@ -67,18 +70,25 @@ public class ModelGeneratorWithValidationTest {
 		validations.add(new PresenceValidation("id"));
 		validations.add(new EmailValidation("email"));
 		model.setValidations(validations);
-
 		model.addValidation(new FormatValidation("salary", "[0-9]*\\.[0-9]*"));
+
+		model.addValidation(new GenericValidation("myOwnValidator1", "name", null));
+
+		Map<String, Object> options = new LinkedHashMap<String, Object>();
+		options.put("o1", "s");
+		options.put("o2", 10);
+		options.put("o3", true);
+		model.addValidation(new GenericValidation("myOwnValidator2", "id", options));
 
 		String code = ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false);
 		assertThat(code)
 				.isEqualTo(
-						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",fields:[{name:\"id\",type:\"int\"},{name:\"email\",type:\"string\"},{name:\"salary\",type:\"float\",useNull:true}],validations:[{type:\"presence\",field:\"id\"},{type:\"email\",field:\"email\"},{type:\"format\",field:\"salary\",matcher:/[0-9]*\\.[0-9]*/}]});");
+						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",fields:[{name:\"id\",type:\"int\"},{name:\"email\",type:\"string\"},{name:\"salary\",type:\"float\",useNull:true}],validations:[{type:\"presence\",field:\"id\"},{type:\"email\",field:\"email\"},{type:\"format\",field:\"salary\",matcher:/[0-9]*\\.[0-9]*/},{type:\"myOwnValidator1\",field:\"name\"},{type:\"myOwnValidator2\",field:\"id\",o1:\"s\",o2:10,o3:true}]});");
 
 		code = ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false);
 		assertThat(code)
 				.isEqualTo(
-						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",fields:[{name:\"id\",type:\"int\"},{name:\"email\",type:\"string\"},{name:\"salary\",type:\"float\",useNull:true}],validations:[{type:\"presence\",field:\"id\"},{type:\"email\",field:\"email\"},{type:\"format\",field:\"salary\",matcher:/[0-9]*\\.[0-9]*/}]});");
+						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",fields:[{name:\"id\",type:\"int\"},{name:\"email\",type:\"string\"},{name:\"salary\",type:\"float\",useNull:true}],validations:[{type:\"presence\",field:\"id\"},{type:\"email\",field:\"email\"},{type:\"format\",field:\"salary\",matcher:/[0-9]*\\.[0-9]*/},{type:\"myOwnValidator1\",field:\"name\"},{type:\"myOwnValidator2\",field:\"id\",o1:\"s\",o2:10,o3:true}]});");
 	}
 
 	@Test
@@ -93,11 +103,18 @@ public class ModelGeneratorWithValidationTest {
 
 		model.addValidation(new PresenceValidation("id"));
 		model.addValidation(new LengthValidation("name", 2, null));
+		model.addValidation(new GenericValidation("myOwnValidator1", "name", null));
+
+		Map<String, Object> options = new LinkedHashMap<String, Object>();
+		options.put("o1", "s");
+		options.put("o2", 10);
+		options.put("o3", true);
+		model.addValidation(new GenericValidation("myOwnValidator2", "id", options));
 
 		String code = ModelGenerator.generateJavascript(model, OutputFormat.TOUCH2, false);
 		assertThat(code)
 				.isEqualTo(
-						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",config:{fields:[{name:\"id\",type:\"int\"},{name:\"name\",type:\"string\"}],validations:[{type:\"presence\",field:\"id\"},{type:\"length\",field:\"name\",min:2}]}});");
+						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",config:{fields:[{name:\"id\",type:\"int\"},{name:\"name\",type:\"string\"}],validations:[{type:\"presence\",field:\"id\"},{type:\"length\",field:\"name\",min:2},{type:\"myOwnValidator1\",field:\"name\"},{type:\"myOwnValidator2\",field:\"id\",o1:\"s\",o2:10,o3:true}]}});");
 
 	}
 

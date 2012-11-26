@@ -57,20 +57,20 @@ public class ModelGeneratorTest {
 
 		ModelFieldBean getNameField = model.getField("name");
 		assertThat(getNameField).isEqualsToByComparingFields(nameField);
-		
+
 		ModelGenerator.clearCaches();
 		nameField.setType(ModelType.INTEGER);
 		code = ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false);
 		assertThat(code)
 				.isEqualTo(
-						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",fields:[{name:\"id\",type:\"int\"},{name:\"name\",type:\"int\"}]});");	
-		
+						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",fields:[{name:\"id\",type:\"int\"},{name:\"name\",type:\"int\"}]});");
+
 		ModelGenerator.clearCaches();
 		idField.setName("nameOfId");
 		code = ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false);
 		assertThat(code)
 				.isEqualTo(
-						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",fields:[{name:\"nameOfId\",type:\"int\"},{name:\"name\",type:\"int\"}]});");			
+						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",fields:[{name:\"nameOfId\",type:\"int\"},{name:\"name\",type:\"int\"}]});");
 	}
 
 	@Test
