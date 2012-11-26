@@ -309,6 +309,9 @@ public class RemoteProviderStoreRead {
 			assertThat(nf3).isInstanceOf(NumericFilter.class);
 			assertThat(nf3).isSameAs(nf);
 
+			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat(request.getAllFiltersForField("xy")).isEmpty();
+			
 			return createResult(1);
 		}
 		case 2: {
@@ -332,6 +335,9 @@ public class RemoteProviderStoreRead {
 			List<Filter> allFiltersForField = request.getAllFiltersForField("id");
 			assertThat(allFiltersForField).containsExactly(filters.get(0), filters.get(1));
 
+			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat(request.getAllFiltersForField("xy")).isEmpty();
+			
 			return createResult(2);
 		}
 		case 3: {
@@ -347,6 +353,9 @@ public class RemoteProviderStoreRead {
 			
 			List<Filter> allFiltersForField = request.getAllFiltersForField("visible");
 			assertThat(allFiltersForField).containsExactly(bf1);			
+			
+			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat(request.getAllFiltersForField("xy")).isEmpty();			
 			
 			return createResult(3);
 		}
