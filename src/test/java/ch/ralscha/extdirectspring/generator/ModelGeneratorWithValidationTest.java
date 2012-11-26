@@ -50,7 +50,7 @@ public class ModelGeneratorWithValidationTest {
 
 		assertThat(code)
 				.isEqualTo(
-						"Ext.define('App.User',{extend:'Ext.data.Model',fields:[{name:'id',type:'int'},{name:'name',type:'string'}],validations:[{type:'presence',field:'id'},{type:'length',field:'name',min:2}]});");
+						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",fields:[{name:\"id\",type:\"int\"},{name:\"name\",type:\"string\"}],validations:[{type:\"presence\",field:\"id\"},{type:\"length\",field:\"name\",min:2}]});");
 	}
 
 	@Test
@@ -73,12 +73,12 @@ public class ModelGeneratorWithValidationTest {
 		String code = ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false);
 		assertThat(code)
 				.isEqualTo(
-						"Ext.define('App.User',{extend:'Ext.data.Model',fields:[{name:'id',type:'int'},{name:'email',type:'string'},{name:'salary',type:'float',useNull:true}],validations:[{type:'presence',field:'id'},{type:'email',field:'email'},{type:'format',field:'salary',matcher:/[0-9]*\\.[0-9]*/}]});");
+						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",fields:[{name:\"id\",type:\"int\"},{name:\"email\",type:\"string\"},{name:\"salary\",type:\"float\",useNull:true}],validations:[{type:\"presence\",field:\"id\"},{type:\"email\",field:\"email\"},{type:\"format\",field:\"salary\",matcher:/[0-9]*\\.[0-9]*/}]});");
 
 		code = ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false);
 		assertThat(code)
 				.isEqualTo(
-						"Ext.define('App.User',{extend:'Ext.data.Model',fields:[{name:'id',type:'int'},{name:'email',type:'string'},{name:'salary',type:'float',useNull:true}],validations:[{type:'presence',field:'id'},{type:'email',field:'email'},{type:'format',field:'salary',matcher:/[0-9]*\\.[0-9]*/}]});");
+						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",fields:[{name:\"id\",type:\"int\"},{name:\"email\",type:\"string\"},{name:\"salary\",type:\"float\",useNull:true}],validations:[{type:\"presence\",field:\"id\"},{type:\"email\",field:\"email\"},{type:\"format\",field:\"salary\",matcher:/[0-9]*\\.[0-9]*/}]});");
 	}
 
 	@Test
@@ -97,7 +97,7 @@ public class ModelGeneratorWithValidationTest {
 		String code = ModelGenerator.generateJavascript(model, OutputFormat.TOUCH2, false);
 		assertThat(code)
 				.isEqualTo(
-						"Ext.define('App.User',{extend:'Ext.data.Model',config:{fields:[{name:'id',type:'int'},{name:'name',type:'string'}],validations:[{type:'presence',field:'id'},{type:'length',field:'name',min:2}]}});");
+						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",config:{fields:[{name:\"id\",type:\"int\"},{name:\"name\",type:\"string\"}],validations:[{type:\"presence\",field:\"id\"},{type:\"length\",field:\"name\",min:2}]}});");
 
 	}
 
@@ -117,12 +117,12 @@ public class ModelGeneratorWithValidationTest {
 		String code = ModelGenerator.generateJavascript(model, OutputFormat.TOUCH2, false);
 		assertThat(code)
 				.isEqualTo(
-						"Ext.define('App.User',{extend:'Ext.data.Model',config:{fields:[{name:'id',type:'int'},{name:'salary',type:'float',useNull:true}],validations:[{type:'presence',field:'id'},{type:'email',field:'email'},{type:'format',field:'salary',matcher:/[0-9]*\\.[0-9]*/}]}});");
+						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",config:{fields:[{name:\"id\",type:\"int\"},{name:\"salary\",type:\"float\",useNull:true}],validations:[{type:\"presence\",field:\"id\"},{type:\"email\",field:\"email\"},{type:\"format\",field:\"salary\",matcher:/[0-9]*\\.[0-9]*/}]}});");
 
 		code = ModelGenerator.generateJavascript(model, OutputFormat.TOUCH2, false);
 		assertThat(code)
 				.isEqualTo(
-						"Ext.define('App.User',{extend:'Ext.data.Model',config:{fields:[{name:'id',type:'int'},{name:'salary',type:'float',useNull:true}],validations:[{type:'presence',field:'id'},{type:'email',field:'email'},{type:'format',field:'salary',matcher:/[0-9]*\\.[0-9]*/}]}});");
+						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",config:{fields:[{name:\"id\",type:\"int\"},{name:\"salary\",type:\"float\",useNull:true}],validations:[{type:\"presence\",field:\"id\"},{type:\"email\",field:\"email\"},{type:\"format\",field:\"salary\",matcher:/[0-9]*\\.[0-9]*/}]}});");
 	}
 
 }

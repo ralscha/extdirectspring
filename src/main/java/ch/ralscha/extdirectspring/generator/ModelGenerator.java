@@ -481,7 +481,7 @@ public abstract class ModelGenerator {
 		}
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("Ext.define('").append(model.getName()).append("',");
+		sb.append("Ext.define(\"").append(model.getName()).append("\",");
 		if (debug) {
 			sb.append("\n");
 		}
@@ -501,8 +501,6 @@ public abstract class ModelGenerator {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-
-		configObjectString = configObjectString.replace("\"", "'");
 
 		sb.append(configObjectString);
 		sb.append(");");

@@ -1,31 +1,31 @@
-Ext.define('MyApp.Author',
+Ext.define("MyApp.Author",
 {
-  extend : 'Ext.data.Model',
+  extend : "Ext.data.Model",
   config : {
     fields : [ {
-      name : 'id',
-      type : 'string'
+      name : "id",
+      type : "string"
     }, {
-      name : 'title',
-      type : 'string'
+      name : "title",
+      type : "string"
     }, {
-      name : 'firstName',
-      type : 'string'
+      name : "firstName",
+      type : "string"
     }, {
-      name : 'lastName',
-      type : 'string'
+      name : "lastName",
+      type : "string"
     }, {
-      name : 'book_id',
-      type : 'int'
+      name : "book_id",
+      type : "int"
     } ],
     associations : [ {
-      type : 'belongsTo',
-      model : 'MyApp.Book',
-      associationKey : 'book',
-      foreignKey : 'book_id',
-      primaryKey : 'isbn',
-      setterName : 'setBook',
-      getterName : 'getBook'
+      type : "belongsTo",
+      model : "MyApp.Book",
+      associationKey : "book",
+      foreignKey : "book_id",
+      primaryKey : "isbn",
+      setterName : "setBook",
+      getterName : "getBook"
     } ]
   }
 });

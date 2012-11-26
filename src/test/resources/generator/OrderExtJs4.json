@@ -1,16 +1,16 @@
-Ext.define('ch.ralscha.extdirectspring.generator.bean.Order',
+Ext.define("ch.ralscha.extdirectspring.generator.bean.Order",
 {
-  extend : 'Ext.data.Model',
+  extend : "Ext.data.Model",
   fields : [ {
-    name : 'entityId',
-    type : 'int'
+    name : "entityId",
+    type : "int"
   } ],
   associations : [ {
-    type : 'hasMany',
-    model : 'ch.ralscha.extdirectspring.generator.bean.Pos',
-    associationKey : 'positions',
-    foreignKey : 'orderId',
-    primaryKey : 'entityId',
-    name : 'pos'
+    type : "hasMany",
+    model : "ch.ralscha.extdirectspring.generator.bean.Pos",
+    associationKey : "positions",
+    foreignKey : "orderId",
+    primaryKey : "entityId",
+    name : "pos"
   } ]
 });

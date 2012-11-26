@@ -1,102 +1,102 @@
-Ext.define('Sch.Bean',
+Ext.define("Sch.Bean",
 {
-  extend : 'Ext.data.Model',
+  extend : "Ext.data.Model",
   config : {
-    idProperty : 'aInt',
+    idProperty : "aInt",
     fields : [ {
-      name : 'by',
-      type : 'int'
+      name : "by",
+      type : "int"
     }, {
-      name : 'aShort',
-      type : 'int'
+      name : "aShort",
+      type : "int"
     }, {
-      name : 'aInt',
-      type : 'int'
+      name : "aInt",
+      type : "int"
     }, {
-      name : 'lo',
-      type : 'int',
+      name : "lo",
+      type : "int",
       defaultValue : -1
     }, {
-      name : 'aByteObject',
-      type : 'string'
+      name : "aByteObject",
+      type : "string"
     }, {
-      name : 'aShortObject',
-      type : 'float'
+      name : "aShortObject",
+      type : "float"
     }, {
-      name : 'aIntObject',
-      type : 'int'
+      name : "aIntObject",
+      type : "int"
     }, {
-      name : 'aLongObject',
-      type : 'int',
+      name : "aLongObject",
+      type : "int",
       useNull : true
     }, {
-      name : 'aBigDecimal',
-      type : 'float'
+      name : "aBigDecimal",
+      type : "float"
     }, {
-      name : 'aBigInteger',
-      type : 'int',
+      name : "aBigInteger",
+      type : "int",
       defaultValue : 1
     }, {
-      name : 'aFloat',
-      type : 'float',
+      name : "aFloat",
+      type : "float",
       defaultValue : 1.1
     }, {
-      name : 'aDouble',
-      type : 'float'
+      name : "aDouble",
+      type : "float"
     }, {
-      name : 'aFloatObject',
-      type : 'float'
+      name : "aFloatObject",
+      type : "float"
     }, {
-      name : 'aDoubleObject',
-      type : 'float'
+      name : "aDoubleObject",
+      type : "float"
     }, {
-      name : 'aString',
-      type : 'string',
+      name : "aString",
+      type : "string",
       useNull : true
     }, {
-      name : 'aBoolean',
-      type : 'boolean',
+      name : "aBoolean",
+      type : "boolean",
       defaultValue : true
     }, {
-      name : 'aBooleanObject',
-      type : 'boolean',
+      name : "aBooleanObject",
+      type : "boolean",
       defaultValue : false
     }, {
-      name : 'aDate',
-      type : 'date',
-      dateFormat : 'c'
+      name : "aDate",
+      type : "date",
+      dateFormat : "c"
     }, {
-      name : 'aSqlDate',
-      type : 'date'
+      name : "aSqlDate",
+      type : "date"
     }, {
-      name : 'aTimestamp',
-      type : 'date'
+      name : "aTimestamp",
+      type : "date"
     }, {
-      name : 'aDateTime',
-      type : 'date',
-      dateFormat : 'd.m.y'
+      name : "aDateTime",
+      type : "date",
+      dateFormat : "d.m.y"
     }, {
-      name : 'aLocalDate',
-      type : 'date'
+      name : "aLocalDate",
+      type : "date"
     }, {
-      name : 'bigValue',
-      type : 'int'
+      name : "bigValue",
+      type : "int"
     }, {
-      name : 'aBooleanVirtual',
-      type : 'boolean',
-      mapping : 'bigValue',
+      name : "aBooleanVirtual",
+      type : "boolean",
+      mapping : "bigValue",
       persist : false,
       convert : function(v, record) { return (record.raw.bigValue > 1000000);}
     }, {
-      name : 'someIds',
-      type : 'auto'
+      name : "someIds",
+      type : "auto"
     }, {
-      name : 'moreIds',
-      type : 'auto'
+      name : "moreIds",
+      type : "auto"
     } ],
     proxy : {
-      type : 'direct',
-      idParam : 'aInt',
+      type : "direct",
+      idParam : "aInt",
       api : {
         read : read,
         create : create,
@@ -104,7 +104,7 @@ Ext.define('Sch.Bean',
         destroy : destroy
       },
       reader : {
-        root : 'records'
+        root : "records"
       }
     }
   }

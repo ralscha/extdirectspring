@@ -91,7 +91,7 @@ public @interface ModelField {
 	 * object <br>
 	 * Property '<a href=
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-mapping"
-	 * >mapping</a>' in JS.<br>
+	 * >mapping</a>' in JS.
 	 * <p>
 	 */
 	String mapping() default "";
@@ -102,18 +102,17 @@ public @interface ModelField {
 	 * Typical use for a virtual field <br>
 	 * Property '<a href=
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-persist"
-	 * >persist</a>' in JS.<br>
+	 * >persist</a>' in JS.
 	 * <p>
 	 */
 	boolean persist() default true;
 
 	/**
-	 * function which coerces string values in raw data into the field's type <br>
+	 * Function which coerces string values in raw data into the field's type <br>
 	 * Typical use for a virtual field <br>
-	 * http://localhost/ext4.1/docs/index.html#!/api/Ext.data.Field-cfg-convert
 	 * Property '<a href=
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-convert" >
-	 * Ext.data.Field.convert</a>' in JS.<br>
+	 * Ext.data.Field.convert</a>' in JS.
 	 * <p>
 	 */
 	String convert() default "";

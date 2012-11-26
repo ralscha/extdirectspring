@@ -1,36 +1,36 @@
-Ext.define('MyApp.Book',
+Ext.define("MyApp.Book",
 {
-  extend : 'Ext.data.Model',
+  extend : "Ext.data.Model",
   config : {
-    idProperty : 'isbn',
+    idProperty : "isbn",
     fields : [ {
-      name : 'title',
-      type : 'string'
+      name : "title",
+      type : "string"
     }, {
-      name : 'publisher',
-      type : 'string'
+      name : "publisher",
+      type : "string"
     }, {
-      name : 'isbn',
-      type : 'string'
+      name : "isbn",
+      type : "string"
     }, {
-      name : 'publishDate',
-      type : 'date',
-      dateFormat : 'd-m-Y'
+      name : "publishDate",
+      type : "date",
+      dateFormat : "d-m-Y"
     }, {
-      name : 'numberOfPages',
-      type : 'int'
+      name : "numberOfPages",
+      type : "int"
     }, {
-      name : 'read',
-      type : 'boolean'
+      name : "read",
+      type : "boolean"
     } ],
     associations : [ {
-      type : 'hasMany',
-      model : 'MyApp.Author',
-      associationKey : 'authors',
-      foreignKey : 'book_id',
-      primaryKey : 'isbn',
+      type : "hasMany",
+      model : "MyApp.Author",
+      associationKey : "authors",
+      foreignKey : "book_id",
+      primaryKey : "isbn",
       autoLoad : true,
-      name : 'authors'
+      name : "authors"
     } ]
   }
 });
