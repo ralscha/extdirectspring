@@ -272,109 +272,107 @@ public abstract class ModelGenerator {
 
 			@Override
 			public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
-				if (field.getAnnotation(ModelField.class) != null
-						|| field.getAnnotation(ModelAssociation.class) != null
-						|| ((Modifier.isPublic(field.getModifiers()) || hasReadMethod.contains(field.getName())) && field
-								.getAnnotation(JsonIgnore.class) == null)) {
-					if (fields.contains(field.getName())) {
-						// ignore superclass declarations of fields already
-						// found in a subclass
-					} else {
-						fields.add(field.getName());
+				if (!fields.contains(field.getName())
+						&& (field.getAnnotation(ModelField.class) != null
+								|| field.getAnnotation(ModelAssociation.class) != null || ((Modifier.isPublic(field
+								.getModifiers()) || hasReadMethod.contains(field.getName())) && field
+								.getAnnotation(JsonIgnore.class) == null))) {
 
-						Class<?> javaType = field.getType();
+					// ignore superclass declarations of fields already found in
+					// a subclass
+					fields.add(field.getName());
 
-						ModelType modelType = null;
-						for (ModelType mt : ModelType.values()) {
-							if (mt.supports(javaType)) {
-								modelType = mt;
-								break;
-							}
-						}
+					Class<?> javaType = field.getType();
 
-						ModelFieldBean modelFieldBean = null;
-
-						ModelField modelFieldAnnotation = field.getAnnotation(ModelField.class);
-						if (modelFieldAnnotation != null) {
-
-							String name;
-							if (StringUtils.hasText(modelFieldAnnotation.value())) {
-								name = modelFieldAnnotation.value();
-							} else {
-								name = field.getName();
-							}
-
-							ModelType type;
-							if (modelFieldAnnotation.type() != ModelType.AUTO) {
-								type = modelFieldAnnotation.type();
-							} else {
-								if (modelType != null) {
-									type = modelType;
-								} else {
-									type = ModelType.AUTO;
-								}
-							}
-
-							modelFieldBean = new ModelFieldBean(name, type);
-
-							if (StringUtils.hasText(modelFieldAnnotation.dateFormat()) && type == ModelType.DATE) {
-								modelFieldBean.setDateFormat(modelFieldAnnotation.dateFormat());
-							}
-
-							if (StringUtils.hasText(modelFieldAnnotation.defaultValue())) {
-								if (type == ModelType.BOOLEAN) {
-									modelFieldBean.setDefaultValue(Boolean.parseBoolean(modelFieldAnnotation
-											.defaultValue()));
-								} else if (type == ModelType.INTEGER) {
-									modelFieldBean.setDefaultValue(Long.valueOf(modelFieldAnnotation.defaultValue()));
-								} else if (type == ModelType.FLOAT) {
-									modelFieldBean.setDefaultValue(Double.valueOf(modelFieldAnnotation.defaultValue()));
-								} else {
-									modelFieldBean.setDefaultValue(modelFieldAnnotation.defaultValue());
-								}
-							}
-
-							if (modelFieldAnnotation.useNull()
-									&& (type == ModelType.INTEGER || type == ModelType.FLOAT
-											|| type == ModelType.STRING || type == ModelType.BOOLEAN)) {
-								modelFieldBean.setUseNull(true);
-							}
-
-							if (StringUtils.hasText(modelFieldAnnotation.mapping())) {
-								modelFieldBean.setMapping(modelFieldAnnotation.mapping());
-							}
-
-							if (!modelFieldAnnotation.persist()) {
-								modelFieldBean.setPersist(modelFieldAnnotation.persist());
-							}
-
-							if (StringUtils.hasText(modelFieldAnnotation.convert())) {
-								modelFieldBean.setConvert(modelFieldAnnotation.convert());
-							}
-
-							modelFields.add(modelFieldBean);
-						} else {
-							if (modelType != null) {
-								modelFieldBean = new ModelFieldBean(field.getName(), modelType);
-								modelFields.add(modelFieldBean);
-							}
-						}
-
-						ModelAssociation modelAssociationAnnotation = field.getAnnotation(ModelAssociation.class);
-						if (modelAssociationAnnotation != null) {
-							associations.add(AbstractAssociation.createAssociation(modelAssociationAnnotation, model,
-									field));
-						}
-
-						if (modelFieldBean != null && includeValidation != IncludeValidation.NONE) {
-							Annotation[] fieldAnnotations = field.getAnnotations();
-
-							for (Annotation fieldAnnotation : fieldAnnotations) {
-								AbstractValidation.addValidationToModel(model, modelFieldBean, fieldAnnotation,
-										includeValidation);
-							}
+					ModelType modelType = null;
+					for (ModelType mt : ModelType.values()) {
+						if (mt.supports(javaType)) {
+							modelType = mt;
+							break;
 						}
 					}
+
+					ModelFieldBean modelFieldBean = null;
+
+					ModelField modelFieldAnnotation = field.getAnnotation(ModelField.class);
+					if (modelFieldAnnotation != null) {
+
+						String name;
+						if (StringUtils.hasText(modelFieldAnnotation.value())) {
+							name = modelFieldAnnotation.value();
+						} else {
+							name = field.getName();
+						}
+
+						ModelType type;
+						if (modelFieldAnnotation.type() != ModelType.AUTO) {
+							type = modelFieldAnnotation.type();
+						} else {
+							if (modelType != null) {
+								type = modelType;
+							} else {
+								type = ModelType.AUTO;
+							}
+						}
+
+						modelFieldBean = new ModelFieldBean(name, type);
+
+						if (StringUtils.hasText(modelFieldAnnotation.dateFormat()) && type == ModelType.DATE) {
+							modelFieldBean.setDateFormat(modelFieldAnnotation.dateFormat());
+						}
+
+						if (StringUtils.hasText(modelFieldAnnotation.defaultValue())) {
+							if (type == ModelType.BOOLEAN) {
+								modelFieldBean.setDefaultValue(Boolean.parseBoolean(modelFieldAnnotation.defaultValue()));
+							} else if (type == ModelType.INTEGER) {
+								modelFieldBean.setDefaultValue(Long.valueOf(modelFieldAnnotation.defaultValue()));
+							} else if (type == ModelType.FLOAT) {
+								modelFieldBean.setDefaultValue(Double.valueOf(modelFieldAnnotation.defaultValue()));
+							} else {
+								modelFieldBean.setDefaultValue(modelFieldAnnotation.defaultValue());
+							}
+						}
+
+						if (modelFieldAnnotation.useNull()
+								&& (type == ModelType.INTEGER || type == ModelType.FLOAT || type == ModelType.STRING || type == ModelType.BOOLEAN)) {
+							modelFieldBean.setUseNull(true);
+						}
+
+						if (StringUtils.hasText(modelFieldAnnotation.mapping())) {
+							modelFieldBean.setMapping(modelFieldAnnotation.mapping());
+						}
+
+						if (!modelFieldAnnotation.persist()) {
+							modelFieldBean.setPersist(modelFieldAnnotation.persist());
+						}
+
+						if (StringUtils.hasText(modelFieldAnnotation.convert())) {
+							modelFieldBean.setConvert(modelFieldAnnotation.convert());
+						}
+
+						modelFields.add(modelFieldBean);
+					} else {
+						if (modelType != null) {
+							modelFieldBean = new ModelFieldBean(field.getName(), modelType);
+							modelFields.add(modelFieldBean);
+						}
+					}
+
+					ModelAssociation modelAssociationAnnotation = field.getAnnotation(ModelAssociation.class);
+					if (modelAssociationAnnotation != null) {
+						associations.add(AbstractAssociation
+								.createAssociation(modelAssociationAnnotation, model, field));
+					}
+
+					if (modelFieldBean != null && includeValidation != IncludeValidation.NONE) {
+						Annotation[] fieldAnnotations = field.getAnnotations();
+
+						for (Annotation fieldAnnotation : fieldAnnotations) {
+							AbstractValidation.addValidationToModel(model, modelFieldBean, fieldAnnotation,
+									includeValidation);
+						}
+					}
+
 				}
 			}
 
