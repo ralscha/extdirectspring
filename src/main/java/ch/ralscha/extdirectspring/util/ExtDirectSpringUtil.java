@@ -116,7 +116,7 @@ public final class ExtDirectSpringUtil {
 		return sw.toString();
 	}
 
-	private final static int secondsInAMonth = 30 * 24 * 60 * 60;
+	private final static long secondsInAMonth = 30L * 24L * 60L * 60L;
 
 	/**
 	 * Adds Vary, Expires, ETag and Cache-Control response headers.
@@ -133,7 +133,7 @@ public final class ExtDirectSpringUtil {
 		if (month != null) {
 			seconds = month * secondsInAMonth;
 		} else {
-			seconds = 6 * secondsInAMonth;
+			seconds = 6L * secondsInAMonth;
 		}
 
 		response.setHeader("Vary", "Accept-Encoding");
