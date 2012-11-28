@@ -31,8 +31,6 @@ import ch.ralscha.extdirectspring.util.ApiCache;
 
 /**
  * Tests for {@link ApiController}.
- * 
- * @author Ralph Schaer
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext1.xml")

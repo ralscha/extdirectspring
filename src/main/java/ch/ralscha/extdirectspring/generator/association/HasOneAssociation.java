@@ -20,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * A hasOne association
- * 
- * @author Ralph Schaer
  */
 @JsonInclude(Include.NON_NULL)
 public class HasOneAssociation extends AbstractAssociation {

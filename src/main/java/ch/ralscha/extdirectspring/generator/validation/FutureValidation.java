@@ -15,9 +15,6 @@
  */
 package ch.ralscha.extdirectspring.generator.validation;
 
-/**
- * @author Ralph Schaer
- */
 public class FutureValidation extends AbstractValidation {
 
 	public FutureValidation(String field) {

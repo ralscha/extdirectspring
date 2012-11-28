@@ -28,9 +28,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * Represents one field in a {@link ModelBean}
- * 
- * @author Ralph Schaer
- * @author dbs
  */
 @JsonInclude(Include.NON_NULL)
 public class ModelFieldBean {
@@ -200,7 +197,7 @@ public class ModelFieldBean {
 	 * Ext.data.Field.convert</a>' in JS.<br>
 	 * 
 	 * @param convert A function. JavaScript Syntax example: function(v, record)
-	 *        { return ... ; }
+	 *            { return ... ; }
 	 */
 	public void setConvert(String convert) {
 		this.convert = convert;

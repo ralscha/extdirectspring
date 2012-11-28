@@ -80,10 +80,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * Main router controller that handles polling, form handler and normal Ext
  * Direct calls.
- * 
- * @author mansari
- * @author Ralph Schaer
- * @author Goddanao
  */
 @Controller
 public class RouterController implements InitializingBean, DisposableBean {

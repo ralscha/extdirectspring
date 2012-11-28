@@ -26,8 +26,6 @@ import java.lang.annotation.Target;
  * Annotation that configures an association to another object. If this
  * annotation is present on a field the generator creates an associations config
  * object in the model.
- * 
- * @author Ralph Schaer
  */
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)

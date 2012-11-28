@@ -15,9 +15,6 @@
  */
 package ch.ralscha.extdirectspring.filter;
 
-/**
- * @author Ralph Schaer
- */
 public class BooleanFilter extends Filter {
 
 	private final boolean value;

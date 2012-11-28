@@ -26,8 +26,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Object contains an {@link ObjectMapper} and provides convenient methods.
- * 
- * @author Ralph Schaer
  */
 public class JsonHandler {
 
@@ -72,7 +70,7 @@ public class JsonHandler {
 	 * 
 	 * @param obj the source object
 	 * @param indent if true JSON is written in a human readable format, if
-	 *        false JSON is written on one line
+	 *            false JSON is written on one line
 	 * @return obj JSON string, <code>null</code> if an exception occured
 	 */
 	public String writeValueAsString(Object obj, boolean indent) {
@@ -94,7 +92,7 @@ public class JsonHandler {
 	 * @param <T> type of the object to create
 	 * @param json string with the JSON
 	 * @param typeReference {@link TypeReference} instance of the desired result
-	 *        type {@link com.fasterxml.jackson.core.type.TypeReference}
+	 *            type {@link com.fasterxml.jackson.core.type.TypeReference}
 	 * @return the created object, null if there was an exception
 	 */
 	public <T> T readValue(String json, TypeReference<T> typeReference) {

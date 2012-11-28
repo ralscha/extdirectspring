@@ -20,9 +20,6 @@ import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-/**
- * @author Ralph Schaer
- */
 @JsonInclude(Include.NON_NULL)
 public class RangeValidation extends AbstractValidation {
 

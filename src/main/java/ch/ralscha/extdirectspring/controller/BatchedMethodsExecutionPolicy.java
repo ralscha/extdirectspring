@@ -18,8 +18,6 @@ package ch.ralscha.extdirectspring.controller;
 /**
  * Policies how batched methods sent from the client should be executed on the
  * server
- * 
- * @author Ralph Schaer
  */
 public enum BatchedMethodsExecutionPolicy {
 

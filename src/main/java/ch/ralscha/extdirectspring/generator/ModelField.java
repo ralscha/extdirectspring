@@ -26,9 +26,6 @@ import java.lang.annotation.Target;
  * Annotation that configures different aspects of a model field. The annotation
  * does not have to be present on the field to be included in the generated JS
  * code. The generator takes all public readable fields into account.
- * 
- * @author Ralph Schaer
- * @author dbs
  */
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)

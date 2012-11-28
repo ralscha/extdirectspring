@@ -26,8 +26,6 @@ import org.springframework.context.ApplicationContext;
 
 /**
  * A simple cache for methods with key beanName/methodName
- * 
- * @author Ralph Schaer
  */
 public enum MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, MethodInfo>> {
 

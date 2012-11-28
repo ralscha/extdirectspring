@@ -35,10 +35,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 
 /**
  * Tests for {@link RouterController}.
- * 
- * @author Ralph Schaer
  */
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testExceptionHandlingConfig.xml")
 public class ExceptionHandlingConfigInXmlTest {

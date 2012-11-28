@@ -20,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * A belongsTo association
- * 
- * @author Ralph Schaer
  */
 @JsonInclude(Include.NON_NULL)
 public class BelongsToAssociation extends AbstractAssociation {

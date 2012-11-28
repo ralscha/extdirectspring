@@ -21,7 +21,6 @@ package ch.ralscha.extdirectspring.bean;
  * @see ExtDirectPollResponse
  * @see ExtDirectResponse
  * 
- * @author Ralph Schaer
  */
 public class BaseResponse {
 

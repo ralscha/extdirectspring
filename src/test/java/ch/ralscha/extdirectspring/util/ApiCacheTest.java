@@ -20,9 +20,6 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 
-/**
- * @author Ralph Schaer
- */
 public class ApiCacheTest {
 
 	@Test

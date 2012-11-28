@@ -17,9 +17,6 @@ package ch.ralscha.extdirectspring.bean.api;
 
 import org.springframework.util.StringUtils;
 
-/**
- * @author Ralph Schaer
- */
 public final class PollingProvider {
 
 	private final String beanName;

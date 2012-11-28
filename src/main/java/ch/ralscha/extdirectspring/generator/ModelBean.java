@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.springframework.util.Assert;
 
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
 import ch.ralscha.extdirectspring.generator.association.AbstractAssociation;
 import ch.ralscha.extdirectspring.generator.validation.AbstractValidation;
 
@@ -30,8 +31,6 @@ import ch.ralscha.extdirectspring.generator.validation.AbstractValidation;
  * {@link ModelGenerator#writeModel(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, ModelBean, OutputFormat, boolean)}
  * or
  * {@link ModelGenerator#generateJavascript(ModelBean, OutputFormat, boolean)}.
- * 
- * @author Ralph Schaer
  */
 public class ModelBean {
 	private String name;

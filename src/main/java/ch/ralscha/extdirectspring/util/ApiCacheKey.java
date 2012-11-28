@@ -17,9 +17,6 @@ package ch.ralscha.extdirectspring.util;
 
 import java.util.Arrays;
 
-/**
- * @author Ralph Schaer
- */
 public final class ApiCacheKey {
 
 	private final String apiNs;

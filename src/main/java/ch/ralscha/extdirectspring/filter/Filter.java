@@ -29,8 +29,6 @@ import org.springframework.core.convert.ConversionService;
  * @see ListFilter
  * @see NumericFilter
  * @see StringFilter
- * 
- * @author Ralph Schaer
  */
 public class Filter {
 	private final String field;

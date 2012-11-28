@@ -32,8 +32,6 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 
 /**
  * Enumeration of all possible remote method types.
- * 
- * @author Ralph Schaer
  */
 public enum ExtDirectMethodType {
 
@@ -338,7 +336,7 @@ public enum ExtDirectMethodType {
 	 * registered and cannot be called from the client.
 	 * 
 	 * @param methodName Name of the bean and method for logging purpose. e.g.
-	 *        'bean.methodname'
+	 *            'bean.methodname'
 	 * @param clazz The class where the method is member of
 	 * @param method The annotated method
 	 * 

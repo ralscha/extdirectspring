@@ -39,9 +39,6 @@ import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 /**
  * Object holds information about a method like the method itself and a list of
  * parameters.
- * 
- * @author Ralph Schaer
- * @author dbs
  */
 public final class MethodInfo {
 
@@ -176,6 +173,7 @@ public final class MethodInfo {
 	/**
 	 * The rule is: whatever has been given is taken as is the API documentation
 	 * is non critical, so any discrepancies will be silently ignored
+	 * 
 	 * @param documentation
 	 * @return ActionDoc
 	 */

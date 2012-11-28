@@ -28,8 +28,6 @@ import org.springframework.util.DigestUtils;
 
 /**
  * Tests for {@link ExtDirectSpringUtil}.
- * 
- * @author Ralph Schaer
  */
 public class ExtDirectSpringUtilTest {
 

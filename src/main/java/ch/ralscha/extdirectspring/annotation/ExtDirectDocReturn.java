@@ -23,9 +23,6 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-/**
- * @author dbs
- */
 @Target({ ElementType.METHOD })
 @Retention(RUNTIME)
 @Inherited

@@ -17,9 +17,6 @@ package ch.ralscha.extdirectspring.filter;
 
 import java.util.List;
 
-/**
- * @author Ralph Schaer
- */
 public class ListFilter extends Filter {
 
 	private final List<String> value;

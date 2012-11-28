@@ -26,9 +26,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-/**
- * @author Ralph Schaer
- */
 @JsonInclude(Include.NON_NULL)
 public final class RemotingApi {
 

@@ -61,8 +61,6 @@ import java.lang.annotation.Target;
  * client server interface.
  * <p/>
  * see example above
- * 
- * @author dbs
  */
 @Target({ ElementType.METHOD })
 @Retention(RUNTIME)

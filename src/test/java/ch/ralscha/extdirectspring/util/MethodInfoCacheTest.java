@@ -31,10 +31,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 
 /**
  * Tests for {@link MethodInfoCache}.
- * 
- * @author Ralph Schaer
  */
-
 public class MethodInfoCacheTest {
 
 	@Test

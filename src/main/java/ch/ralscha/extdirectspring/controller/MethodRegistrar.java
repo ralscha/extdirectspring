@@ -39,8 +39,6 @@ import ch.ralscha.extdirectspring.util.MethodInfoCache;
  * annotated methods in the current ApplicationContext. Found methods will be
  * cached in the {@link MethodInfoCache}. The class also reports warnings and
  * errors of misconfigured methods.
- * 
- * @author Ralph Schaer
  */
 @Service
 public class MethodRegistrar implements ApplicationListener<ContextRefreshedEvent> {

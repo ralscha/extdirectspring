@@ -26,9 +26,6 @@ import javax.servlet.http.HttpSession;
 
 /**
  * Enum of all supported parameter types.
- * 
- * @author mansari
- * @author Ralph Schaer
  */
 public enum SupportedParameters {
 

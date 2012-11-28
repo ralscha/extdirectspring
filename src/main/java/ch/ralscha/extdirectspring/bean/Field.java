@@ -19,9 +19,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * @author Ralph Schaer
- */
 public class Field {
 	private final Map<String, Object> fieldData;
 

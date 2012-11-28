@@ -42,10 +42,7 @@ import ch.ralscha.extdirectspring.provider.FormInfo;
 
 /**
  * Tests for {@link RouterController}.
- * 
- * @author Ralph Schaer
  */
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerFormLoadTest {

@@ -17,9 +17,6 @@ package ch.ralscha.extdirectspring.generator.validation;
 
 import com.fasterxml.jackson.annotation.JsonRawValue;
 
-/**
- * @author Ralph Schaer
- */
 public class FormatValidation extends AbstractValidation {
 
 	@JsonRawValue

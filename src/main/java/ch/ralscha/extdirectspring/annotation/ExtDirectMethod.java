@@ -24,9 +24,6 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation for methods that should be exposed to a Ext Direct client
- * 
- * @author Ralph Schaer
- * @author dbs
  */
 @Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)

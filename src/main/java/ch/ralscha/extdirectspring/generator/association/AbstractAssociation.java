@@ -31,8 +31,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * Base class for the association objects
- * 
- * @author Ralph Schaer
  */
 @JsonInclude(Include.NON_NULL)
 public abstract class AbstractAssociation {

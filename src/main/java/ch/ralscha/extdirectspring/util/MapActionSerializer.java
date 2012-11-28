@@ -31,9 +31,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
-/**
- * @author dbs
- */
 public class MapActionSerializer extends JsonSerializer<Map<String, List<Action>>> {
 
 	@Override

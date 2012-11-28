@@ -19,8 +19,6 @@ package ch.ralscha.extdirectspring.bean;
  * Enumeration of all valid data types from a {@link Field}.
  * 
  * @see Field#setType(DataType)
- * 
- * @author Ralph Schaer
  */
 public enum DataType {
 	STRING("string"), INTEGER("int"), FLOAT("float"), BOOLEAN("boolean"), DATE("date");

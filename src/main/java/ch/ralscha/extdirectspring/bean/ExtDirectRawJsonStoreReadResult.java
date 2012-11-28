@@ -29,8 +29,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * already in JSON format. Add the JSON to the records collection and the
  * response will contain the unfiltered JSON. There is no validation that the
  * added JSON string is valid.
- * 
- * @author Ralph Schaer
  */
 public class ExtDirectRawJsonStoreReadResult extends ExtDirectStoreReadResult<String> {
 

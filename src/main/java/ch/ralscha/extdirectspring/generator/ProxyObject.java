@@ -25,8 +25,6 @@ import com.fasterxml.jackson.annotation.JsonRawValue;
 
 /**
  * Internal class used by the {@link ModelGenerator} to serialize the model code
- * 
- * @author Ralph Schaer
  */
 @JsonInclude(Include.NON_NULL)
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)

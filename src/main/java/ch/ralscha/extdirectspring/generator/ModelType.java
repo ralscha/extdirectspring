@@ -23,8 +23,6 @@ import java.util.Date;
 
 /**
  * Enumeration of all types that are valid in a ExtJS and Touch model object.
- * 
- * @author Ralph Schaer
  */
 public enum ModelType {
 

@@ -17,9 +17,6 @@ package ch.ralscha.extdirectspring.bean;
 
 /**
  * Class representing the request of a Ext Direct call.
- * 
- * @author mansari
- * @author Ralph Schaer
  */
 public class ExtDirectRequest {
 

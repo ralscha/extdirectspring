@@ -27,8 +27,6 @@ import org.springframework.validation.FieldError;
 
 /**
  * Class representing the result of a FORM_POST method call.
- * 
- * @author Ralph Schaer
  */
 public class ExtDirectFormPostResult {
 

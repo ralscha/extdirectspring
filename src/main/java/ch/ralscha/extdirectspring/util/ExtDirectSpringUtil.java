@@ -35,9 +35,6 @@ import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 
 /**
  * Utility class
- * 
- * @author mansari
- * @author Ralph Schaer
  */
 public final class ExtDirectSpringUtil {
 
@@ -124,7 +121,8 @@ public final class ExtDirectSpringUtil {
 	 * @param response the HTTP servlet response
 	 * @param etag the calculated etag (md5) of the response
 	 * @param month number of months the response can be cached. Added to the
-	 *        Expires and Cache-Control header. If null defaults to 6 months.
+	 *            Expires and Cache-Control header. If null defaults to 6
+	 *            months.
 	 */
 	public static void addCacheHeaders(HttpServletResponse response, String etag, Integer month) {
 		Assert.notNull(etag, "ETag must not be null");
@@ -153,7 +151,7 @@ public final class ExtDirectSpringUtil {
 	 * @param response the HTTP servlet response
 	 * @param data the response data
 	 * @param contentType the content type of the data (i.e.
-	 *        "application/javascript;charset=UTF-8")
+	 *            "application/javascript;charset=UTF-8")
 	 * @throws IOException
 	 */
 	public static void handleCacheableResponse(HttpServletRequest request, HttpServletResponse response, byte[] data,

@@ -17,14 +17,20 @@ package ch.ralscha.extdirectspring.controller;
 
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.bean.BaseResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
+
 /**
  * Configuration class to configure different aspects of extdirectspring.
- * 
- * @author Ralph Schaer
  */
 public class Configuration {
 	private String defaultExceptionMessage = "Server Error";
@@ -309,6 +315,7 @@ public class Configuration {
 	 * mime type is 'application/javascript'.
 	 * <p>
 	 * Default value is "application/javascript"
+	 * 
 	 * @param jsContentType new Content-type
 	 */
 	public void setJsContentType(String jsContentType) {
@@ -332,6 +339,7 @@ public class Configuration {
 	 * 
 	 * <p>
 	 * Default value is {@link BatchedMethodsExecutionPolicy#SEQUENTIAL}
+	 * 
 	 * @see #setBatchedMethodsExecutorService(ExecutorService)
 	 * @param batchedMethodsExecutionPolicy new policy
 	 */
@@ -351,6 +359,7 @@ public class Configuration {
 	 * {@link BatchedMethodsExecutionPolicy#CONCURRENT} but no
 	 * batchedMethodsExecutorService is specified the library creates a
 	 * {@link Executors#newFixedThreadPool(int)} with 5 threads.
+	 * 
 	 * @see #setBatchedMethodsExecutionPolicy(BatchedMethodsExecutionPolicy)
 	 * @param batchedMethodsExecutorService the new thread pool
 	 */

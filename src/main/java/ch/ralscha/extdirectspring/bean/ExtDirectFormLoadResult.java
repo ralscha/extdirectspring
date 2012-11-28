@@ -17,9 +17,6 @@ package ch.ralscha.extdirectspring.bean;
 
 /**
  * Class representing the result of a FORM_LOAD method call.
- * 
- * @author mansari
- * @author Ralph Schaer
  */
 public class ExtDirectFormLoadResult {
 

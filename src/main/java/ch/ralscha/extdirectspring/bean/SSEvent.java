@@ -23,8 +23,6 @@ package ch.ralscha.extdirectspring.bean;
  * Event response. If a property in this class is null it will be ignored.
  * <p>
  * See <a href="http://www.w3.org/TR/eventsource/">Server-Sent Specification</a>
- * 
- * @author Ralph Schaer
  */
 public class SSEvent {
 

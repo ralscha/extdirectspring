@@ -54,8 +54,6 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 
 /**
  * Resolver of ExtDirectRequest parameters.
- * 
- * @author Goddanao
  */
 @Component
 public final class ParametersResolver implements InitializingBean {

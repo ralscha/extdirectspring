@@ -40,10 +40,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Tests for {@link JsonHandler}.
- * 
- * @author Ralph Schaer
  */
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class JsonHandlerTest {

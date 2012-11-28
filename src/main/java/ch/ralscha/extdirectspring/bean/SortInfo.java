@@ -21,8 +21,6 @@ import java.util.Map;
  * Class contains information about the property/field on which to sort and if
  * sort is ascending or descending. Ext JS can send more than one sort info in
  * one request.
- * 
- * @author Ralph Schaer
  */
 public class SortInfo {
 	private final String property;

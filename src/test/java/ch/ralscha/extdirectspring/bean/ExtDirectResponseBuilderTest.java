@@ -38,8 +38,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Tests for {@link ExtDirectResponseBuilder}.
- * 
- * @author Ralph Schaer
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")

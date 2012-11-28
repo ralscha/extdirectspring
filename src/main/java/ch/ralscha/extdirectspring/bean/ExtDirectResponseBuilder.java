@@ -31,6 +31,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import ch.ralscha.extdirectspring.controller.Configuration;
@@ -41,8 +42,6 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
  * An utility class that helps building the response for a FORM_POST method. The
  * response is written directly into the
  * {@link HttpServletResponse#getOutputStream()} with {@link #buildAndWrite()}.
- * 
- * @author Ralph Schaer
  */
 public class ExtDirectResponseBuilder {
 
@@ -186,6 +185,7 @@ public class ExtDirectResponseBuilder {
 
 	/**
 	 * Sets success flag to true.
+	 * 
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder successful() {
@@ -195,6 +195,7 @@ public class ExtDirectResponseBuilder {
 
 	/**
 	 * Sets success flag to false.
+	 * 
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder unsuccessful() {
@@ -204,6 +205,7 @@ public class ExtDirectResponseBuilder {
 
 	/**
 	 * Sets success flag to the provided parameter.
+	 * 
 	 * @param flag the new success value
 	 * @return this instance
 	 */

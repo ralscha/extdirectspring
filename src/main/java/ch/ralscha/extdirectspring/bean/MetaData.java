@@ -24,9 +24,6 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-/**
- * @author Ralph Schaer
- */
 @JsonInclude(Include.NON_NULL)
 public class MetaData {
 

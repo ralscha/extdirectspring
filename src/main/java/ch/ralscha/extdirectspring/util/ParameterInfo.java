@@ -30,8 +30,6 @@ import org.springframework.web.bind.annotation.ValueConstants;
 /**
  * Object holds information about a parameter. i.e. the name, type and the
  * attributes of a RequestParam annotation.
- * 
- * @author Ralph Schaer
  */
 public final class ParameterInfo {
 

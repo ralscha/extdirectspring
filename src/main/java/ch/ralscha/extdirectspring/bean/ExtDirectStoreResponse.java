@@ -19,6 +19,7 @@ import java.util.Collection;
 
 /**
  * {@link Deprecated} use {@link ExtDirectStoreReadResult} instead
+ * 
  * @param <T> Type of the entry inside the collection
  */
 @Deprecated
