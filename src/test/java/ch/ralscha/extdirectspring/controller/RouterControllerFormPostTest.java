@@ -33,9 +33,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 
-/**
- * Tests for {@link RouterController}.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerFormPostTest {

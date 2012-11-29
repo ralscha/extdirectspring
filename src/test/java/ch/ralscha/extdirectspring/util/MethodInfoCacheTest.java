@@ -29,9 +29,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 
-/**
- * Tests for {@link MethodInfoCache}.
- */
 public class MethodInfoCacheTest {
 
 	@Test

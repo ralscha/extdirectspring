@@ -47,8 +47,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Spring managed controller that handles /api.jsp, /api-debug.js and
- * /api-{fingerprinted}.js requests.
+ * Spring managed controller that handles /api.jsp, /api-debug.js,
+ * /api-debug-doc.js and /api-{fingerprinted}.js requests.
  */
 @Controller
 public class ApiController {

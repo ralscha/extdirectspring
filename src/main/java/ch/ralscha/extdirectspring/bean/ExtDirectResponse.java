@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
- * Class representing the response of a Ext Direct call.
+ * Represents the response of a Ext Direct call. Internal class
  */
 @JsonInclude(Include.NON_NULL)
 public class ExtDirectResponse extends BaseResponse {

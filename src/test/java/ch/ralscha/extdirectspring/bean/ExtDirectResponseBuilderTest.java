@@ -36,9 +36,6 @@ import ch.ralscha.extdirectspring.controller.ControllerUtil;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-/**
- * Tests for {@link ExtDirectResponseBuilder}.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ExtDirectResponseBuilderTest {

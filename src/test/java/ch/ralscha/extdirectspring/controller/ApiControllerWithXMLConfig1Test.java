@@ -29,9 +29,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.util.ApiCache;
 
-/**
- * Tests for {@link ApiController}.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext1.xml")
 public class ApiControllerWithXMLConfig1Test {

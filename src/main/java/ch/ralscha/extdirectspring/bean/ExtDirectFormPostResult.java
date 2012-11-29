@@ -26,7 +26,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 /**
- * Class representing the result of a FORM_POST method call.
+ * Represents the result of a FORM_POST method call.
  */
 public class ExtDirectFormPostResult {
 

@@ -40,9 +40,6 @@ import org.springframework.util.Assert;
 import ch.ralscha.extdirectspring.bean.api.ActionDoc;
 import ch.ralscha.extdirectspring.util.ApiCache;
 
-/**
- * Tests for {@link ApiController}.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ApiControllerWithDocumentationTest {

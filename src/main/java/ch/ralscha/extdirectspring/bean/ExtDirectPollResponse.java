@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
- * Class representing the response of a poll request.
+ * Represents the response of a poll request.
  */
 @JsonInclude(Include.NON_NULL)
 public class ExtDirectPollResponse extends BaseResponse {

@@ -30,7 +30,7 @@ import ch.ralscha.extdirectspring.filter.StringFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * Class representing the request of a DirectStore read call.
+ * Represents the request of a DirectStore read call.
  */
 public class ExtDirectStoreReadRequest {
 

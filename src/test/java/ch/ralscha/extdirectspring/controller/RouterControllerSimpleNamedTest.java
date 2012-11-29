@@ -47,9 +47,6 @@ import ch.ralscha.extdirectspring.provider.Row;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-/**
- * Tests for {@link RouterController}.
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class RouterControllerSimpleNamedTest {

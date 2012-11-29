@@ -16,7 +16,7 @@
 package ch.ralscha.extdirectspring.bean;
 
 /**
- * Class representing the request of a Ext Direct call.
+ * Represents the request of a Ext Direct call. Internal class.
  */
 public class ExtDirectRequest {
 

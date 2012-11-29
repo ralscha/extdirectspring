@@ -26,9 +26,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.util.DigestUtils;
 
-/**
- * Tests for {@link ExtDirectSpringUtil}.
- */
 public class ExtDirectSpringUtilTest {
 
 	@Test

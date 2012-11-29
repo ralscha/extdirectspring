@@ -34,18 +34,4 @@ public class ExceptionFormPostController {
 		throw new NullPointerException("a null pointer");
 	}
 
-	// This only works with Spring 3.1
-	// @ExceptionHandler(Exception.class)
-	// public void handleException(HttpServletRequest request,
-	// HttpServletResponse response) {
-	// ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request,
-	// response);
-	// builder.unsuccessful();
-	//
-	// ExtDirectResponse response = builder.build();
-	// response.setType("exception");
-	// response.setMessage("Server Error");
-	// return response;
-	// }
-
 }

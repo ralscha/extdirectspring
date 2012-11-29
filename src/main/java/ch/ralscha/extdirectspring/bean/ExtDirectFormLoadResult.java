@@ -16,7 +16,7 @@
 package ch.ralscha.extdirectspring.bean;
 
 /**
- * Class representing the result of a FORM_LOAD method call.
+ * Represents the result of a FORM_LOAD method call.
  */
 public class ExtDirectFormLoadResult {
 

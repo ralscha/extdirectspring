@@ -58,7 +58,7 @@ public class SSEvent {
 	/**
 	 * Sets the data part of the Server-Sent Event response.
 	 * 
-	 * @param data actual payload of the reponse
+	 * @param data the actual payload of the reponse
 	 */
 	public void setData(String data) {
 		this.data = data;
@@ -74,7 +74,7 @@ public class SSEvent {
 	 * <p>
 	 * Default value is 3000 (3 seconds).
 	 * 
-	 * @param retry new retry value in milliseconds
+	 * @param retry the new retry value in milliseconds
 	 */
 	public void setRetry(Integer retry) {
 		this.retry = retry;
@@ -89,7 +89,7 @@ public class SSEvent {
 	 * after receiving this response. If empty the default event 'message' will
 	 * be fired
 	 * 
-	 * @param event new name of the event
+	 * @param event the new name of the event
 	 */
 	public void setEvent(String event) {
 		this.event = event;
@@ -104,7 +104,7 @@ public class SSEvent {
 	 * with : (colon) following by the text from this property. Comments will be
 	 * ignored by the client but may be useful for debugging.
 	 * 
-	 * @param comment new comment for this event
+	 * @param comment the new comment for this event
 	 */
 	public void setComment(String comment) {
 		this.comment = comment;

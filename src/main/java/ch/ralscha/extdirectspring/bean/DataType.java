@@ -16,7 +16,7 @@
 package ch.ralscha.extdirectspring.bean;
 
 /**
- * Enumeration of all valid data types from a {@link Field}.
+ * Enumeration of all valid data types for a {@link Field}.
  * 
  * @see Field#setType(DataType)
  */
