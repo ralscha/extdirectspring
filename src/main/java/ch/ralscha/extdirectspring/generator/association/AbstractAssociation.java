@@ -87,6 +87,8 @@ public abstract class AbstractAssociation {
 	 * Corresponds to the <a href=
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-foreignKey"
 	 * >foreignKey</a> config property.
+	 * 
+	 * @param foreignKey the new name for the foreignKey
 	 */
 	public void setForeignKey(String foreignKey) {
 		this.foreignKey = foreignKey;
@@ -103,6 +105,8 @@ public abstract class AbstractAssociation {
 	 * Corresponds to the <a href=
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.Association-cfg-primaryKey"
 	 * >primaryKey</a> config property.
+	 * 
+	 * @param primaryKey the new name for the primaryKey
 	 */
 	public void setPrimaryKey(String primaryKey) {
 		this.primaryKey = primaryKey;

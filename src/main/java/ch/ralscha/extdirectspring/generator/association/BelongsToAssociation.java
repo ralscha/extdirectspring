@@ -15,6 +15,8 @@
  */
 package ch.ralscha.extdirectspring.generator.association;
 
+import ch.ralscha.extdirectspring.generator.Model;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -61,6 +63,8 @@ public class BelongsToAssociation extends AbstractAssociation {
 	 * Corresponds to the <a href=
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.BelongsTo-cfg-setterName"
 	 * >setterName</a> config property.
+	 * 
+	 * @param setterName the new name for the setter function
 	 */
 	public void setSetterName(String setterName) {
 		this.setterName = setterName;
@@ -78,6 +82,8 @@ public class BelongsToAssociation extends AbstractAssociation {
 	 * Corresponds to the <a href=
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.BelongsTo-cfg-getterName"
 	 * >getterName</a> config property.
+	 * 
+	 * @param getterName the new name for the getter function
 	 */
 	public void setGetterName(String getterName) {
 		this.getterName = getterName;

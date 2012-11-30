@@ -15,6 +15,8 @@
  */
 package ch.ralscha.extdirectspring.generator.association;
 
+import ch.ralscha.extdirectspring.generator.Model;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -60,6 +62,8 @@ public class HasManyAssociation extends AbstractAssociation {
 	 * Corresponds to the <a href=
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-autoLoad"
 	 * >autoLoad</a> config property.
+	 * 
+	 * @param autoLoad the new value for autoLoad
 	 */
 	public void setAutoLoad(Boolean autoLoad) {
 		this.autoLoad = autoLoad;
@@ -77,6 +81,8 @@ public class HasManyAssociation extends AbstractAssociation {
 	 * Corresponds to the <a href=
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-name"
 	 * >name</a> config property.
+	 * 
+	 * @param name the new name for the function
 	 */
 	public void setName(String name) {
 		this.name = name;

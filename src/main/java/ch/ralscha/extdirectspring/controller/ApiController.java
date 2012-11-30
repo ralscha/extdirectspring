@@ -67,6 +67,7 @@ public class ApiController {
 	 *            REMOTING_API
 	 * @param pollingUrlsVar name of the polling urls object. Defaults to
 	 *            POLLING_URLS
+	 * @param sseVar name of the SSE urls object. Defaults to SSE
 	 * @param group name of the api group. Multiple groups delimited with comma
 	 * @param fullRouterUrl if true the router property contains the full
 	 *            request URL with method, server and port. Defaults to false
@@ -137,6 +138,7 @@ public class ApiController {
 	 *            REMOTING_API
 	 * @param pollingUrlsVar name of the polling urls object. Defaults to
 	 *            POLLING_URLS
+	 * @param sseVar name of the SSE urls object. Defaults to SSE
 	 * @param group name of the api group. Multiple groups delimited with comma
 	 * @param fullRouterUrl if true the router property contains the full
 	 *            request URL with method, server and port. Defaults to false

@@ -161,10 +161,10 @@ public class ModelBean {
 	}
 
 	/**
-	 * Adds one instance of {@link ModelFieldValidationBean} to the internal
-	 * collection of validations
+	 * Adds one instance of one of the subclasses of {@link AbstractValidation}
+	 * to the internal collection of validations
 	 * 
-	 * @param bean instance of {@link ModelFieldValidationBean}
+	 * @param bean instance of subclass of {@link AbstractValidation}
 	 */
 	public void addValidation(AbstractValidation bean) {
 		Assert.notNull(bean, "ModelFieldValidationBean must not be null");
