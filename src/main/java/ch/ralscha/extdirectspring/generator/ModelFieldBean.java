@@ -35,6 +35,7 @@ public class ModelFieldBean {
 
 	private ModelType type;
 
+	@JsonRawValue
 	private Object defaultValue;
 
 	private String dateFormat;

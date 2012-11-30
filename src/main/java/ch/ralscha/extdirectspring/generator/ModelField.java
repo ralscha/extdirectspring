@@ -55,6 +55,9 @@ public @interface ModelField {
 	 * The default value. Property '<a href=
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-defaultValue"
 	 * >defaultValue</a>' in JS.
+	 * <p>
+	 * Can be set to {@link #DEFAULTVALUE_UNDEFINED} to set defaultValue to the
+	 * value undefined. This prevents defaulting a value.
 	 */
 	String defaultValue() default "";
 
@@ -114,4 +117,12 @@ public @interface ModelField {
 	 */
 	String convert() default "";
 
+	/**
+	 * Constant for the value undefined. Can only be used for the property
+	 * {@link #defaultValue()}. According to the <a href=
+	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-defaultValue"
+	 * >documentation</a> setting defaultValue to undefined prevents defaulting
+	 * a value.
+	 */
+	public final static String DEFAULTVALUE_UNDEFINED = "undefined";
 }

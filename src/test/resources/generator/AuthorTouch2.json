@@ -11,10 +11,12 @@ Ext.define("MyApp.Author",
       defaultValue : "Mr."
     }, {
       name : "firstName",
-      type : "string"
+      type : "string",
+      defaultValue : undefined
     }, {
       name : "lastName",
-      type : "string"
+      type : "string",
+      convert : null
     }, {
       name : "book_id",
       type : "int"

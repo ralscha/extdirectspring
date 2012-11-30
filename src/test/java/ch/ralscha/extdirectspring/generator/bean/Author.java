@@ -28,8 +28,10 @@ public class Author {
 	@ModelField(defaultValue = "Mr.")
 	public String title;
 
+	@ModelField(defaultValue = ModelField.DEFAULTVALUE_UNDEFINED)
 	public String firstName;
 
+	@ModelField(convert = "null")
 	public String lastName;
 
 	public int book_id;

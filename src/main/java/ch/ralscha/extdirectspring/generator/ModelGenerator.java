@@ -319,15 +319,20 @@ public abstract class ModelGenerator {
 							modelFieldBean.setDateFormat(modelFieldAnnotation.dateFormat());
 						}
 
-						if (StringUtils.hasText(modelFieldAnnotation.defaultValue())) {
-							if (type == ModelType.BOOLEAN) {
-								modelFieldBean.setDefaultValue(Boolean.parseBoolean(modelFieldAnnotation.defaultValue()));
-							} else if (type == ModelType.INTEGER) {
-								modelFieldBean.setDefaultValue(Long.valueOf(modelFieldAnnotation.defaultValue()));
-							} else if (type == ModelType.FLOAT) {
-								modelFieldBean.setDefaultValue(Double.valueOf(modelFieldAnnotation.defaultValue()));
+						String defaultValue = modelFieldAnnotation.defaultValue();
+						if (StringUtils.hasText(defaultValue)) {
+							if (ModelField.DEFAULTVALUE_UNDEFINED.equals(defaultValue)) {
+								modelFieldBean.setDefaultValue(ModelField.DEFAULTVALUE_UNDEFINED);
 							} else {
-								modelFieldBean.setDefaultValue(modelFieldAnnotation.defaultValue());
+								if (type == ModelType.BOOLEAN) {
+									modelFieldBean.setDefaultValue(Boolean.parseBoolean(defaultValue));
+								} else if (type == ModelType.INTEGER) {
+									modelFieldBean.setDefaultValue(Long.valueOf(defaultValue));
+								} else if (type == ModelType.FLOAT) {
+									modelFieldBean.setDefaultValue(Double.valueOf(defaultValue));
+								} else {
+									modelFieldBean.setDefaultValue("\"" + defaultValue + "\"");
+								}
 							}
 						}
 
