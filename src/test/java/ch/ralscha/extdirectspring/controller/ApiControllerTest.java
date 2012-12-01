@@ -59,6 +59,9 @@ public class ApiControllerTest {
 
 	@Autowired
 	private RouterController routerController;
+	
+	@Autowired
+	private ConfigurationService configurationService;
 
 	@Before
 	public void setupApiController() throws Exception {
@@ -89,7 +92,7 @@ public class ApiControllerTest {
 		config.setEnableBuffer(10);
 		config.setMaxRetries(2);
 		config.setTimeout(12000);
-		ReflectionTestUtils.setField(routerController, "configuration", config);
+		ReflectionTestUtils.setField(configurationService, "configuration", config);
 
 		request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		response = new MockHttpServletResponse();
@@ -105,7 +108,7 @@ public class ApiControllerTest {
 		compare(response.getContentAsString(), response.getContentType(), allApis(null), "test", "TEST_REMOTING_API",
 				"TEST_POLLING_URLS", "TEST_SSE", config);
 
-		ReflectionTestUtils.setField(routerController, "configuration", new Configuration());
+		ReflectionTestUtils.setField(configurationService, "configuration", new Configuration());
 	}
 
 	@Test
@@ -129,7 +132,7 @@ public class ApiControllerTest {
 		Configuration config = new Configuration();
 		config.setEnableBuffer(false);
 		config.setTimeout(10000);
-		ReflectionTestUtils.setField(routerController, "configuration", config);
+		ReflectionTestUtils.setField(configurationService, "configuration", config);
 
 		request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		response = new MockHttpServletResponse();
@@ -145,7 +148,7 @@ public class ApiControllerTest {
 		compare(response.getContentAsString(), response.getContentType(), allApis("actionns"), "Ext.ns",
 				"TEST_REMOTING_API", "TEST_POLLING_URLS", "TEST_SSE", config);
 
-		ReflectionTestUtils.setField(routerController, "configuration", new Configuration());
+		ReflectionTestUtils.setField(configurationService, "configuration", new Configuration());
 	}
 
 	@Test
@@ -168,7 +171,7 @@ public class ApiControllerTest {
 		ApiCache.INSTANCE.clear();
 		Configuration config = new Configuration();
 		config.setEnableBuffer(true);
-		ReflectionTestUtils.setField(routerController, "configuration", config);
+		ReflectionTestUtils.setField(configurationService, "configuration", config);
 
 		request = new MockHttpServletRequest("GET", "/action/api-debug.js");
 		response = new MockHttpServletResponse();
@@ -184,7 +187,7 @@ public class ApiControllerTest {
 		compare(response.getContentAsString(), response.getContentType(), noApis(null), "test", "TEST_REMOTING_API",
 				"TEST_POLLING_URLS", "TEST_SSE", config);
 
-		ReflectionTestUtils.setField(routerController, "configuration", new Configuration());
+		ReflectionTestUtils.setField(configurationService, "configuration", new Configuration());
 
 	}
 
@@ -202,14 +205,14 @@ public class ApiControllerTest {
 	public void testGroup1WithConfig() throws IOException {
 		Configuration config = new Configuration();
 		config.setTimeout(12000);
-		ReflectionTestUtils.setField(routerController, "configuration", config);
+		ReflectionTestUtils.setField(configurationService, "configuration", config);
 
 		testGroup1(config, null);
 		testGroup1(config, null);
 		ApiCache.INSTANCE.clear();
 		testGroup1(config, "-1.0.0");
 
-		ReflectionTestUtils.setField(routerController, "configuration", new Configuration());
+		ReflectionTestUtils.setField(configurationService, "configuration", new Configuration());
 	}
 
 	private void testGroup1(Configuration config, String fingerprint) throws IOException {

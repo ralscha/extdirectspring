@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.ConversionService;
@@ -45,6 +44,8 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.GroupInfo;
 import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.bean.SortInfo;
+import ch.ralscha.extdirectspring.controller.ConfigurationService;
+import ch.ralscha.extdirectspring.controller.SSEWriter;
 import ch.ralscha.extdirectspring.filter.Filter;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -56,21 +57,43 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
  * Resolver of ExtDirectRequest parameters.
  */
 @Component
-public final class ParametersResolver implements InitializingBean {
+public final class ParametersResolver {
 
 	private static final Log log = LogFactory.getLog(ParametersResolver.class);
 
 	@Autowired
 	private ConversionService conversionService;
 
-	@Autowired(required = false)
-	private JsonHandler jsonHandler;
+	@Autowired
+	private ConfigurationService configurationService;
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		if (jsonHandler == null) {
-			jsonHandler = new JsonHandler();
+	public Object[] prepareParameters(HttpServletRequest request, HttpServletResponse response, Locale locale,
+			MethodInfo methodInfo) {
+		return prepareParameters(request, response, locale, methodInfo, null);
+	}
+	
+	public Object[] prepareParameters(HttpServletRequest request, HttpServletResponse response, Locale locale,
+			MethodInfo methodInfo, SSEWriter sseWriter) {
+		List<ParameterInfo> methodParameters = methodInfo.getParameters();
+		Object[] parameters = null;
+		if (!methodParameters.isEmpty()) {
+			parameters = new Object[methodParameters.size()];
+
+			for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
+				ParameterInfo methodParameter = methodParameters.get(paramIndex);
+
+				if (methodParameter.isSupportedParameter()) {
+					parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(), request,
+							response, locale, sseWriter);
+				} else if (methodParameter.isHasRequestHeaderAnnotation()) {
+					parameters[paramIndex] = resolveRequestHeader(request, methodParameter);
+				} else {
+					parameters[paramIndex] = resolveRequestParam(request, null, methodParameter);
+				}
+
+			}
 		}
+		return parameters;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -116,13 +139,15 @@ public final class ParametersResolver implements InitializingBean {
 									directStoreEntryClass);
 						} else {
 							directStoreModifyRecords = new ArrayList<Object>();
-							directStoreModifyRecords.add(jsonHandler.convertValue(records, directStoreEntryClass));
+							directStoreModifyRecords.add(configurationService.getJsonHandler().convertValue(records,
+									directStoreEntryClass));
 						}
 						remainingParameters = new HashMap<String, Object>(jsonData);
 						remainingParameters.remove("records");
 					} else {
 						directStoreModifyRecords = new ArrayList<Object>();
-						directStoreModifyRecords.add(jsonHandler.convertValue(jsonData, directStoreEntryClass));
+						directStoreModifyRecords.add(configurationService.getJsonHandler().convertValue(jsonData,
+								directStoreEntryClass));
 					}
 				}
 				jsonParamIndex = 1;
@@ -247,23 +272,23 @@ public final class ParametersResolver implements InitializingBean {
 				} catch (ConversionFailedException e) {
 					// ignore this exception for collections and arrays.
 					// try to convert the value with jackson
-					TypeFactory typeFactory = jsonHandler.getMapper().getTypeFactory();
+					TypeFactory typeFactory = configurationService.getJsonHandler().getMapper().getTypeFactory();
 					if (methodParameter.getTypeDescriptor().isCollection()) {
 						JavaType type = CollectionType.construct(
 								methodParameter.getType(),
 								typeFactory.constructType(methodParameter.getTypeDescriptor()
 										.getElementTypeDescriptor().getType()));
-						return jsonHandler.convertValue(value, type);
+						return configurationService.getJsonHandler().convertValue(value, type);
 					} else if (methodParameter.getTypeDescriptor().isArray()) {
 						JavaType type = typeFactory.constructArrayType(methodParameter.getTypeDescriptor()
 								.getElementTypeDescriptor().getType());
-						return jsonHandler.convertValue(value, type);
+						return configurationService.getJsonHandler().convertValue(value, type);
 					}
 
 					throw e;
 				}
 			} else {
-				return jsonHandler.convertValue(value, methodParameter.getType());
+				return configurationService.getJsonHandler().convertValue(value, methodParameter.getType());
 			}
 
 		}
@@ -281,8 +306,8 @@ public final class ParametersResolver implements InitializingBean {
 				List<Filter> filters = new ArrayList<Filter>();
 
 				if (value instanceof String) {
-					List<Map<String, Object>> rawFilters = jsonHandler.readValue((String) value,
-							new TypeReference<List<Map<String, Object>>>() {/* empty */
+					List<Map<String, Object>> rawFilters = configurationService.getJsonHandler().readValue(
+							(String) value, new TypeReference<List<Map<String, Object>>>() {/* empty */
 							});
 
 					for (Map<String, Object> rawFilter : rawFilters) {
@@ -379,7 +404,7 @@ public final class ParametersResolver implements InitializingBean {
 		if (records != null) {
 			List<Object> convertedList = new ArrayList<Object>();
 			for (Object record : records) {
-				Object convertedObject = jsonHandler.convertValue(record, directStoreType);
+				Object convertedObject = configurationService.getJsonHandler().convertValue(record, directStoreType);
 				convertedList.add(convertedObject);
 			}
 			return convertedList;

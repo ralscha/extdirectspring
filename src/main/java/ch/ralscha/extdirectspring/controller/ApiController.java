@@ -54,7 +54,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ApiController {
 
 	@Autowired
-	private RouterController routerController;
+	private ConfigurationService configurationService;
 
 	/**
 	 * Method that handles api.js and api-debug.js calls. Generates a javascript
@@ -93,13 +93,13 @@ public class ApiController {
 			HttpServletResponse response) throws IOException {
 
 		if (format == null) {
-			response.setContentType(routerController.getConfiguration().getJsContentType());
-			response.setCharacterEncoding(RouterController.UTF8_CHARSET.name());
+			response.setContentType(configurationService.getConfiguration().getJsContentType());
+			response.setCharacterEncoding(ExtDirectSpringUtil.UTF8_CHARSET.name());
 
 			String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, group,
 					fullRouterUrl, request);
 
-			byte[] outputBytes = apiString.getBytes(RouterController.UTF8_CHARSET);
+			byte[] outputBytes = apiString.getBytes(ExtDirectSpringUtil.UTF8_CHARSET);
 			response.setContentLength(outputBytes.length);
 
 			ServletOutputStream outputStream = response.getOutputStream();
@@ -117,7 +117,7 @@ public class ApiController {
 			String routerUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "router");
 
 			String apiString = buildApiJson(apiNs, actionNs, remotingApiVar, routerUrl, group, debug);
-			byte[] outputBytes = apiString.getBytes(RouterController.UTF8_CHARSET);
+			byte[] outputBytes = apiString.getBytes(ExtDirectSpringUtil.UTF8_CHARSET);
 			response.setContentLength(outputBytes.length);
 
 			ServletOutputStream outputStream = response.getOutputStream();
@@ -162,9 +162,9 @@ public class ApiController {
 		String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, group,
 				fullRouterUrl, request);
 
-		byte[] outputBytes = apiString.getBytes(RouterController.UTF8_CHARSET);
-		ExtDirectSpringUtil.handleCacheableResponse(request, response, outputBytes, routerController.getConfiguration()
-				.getJsContentType());
+		byte[] outputBytes = apiString.getBytes(ExtDirectSpringUtil.UTF8_CHARSET);
+		ExtDirectSpringUtil.handleCacheableResponse(request, response, outputBytes, configurationService
+				.getConfiguration().getJsContentType());
 	}
 
 	private String buildAndCacheApiString(String apiNs, String actionNs, String remotingApiVar, String pollingUrlsVar,
@@ -208,13 +208,13 @@ public class ApiController {
 			String sseVar, String routerUrl, String basePollUrl, String baseSseUrl, String group, boolean debug,
 			boolean doc) {
 
-		RemotingApi remotingApi = new RemotingApi(routerController.getConfiguration().getProviderType(), routerUrl,
+		RemotingApi remotingApi = new RemotingApi(configurationService.getConfiguration().getProviderType(), routerUrl,
 				actionNs);
 
-		remotingApi.setTimeout(routerController.getConfiguration().getTimeout());
-		remotingApi.setMaxRetries(routerController.getConfiguration().getMaxRetries());
+		remotingApi.setTimeout(configurationService.getConfiguration().getTimeout());
+		remotingApi.setMaxRetries(configurationService.getConfiguration().getMaxRetries());
 
-		Object enableBuffer = routerController.getConfiguration().getEnableBuffer();
+		Object enableBuffer = configurationService.getConfiguration().getEnableBuffer();
 		if (enableBuffer instanceof String && StringUtils.hasText((String) enableBuffer)) {
 			String enableBufferString = (String) enableBuffer;
 			if (enableBufferString.equalsIgnoreCase("true")) {
@@ -255,7 +255,7 @@ public class ApiController {
 
 		String jsonConfig;
 		if (!doc) {
-			jsonConfig = routerController.getJsonHandler().writeValueAsString(remotingApi, debug);
+			jsonConfig = configurationService.getJsonHandler().writeValueAsString(remotingApi, debug);
 		} else {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.addMixInAnnotations(RemotingApi.class, RemotingApiMixin.class);
@@ -336,7 +336,7 @@ public class ApiController {
 				}
 			}
 
-			String sseConfig = routerController.getJsonHandler().writeValueAsString(sseconfig, debug);
+			String sseConfig = configurationService.getJsonHandler().writeValueAsString(sseconfig, debug);
 
 			if (StringUtils.hasText(apiNs)) {
 				sb.append(apiNs).append(".");
@@ -352,7 +352,7 @@ public class ApiController {
 	private String buildApiJson(String apiNs, String actionNs, String remotingApiVar, String routerUrl, String group,
 			boolean debug) {
 
-		RemotingApi remotingApi = new RemotingApi(routerController.getConfiguration().getProviderType(), routerUrl,
+		RemotingApi remotingApi = new RemotingApi(configurationService.getConfiguration().getProviderType(), routerUrl,
 				actionNs);
 
 		if (StringUtils.hasText(apiNs)) {
@@ -363,7 +363,7 @@ public class ApiController {
 
 		buildRemotingApi(remotingApi, group);
 
-		return routerController.getJsonHandler().writeValueAsString(remotingApi, debug);
+		return configurationService.getJsonHandler().writeValueAsString(remotingApi, debug);
 
 	}
 

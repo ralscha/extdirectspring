@@ -33,6 +33,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.SSEvent;
+import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.JsonHandler;
 
 import com.fasterxml.jackson.core.JsonEncoding;
@@ -223,7 +224,7 @@ public class ControllerUtil {
 		StringBuilder commentLines = new StringBuilder(32);
 		StringBuilder dataLines = new StringBuilder(32);
 
-		String content = new String(contentAsByteArray, RouterController.UTF8_CHARSET);
+		String content = new String(contentAsByteArray, ExtDirectSpringUtil.UTF8_CHARSET);
 		for (String line : content.split("\\n")) {
 			if (line.startsWith(":")) {
 				if (commentLines.length() > 0) {
