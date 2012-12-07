@@ -65,6 +65,10 @@ public class ApiControllerTest {
 		MethodInfoCache.INSTANCE.clear();
 		ApiCache.INSTANCE.clear();
 		applicationContext.publishEvent(new ContextRefreshedEvent(applicationContext));
+		
+		Configuration config = new Configuration();
+		ReflectionTestUtils.setField(routerController, "configuration", config);
+
 	}
 
 	@Test
