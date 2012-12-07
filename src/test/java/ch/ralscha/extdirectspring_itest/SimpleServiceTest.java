@@ -82,7 +82,7 @@ public class SimpleServiceTest extends JettyTest2 {
 	}
 
 	@Test
-	@PerfTest(invocations = 200, threads = 5)
+	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleApiDebug() throws IllegalStateException, IOException {
 		HttpClient client = new DefaultHttpClient();
 		HttpGet get = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_simple");
@@ -90,7 +90,7 @@ public class SimpleServiceTest extends JettyTest2 {
 	}
 
 	@Test
-	@PerfTest(invocations = 200, threads = 5)
+	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleApi() throws IllegalStateException, IOException {
 		HttpClient client = new DefaultHttpClient();
 		HttpGet get = new HttpGet("http://localhost:9998/controller/api.js?group=itest_simple");
@@ -98,7 +98,7 @@ public class SimpleServiceTest extends JettyTest2 {
 	}
 
 	@Test
-	@PerfTest(invocations = 200, threads = 5)
+	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleApiFingerprinted() throws IllegalStateException, IOException {
 		HttpClient client = new DefaultHttpClient();
 		HttpGet get = new HttpGet("http://localhost:9998/controller/api-1.0.0.js?group=itest_simple");
@@ -151,7 +151,7 @@ public class SimpleServiceTest extends JettyTest2 {
 	}
 
 	@Test
-	@PerfTest(invocations = 200, threads = 5)
+	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleCall() throws IllegalStateException, IOException {
 		HttpClient client = new DefaultHttpClient();
 		postToUpperCase("ralph", client);
@@ -160,7 +160,7 @@ public class SimpleServiceTest extends JettyTest2 {
 	}
 
 	@Test
-	@PerfTest(invocations = 200, threads = 5)
+	@PerfTest(invocations = 150, threads = 5)
 	public void testPoll() throws ClientProtocolException, IOException {
 		String _id = String.valueOf(id.incrementAndGet());
 		HttpClient client = new DefaultHttpClient();
@@ -178,7 +178,7 @@ public class SimpleServiceTest extends JettyTest2 {
 	}
 
 	@Test
-	@PerfTest(invocations = 200, threads = 5)
+	@PerfTest(invocations = 150, threads = 5)
 	public void testSse() throws ClientProtocolException, IOException {
 		String _id = String.valueOf(id.incrementAndGet());
 		HttpClient client = new DefaultHttpClient();
@@ -224,7 +224,7 @@ public class SimpleServiceTest extends JettyTest2 {
 	}
 
 	@Test
-	@PerfTest(invocations = 200, threads = 5)
+	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleNamedCall() throws IllegalStateException, IOException {
 		HttpClient client = new DefaultHttpClient();
 		postToEcho(Collections.singletonList("\"userId\":\"ralph\", \"logLevel\": 100"),
@@ -238,7 +238,7 @@ public class SimpleServiceTest extends JettyTest2 {
 	}
 
 	@Test
-	@PerfTest(invocations = 200, threads = 5)
+	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleNamedCallBatched() throws IllegalStateException, IOException {
 		HttpClient client = new DefaultHttpClient();
 		postToEcho(Arrays.asList("\"userId\":\"Ralph\", \"logLevel\": 100", "\"userId\":\"Tom\"",
