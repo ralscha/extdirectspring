@@ -49,7 +49,7 @@
 
 	<properties>
 		<spring.version>3.1.3.RELEASE</spring.version>
-		<jackson.version>2.1.1</jackson.version>
+		<jackson.version>2.1.2</jackson.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -159,7 +159,7 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.0.7</version>
+			<version>1.0.9</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -300,7 +300,7 @@
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.16.1-GA</version>
+			<version>3.17.1-GA</version>
 			<scope>test</scope>
 		</dependency>
 
