@@ -717,7 +717,7 @@ public class ApiControllerTest {
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message9", "message9"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message10", "message10"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message11", "message11"));
-		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message12", "message12"));
+		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message12", "message12"));		
 
 		remotingApi.addSseProvider("sseProvider", "message1");
 		remotingApi.addSseProvider("sseProvider", "message2");
@@ -731,6 +731,9 @@ public class ApiControllerTest {
 		remotingApi.addSseProvider("sseProvider", "message10");
 		remotingApi.addSseProvider("sseProvider", "message11");
 		remotingApi.addSseProvider("sseProvider", "message12");
+		remotingApi.addSseProvider("sseProvider", "message13");
+		remotingApi.addSseProvider("sseProvider", "message14");
+		remotingApi.addSseProvider("sseProvider", "message15");
 		return remotingApi;
 	}
 
