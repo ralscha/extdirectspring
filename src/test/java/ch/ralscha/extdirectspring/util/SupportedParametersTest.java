@@ -17,7 +17,6 @@ package ch.ralscha.extdirectspring.util;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.util.Locale;
 
@@ -44,7 +43,7 @@ public class SupportedParametersTest {
 	}
 
 	@Test
-	public void testResolveParameter() throws IOException {
+	public void testResolveParameter() {
 		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		Locale en = Locale.ENGLISH;
@@ -59,9 +58,10 @@ public class SupportedParametersTest {
 		assertThat(SupportedParameters.resolveParameter(MockHttpServletResponse.class, request, response, en))
 				.isSameAs(response);
 		assertThat(SupportedParameters.resolveParameter(Locale.class, request, response, en)).isSameAs(en);
-		
-		SSEWriter sseWriter = new SSEWriter(null, response);
-		assertThat(SupportedParameters.resolveParameter(SSEWriter.class, request, response, en, sseWriter)).isSameAs(sseWriter);
+
+		SSEWriter sseWriter = new SSEWriter(response);
+		assertThat(SupportedParameters.resolveParameter(SSEWriter.class, request, response, en, sseWriter)).isSameAs(
+				sseWriter);
 	}
 
 }

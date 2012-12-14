@@ -39,7 +39,7 @@ public class RouterControllerFormPostTest {
 
 	@Autowired
 	private RouterController controller;
-	
+
 	@Autowired
 	private ConfigurationService configurationService;
 

@@ -71,7 +71,7 @@ public final class ParametersResolver {
 			MethodInfo methodInfo) {
 		return prepareParameters(request, response, locale, methodInfo, null);
 	}
-	
+
 	public Object[] prepareParameters(HttpServletRequest request, HttpServletResponse response, Locale locale,
 			MethodInfo methodInfo, SSEWriter sseWriter) {
 		List<ParameterInfo> methodParameters = methodInfo.getParameters();

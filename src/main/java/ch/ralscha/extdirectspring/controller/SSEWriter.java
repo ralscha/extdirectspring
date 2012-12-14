@@ -16,7 +16,6 @@
 package ch.ralscha.extdirectspring.controller;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,38 +25,46 @@ import org.springframework.util.StringUtils;
 import ch.ralscha.extdirectspring.bean.SSEvent;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
+/**
+ * This class allows you to send server sent events in a streaming fashion. Add
+ * this class as a paramter to the method and send {@link SSEvent} with
+ * {@link #write(SSEvent)} to the client.
+ * <p>
+ * Example:
+ * 
+ * <pre>
+ *  {@literal @}ExtDirectMethod(ExtDirectMethodType.SSE)
+ *  public void sse(SSEWriter sseWriter) {
+ *    SSEvent event = new SSEvent();
+ *    event.set....	    
+ *    sseWriter.write(event);
+ *    //do something else or wait for something or ...
+ *    sseWriter.write(event);
+ *    //...
+ *  }
+ * </pre>
+ */
 public class SSEWriter {
 	private final HttpServletResponse response;
 
 	private static final MediaType EVENT_STREAM = new MediaType("text", "event-stream",
 			ExtDirectSpringUtil.UTF8_CHARSET);
 
-	public SSEWriter(String userAgent, HttpServletResponse response) throws IOException {
+	public SSEWriter(HttpServletResponse response) {
 		this.response = response;
 
 		response.setContentType(EVENT_STREAM.toString());
 		response.setCharacterEncoding(EVENT_STREAM.getCharSet().name());
-		
-		if (isIE(userAgent)) {
-			writeIEHeadersAndPadding();
-		}
 	}
 
-	private void writeIEHeadersAndPadding() throws IOException {
-		// Looks like Yaffle / EventSource needs these two headers to work correctly 
-		response.setHeader("Cache-Control", "no-cache");
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		
-		// 2kb padding for IE
-		byte[] spaces = new byte[2048];
-		Arrays.fill(spaces, (byte)' ');
-		
-		response.getOutputStream().write(':');
-		response.getOutputStream().write(spaces);
-		response.getOutputStream().write('\n');
-		response.getOutputStream().flush();
-	}
-
+	/**
+	 * Creates a {@link SSEvent} object and sets the data property to the
+	 * provided parameter. Then it writes the event into the servlet output
+	 * stream and flushes the response.
+	 * 
+	 * @param data the value that becomes the data part of the {@link SSEvent}
+	 * @throws IOException
+	 */
 	public void write(String data) throws IOException {
 		if (data != null) {
 			SSEvent sseEvent = new SSEvent();
@@ -66,6 +73,13 @@ public class SSEWriter {
 		}
 	}
 
+	/**
+	 * Writes the event into the servlet output stream and flushes the response.
+	 * The method does not close the output stream.
+	 * 
+	 * @param sseEvent the event object
+	 * @throws IOException
+	 */
 	public void write(SSEvent sseEvent) throws IOException {
 		StringBuilder sb = new StringBuilder(32);
 
@@ -98,18 +112,5 @@ public class SSEWriter {
 		response.getOutputStream().flush();
 
 	}
-	
-	private static boolean isIE(String userAgent) {
-		if (userAgent != null && userAgent.contains("MSIE ")) {
-			String ver = userAgent.substring(userAgent.indexOf("MSIE ") + 5);
-			ver = ver.substring(0, ver.indexOf(";")).trim();
-			int version = Integer.parseInt(ver.substring(0, ver.indexOf(".")));
-			if (version < 10) {
-				return true;
-			}
-		}
 
-		return false;
-
-	}	
 }

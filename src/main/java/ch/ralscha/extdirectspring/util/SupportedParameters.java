@@ -68,7 +68,7 @@ enum SupportedParameters {
 			HttpServletResponse response, Locale locale) {
 		return resolveParameter(parameterType, request, response, locale, null);
 	}
-	
+
 	public static Object resolveParameter(Class<?> parameterType, HttpServletRequest request,
 			HttpServletResponse response, Locale locale, SSEWriter sseWriter) {
 

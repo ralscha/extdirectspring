@@ -46,7 +46,7 @@ public class SSEHandler {
 		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(beanName, method);
 
 		SSEvent result = null;
-		SSEWriter sseWriter = new SSEWriter(request.getHeader("User-Agent"), response);
+		SSEWriter sseWriter = new SSEWriter(response);
 
 		if (methodInfo != null) {
 

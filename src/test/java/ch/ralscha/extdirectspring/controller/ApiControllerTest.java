@@ -59,7 +59,7 @@ public class ApiControllerTest {
 
 	@Autowired
 	private RouterController routerController;
-	
+
 	@Autowired
 	private ConfigurationService configurationService;
 
