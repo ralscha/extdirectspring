@@ -97,7 +97,7 @@ public class RemoteProviderSimple {
 		return a + b;
 	}
 
-	@ExtDirectMethod
+	@SimpleEdsMethod
 	public String method7() {
 		return null;
 	}

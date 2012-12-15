@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 /**
  * Annotation for methods that should be exposed to a Ext Direct client
  */
-@Target({ ElementType.METHOD })
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented

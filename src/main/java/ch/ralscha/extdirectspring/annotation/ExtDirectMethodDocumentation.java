@@ -62,7 +62,7 @@ import java.lang.annotation.Target;
  * <p/>
  * see example above
  */
-@Target({ ElementType.METHOD })
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @Inherited
 @Documented

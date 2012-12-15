@@ -23,7 +23,7 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-@Target({ ElementType.METHOD })
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @Inherited
 @Documented

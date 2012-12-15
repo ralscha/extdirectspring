@@ -55,7 +55,7 @@ public class RemoteProviderSimpleNamed {
 		return "method1() called";
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	@NamedEdsMethod
 	public String method2(long i, Double d, String s) {
 		return String.format("method2() called-%d-%.3f-%s", i, d, s);
 	}
