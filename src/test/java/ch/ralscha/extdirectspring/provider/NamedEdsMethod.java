@@ -31,5 +31,5 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 @Inherited
 @Documented
 public @interface NamedEdsMethod {
-  //nothing here
+	// nothing here
 }

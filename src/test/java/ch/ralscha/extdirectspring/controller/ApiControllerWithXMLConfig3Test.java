@@ -15,74 +15,49 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import ch.ralscha.extdirectspring.util.ApiCache;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/testApplicationContext3.xml")
+@WebAppConfiguration
+@ContextConfiguration("classpath:/testApplicationContext3.xml")
 public class ApiControllerWithXMLConfig3Test {
 
 	@Autowired
-	private ApplicationContext applicationContext;
+	private WebApplicationContext wac;
 
-	@Autowired
-	private ApiController apiController;
-
-	@Autowired
-	private RouterController routerController;
-
-	private Configuration config;
+	private MockMvc mockMvc;
 
 	@Before
 	public void setupApiController() throws Exception {
 		ApiCache.INSTANCE.clear();
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+	}
 
-		config = new Configuration();
+	@Test
+	public void testGroup2() throws Exception {
+
+		Configuration config = new Configuration();
 		config.setTimeout(15111);
 		config.setEnableBuffer(true);
 		config.setMaxRetries(6);
 		config.setStreamResponse(true);
-	}
 
-	@Test
-	public void testGroup2() throws IOException {
-		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "TEST_SSE", "group2", false, null,
-				request, response);
-		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(),
-				ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", "TEST_SSE",
-				config);
+		ApiRequestParams params = ApiRequestParams.builder().apiNs("test").group("group2").configuration(config)
+				.build();
+		ApiControllerTest.runTest(mockMvc, params, ApiControllerTest.group2Apis(null));
 
-		assertThat(response.getContentLength()).isEqualTo(response.getContentAsByteArray().length);
-
-		request = new MockHttpServletRequest("GET", "/action/api.js");
-		response = new MockHttpServletResponse();
-		apiController.api("test", null, "TEST_REMOTING_API", "TEST_POLLING_URLS", "TEST_SSE", "group2", false, null,
-				request, response);
-		ApiControllerTest.compare(response.getContentAsString(), response.getContentType(),
-				ApiControllerTest.group2Apis(null), "test", "TEST_REMOTING_API", "TEST_POLLING_URLS", "TEST_SSE",
-				config);
-
-		assertThat(response.getContentLength()).isEqualTo(response.getContentAsByteArray().length);
-	}
-
-	@Test
-	public void testGroup2Again() throws IOException {
-		testGroup2();
+		ApiControllerTest.runTest(mockMvc, params, ApiControllerTest.group2Apis(null));
 	}
 
 }

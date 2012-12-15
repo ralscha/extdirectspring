@@ -17,8 +17,10 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.fest.assertions.data.MapEntry.entry;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,25 +32,28 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.Assert;
+import org.springframework.web.context.WebApplicationContext;
 
 import ch.ralscha.extdirectspring.bean.api.ActionDoc;
 import ch.ralscha.extdirectspring.util.ApiCache;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
+@WebAppConfiguration
+@ContextConfiguration("classpath:/testApplicationContext.xml")
 public class ApiControllerWithDocumentationTest {
-
 	@Autowired
-	private ApplicationContext applicationContext;
+	private WebApplicationContext wac;
 
-	@Autowired
-	private ApiController apiController;
+	private MockMvc mockMvc;
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -61,6 +66,8 @@ public class ApiControllerWithDocumentationTest {
 		configurationService.getConfiguration().setEnableBuffer(false);
 		configurationService.getConfiguration().setMaxRetries(5);
 		configurationService.getConfiguration().setStreamResponse(true);
+
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
 
 	/**
@@ -70,10 +77,10 @@ public class ApiControllerWithDocumentationTest {
 	 * typical error is com.fasterxml.jackson.core.JsonParseException:
 	 * Unexpected character ('/' (code 47)): maybe a (non-standard) comment?
 	 * 
-	 * @throws IOException
+	 * @throws Exception
 	 */
 	@Test
-	public void testDoc1() throws IOException {
+	public void testDoc1() throws Exception {
 		ActionDoc doc = callApi("method1");
 
 		assertThat(doc.isDeprecated()).isTrue();
@@ -89,7 +96,7 @@ public class ApiControllerWithDocumentationTest {
 	}
 
 	@Test
-	public void testDoc2() throws IOException {
+	public void testDoc2() throws Exception {
 		ActionDoc doc = callApi("method2");
 
 		assertThat(doc.isDeprecated()).isFalse();
@@ -101,7 +108,7 @@ public class ApiControllerWithDocumentationTest {
 	}
 
 	@Test
-	public void testDoc3() throws IOException {
+	public void testDoc3() throws Exception {
 		ActionDoc doc = callApi("method3");
 
 		assertThat(doc.isDeprecated()).isFalse();
@@ -113,7 +120,7 @@ public class ApiControllerWithDocumentationTest {
 	}
 
 	@Test
-	public void testDoc4() throws IOException {
+	public void testDoc4() throws Exception {
 		ActionDoc doc = callApi("method4");
 
 		assertThat(doc.isDeprecated()).isFalse();
@@ -125,7 +132,7 @@ public class ApiControllerWithDocumentationTest {
 	}
 
 	@Test
-	public void testDoc5() throws IOException {
+	public void testDoc5() throws Exception {
 		ActionDoc doc = callApi("method5");
 
 		assertThat(doc.isDeprecated()).isTrue();
@@ -137,7 +144,7 @@ public class ApiControllerWithDocumentationTest {
 	}
 
 	@Test
-	public void testDoc6() throws IOException {
+	public void testDoc6() throws Exception {
 		ActionDoc doc = callApi("method6");
 
 		assertThat(doc.isDeprecated()).isFalse();
@@ -149,7 +156,7 @@ public class ApiControllerWithDocumentationTest {
 	}
 
 	@Test
-	public void testDoc7() throws IOException {
+	public void testDoc7() throws Exception {
 		ActionDoc doc = callApi("method7");
 
 		assertThat(doc.isDeprecated()).isTrue();
@@ -162,7 +169,7 @@ public class ApiControllerWithDocumentationTest {
 	}
 
 	@Test
-	public void testDoc8() throws IOException {
+	public void testDoc8() throws Exception {
 		ActionDoc doc = callApi("method8");
 
 		assertThat(doc.isDeprecated()).isFalse();
@@ -175,7 +182,7 @@ public class ApiControllerWithDocumentationTest {
 	}
 
 	@Test
-	public void testDoc9() throws IOException {
+	public void testDoc9() throws Exception {
 		ActionDoc doc = callApi("method9");
 
 		assertThat(doc.isDeprecated()).isFalse();
@@ -187,7 +194,7 @@ public class ApiControllerWithDocumentationTest {
 	}
 
 	@Test
-	public void testDoc10() throws IOException {
+	public void testDoc10() throws Exception {
 		ActionDoc doc = callApi("method10");
 
 		assertThat(doc.isDeprecated()).isFalse();
@@ -202,7 +209,7 @@ public class ApiControllerWithDocumentationTest {
 	}
 
 	@Test
-	public void testDoc11() throws IOException {
+	public void testDoc11() throws Exception {
 		ActionDoc doc = callApi("method11");
 
 		assertThat(doc.isDeprecated()).isFalse();
@@ -215,7 +222,7 @@ public class ApiControllerWithDocumentationTest {
 	}
 
 	@Test
-	public void testDoc12() throws IOException {
+	public void testDoc12() throws Exception {
 		ActionDoc doc = callApi("method12");
 
 		assertThat(doc.isDeprecated()).isFalse();
@@ -226,41 +233,44 @@ public class ApiControllerWithDocumentationTest {
 		assertThat(doc.getReturnMethod()).isEmpty();
 	}
 
-	public void testRequestToApiDebugDoesNotContainDocs() throws IOException {
-		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug.js");
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "doc", false, null, request,
-				response);
-		String content = response.getContentAsString();
-
-		ApiControllerTest.compare(content, response.getContentType(), ApiControllerTest.groupApisWithDoc("actionns"),
-				"Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", configurationService.getConfiguration(), "remoting");
-		Assert.doesNotContain("/**", content, "generation of api-debug.js should not contain method documentation");
+	public void testRequestToApiDebugDoesNotContainDocs() throws Exception {
+		doRequestWithoutDocs("/api-debug.js");
 	}
 
-	public void testRequestToApiDoesNotContainDocs() throws IOException {
-		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api.js");
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "doc", false, null, request,
-				response);
-		String content = response.getContentAsString();
-
-		ApiControllerTest.compare(content, response.getContentType(), ApiControllerTest.groupApisWithDoc("actionns"),
-				"Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", configurationService.getConfiguration(), "remoting");
-		Assert.doesNotContain("/**", content, "generation of api.js should not contain method documentation");
+	public void testRequestToApiDoesNotContainDocs() throws Exception {
+		doRequestWithoutDocs("/api.js");
 	}
 
-	private ActionDoc callApi(String method) throws IOException, UnsupportedEncodingException {
-		MockHttpServletRequest request = new MockHttpServletRequest("GET", "/action/api-debug-doc.js");
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		apiController.api("Ext.ns", "actionns", "REMOTING_API", "POLLING_URLS", "SSE", "doc", false, null, request,
-				response);
-		String content = response.getContentAsString();
+	private void doRequestWithoutDocs(String url) throws Exception, UnsupportedEncodingException {
+		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns").actionNs("actionns").group("doc")
+				.configuration(configurationService.getConfiguration()).build();
+		MockHttpServletRequestBuilder request = get(url).accept(MediaType.ALL).characterEncoding("UTF-8");
+		request.param("apiNs", params.getApiNs());
+		request.param("actionNs", params.getActionNs());
+		request.param("group", params.getGroup());
 
-		ApiControllerTest.compare(content, response.getContentType(), ApiControllerTest.groupApisWithDoc("actionns"),
-				"Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", configurationService.getConfiguration(), "remoting");
+		MvcResult result = mockMvc.perform(request).andExpect(status().isOk())
+				.andExpect(content().contentType("application/javascript")).andReturn();
 
-		ActionDoc doc = getCommentForMethod(content, method);
+		ApiControllerTest.compare(result, ApiControllerTest.groupApisWithDoc("actionns"), params);
+		Assert.doesNotContain("/**", result.getResponse().getContentAsString(),
+				"generation of api.js should not contain method documentation");
+	}
+
+	private ActionDoc callApi(String method) throws Exception {
+		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns").actionNs("actionns").group("doc")
+				.configuration(configurationService.getConfiguration()).build();
+		MockHttpServletRequestBuilder request = get("/api-debug-doc.js").accept(MediaType.ALL).characterEncoding(
+				"UTF-8");
+		request.param("apiNs", params.getApiNs());
+		request.param("actionNs", params.getActionNs());
+		request.param("group", params.getGroup());
+
+		MvcResult result = mockMvc.perform(request).andExpect(status().isOk())
+				.andExpect(content().contentType("application/javascript")).andReturn();
+
+		ApiControllerTest.compare(result, ApiControllerTest.groupApisWithDoc("actionns"), params);
+		ActionDoc doc = getCommentForMethod(result.getResponse().getContentAsString(), method);
 		return doc;
 	}
 

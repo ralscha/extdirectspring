@@ -49,6 +49,7 @@ import ch.ralscha.extdirectspring.bean.api.Action;
 import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.controller.ApiControllerTest;
+import ch.ralscha.extdirectspring.controller.ApiRequestParams;
 import ch.ralscha.extdirectspring.util.ApiCache;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -113,7 +114,7 @@ public class SimpleServiceTest extends JettyTest2 {
 		String responseString = EntityUtils.toString(entity);
 
 		String contentType = response.getFirstHeader("Content-Type").getValue();
-		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS", "SSE");
+		ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
 
 		assertCacheHeaders(response, fingerprinted);
 	}

@@ -30,5 +30,5 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 @Inherited
 @Documented
 public @interface SimpleEdsMethod {
-  //nothing here
+	// nothing here
 }

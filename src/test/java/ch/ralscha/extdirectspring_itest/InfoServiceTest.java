@@ -41,6 +41,7 @@ import org.junit.Test;
 import ch.ralscha.extdirectspring.bean.api.Action;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.controller.ApiControllerTest;
+import ch.ralscha.extdirectspring.controller.ApiRequestParams;
 import ch.ralscha.extdirectspring.util.ApiCache;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -68,7 +69,7 @@ public class InfoServiceTest extends JettyTest {
 		HttpResponse response = client.execute(g);
 		String responseString = EntityUtils.toString(response.getEntity());
 		String contentType = response.getFirstHeader("Content-Type").getValue();
-		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS", "SSE");
+		ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
 		SimpleServiceTest.assertCacheHeaders(response, false);
 		ApiCache.INSTANCE.clear();
 	}
@@ -80,7 +81,7 @@ public class InfoServiceTest extends JettyTest {
 		HttpResponse response = client.execute(g);
 		String responseString = EntityUtils.toString(response.getEntity());
 		String contentType = response.getFirstHeader("Content-Type").getValue();
-		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS", "SSE");
+		ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
 		SimpleServiceTest.assertCacheHeaders(response, false);
 		ApiCache.INSTANCE.clear();
 	}
@@ -92,7 +93,7 @@ public class InfoServiceTest extends JettyTest {
 		HttpResponse response = client.execute(g);
 		String responseString = EntityUtils.toString(response.getEntity());
 		String contentType = response.getFirstHeader("Content-Type").getValue();
-		ApiControllerTest.compare(responseString, contentType, api(), "Ext.app", "REMOTING_API", "POLLING_URLS", "SSE");
+		ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
 		SimpleServiceTest.assertCacheHeaders(response, true);
 		ApiCache.INSTANCE.clear();
 	}
