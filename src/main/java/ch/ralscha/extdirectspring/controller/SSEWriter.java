@@ -62,13 +62,13 @@ public class SSEWriter {
 	 * provided parameter. Then it writes the event into the servlet output
 	 * stream and flushes the response.
 	 * 
-	 * @param data the value that becomes the data part of the {@link SSEvent}
+	 * @param data the value that becomes the data part of the {@link SSEvent}. If null nothing is written.
 	 * @throws IOException
 	 */
-	public void write(String data) throws IOException {
+	public void write(Object data) throws IOException {
 		if (data != null) {
 			SSEvent sseEvent = new SSEvent();
-			sseEvent.setData(data);
+			sseEvent.setData(data.toString());
 			write(sseEvent);
 		}
 	}
