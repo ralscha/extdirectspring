@@ -51,16 +51,16 @@ public class ApiControllerWithDocumentationTest {
 	private ApiController apiController;
 
 	@Autowired
-	private RouterController routerController;
+	private ConfigurationService configurationService;
 
 	@Before
 	public void setupApiController() throws Exception {
 		ApiCache.INSTANCE.clear();
 
-		routerController.getConfiguration().setTimeout(15000);
-		routerController.getConfiguration().setEnableBuffer(false);
-		routerController.getConfiguration().setMaxRetries(5);
-		routerController.getConfiguration().setStreamResponse(true);
+		configurationService.getConfiguration().setTimeout(15000);
+		configurationService.getConfiguration().setEnableBuffer(false);
+		configurationService.getConfiguration().setMaxRetries(5);
+		configurationService.getConfiguration().setStreamResponse(true);
 	}
 
 	/**
@@ -234,7 +234,7 @@ public class ApiControllerWithDocumentationTest {
 		String content = response.getContentAsString();
 
 		ApiControllerTest.compare(content, response.getContentType(), ApiControllerTest.groupApisWithDoc("actionns"),
-				"Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", routerController.getConfiguration(), "remoting");
+				"Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", configurationService.getConfiguration(), "remoting");
 		Assert.doesNotContain("/**", content, "generation of api-debug.js should not contain method documentation");
 	}
 
@@ -246,7 +246,7 @@ public class ApiControllerWithDocumentationTest {
 		String content = response.getContentAsString();
 
 		ApiControllerTest.compare(content, response.getContentType(), ApiControllerTest.groupApisWithDoc("actionns"),
-				"Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", routerController.getConfiguration(), "remoting");
+				"Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", configurationService.getConfiguration(), "remoting");
 		Assert.doesNotContain("/**", content, "generation of api.js should not contain method documentation");
 	}
 
@@ -258,7 +258,7 @@ public class ApiControllerWithDocumentationTest {
 		String content = response.getContentAsString();
 
 		ApiControllerTest.compare(content, response.getContentType(), ApiControllerTest.groupApisWithDoc("actionns"),
-				"Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", routerController.getConfiguration(), "remoting");
+				"Ext.ns", "REMOTING_API", "POLLING_URLS", "SSE", configurationService.getConfiguration(), "remoting");
 
 		ActionDoc doc = getCommentForMethod(content, method);
 		return doc;

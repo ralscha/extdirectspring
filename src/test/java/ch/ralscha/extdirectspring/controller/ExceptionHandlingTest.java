@@ -41,6 +41,9 @@ public class ExceptionHandlingTest {
 	@Autowired
 	private RouterController controller;
 
+	@Autowired
+	private ConfigurationService configurationService;
+
 	private MockHttpServletResponse response;
 
 	private MockHttpServletRequest request;
@@ -146,7 +149,7 @@ public class ExceptionHandlingTest {
 	}
 
 	private ExtDirectResponse runTest(Configuration configuration) throws Exception {
-		ReflectionTestUtils.setField(controller, "configuration", configuration);
+		ReflectionTestUtils.setField(configurationService, "configuration", configuration);
 
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4b", 2,
 				new Object[] { 3, "xxx", "string.param" });
@@ -163,13 +166,13 @@ public class ExceptionHandlingTest {
 		assertThat(resp.getTid()).isEqualTo(2);
 		assertThat(resp.getResult()).isNull();
 
-		ReflectionTestUtils.setField(controller, "configuration", new Configuration());
+		ReflectionTestUtils.setField(configurationService, "configuration", new Configuration());
 
 		return resp;
 	}
 
 	private ExtDirectResponse runTest11(Configuration configuration) throws Exception {
-		ReflectionTestUtils.setField(controller, "configuration", configuration);
+		ReflectionTestUtils.setField(configurationService, "configuration", configuration);
 
 		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method11", 3, null);
 
@@ -185,7 +188,7 @@ public class ExceptionHandlingTest {
 		assertThat(resp.getTid()).isEqualTo(3);
 		assertThat(resp.getResult()).isNull();
 
-		ReflectionTestUtils.setField(controller, "configuration", new Configuration());
+		ReflectionTestUtils.setField(configurationService, "configuration", new Configuration());
 
 		return resp;
 	}

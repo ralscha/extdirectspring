@@ -20,6 +20,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
 import java.util.Locale;
 
 import javax.servlet.ServletOutputStream;
@@ -37,6 +38,8 @@ import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
  * Utility class
  */
 public final class ExtDirectSpringUtil {
+
+	public static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
 	private ExtDirectSpringUtil() {
 		// singleton

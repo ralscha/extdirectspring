@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.provider;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.SSEvent;
+import ch.ralscha.extdirectspring.controller.SSEWriter;
 
 @Service
 public class SseProvider {
@@ -146,5 +148,56 @@ public class SseProvider {
 		event.setRetry(10000);
 		event.setData(intHeader + ";" + booleanHeader);
 		return event;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "group5")
+	public String message13(SSEWriter writer) throws IOException {
+		SSEvent event = new SSEvent();
+		event.setComment("first comment");
+		event.setEvent("event");
+		event.setId("1");
+		event.setRetry(1000);
+		event.setData("one");
+
+		writer.write(event);
+
+		event = new SSEvent();
+		event.setComment("second comment");
+		event.setEvent("event");
+		event.setId("2");
+		event.setRetry(1000);
+		event.setData("two");
+
+		writer.write(event);
+
+		writer.write("third");
+
+		writer.write("fourth");
+
+		return "fifth";
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "group5")
+	public SSEvent message14(SSEWriter writer) throws IOException {
+		writer.write("1");
+		writer.write("2");
+		
+		SSEvent event = new SSEvent();
+		event.setData("3");
+		event.setRetry(0);
+		event.setComment("the last message");
+		event.setId("123");
+		return event;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "group5")
+	public void message15(SSEWriter writer) throws IOException {
+		writer.write("A");
+		writer.write("B");
+
+		SSEvent event = new SSEvent();
+		event.setData("C");
+		event.setRetry(0);
+		writer.write(event);
 	}
 }

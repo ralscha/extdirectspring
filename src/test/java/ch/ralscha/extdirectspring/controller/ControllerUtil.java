@@ -20,6 +20,7 @@ import static org.junit.Assert.fail;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -33,6 +34,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.SSEvent;
+import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.JsonHandler;
 
 import com.fasterxml.jackson.core.JsonEncoding;
@@ -218,13 +220,33 @@ public class ControllerUtil {
 
 	}
 
-	public static SSEvent readDirectSseResponse(byte[] contentAsByteArray) {
-		SSEvent event = new SSEvent();
+	public static List<SSEvent> readDirectSseResponse(byte[] contentAsByteArray) {
+
+		List<SSEvent> events = new ArrayList<SSEvent>();
+
 		StringBuilder commentLines = new StringBuilder(32);
 		StringBuilder dataLines = new StringBuilder(32);
 
-		String content = new String(contentAsByteArray, RouterController.UTF8_CHARSET);
+		SSEvent event = null;
+		String content = new String(contentAsByteArray, ExtDirectSpringUtil.UTF8_CHARSET);
 		for (String line : content.split("\\n")) {
+
+			if (line.isEmpty() && event != null) {
+				if (dataLines.length() > 0) {
+					event.setData(dataLines.toString());
+				}
+				if (commentLines.length() > 0) {
+					event.setComment(commentLines.toString());
+				}
+				events.add(event);
+				event = null;
+				commentLines = new StringBuilder(32);
+				dataLines = new StringBuilder(32);
+				continue;
+			} else if (event == null) {
+				event = new SSEvent();
+			}
+
 			if (line.startsWith(":")) {
 				if (commentLines.length() > 0) {
 					commentLines.append("\n");
@@ -244,15 +266,17 @@ public class ControllerUtil {
 			}
 		}
 
-		if (dataLines.length() > 0) {
-			event.setData(dataLines.toString());
+		if (event != null) {
+			if (dataLines.length() > 0) {
+				event.setData(dataLines.toString());
+			}
+			if (commentLines.length() > 0) {
+				event.setComment(commentLines.toString());
+			}
+			events.add(event);
 		}
 
-		if (commentLines.length() > 0) {
-			event.setComment(commentLines.toString());
-		}
-
-		return event;
+		return events;
 	}
 
 }

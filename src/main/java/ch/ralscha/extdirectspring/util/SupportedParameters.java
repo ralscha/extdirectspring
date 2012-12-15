@@ -24,13 +24,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ch.ralscha.extdirectspring.controller.SSEWriter;
+
 /**
  * Enumeration of all supported parameter types.
  */
-public enum SupportedParameters {
+enum SupportedParameters {
 
 	SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class), SESSION(HttpSession.class), LOCALE(
-			Locale.class), PRINCIPAL(Principal.class);
+			Locale.class), PRINCIPAL(Principal.class), SSE_WRITER(SSEWriter.class);
 
 	private final Class<?> clazz;
 
@@ -63,7 +65,12 @@ public enum SupportedParameters {
 	}
 
 	public static Object resolveParameter(Class<?> parameterType, HttpServletRequest request,
-			final HttpServletResponse response, Locale locale) {
+			HttpServletResponse response, Locale locale) {
+		return resolveParameter(parameterType, request, response, locale, null);
+	}
+
+	public static Object resolveParameter(Class<?> parameterType, HttpServletRequest request,
+			HttpServletResponse response, Locale locale, SSEWriter sseWriter) {
 
 		if (SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
 			return request;
@@ -75,6 +82,8 @@ public enum SupportedParameters {
 			return request.getUserPrincipal();
 		} else if (LOCALE.getSupportedClass().equals(parameterType)) {
 			return locale;
+		} else if (SSE_WRITER.getSupportedClass().equals(parameterType)) {
+			return sseWriter;
 		}
 
 		return null;

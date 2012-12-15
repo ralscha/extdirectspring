@@ -40,6 +40,9 @@ public class RouterControllerFormPostTest {
 	@Autowired
 	private RouterController controller;
 
+	@Autowired
+	private ConfigurationService configurationService;
+
 	private MockHttpServletResponse response;
 
 	private MockHttpServletRequest request;
@@ -73,7 +76,7 @@ public class RouterControllerFormPostTest {
 		Configuration conf = new Configuration();
 		conf.setDefaultExceptionMessage("something wrong");
 		conf.setSendStacktrace(true);
-		ReflectionTestUtils.setField(controller, "configuration", conf);
+		ReflectionTestUtils.setField(configurationService, "configuration", conf);
 
 		request.setParameter("extTID", "12");
 		request.setParameter("extAction", "remoteProviderSimple");
@@ -90,7 +93,7 @@ public class RouterControllerFormPostTest {
 		assertThat(edsResponse.getAction()).isEqualTo("remoteProviderSimple");
 		assertThat(edsResponse.getMethod()).isEqualTo("method1");
 
-		ReflectionTestUtils.setField(controller, "configuration", new Configuration());
+		ReflectionTestUtils.setField(configurationService, "configuration", new Configuration());
 	}
 
 	public void testCallExistsFormPostMethod() throws IOException {

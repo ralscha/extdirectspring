@@ -225,8 +225,7 @@ public class ExtDirectResponseBuilder {
 			RouterController routerController = RequestContextUtils.getWebApplicationContext(request).getBean(
 					RouterController.class);
 
-			routerController.writeJsonResponse(response, extDirectResponse, routerController.getConfiguration()
-					.isStreamResponse(), ExtDirectSpringUtil.isMultipart(request));
+			routerController.writeJsonResponse(request, response, extDirectResponse);
 
 		} catch (IOException e) {
 			LogFactory.getLog(getClass()).error("buildAndWrite", e);

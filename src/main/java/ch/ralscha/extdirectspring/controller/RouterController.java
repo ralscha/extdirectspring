@@ -17,7 +17,6 @@ package ch.ralscha.extdirectspring.controller;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,7 +26,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import javax.servlet.ServletOutputStream;
@@ -37,14 +35,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -62,14 +56,9 @@ import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
-import ch.ralscha.extdirectspring.bean.SSEvent;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
-import ch.ralscha.extdirectspring.util.JsonHandler;
 import ch.ralscha.extdirectspring.util.MethodInfo;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
-import ch.ralscha.extdirectspring.util.ParameterInfo;
-import ch.ralscha.extdirectspring.util.ParametersResolver;
-import ch.ralscha.extdirectspring.util.SupportedParameters;
 
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -82,65 +71,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Direct calls.
  */
 @Controller
-public class RouterController implements InitializingBean, DisposableBean {
+public class RouterController {
 
-	public static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
+	public static final MediaType APPLICATION_JSON = new MediaType("application", "json",
+			ExtDirectSpringUtil.UTF8_CHARSET);
 
-	private static final MediaType EVENT_STREAM = new MediaType("text", "event-stream", UTF8_CHARSET);
-
-	public static final MediaType APPLICATION_JSON = new MediaType("application", "json", UTF8_CHARSET);
-
-	public static final MediaType TEXT_HTML = new MediaType("text", "html", UTF8_CHARSET);
+	public static final MediaType TEXT_HTML = new MediaType("text", "html", ExtDirectSpringUtil.UTF8_CHARSET);
 
 	private static final Log log = LogFactory.getLog(RouterController.class);
 
 	@Autowired
-	private ApplicationContext context;
-
-	@Autowired(required = false)
-	private JsonHandler jsonHandler;
-
-	@Autowired(required = false)
-	private Configuration configuration;
-
-	@Autowired
-	private ParametersResolver parametersResolver;
-
-	@Autowired
 	private RequestMappingHandlerAdapter handlerAdapter;
 
-	public Configuration getConfiguration() {
-		return configuration;
-	}
+	@Autowired
+	private SSEHandler sseHandler;
 
-	public JsonHandler getJsonHandler() {
-		return jsonHandler;
-	}
-
-	@Override
-	public void afterPropertiesSet() {
-
-		if (configuration == null) {
-			configuration = new Configuration();
-		}
-
-		if (jsonHandler == null) {
-			jsonHandler = new JsonHandler();
-		}
-
-		if (configuration.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.CONCURRENT
-				&& configuration.getBatchedMethodsExecutorService() == null) {
-			configuration.setBatchedMethodsExecutorService(Executors.newFixedThreadPool(5));
-		}
-
-	}
-
-	@Override
-	public void destroy() throws Exception {
-		if (configuration.getBatchedMethodsExecutorService() != null) {
-			configuration.getBatchedMethodsExecutorService().shutdown();
-		}
-	}
+	@Autowired
+	private ConfigurationService configurationService;
 
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
 	public void poll(@PathVariable("beanName") String beanName, @PathVariable("method") String method,
@@ -155,26 +102,30 @@ public class RouterController implements InitializingBean, DisposableBean {
 
 		if (methodInfo != null) {
 
-			streamResponse = configuration.isStreamResponse() || methodInfo.isStreamResponse();
+			streamResponse = configurationService.getConfiguration().isStreamResponse()
+					|| methodInfo.isStreamResponse();
 
 			try {
 
-				Object[] parameters = prepareParameters(request, response, locale, methodInfo);
+				Object[] parameters = configurationService.getParametersResolver().prepareParameters(request, response,
+						locale, methodInfo);
 
-				if (configuration.isSynchronizeOnSession() || methodInfo.isSynchronizeOnSession()) {
+				if (configurationService.getConfiguration().isSynchronizeOnSession()
+						|| methodInfo.isSynchronizeOnSession()) {
 					HttpSession session = request.getSession(false);
 					if (session != null) {
 						Object mutex = WebUtils.getSessionMutex(session);
 						synchronized (mutex) {
-							directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo,
-									parameters));
+							directPollResponse.setData(ExtDirectSpringUtil.invoke(
+									configurationService.getApplicationContext(), beanName, methodInfo, parameters));
 						}
 					} else {
-						directPollResponse.setData(ExtDirectSpringUtil
-								.invoke(context, beanName, methodInfo, parameters));
+						directPollResponse.setData(ExtDirectSpringUtil.invoke(
+								configurationService.getApplicationContext(), beanName, methodInfo, parameters));
 					}
 				} else {
-					directPollResponse.setData(ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters));
+					directPollResponse.setData(ExtDirectSpringUtil.invoke(configurationService.getApplicationContext(),
+							beanName, methodInfo, parameters));
 				}
 
 			} catch (Exception e) {
@@ -185,7 +136,7 @@ public class RouterController implements InitializingBean, DisposableBean {
 		} else {
 			log.error("Error invoking method '" + beanName + "." + method + "'. Method or Bean not found");
 			handleMethodNotFoundError(directPollResponse, beanName, method);
-			streamResponse = configuration.isStreamResponse();
+			streamResponse = configurationService.getConfiguration().isStreamResponse();
 		}
 
 		writeJsonResponse(response, directPollResponse, streamResponse);
@@ -194,127 +145,7 @@ public class RouterController implements InitializingBean, DisposableBean {
 	@RequestMapping(value = "/sse/{beanName}/{method}")
 	public void sse(@PathVariable("beanName") String beanName, @PathVariable("method") String method,
 			HttpServletRequest request, HttpServletResponse response, Locale locale) throws Exception {
-
-		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(beanName, method);
-
-		SSEvent result = null;
-
-		if (methodInfo != null) {
-
-			try {
-
-				Object[] parameters = prepareParameters(request, response, locale, methodInfo);
-				Object methodReturnValue = null;
-
-				if (configuration.isSynchronizeOnSession() || methodInfo.isSynchronizeOnSession()) {
-					HttpSession session = request.getSession(false);
-					if (session != null) {
-						Object mutex = WebUtils.getSessionMutex(session);
-						synchronized (mutex) {
-							methodReturnValue = ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters);
-						}
-					} else {
-						methodReturnValue = ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters);
-					}
-				} else {
-					methodReturnValue = ExtDirectSpringUtil.invoke(context, beanName, methodInfo, parameters);
-				}
-
-				if (methodReturnValue instanceof SSEvent) {
-					result = (SSEvent) methodReturnValue;
-				} else {
-					result = new SSEvent();
-					if (methodReturnValue != null) {
-						result.setData(methodReturnValue.toString());
-					}
-				}
-
-			} catch (Exception e) {
-				log.error("Error polling method '" + beanName + "." + method + "'", e.getCause() != null ? e.getCause()
-						: e);
-
-				Throwable cause;
-				if (e.getCause() != null) {
-					cause = e.getCause();
-				} else {
-					cause = e;
-				}
-
-				result = new SSEvent();
-				result.setEvent("error");
-				result.setData(configuration.getMessage(cause));
-
-				if (configuration.isSendStacktrace()) {
-					result.setComment(ExtDirectSpringUtil.getStackTrace(cause));
-				}
-			}
-		} else {
-			log.error("Error invoking method '" + beanName + "." + method + "'. Method or Bean not found");
-
-			result = new SSEvent();
-			result.setEvent("error");
-			result.setData(configuration.getDefaultExceptionMessage());
-
-			if (configuration.isSendStacktrace()) {
-				result.setComment("Bean or Method '" + beanName + "." + method + "' not found");
-			}
-		}
-
-		response.setContentType(EVENT_STREAM.toString());
-		response.setCharacterEncoding(EVENT_STREAM.getCharSet().name());
-
-		StringBuilder sb = new StringBuilder(32);
-
-		if (StringUtils.hasText(result.getComment())) {
-			for (String line : result.getComment().split("\\r?\\n|\\r")) {
-				sb.append(":").append(line).append("\n");
-			}
-		}
-
-		if (StringUtils.hasText(result.getId())) {
-			sb.append("id:").append(result.getId()).append("\n");
-		}
-
-		if (StringUtils.hasText(result.getEvent())) {
-			sb.append("event:").append(result.getEvent()).append("\n");
-		}
-
-		if (StringUtils.hasText(result.getData())) {
-			for (String line : result.getData().split("\\r?\\n|\\r")) {
-				sb.append("data:").append(line).append("\n");
-			}
-		}
-
-		if (result.getRetry() != null) {
-			sb.append("retry:").append(result.getRetry()).append("\n");
-		}
-
-		sb.append("\n");
-		FileCopyUtils.copy(sb.toString().getBytes(UTF8_CHARSET), response.getOutputStream());
-	}
-
-	private Object[] prepareParameters(HttpServletRequest request, HttpServletResponse response, Locale locale,
-			MethodInfo methodInfo) {
-		List<ParameterInfo> methodParameters = methodInfo.getParameters();
-		Object[] parameters = null;
-		if (!methodParameters.isEmpty()) {
-			parameters = new Object[methodParameters.size()];
-
-			for (int paramIndex = 0; paramIndex < methodParameters.size(); paramIndex++) {
-				ParameterInfo methodParameter = methodParameters.get(paramIndex);
-
-				if (methodParameter.isSupportedParameter()) {
-					parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(), request,
-							response, locale);
-				} else if (methodParameter.isHasRequestHeaderAnnotation()) {
-					parameters[paramIndex] = parametersResolver.resolveRequestHeader(request, methodParameter);
-				} else {
-					parameters[paramIndex] = parametersResolver.resolveRequestParam(request, null, methodParameter);
-				}
-
-			}
-		}
-		return parameters;
+		sseHandler.handle(beanName, method, request, response, locale);
 	}
 
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "extAction")
@@ -329,14 +160,16 @@ public class RouterController implements InitializingBean, DisposableBean {
 		if (methodInfo != null && methodInfo.getForwardPath() != null) {
 			return methodInfo.getForwardPath();
 		} else if (methodInfo != null && methodInfo.getHandlerMethod() != null) {
-			streamResponse = configuration.isStreamResponse() || methodInfo.isStreamResponse();
+			streamResponse = configurationService.getConfiguration().isStreamResponse()
+					|| methodInfo.isStreamResponse();
 
 			HandlerMethod handlerMethod = methodInfo.getHandlerMethod();
 			try {
 
 				ModelAndView modelAndView = null;
 
-				if (configuration.isSynchronizeOnSession() || methodInfo.isSynchronizeOnSession()) {
+				if (configurationService.getConfiguration().isSynchronizeOnSession()
+						|| methodInfo.isSynchronizeOnSession()) {
 					HttpSession session = request.getSession(false);
 					if (session != null) {
 						Object mutex = WebUtils.getSessionMutex(session);
@@ -361,7 +194,7 @@ public class RouterController implements InitializingBean, DisposableBean {
 				directResponse.setResult(result);
 			}
 		} else {
-			streamResponse = configuration.isStreamResponse();
+			streamResponse = configurationService.getConfiguration().isStreamResponse();
 			log.error("Error invoking method '" + extAction + "." + extMethod + "'. Method  or Bean not found");
 			handleMethodNotFoundError(directResponse, extAction, extMethod);
 		}
@@ -373,21 +206,22 @@ public class RouterController implements InitializingBean, DisposableBean {
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction")
 	public void router(HttpServletRequest request, HttpServletResponse response, Locale locale) throws IOException {
 
-		Object requestData = jsonHandler.readValue(request.getInputStream(), Object.class);
+		Object requestData = configurationService.getJsonHandler().readValue(request.getInputStream(), Object.class);
 
 		List<ExtDirectRequest> directRequests = new ArrayList<ExtDirectRequest>();
 		if (requestData instanceof Map) {
-			directRequests.add(jsonHandler.convertValue(requestData, ExtDirectRequest.class));
+			directRequests.add(configurationService.getJsonHandler().convertValue(requestData, ExtDirectRequest.class));
 		} else if (requestData instanceof List) {
 			for (Object oneRequest : (List<?>) requestData) {
-				directRequests.add(jsonHandler.convertValue(oneRequest, ExtDirectRequest.class));
+				directRequests.add(configurationService.getJsonHandler().convertValue(oneRequest,
+						ExtDirectRequest.class));
 			}
 		}
 
 		if (directRequests.size() == 1
-				|| configuration.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.SEQUENTIAL) {
+				|| configurationService.getConfiguration().getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.SEQUENTIAL) {
 			handleMethodCallsSequential(directRequests, request, response, locale);
-		} else if (configuration.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.CONCURRENT) {
+		} else if (configurationService.getConfiguration().getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.CONCURRENT) {
 			handleMethodCallsConcurrent(directRequests, request, response, locale);
 		}
 
@@ -399,11 +233,11 @@ public class RouterController implements InitializingBean, DisposableBean {
 		List<Future<ExtDirectResponse>> futures = new ArrayList<Future<ExtDirectResponse>>(directRequests.size());
 		for (ExtDirectRequest directRequest : directRequests) {
 			Callable<ExtDirectResponse> callable = createMethodCallCallable(directRequest, request, response, locale);
-			futures.add(configuration.getBatchedMethodsExecutorService().submit(callable));
+			futures.add(configurationService.getConfiguration().getBatchedMethodsExecutorService().submit(callable));
 		}
 
 		List<ExtDirectResponse> directResponses = new ArrayList<ExtDirectResponse>(directRequests.size());
-		boolean streamResponse = configuration.isStreamResponse();
+		boolean streamResponse = configurationService.getConfiguration().isStreamResponse();
 		for (Future<ExtDirectResponse> future : futures) {
 			try {
 				ExtDirectResponse directResponse = future.get();
@@ -432,7 +266,7 @@ public class RouterController implements InitializingBean, DisposableBean {
 			HttpServletResponse response, Locale locale) throws JsonGenerationException, JsonMappingException,
 			IOException {
 		List<ExtDirectResponse> directResponses = new ArrayList<ExtDirectResponse>(directRequests.size());
-		boolean streamResponse = configuration.isStreamResponse();
+		boolean streamResponse = configurationService.getConfiguration().isStreamResponse();
 
 		for (ExtDirectRequest directRequest : directRequests) {
 			ExtDirectResponse directResponse = handleMethodCall(directRequest, request, response, locale);
@@ -465,7 +299,7 @@ public class RouterController implements InitializingBean, DisposableBean {
 					} else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo
 							.isType(ExtDirectMethodType.STORE_READ))
 							&& !ExtDirectStoreReadResult.class.isAssignableFrom(result.getClass())
-							&& configuration.isAlwaysWrapStoreResponse()) {
+							&& configurationService.getConfiguration().isAlwaysWrapStoreResponse()) {
 						if (result instanceof Collection) {
 							result = new ExtDirectStoreReadResult((Collection) result);
 						} else {
@@ -494,6 +328,12 @@ public class RouterController implements InitializingBean, DisposableBean {
 		return directResponse;
 	}
 
+	public void writeJsonResponse(HttpServletRequest request, HttpServletResponse response, Object responseObject)
+			throws IOException, JsonGenerationException, JsonMappingException {
+		writeJsonResponse(response, responseObject, configurationService.getConfiguration().isStreamResponse(),
+				ExtDirectSpringUtil.isMultipart(request));
+	}
+
 	private void writeJsonResponse(HttpServletResponse response, Object responseObject, boolean streamResponse)
 			throws IOException, JsonGenerationException, JsonMappingException {
 		writeJsonResponse(response, responseObject, streamResponse, false);
@@ -508,13 +348,13 @@ public class RouterController implements InitializingBean, DisposableBean {
 			response.setCharacterEncoding(RouterController.TEXT_HTML.getCharSet().name());
 
 			ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
-			bos.write("<html><body><textarea>".getBytes(UTF8_CHARSET));
+			bos.write("<html><body><textarea>".getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
 
-			String responseJson = jsonHandler.getMapper().writeValueAsString(responseObject);
+			String responseJson = configurationService.getJsonHandler().getMapper().writeValueAsString(responseObject);
 
 			responseJson = responseJson.replace("&quot;", "\\&quot;");
-			bos.write(responseJson.getBytes(UTF8_CHARSET));
-			bos.write("</textarea></body></html>".getBytes(UTF8_CHARSET));
+			bos.write(responseJson.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
+			bos.write("</textarea></body></html>".getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
 
 			response.setContentLength(bos.size());
 			FileCopyUtils.copy(bos.toByteArray(), response.getOutputStream());
@@ -523,7 +363,7 @@ public class RouterController implements InitializingBean, DisposableBean {
 			response.setContentType(APPLICATION_JSON.toString());
 			response.setCharacterEncoding(APPLICATION_JSON.getCharSet().name());
 
-			ObjectMapper objectMapper = jsonHandler.getMapper();
+			ObjectMapper objectMapper = configurationService.getJsonHandler().getMapper();
 
 			ServletOutputStream outputStream = response.getOutputStream();
 
@@ -548,20 +388,22 @@ public class RouterController implements InitializingBean, DisposableBean {
 	private Object processRemotingRequest(HttpServletRequest request, HttpServletResponse response, Locale locale,
 			ExtDirectRequest directRequest, MethodInfo methodInfo) throws Exception {
 
-		Object[] parameters = parametersResolver
-				.resolveParameters(request, response, locale, directRequest, methodInfo);
+		Object[] parameters = configurationService.getParametersResolver().resolveParameters(request, response, locale,
+				directRequest, methodInfo);
 
-		if (configuration.isSynchronizeOnSession() || methodInfo.isSynchronizeOnSession()) {
+		if (configurationService.getConfiguration().isSynchronizeOnSession() || methodInfo.isSynchronizeOnSession()) {
 			HttpSession session = request.getSession(false);
 			if (session != null) {
 				Object mutex = WebUtils.getSessionMutex(session);
 				synchronized (mutex) {
-					return ExtDirectSpringUtil.invoke(context, directRequest.getAction(), methodInfo, parameters);
+					return ExtDirectSpringUtil.invoke(configurationService.getApplicationContext(),
+							directRequest.getAction(), methodInfo, parameters);
 				}
 			}
 		}
 
-		return ExtDirectSpringUtil.invoke(context, directRequest.getAction(), methodInfo, parameters);
+		return ExtDirectSpringUtil.invoke(configurationService.getApplicationContext(), directRequest.getAction(),
+				methodInfo, parameters);
 	}
 
 	private void handleException(BaseResponse response, Exception e) {
@@ -573,9 +415,9 @@ public class RouterController implements InitializingBean, DisposableBean {
 		}
 
 		response.setType("exception");
-		response.setMessage(configuration.getMessage(cause));
+		response.setMessage(configurationService.getConfiguration().getMessage(cause));
 
-		if (configuration.isSendStacktrace()) {
+		if (configurationService.getConfiguration().isSendStacktrace()) {
 			response.setWhere(ExtDirectSpringUtil.getStackTrace(cause));
 		} else {
 			response.setWhere(null);
@@ -584,9 +426,9 @@ public class RouterController implements InitializingBean, DisposableBean {
 
 	private void handleMethodNotFoundError(BaseResponse response, String beanName, String methodName) {
 		response.setType("exception");
-		response.setMessage(configuration.getDefaultExceptionMessage());
+		response.setMessage(configurationService.getConfiguration().getDefaultExceptionMessage());
 
-		if (configuration.isSendStacktrace()) {
+		if (configurationService.getConfiguration().isSendStacktrace()) {
 			response.setWhere("Bean or Method '" + beanName + "." + methodName + "' not found");
 		} else {
 			response.setWhere(null);

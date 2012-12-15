@@ -42,9 +42,9 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.ReflectionUtils.FieldCallback;
 import org.springframework.util.StringUtils;
 
-import ch.ralscha.extdirectspring.controller.RouterController;
 import ch.ralscha.extdirectspring.generator.association.AbstractAssociation;
 import ch.ralscha.extdirectspring.generator.validation.AbstractValidation;
+import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -153,7 +153,7 @@ public abstract class ModelGenerator {
 	public static void writeModel(HttpServletRequest request, HttpServletResponse response, ModelBean model,
 			OutputFormat format, boolean debug) throws IOException {
 
-		byte[] data = generateJavascript(model, format, debug).getBytes(RouterController.UTF8_CHARSET);
+		byte[] data = generateJavascript(model, format, debug).getBytes(ExtDirectSpringUtil.UTF8_CHARSET);
 		String ifNoneMatch = request.getHeader("If-None-Match");
 		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + "\"";
 
@@ -163,7 +163,7 @@ public abstract class ModelGenerator {
 		}
 
 		response.setContentType("application/javascript");
-		response.setCharacterEncoding(RouterController.UTF8_CHARSET.name());
+		response.setCharacterEncoding(ExtDirectSpringUtil.UTF8_CHARSET.name());
 		response.setContentLength(data.length);
 
 		response.setHeader("ETag", etag);
