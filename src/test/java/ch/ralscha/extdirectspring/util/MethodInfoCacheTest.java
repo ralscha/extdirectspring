@@ -65,7 +65,8 @@ public class MethodInfoCacheTest {
 
 	@Test
 	public void testFindMethodWithAnnotation() {
-		ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
+		ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext(
+				"/testApplicationContextB.xml");
 		MethodInfo methodBInfo = MethodInfoCache.INSTANCE.get("springManagedBean", "methodB");
 		Method methodBWithAnnotation = MethodInfo.findMethodWithAnnotation(methodBInfo.getMethod(),
 				ExtDirectMethod.class);
@@ -80,7 +81,8 @@ public class MethodInfoCacheTest {
 
 	@Test(expected = NullPointerException.class)
 	public void testInvokeWithNull() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
+		ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext(
+				"/testApplicationContextB.xml");
 		ExtDirectSpringUtil.invoke(null, null, null, null);
 		classPathXmlApplicationContext.close();
 	}

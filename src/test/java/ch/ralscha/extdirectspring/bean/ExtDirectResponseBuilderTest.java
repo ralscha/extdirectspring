@@ -81,8 +81,7 @@ public class ExtDirectResponseBuilderTest {
 	public void testBuilderUploadResponse() throws IOException {
 
 		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
-		GenericWebApplicationContext ctx = new GenericWebApplicationContext(
-				applicationContext);
+		GenericWebApplicationContext ctx = new GenericWebApplicationContext(applicationContext);
 		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, ctx);
 
 		request.setParameter("extAction", "action");

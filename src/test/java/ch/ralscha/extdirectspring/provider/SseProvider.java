@@ -181,7 +181,7 @@ public class SseProvider {
 	public SSEvent message14(SSEWriter writer) throws IOException {
 		writer.write(1);
 		writer.write(2);
-		
+
 		SSEvent event = new SSEvent();
 		event.setData(3);
 		event.setRetry(0);

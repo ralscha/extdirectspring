@@ -68,7 +68,7 @@ public class ApiControllerTest {
 		MethodInfoCache.INSTANCE.clear();
 		ApiCache.INSTANCE.clear();
 		applicationContext.publishEvent(new ContextRefreshedEvent(applicationContext));
-		
+
 		Configuration config = new Configuration();
 		ReflectionTestUtils.setField(configurationService, "configuration", config);
 
@@ -721,7 +721,7 @@ public class ApiControllerTest {
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message9", "message9"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message10", "message10"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message11", "message11"));
-		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message12", "message12"));		
+		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message12", "message12"));
 
 		remotingApi.addSseProvider("sseProvider", "message1");
 		remotingApi.addSseProvider("sseProvider", "message2");
