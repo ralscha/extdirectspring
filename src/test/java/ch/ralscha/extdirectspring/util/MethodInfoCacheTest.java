@@ -24,7 +24,6 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
@@ -64,10 +63,9 @@ public class MethodInfoCacheTest {
 		assertThat(key1.equals("test")).isFalse();
 	}
 
-	@SuppressWarnings("unused")
 	@Test
 	public void testFindMethodWithAnnotation() {
-		new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
+		ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 		MethodInfo methodBInfo = MethodInfoCache.INSTANCE.get("springManagedBean", "methodB");
 		Method methodBWithAnnotation = MethodInfo.findMethodWithAnnotation(methodBInfo.getMethod(),
 				ExtDirectMethod.class);
@@ -77,35 +75,38 @@ public class MethodInfoCacheTest {
 		methodBWithAnnotation = MethodInfo.findMethodWithAnnotation(methodSubBInfo.getMethod(), ExtDirectMethod.class);
 		assertThat(methodSubBInfo.getMethod().equals(methodBWithAnnotation)).isFalse();
 		assertThat(methodBInfo.getMethod().equals(methodBWithAnnotation)).isTrue();
+		classPathXmlApplicationContext.close();
 	}
 
-	@SuppressWarnings("unused")
 	@Test(expected = NullPointerException.class)
 	public void testInvokeWithNull() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
+		ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 		ExtDirectSpringUtil.invoke(null, null, null, null);
+		classPathXmlApplicationContext.close();
 	}
 
 	@Test(expected = NoSuchBeanDefinitionException.class)
 	public void testNonExistingBeanAndMethod() throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException {
-		ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 		MethodInfo info = MethodInfoCache.INSTANCE.get("springManagedBeanA", "methodA");
 		ExtDirectSpringUtil.invoke(context, "springManagedBeanA", info, null);
+		context.close();
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testExistingWithouEdsAnnotation() throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException {
-		ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 		MethodInfo info = MethodInfoCache.INSTANCE.get("springManagedBean", "methodA");
 		ExtDirectSpringUtil.invoke(context, "springManagedBean", info, null);
+		context.close();
 	}
 
 	@Test
 	public void testFindMethodAndInvoke() throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException {
-		ApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/testApplicationContextB.xml");
 
 		MethodInfo infoB = MethodInfoCache.INSTANCE.get("springManagedBean", "methodB");
 
@@ -120,6 +121,7 @@ public class MethodInfoCacheTest {
 				Integer.valueOf(9));
 
 		assertThat(MethodInfoCache.INSTANCE.get("springManagedBean", "methodC")).isNull();
+		context.close();
 	}
 
 }

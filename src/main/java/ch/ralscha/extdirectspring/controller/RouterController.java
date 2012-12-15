@@ -369,13 +369,13 @@ public class RouterController {
 
 			if (!streamResponse) {
 				ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
-				JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(bos, JsonEncoding.UTF8);
+				JsonGenerator jsonGenerator = objectMapper.getFactory().createJsonGenerator(bos, JsonEncoding.UTF8);
 				objectMapper.writeValue(jsonGenerator, responseObject);
 				response.setContentLength(bos.size());
 				outputStream.write(bos.toByteArray());
 				jsonGenerator.close();
 			} else {
-				JsonGenerator jsonGenerator = objectMapper.getJsonFactory().createJsonGenerator(outputStream,
+				JsonGenerator jsonGenerator = objectMapper.getFactory().createJsonGenerator(outputStream,
 						JsonEncoding.UTF8);
 				objectMapper.writeValue(jsonGenerator, responseObject);
 				jsonGenerator.close();

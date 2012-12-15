@@ -208,7 +208,7 @@ public class ControllerUtil {
 	public static byte[] writeAsByte(Object obj) {
 		try {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			mapper.getJsonFactory().createJsonGenerator(bos, JsonEncoding.UTF8);
+			mapper.getFactory().createJsonGenerator(bos, JsonEncoding.UTF8);
 			return mapper.writeValueAsBytes(obj);
 		} catch (JsonGenerationException e) {
 			throw new RuntimeException(e);

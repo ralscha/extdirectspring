@@ -81,8 +81,9 @@ public class ExtDirectResponseBuilderTest {
 	public void testBuilderUploadResponse() throws IOException {
 
 		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
-		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, new GenericWebApplicationContext(
-				applicationContext));
+		GenericWebApplicationContext ctx = new GenericWebApplicationContext(
+				applicationContext);
+		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, ctx);
 
 		request.setParameter("extAction", "action");
 		request.setParameter("extMethod", "method");
@@ -117,6 +118,7 @@ public class ExtDirectResponseBuilderTest {
 		assertThat((Boolean) result.get("success")).isTrue();
 		assertThat(result.get("text")).isEqualTo("a lot of 'text'");
 		assertThat(result.get("additionalProperty")).isEqualTo(false);
+		ctx.close();
 	}
 
 	@Test
