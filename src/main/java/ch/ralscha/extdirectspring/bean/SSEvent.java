@@ -65,13 +65,15 @@ public class SSEvent {
 	}
 	
 	/**
-	 * Sets the data part of the Server-Sent Event response. Nothing is set when the provided value is null.
+	 * Sets the data part of the Server-Sent Event response. 
 	 * 
-	 * @param data the actual payload of the reponse. Converted to a String by calling the object's toString() method. 
+	 * @param data the actual payload of the reponse. Converted to a String by calling the object's toString() method. If null data is set to null.
 	 */	
 	public void setData(Object data) {
 		if (data != null) {
 			this.data = data.toString();
+		} else {
+			this.data = null;
 		}
 	}
 
