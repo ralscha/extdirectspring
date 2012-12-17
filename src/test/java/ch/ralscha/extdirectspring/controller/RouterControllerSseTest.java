@@ -29,6 +29,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -45,8 +46,14 @@ public class RouterControllerSseTest {
 
 	private MockMvc mockMvc;
 
+	@Autowired
+	private ConfigurationService configurationService;
+	
 	@Before
 	public void setupMockMvc() throws Exception {
+		Configuration config = new Configuration();
+		ReflectionTestUtils.setField(configurationService, "configuration", config);
+
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
 
@@ -63,6 +70,24 @@ public class RouterControllerSseTest {
 		assertThat(event.getRetry()).isNull();
 	}
 
+	@Test
+	public void sseBeanDoesNotExistsWithStacktrace() throws Exception {
+		Configuration config = new Configuration();
+		config.setSendStacktrace(true);
+		ReflectionTestUtils.setField(configurationService, "configuration", config);
+		
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProviderXY", "message1", null, null);
+		assertThat(events).hasSize(1);
+		SSEvent event = events.get(0);
+
+		assertThat(event.getEvent()).isEqualTo("error");
+		assertThat(event.getComment()).isEqualTo("Bean or Method 'sseProviderXY.message1' not found");
+		assertThat(event.getData()).isEqualTo("Server Error");
+		assertThat(event.getId()).isNull();
+		assertThat(event.getRetry()).isNull();
+	}
+	
+	
 	@Test
 	public void sseNoArguments() throws Exception {
 
@@ -119,6 +144,23 @@ public class RouterControllerSseTest {
 		assertThat(event.getId()).isNull();
 		assertThat(event.getRetry()).isNull();
 	}
+	
+	@Test
+	public void sseRequiredArgumentNoRequestParameterWithStacktrace() throws Exception {
+		Configuration config = new Configuration();
+		config.setSendStacktrace(true);
+		ReflectionTestUtils.setField(configurationService, "configuration", config);
+
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message3", null, null);
+		assertThat(events).hasSize(1);
+		SSEvent event = events.get(0);
+
+		assertThat(event.getEvent()).isEqualTo("error");
+		assertThat(event.getComment()).startsWith("java.lang.IllegalStateException: Missing parameter 'id' of type [int]");
+		assertThat(event.getData()).isEqualTo("Server Error");
+		assertThat(event.getId()).isNull();
+		assertThat(event.getRetry()).isNull();
+	}	
 
 	@Test
 	public void sseDefaultValueArgumentWithRequestParameter() throws Exception {
@@ -139,7 +181,7 @@ public class RouterControllerSseTest {
 
 	@Test
 	public void sseDefaultValueArgumentWithoutRequestParameter() throws Exception {
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message4", null, null);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message4", null, null, true);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -218,7 +260,7 @@ public class RouterControllerSseTest {
 		params.clear();
 		params.put("id", "2");
 
-		events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message8", params, null);
+		events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message8", params, null, true);
 		assertThat(events).hasSize(1);
 		event = events.get(0);
 

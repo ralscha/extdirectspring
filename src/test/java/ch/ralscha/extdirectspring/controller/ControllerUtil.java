@@ -34,6 +34,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -65,7 +66,8 @@ public class ControllerUtil {
 	public static ExtDirectPollResponse performPollRequest(MockMvc mockMvc, String bean, String method, String event,
 			Map<String, String> params, HttpHeaders headers) throws Exception {
 		MockHttpServletRequestBuilder request = post("/poll/" + bean + "/" + method + "/" + event)
-				.accept(MediaType.ALL).contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
+				.session(new MockHttpSession()).accept(MediaType.ALL).contentType(MediaType.APPLICATION_JSON)
+				.characterEncoding("UTF-8");
 
 		if (params != null) {
 			for (String paramName : params.keySet()) {
@@ -83,12 +85,22 @@ public class ControllerUtil {
 
 		return readDirectPollResponse(result.getResponse().getContentAsByteArray());
 	}
-	
-	public static List<SSEvent> performSseRequest(MockMvc mockMvc, String bean, String method, 
-			Map<String, String> params, HttpHeaders headers) throws Exception {
-		MockHttpServletRequestBuilder request = post("/sse/" + bean + "/" + method)
-				.accept(MediaType.ALL).contentType(MediaType.parseMediaType("text/event-stream")).characterEncoding("UTF-8");
 
+	public static List<SSEvent> performSseRequest(MockMvc mockMvc, String bean, String method,
+			Map<String, String> params, HttpHeaders headers) throws Exception {
+		return performSseRequest(mockMvc, bean, method, params, headers, false);
+	}
+	
+	public static List<SSEvent> performSseRequest(MockMvc mockMvc, String bean, String method,
+			Map<String, String> params, HttpHeaders headers, boolean withSession) throws Exception {
+		MockHttpServletRequestBuilder request = post("/sse/" + bean + "/" + method)
+				.accept(MediaType.ALL).contentType(MediaType.parseMediaType("text/event-stream"))
+				.characterEncoding("UTF-8");
+
+		if (withSession) {
+			request.session(new MockHttpSession());
+		}
+		
 		if (params != null) {
 			for (String paramName : params.keySet()) {
 				request.param(paramName, params.get(paramName));
@@ -104,7 +116,7 @@ public class ControllerUtil {
 				.andExpect(content().encoding("UTF-8")).andReturn();
 
 		return readDirectSseResponse(result.getResponse().getContentAsByteArray());
-	}	
+	}
 
 	public static MvcResult performRouterRequest(MockMvc mockMvc, String content) throws Exception {
 		return performRouterRequest(mockMvc, content, null, null);
@@ -113,7 +125,7 @@ public class ControllerUtil {
 	public static MvcResult performRouterRequest(MockMvc mockMvc, String content, Map<String, String> params,
 			HttpHeaders headers) throws Exception {
 
-		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
+		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL).session(new MockHttpSession())
 				.contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
 
 		if (content != null) {
