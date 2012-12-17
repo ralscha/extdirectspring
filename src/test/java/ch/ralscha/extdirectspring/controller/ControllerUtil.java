@@ -83,6 +83,28 @@ public class ControllerUtil {
 
 		return readDirectPollResponse(result.getResponse().getContentAsByteArray());
 	}
+	
+	public static List<SSEvent> performSseRequest(MockMvc mockMvc, String bean, String method, 
+			Map<String, String> params, HttpHeaders headers) throws Exception {
+		MockHttpServletRequestBuilder request = post("/sse/" + bean + "/" + method)
+				.accept(MediaType.ALL).contentType(MediaType.parseMediaType("text/event-stream")).characterEncoding("UTF-8");
+
+		if (params != null) {
+			for (String paramName : params.keySet()) {
+				request.param(paramName, params.get(paramName));
+			}
+		}
+
+		if (headers != null) {
+			request.headers(headers);
+		}
+
+		MvcResult result = mockMvc.perform(request).andExpect(status().isOk())
+				.andExpect(content().contentType("text/event-stream;charset=UTF-8"))
+				.andExpect(content().encoding("UTF-8")).andReturn();
+
+		return readDirectSseResponse(result.getResponse().getContentAsByteArray());
+	}	
 
 	public static MvcResult performRouterRequest(MockMvc mockMvc, String content) throws Exception {
 		return performRouterRequest(mockMvc, content, null, null);
