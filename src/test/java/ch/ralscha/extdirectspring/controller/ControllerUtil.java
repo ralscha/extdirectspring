@@ -65,10 +65,19 @@ public class ControllerUtil {
 
 	public static ExtDirectPollResponse performPollRequest(MockMvc mockMvc, String bean, String method, String event,
 			Map<String, String> params, HttpHeaders headers) throws Exception {
+		return performPollRequest(mockMvc, bean, method, event, params, headers, false);
+	}
+	
+	public static ExtDirectPollResponse performPollRequest(MockMvc mockMvc, String bean, String method, String event,
+			Map<String, String> params, HttpHeaders headers, boolean withSession) throws Exception {
 		MockHttpServletRequestBuilder request = post("/poll/" + bean + "/" + method + "/" + event)
-				.session(new MockHttpSession()).accept(MediaType.ALL).contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.ALL).contentType(MediaType.APPLICATION_JSON)
 				.characterEncoding("UTF-8");
 
+		if (withSession) {
+			request.session(new MockHttpSession());
+		}
+		
 		if (params != null) {
 			for (String paramName : params.keySet()) {
 				request.param(paramName, params.get(paramName));

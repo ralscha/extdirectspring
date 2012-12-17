@@ -137,7 +137,7 @@ public class RouterControllerPollTest {
 	@Test
 	public void pollDefaultValueArgumentWithoutRequestParameter() throws Exception {
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "handleMessage4",
-				"message4", null, null);
+				"message4", null, null, true);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -215,7 +215,7 @@ public class RouterControllerPollTest {
 		params.clear();
 		params.put("id", "2");
 
-		resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "message8", "message8", params, null);
+		resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "message8", "message8", params, null, true);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("exception");
