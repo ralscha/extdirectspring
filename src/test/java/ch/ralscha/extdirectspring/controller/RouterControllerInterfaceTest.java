@@ -23,38 +23,51 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import ch.ralscha.extdirectspring.provider.Row;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
+@WebAppConfiguration
+@ContextConfiguration("classpath:/testApplicationContext.xml")
 public class RouterControllerInterfaceTest {
 
 	@Autowired
-	private RouterController controller;
+	private WebApplicationContext wac;
+
+	private MockMvc mockMvc;
 
 	@BeforeClass
 	public static void beforeTest() {
 		Locale.setDefault(Locale.US);
 	}
 
+	@Before
+	public void setupMockMvc() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+	}
+
 	@Test
 	public void testNoParameters() {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderImplementation", "method2", null, "method2() called");
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderImplementation", "method2", "method2() called");
 	}
 
 	@Test
 	public void testNoParameterAnnotation() {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderImplementation", "method3", new Object[] { 21, 3.1,
-				"aString2" }, "method3() called-21-3.1-aString2");
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderImplementation", "method3",
+				"method3() called-21-3.1-aString2", 21, 3.1, "aString2");
 	}
 
 	@Test
@@ -64,9 +77,9 @@ public class RouterControllerInterfaceTest {
 		readRequest.put("lastName", "Smith");
 		readRequest.put("active", true);
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderImplementation",
-				"storeRead", readRequest, new TypeReference<List<Row>>() {/* nothing_here */
-				});
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderImplementation",
+				"storeRead", new TypeReference<List<Row>>() {/* nothing_here */
+				}, readRequest);
 
 		assertThat(rows).hasSize(1);
 		Row theRow = rows.get(0);

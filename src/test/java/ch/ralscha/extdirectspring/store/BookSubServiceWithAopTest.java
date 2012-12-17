@@ -15,40 +15,49 @@
  */
 package ch.ralscha.extdirectspring.store;
 
-import java.io.IOException;
-
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import ch.ralscha.extdirectspring.controller.RouterController;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/teststorewithaop.xml")
+@WebAppConfiguration
+@ContextConfiguration("classpath:/teststorewithaop.xml")
 public class BookSubServiceWithAopTest {
 
 	@Autowired
-	private RouterController controller;
+	private WebApplicationContext wac;
 
-	@Test
-	public void testCreate() throws IOException {
-		new CrudTestMethods("bookSubAopService").testCreate(controller);
+	private MockMvc mockMvc;
+
+	@Before
+	public void setupMockMvc() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
 
 	@Test
-	public void testRead() throws IOException {
-		new CrudTestMethods("bookSubAopService").testRead(controller);
+	public void testCreate() throws Exception {
+		new CrudTestMethods("bookSubAopService").testCreate(mockMvc);
 	}
 
 	@Test
-	public void testUpdate() throws IOException {
-		new CrudTestMethods("bookSubAopService").testUpdate(controller);
+	public void testRead() throws Exception {
+		new CrudTestMethods("bookSubAopService").testRead(mockMvc);
 	}
 
 	@Test
-	public void testDelete() throws IOException {
-		new CrudTestMethods("bookSubAopService").testDelete(controller);
+	public void testUpdate() throws Exception {
+		new CrudTestMethods("bookSubAopService").testUpdate(mockMvc);
+	}
+
+	@Test
+	public void testDelete() throws Exception {
+		new CrudTestMethods("bookSubAopService").testDelete(mockMvc);
 	}
 }

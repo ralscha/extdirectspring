@@ -17,51 +17,58 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.fest.assertions.api.Assertions.entry;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
+@WebAppConfiguration
+@ContextConfiguration("classpath:/testApplicationContext.xml")
 public class RouterControllerFormPostTest {
 
 	@Autowired
-	private RouterController controller;
+	private WebApplicationContext wac;
+
+	private MockMvc mockMvc;
 
 	@Autowired
 	private ConfigurationService configurationService;
 
-	private MockHttpServletResponse response;
-
-	private MockHttpServletRequest request;
-
 	@Before
-	public void beforeTest() {
-		response = new MockHttpServletResponse();
-		request = new MockHttpServletRequest();
+	public void setupMockMvc() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
 
 	@Test
-	public void testCallNonExistsFormPostMethod() throws IOException {
-		request.setParameter("extTID", "11");
-		request.setParameter("extAction", "remoteProviderSimple");
-		request.setParameter("extMethod", "method1");
-		request.setParameter("extType", "rpc");
+	public void testCallNonExistsFormPostMethod() throws Exception {
+		Map<String, String> parameters = new LinkedHashMap<String, String>();
+		parameters.put("extTID", "11");
+		parameters.put("extAction", "remoteProviderSimple");
+		parameters.put("extMethod", "method1");
+		parameters.put("extType", "rpc");
 
-		controller.router(request, response, "remoteProviderSimple", "method1");
-		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(response.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, null, parameters, null);
+		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(result.getResponse().getContentAsByteArray());
 
 		assertThat(edsResponse.getType()).isEqualTo("exception");
 		assertThat(edsResponse.getMessage()).isEqualTo("Server Error");
@@ -72,18 +79,19 @@ public class RouterControllerFormPostTest {
 	}
 
 	@Test
-	public void testCallNonExistsFormPostMethodWithConfig() throws IOException {
+	public void testCallNonExistsFormPostMethodWithConfig() throws Exception {
 		Configuration conf = new Configuration();
 		conf.setDefaultExceptionMessage("something wrong");
 		conf.setSendStacktrace(true);
 		ReflectionTestUtils.setField(configurationService, "configuration", conf);
 
-		request.setParameter("extTID", "12");
-		request.setParameter("extAction", "remoteProviderSimple");
-		request.setParameter("extMethod", "method1");
-		request.setParameter("extType", "rpc");
-		controller.router(request, response, "remoteProviderSimple", "method1");
-		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(response.getContentAsByteArray());
+		Map<String, String> parameters = new LinkedHashMap<String, String>();
+		parameters.put("extTID", "12");
+		parameters.put("extAction", "remoteProviderSimple");
+		parameters.put("extMethod", "method1");
+		parameters.put("extType", "rpc");
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, null, parameters, null);
+		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(result.getResponse().getContentAsByteArray());
 
 		assertThat(edsResponse.getType()).isEqualTo("exception");
 		assertThat(edsResponse.getMessage()).isEqualTo("something wrong");
@@ -96,24 +104,40 @@ public class RouterControllerFormPostTest {
 		ReflectionTestUtils.setField(configurationService, "configuration", new Configuration());
 	}
 
-	public void testCallExistsFormPostMethod() throws IOException {
-		String redirect = controller.router(request, response, "formInfoController", "updateInfo");
-		assertThat(redirect).isEqualTo("forward:updateInfo");
+	@Test
+	public void testCallExistsFormPostMethod() throws Exception {
+		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
+				.contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
+
+		request.param("extTID", "12");
+		request.param("extAction", "formInfoController");
+		request.param("extMethod", "updateInfo");
+		request.param("extType", "rpc");
+		request.param("name", "Ralph");
+		request.param("age", "20");
+		request.param("admin", "true");
+		request.param("salary", "12.3");
+		request.param("result", "theResult");
+
+		mockMvc.perform(request).andExpect(status().isOk()).andExpect(forwardedUrl("updateInfo"));
 	}
 
 	@Test
-	public void testCallDirectWay() throws IOException {
-		request.setParameter("extTID", "12");
-		request.setParameter("extAction", "formInfoController");
-		request.setParameter("extMethod", "updateInfoDirect");
-		request.setParameter("extType", "rpc");
-		request.setParameter("name", "Ralph");
-		request.setParameter("age", "20");
-		request.setParameter("admin", "true");
-		request.setParameter("salary", "12.3");
-		request.setParameter("result", "theResult");
-		controller.router(request, response, "formInfoController", "updateInfoDirect");
-		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(response.getContentAsByteArray());
+	public void testCallDirectWay() throws Exception {
+		Map<String, String> parameters = new LinkedHashMap<String, String>();
+		parameters.put("extTID", "12");
+		parameters.put("extAction", "formInfoController");
+		parameters.put("extMethod", "updateInfoDirect");
+		parameters.put("extType", "rpc");
+		parameters.put("name", "Ralph");
+		parameters.put("age", "20");
+		parameters.put("admin", "true");
+		parameters.put("salary", "12.3");
+		parameters.put("result", "theResult");
+
+		MvcResult resultMvc = ControllerUtil.performRouterRequest(mockMvc, null, parameters, null);
+		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(resultMvc.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(edsResponse.getType()).isEqualTo("rpc");
 		assertThat(edsResponse.getMessage()).isNull();

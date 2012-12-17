@@ -17,48 +17,45 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/testExceptionHandlingConfig.xml")
+@WebAppConfiguration
+@ContextConfiguration("classpath:/testExceptionHandlingConfig.xml")
 public class ExceptionHandlingConfigInXmlTest {
 
 	@Autowired
-	private RouterController controller;
+	private WebApplicationContext wac;
 
-	private MockHttpServletResponse response;
-
-	private MockHttpServletRequest request;
+	private MockMvc mockMvc;
 
 	@Before
-	public void beforeTest() {
-		response = new MockHttpServletResponse();
-		request = new MockHttpServletRequest();
+	public void setupMockMvc() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
 
 	@Test
 	public void testExceptionInMapping() throws Exception {
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method4b", 2,
-				new Object[] { 3, "xxx", "string.param" });
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple", "method4b", 2, new Object[] { 3,
+				"xxx", "string.param" });
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -74,12 +71,12 @@ public class ExceptionHandlingConfigInXmlTest {
 	@Test
 	public void testBeanOrMethodNotFound() throws Exception {
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple2", "method4", 2,
-				new Object[] { 3, 2.5, "string.param" });
+		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple2", "method4", 2, new Object[] { 3,
+				2.5, "string.param" });
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -95,11 +92,11 @@ public class ExceptionHandlingConfigInXmlTest {
 
 	@Test
 	public void testExceptionInMappingWithNullValue() throws Exception {
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method11b", 3, null);
+		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple", "method11b", 3, null);
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -113,12 +110,12 @@ public class ExceptionHandlingConfigInXmlTest {
 	}
 
 	@Test
-	public void testExceptionNotInMapping() throws IOException {
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderSimple", "method11", 3, null);
+	public void testExceptionNotInMapping() throws Exception {
+		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple", "method11", 3, null);
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);

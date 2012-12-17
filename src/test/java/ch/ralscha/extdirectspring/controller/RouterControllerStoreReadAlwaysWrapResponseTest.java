@@ -27,6 +27,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
@@ -35,7 +36,8 @@ import ch.ralscha.extdirectspring.provider.Row;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/testApplicationContextWrapResponse.xml")
+@WebAppConfiguration
+@ContextConfiguration("classpath:/testApplicationContextWrapResponse.xml")
 public class RouterControllerStoreReadAlwaysWrapResponseTest {
 
 	@Autowired

@@ -17,18 +17,26 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.logging.LogFactory;
+import org.fest.util.Arrays;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
@@ -41,6 +49,7 @@ import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,24 +62,87 @@ public class ControllerUtil {
 		mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
 	}
 
-	public static Map<String, Object> createRequestJson(String action, String method, int tid, Object data) {
-		return createRequestJson(action, method, false, tid, data);
+	public static ExtDirectPollResponse performPollRequest(MockMvc mockMvc, String bean, String method, String event,
+			Map<String, String> params, HttpHeaders headers) throws Exception {
+		MockHttpServletRequestBuilder request = post("/poll/" + bean + "/" + method + "/" + event)
+				.accept(MediaType.ALL).contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
+
+		if (params != null) {
+			for (String paramName : params.keySet()) {
+				request.param(paramName, params.get(paramName));
+			}
+		}
+
+		if (headers != null) {
+			request.headers(headers);
+		}
+
+		MvcResult result = mockMvc.perform(request).andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=UTF-8"))
+				.andExpect(content().encoding("UTF-8")).andReturn();
+
+		return readDirectPollResponse(result.getResponse().getContentAsByteArray());
 	}
 
-	public static Map<String, Object> createRequestJson(String action, String method, boolean namedParameter, int tid,
-			Object data) {
+	public static MvcResult performRouterRequest(MockMvc mockMvc, String content) throws Exception {
+		return performRouterRequest(mockMvc, content, null, null);
+	}
+
+	public static MvcResult performRouterRequest(MockMvc mockMvc, String content, Map<String, String> params,
+			HttpHeaders headers) throws Exception {
+
+		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
+				.contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
+
+		if (content != null) {
+			request.content(content);
+		}
+
+		if (params != null) {
+			for (String paramName : params.keySet()) {
+				request.param(paramName, params.get(paramName));
+			}
+
+		}
+
+		if (headers != null) {
+			request.headers(headers);
+		}
+
+		return mockMvc.perform(request).andExpect(status().isOk())
+				.andExpect(content().contentType("application/json;charset=UTF-8"))
+				.andExpect(content().encoding("UTF-8")).andReturn();
+
+	}
+
+	public static String createEdsRequest(String action, String method, int tid, Object data) {
+		return createEdsRequest(action, method, false, tid, data);
+	}
+
+	public static String createEdsRequest(String action, String method, boolean namedParameter, int tid, Object data) {
 		ExtDirectRequest dr = new ExtDirectRequest();
 		dr.setAction(action);
 		dr.setMethod(method);
 		dr.setTid(tid);
 		dr.setType("rpc");
 
-		if (namedParameter || data instanceof Object[] || data == null) {
+		if (namedParameter && data != null) {
+			if (Arrays.isArray(data)) {
+				dr.setData(((Object[]) data)[0]);
+			} else {
+				dr.setData(data);
+			}
+		} else if (data instanceof Object[] || data == null) {
 			dr.setData(data);
 		} else {
 			dr.setData(new Object[] { data });
 		}
-		return mapper.convertValue(dr, LinkedHashMap.class);
+		try {
+			return mapper.writeValueAsString(dr);
+		} catch (JsonProcessingException e) {
+			fail("createEdsRequest: " + e.getMessage());
+		}
+		return null;
 	}
 
 	public static Object sendAndReceive(RouterController controller, String action, String method, Object data,
@@ -96,9 +168,8 @@ public class ControllerUtil {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
 		int tid = (int) (Math.random() * 1000);
-		Map<String, Object> edRequest = createRequestJson(action, method, namedParameter, tid, data);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
+		request.setContent(createEdsRequest(action, method, namedParameter, tid, data).getBytes(
+				ExtDirectSpringUtil.UTF8_CHARSET));
 		try {
 			controller.router(request, response, Locale.ENGLISH);
 		} catch (IOException e) {
@@ -137,15 +208,70 @@ public class ControllerUtil {
 		return edResponse.getResult();
 	}
 
-	public static Map<String, Object> createRequestJsonNamedParam(String action, String method, int tid,
-			Map<String, Object> data) {
-		ExtDirectRequest dr = new ExtDirectRequest();
-		dr.setAction(action);
-		dr.setMethod(method);
-		dr.setTid(tid);
-		dr.setType("rpc");
-		dr.setData(data);
-		return mapper.convertValue(dr, LinkedHashMap.class);
+	public static Object sendAndReceive(MockMvc mockMvc, HttpHeaders headers, String bean, String method,
+			Object expectedResultOrType, Object... requestData) {
+		return sendAndReceive(mockMvc, headers, bean, method, false, expectedResultOrType, requestData);
+	}
+
+	public static Object sendAndReceive(MockMvc mockMvc, String bean, String method, Object expectedResultOrType,
+			Object... requestData) {
+		return sendAndReceive(mockMvc, null, bean, method, false, expectedResultOrType, requestData);
+	}
+
+	public static Object sendAndReceiveNamed(MockMvc mockMvc, String bean, String method, Object expectedResultOrType,
+			Map<String, Object> requestData) {
+		return sendAndReceive(mockMvc, null, bean, method, true, expectedResultOrType, new Object[] { requestData });
+	}
+
+	public static Object sendAndReceive(MockMvc mockMvc, HttpHeaders headers, String bean, String method,
+			boolean namedParameters, Object expectedResultOrType, Object... requestData) {
+
+		int tid = (int) (Math.random() * 1000);
+
+		MvcResult result = null;
+		try {
+			result = performRouterRequest(mockMvc, createEdsRequest(bean, method, namedParameters, tid, requestData),
+					null, headers);
+		} catch (JsonProcessingException e) {
+			fail("perform post to /router" + e.getMessage());
+			return null;
+		} catch (Exception e) {
+			fail("perform post to /router" + e.getMessage());
+			return null;
+		}
+
+		List<ExtDirectResponse> responses = readDirectResponses(result.getResponse().getContentAsByteArray());
+		assertThat(responses).hasSize(1);
+
+		ExtDirectResponse edResponse = responses.get(0);
+
+		assertThat(edResponse.getAction()).isEqualTo(bean);
+		assertThat(edResponse.getMethod()).isEqualTo(method);
+		assertThat(edResponse.getTid()).isEqualTo(tid);
+		assertThat(edResponse.getWhere()).isNull();
+
+		if (expectedResultOrType == null) {
+			assertThat(edResponse.getType()).isEqualTo("exception");
+			assertThat(edResponse.getResult()).isNull();
+			assertThat(edResponse.getMessage()).isEqualTo("Server Error");
+		} else {
+			assertThat(edResponse.getType()).isEqualTo("rpc");
+			assertThat(edResponse.getMessage()).isNull();
+			if (expectedResultOrType == Void.TYPE) {
+				assertThat(edResponse.getResult()).isNull();
+			} else if (expectedResultOrType instanceof Class<?>) {
+				Object r = ControllerUtil.convertValue(edResponse.getResult(), (Class<?>) expectedResultOrType);
+				return r;
+			} else if (expectedResultOrType instanceof TypeReference) {
+				Object r = ControllerUtil.convertValue(edResponse.getResult(), (TypeReference<?>) expectedResultOrType);
+				return r;
+			} else {
+				assertThat(edResponse.getResult()).isEqualTo(expectedResultOrType);
+			}
+		}
+
+		return edResponse.getResult();
+
 	}
 
 	public static <T> T readValue(String json, Class<?> clazz) {
@@ -217,7 +343,6 @@ public class ControllerUtil {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-
 	}
 
 	public static List<SSEvent> readDirectSseResponse(byte[] contentAsByteArray) {

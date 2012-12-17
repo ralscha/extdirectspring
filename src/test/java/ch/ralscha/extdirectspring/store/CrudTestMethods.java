@@ -17,23 +17,20 @@ package ch.ralscha.extdirectspring.store;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
 import ch.ralscha.extdirectspring.controller.ControllerUtil;
-import ch.ralscha.extdirectspring.controller.RouterController;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -45,49 +42,43 @@ public class CrudTestMethods {
 		this.serviceName = serviceName;
 	}
 
-	public void testCreate(RouterController controller) throws IOException {
-		testCreateRecordsOne(controller, new MockHttpServletResponse(), new MockHttpServletRequest());
-		testCreateRecordsMany(controller, new MockHttpServletResponse(), new MockHttpServletRequest());
-		testCreateOne(controller, new MockHttpServletResponse(), new MockHttpServletRequest());
-		testCreateMany(controller, new MockHttpServletResponse(), new MockHttpServletRequest());
+	public void testCreate(MockMvc mockMvc) throws Exception {
+		testCreateRecordsOne(mockMvc);
+		testCreateRecordsMany(mockMvc);
+		testCreateOne(mockMvc);
+		testCreateMany(mockMvc);
 	}
 
-	public void testUpdate(RouterController controller) throws IOException {
-		testUpdateRecordsOne(controller, new MockHttpServletResponse(), new MockHttpServletRequest());
-		testUpdateRecordsMany(controller, new MockHttpServletResponse(), new MockHttpServletRequest());
-		testUpdateOne(controller, new MockHttpServletResponse(), new MockHttpServletRequest());
-		testUpdateMany(controller, new MockHttpServletResponse(), new MockHttpServletRequest());
+	public void testUpdate(MockMvc mockMvc) throws Exception {
+		testUpdateRecordsOne(mockMvc);
+		testUpdateRecordsMany(mockMvc);
+		testUpdateOne(mockMvc);
+		testUpdateMany(mockMvc);
 	}
 
-	public void testDelete(RouterController controller) throws IOException {
-		testDeleteRecordsOne(controller, new MockHttpServletResponse(), new MockHttpServletRequest());
-		testDeleteRecordsMany(controller, new MockHttpServletResponse(), new MockHttpServletRequest());
-		testDeleteOne(controller, new MockHttpServletResponse(), new MockHttpServletRequest());
-		testDeleteMany(controller, new MockHttpServletResponse(), new MockHttpServletRequest());
+	public void testDelete(MockMvc mockMvc) throws Exception {
+		testDeleteRecordsOne(mockMvc);
+		testDeleteRecordsMany(mockMvc);
+		testDeleteOne(mockMvc);
+		testDeleteMany(mockMvc);
 	}
 
-	public void testRead(RouterController controller) throws IOException {
+	public void testRead(MockMvc mockMvc) throws Exception {
 		Map<String, Object> pagingParameters = new HashMap<String, Object>();
 		pagingParameters.put("page", 1);
 		pagingParameters.put("start", 0);
 		pagingParameters.put("limit", 50);
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "readWithPaging", 1,
-				pagingParameters);
-
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		MockHttpServletRequest request = new MockHttpServletRequest();
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		String edRequest = ControllerUtil.createEdsRequest(serviceName, "readWithPaging", 1, pagingParameters);
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
 		assertResponse(resp, "readWithPaging");
 		ExtDirectStoreReadResult<Book> storeResponse = ControllerUtil.convertValue(resp.getResult(),
-				new TypeReference<ExtDirectStoreReadResult<Book>>() {// nothing
-																		// here
+				new TypeReference<ExtDirectStoreReadResult<Book>>() {/* nothing_here */
 				});
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(51));
 		assertThat(storeResponse.isSuccess()).isTrue();
@@ -105,12 +96,9 @@ public class CrudTestMethods {
 		assertThat(aBook.getTitle()).isEqualTo("Learning Ext JS 3.2");
 		assertThat(aBook.getIsbn()).isEqualTo("1849511209");
 
-		edRequest = ControllerUtil.createRequestJson(serviceName, "read", 1, null);
-		response = new MockHttpServletResponse();
-		request = new MockHttpServletRequest();
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		edRequest = ControllerUtil.createEdsRequest(serviceName, "read", 1, null);
+		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		resp = responses.get(0);
@@ -131,15 +119,13 @@ public class CrudTestMethods {
 		assertThat(aBook.getIsbn()).isEqualTo("1849511209");
 	}
 
-	private void testUpdateRecordsOne(RouterController controller, MockHttpServletResponse response,
-			final MockHttpServletRequest request) throws IOException {
+	private void testUpdateRecordsOne(MockMvc mockMvc) throws Exception {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		storeRequest.put("records", new Book(1, "an update", "9999999"));
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "update3", 1, storeRequest);
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		String edRequest = ControllerUtil.createEdsRequest(serviceName, "update3", 1, storeRequest);
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -147,19 +133,18 @@ public class CrudTestMethods {
 		assertUpdateResponse(resp, 1, 3);
 	}
 
-	private void testUpdateRecordsMany(RouterController controller, MockHttpServletResponse response,
-			final MockHttpServletRequest request) throws IOException {
+	private void testUpdateRecordsMany(MockMvc mockMvc) throws Exception {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Book> newBooks = new ArrayList<Book>();
 		newBooks.add(new Book(1, "an update", "9999999"));
 		newBooks.add(new Book(2, "a second update", "8888888"));
 
 		storeRequest.put("records", newBooks);
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "update3", 1, storeRequest);
+		String edRequest = ControllerUtil.createEdsRequest(serviceName, "update3", 1, storeRequest);
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -167,14 +152,13 @@ public class CrudTestMethods {
 		assertUpdateResponse(resp, 2, 3);
 	}
 
-	private void testUpdateOne(RouterController controller, MockHttpServletResponse response,
-			final MockHttpServletRequest request) throws IOException {
+	private void testUpdateOne(MockMvc mockMvc) throws Exception {
 		Book updatedBook = new Book(1, "an update", "9999999");
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "update4", 1, updatedBook);
+		String edRequest = ControllerUtil.createEdsRequest(serviceName, "update4", 1, updatedBook);
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -182,16 +166,15 @@ public class CrudTestMethods {
 		assertUpdateResponse(resp, 1, 4);
 	}
 
-	private void testUpdateMany(RouterController controller, MockHttpServletResponse response,
-			final MockHttpServletRequest request) throws IOException {
+	private void testUpdateMany(MockMvc mockMvc) throws Exception {
 		List<Book> newBooks = new ArrayList<Book>();
 		newBooks.add(new Book(1, "an update", "9999999"));
 		newBooks.add(new Book(2, "a second update", "8888888"));
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "update4", 1, newBooks);
+		String edRequest = ControllerUtil.createEdsRequest(serviceName, "update4", 1, newBooks);
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -233,15 +216,14 @@ public class CrudTestMethods {
 
 	}
 
-	private void testCreateRecordsOne(RouterController controller, MockHttpServletResponse response,
-			final MockHttpServletRequest request) throws IOException {
+	private void testCreateRecordsOne(MockMvc mockMvc) throws Exception {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		storeRequest.put("records", new Book(-1, "Ext JS 3.0 Cookbook", "1847198708"));
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "create3", 1, storeRequest);
+		String edRequest = ControllerUtil.createEdsRequest(serviceName, "create3", 1, storeRequest);
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -249,19 +231,18 @@ public class CrudTestMethods {
 		assertCreateResponse(resp, 1, 3);
 	}
 
-	private void testCreateRecordsMany(RouterController controller, MockHttpServletResponse response,
-			final MockHttpServletRequest request) throws IOException {
+	private void testCreateRecordsMany(MockMvc mockMvc) throws Exception {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Book> newBooks = new ArrayList<Book>();
 		newBooks.add(new Book(-1, "Ext JS 3.0 Cookbook", "1847198708"));
 		newBooks.add(new Book(-1, "Learning Ext JS 3.2", "1849511209"));
 
 		storeRequest.put("records", newBooks);
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "create3", 1, storeRequest);
+		String edRequest = ControllerUtil.createEdsRequest(serviceName, "create3", 1, storeRequest);
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -269,15 +250,14 @@ public class CrudTestMethods {
 		assertCreateResponse(resp, 2, 3);
 	}
 
-	private void testCreateOne(RouterController controller, MockHttpServletResponse response,
-			final MockHttpServletRequest request) throws IOException {
+	private void testCreateOne(MockMvc mockMvc) throws Exception {
 
 		Book newBook = new Book(-1, "Ext JS 3.0 Cookbook", "1847198708");
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "create4", 1, newBook);
+		String edRequest = ControllerUtil.createEdsRequest(serviceName, "create4", 1, newBook);
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -285,17 +265,16 @@ public class CrudTestMethods {
 		assertCreateResponse(resp, 1, 4);
 	}
 
-	private void testCreateMany(RouterController controller, MockHttpServletResponse response,
-			final MockHttpServletRequest request) throws IOException {
+	private void testCreateMany(MockMvc mockMvc) throws Exception {
 		List<Book> newBooks = new ArrayList<Book>();
 		newBooks.add(new Book(-1, "Ext JS 3.0 Cookbook", "1847198708"));
 		newBooks.add(new Book(-1, "Learning Ext JS 3.2", "1849511209"));
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "create4", 1, newBooks);
+		String edRequest = ControllerUtil.createEdsRequest(serviceName, "create4", 1, newBooks);
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -303,15 +282,14 @@ public class CrudTestMethods {
 		assertCreateResponse(resp, 2, 4);
 	}
 
-	private void testDeleteRecordsOne(RouterController controller, MockHttpServletResponse response,
-			final MockHttpServletRequest request) throws IOException {
+	private void testDeleteRecordsOne(MockMvc mockMvc) throws Exception {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		storeRequest.put("records", new Integer(1));
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "delete3", 1, storeRequest);
+		String edRequest = ControllerUtil.createEdsRequest(serviceName, "delete3", 1, storeRequest);
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -328,19 +306,18 @@ public class CrudTestMethods {
 		assertThat(deleteBookId.intValue()).isEqualTo(1);
 	}
 
-	private void testDeleteRecordsMany(RouterController controller, MockHttpServletResponse response,
-			final MockHttpServletRequest request) throws IOException {
+	private void testDeleteRecordsMany(MockMvc mockMvc) throws Exception {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		List<Integer> booksToDelete = new ArrayList<Integer>();
 		booksToDelete.add(1);
 		booksToDelete.add(2);
 
 		storeRequest.put("records", booksToDelete);
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "delete3", 1, storeRequest);
+		String edRequest = ControllerUtil.createEdsRequest(serviceName, "delete3", 1, storeRequest);
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -360,15 +337,14 @@ public class CrudTestMethods {
 		assertThat(deleteBookId.intValue()).isEqualTo(2);
 	}
 
-	private void testDeleteOne(RouterController controller, MockHttpServletResponse response,
-			final MockHttpServletRequest request) throws IOException {
+	private void testDeleteOne(MockMvc mockMvc) throws Exception {
 
 		Book deleteBook = new Book(11, "Ext JS 3.0 Cookbook", "1847198708");
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "delete4", 1, deleteBook);
+		String edRequest = ControllerUtil.createEdsRequest(serviceName, "delete4", 1, deleteBook);
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -385,18 +361,17 @@ public class CrudTestMethods {
 		assertThat(book.getIsbn()).isEqualTo("DELETED_1847198708");
 	}
 
-	private void testDeleteMany(RouterController controller, MockHttpServletResponse response,
-			final MockHttpServletRequest request) throws IOException {
+	private void testDeleteMany(MockMvc mockMvc) throws Exception {
 
 		List<Book> deletedBooks = new ArrayList<Book>();
 		deletedBooks.add(new Book(9, "Ext JS 3.0 Cookbook", "1847198708"));
 		deletedBooks.add(new Book(10, "Learning Ext JS 3.2", "1849511209"));
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson(serviceName, "delete4", 1, deletedBooks);
+		String edRequest = ControllerUtil.createEdsRequest(serviceName, "delete4", 1, deletedBooks);
 
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);

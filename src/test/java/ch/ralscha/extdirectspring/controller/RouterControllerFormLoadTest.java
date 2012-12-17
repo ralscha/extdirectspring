@@ -1,3 +1,5 @@
+package ch.ralscha.extdirectspring.controller;
+
 /**
  * Copyright 2010-2012 Ralph Schaer <ralphschaer@gmail.com>
  *
@@ -13,11 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,37 +27,49 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.FormInfo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
+@WebAppConfiguration
+@ContextConfiguration("classpath:/testApplicationContext.xml")
 public class RouterControllerFormLoadTest {
 
 	@Autowired
-	private RouterController controller;
+	private WebApplicationContext wac;
+
+	private MockMvc mockMvc;
 
 	@BeforeClass
 	public static void beforeTest() {
 		Locale.setDefault(Locale.US);
 	}
 
+	@Before
+	public void setupMockMvc() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+	}
+
 	@Test
 	public void testFormLoad() {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("d", 3.141);
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderFormLoad", "method1", data, ExtDirectFormLoadResult.class);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderFormLoad", "method1", ExtDirectFormLoadResult.class, data);
 
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
@@ -73,13 +85,13 @@ public class RouterControllerFormLoadTest {
 
 	@Test
 	public void testFormLoadReturnsNull() {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderFormLoad", "method2", null, Void.TYPE);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderFormLoad", "method2", null, Void.TYPE);
 	}
 
 	@Test
 	public void testWithSupportedArguments() {
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderFormLoad", "method3", null, ExtDirectFormLoadResult.class);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderFormLoad", "method3", ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
 		FormInfo formInfo = ControllerUtil.convertValue(wrapper.getData(), FormInfo.class);
@@ -90,8 +102,8 @@ public class RouterControllerFormLoadTest {
 	public void testWithRequestParam() {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("id", 12);
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderFormLoad", "method4", data, ExtDirectFormLoadResult.class);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderFormLoad", "method4", ExtDirectFormLoadResult.class, data);
 
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
@@ -101,8 +113,8 @@ public class RouterControllerFormLoadTest {
 
 	@Test
 	public void testWithRequestParamDefaultValue() {
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderFormLoad", "method5", null, ExtDirectFormLoadResult.class);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderFormLoad", "method5", ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
 		FormInfo formInfo = ControllerUtil.convertValue(wrapper.getData(), FormInfo.class);
@@ -112,15 +124,15 @@ public class RouterControllerFormLoadTest {
 	@Test
 	public void testWithRequestParamOptional() {
 
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderFormLoad", "method6", null, ExtDirectFormLoadResult.class);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderFormLoad", "method6", ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isEqualTo("TEST:null");
 
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("id", 11);
-		wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller, "remoteProviderFormLoad",
-				"method6", data, ExtDirectFormLoadResult.class);
+		wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderFormLoad", "method6",
+				ExtDirectFormLoadResult.class, data);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isEqualTo("TEST:11");
 	}
@@ -130,45 +142,51 @@ public class RouterControllerFormLoadTest {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("data", "one");
 		data.put("success", true);
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderFormLoad", "method7", data, ExtDirectFormLoadResult.class);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderFormLoad", "method7", ExtDirectFormLoadResult.class, data);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isEqualTo("one");
 
 		data = new HashMap<String, Object>();
 		data.put("data", "two");
 		data.put("success", false);
-		wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(controller, "remoteProviderFormLoad",
-				"method7", data, ExtDirectFormLoadResult.class);
+		wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderFormLoad", "method7",
+				ExtDirectFormLoadResult.class, data);
 		assertThat(wrapper.isSuccess()).isFalse();
 		assertThat(wrapper.getData()).isEqualTo("two");
 	}
 
 	@Test
-	public void testMultipleRequests() throws IOException {
-		List<Map<String, Object>> edRequests = new ArrayList<Map<String, Object>>();
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		MockHttpServletRequest request = new MockHttpServletRequest();
+	public void testMultipleRequests() throws Exception {
+		List<String> edRequests = new ArrayList<String>();
 
-		edRequests.add(ControllerUtil.createRequestJson("remoteProvider", "method1", 1, new Object[] { 3, 2.5,
+		edRequests.add(ControllerUtil.createEdsRequest("remoteProvider", "method1", 1, new Object[] { 3, 2.5,
 				"string.param" }));
-		edRequests.add(ControllerUtil.createRequestJson("remoteProviderSimple", "method4", 2, new Object[] { 3, 2.5,
+		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderSimple", "method4", 2, new Object[] { 3, 2.5,
 				"string.param" }));
-		edRequests.add(ControllerUtil.createRequestJson("remoteProviderSimple", "method1", 3, null));
+		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderSimple", "method1", 3, null));
 
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("d", 1.1);
-		edRequests.add(ControllerUtil.createRequestJson("remoteProviderFormLoad", "method1", 4, data));
+		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderFormLoad", "method1", 4, data));
 
 		data = new HashMap<String, Object>();
 		data.put("d", 2.2);
-		edRequests.add(ControllerUtil.createRequestJson("remoteProviderFormLoad", "method1", 5, data));
+		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderFormLoad", "method1", 5, data));
 
-		edRequests.add(ControllerUtil.createRequestJson("remoteProviderSimple", "method6", 6, new Object[] { 20, 20 }));
+		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderSimple", "method6", 6, new Object[] { 20, 20 }));
 
-		request.setContent(ControllerUtil.writeAsByte(edRequests));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for (String requests : edRequests) {
+			sb.append(requests);
+			sb.append(",");
+		}
+		sb.replace(sb.length() - 1, sb.length(), "]");
+
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, sb.toString());
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(6);
 		ExtDirectResponse resp = responses.get(0);

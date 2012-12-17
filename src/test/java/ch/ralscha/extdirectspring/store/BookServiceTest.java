@@ -15,40 +15,49 @@
  */
 package ch.ralscha.extdirectspring.store;
 
-import java.io.IOException;
-
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import ch.ralscha.extdirectspring.controller.RouterController;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/teststore.xml")
+@WebAppConfiguration
+@ContextConfiguration("classpath:/teststore.xml")
 public class BookServiceTest {
 
 	@Autowired
-	private RouterController controller;
+	private WebApplicationContext wac;
 
-	@Test
-	public void testCreate() throws IOException {
-		new CrudTestMethods("bookService").testCreate(controller);
+	private MockMvc mockMvc;
+
+	@Before
+	public void setupMockMvc() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
 
 	@Test
-	public void testRead() throws IOException {
-		new CrudTestMethods("bookService").testRead(controller);
+	public void testCreate() throws Exception {
+		new CrudTestMethods("bookService").testCreate(mockMvc);
 	}
 
 	@Test
-	public void testUpdate() throws IOException {
-		new CrudTestMethods("bookService").testUpdate(controller);
+	public void testRead() throws Exception {
+		new CrudTestMethods("bookService").testRead(mockMvc);
 	}
 
 	@Test
-	public void testDelete() throws IOException {
-		new CrudTestMethods("bookService").testDelete(controller);
+	public void testUpdate() throws Exception {
+		new CrudTestMethods("bookService").testUpdate(mockMvc);
+	}
+
+	@Test
+	public void testDelete() throws Exception {
+		new CrudTestMethods("bookService").testDelete(mockMvc);
 	}
 }

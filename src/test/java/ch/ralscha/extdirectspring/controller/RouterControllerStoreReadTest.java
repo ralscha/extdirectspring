@@ -18,40 +18,55 @@ package ch.ralscha.extdirectspring.controller;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.fest.assertions.api.Assertions.entry;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
-import ch.ralscha.extdirectspring.bean.GroupInfo;
-import ch.ralscha.extdirectspring.bean.SortDirection;
-import ch.ralscha.extdirectspring.bean.SortInfo;
 import ch.ralscha.extdirectspring.provider.Row;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
+@WebAppConfiguration
+@ContextConfiguration("classpath:/testApplicationContext.xml")
 public class RouterControllerStoreReadTest {
 
 	@Autowired
-	private RouterController controller;
+	private WebApplicationContext wac;
+
+	private MockMvc mockMvc;
+
+	@BeforeClass
+	public static void beforeTest() {
+		Locale.setDefault(Locale.US);
+	}
+
+	@Before
+	public void setupMockMvc() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+	}
 
 	public static void assert100Rows(List<Row> rows, String appendix) {
 		assertThat(rows.size()).isEqualTo(100);
@@ -65,8 +80,8 @@ public class RouterControllerStoreReadTest {
 
 	@Test
 	public void testNoArgumentsNoRequestParameters() {
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method1",
-				null, new TypeReference<List<Row>>() {/* nothing here */
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderStoreRead", "method1",
+				new TypeReference<List<Row>>() {/* nothing here */
 				});
 		assert100Rows(rows, "");
 	}
@@ -76,29 +91,29 @@ public class RouterControllerStoreReadTest {
 		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
 		storeRead.setQuery("ralph");
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method1",
-				storeRead, new TypeReference<List<Row>>() {/* nothing here */
-				});
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderStoreRead", "method1",
+				new TypeReference<List<Row>>() {/* nothing here */
+				}, storeRead);
 		assert100Rows(rows, "");
 	}
 
 	@Test
 	public void testReturnsNull() {
-		ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method2", null, Collections.emptyList());
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderStoreRead", "method2", Collections.emptyList());
 	}
 
 	@Test
 	public void testSupportedArguments() {
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method3",
-				null, new TypeReference<List<Row>>() {/* nothing here */
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderStoreRead", "method3",
+				new TypeReference<List<Row>>() {/* nothing here */
 				});
 		assert100Rows(rows, ":true;true:true;en");
 	}
 
 	@Test
-	public void testWithExtDirectStoreReadRequest() throws IOException {
-		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
-		storeRead.setQuery("name");
+	public void testWithExtDirectStoreReadRequest() throws Exception {
+		Map<String, Object> storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "name");
 		ExtDirectStoreReadResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(50));
 		assertThat(storeResponse.getRecords()).hasSize(50);
@@ -106,8 +121,8 @@ public class RouterControllerStoreReadTest {
 			assertThat(row.getName().startsWith("name")).isTrue();
 		}
 
-		storeRead = new ExtDirectStoreReadRequest();
-		storeRead.setQuery("firstname");
+		storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "firstname");
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(50));
 		assertThat(storeResponse.getRecords()).hasSize(50);
@@ -115,14 +130,12 @@ public class RouterControllerStoreReadTest {
 			assertThat(row.getName()).startsWith("firstname");
 		}
 
-		storeRead = new ExtDirectStoreReadRequest();
-		storeRead.setQuery("");
-		storeRead.setSort("id");
-		storeRead.setDir("ASC");
-		storeRead.setLimit(10);
-		storeRead.setStart(10);
-		assertThat(storeRead.isAscendingSort()).isTrue();
-		assertThat(storeRead.isDescendingSort()).isFalse();
+		storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "");
+		storeRead.put("sort", "id");
+		storeRead.put("dir", "ASC");
+		storeRead.put("limit", "10");
+		storeRead.put("start", "10");
 
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
@@ -134,14 +147,12 @@ public class RouterControllerStoreReadTest {
 			id++;
 		}
 
-		storeRead = new ExtDirectStoreReadRequest();
-		storeRead.setQuery("");
-		storeRead.setSort("id");
-		storeRead.setDir("DESC");
-		storeRead.setLimit(10);
-		storeRead.setStart(20);
-		assertThat(storeRead.isAscendingSort()).isFalse();
-		assertThat(storeRead.isDescendingSort()).isTrue();
+		storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "");
+		storeRead.put("sort", "id");
+		storeRead.put("dir", "DESC");
+		storeRead.put("limit", "10");
+		storeRead.put("start", "20");
 
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
@@ -153,14 +164,12 @@ public class RouterControllerStoreReadTest {
 			id--;
 		}
 
-		storeRead = new ExtDirectStoreReadRequest();
-		storeRead.setQuery("");
-		storeRead.setGroupBy("id");
-		storeRead.setGroupDir("ASC");
-		storeRead.setLimit(10);
-		storeRead.setStart(10);
-		assertThat(storeRead.isAscendingGroupSort()).isTrue();
-		assertThat(storeRead.isDescendingGroupSort()).isFalse();
+		storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "");
+		storeRead.put("groupBy", "id");
+		storeRead.put("groupDir", "ASC");
+		storeRead.put("limit", "10");
+		storeRead.put("start", "10");
 
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
@@ -172,14 +181,12 @@ public class RouterControllerStoreReadTest {
 			id++;
 		}
 
-		storeRead = new ExtDirectStoreReadRequest();
-		storeRead.setQuery("");
-		storeRead.setGroupBy("id");
-		storeRead.setGroupDir("DESC");
-		storeRead.setLimit(10);
-		storeRead.setStart(20);
-		assertThat(storeRead.isAscendingGroupSort()).isFalse();
-		assertThat(storeRead.isDescendingGroupSort()).isTrue();
+		storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "");
+		storeRead.put("groupBy", "id");
+		storeRead.put("groupDir", "DESC");
+		storeRead.put("limit", "10");
+		storeRead.put("start", "20");
 
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
@@ -191,13 +198,14 @@ public class RouterControllerStoreReadTest {
 			id--;
 		}
 
-		storeRead = new ExtDirectStoreReadRequest();
-		storeRead.setQuery("");
-		storeRead.setSort("id");
-		storeRead.setDir("ASC");
-		storeRead.setPage(1);
-		storeRead.setStart(0);
-		storeRead.setLimit(10);
+		storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "");
+		storeRead.put("sort", "id");
+		storeRead.put("dir", "ASC");
+		storeRead.put("limit", "10");
+		storeRead.put("start", "0");
+		storeRead.put("page", "1");
+
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
@@ -208,13 +216,14 @@ public class RouterControllerStoreReadTest {
 			id++;
 		}
 
-		storeRead = new ExtDirectStoreReadRequest();
-		storeRead.setQuery("");
-		storeRead.setSort("id");
-		storeRead.setDir("ASC");
-		storeRead.setPage(2);
-		storeRead.setStart(10);
-		storeRead.setLimit(10);
+		storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "");
+		storeRead.put("sort", "id");
+		storeRead.put("dir", "ASC");
+		storeRead.put("limit", "10");
+		storeRead.put("start", "10");
+		storeRead.put("page", "2");
+
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
@@ -227,14 +236,18 @@ public class RouterControllerStoreReadTest {
 	}
 
 	@Test
-	public void testWithExtDirectStoreReadRequestMultipeGroups() throws IOException {
-		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
-		storeRead.setQuery("");
-		List<GroupInfo> groups = new ArrayList<GroupInfo>();
-		groups.add(new GroupInfo("id", SortDirection.ASCENDING));
-		storeRead.setGroups(groups);
-		storeRead.setLimit(10);
-		storeRead.setStart(10);
+	public void testWithExtDirectStoreReadRequestMultipeGroups() throws Exception {
+		Map<String, Object> storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "");
+
+		List<Map<String, Object>> groups = new ArrayList<Map<String, Object>>();
+		Map<String, Object> groupInfo = new LinkedHashMap<String, Object>();
+		groupInfo.put("property", "id");
+		groupInfo.put("direction", "ASC");
+		groups.add(groupInfo);
+		storeRead.put("group", groups);
+		storeRead.put("limit", "10");
+		storeRead.put("start", "10");
 		ExtDirectStoreReadResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
@@ -245,13 +258,16 @@ public class RouterControllerStoreReadTest {
 			id++;
 		}
 
-		storeRead = new ExtDirectStoreReadRequest();
-		storeRead.setQuery("");
-		groups = new ArrayList<GroupInfo>();
-		groups.add(new GroupInfo("id", SortDirection.DESCENDING));
-		storeRead.setGroups(groups);
-		storeRead.setLimit(10);
-		storeRead.setStart(20);
+		storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "");
+		groups = new ArrayList<Map<String, Object>>();
+		groupInfo = new LinkedHashMap<String, Object>();
+		groupInfo.put("property", "id");
+		groupInfo.put("direction", "DESC");
+		groups.add(groupInfo);
+		storeRead.put("group", groups);
+		storeRead.put("limit", "10");
+		storeRead.put("start", "20");
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
@@ -264,17 +280,20 @@ public class RouterControllerStoreReadTest {
 	}
 
 	@Test
-	public void testWithExtDirectStoreReadRequestMultipleSorters() throws IOException {
-		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
-		storeRead.setQuery("");
+	public void testWithExtDirectStoreReadRequestMultipleSorters() throws Exception {
+		Map<String, Object> storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "");
 
-		List<SortInfo> sorters = new ArrayList<SortInfo>();
-		sorters.add(new SortInfo("id", SortDirection.ASCENDING));
-		storeRead.setSorters(sorters);
+		List<Map<String, Object>> sorters = new ArrayList<Map<String, Object>>();
+		Map<String, Object> sortInfo = new LinkedHashMap<String, Object>();
+		sortInfo.put("property", "id");
+		sortInfo.put("direction", "ASC");
+		sorters.add(sortInfo);
+		storeRead.put("sort", sorters);
 
-		storeRead.setLimit(10);
-		storeRead.setStart(10);
-		storeRead.setPage(2);
+		storeRead.put("limit", "10");
+		storeRead.put("start", "10");
+		storeRead.put("page", "2");
 		ExtDirectStoreReadResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
@@ -285,14 +304,17 @@ public class RouterControllerStoreReadTest {
 			id++;
 		}
 
-		storeRead = new ExtDirectStoreReadRequest();
-		storeRead.setQuery("");
-		sorters = new ArrayList<SortInfo>();
-		sorters.add(new SortInfo("id", SortDirection.DESCENDING));
-		storeRead.setSorters(sorters);
-		storeRead.setLimit(10);
-		storeRead.setStart(20);
-		storeRead.setPage(3);
+		storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "");
+		sorters = new ArrayList<Map<String, Object>>();
+		sortInfo = new LinkedHashMap<String, Object>();
+		sortInfo.put("property", "id");
+		sortInfo.put("direction", "DESC");
+		sorters.add(sortInfo);
+		storeRead.put("sort", sorters);
+		storeRead.put("limit", "10");
+		storeRead.put("start", "20");
+		storeRead.put("page", "3");
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
@@ -303,14 +325,17 @@ public class RouterControllerStoreReadTest {
 			id--;
 		}
 
-		storeRead = new ExtDirectStoreReadRequest();
-		storeRead.setQuery("");
-		sorters = new ArrayList<SortInfo>();
-		sorters.add(new SortInfo("id", SortDirection.ASCENDING));
-		storeRead.setSorters(sorters);
-		storeRead.setLimit(10);
-		storeRead.setStart(10);
-		storeRead.setPage(2);
+		storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "");
+		sorters = new ArrayList<Map<String, Object>>();
+		sortInfo = new LinkedHashMap<String, Object>();
+		sortInfo.put("property", "id");
+		sortInfo.put("direction", "ASC");
+		sorters.add(sortInfo);
+		storeRead.put("sort", sorters);
+		storeRead.put("limit", "10");
+		storeRead.put("start", "10");
+		storeRead.put("page", "2");
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
@@ -321,14 +346,17 @@ public class RouterControllerStoreReadTest {
 			id++;
 		}
 
-		storeRead = new ExtDirectStoreReadRequest();
-		storeRead.setQuery("");
-		sorters = new ArrayList<SortInfo>();
-		sorters.add(new SortInfo("id", SortDirection.DESCENDING));
-		storeRead.setSorters(sorters);
-		storeRead.setLimit(10);
-		storeRead.setStart(20);
-		storeRead.setPage(3);
+		storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "");
+		sorters = new ArrayList<Map<String, Object>>();
+		sortInfo = new LinkedHashMap<String, Object>();
+		sortInfo.put("property", "id");
+		sortInfo.put("direction", "DESC");
+		sorters.add(sortInfo);
+		storeRead.put("sort", sorters);
+		storeRead.put("limit", "10");
+		storeRead.put("start", "20");
+		storeRead.put("page", "3");
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
@@ -339,14 +367,17 @@ public class RouterControllerStoreReadTest {
 			id--;
 		}
 
-		storeRead = new ExtDirectStoreReadRequest();
-		storeRead.setQuery("");
-		sorters = new ArrayList<SortInfo>();
-		sorters.add(new SortInfo("id", SortDirection.ASCENDING));
-		storeRead.setSorters(sorters);
-		storeRead.setPage(1);
-		storeRead.setStart(0);
-		storeRead.setLimit(10);
+		storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "");
+		sorters = new ArrayList<Map<String, Object>>();
+		sortInfo = new LinkedHashMap<String, Object>();
+		sortInfo.put("property", "id");
+		sortInfo.put("direction", "ASC");
+		sorters.add(sortInfo);
+		storeRead.put("sort", sorters);
+		storeRead.put("limit", "10");
+		storeRead.put("start", "0");
+		storeRead.put("page", "1");
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
@@ -357,14 +388,17 @@ public class RouterControllerStoreReadTest {
 			id++;
 		}
 
-		storeRead = new ExtDirectStoreReadRequest();
-		storeRead.setQuery("");
-		sorters = new ArrayList<SortInfo>();
-		sorters.add(new SortInfo("id", SortDirection.ASCENDING));
-		storeRead.setSorters(sorters);
-		storeRead.setPage(2);
-		storeRead.setStart(10);
-		storeRead.setLimit(10);
+		storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "");
+		sorters = new ArrayList<Map<String, Object>>();
+		sortInfo = new LinkedHashMap<String, Object>();
+		sortInfo.put("property", "id");
+		sortInfo.put("direction", "ASC");
+		sorters.add(sortInfo);
+		storeRead.put("sort", sorters);
+		storeRead.put("limit", "10");
+		storeRead.put("start", "10");
+		storeRead.put("page", "2");
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
@@ -376,45 +410,14 @@ public class RouterControllerStoreReadTest {
 		}
 	}
 
-	private ExtDirectStoreReadResult<Row> executeWithExtDirectStoreReadRequest(ExtDirectStoreReadRequest storeRead)
-			throws IOException {
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "method4", 1,
-				storeRead);
+	private ExtDirectStoreReadResult<Row> executeWithExtDirectStoreReadRequest(Map<String, Object> storeRead)
+			throws Exception {
 
-		@SuppressWarnings("rawtypes")
-		Map<String, Object> data = (Map<String, Object>) ((List) edRequest.get("data")).get(0);
-		List<Map<String, Object>> sorters = (List<Map<String, Object>>) data.get("sorters");
+		String edRequest = ControllerUtil.createEdsRequest("remoteProviderStoreRead", "method4", 1, storeRead);
 
-		if (sorters != null && !sorters.isEmpty()) {
-			for (Map<String, Object> map : sorters) {
-				if ("DESCENDING".equals(map.get("direction"))) {
-					map.put("direction", "DESC");
-				} else {
-					map.put("direction", "ASC");
-				}
-			}
-			data.remove("sorters");
-			data.put("sort", sorters);
-		}
-
-		List<Map<String, Object>> groups = (List<Map<String, Object>>) data.get("groups");
-		if (groups != null && !groups.isEmpty()) {
-			for (Map<String, Object> map : groups) {
-				if ("DESCENDING".equals(map.get("direction"))) {
-					map.put("direction", "DESC");
-				} else {
-					map.put("direction", "ASC");
-				}
-			}
-			data.remove("groups");
-			data.put("group", groups);
-		}
-
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, response, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -427,10 +430,7 @@ public class RouterControllerStoreReadTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		return ControllerUtil.convertValue(resp.getResult(), new TypeReference<ExtDirectStoreReadResult<Row>>() {/*
-																												 * nothing
-																												 * here
-																												 */
+		return ControllerUtil.convertValue(resp.getResult(), new TypeReference<ExtDirectStoreReadResult<Row>>() {/* nothing_here */
 		});
 	}
 
@@ -441,10 +441,9 @@ public class RouterControllerStoreReadTest {
 		readRequest.put("query", "name");
 
 		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(
-				controller, "remoteProviderStoreRead", "method5", readRequest,
-				new TypeReference<ExtDirectStoreReadResult<Row>>() {
+				mockMvc, "remoteProviderStoreRead", "method5", new TypeReference<ExtDirectStoreReadResult<Row>>() {
 					// nothing here
-				});
+				}, readRequest);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(50));
 		assertThat(storeResponse.getRecords()).hasSize(50);
@@ -455,8 +454,8 @@ public class RouterControllerStoreReadTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(controller,
-				"remoteProviderStoreRead", "method5", readRequest, null);
+		storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderStoreRead", "method5", null, readRequest);
 	}
 
 	@Test
@@ -465,10 +464,9 @@ public class RouterControllerStoreReadTest {
 		readRequest.put("query", "firstname");
 
 		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(
-				controller, "remoteProviderStoreRead", "method6", readRequest,
-				new TypeReference<ExtDirectStoreReadResult<Row>>() {
+				mockMvc, "remoteProviderStoreRead", "method6", new TypeReference<ExtDirectStoreReadResult<Row>>() {
 					// nothing here
-				});
+				}, readRequest);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(50));
 		assertThat(storeResponse.getRecords()).hasSize(50);
@@ -482,8 +480,8 @@ public class RouterControllerStoreReadTest {
 	@Test
 	public void testWithAdditionalParametersOptional() {
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method7",
-				null, new TypeReference<List<Row>>() {
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderStoreRead", "method7",
+				new TypeReference<List<Row>>() {
 					// nothing here
 				});
 		assert100Rows(rows, ":null");
@@ -492,10 +490,10 @@ public class RouterControllerStoreReadTest {
 		readRequest.put("id", 11);
 		readRequest.put("query", "");
 
-		rows = (List<Row>) ControllerUtil.sendAndReceive(controller, "remoteProviderStoreRead", "method7", readRequest,
+		rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderStoreRead", "method7",
 				new TypeReference<List<Row>>() {
 					// nothing here
-				});
+				}, readRequest);
 		assert100Rows(rows, ":11");
 
 	}
@@ -507,27 +505,23 @@ public class RouterControllerStoreReadTest {
 		readRequest.put("endDate", ISODateTimeFormat.dateTime().print(today));
 
 		ExtDirectStoreReadResult<Row> storeResponse = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(
-				controller, "remoteProviderStoreRead", "method8", readRequest,
-				new TypeReference<ExtDirectStoreReadResult<Row>>() {
+				mockMvc, "remoteProviderStoreRead", "method8", new TypeReference<ExtDirectStoreReadResult<Row>>() {
 					// nothing here
-				});
+				}, readRequest);
 
 		assertThat(storeResponse.getRecords()).hasSize(50);
 
 	}
 
 	@Test
-	public void testMetadata() throws IOException {
+	public void testMetadata() throws Exception {
 
-		Map<String, Object> edRequest = ControllerUtil.createRequestJson("remoteProviderStoreRead", "methodMetadata",
-				1, new HashMap<String, Object>());
+		String edRequest = ControllerUtil.createEdsRequest("remoteProviderStoreRead", "methodMetadata", 1,
+				new HashMap<String, Object>());
 
-		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
-		MockHttpServletRequest request = new MockHttpServletRequest();
-
-		request.setContent(ControllerUtil.writeAsByte(edRequest));
-		controller.router(request, servletResponse, Locale.ENGLISH);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(servletResponse.getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);

@@ -67,9 +67,6 @@ public class ApiControllerTest {
 	private MockMvc mockMvc;
 
 	@Autowired
-	private RouterController routerController;
-
-	@Autowired
 	private ConfigurationService configurationService;
 
 	@Before

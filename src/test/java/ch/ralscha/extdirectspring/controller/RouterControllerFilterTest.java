@@ -23,17 +23,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.Row;
@@ -41,13 +43,21 @@ import ch.ralscha.extdirectspring.provider.Row;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
+@WebAppConfiguration
+@ContextConfiguration("classpath:/testApplicationContext.xml")
 public class RouterControllerFilterTest {
 
 	@Autowired
-	private RouterController controller;
+	private WebApplicationContext wac;
+
+	private MockMvc mockMvc;
 
 	private static List<String> jsonList;
+
+	@Before
+	public void setupMockMvc() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+	}
 
 	@BeforeClass
 	public static void readJson() throws IOException {
@@ -63,17 +73,13 @@ public class RouterControllerFilterTest {
 	}
 
 	@Test
-	public void testFilters() throws IOException {
+	public void testFilters() throws Exception {
 
 		int index = 1;
 		for (String json : jsonList) {
-			MockHttpServletResponse response = new MockHttpServletResponse();
-			MockHttpServletRequest request = new MockHttpServletRequest();
-			Map<String, Object> edRequest = ControllerUtil.readValue(json, Map.class);
-
-			request.setContent(ControllerUtil.writeAsByte(edRequest));
-			controller.router(request, response, Locale.ENGLISH);
-			List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(response.getContentAsByteArray());
+			MvcResult result = ControllerUtil.performRouterRequest(mockMvc, json);
+			List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
+					.getContentAsByteArray());
 
 			assertThat(responses).hasSize(1);
 			ExtDirectResponse resp = responses.get(0);
