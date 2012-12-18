@@ -17,11 +17,14 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.fest.assertions.api.Assertions.entry;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
@@ -29,6 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -36,10 +40,12 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
+import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -67,7 +73,7 @@ public class RouterControllerFormPostTest {
 		parameters.put("extMethod", "method1");
 		parameters.put("extType", "rpc");
 
-		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, null, parameters, null);
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, null, parameters, null, false);
 		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(result.getResponse().getContentAsByteArray());
 
 		assertThat(edsResponse.getType()).isEqualTo("exception");
@@ -90,7 +96,7 @@ public class RouterControllerFormPostTest {
 		parameters.put("extAction", "remoteProviderSimple");
 		parameters.put("extMethod", "method1");
 		parameters.put("extType", "rpc");
-		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, null, parameters, null);
+		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, null, parameters, null, false);
 		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(result.getResponse().getContentAsByteArray());
 
 		assertThat(edsResponse.getType()).isEqualTo("exception");
@@ -123,7 +129,7 @@ public class RouterControllerFormPostTest {
 	}
 
 	@Test
-	public void testCallDirectWay() throws Exception {
+	public void testCallDirect() throws Exception {
 		Map<String, String> parameters = new LinkedHashMap<String, String>();
 		parameters.put("extTID", "12");
 		parameters.put("extAction", "formInfoController");
@@ -135,7 +141,7 @@ public class RouterControllerFormPostTest {
 		parameters.put("salary", "12.3");
 		parameters.put("result", "theResult");
 
-		MvcResult resultMvc = ControllerUtil.performRouterRequest(mockMvc, null, parameters, null);
+		MvcResult resultMvc = ControllerUtil.performRouterRequest(mockMvc, null, parameters, null, false);
 		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(resultMvc.getResponse()
 				.getContentAsByteArray());
 
@@ -149,6 +155,53 @@ public class RouterControllerFormPostTest {
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
 		assertThat(result).hasSize(6).contains(entry("name", "RALPH"), entry("age", 30), entry("admin", false),
 				entry("salary", 1012.3), entry("result", "theResultRESULT"), entry("success", true));
+	}
+
+	@Test
+	public void testUpload() throws Exception {
+		MockMultipartHttpServletRequestBuilder request = fileUpload("/router");
+		request.accept(MediaType.ALL).characterEncoding("UTF-8").session(new MockHttpSession());
+
+		request.param("extTID", "1");
+		request.param("extAction", "uploadService");
+		request.param("extMethod", "upload");
+		request.param("extType", "rpc");
+		request.param("name", "Ralph");
+		request.param("age", "20");
+		request.param("admin", "true");
+		request.param("salary", "12.3");
+		request.param("result", "theResult");
+
+		request.file("fileUpload", "the content of the file".getBytes());
+
+		MvcResult resultMvc = mockMvc.perform(request).andExpect(status().isOk())
+				.andExpect(content().contentType("text/html;charset=UTF-8")).andExpect(content().encoding("UTF-8"))
+				.andReturn();
+
+		String response = resultMvc.getResponse().getContentAsString();
+		String prefix = "<html><body><textarea>";
+		String suffix = "</textarea></body></html>";
+		assertThat(response).startsWith(prefix).endsWith(suffix);
+		String json = response.substring(prefix.length(), response.indexOf(suffix));
+
+		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(json
+				.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
+
+		assertThat(edsResponse.getType()).isEqualTo("rpc");
+		assertThat(edsResponse.getMessage()).isNull();
+		assertThat(edsResponse.getWhere()).isNull();
+		assertThat(edsResponse.getTid()).isEqualTo(1);
+		assertThat(edsResponse.getAction()).isEqualTo("uploadService");
+		assertThat(edsResponse.getMethod()).isEqualTo("upload");
+
+		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
+		assertThat(result).hasSize(8);
+		assertThat(result).contains(entry("e-mail", null), entry("age", 20), entry("name", "Ralph"),
+				entry("fileName", ""), entry("fileContents", "the content of the file"), entry("firstName", null),
+				entry("success", true));
+		Map<String, Object> error = (Map<String, Object>) result.get("errors");
+		assertThat(error).containsKey("email");
+		assertThat((List<String>) error.get("email")).containsExactly("may not be empty");
 	}
 
 }

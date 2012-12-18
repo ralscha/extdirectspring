@@ -381,6 +381,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("update4", 1, false));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("update4", 1, false));
 		remotingApi.addAction("formInfoController", new Action("upload", 0, true));
+		remotingApi.addAction("uploadService", new Action("upload", 0, true));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage1", "message1"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage2", "message2"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message6", "message6"));
@@ -404,6 +405,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("update4", 1, false));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("update4", 1, false));
 		remotingApi.addAction("formInfoController", new Action("upload", 0, true));
+		remotingApi.addAction("uploadService", new Action("upload", 0, true));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage1", "message1"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage2", "message2"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message6", "message6"));
@@ -549,6 +551,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("formInfoController", new Action("updateInfo", 0, true));
 		remotingApi.addAction("formInfoController", new Action("updateInfoDirect", 0, true));
 		remotingApi.addAction("formInfoController", new Action("upload", 0, true));
+		remotingApi.addAction("uploadService", new Action("upload", 0, true));
 
 		remotingApi.addAction("formInfoController2", new Action("updateInfo1", 0, true));
 		remotingApi.addAction("formInfoController2", new Action("updateInfo2", 0, true));

@@ -169,9 +169,9 @@ public class SseProvider {
 		event.setData("two");
 
 		writer.write(event);
-
+		writer.write((String) null);
 		writer.write("third");
-
+		writer.write((String) null);
 		writer.write("fourth");
 
 		return "fifth";
@@ -198,6 +198,10 @@ public class SseProvider {
 		SSEvent event = new SSEvent();
 		event.setData("C");
 		event.setRetry(0);
+		writer.write(event);
+
+		event = new SSEvent();
+		event.setRetry(10);
 		writer.write(event);
 	}
 }

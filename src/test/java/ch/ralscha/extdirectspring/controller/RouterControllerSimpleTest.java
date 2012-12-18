@@ -233,7 +233,7 @@ public class RouterControllerSimpleTest {
 	public void methodOptionalHeaderWithoutValueAndDefault1() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("header", "headerValue");
-		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderSimple", "method18", "headerValue");
+		ControllerUtil.sendAndReceiveWithSession(mockMvc, headers, "remoteProviderSimple", "method18", "headerValue");
 	}
 
 	@Test
@@ -277,6 +277,7 @@ public class RouterControllerSimpleTest {
 		headers.add("booleanHeader", "true");
 
 		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderSimple", "method20", "2;true");
+		ControllerUtil.sendAndReceiveWithSession(mockMvc, headers, "remoteProviderSimple", "method20", "2;true");
 	}
 
 	@Test

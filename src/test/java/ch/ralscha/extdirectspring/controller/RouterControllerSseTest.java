@@ -48,7 +48,7 @@ public class RouterControllerSseTest {
 
 	@Autowired
 	private ConfigurationService configurationService;
-	
+
 	@Before
 	public void setupMockMvc() throws Exception {
 		Configuration config = new Configuration();
@@ -75,7 +75,7 @@ public class RouterControllerSseTest {
 		Configuration config = new Configuration();
 		config.setSendStacktrace(true);
 		ReflectionTestUtils.setField(configurationService, "configuration", config);
-		
+
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProviderXY", "message1", null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
@@ -86,8 +86,7 @@ public class RouterControllerSseTest {
 		assertThat(event.getId()).isNull();
 		assertThat(event.getRetry()).isNull();
 	}
-	
-	
+
 	@Test
 	public void sseNoArguments() throws Exception {
 
@@ -144,7 +143,7 @@ public class RouterControllerSseTest {
 		assertThat(event.getId()).isNull();
 		assertThat(event.getRetry()).isNull();
 	}
-	
+
 	@Test
 	public void sseRequiredArgumentNoRequestParameterWithStacktrace() throws Exception {
 		Configuration config = new Configuration();
@@ -156,11 +155,12 @@ public class RouterControllerSseTest {
 		SSEvent event = events.get(0);
 
 		assertThat(event.getEvent()).isEqualTo("error");
-		assertThat(event.getComment()).startsWith("java.lang.IllegalStateException: Missing parameter 'id' of type [int]");
+		assertThat(event.getComment()).startsWith(
+				"java.lang.IllegalStateException: Missing parameter 'id' of type [int]");
 		assertThat(event.getData()).isEqualTo("Server Error");
 		assertThat(event.getId()).isNull();
 		assertThat(event.getRetry()).isNull();
-	}	
+	}
 
 	@Test
 	public void sseDefaultValueArgumentWithRequestParameter() throws Exception {
@@ -478,7 +478,7 @@ public class RouterControllerSseTest {
 	@Test
 	public void sseWithWriterAndVoidReturn() throws Exception {
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message15", null, null);
-		assertThat(events).hasSize(3);
+		assertThat(events).hasSize(4);
 
 		SSEvent event = events.get(0);
 		assertThat(event.getEvent()).isNull();
@@ -501,5 +501,11 @@ public class RouterControllerSseTest {
 		assertThat(event.getId()).isNull();
 		assertThat(event.getRetry()).isEqualTo(0);
 
+		event = events.get(3);
+		assertThat(event.getEvent()).isNull();
+		assertThat(event.getComment()).isNull();
+		assertThat(event.getData()).isNull();
+		assertThat(event.getId()).isNull();
+		assertThat(event.getRetry()).isEqualTo(10);
 	}
 }
