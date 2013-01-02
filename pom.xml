@@ -510,7 +510,7 @@
 					<properties>
 						<owner>Ralph Schaer</owner>
 						<year>${project.inceptionYear}</year>
-						<currentYear>2012</currentYear>
+						<currentYear>2013</currentYear>
 						<email>ralphschaer@gmail.com</email>
 					</properties>
 					<excludes>
