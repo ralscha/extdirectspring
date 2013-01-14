@@ -23,6 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ClassUtils;
@@ -41,7 +42,7 @@ import ch.ralscha.extdirectspring.util.MethodInfoCache;
  * errors of misconfigured methods.
  */
 @Service
-public class MethodRegistrar implements ApplicationListener<ContextRefreshedEvent> {
+public class MethodRegistrar implements ApplicationListener<ContextRefreshedEvent>, Ordered {
 
 	private static final Log log = LogFactory.getLog(RouterController.class);
 
@@ -84,6 +85,11 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 			}
 
 		}
+	}
+
+	@Override
+	public int getOrder() {
+		return Ordered.LOWEST_PRECEDENCE;
 	}
 
 }
