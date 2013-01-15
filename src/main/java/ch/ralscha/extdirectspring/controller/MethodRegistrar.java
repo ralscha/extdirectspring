@@ -89,7 +89,7 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 
 	@Override
 	public int getOrder() {
-		return Ordered.LOWEST_PRECEDENCE;
+		return Ordered.LOWEST_PRECEDENCE - 1000;
 	}
 
 }
