@@ -160,6 +160,7 @@ public class ExtDirectResponseBuilderTest {
 		checkResponse(servletResponse, false);
 	}
 
+	@SuppressWarnings("resource")
 	private MockHttpServletRequest createRequest() {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, new GenericWebApplicationContext(
