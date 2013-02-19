@@ -22,6 +22,7 @@ import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.SupportedOptions;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
@@ -33,6 +34,7 @@ import org.springframework.util.StringUtils;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 @SupportedAnnotationTypes({ "ch.ralscha.extdirectspring.generator.Model" })
+@SupportedOptions({"outputFormat", "debug", "includeValidation"})
 public class ModelAnnotationProcessor extends AbstractProcessor {
 
 	private static final boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = false;
