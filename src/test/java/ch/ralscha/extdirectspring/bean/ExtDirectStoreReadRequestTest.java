@@ -18,8 +18,11 @@ package ch.ralscha.extdirectspring.bean;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.fest.assertions.data.MapEntry;
 import org.junit.Test;
 
 import ch.ralscha.extdirectspring.filter.Filter;
@@ -41,4 +44,47 @@ public class ExtDirectStoreReadRequestTest {
 		assertThat(request.getFilters()).hasSize(1).contains(sf);
 	}
 
+	@Test
+	public void testSetSorters() {
+		ExtDirectStoreReadRequest request = new ExtDirectStoreReadRequest();
+		assertThat(request.getSorters()).isEmpty();
+		
+		request.setSorters(null);
+		assertThat(request.getSorters()).isEmpty();
+		
+		SortInfo si = new SortInfo("property", SortDirection.ASCENDING);
+		List<SortInfo> sortInfos = new ArrayList<SortInfo>();
+		sortInfos.add(si);
+		request.setSorters(sortInfos);
+		assertThat(request.getSorters()).hasSize(1).contains(si);
+	}
+	
+	@Test
+	public void testSetGroups() {
+		ExtDirectStoreReadRequest request = new ExtDirectStoreReadRequest();
+		assertThat(request.getGroups()).isEmpty();
+		
+		request.setGroups(null);
+		assertThat(request.getGroups()).isEmpty();
+		
+		GroupInfo gi = new GroupInfo("property", SortDirection.ASCENDING);
+		List<GroupInfo> groupInfos = new ArrayList<GroupInfo>();
+		groupInfos.add(gi);		
+		request.setGroups(groupInfos);
+		assertThat(request.getGroups()).hasSize(1).contains(gi);
+	}
+	
+	@Test
+	public void testSetParams() {
+		ExtDirectStoreReadRequest request = new ExtDirectStoreReadRequest();
+		assertThat(request.getParams()).isEmpty();
+		
+		request.setParams(null);
+		assertThat(request.getParams()).isEmpty();
+		
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("id", 10);
+		request.setParams(params);
+		assertThat(request.getParams()).hasSize(1).contains(MapEntry.entry("id", 10));
+	}
 }

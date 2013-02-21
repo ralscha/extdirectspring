@@ -202,10 +202,7 @@ public class ExtDirectStoreReadRequest {
 	 * @see StringFilter
 	 */
 	public List<Filter> getFilters() {
-		if (filters != null) {
-			return Collections.unmodifiableList(filters);
-		}
-		return Collections.emptyList();
+		return Collections.unmodifiableList(filters);
 	}
 
 	/**
@@ -244,7 +241,11 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	public void setFilters(List<Filter> filters) {
-		this.filters = filters;
+		if (filters != null) {
+			this.filters = filters;
+		} else {
+			this.filters = Collections.emptyList();
+		}
 	}
 
 	/**
@@ -264,7 +265,11 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	public void setSorters(List<SortInfo> sorters) {
-		this.sorters = sorters;
+		if (sorters != null) {
+			this.sorters = sorters;
+		} else {
+			this.sorters = Collections.emptyList();
+		}
 	}
 
 	public List<GroupInfo> getGroups() {
@@ -272,7 +277,11 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	public void setGroups(List<GroupInfo> groups) {
-		this.groups = groups;
+		if (groups != null) {
+			this.groups = groups;
+		} else {
+			this.groups = Collections.emptyList();
+		}
 	}
 
 	/**
@@ -283,7 +292,11 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	public void setParams(Map<String, Object> params) {
-		this.params = params;
+		if (params != null) {
+			this.params = params;
+		} else {
+			this.params = Collections.emptyMap();
+		}
 	}
 
 	@Override
