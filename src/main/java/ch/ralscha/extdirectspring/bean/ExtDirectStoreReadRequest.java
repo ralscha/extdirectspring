@@ -202,7 +202,10 @@ public class ExtDirectStoreReadRequest {
 	 * @see StringFilter
 	 */
 	public List<Filter> getFilters() {
-		return Collections.unmodifiableList(filters);
+		if (filters != null) {
+			return Collections.unmodifiableList(filters);
+		}
+		return Collections.emptyList();
 	}
 
 	/**
