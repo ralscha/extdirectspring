@@ -58,7 +58,7 @@ public class RemoteProviderSimple {
 		return "method1() called";
 	}
 
-	@ExtDirectMethod
+	@ExtDirectMethod(group = "")
 	public String method2() {
 		return "method2() called";
 	}
@@ -77,7 +77,7 @@ public class RemoteProviderSimple {
 		return "method4() called";
 	}
 
-	@ExtDirectMethod(event = "test")
+	@ExtDirectMethod(event = "test", group = "    ")
 	public String method4b(long i, Double d, String s) {
 		return "method4b() called";
 	}

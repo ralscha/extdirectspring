@@ -367,8 +367,8 @@ public class ApiController {
 
 	}
 
-	private static void buildRemotingApi(RemotingApi remotingApi, String group) {
-
+	private static void buildRemotingApi(RemotingApi remotingApi, String requestedGroup) {
+		String group = requestedGroup != null ? requestedGroup.trim() : requestedGroup;
 		for (Map.Entry<MethodInfoCache.Key, MethodInfo> entry : MethodInfoCache.INSTANCE) {
 			MethodInfo methodInfo = entry.getValue();
 			if (isSameGroup(group, methodInfo.getGroup())) {
@@ -383,16 +383,18 @@ public class ApiController {
 		}
 	}
 
-	private static boolean isSameGroup(String requestedGroupString, String annotationGroupString) {
-		if (requestedGroupString != null) {
-			if (annotationGroupString != null) {
-				for (String requestedGroup : requestedGroupString.split(",")) {
-					for (String annotationGroup : annotationGroupString.split(",")) {
+	private static boolean isSameGroup(String requestedGroups, String annotationGroups) {
+		if (requestedGroups != null) {
+			if (!requestedGroups.isEmpty() && annotationGroups != null && !annotationGroups.isEmpty()) {
+				for (String requestedGroup : requestedGroups.split(",")) {
+					for (String annotationGroup : annotationGroups.split(",")) {
 						if (ExtDirectSpringUtil.equal(requestedGroup, annotationGroup)) {
 							return true;
 						}
 					}
 				}
+			} else if (requestedGroups.isEmpty() && (annotationGroups == null || annotationGroups.trim().isEmpty())) {
+				return true;
 			}
 			return false;
 		}
