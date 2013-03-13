@@ -15,8 +15,12 @@
  */
 package ch.ralscha.extdirectspring.generator;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -33,6 +37,11 @@ import org.springframework.util.StringUtils;
 
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @SupportedAnnotationTypes({ "ch.ralscha.extdirectspring.generator.Model" })
 @SupportedOptions({ "outputFormat", "debug", "includeValidation" })
 public class ModelAnnotationProcessor extends AbstractProcessor {
@@ -44,6 +53,14 @@ public class ModelAnnotationProcessor extends AbstractProcessor {
 	private static final String OPTION_DEBUG = "debug";
 
 	private static final String OPTION_INCLUDEVALIDATION = "includeValidation";
+
+	private static final String OPTION_CREATEBASEANDSUBCLASS = "createBaseAndSubclass";
+
+	private final static ObjectMapper mapper = new ObjectMapper();
+
+	static {
+		mapper.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
+	}
 
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -65,6 +82,8 @@ public class ModelAnnotationProcessor extends AbstractProcessor {
 				String outputFormatString = processingEnv.getOptions().get(OPTION_OUTPUTFORMAT);
 				boolean debugOutput = !"false".equals(processingEnv.getOptions().get(OPTION_DEBUG));
 				String includeValidationString = processingEnv.getOptions().get(OPTION_INCLUDEVALIDATION);
+				boolean createBaseAndSubclass = "true".equals(processingEnv.getOptions().get(
+						OPTION_CREATEBASEANDSUBCLASS));
 
 				OutputFormat outputFormat = OutputFormat.EXTJS4;
 				if (StringUtils.hasText(outputFormatString)) {
@@ -110,11 +129,35 @@ public class ModelAnnotationProcessor extends AbstractProcessor {
 						fileName = typeElement.getSimpleName().toString();
 					}
 
-					FileObject fo = processingEnv.getFiler().createResource(StandardLocation.SOURCE_OUTPUT,
-							packageName, fileName + ".js");
-					OutputStream os = fo.openOutputStream();
-					os.write(code.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
-					os.close();
+					if (createBaseAndSubclass) {
+						code = code.replaceFirst("(Ext.define\\(\"[^\"]+?)(\",)", "$1Base$2");
+						FileObject fo = processingEnv.getFiler().createResource(StandardLocation.SOURCE_OUTPUT,
+								packageName, fileName + "Base.js");
+						OutputStream os = fo.openOutputStream();
+						os.write(code.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
+						os.close();
+
+						try {
+							fo = processingEnv.getFiler().getResource(StandardLocation.SOURCE_OUTPUT, packageName,
+									fileName + ".js");
+							InputStream is = fo.openInputStream();
+							is.close();
+						} catch (FileNotFoundException e) {
+							String subClassCode = generateSubclassCode(modelClass, debugOutput);
+							fo = processingEnv.getFiler().createResource(StandardLocation.SOURCE_OUTPUT, packageName,
+									fileName + ".js");
+							os = fo.openOutputStream();
+							os.write(subClassCode.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
+							os.close();
+						}
+
+					} else {
+						FileObject fo = processingEnv.getFiler().createResource(StandardLocation.SOURCE_OUTPUT,
+								packageName, fileName + ".js");
+						OutputStream os = fo.openOutputStream();
+						os.write(code.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
+						os.close();
+					}
 
 				} catch (ClassNotFoundException e) {
 					processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage());
@@ -128,4 +171,45 @@ public class ModelAnnotationProcessor extends AbstractProcessor {
 		return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
 	}
 
+	private static String generateSubclassCode(Class<?> clazz, boolean debug) {
+		Model modelAnnotation = clazz.getAnnotation(Model.class);
+
+		String name;
+		if (modelAnnotation != null && StringUtils.hasText(modelAnnotation.value())) {
+			name = modelAnnotation.value();
+		} else {
+			name = clazz.getName();
+		}
+
+		Map<String, Object> modelObject = new LinkedHashMap<String, Object>();
+		modelObject.put("extend", name + "Base");
+
+		StringBuilder sb = new StringBuilder(100);
+		sb.append("Ext.define(\"").append(name).append("\",");
+		if (debug) {
+			sb.append("\n");
+		}
+
+		String configObjectString;
+		try {
+			if (debug) {
+				configObjectString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(modelObject);
+			} else {
+				configObjectString = mapper.writeValueAsString(modelObject);
+			}
+
+		} catch (JsonGenerationException e) {
+			throw new RuntimeException(e);
+		} catch (JsonMappingException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		sb.append(configObjectString);
+		sb.append(");");
+
+		return sb.toString();
+
+	}
 }
