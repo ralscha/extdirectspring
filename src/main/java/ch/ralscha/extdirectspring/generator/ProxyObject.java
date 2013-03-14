@@ -81,6 +81,7 @@ class ProxyObject {
 	}
 
 	@JsonAutoDetect(fieldVisibility = Visibility.ANY)
+	@JsonInclude(Include.NON_NULL)
 	private final class ApiObject {
 		@JsonRawValue
 		private String read;
