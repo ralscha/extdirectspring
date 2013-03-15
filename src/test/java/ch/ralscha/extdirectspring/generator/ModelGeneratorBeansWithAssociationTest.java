@@ -51,38 +51,38 @@ public class ModelGeneratorBeansWithAssociationTest {
 	public void testBook() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Book.class, OutputFormat.EXTJS4, true);
-		GeneratorTestUtil.compareExtJs4Code("Book", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("Book", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Book.class, OutputFormat.TOUCH2, false);
-		GeneratorTestUtil.compareTouch2Code("Book", response.getContentAsString(), false);
+		GeneratorTestUtil.compareTouch2Code("Book", response.getContentAsString(), false, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Book.class, OutputFormat.EXTJS4, true);
-		GeneratorTestUtil.compareExtJs4Code("Book", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("Book", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Book.class, OutputFormat.TOUCH2, true);
-		GeneratorTestUtil.compareTouch2Code("Book", response.getContentAsString(), true);
+		GeneratorTestUtil.compareTouch2Code("Book", response.getContentAsString(), true, false);
 	}
 
 	@Test
 	public void testAuthor() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Author.class, OutputFormat.EXTJS4, true);
-		GeneratorTestUtil.compareExtJs4Code("Author", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("Author", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Author.class, OutputFormat.TOUCH2, false);
-		GeneratorTestUtil.compareTouch2Code("Author", response.getContentAsString(), false);
+		GeneratorTestUtil.compareTouch2Code("Author", response.getContentAsString(), false, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Author.class, OutputFormat.EXTJS4, true);
-		GeneratorTestUtil.compareExtJs4Code("Author", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("Author", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Author.class, OutputFormat.TOUCH2, true);
-		GeneratorTestUtil.compareTouch2Code("Author", response.getContentAsString(), true);
+		GeneratorTestUtil.compareTouch2Code("Author", response.getContentAsString(), true, false);
 	}
 
 	@Test
@@ -90,79 +90,79 @@ public class ModelGeneratorBeansWithAssociationTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BookWithOneAuthor.class, OutputFormat.EXTJS4,
 				true);
-		GeneratorTestUtil.compareExtJs4Code("BookWithOneAuthor", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("BookWithOneAuthor", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BookWithOneAuthor.class, OutputFormat.TOUCH2,
 				false);
-		GeneratorTestUtil.compareTouch2Code("BookWithOneAuthor", response.getContentAsString(), false);
+		GeneratorTestUtil.compareTouch2Code("BookWithOneAuthor", response.getContentAsString(), false, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BookWithOneAuthor.class, OutputFormat.EXTJS4,
 				true);
-		GeneratorTestUtil.compareExtJs4Code("BookWithOneAuthor", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("BookWithOneAuthor", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BookWithOneAuthor.class, OutputFormat.TOUCH2,
 				true);
-		GeneratorTestUtil.compareTouch2Code("BookWithOneAuthor", response.getContentAsString(), true);
+		GeneratorTestUtil.compareTouch2Code("BookWithOneAuthor", response.getContentAsString(), true, false);
 	}
 
 	@Test
 	public void testOrder() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Order.class, OutputFormat.EXTJS4, true);
-		GeneratorTestUtil.compareExtJs4Code("Order", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("Order", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Order.class, OutputFormat.TOUCH2, false);
-		GeneratorTestUtil.compareTouch2Code("Order", response.getContentAsString(), false);
+		GeneratorTestUtil.compareTouch2Code("Order", response.getContentAsString(), false, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Order.class, OutputFormat.EXTJS4, true);
-		GeneratorTestUtil.compareExtJs4Code("Order", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("Order", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Order.class, OutputFormat.TOUCH2, true);
-		GeneratorTestUtil.compareTouch2Code("Order", response.getContentAsString(), true);
+		GeneratorTestUtil.compareTouch2Code("Order", response.getContentAsString(), true, false);
 	}
 
 	@Test
 	public void testPos() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Pos.class, OutputFormat.EXTJS4, true);
-		GeneratorTestUtil.compareExtJs4Code("Pos", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("Pos", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Pos.class, OutputFormat.TOUCH2, false);
-		GeneratorTestUtil.compareTouch2Code("Pos", response.getContentAsString(), false);
+		GeneratorTestUtil.compareTouch2Code("Pos", response.getContentAsString(), false, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Pos.class, OutputFormat.EXTJS4, true);
-		GeneratorTestUtil.compareExtJs4Code("Pos", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("Pos", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Pos.class, OutputFormat.TOUCH2, true);
-		GeneratorTestUtil.compareTouch2Code("Pos", response.getContentAsString(), true);
+		GeneratorTestUtil.compareTouch2Code("Pos", response.getContentAsString(), true, false);
 	}
 
 	@Test
 	public void testEmployee() throws IOException {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Employee.class, OutputFormat.EXTJS4, true);
-		GeneratorTestUtil.compareExtJs4Code("Employee", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("Employee", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Employee.class, OutputFormat.TOUCH2, false);
-		GeneratorTestUtil.compareTouch2Code("Employee", response.getContentAsString(), false);
+		GeneratorTestUtil.compareTouch2Code("Employee", response.getContentAsString(), false, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Employee.class, OutputFormat.EXTJS4, true);
-		GeneratorTestUtil.compareExtJs4Code("Employee", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("Employee", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Employee.class, OutputFormat.TOUCH2, true);
-		GeneratorTestUtil.compareTouch2Code("Employee", response.getContentAsString(), true);
+		GeneratorTestUtil.compareTouch2Code("Employee", response.getContentAsString(), true, false);
 	}
 
 	@Test
@@ -170,18 +170,18 @@ public class ModelGeneratorBeansWithAssociationTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Address.class, OutputFormat.EXTJS4, true);
 
-		GeneratorTestUtil.compareExtJs4Code("Address", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("Address", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Address.class, OutputFormat.TOUCH2, false);
-		GeneratorTestUtil.compareTouch2Code("Address", response.getContentAsString(), false);
+		GeneratorTestUtil.compareTouch2Code("Address", response.getContentAsString(), false, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Address.class, OutputFormat.EXTJS4, true);
-		GeneratorTestUtil.compareExtJs4Code("Address", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("Address", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Address.class, OutputFormat.TOUCH2, true);
-		GeneratorTestUtil.compareTouch2Code("Address", response.getContentAsString(), true);
+		GeneratorTestUtil.compareTouch2Code("Address", response.getContentAsString(), true, false);
 	}
 }

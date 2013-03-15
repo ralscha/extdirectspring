@@ -18,18 +18,18 @@ package ch.ralscha.extdirectspring.generator;
 final class JsCacheKey {
 	private final String modelName;
 
-	private final OutputFormat format;
+	private final OutputConfig config;
 
-	JsCacheKey(ModelBean modelBean, OutputFormat format) {
+	JsCacheKey(ModelBean modelBean, OutputConfig config) {
 		this.modelName = modelBean.getName();
-		this.format = format;
+		this.config = config;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((format == null) ? 0 : format.hashCode());
+		result = prime * result + ((config == null) ? 0 : config.hashCode());
 		result = prime * result + ((modelName == null) ? 0 : modelName.hashCode());
 		return result;
 	}
@@ -46,7 +46,11 @@ final class JsCacheKey {
 			return false;
 		}
 		JsCacheKey other = (JsCacheKey) obj;
-		if (format != other.format) {
+		if (config == null) {
+			if (other.config != null) {
+				return false;
+			}
+		} else if (!config.equals(other.config)) {
 			return false;
 		}
 		if (modelName == null) {

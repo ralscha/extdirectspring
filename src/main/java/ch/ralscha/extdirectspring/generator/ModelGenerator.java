@@ -121,6 +121,12 @@ public abstract class ModelGenerator {
 		writeModel(request, response, model, format, debug);
 	}
 
+	public static void writeModel(HttpServletRequest request, HttpServletResponse response, Class<?> clazz,
+			OutputConfig outputConfig) throws IOException {
+		ModelBean model = createModel(clazz, outputConfig);
+		writeModel(request, response, model, outputConfig);
+	}
+
 	/**
 	 * Creates a model object (JS code) based on the provided {@link ModelBean}
 	 * and writes it into the response. Creates compressed JS code.
@@ -152,27 +158,10 @@ public abstract class ModelGenerator {
 	 */
 	public static void writeModel(HttpServletRequest request, HttpServletResponse response, ModelBean model,
 			OutputFormat format, boolean debug) throws IOException {
-
-		byte[] data = generateJavascript(model, format, debug).getBytes(ExtDirectSpringUtil.UTF8_CHARSET);
-		String ifNoneMatch = request.getHeader("If-None-Match");
-		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + "\"";
-
-		if (etag.equals(ifNoneMatch)) {
-			response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-			return;
-		}
-
-		response.setContentType("application/javascript");
-		response.setCharacterEncoding(ExtDirectSpringUtil.UTF8_CHARSET.name());
-		response.setContentLength(data.length);
-
-		response.setHeader("ETag", etag);
-
-		@SuppressWarnings("resource")
-		ServletOutputStream out = response.getOutputStream();
-		out.write(data);
-		out.flush();
-
+		OutputConfig outputConfig = new OutputConfig();
+		outputConfig.setDebug(debug);
+		outputConfig.setOutputFormat(format);
+		writeModel(request, response, model, outputConfig);
 	}
 
 	/**
@@ -205,12 +194,104 @@ public abstract class ModelGenerator {
 	 * @return a instance of {@link ModelBean} that describes the provided class
 	 *         and can be used for Javascript generation.
 	 */
-	public static ModelBean createModel(Class<?> clazz, final IncludeValidation includeValidation) {
+	public static ModelBean createModel(Class<?> clazz, IncludeValidation includeValidation) {
+		OutputConfig outputConfig = new OutputConfig();
+		outputConfig.setIncludeValidation(includeValidation);
+		return createModel(clazz, outputConfig);
+	}
+
+	/**
+	 * Instrospects the provided class, creates a model object (JS code) and
+	 * returns it. This method does not add any validation configuration.
+	 * 
+	 * @param clazz class that the generator should introspect
+	 * @param format specifies which code (ExtJS or Touch) the generator should
+	 *            create
+	 * @param debug if true the generator creates the output in pretty format,
+	 *            false the output is compressed
+	 * @return the generated model object (JS code)
+	 */
+	public static String generateJavascript(Class<?> clazz, OutputFormat format, boolean debug) {
+		ModelBean model = createModel(clazz, IncludeValidation.NONE);
+		return generateJavascript(model, format, debug);
+	}
+
+	public static String generateJavascript(Class<?> clazz, OutputConfig outputConfig) {
+		ModelBean model = createModel(clazz, outputConfig);
+		return generateJavascript(model, outputConfig);
+	}
+
+	/**
+	 * Instrospects the provided class, creates a model object (JS code) and
+	 * returns it.
+	 * 
+	 * @param clazz class that the generator should introspect
+	 * @param format specifies which code (ExtJS or Touch) the generator should
+	 *            create
+	 * @param includeValidation specifies what validation configuration should
+	 *            be added to the mode code
+	 * @param debug if true the generator creates the output in pretty format,
+	 *            false the output is compressed
+	 * @return the generated model object (JS code)
+	 */
+	public static String generateJavascript(Class<?> clazz, OutputFormat format, IncludeValidation includeValidation,
+			boolean debug) {
+		ModelBean model = createModel(clazz, includeValidation);
+		return generateJavascript(model, format, debug);
+	}
+
+	/**
+	 * Creates JS code based on the provided {@link ModelBean} in the specified
+	 * {@link OutputFormat}. Code can be generated in pretty or compressed
+	 * format. The generated code is cached unless debug is true. A second call
+	 * to this method with the same model name and format will return the code
+	 * from the cache.
+	 * 
+	 * @param model generate code based on this {@link ModelBean}
+	 * @param format specifies which code (ExtJS or Touch) the generator should
+	 *            create
+	 * @param debug if true the generator creates the output in pretty format,
+	 *            false the output is compressed
+	 * @return the generated model object (JS code)
+	 */
+	public static String generateJavascript(ModelBean model, OutputFormat format, boolean debug) {
+		OutputConfig outputConfig = new OutputConfig();
+		outputConfig.setOutputFormat(format);
+		outputConfig.setDebug(debug);
+		return generateJavascript(model, outputConfig);
+	}
+
+	public static void writeModel(HttpServletRequest request, HttpServletResponse response, ModelBean model,
+			OutputConfig outputConfig) throws IOException {
+
+		byte[] data = generateJavascript(model, outputConfig).getBytes(ExtDirectSpringUtil.UTF8_CHARSET);
+		String ifNoneMatch = request.getHeader("If-None-Match");
+		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + "\"";
+
+		if (etag.equals(ifNoneMatch)) {
+			response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+			return;
+		}
+
+		response.setContentType("application/javascript");
+		response.setCharacterEncoding(ExtDirectSpringUtil.UTF8_CHARSET.name());
+		response.setContentLength(data.length);
+
+		response.setHeader("ETag", etag);
+
+		@SuppressWarnings("resource")
+		ServletOutputStream out = response.getOutputStream();
+		out.write(data);
+		out.flush();
+
+	}
+
+	public static ModelBean createModel(Class<?> clazz, final OutputConfig outputConfig) {
 
 		Assert.notNull(clazz, "clazz must not be null");
-		Assert.notNull(includeValidation, "includeValidation must not be null");
+		Assert.notNull(outputConfig.getIncludeValidation(), "includeValidation must not be null");
 
-		ModelCacheKey key = new ModelCacheKey(clazz.getName(), includeValidation);
+		ModelCacheKey key = new ModelCacheKey(clazz.getName(), outputConfig.getIncludeValidation());
 		SoftReference<ModelBean> modelReference = modelCache.get(key);
 		if (modelReference != null && modelReference.get() != null) {
 			return modelReference.get();
@@ -367,12 +448,12 @@ public abstract class ModelGenerator {
 								.createAssociation(modelAssociationAnnotation, model, field));
 					}
 
-					if (modelFieldBean != null && includeValidation != IncludeValidation.NONE) {
+					if (modelFieldBean != null && outputConfig.getIncludeValidation() != IncludeValidation.NONE) {
 						Annotation[] fieldAnnotations = field.getAnnotations();
 
 						for (Annotation fieldAnnotation : fieldAnnotations) {
 							AbstractValidation.addValidationToModel(model, modelFieldBean, fieldAnnotation,
-									includeValidation);
+									outputConfig.getIncludeValidation());
 						}
 					}
 
@@ -388,59 +469,10 @@ public abstract class ModelGenerator {
 		return model;
 	}
 
-	/**
-	 * Instrospects the provided class, creates a model object (JS code) and
-	 * returns it. This method does not add any validation configuration.
-	 * 
-	 * @param clazz class that the generator should introspect
-	 * @param format specifies which code (ExtJS or Touch) the generator should
-	 *            create
-	 * @param debug if true the generator creates the output in pretty format,
-	 *            false the output is compressed
-	 * @return the generated model object (JS code)
-	 */
-	public static String generateJavascript(Class<?> clazz, OutputFormat format, boolean debug) {
-		ModelBean model = createModel(clazz, IncludeValidation.NONE);
-		return generateJavascript(model, format, debug);
-	}
+	public static String generateJavascript(ModelBean model, OutputConfig config) {
 
-	/**
-	 * Instrospects the provided class, creates a model object (JS code) and
-	 * returns it.
-	 * 
-	 * @param clazz class that the generator should introspect
-	 * @param format specifies which code (ExtJS or Touch) the generator should
-	 *            create
-	 * @param includeValidation specifies what validation configuration should
-	 *            be added to the mode code
-	 * @param debug if true the generator creates the output in pretty format,
-	 *            false the output is compressed
-	 * @return the generated model object (JS code)
-	 */
-	public static String generateJavascript(Class<?> clazz, OutputFormat format, IncludeValidation includeValidation,
-			boolean debug) {
-		ModelBean model = createModel(clazz, includeValidation);
-		return generateJavascript(model, format, debug);
-	}
-
-	/**
-	 * Creates JS code based on the provided {@link ModelBean} in the specified
-	 * {@link OutputFormat}. Code can be generated in pretty or compressed
-	 * format. The generated code is cached unless debug is true. A second call
-	 * to this method with the same model name and format will return the code
-	 * from the cache.
-	 * 
-	 * @param model generate code based on this {@link ModelBean}
-	 * @param format specifies which code (ExtJS or Touch) the generator should
-	 *            create
-	 * @param debug if true the generator creates the output in pretty format,
-	 *            false the output is compressed
-	 * @return the generated model object (JS code)
-	 */
-	public static String generateJavascript(ModelBean model, OutputFormat format, boolean debug) {
-
-		if (!debug) {
-			JsCacheKey key = new JsCacheKey(model, format);
+		if (!config.isDebug()) {
+			JsCacheKey key = new JsCacheKey(model, config);
 
 			SoftReference<String> jsReference = jsCache.get(key);
 			if (jsReference != null && jsReference.get() != null) {
@@ -469,13 +501,22 @@ public abstract class ModelGenerator {
 			configObject.put("validations", model.getValidations());
 		}
 
-		ProxyObject proxyObject = new ProxyObject(model.getIdProperty(), model.getReadMethod(),
-				model.getCreateMethod(), model.getUpdateMethod(), model.getDestroyMethod(), model.isPaging());
-		if (proxyObject.hasMethods()) {
-			configObject.put("proxy", proxyObject);
+		if (config.isSurroundApiWithQuotes()) {
+			ProxyObjectWithQuotes proxyObject = new ProxyObjectWithQuotes(model.getIdProperty(), model.getReadMethod(),
+					model.getCreateMethod(), model.getUpdateMethod(), model.getDestroyMethod(), model.isPaging());
+			if (proxyObject.hasMethods()) {
+				configObject.put("proxy", proxyObject);
+			}
+		} else {
+			ProxyObjectWithoutQuotes proxyObject = new ProxyObjectWithoutQuotes(model.getIdProperty(),
+					model.getReadMethod(), model.getCreateMethod(), model.getUpdateMethod(), model.getDestroyMethod(),
+					model.isPaging());
+			if (proxyObject.hasMethods()) {
+				configObject.put("proxy", proxyObject);
+			}
 		}
 
-		if (format == OutputFormat.EXTJS4) {
+		if (config.getOutputFormat() == OutputFormat.EXTJS4) {
 			modelObject.putAll(configObject);
 		} else {
 			modelObject.put("config", configObject);
@@ -483,13 +524,13 @@ public abstract class ModelGenerator {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("Ext.define(\"").append(model.getName()).append("\",");
-		if (debug) {
+		if (config.isDebug()) {
 			sb.append("\n");
 		}
 
 		String configObjectString;
 		try {
-			if (debug) {
+			if (config.isDebug()) {
 				configObjectString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(modelObject);
 			} else {
 				configObjectString = mapper.writeValueAsString(modelObject);
@@ -507,8 +548,13 @@ public abstract class ModelGenerator {
 		sb.append(");");
 
 		String result = sb.toString();
-		if (!debug) {
-			jsCache.put(new JsCacheKey(model, format), new SoftReference<String>(result));
+
+		if (config.isUseSingleQuotes()) {
+			result = result.replace('"', '\'');
+		}
+
+		if (!config.isDebug()) {
+			jsCache.put(new JsCacheKey(model, config), new SoftReference<String>(result));
 		}
 		return result;
 	}

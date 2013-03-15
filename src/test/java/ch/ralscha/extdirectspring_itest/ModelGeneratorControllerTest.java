@@ -40,7 +40,7 @@ public class ModelGeneratorControllerTest extends JettyTest {
 		String contentType = response.getFirstHeader("Content-Type").getValue();
 		String etag = response.getFirstHeader("ETag").getValue();
 
-		GeneratorTestUtil.compareExtJs4Code("Author", responseString, false);
+		GeneratorTestUtil.compareExtJs4Code("Author", responseString, false, false);
 		assertThat(contentType).isEqualTo("application/javascript;charset=UTF-8");
 		assertThat(etag).isNotEmpty();
 
@@ -61,7 +61,7 @@ public class ModelGeneratorControllerTest extends JettyTest {
 		String contentType = response.getFirstHeader("Content-Type").getValue();
 		String etag = response.getFirstHeader("ETag").getValue();
 
-		GeneratorTestUtil.compareTouch2Code("Book", responseString, false);
+		GeneratorTestUtil.compareTouch2Code("Book", responseString, false, false);
 		assertThat(contentType).isEqualTo("application/javascript;charset=UTF-8");
 		assertThat(etag).isNotEmpty();
 

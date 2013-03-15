@@ -56,6 +56,10 @@ public class ModelAnnotationProcessor extends AbstractProcessor {
 
 	private static final String OPTION_CREATEBASEANDSUBCLASS = "createBaseAndSubclass";
 
+	private static final String OPTION_USESINGLEQUOTES = "useSingleQuotes";
+
+	private static final String OPTION_SURROUNDAPIWITHQUOTES = "surroundApiWithQuotes";
+
 	private final static ObjectMapper mapper = new ObjectMapper();
 
 	static {
@@ -75,31 +79,36 @@ public class ModelAnnotationProcessor extends AbstractProcessor {
 			return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
 		}
 
+		OutputConfig outputConfig = new OutputConfig();
+
+		outputConfig.setDebug(!"false".equals(processingEnv.getOptions().get(OPTION_DEBUG)));
+		boolean createBaseAndSubclass = "true".equals(processingEnv.getOptions().get(OPTION_CREATEBASEANDSUBCLASS));
+
+		String outputFormatString = processingEnv.getOptions().get(OPTION_OUTPUTFORMAT);
+		outputConfig.setOutputFormat(OutputFormat.EXTJS4);
+		if (StringUtils.hasText(outputFormatString)) {
+			if (OutputFormat.TOUCH2.name().equalsIgnoreCase(outputFormatString)) {
+				outputConfig.setOutputFormat(OutputFormat.TOUCH2);
+			}
+		}
+
+		String includeValidationString = processingEnv.getOptions().get(OPTION_INCLUDEVALIDATION);
+		outputConfig.setIncludeValidation(IncludeValidation.NONE);
+		if (StringUtils.hasText(includeValidationString)) {
+			if (IncludeValidation.ALL.name().equalsIgnoreCase(includeValidationString)) {
+				outputConfig.setIncludeValidation(IncludeValidation.ALL);
+			} else if (IncludeValidation.BUILTIN.name().equalsIgnoreCase(includeValidationString)) {
+				outputConfig.setIncludeValidation(IncludeValidation.BUILTIN);
+			}
+		}
+
+		outputConfig.setUseSingleQuotes("true".equals(processingEnv.getOptions().get(OPTION_USESINGLEQUOTES)));
+		outputConfig.setSurroundApiWithQuotes("true".equals(processingEnv.getOptions()
+				.get(OPTION_SURROUNDAPIWITHQUOTES)));
+
 		for (TypeElement annotation : annotations) {
 			Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(annotation);
 			for (Element element : elements) {
-
-				String outputFormatString = processingEnv.getOptions().get(OPTION_OUTPUTFORMAT);
-				boolean debugOutput = !"false".equals(processingEnv.getOptions().get(OPTION_DEBUG));
-				String includeValidationString = processingEnv.getOptions().get(OPTION_INCLUDEVALIDATION);
-				boolean createBaseAndSubclass = "true".equals(processingEnv.getOptions().get(
-						OPTION_CREATEBASEANDSUBCLASS));
-
-				OutputFormat outputFormat = OutputFormat.EXTJS4;
-				if (StringUtils.hasText(outputFormatString)) {
-					if (OutputFormat.TOUCH2.name().equalsIgnoreCase(outputFormatString)) {
-						outputFormat = OutputFormat.TOUCH2;
-					}
-				}
-
-				IncludeValidation includeValidation = IncludeValidation.NONE;
-				if (StringUtils.hasText(includeValidationString)) {
-					if (IncludeValidation.ALL.name().equalsIgnoreCase(includeValidationString)) {
-						includeValidation = IncludeValidation.ALL;
-					} else if (IncludeValidation.BUILTIN.name().equalsIgnoreCase(includeValidationString)) {
-						includeValidation = IncludeValidation.BUILTIN;
-					}
-				}
 
 				try {
 					TypeElement typeElement = (TypeElement) element;
@@ -107,8 +116,7 @@ public class ModelAnnotationProcessor extends AbstractProcessor {
 					String qualifiedName = typeElement.getQualifiedName().toString();
 					Class<?> modelClass = Class.forName(qualifiedName);
 
-					String code = ModelGenerator.generateJavascript(modelClass, outputFormat, includeValidation,
-							debugOutput);
+					String code = ModelGenerator.generateJavascript(modelClass, outputConfig);
 
 					Model modelAnnotation = element.getAnnotation(Model.class);
 					String modelName = modelAnnotation.value();
@@ -143,7 +151,7 @@ public class ModelAnnotationProcessor extends AbstractProcessor {
 							InputStream is = fo.openInputStream();
 							is.close();
 						} catch (FileNotFoundException e) {
-							String subClassCode = generateSubclassCode(modelClass, debugOutput);
+							String subClassCode = generateSubclassCode(modelClass, outputConfig.isDebug());
 							fo = processingEnv.getFiler().createResource(StandardLocation.SOURCE_OUTPUT, packageName,
 									fileName + ".js");
 							os = fo.openOutputStream();

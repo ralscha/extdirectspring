@@ -34,13 +34,22 @@ public class JsCacheKeyTest {
 	@Test
 	public void testPutAndGet() {
 		JsCacheKey key1 = new JsCacheKey(new ModelBean(), null);
-		JsCacheKey key2 = new JsCacheKey(new ModelBean(), OutputFormat.EXTJS4);
+
+		OutputConfig config = new OutputConfig();
+		config.setOutputFormat(OutputFormat.EXTJS4);
+		JsCacheKey key2 = new JsCacheKey(new ModelBean(), config);
 
 		ModelBean m = new ModelBean();
 		m.setName("name");
 		JsCacheKey key3 = new JsCacheKey(m, null);
-		JsCacheKey key4 = new JsCacheKey(m, OutputFormat.TOUCH2);
-		JsCacheKey key5 = new JsCacheKey(m, OutputFormat.EXTJS4);
+
+		config = new OutputConfig();
+		config.setOutputFormat(OutputFormat.TOUCH2);
+		JsCacheKey key4 = new JsCacheKey(m, config);
+
+		config = new OutputConfig();
+		config.setOutputFormat(OutputFormat.EXTJS4);
+		JsCacheKey key5 = new JsCacheKey(m, config);
 
 		Map<JsCacheKey, String> map = new ConcurrentHashMap<JsCacheKey, String>();
 		map.put(key1, "one");

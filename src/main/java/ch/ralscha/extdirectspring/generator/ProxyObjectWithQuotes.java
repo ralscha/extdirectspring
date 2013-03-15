@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonRawValue;
 
 /**
  * Internal class used by the {@link ModelGenerator} to serialize the model code
@@ -29,19 +28,19 @@ import com.fasterxml.jackson.annotation.JsonRawValue;
 @JsonInclude(Include.NON_NULL)
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 @SuppressWarnings("unused")
-class ProxyObject {
+class ProxyObjectWithQuotes {
 	private final String type = "direct";
 
 	private String idParam;
 
-	@JsonRawValue
 	private String directFn;
 
 	private ApiObject api;
 
 	private ReaderObject reader;
 
-	public ProxyObject(String idParam, String read, String create, String update, String destroy, boolean paging) {
+	public ProxyObjectWithQuotes(String idParam, String read, String create, String update, String destroy,
+			boolean paging) {
 
 		if (StringUtils.hasText(idParam) && !idParam.equals("id")) {
 			this.idParam = idParam;
@@ -83,16 +82,13 @@ class ProxyObject {
 	@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 	@JsonInclude(Include.NON_NULL)
 	private final class ApiObject {
-		@JsonRawValue
+
 		private String read;
 
-		@JsonRawValue
 		private String create;
 
-		@JsonRawValue
 		private String update;
 
-		@JsonRawValue
 		private String destroy;
 	}
 
