@@ -81,12 +81,11 @@ public class ApiController {
 	 */
 	@SuppressWarnings({ "resource" })
 	@RequestMapping(value = { "/api.js", "/api-debug.js", "/api-debug-doc.js" }, method = RequestMethod.GET)
-	public void api(
-			@RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app") String apiNs,
+	public void api(@RequestParam(value = "apiNs", required = false) String apiNs,
 			@RequestParam(value = "actionNs", required = false) String actionNs,
-			@RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API") String remotingApiVar,
-			@RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS") String pollingUrlsVar,
-			@RequestParam(value = "sseVar", required = false, defaultValue = "SSE") String sseVar,
+			@RequestParam(value = "remotingApiVar", required = false) String remotingApiVar,
+			@RequestParam(value = "pollingUrlsVar", required = false) String pollingUrlsVar,
+			@RequestParam(value = "sseVar", required = false) String sseVar,
 			@RequestParam(value = "group", required = false) String group,
 			@RequestParam(value = "fullRouterUrl", required = false, defaultValue = "false") boolean fullRouterUrl,
 			@RequestParam(value = "format", required = false) String format, HttpServletRequest request,
@@ -149,12 +148,11 @@ public class ApiController {
 	 */
 
 	@RequestMapping(value = "/api-{fingerprint}.js", method = RequestMethod.GET)
-	public void api(
-			@RequestParam(value = "apiNs", required = false, defaultValue = "Ext.app") String apiNs,
+	public void api(@RequestParam(value = "apiNs", required = false) String apiNs,
 			@RequestParam(value = "actionNs", required = false) String actionNs,
-			@RequestParam(value = "remotingApiVar", required = false, defaultValue = "REMOTING_API") String remotingApiVar,
-			@RequestParam(value = "pollingUrlsVar", required = false, defaultValue = "POLLING_URLS") String pollingUrlsVar,
-			@RequestParam(value = "sseVar", required = false, defaultValue = "SSE") String sseVar,
+			@RequestParam(value = "remotingApiVar", required = false) String remotingApiVar,
+			@RequestParam(value = "pollingUrlsVar", required = false) String pollingUrlsVar,
+			@RequestParam(value = "sseVar", required = false) String sseVar,
 			@RequestParam(value = "group", required = false) String group,
 			@RequestParam(value = "fullRouterUrl", required = false, defaultValue = "false") boolean fullRouterUrl,
 			HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -167,8 +165,15 @@ public class ApiController {
 				.getConfiguration().getJsContentType());
 	}
 
-	private String buildAndCacheApiString(String apiNs, String actionNs, String remotingApiVar, String pollingUrlsVar,
-			String sseVar, String group, boolean fullRouterUrl, HttpServletRequest request) {
+	private String buildAndCacheApiString(String requestApiNs, String actionNs, String requestRemotingApiVar,
+			String requestPollingUrlsVar, String requestSseVar, String group, boolean fullRouterUrl,
+			HttpServletRequest request) {
+
+		String apiNs = requestApiNs != null ? requestApiNs : "Ext.app";
+		String remotingApiVar = requestRemotingApiVar != null ? requestRemotingApiVar : "REMOTING_API";
+		String pollingUrlsVar = requestPollingUrlsVar != null ? requestPollingUrlsVar : "POLLING_URLS";
+		String sseVar = requestSseVar != null ? requestSseVar : "SSE";
+
 		String requestUrlString;
 
 		if (fullRouterUrl) {
@@ -349,8 +354,11 @@ public class ApiController {
 		return sb.toString();
 	}
 
-	private String buildApiJson(String apiNs, String actionNs, String remotingApiVar, String routerUrl, String group,
-			boolean debug) {
+	private String buildApiJson(String requestApiNs, String actionNs, String requestRemotingApiVar, String routerUrl,
+			String group, boolean debug) {
+
+		String apiNs = requestApiNs != null ? requestApiNs : "Ext.app";
+		String remotingApiVar = requestRemotingApiVar != null ? requestRemotingApiVar : "REMOTING_API";
 
 		RemotingApi remotingApi = new RemotingApi(configurationService.getConfiguration().getProviderType(), routerUrl,
 				actionNs);
