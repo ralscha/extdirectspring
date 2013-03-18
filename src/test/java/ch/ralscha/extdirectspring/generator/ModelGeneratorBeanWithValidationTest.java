@@ -22,13 +22,8 @@ import java.math.BigDecimal;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.generator.bean.BeanWithValidation;
 import ch.ralscha.extdirectspring.generator.validation.CreditCardNumberValidation;
@@ -40,12 +35,7 @@ import ch.ralscha.extdirectspring.generator.validation.NotBlankValidation;
 import ch.ralscha.extdirectspring.generator.validation.PastValidation;
 import ch.ralscha.extdirectspring.generator.validation.RangeValidation;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ModelGeneratorBeanWithValidationTest {
-
-	@Autowired
-	private DefaultListableBeanFactory applicationContext;
 
 	@Before
 	public void clearCaches() {

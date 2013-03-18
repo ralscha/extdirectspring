@@ -19,13 +19,8 @@ import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.generator.bean.Address;
 import ch.ralscha.extdirectspring.generator.bean.Author;
@@ -35,12 +30,7 @@ import ch.ralscha.extdirectspring.generator.bean.Employee;
 import ch.ralscha.extdirectspring.generator.bean.Order;
 import ch.ralscha.extdirectspring.generator.bean.Pos;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ModelGeneratorBeansWithAssociationTest {
-
-	@Autowired
-	private DefaultListableBeanFactory applicationContext;
 
 	@Before
 	public void clearCaches() {

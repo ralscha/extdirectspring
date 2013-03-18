@@ -21,13 +21,8 @@ import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.generator.bean.BeanWithAnnotations;
 import ch.ralscha.extdirectspring.generator.validation.EmailValidation;
@@ -35,12 +30,7 @@ import ch.ralscha.extdirectspring.generator.validation.FormatValidation;
 import ch.ralscha.extdirectspring.generator.validation.LengthValidation;
 import ch.ralscha.extdirectspring.generator.validation.PresenceValidation;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ModelGeneratorBeanWithAnnotationsAndValidationTest {
-
-	@Autowired
-	private DefaultListableBeanFactory applicationContext;
 
 	@Before
 	public void clearCaches() {
