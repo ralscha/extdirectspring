@@ -15,6 +15,8 @@
  */
 package ch.ralscha.extdirectspring.generator;
 
+import static org.fest.assertions.api.Assertions.assertThat;
+
 import java.io.IOException;
 
 import org.junit.Before;
@@ -23,7 +25,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import ch.ralscha.extdirectspring.generator.bean.PartialApi;
-import static org.fest.assertions.api.Assertions.assertThat;
 
 public class ModelGeneratorPartialApiTest {
 

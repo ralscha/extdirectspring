@@ -44,7 +44,6 @@ public class PartialApi {
 		this.name = name;
 	}
 
-	
 	public static List<ModelFieldBean> expectedFields = new ArrayList<ModelFieldBean>();
 	static {
 
