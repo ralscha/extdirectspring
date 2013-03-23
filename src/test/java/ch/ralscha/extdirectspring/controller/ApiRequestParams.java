@@ -35,6 +35,8 @@ public class ApiRequestParams {
 
 	private Boolean fullRouterUrl;
 
+	private String baseRouterUrl;
+
 	private String format;
 
 	private String providerType;
@@ -99,6 +101,11 @@ public class ApiRequestParams {
 			return this;
 		}
 
+		Builder baseRouterUrl(String value) {
+			params.baseRouterUrl = value;
+			return this;
+		}
+
 		public ApiRequestParams build() {
 			return params;
 		}
@@ -130,6 +137,10 @@ public class ApiRequestParams {
 
 	public Boolean isFullRouterUrl() {
 		return fullRouterUrl;
+	}
+
+	public String getBaseRouterUrl() {
+		return baseRouterUrl;
 	}
 
 	public String getFormat() {

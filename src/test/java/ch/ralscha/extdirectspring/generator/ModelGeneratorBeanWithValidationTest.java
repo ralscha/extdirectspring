@@ -22,13 +22,8 @@ import java.math.BigDecimal;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import ch.ralscha.extdirectspring.generator.bean.BeanWithValidation;
 import ch.ralscha.extdirectspring.generator.validation.CreditCardNumberValidation;
@@ -40,12 +35,7 @@ import ch.ralscha.extdirectspring.generator.validation.NotBlankValidation;
 import ch.ralscha.extdirectspring.generator.validation.PastValidation;
 import ch.ralscha.extdirectspring.generator.validation.RangeValidation;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ModelGeneratorBeanWithValidationTest {
-
-	@Autowired
-	private DefaultListableBeanFactory applicationContext;
 
 	@Before
 	public void clearCaches() {
@@ -57,22 +47,22 @@ public class ModelGeneratorBeanWithValidationTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithValidation.class,
 				OutputFormat.EXTJS4, IncludeValidation.ALL, true);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithValidation", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithValidation", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithValidation.class,
 				OutputFormat.TOUCH2, IncludeValidation.ALL, false);
-		GeneratorTestUtil.compareTouch2Code("BeanWithValidation", response.getContentAsString(), false);
+		GeneratorTestUtil.compareTouch2Code("BeanWithValidation", response.getContentAsString(), false, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithValidation.class,
 				OutputFormat.EXTJS4, IncludeValidation.ALL, true);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithValidation", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithValidation", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithValidation.class,
 				OutputFormat.TOUCH2, IncludeValidation.ALL, true);
-		GeneratorTestUtil.compareTouch2Code("BeanWithValidation", response.getContentAsString(), true);
+		GeneratorTestUtil.compareTouch2Code("BeanWithValidation", response.getContentAsString(), true, false);
 	}
 
 	@Test
@@ -80,11 +70,11 @@ public class ModelGeneratorBeanWithValidationTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelBean model = ModelGenerator.createModel(BeanWithValidation.class, IncludeValidation.ALL);
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.EXTJS4);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithValidation", response.getContentAsString(), false);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithValidation", response.getContentAsString(), false, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.TOUCH2);
-		GeneratorTestUtil.compareTouch2Code("BeanWithValidation", response.getContentAsString(), false);
+		GeneratorTestUtil.compareTouch2Code("BeanWithValidation", response.getContentAsString(), false, false);
 	}
 
 	@Test
@@ -92,32 +82,32 @@ public class ModelGeneratorBeanWithValidationTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelBean model = ModelGenerator.createModel(BeanWithValidation.class, IncludeValidation.ALL);
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.EXTJS4, false);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithValidation", response.getContentAsString(), false);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithValidation", response.getContentAsString(), false, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.TOUCH2, false);
-		GeneratorTestUtil.compareTouch2Code("BeanWithValidation", response.getContentAsString(), false);
+		GeneratorTestUtil.compareTouch2Code("BeanWithValidation", response.getContentAsString(), false, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.EXTJS4, true);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithValidation", response.getContentAsString(), true);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithValidation", response.getContentAsString(), true, false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.TOUCH2, true);
-		GeneratorTestUtil.compareTouch2Code("BeanWithValidation", response.getContentAsString(), true);
+		GeneratorTestUtil.compareTouch2Code("BeanWithValidation", response.getContentAsString(), true, false);
 	}
 
 	@Test
 	public void testGenerateJavascriptClassOfQOutputFormatBoolean() {
 		GeneratorTestUtil.compareExtJs4Code("BeanWithValidation", ModelGenerator.generateJavascript(
-				BeanWithValidation.class, OutputFormat.EXTJS4, IncludeValidation.ALL, true), true);
+				BeanWithValidation.class, OutputFormat.EXTJS4, IncludeValidation.ALL, true), true, false);
 		GeneratorTestUtil.compareExtJs4Code("BeanWithValidation", ModelGenerator.generateJavascript(
-				BeanWithValidation.class, OutputFormat.EXTJS4, IncludeValidation.ALL, false), false);
+				BeanWithValidation.class, OutputFormat.EXTJS4, IncludeValidation.ALL, false), false, false);
 
 		GeneratorTestUtil.compareTouch2Code("BeanWithValidation", ModelGenerator.generateJavascript(
-				BeanWithValidation.class, OutputFormat.TOUCH2, IncludeValidation.ALL, true), true);
+				BeanWithValidation.class, OutputFormat.TOUCH2, IncludeValidation.ALL, true), true, false);
 		GeneratorTestUtil.compareTouch2Code("BeanWithValidation", ModelGenerator.generateJavascript(
-				BeanWithValidation.class, OutputFormat.TOUCH2, IncludeValidation.ALL, false), false);
+				BeanWithValidation.class, OutputFormat.TOUCH2, IncludeValidation.ALL, false), false, false);
 	}
 
 	@Test
@@ -208,14 +198,14 @@ public class ModelGeneratorBeanWithValidationTest {
 	public void testGenerateJavascriptModelBeanOutputFormatBoolean() {
 		ModelBean model = ModelGenerator.createModel(BeanWithValidation.class, IncludeValidation.ALL);
 		GeneratorTestUtil.compareExtJs4Code("BeanWithValidation",
-				ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, true), true);
+				ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, true), true, false);
 		GeneratorTestUtil.compareExtJs4Code("BeanWithValidation",
-				ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false), false);
+				ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false), false, false);
 
 		GeneratorTestUtil.compareTouch2Code("BeanWithValidation",
-				ModelGenerator.generateJavascript(model, OutputFormat.TOUCH2, true), true);
+				ModelGenerator.generateJavascript(model, OutputFormat.TOUCH2, true), true, false);
 		GeneratorTestUtil.compareTouch2Code("BeanWithValidation",
-				ModelGenerator.generateJavascript(model, OutputFormat.TOUCH2, false), false);
+				ModelGenerator.generateJavascript(model, OutputFormat.TOUCH2, false), false, false);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

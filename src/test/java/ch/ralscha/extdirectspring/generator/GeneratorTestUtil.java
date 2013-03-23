@@ -31,10 +31,10 @@ public class GeneratorTestUtil {
 		}
 	}
 
-	public static void compareExtJs4Code(String model, String value, boolean debug) {
+	public static void compareExtJs4Code(String model, String value, boolean debug, boolean apiWithQuotes) {
 		try {
 			String expectedValue = IOUtils.toString(GeneratorTestUtil.class.getResourceAsStream("/generator/" + model
-					+ "ExtJs4.json"));
+					+ "ExtJs4" + (apiWithQuotes ? "Q" : "") + ".json"));
 			compareModelString(expectedValue, value, debug);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -42,10 +42,10 @@ public class GeneratorTestUtil {
 
 	}
 
-	public static void compareTouch2Code(String model, String value, boolean debug) {
+	public static void compareTouch2Code(String model, String value, boolean debug, boolean apiWithQuotes) {
 		try {
 			String expectedValue = IOUtils.toString(GeneratorTestUtil.class.getResourceAsStream("/generator/" + model
-					+ "Touch2.json"));
+					+ "Touch2" + (apiWithQuotes ? "Q" : "") + ".json"));
 			compareModelString(expectedValue, value, debug);
 		} catch (IOException e) {
 			throw new RuntimeException(e);

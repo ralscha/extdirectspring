@@ -1,0 +1,18 @@
+Ext.define('App.PartialApi',
+{
+  extend : 'Ext.data.Model',
+  fields : [ {
+    name : 'id',
+    type : 'int'
+  }, {
+    name : 'name',
+    type : 'string'
+  } ],
+  proxy : {
+    type : 'direct',
+    api : {
+      read : 'read',
+      destroy : 'destroy'
+    }
+  }
+});

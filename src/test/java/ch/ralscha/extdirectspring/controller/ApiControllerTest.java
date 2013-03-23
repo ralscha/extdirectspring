@@ -320,6 +320,28 @@ public class ApiControllerTest {
 		runTest(mockMvc, params, group2Apis("ns", "http://localhost:80/router"));
 	}
 
+	@Test
+	public void testBaseRouterUrl() throws Exception {
+		ApiRequestParams params = ApiRequestParams.builder().actionNs("").apiNs("an").remotingApiVar("rapi")
+				.pollingUrlsVar("papi").sseVar("sseapi").group("group2").baseRouterUrl("test").build();
+		runTest(mockMvc, params, group2Apis(null, "test/router"));
+	}
+
+	@Test
+	public void testBaseRouterUrlWithEndingSlash() throws Exception {
+		ApiRequestParams params = ApiRequestParams.builder().actionNs("").apiNs("an").remotingApiVar("rapi")
+				.pollingUrlsVar("papi").sseVar("sseapi").group("group2").fullRouterUrl(true)
+				.baseRouterUrl("service/test/").build();
+		runTest(mockMvc, params, group2Apis(null, "service/test/router"));
+	}
+
+	@Test
+	public void testBaseRouterUrlEmptyString() throws Exception {
+		ApiRequestParams params = ApiRequestParams.builder().actionNs("").apiNs("an").remotingApiVar("rapi")
+				.pollingUrlsVar("papi").sseVar("sseapi").group("group2").baseRouterUrl("").build();
+		runTest(mockMvc, params, group2Apis(null, "/router"));
+	}
+
 	static void runTest(MockMvc mockMvc, ApiRequestParams params, RemotingApi api) throws Exception {
 		doTest(mockMvc, "/api-debug-doc.js", params, api);
 		doTest(mockMvc, "/api-debug.js", params, api);
@@ -357,6 +379,9 @@ public class ApiControllerTest {
 		}
 		if (params.isFullRouterUrl() != null) {
 			request.param("fullRouterUrl", "true");
+		}
+		if (params.getBaseRouterUrl() != null) {
+			request.param("baseRouterUrl", params.getBaseRouterUrl());
 		}
 
 		String contentType = "application/javascript";
