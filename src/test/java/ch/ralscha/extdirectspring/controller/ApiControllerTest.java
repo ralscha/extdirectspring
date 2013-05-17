@@ -77,6 +77,7 @@ public class ApiControllerTest {
 
 		Configuration config = new Configuration();
 		ReflectionTestUtils.setField(configurationService, "configuration", config);
+		configurationService.afterPropertiesSet();
 
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
@@ -95,6 +96,7 @@ public class ApiControllerTest {
 		config.setMaxRetries(2);
 		config.setTimeout(12000);
 		ReflectionTestUtils.setField(configurationService, "configuration", config);
+		configurationService.afterPropertiesSet();
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("testC").remotingApiVar("remotingApiV")
 				.pollingUrlsVar("pollingUrlsV").sseVar("sseV").configuration(config).build();
@@ -115,6 +117,7 @@ public class ApiControllerTest {
 		config.setEnableBuffer(false);
 		config.setTimeout(10000);
 		ReflectionTestUtils.setField(configurationService, "configuration", config);
+		configurationService.afterPropertiesSet();
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns").actionNs("actionns")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS").sseVar("TEST_SSE")
@@ -142,6 +145,7 @@ public class ApiControllerTest {
 		config.setEnableBuffer(true);
 		config.setTimeout(33333);
 		ReflectionTestUtils.setField(configurationService, "configuration", config);
+		configurationService.afterPropertiesSet();
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test").remotingApiVar("TEST_REMOTING_API")
 				.pollingUrlsVar("TEST_POLLING_URLS").group("").sseVar("TEST_SSE").configuration(config).build();
@@ -154,6 +158,7 @@ public class ApiControllerTest {
 		config.setEnableBuffer(true);
 		config.setTimeout(33333);
 		ReflectionTestUtils.setField(configurationService, "configuration", config);
+		configurationService.afterPropertiesSet();
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test").remotingApiVar("TEST_REMOTING_API")
 				.pollingUrlsVar("TEST_POLLING_URLS").group("        ").sseVar("TEST_SSE").configuration(config).build();
@@ -173,6 +178,7 @@ public class ApiControllerTest {
 		Configuration config = new Configuration();
 		config.setEnableBuffer(true);
 		ReflectionTestUtils.setField(configurationService, "configuration", config);
+		configurationService.afterPropertiesSet();
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test").remotingApiVar("TEST_REMOTING_API")
 				.pollingUrlsVar("TEST_POLLING_URLS").group("xy").sseVar("TEST_SSE").configuration(config).build();
@@ -194,6 +200,7 @@ public class ApiControllerTest {
 		Configuration config = new Configuration();
 		config.setTimeout(12000);
 		ReflectionTestUtils.setField(configurationService, "configuration", config);
+		configurationService.afterPropertiesSet();
 
 		testGroup1(config, null);
 		testGroup1(config, null);

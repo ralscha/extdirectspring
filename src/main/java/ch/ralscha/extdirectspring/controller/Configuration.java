@@ -21,6 +21,7 @@ import java.util.concurrent.Executors;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.core.convert.ConversionService;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -28,6 +29,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.bean.BaseResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
+import ch.ralscha.extdirectspring.util.JsonHandler;
 
 /**
  * Configuration class to configure different aspects of extdirectspring.
@@ -60,6 +62,10 @@ public class Configuration {
 	private ExecutorService batchedMethodsExecutorService = null;
 
 	private String providerType = "remoting";
+
+	private JsonHandler jsonHandler;
+
+	private ConversionService conversionService;
 
 	public String getDefaultExceptionMessage() {
 		return defaultExceptionMessage;
@@ -382,6 +388,22 @@ public class Configuration {
 	 */
 	public void setProviderType(String providerType) {
 		this.providerType = providerType;
+	}
+
+	public ConversionService getConversionService() {
+		return conversionService;
+	}
+
+	public void setConversionService(ConversionService conversionService) {
+		this.conversionService = conversionService;
+	}
+
+	public JsonHandler getJsonHandler() {
+		return jsonHandler;
+	}
+
+	public void setJsonHandler(JsonHandler jsonHandler) {
+		this.jsonHandler = jsonHandler;
 	}
 
 }

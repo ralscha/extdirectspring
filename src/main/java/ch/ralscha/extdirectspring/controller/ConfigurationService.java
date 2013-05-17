@@ -15,12 +15,16 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
+import java.util.Map;
 import java.util.concurrent.Executors;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.format.support.DefaultFormattingConversionService;
+import org.springframework.format.support.FormattingConversionService;
 import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.util.JsonHandler;
@@ -38,7 +42,6 @@ public class ConfigurationService implements InitializingBean, DisposableBean {
 	@Autowired(required = false)
 	private JsonHandler jsonHandler;
 
-	@Autowired
 	private ParametersResolver parametersResolver;
 
 	@Override
@@ -46,6 +49,10 @@ public class ConfigurationService implements InitializingBean, DisposableBean {
 
 		if (configuration == null) {
 			configuration = new Configuration();
+		}
+
+		if (configuration.getJsonHandler() != null) {
+			jsonHandler = configuration.getJsonHandler();
 		}
 
 		if (jsonHandler == null) {
@@ -56,6 +63,31 @@ public class ConfigurationService implements InitializingBean, DisposableBean {
 				&& configuration.getBatchedMethodsExecutorService() == null) {
 			configuration.setBatchedMethodsExecutorService(Executors.newFixedThreadPool(5));
 		}
+
+		if (configuration.getConversionService() == null) {
+			Map<String, ConversionService> conversionServices = context.getBeansOfType(ConversionService.class);
+			if (conversionServices.isEmpty()) {
+				configuration.setConversionService(new DefaultFormattingConversionService());
+			} else if (conversionServices.size() == 1) {
+				configuration.setConversionService(conversionServices.values().iterator().next());
+			} else {
+				if (conversionServices.containsKey("mvcConversionService")) {
+					configuration.setConversionService(conversionServices.get("mvcConversionService"));
+				} else {
+					for (ConversionService conversionService : conversionServices.values()) {
+						if (conversionService instanceof FormattingConversionService) {
+							configuration.setConversionService(conversionService);
+							break;
+						}
+					}
+					if (configuration.getConversionService() == null) {
+						configuration.setConversionService(conversionServices.values().iterator().next());
+					}
+				}
+			}
+		}
+
+		parametersResolver = new ParametersResolver(configuration.getConversionService(), jsonHandler);
 
 	}
 

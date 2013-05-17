@@ -90,6 +90,7 @@ public class RouterControllerFormPostTest {
 		conf.setDefaultExceptionMessage("something wrong");
 		conf.setSendStacktrace(true);
 		ReflectionTestUtils.setField(configurationService, "configuration", conf);
+		configurationService.afterPropertiesSet();
 
 		Map<String, String> parameters = new LinkedHashMap<String, String>();
 		parameters.put("extTID", "12");
@@ -108,6 +109,7 @@ public class RouterControllerFormPostTest {
 		assertThat(edsResponse.getMethod()).isEqualTo("method1");
 
 		ReflectionTestUtils.setField(configurationService, "configuration", new Configuration());
+		configurationService.afterPropertiesSet();
 	}
 
 	@Test

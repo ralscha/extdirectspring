@@ -11,6 +11,8 @@
 
 	<mvc:annotation-driven />
 
+    <bean id="anotherConversionService" class="org.springframework.format.support.DefaultFormattingConversionService" />
+
 	<bean id="extDirectSpringConfiguration" 
 	      class="ch.ralscha.extdirectspring.controller.Configuration" 
 	      p:enableBuffer="true"

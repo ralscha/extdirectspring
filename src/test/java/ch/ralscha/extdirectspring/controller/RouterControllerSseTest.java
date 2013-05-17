@@ -53,6 +53,7 @@ public class RouterControllerSseTest {
 	public void setupMockMvc() throws Exception {
 		Configuration config = new Configuration();
 		ReflectionTestUtils.setField(configurationService, "configuration", config);
+		configurationService.afterPropertiesSet();
 
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
@@ -75,6 +76,7 @@ public class RouterControllerSseTest {
 		Configuration config = new Configuration();
 		config.setSendStacktrace(true);
 		ReflectionTestUtils.setField(configurationService, "configuration", config);
+		configurationService.afterPropertiesSet();
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProviderXY", "message1", null, null);
 		assertThat(events).hasSize(1);
@@ -149,6 +151,7 @@ public class RouterControllerSseTest {
 		Configuration config = new Configuration();
 		config.setSendStacktrace(true);
 		ReflectionTestUtils.setField(configurationService, "configuration", config);
+		configurationService.afterPropertiesSet();
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message3", null, null);
 		assertThat(events).hasSize(1);

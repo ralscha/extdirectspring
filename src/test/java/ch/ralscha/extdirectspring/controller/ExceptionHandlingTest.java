@@ -150,6 +150,7 @@ public class ExceptionHandlingTest {
 
 	private ExtDirectResponse runTest(Configuration configuration) throws Exception {
 		ReflectionTestUtils.setField(configurationService, "configuration", configuration);
+		configurationService.afterPropertiesSet();
 
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple", "method4b", 2, new Object[] { 3,
 				"xxx", "string.param" });
@@ -166,12 +167,14 @@ public class ExceptionHandlingTest {
 		assertThat(resp.getResult()).isNull();
 
 		ReflectionTestUtils.setField(configurationService, "configuration", new Configuration());
+		configurationService.afterPropertiesSet();
 
 		return resp;
 	}
 
 	private ExtDirectResponse runTest11(Configuration configuration) throws Exception {
 		ReflectionTestUtils.setField(configurationService, "configuration", configuration);
+		configurationService.afterPropertiesSet();
 
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple", "method11", 3, null);
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
@@ -187,6 +190,7 @@ public class ExceptionHandlingTest {
 		assertThat(resp.getResult()).isNull();
 
 		ReflectionTestUtils.setField(configurationService, "configuration", new Configuration());
+		configurationService.afterPropertiesSet();
 
 		return resp;
 	}

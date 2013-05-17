@@ -32,11 +32,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
-import org.springframework.stereotype.Component;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
@@ -44,7 +42,6 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.GroupInfo;
 import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.bean.SortInfo;
-import ch.ralscha.extdirectspring.controller.ConfigurationService;
 import ch.ralscha.extdirectspring.controller.SSEWriter;
 import ch.ralscha.extdirectspring.filter.Filter;
 
@@ -56,16 +53,18 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 /**
  * Resolver of ExtDirectRequest parameters.
  */
-@Component
 public final class ParametersResolver {
 
 	private static final Log log = LogFactory.getLog(ParametersResolver.class);
 
-	@Autowired
-	private ConversionService conversionService;
+	private final ConversionService conversionService;
 
-	@Autowired
-	private ConfigurationService configurationService;
+	private final JsonHandler jsonHandler;
+
+	public ParametersResolver(ConversionService conversionService, JsonHandler jsonHandler) {
+		this.conversionService = conversionService;
+		this.jsonHandler = jsonHandler;
+	}
 
 	public Object[] prepareParameters(HttpServletRequest request, HttpServletResponse response, Locale locale,
 			MethodInfo methodInfo) {
@@ -139,15 +138,13 @@ public final class ParametersResolver {
 									directStoreEntryClass);
 						} else {
 							directStoreModifyRecords = new ArrayList<Object>();
-							directStoreModifyRecords.add(configurationService.getJsonHandler().convertValue(records,
-									directStoreEntryClass));
+							directStoreModifyRecords.add(jsonHandler.convertValue(records, directStoreEntryClass));
 						}
 						remainingParameters = new HashMap<String, Object>(jsonData);
 						remainingParameters.remove("records");
 					} else {
 						directStoreModifyRecords = new ArrayList<Object>();
-						directStoreModifyRecords.add(configurationService.getJsonHandler().convertValue(jsonData,
-								directStoreEntryClass));
+						directStoreModifyRecords.add(jsonHandler.convertValue(jsonData, directStoreEntryClass));
 					}
 				}
 				jsonParamIndex = 1;
@@ -272,23 +269,23 @@ public final class ParametersResolver {
 				} catch (ConversionFailedException e) {
 					// ignore this exception for collections and arrays.
 					// try to convert the value with jackson
-					TypeFactory typeFactory = configurationService.getJsonHandler().getMapper().getTypeFactory();
+					TypeFactory typeFactory = jsonHandler.getMapper().getTypeFactory();
 					if (methodParameter.getTypeDescriptor().isCollection()) {
 						JavaType type = CollectionType.construct(
 								methodParameter.getType(),
 								typeFactory.constructType(methodParameter.getTypeDescriptor()
 										.getElementTypeDescriptor().getType()));
-						return configurationService.getJsonHandler().convertValue(value, type);
+						return jsonHandler.convertValue(value, type);
 					} else if (methodParameter.getTypeDescriptor().isArray()) {
 						JavaType type = typeFactory.constructArrayType(methodParameter.getTypeDescriptor()
 								.getElementTypeDescriptor().getType());
-						return configurationService.getJsonHandler().convertValue(value, type);
+						return jsonHandler.convertValue(value, type);
 					}
 
 					throw e;
 				}
 			} else {
-				return configurationService.getJsonHandler().convertValue(value, methodParameter.getType());
+				return jsonHandler.convertValue(value, methodParameter.getType());
 			}
 
 		}
@@ -306,8 +303,8 @@ public final class ParametersResolver {
 				List<Filter> filters = new ArrayList<Filter>();
 
 				if (value instanceof String) {
-					List<Map<String, Object>> rawFilters = configurationService.getJsonHandler().readValue(
-							(String) value, new TypeReference<List<Map<String, Object>>>() {/* empty */
+					List<Map<String, Object>> rawFilters = jsonHandler.readValue((String) value,
+							new TypeReference<List<Map<String, Object>>>() {/* empty */
 							});
 
 					for (Map<String, Object> rawFilter : rawFilters) {
@@ -404,7 +401,7 @@ public final class ParametersResolver {
 		if (records != null) {
 			List<Object> convertedList = new ArrayList<Object>();
 			for (Object record : records) {
-				Object convertedObject = configurationService.getJsonHandler().convertValue(record, directStoreType);
+				Object convertedObject = jsonHandler.convertValue(record, directStoreType);
 				convertedList.add(convertedObject);
 			}
 			return convertedList;
