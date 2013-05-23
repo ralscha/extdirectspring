@@ -277,7 +277,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>4.2.0.Final</version>
+			<version>4.2.2.Final</version>
 			<scope>test</scope>
 		</dependency>
 
