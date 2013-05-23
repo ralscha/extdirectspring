@@ -15,29 +15,37 @@
  */
 package ch.ralscha.extdirectspring.filter;
 
+import java.util.HashSet;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 public enum Comparison {
-	LESS_THAN("lt"), LESS_THAN_OR_EQUAL("lte"), GREATER_THAN("gt"), GREATER_THAN_OR_EQUAL("gte"), EQUAL("eq"), NOT_EQUAL(
-			"ne"), LIKE("like"), IN("in");
+	LESS_THAN("lt", "<"), LESS_THAN_OR_EQUAL("lte", "<="), GREATER_THAN("gt", ">"), GREATER_THAN_OR_EQUAL("gte", ">="), EQUAL(
+			"eq", "="), NOT_EQUAL("ne", "!="), LIKE("like"), IN("in");
 
-	private final String name;
+	private final Set<String> externalValues;
 
-	private Comparison(String name) {
-		this.name = name;
+	private Comparison(String... values) {
+		externalValues = new HashSet<String>();
+		for (String value : values) {
+			externalValues.add(value);
+		}
 	}
 
-	public String getName() {
-		return name;
+	public boolean is(String externalValue) {
+		return externalValues.contains(externalValue);
 	}
 
-	public static Comparison fromString(String name) {
-		for (Comparison comparison : Comparison.values()) {
-			if (comparison.getName().equalsIgnoreCase(name)) {
-				return comparison;
+	public static Comparison fromString(String externalValue) {
+		if (externalValue != null) {
+			final String externalValueLowerCase = externalValue.toLowerCase();
+			for (Comparison comparison : Comparison.values()) {
+				if (comparison.is(externalValueLowerCase)) {
+					return comparison;
+				}
 			}
 		}
-		throw new NoSuchElementException(name + " not found");
+		throw new NoSuchElementException("Comparison value: '" + externalValue + "' not supported");
 	}
 
 }
