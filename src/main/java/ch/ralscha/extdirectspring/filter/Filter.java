@@ -58,7 +58,7 @@ public class Filter {
 				} else if (filterValue instanceof Boolean) {
 					return new BooleanFilter(property, (Boolean) filterValue);
 				}
-				return new StringFilter(property, filterValue.toString());
+				return new StringFilter(property, filterValue != null ? filterValue.toString() : null);
 			}
 
 			return null;
