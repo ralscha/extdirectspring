@@ -291,7 +291,8 @@ public class RemoteProviderStoreRead {
 
 		List<Filter> filters = new ArrayList<Filter>(request.getFilters());
 		switch (type) {
-		case 1: {
+		case 1:
+		case 15: {
 			assertThat(request.getFilters()).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
 
@@ -312,9 +313,10 @@ public class RemoteProviderStoreRead {
 			assertThat(request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
-			return createResult(1);
+			return createResult(type);
 		}
-		case 2: {
+		case 2:
+		case 16: {
 			assertThat(request.getFilters()).hasSize(2);
 			assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
 			assertThat(filters.get(1)).isInstanceOf(NumericFilter.class);
@@ -338,7 +340,7 @@ public class RemoteProviderStoreRead {
 			assertThat(request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
-			return createResult(2);
+			return createResult(type);
 		}
 		case 3: {
 			assertThat(filters).hasSize(1);
@@ -357,7 +359,7 @@ public class RemoteProviderStoreRead {
 			assertThat(request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
-			return createResult(3);
+			return createResult(type);
 		}
 		case 4: {
 			assertThat(filters).hasSize(1);
@@ -373,7 +375,7 @@ public class RemoteProviderStoreRead {
 			List<Filter> allFiltersForField = request.getAllFiltersForField("visible");
 			assertThat(allFiltersForField).containsExactly(bf1);
 
-			return createResult(4);
+			return createResult(type);
 		}
 		case 5: {
 			assertThat(filters).hasSize(1);
@@ -389,7 +391,7 @@ public class RemoteProviderStoreRead {
 			List<Filter> allFiltersForField = request.getAllFiltersForField("company");
 			assertThat(allFiltersForField).containsExactly(sf1);
 
-			return createResult(5);
+			return createResult(type);
 		}
 		case 6: {
 			assertThat(filters).hasSize(1);
@@ -406,7 +408,7 @@ public class RemoteProviderStoreRead {
 			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
 			assertThat(allFiltersForField).containsExactly(lf1);
 
-			return createResult(6);
+			return createResult(type);
 		}
 		case 7: {
 			assertThat(filters).hasSize(1);
@@ -424,9 +426,10 @@ public class RemoteProviderStoreRead {
 			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
 			assertThat(allFiltersForField).containsExactly(lf1);
 
-			return createResult(7);
+			return createResult(type);
 		}
-		case 8: {
+		case 8:
+		case 17: {
 			assertThat(filters).hasSize(2);
 			assertThat(filters.get(0)).isInstanceOf(DateFilter.class);
 			assertThat(filters.get(1)).isInstanceOf(DateFilter.class);
@@ -447,9 +450,10 @@ public class RemoteProviderStoreRead {
 			List<Filter> allFiltersForField = request.getAllFiltersForField("date");
 			assertThat(allFiltersForField).containsExactly(filters.get(0), filters.get(1));
 
-			return createResult(8);
+			return createResult(type);
 		}
-		case 9: {
+		case 9:
+		case 18: {
 			assertThat(filters).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(DateFilter.class);
 
@@ -464,7 +468,7 @@ public class RemoteProviderStoreRead {
 			List<Filter> allFiltersForField = request.getAllFiltersForField("date");
 			assertThat(allFiltersForField).containsExactly(df1);
 
-			return createResult(9);
+			return createResult(type);
 		}
 		case 10: {
 			assertThat(filters).hasSize(1);
@@ -480,7 +484,7 @@ public class RemoteProviderStoreRead {
 			List<Filter> allFiltersForField = request.getAllFiltersForField("level");
 			assertThat(allFiltersForField).containsExactly(sf1);
 
-			return createResult(10);
+			return createResult(type);
 		}
 		case 11: {
 			assertThat(request.getFilters()).hasSize(1);
@@ -497,7 +501,7 @@ public class RemoteProviderStoreRead {
 			List<Filter> allFiltersForField = request.getAllFiltersForField("level");
 			assertThat(allFiltersForField).containsExactly(nf1);
 
-			return createResult(11);
+			return createResult(type);
 		}
 		case 12: {
 			assertThat(filters).hasSize(1);
@@ -513,7 +517,7 @@ public class RemoteProviderStoreRead {
 			List<Filter> allFiltersForField = request.getAllFiltersForField("level");
 			assertThat(allFiltersForField).containsExactly(bf1);
 
-			return createResult(12);
+			return createResult(type);
 		}
 		case 13: {
 			assertThat(filters).hasSize(1);
@@ -530,7 +534,7 @@ public class RemoteProviderStoreRead {
 			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
 			assertThat(allFiltersForField).containsExactly(lf1);
 
-			return createResult(13);
+			return createResult(type);
 		}
 		case 14: {
 			assertThat(filters).hasSize(1);
@@ -548,7 +552,7 @@ public class RemoteProviderStoreRead {
 			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
 			assertThat(allFiltersForField).containsExactly(lf1);
 
-			return createResult(14);
+			return createResult(type);
 		}
 
 		default: // do nothing

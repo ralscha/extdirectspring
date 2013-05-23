@@ -101,7 +101,7 @@ public class RouterControllerFilterTest {
 			index++;
 		}
 
-		assertThat(index).isEqualTo(15);
+		assertThat(index).isEqualTo(19);
 
 	}
 

@@ -42,7 +42,16 @@ public class ComparisonTest {
 		assertSame(Comparison.NOT_EQUAL, Comparison.fromString("NE"));
 		assertSame(Comparison.IN, Comparison.fromString("IN"));
 		assertSame(Comparison.LIKE, Comparison.fromString("LIKE"));
+	}
 
+	@Test
+	public void testFromOperator() {
+		assertSame(Comparison.LESS_THAN, Comparison.fromString("<"));
+		assertSame(Comparison.GREATER_THAN, Comparison.fromString(">"));
+		assertSame(Comparison.EQUAL, Comparison.fromString("="));
+		assertSame(Comparison.LESS_THAN_OR_EQUAL, Comparison.fromString("<="));
+		assertSame(Comparison.GREATER_THAN_OR_EQUAL, Comparison.fromString(">="));
+		assertSame(Comparison.NOT_EQUAL, Comparison.fromString("!="));
 	}
 
 	@Test(expected = NoSuchElementException.class)
