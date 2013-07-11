@@ -138,7 +138,7 @@ public class ModelAnnotationProcessor extends AbstractProcessor {
 					}
 
 					if (createBaseAndSubclass) {
-						code = code.replaceFirst("(Ext.define\\(\"[^\"]+?)(\",)", "$1Base$2");
+						code = code.replaceFirst("(Ext.define\\([\"'].+?)([\"'],)", "$1Base$2");
 						FileObject fo = processingEnv.getFiler().createResource(StandardLocation.SOURCE_OUTPUT,
 								packageName, fileName + "Base.js");
 						OutputStream os = fo.openOutputStream();
@@ -151,7 +151,7 @@ public class ModelAnnotationProcessor extends AbstractProcessor {
 							InputStream is = fo.openInputStream();
 							is.close();
 						} catch (FileNotFoundException e) {
-							String subClassCode = generateSubclassCode(modelClass, outputConfig.isDebug());
+							String subClassCode = generateSubclassCode(modelClass, outputConfig);
 							fo = processingEnv.getFiler().createResource(StandardLocation.SOURCE_OUTPUT, packageName,
 									fileName + ".js");
 							os = fo.openOutputStream();
@@ -179,7 +179,7 @@ public class ModelAnnotationProcessor extends AbstractProcessor {
 		return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
 	}
 
-	private static String generateSubclassCode(Class<?> clazz, boolean debug) {
+	private static String generateSubclassCode(Class<?> clazz, OutputConfig outputConfig) {
 		Model modelAnnotation = clazz.getAnnotation(Model.class);
 
 		String name;
@@ -194,13 +194,13 @@ public class ModelAnnotationProcessor extends AbstractProcessor {
 
 		StringBuilder sb = new StringBuilder(100);
 		sb.append("Ext.define(\"").append(name).append("\",");
-		if (debug) {
+		if (outputConfig.isDebug()) {
 			sb.append("\n");
 		}
 
 		String configObjectString;
 		try {
-			if (debug) {
+			if (outputConfig.isDebug()) {
 				configObjectString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(modelObject);
 			} else {
 				configObjectString = mapper.writeValueAsString(modelObject);
@@ -217,6 +217,10 @@ public class ModelAnnotationProcessor extends AbstractProcessor {
 		sb.append(configObjectString);
 		sb.append(");");
 
+		if (outputConfig.isUseSingleQuotes()) {
+			return sb.toString().replace('"', '\'');
+		}
+		
 		return sb.toString();
 
 	}
