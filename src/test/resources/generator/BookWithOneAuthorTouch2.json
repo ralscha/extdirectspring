@@ -1,6 +1,7 @@
 Ext.define("ch.ralscha.extdirectspring.generator.bean.BookWithOneAuthor",
 {
   extend : "Ext.data.Model",
+  requires : [ "MyApp.Author" ],
   config : {
     fields : [ {
       name : "id",

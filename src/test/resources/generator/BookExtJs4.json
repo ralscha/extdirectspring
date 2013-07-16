@@ -1,6 +1,7 @@
 Ext.define("MyApp.Book",
 {
   extend : "Ext.data.Model",
+  requires : [ "MyApp.Author" ],
   idProperty : "isbn",
   fields : [ {
     name : "title",
