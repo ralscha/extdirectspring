@@ -485,6 +485,14 @@ public abstract class ModelGenerator {
 		Map<String, Object> modelObject = new LinkedHashMap<String, Object>();
 		modelObject.put("extend", "Ext.data.Model");
 
+		if (!model.getAssociations().isEmpty()) {
+			Set<String> requiredClasses = new HashSet<String>();
+			for (AbstractAssociation association : model.getAssociations()) {
+				requiredClasses.add(association.getModel());
+			}
+			modelObject.put("requires", requiredClasses);
+		}
+		
 		Map<String, Object> configObject = new LinkedHashMap<String, Object>();
 
 		if (StringUtils.hasText(model.getIdProperty()) && !model.getIdProperty().equals("id")) {
