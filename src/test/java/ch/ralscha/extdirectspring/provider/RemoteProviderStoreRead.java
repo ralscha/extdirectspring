@@ -586,7 +586,7 @@ public class RemoteProviderStoreRead {
 
 			return createResult(type);
 		}
-		
+
 		default: // do nothing
 		}
 

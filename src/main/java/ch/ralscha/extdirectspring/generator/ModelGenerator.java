@@ -492,7 +492,7 @@ public abstract class ModelGenerator {
 			}
 			modelObject.put("requires", requiredClasses);
 		}
-		
+
 		Map<String, Object> configObject = new LinkedHashMap<String, Object>();
 
 		if (StringUtils.hasText(model.getIdProperty()) && !model.getIdProperty().equals("id")) {

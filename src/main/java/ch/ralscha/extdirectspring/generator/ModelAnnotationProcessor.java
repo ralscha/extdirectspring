@@ -220,7 +220,7 @@ public class ModelAnnotationProcessor extends AbstractProcessor {
 		if (outputConfig.isUseSingleQuotes()) {
 			return sb.toString().replace('"', '\'');
 		}
-		
+
 		return sb.toString();
 
 	}
