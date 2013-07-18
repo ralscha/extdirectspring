@@ -27,6 +27,7 @@ import ch.ralscha.extdirectspring.generator.bean.Author;
 import ch.ralscha.extdirectspring.generator.bean.Book;
 import ch.ralscha.extdirectspring.generator.bean.BookWithOneAuthor;
 import ch.ralscha.extdirectspring.generator.bean.Employee;
+import ch.ralscha.extdirectspring.generator.bean.EmployeeWithInstanceName;
 import ch.ralscha.extdirectspring.generator.bean.Order;
 import ch.ralscha.extdirectspring.generator.bean.Pos;
 
@@ -153,6 +154,29 @@ public class ModelGeneratorBeansWithAssociationTest {
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Employee.class, OutputFormat.TOUCH2, true);
 		GeneratorTestUtil.compareTouch2Code("Employee", response.getContentAsString(), true, false);
+	}
+
+	@Test
+	public void testEmployeeWithInstanceName() throws IOException {
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, EmployeeWithInstanceName.class,
+				OutputFormat.EXTJS4, true);
+		GeneratorTestUtil.compareExtJs4Code("EmployeeWithInstanceName", response.getContentAsString(), true, false);
+
+		response = new MockHttpServletResponse();
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, EmployeeWithInstanceName.class,
+				OutputFormat.TOUCH2, false);
+		GeneratorTestUtil.compareTouch2Code("EmployeeWithInstanceName", response.getContentAsString(), false, false);
+
+		response = new MockHttpServletResponse();
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, EmployeeWithInstanceName.class,
+				OutputFormat.EXTJS4, true);
+		GeneratorTestUtil.compareExtJs4Code("EmployeeWithInstanceName", response.getContentAsString(), true, false);
+
+		response = new MockHttpServletResponse();
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, EmployeeWithInstanceName.class,
+				OutputFormat.TOUCH2, true);
+		GeneratorTestUtil.compareTouch2Code("EmployeeWithInstanceName", response.getContentAsString(), true, false);
 	}
 
 	@Test

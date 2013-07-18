@@ -126,4 +126,18 @@ public @interface ModelAssociation {
 	 */
 	String getterName() default "";
 
+	/**
+	 * Sets the private config field instanceName of
+	 * Ext.data.association.HasOne, Ext.data.association.HasMany or
+	 * Ext.data.association.BelongsTo
+	 * 
+	 * Setting this property fixes a problem in Ext JS when there are two
+	 * associations that use the same class type (Ext JS only sets one
+	 * assocation correctly).
+	 * 
+	 * Warning: instanceName is a private config field in Ext JS and it can
+	 * change anytime.
+	 */
+	String instanceName() default "";
+
 }

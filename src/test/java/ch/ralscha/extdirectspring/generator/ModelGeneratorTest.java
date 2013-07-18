@@ -484,4 +484,59 @@ public class ModelGeneratorTest {
 						"Ext.define(\"App.Info\",{extend:\"Ext.data.Model\",requires:[\"User\"],config:{fields:[{name:\"id\",type:\"int\"}],associations:[{type:\"hasOne\",model:\"User\",foreignKey:\"user_id\",setterName:\"setUser\",getterName:\"getUser\"}]}});");
 	}
 
+	@Test
+	public void testInstanceNameExtJs() {
+		ModelBean model = new ModelBean();
+		model.setName("App.Info");
+
+		Map<String, ModelFieldBean> fields = new HashMap<String, ModelFieldBean>();
+		fields.put("id", new ModelFieldBean("id", ModelType.INTEGER));
+		model.setFields(fields);
+
+		HasOneAssociation association = new HasOneAssociation("User");
+		association.setInstanceName("userBelongsToInstance");
+		model.addAssociation(association);
+
+		String code = ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false);
+		assertThat(code)
+				.isEqualTo(
+						"Ext.define(\"App.Info\",{extend:\"Ext.data.Model\",requires:[\"User\"],fields:[{name:\"id\",type:\"int\"}],associations:[{type:\"hasOne\",model:\"User\",instanceName:\"userBelongsToInstance\"}]});");
+
+		ModelGenerator.clearCaches();
+		association.setAssociationKey("test");
+		association.setInstanceName("userBelongsToInstance");
+		code = ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false);
+		assertThat(code)
+				.isEqualTo(
+						"Ext.define(\"App.Info\",{extend:\"Ext.data.Model\",requires:[\"User\"],fields:[{name:\"id\",type:\"int\"}],associations:[{type:\"hasOne\",model:\"User\",associationKey:\"test\",instanceName:\"userBelongsToInstance\"}]});");
+
+		ModelGenerator.clearCaches();
+		association.setAssociationKey(null);
+		association.setPrimaryKey("id");
+		association.setInstanceName("userBelongsToInstance");
+		code = ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false);
+		assertThat(code)
+				.isEqualTo(
+						"Ext.define(\"App.Info\",{extend:\"Ext.data.Model\",requires:[\"User\"],fields:[{name:\"id\",type:\"int\"}],associations:[{type:\"hasOne\",model:\"User\",primaryKey:\"id\",instanceName:\"userBelongsToInstance\"}]});");
+
+		ModelGenerator.clearCaches();
+		association.setPrimaryKey(null);
+		association.setGetterName("getUser");
+		association.setInstanceName("userBelongsToInstance");
+		code = ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false);
+		assertThat(code)
+				.isEqualTo(
+						"Ext.define(\"App.Info\",{extend:\"Ext.data.Model\",requires:[\"User\"],fields:[{name:\"id\",type:\"int\"}],associations:[{type:\"hasOne\",model:\"User\",instanceName:\"userBelongsToInstance\",getterName:\"getUser\"}]});");
+
+		ModelGenerator.clearCaches();
+		association.setPrimaryKey(null);
+		association.setSetterName("setUser");
+		association.setForeignKey("user_id");
+		association.setInstanceName("userBelongsToInstance");
+		code = ModelGenerator.generateJavascript(model, OutputFormat.EXTJS4, false);
+		assertThat(code)
+				.isEqualTo(
+						"Ext.define(\"App.Info\",{extend:\"Ext.data.Model\",requires:[\"User\"],fields:[{name:\"id\",type:\"int\"}],associations:[{type:\"hasOne\",model:\"User\",foreignKey:\"user_id\",instanceName:\"userBelongsToInstance\",setterName:\"setUser\",getterName:\"getUser\"}]});");
+	}
+
 }

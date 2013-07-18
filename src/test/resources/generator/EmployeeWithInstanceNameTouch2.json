@@ -1,0 +1,24 @@
+Ext.define("MyApp.Employee",
+{
+  extend : "Ext.data.Model",
+  requires : [ "ch.ralscha.extdirectspring.generator.bean.Address" ],
+  config : {
+    idProperty : "eId",
+    fields : [ {
+      name : "eId",
+      type : "int"
+    }, {
+      name : "address_id",
+      type : "int"
+    } ],
+    associations : [ {
+      type : "hasOne",
+      model : "ch.ralscha.extdirectspring.generator.bean.Address",
+      associationKey : "address",
+      foreignKey : "address_id",
+      instanceName : "addressBelongsToInstance",
+      setterName : "setAddress",
+      getterName : "getAddress"
+    } ]
+  }
+});

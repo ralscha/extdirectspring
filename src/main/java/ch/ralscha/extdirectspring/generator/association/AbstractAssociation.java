@@ -45,6 +45,8 @@ public abstract class AbstractAssociation {
 
 	private String primaryKey;
 
+	private String instanceName;
+
 	/**
 	 * Creates an instance of the AbstractAssociation. Sets {@link #getType()}
 	 * and {@link #getModel()} to the provided parameters.
@@ -118,6 +120,14 @@ public abstract class AbstractAssociation {
 
 	public String getModel() {
 		return model;
+	}
+
+	public String getInstanceName() {
+		return instanceName;
+	}
+
+	public void setInstanceName(String instanceName) {
+		this.instanceName = instanceName;
 	}
 
 	protected static String getModelName(Class<?> model) {
@@ -235,6 +245,10 @@ public abstract class AbstractAssociation {
 			if (StringUtils.hasText(associationAnnotation.name())) {
 				LogFactory.getLog(ModelGenerator.class).warn(getWarningText(field, association.getType(), "name"));
 			}
+		}
+
+		if (StringUtils.hasText(associationAnnotation.instanceName())) {
+			association.setInstanceName(associationAnnotation.instanceName());
 		}
 
 		return association;
