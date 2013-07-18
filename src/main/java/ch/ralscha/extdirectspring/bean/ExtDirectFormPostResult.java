@@ -16,12 +16,14 @@
 package ch.ralscha.extdirectspring.bean;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.context.MessageSource;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
@@ -29,6 +31,10 @@ import org.springframework.validation.FieldError;
  * Represents the result of a FORM_POST method call.
  */
 public class ExtDirectFormPostResult {
+
+	private static final String ERRORS_PROPERTY = "errors";
+
+	private static final String SUCCESS_PROPERTY = "success";
 
 	private final Map<String, Object> result = new HashMap<String, Object>();
 
@@ -59,6 +65,15 @@ public class ExtDirectFormPostResult {
 		setSuccess(success);
 	}
 
+	/**
+	 * Extracts errors from the bindingResult and inserts them into the error
+	 * properties. Sets the property success to false if there are errors. Sets
+	 * the property success to true if there are no errors.
+	 * 
+	 * @param locale
+	 * @param messageSource
+	 * @param bindingResult
+	 */
 	private void addErrors(Locale locale, MessageSource messageSource, BindingResult bindingResult) {
 		if (bindingResult != null && bindingResult.hasFieldErrors()) {
 			Map<String, List<String>> errorMap = new HashMap<String, List<String>>();
@@ -78,14 +93,58 @@ public class ExtDirectFormPostResult {
 				fieldErrors.add(message);
 			}
 			if (errorMap.isEmpty()) {
-				addResultProperty("success", true);
+				addResultProperty(SUCCESS_PROPERTY, true);
 			} else {
-				addResultProperty("errors", errorMap);
-				addResultProperty("success", false);
+				addResultProperty(ERRORS_PROPERTY, errorMap);
+				addResultProperty(SUCCESS_PROPERTY, false);
 			}
 		} else {
 			setSuccess(true);
 		}
+	}
+
+	/**
+	 * Adds one error message to a specific field. Does not overwrite already
+	 * existing errors.
+	 * 
+	 * @param field the name of the field
+	 * @param error the error message
+	 */
+	public void addError(String field, String error) {
+		Assert.notNull(field, "field must not be null");
+		Assert.notNull(error, "field must not be null");
+
+		addErrors(field, Collections.singletonList(error));
+
+		addResultProperty(SUCCESS_PROPERTY, false);
+	}
+
+	/**
+	 * Adds multiple error messages to a specific field. Does not overwrite
+	 * already existing errors.
+	 * 
+	 * @param field the name of the field
+	 * @param error a collection of error messages
+	 */
+	public void addErrors(String field, List<String> errors) {
+		Assert.notNull(field, "field must not be null");
+		Assert.notNull(errors, "field must not be null");
+
+		// do not overwrite existing errors
+		Map<String, List<String>> errorMap = (Map<String, List<String>>) result.get(ERRORS_PROPERTY);
+		if (errorMap == null) {
+			errorMap = new HashMap<String, List<String>>();
+			addResultProperty(ERRORS_PROPERTY, errorMap);
+		}
+
+		List<String> fieldErrors = errorMap.get(field);
+		if (fieldErrors == null) {
+			fieldErrors = new ArrayList<String>();
+			errorMap.put(field, fieldErrors);
+		}
+		fieldErrors.addAll(errors);
+
+		addResultProperty(SUCCESS_PROPERTY, false);
 	}
 
 	public void addResultProperty(String key, Object value) {
@@ -97,7 +156,7 @@ public class ExtDirectFormPostResult {
 	}
 
 	public void setSuccess(boolean flag) {
-		result.put("success", flag);
+		result.put(SUCCESS_PROPERTY, flag);
 	}
 
 }
