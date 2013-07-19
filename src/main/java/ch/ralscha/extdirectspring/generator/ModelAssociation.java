@@ -37,7 +37,7 @@ public @interface ModelAssociation {
 	 * The type of the association.
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-type"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.HasMany-cfg-type"
 	 * >type</a> config property.
 	 */
 	ModelAssociationType value();
@@ -46,7 +46,7 @@ public @interface ModelAssociation {
 	 * The class of the model that is being associated with.
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.Association-cfg-model"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.Association-cfg-model"
 	 * >model</a> config property. The generated Javascript code contains either
 	 * the full qualified class name of the class or the string from
 	 * {@link Model#value()} if present on the class.
@@ -58,7 +58,7 @@ public @interface ModelAssociation {
 	 * instantiated. Defaults to false.
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-autoLoad"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.HasMany-cfg-autoLoad"
 	 * >autoLoad</a> config property.
 	 * <p>
 	 * Only {@link ModelAssociationType#HAS_MANY} association support this
@@ -72,7 +72,7 @@ public @interface ModelAssociation {
 	 * (HAS_MANY) or to the field name (BELONGS_TO, HAS_ONE) + "_id".
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-foreignKey"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.HasMany-cfg-foreignKey"
 	 * >foreignKey</a> config property.
 	 */
 	String foreignKey() default "";
@@ -82,7 +82,7 @@ public @interface ModelAssociation {
 	 * child store. If not specified, the name of the field is used.
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-name"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.HasMany-cfg-name"
 	 * >name</a> config property.
 	 * <p>
 	 * Only {@link ModelAssociationType#HAS_MANY} association support this
@@ -95,7 +95,7 @@ public @interface ModelAssociation {
 	 * In general this will be the value of {@link Model#idProperty()}.
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.Association-cfg-primaryKey"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.Association-cfg-primaryKey"
 	 * >primaryKey</a> config property.
 	 */
 	String primaryKey() default "";
@@ -105,7 +105,7 @@ public @interface ModelAssociation {
 	 * prototype. Defaults to 'set' + name of the field, e.g. setCategory.
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.BelongsTo-cfg-setterName"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.BelongsTo-cfg-setterName"
 	 * >setterName</a> config property.
 	 * <p>
 	 * Only {@link ModelAssociationType#BELONGS_TO} and
@@ -118,7 +118,7 @@ public @interface ModelAssociation {
 	 * prototype. Defaults to 'get' + name of the field, e.g. getCategory.
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.BelongsTo-cfg-getterName"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.BelongsTo-cfg-getterName"
 	 * >getterName</a> config property.
 	 * <p>
 	 * Only {@link ModelAssociationType#BELONGS_TO} and

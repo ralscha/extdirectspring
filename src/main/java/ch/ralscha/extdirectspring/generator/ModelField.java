@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
 public @interface ModelField {
 	/**
 	 * Name of the field. Property '<a
-	 * href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-name"
+	 * href="http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-name"
 	 * >name</a>' in JS.
 	 * <p>
 	 * If not present the name of the field is used.
@@ -43,7 +43,7 @@ public @interface ModelField {
 
 	/**
 	 * Type of the field. Property '<a
-	 * href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-type"
+	 * href="http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-type"
 	 * >type</a>' in JS.
 	 * <p>
 	 * If not present the library tries to figure out the type with
@@ -53,7 +53,7 @@ public @interface ModelField {
 
 	/**
 	 * The default value. Property '<a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-defaultValue"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-defaultValue"
 	 * >defaultValue</a>' in JS.
 	 * <p>
 	 * Can be set to {@link #DEFAULTVALUE_UNDEFINED} to set defaultValue to the
@@ -63,10 +63,10 @@ public @interface ModelField {
 
 	/**
 	 * Specifies format of date. Property '<a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-dateFormat"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-dateFormat"
 	 * >dateFormat</a>' in JS.<br>
 	 * For a list of all supported formats see Sencha Doc: <a
-	 * href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.Date">Ext.Date</a>
+	 * href="http://docs.sencha.com/ext-js/4-2/#!/api/Ext.Date">Ext.Date</a>
 	 * <p>
 	 * Will be ignored if the field is not a {@link ModelType#DATE} field.
 	 */
@@ -77,7 +77,7 @@ public @interface ModelField {
 	 * values are used (0 for integer and float, "" for string and false for
 	 * boolean).<br>
 	 * Property '<a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-useNull"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-useNull"
 	 * >useNull</a>' in JS.<br>
 	 * <p>
 	 * Only used if type of field is {@link ModelType#INTEGER},
@@ -90,7 +90,7 @@ public @interface ModelField {
 	 * Typical use for a virtual field to extract field data from the model
 	 * object <br>
 	 * Property '<a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-mapping"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-mapping"
 	 * >mapping</a>' in JS.
 	 * <p>
 	 */
@@ -101,7 +101,7 @@ public @interface ModelField {
 	 * Ext.data.writer.Writer <br>
 	 * Typical use for a virtual field <br>
 	 * Property '<a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-persist"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-persist"
 	 * >persist</a>' in JS.
 	 * <p>
 	 */
@@ -111,7 +111,7 @@ public @interface ModelField {
 	 * Function which coerces string values in raw data into the field's type <br>
 	 * Typical use for a virtual field <br>
 	 * Property '<a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-convert" >
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-convert" >
 	 * Ext.data.Field.convert</a>' in JS.
 	 * <p>
 	 */
@@ -120,7 +120,7 @@ public @interface ModelField {
 	/**
 	 * Constant for the value undefined. Can only be used for the property
 	 * {@link #defaultValue()}. According to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-defaultValue"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-defaultValue"
 	 * >documentation</a> setting defaultValue to undefined prevents defaulting
 	 * a value.
 	 */

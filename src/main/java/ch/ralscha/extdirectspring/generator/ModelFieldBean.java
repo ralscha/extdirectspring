@@ -67,7 +67,7 @@ public class ModelFieldBean {
 
 	/**
 	 * Name of the field. Property '<a
-	 * href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-name"
+	 * href="http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-name"
 	 * >name</a>' in JS.
 	 * 
 	 * @param name new name for the field
@@ -83,7 +83,7 @@ public class ModelFieldBean {
 
 	/**
 	 * Type of the field. Property '<a
-	 * href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-type"
+	 * href="http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-type"
 	 * >type</a>' in JS.
 	 * 
 	 * @param type new type for the field
@@ -98,7 +98,7 @@ public class ModelFieldBean {
 
 	/**
 	 * The default value. Property '<a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-defaultValue"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-defaultValue"
 	 * >defaultValue</a>' in JS.
 	 * 
 	 * @param defaultValue new defaultValue
@@ -113,10 +113,10 @@ public class ModelFieldBean {
 
 	/**
 	 * Specifies format of date. Property '<a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-dateFormat"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-dateFormat"
 	 * >dateFormat</a>' in JS.<br>
 	 * For a list of all supported formats see Sencha Doc: <a
-	 * href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.Date">Ext.Date</a>
+	 * href="http://docs.sencha.com/ext-js/4-2/#!/api/Ext.Date">Ext.Date</a>
 	 * <p>
 	 * Will be ignored if the field is not a {@link ModelType#DATE} field.
 	 * 
@@ -135,7 +135,7 @@ public class ModelFieldBean {
 	 * values are used (0 for integer and float, "" for string and false for
 	 * boolean).<br>
 	 * Property '<a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-useNull"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-useNull"
 	 * >useNull</a>' in JS.<br>
 	 * <p>
 	 * Only used if type of field is {@link ModelType#INTEGER},
@@ -156,7 +156,7 @@ public class ModelFieldBean {
 	 * Typical use for a virtual field to extract field data from the model
 	 * object <br>
 	 * Property '<a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-mapping"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-mapping"
 	 * >mapping</a>' in JS.<br>
 	 * <p>
 	 * 
@@ -175,7 +175,7 @@ public class ModelFieldBean {
 	 * Ext.data.writer.Writer <br>
 	 * Typical use for a virtual field <br>
 	 * Property '<a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-persist"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-persist"
 	 * >persist</a>' in JS.<br>
 	 * <p>
 	 * 
@@ -194,7 +194,7 @@ public class ModelFieldBean {
 	 * Typical use for a virtual field <br>
 	 * http://localhost/ext4.1/docs/index.html#!/api/Ext.data.Field-cfg-convert
 	 * Property '<a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Field-cfg-convert" >
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Field-cfg-convert" >
 	 * Ext.data.Field.convert</a>' in JS.<br>
 	 * 
 	 * @param convert A function. JavaScript Syntax example: function(v, record)

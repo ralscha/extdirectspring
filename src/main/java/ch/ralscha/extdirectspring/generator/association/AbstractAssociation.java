@@ -68,7 +68,7 @@ public abstract class AbstractAssociation {
 	 * Defaults to the name of the associated model.
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.Association-cfg-associationKey"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.Association-cfg-associationKey"
 	 * >associationKey</a> config property.
 	 * 
 	 * @param associationKey name of the property in the json data
@@ -87,7 +87,7 @@ public abstract class AbstractAssociation {
 	 * (HAS_MANY) or to the field name (BELONGS_TO, HAS_ONE) + "_id".
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-foreignKey"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.HasMany-cfg-foreignKey"
 	 * >foreignKey</a> config property.
 	 * 
 	 * @param foreignKey the new name for the foreignKey
@@ -105,7 +105,7 @@ public abstract class AbstractAssociation {
 	 * In general this will be the value of {@link Model#idProperty()}.
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.Association-cfg-primaryKey"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.Association-cfg-primaryKey"
 	 * >primaryKey</a> config property.
 	 * 
 	 * @param primaryKey the new name for the primaryKey

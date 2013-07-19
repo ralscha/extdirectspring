@@ -34,7 +34,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
 public @interface Model {
 	/**
 	 * "Classname" of the model. See <a
-	 * href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Model"
+	 * href="http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Model"
 	 * >Ext.data.Model</a>.
 	 * <p>
 	 * If not present full qualified name of the class is used.
@@ -43,9 +43,9 @@ public @interface Model {
 
 	/**
 	 * Name of the id property. See <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Model-cfg-idProperty"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.Model-cfg-idProperty"
 	 * >Ext.data.Model#idProperty</a>. This also sets the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.proxy.Server-cfg-idParam"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.proxy.Server-cfg-idParam"
 	 * >idParam</a> property on the proxy.
 	 * <p>
 	 * If not present default value of 'id' is used.
@@ -70,12 +70,12 @@ public @interface Model {
 	/**
 	 * Specifies the read method. This is a ExtDirect reference in the form
 	 * action.methodName. See <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.proxy.Direct-cfg-api"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.proxy.Direct-cfg-api"
 	 * >Ext.data.proxy.Direct#api</a>.
 	 * <p>
 	 * If only the readMethod is specified generator will write property <a
 	 * href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.proxy.Direct-cfg-directFn"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.proxy.Direct-cfg-directFn"
 	 * >directFn</a> instead.
 	 */
 	String readMethod() default "";
@@ -83,7 +83,7 @@ public @interface Model {
 	/**
 	 * Specifies the create method. This is a ExtDirect reference in the form
 	 * action.methodName. See <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.proxy.Direct-cfg-api"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.proxy.Direct-cfg-api"
 	 * >Ext.data.proxy.Direct#api</a>.
 	 */
 	String createMethod() default "";
@@ -91,7 +91,7 @@ public @interface Model {
 	/**
 	 * Specifies the update method. This is a ExtDirect reference in the form
 	 * action.methodName. See <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.proxy.Direct-cfg-api"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.proxy.Direct-cfg-api"
 	 * >Ext.data.proxy.Direct#api</a>.
 	 */
 	String updateMethod() default "";
@@ -99,7 +99,7 @@ public @interface Model {
 	/**
 	 * Specifies the destroy method. This is a ExtDirect reference in the form
 	 * action.methodName. See <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.proxy.Direct-cfg-api"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.proxy.Direct-cfg-api"
 	 * >Ext.data.proxy.Direct#api</a>.
 	 */
 	String destroyMethod() default "";

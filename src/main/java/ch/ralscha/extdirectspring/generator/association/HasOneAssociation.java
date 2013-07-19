@@ -61,7 +61,7 @@ public class HasOneAssociation extends AbstractAssociation {
 	 * setCategory.
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasOne-cfg-setterName"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.HasOne-cfg-setterName"
 	 * >setterName</a> config property.
 	 * 
 	 * @param setterName the new name for the getterName
@@ -80,7 +80,7 @@ public class HasOneAssociation extends AbstractAssociation {
 	 * getCategory.
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasOne-cfg-getterName"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.HasOne-cfg-getterName"
 	 * >getterName</a> config property.
 	 * 
 	 * @param getterName the new name for the getterName

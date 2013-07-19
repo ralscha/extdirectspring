@@ -60,7 +60,7 @@ public class HasManyAssociation extends AbstractAssociation {
 	 * instantiated. Defaults to false.
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-autoLoad"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.HasMany-cfg-autoLoad"
 	 * >autoLoad</a> config property.
 	 * 
 	 * @param autoLoad the new value for autoLoad
@@ -79,7 +79,7 @@ public class HasManyAssociation extends AbstractAssociation {
 	 * used. Always specify this if the class name contains a package component.
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-name"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.HasMany-cfg-name"
 	 * >name</a> config property.
 	 * 
 	 * @param name the new name for the function

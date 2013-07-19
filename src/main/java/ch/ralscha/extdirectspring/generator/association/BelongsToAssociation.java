@@ -61,7 +61,7 @@ public class BelongsToAssociation extends AbstractAssociation {
 	 * setCategory.
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.BelongsTo-cfg-setterName"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.BelongsTo-cfg-setterName"
 	 * >setterName</a> config property.
 	 * 
 	 * @param setterName the new name for the setter function
@@ -80,7 +80,7 @@ public class BelongsToAssociation extends AbstractAssociation {
 	 * getCategory.
 	 * <p>
 	 * Corresponds to the <a href=
-	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.BelongsTo-cfg-getterName"
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.association.BelongsTo-cfg-getterName"
 	 * >getterName</a> config property.
 	 * 
 	 * @param getterName the new name for the getter function
