@@ -15,6 +15,9 @@
  */
 package ch.ralscha.extdirectspring.generator;
 
+import java.util.Collections;
+import java.util.Map;
+
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -37,36 +40,34 @@ class ProxyObjectWithQuotes {
 
 	private ApiObject api;
 
-	private ReaderObject reader;
+	private Map<String, String> reader;
 
-	public ProxyObjectWithQuotes(String idParam, String read, String create, String update, String destroy,
-			boolean paging) {
-
-		if (StringUtils.hasText(idParam) && !idParam.equals("id")) {
-			this.idParam = idParam;
+	public ProxyObjectWithQuotes(ModelBean model, OutputConfig config) {
+		if (StringUtils.hasText(model.getIdProperty()) && !model.getIdProperty().equals("id")) {
+			this.idParam = model.getIdProperty();
 		}
 
 		boolean hasApiMethods = false;
 		ApiObject apiObject = new ApiObject();
 
-		if (StringUtils.hasText(create)) {
+		if (StringUtils.hasText(model.getCreateMethod())) {
 			hasApiMethods = true;
-			apiObject.create = create;
+			apiObject.create = model.getCreateMethod();
 		}
-		if (StringUtils.hasText(update)) {
+		if (StringUtils.hasText(model.getUpdateMethod())) {
 			hasApiMethods = true;
-			apiObject.update = update;
+			apiObject.update = model.getUpdateMethod();
 		}
-		if (StringUtils.hasText(destroy)) {
+		if (StringUtils.hasText(model.getDestroyMethod())) {
 			hasApiMethods = true;
-			apiObject.destroy = destroy;
+			apiObject.destroy = model.getDestroyMethod();
 		}
 
-		if (StringUtils.hasText(read)) {
+		if (StringUtils.hasText(model.getReadMethod())) {
 			if (hasApiMethods) {
-				apiObject.read = read;
+				apiObject.read = model.getReadMethod();
 			} else {
-				this.directFn = read;
+				this.directFn = model.getReadMethod();
 			}
 		}
 
@@ -74,8 +75,9 @@ class ProxyObjectWithQuotes {
 			this.api = apiObject;
 		}
 
-		if (paging) {
-			this.reader = new ReaderObject();
+		if (model.isPaging()) {
+			String rootPropertyName = config.getOutputFormat() == OutputFormat.EXTJS4 ? "root" : "rootProperty";
+			this.reader = Collections.singletonMap(rootPropertyName, "records");
 		}
 	}
 
@@ -90,11 +92,6 @@ class ProxyObjectWithQuotes {
 		private String update;
 
 		private String destroy;
-	}
-
-	@JsonAutoDetect(fieldVisibility = Visibility.ANY)
-	private final class ReaderObject {
-		private final String root = "records";
 	}
 
 	public boolean hasMethods() {

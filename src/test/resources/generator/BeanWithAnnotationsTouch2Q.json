@@ -104,7 +104,7 @@ Ext.define("Sch.Bean",
         destroy : "destroy"
       },
       reader : {
-        root : "records"
+        rootProperty : "records"
       }
     }
   }

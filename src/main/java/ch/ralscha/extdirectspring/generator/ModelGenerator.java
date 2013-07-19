@@ -510,15 +510,12 @@ public abstract class ModelGenerator {
 		}
 
 		if (config.isSurroundApiWithQuotes()) {
-			ProxyObjectWithQuotes proxyObject = new ProxyObjectWithQuotes(model.getIdProperty(), model.getReadMethod(),
-					model.getCreateMethod(), model.getUpdateMethod(), model.getDestroyMethod(), model.isPaging());
+			ProxyObjectWithQuotes proxyObject = new ProxyObjectWithQuotes(model, config);
 			if (proxyObject.hasMethods()) {
 				configObject.put("proxy", proxyObject);
 			}
 		} else {
-			ProxyObjectWithoutQuotes proxyObject = new ProxyObjectWithoutQuotes(model.getIdProperty(),
-					model.getReadMethod(), model.getCreateMethod(), model.getUpdateMethod(), model.getDestroyMethod(),
-					model.isPaging());
+			ProxyObjectWithoutQuotes proxyObject = new ProxyObjectWithoutQuotes(model, config);
 			if (proxyObject.hasMethods()) {
 				configObject.put("proxy", proxyObject);
 			}
