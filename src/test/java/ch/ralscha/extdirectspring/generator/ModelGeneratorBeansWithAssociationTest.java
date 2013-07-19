@@ -30,6 +30,7 @@ import ch.ralscha.extdirectspring.generator.bean.Employee;
 import ch.ralscha.extdirectspring.generator.bean.EmployeeWithInstanceName;
 import ch.ralscha.extdirectspring.generator.bean.Order;
 import ch.ralscha.extdirectspring.generator.bean.Pos;
+import ch.ralscha.extdirectspring.generator.bean.TwoHasOneClass;
 
 public class ModelGeneratorBeansWithAssociationTest {
 
@@ -197,5 +198,28 @@ public class ModelGeneratorBeansWithAssociationTest {
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, Address.class, OutputFormat.TOUCH2, true);
 		GeneratorTestUtil.compareTouch2Code("Address", response.getContentAsString(), true, false);
+	}
+
+	@Test
+	public void testTwoHasOneClass() throws IOException {
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, TwoHasOneClass.class, OutputFormat.EXTJS4,
+				true);
+		GeneratorTestUtil.compareExtJs4Code("TwoHasOneClass", response.getContentAsString(), true, false);
+
+		response = new MockHttpServletResponse();
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, TwoHasOneClass.class, OutputFormat.TOUCH2,
+				false);
+		GeneratorTestUtil.compareTouch2Code("TwoHasOneClass", response.getContentAsString(), false, false);
+
+		response = new MockHttpServletResponse();
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, TwoHasOneClass.class, OutputFormat.EXTJS4,
+				true);
+		GeneratorTestUtil.compareExtJs4Code("TwoHasOneClass", response.getContentAsString(), true, false);
+
+		response = new MockHttpServletResponse();
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, TwoHasOneClass.class, OutputFormat.TOUCH2,
+				true);
+		GeneratorTestUtil.compareTouch2Code("TwoHasOneClass", response.getContentAsString(), true, false);
 	}
 }

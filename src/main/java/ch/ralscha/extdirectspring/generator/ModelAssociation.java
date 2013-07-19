@@ -68,8 +68,8 @@ public @interface ModelAssociation {
 
 	/**
 	 * The name of the foreign key on the associated model that links it to the
-	 * owner model. Defaults to the lowercased name of the owner class plus
-	 * "_id".
+	 * owner model. Defaults to the lowercase name of the owner model + "_id"
+	 * (HAS_MANY) or to the field name (BELONGS_TO, HAS_ONE) + "_id".
 	 * <p>
 	 * Corresponds to the <a href=
 	 * "http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.association.HasMany-cfg-foreignKey"
