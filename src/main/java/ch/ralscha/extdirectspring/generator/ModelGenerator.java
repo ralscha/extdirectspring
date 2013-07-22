@@ -490,7 +490,12 @@ public abstract class ModelGenerator {
 			for (AbstractAssociation association : model.getAssociations()) {
 				requiredClasses.add(association.getModel());
 			}
-			modelObject.put("requires", requiredClasses);
+
+			requiredClasses.remove(model.getName());
+			
+			if (!requiredClasses.isEmpty()) {
+				modelObject.put("requires", requiredClasses);
+			}
 		}
 
 		Map<String, Object> configObject = new LinkedHashMap<String, Object>();
