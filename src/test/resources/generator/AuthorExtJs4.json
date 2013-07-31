@@ -1,7 +1,7 @@
 Ext.define("MyApp.Author",
 {
   extend : "Ext.data.Model",
-  requires : [ "MyApp.Book" ],
+  uses : [ "MyApp.Book" ],
   fields : [ {
     name : "id",
     type : "string"

@@ -1,7 +1,7 @@
 Ext.define("App.TwoHasOneClass",
 {
   extend : "Ext.data.Model",
-  requires : [ "ch.ralscha.extdirectspring.generator.bean.AssociatedClass" ],
+  uses : [ "ch.ralscha.extdirectspring.generator.bean.AssociatedClass" ],
   config : {
     fields : [ ],
     associations : [ {

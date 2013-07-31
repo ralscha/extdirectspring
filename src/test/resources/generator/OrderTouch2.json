@@ -1,7 +1,7 @@
 Ext.define("ch.ralscha.extdirectspring.generator.bean.Order",
 {
   extend : "Ext.data.Model",
-  requires : [ "ch.ralscha.extdirectspring.generator.bean.Pos" ],
+  uses : [ "ch.ralscha.extdirectspring.generator.bean.Pos" ],
   config : {
     fields : [ {
       name : "entityId",

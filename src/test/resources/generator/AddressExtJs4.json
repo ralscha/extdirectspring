@@ -1,7 +1,7 @@
 Ext.define("ch.ralscha.extdirectspring.generator.bean.Address",
 {
   extend : "Ext.data.Model",
-  requires : [ "MyApp.Employee" ],
+  uses : [ "MyApp.Employee" ],
   fields : [ {
     name : "id",
     type : "int"

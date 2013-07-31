@@ -486,15 +486,15 @@ public abstract class ModelGenerator {
 		modelObject.put("extend", "Ext.data.Model");
 
 		if (!model.getAssociations().isEmpty()) {
-			Set<String> requiredClasses = new HashSet<String>();
+			Set<String> usesClasses = new HashSet<String>();
 			for (AbstractAssociation association : model.getAssociations()) {
-				requiredClasses.add(association.getModel());
+				usesClasses.add(association.getModel());
 			}
 
-			requiredClasses.remove(model.getName());
+			usesClasses.remove(model.getName());
 
-			if (!requiredClasses.isEmpty()) {
-				modelObject.put("requires", requiredClasses);
+			if (!usesClasses.isEmpty()) {
+				modelObject.put("uses", usesClasses);
 			}
 		}
 
