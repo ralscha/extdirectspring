@@ -492,7 +492,7 @@ public abstract class ModelGenerator {
 			}
 
 			requiredClasses.remove(model.getName());
-			
+
 			if (!requiredClasses.isEmpty()) {
 				modelObject.put("requires", requiredClasses);
 			}
