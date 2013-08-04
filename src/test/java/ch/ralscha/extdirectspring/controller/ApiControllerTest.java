@@ -660,6 +660,14 @@ public class ApiControllerTest {
 		remotingApi.addAction("bookSubService", new Action("delete4", 1, false));
 		remotingApi.addAction("bookSubService", new Action("create3", 1, false));
 		remotingApi.addAction("bookSubService", new Action("create4", 1, false));
+		
+		remotingApi.addAction("colorOptionService", new Action("createOne", 1, false));
+		remotingApi.addAction("colorOptionService", new Action("createMultiple", 1, false));
+		remotingApi.addAction("colorOptionService", new Action("updateOne", 1, false));
+		remotingApi.addAction("colorOptionService", new Action("updateMultiple", 1, false));
+		remotingApi.addAction("colorOptionService", new Action("destroyOne", 1, false));
+		remotingApi.addAction("colorOptionService", new Action("destroyMultiple", 1, false));
+		remotingApi.addAction("colorOptionService", new Action("simpleMethod", 2, false));
 
 		remotingApi.addAction("remoteProviderSimpleNamed", new Action("method1", new ArrayList<String>()));
 		remotingApi.addAction("remoteProviderSimpleNamed", new Action("method2", Arrays.asList("i", "d", "s")));

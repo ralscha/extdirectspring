@@ -49,11 +49,11 @@ public final class ParameterInfo {
 
 	private String defaultValue;
 
-	public ParameterInfo(Method method, int paramIndex) {
+	public ParameterInfo(Class<?> clazz, Method method, int paramIndex) {
 
 		MethodParameter methodParam = new MethodParameter(method, paramIndex);
 		methodParam.initParameterNameDiscovery(discoverer);
-		GenericTypeResolver.resolveParameterType(methodParam, method.getClass());
+		GenericTypeResolver.resolveParameterType(methodParam, clazz);
 
 		this.name = methodParam.getParameterName();
 		this.typeDescriptor = new TypeDescriptor(methodParam);

@@ -83,7 +83,7 @@ public final class MethodInfo {
 
 		if (type != ExtDirectMethodType.FORM_POST) {
 			this.method = method;
-			this.parameters = buildParameterList(method);
+			this.parameters = buildParameterList(clazz, method);
 
 			this.collectionType = (extDirectMethodAnnotation.entryClass() == Object.class) ? null
 					: extDirectMethodAnnotation.entryClass();
@@ -223,7 +223,7 @@ public final class MethodInfo {
 				.hasText(requestMapping.value()[0]));
 	}
 
-	private static List<ParameterInfo> buildParameterList(Method method) {
+	private static List<ParameterInfo> buildParameterList(Class<?> clazz, Method method) {
 		List<ParameterInfo> params = new ArrayList<ParameterInfo>();
 
 		Class<?>[] parameterTypes = method.getParameterTypes();
@@ -234,7 +234,7 @@ public final class MethodInfo {
 		}
 
 		for (int paramIndex = 0; paramIndex < parameterTypes.length; paramIndex++) {
-			params.add(new ParameterInfo(methodWithAnnotation, paramIndex));
+			params.add(new ParameterInfo(clazz, methodWithAnnotation, paramIndex));
 		}
 
 		return params;
