@@ -63,11 +63,11 @@ public class GenericTest {
 		newColor.setId(1L);
 		newColor.setLongName("longName");
 		newColor.setShortName("shortName");
-		String result = (String) ControllerUtil.sendAndReceive(mockMvc, "colorOptionService", "simpleMethod", String.class,
-				newColor, Collections.singletonList(newColor));
+		String result = (String) ControllerUtil.sendAndReceive(mockMvc, "colorOptionService", "simpleMethod",
+				String.class, newColor, Collections.singletonList(newColor));
 		assertThat(result).isEqualTo("1longNameshortName;1");
 	}
-	
+
 	@Test
 	public void testCreateOne() {
 		Color newColor = new Color();
@@ -224,6 +224,5 @@ public class GenericTest {
 		assertThat(color.getShortName()).isEqualTo("B");
 		assertThat(color.getCreateDate()).isEqualTo(now);
 	}
-
 
 }

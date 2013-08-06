@@ -22,7 +22,7 @@ import java.util.Map;
 
 import org.springframework.util.Assert;
 
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.generator.association.AbstractAssociation;
 import ch.ralscha.extdirectspring.generator.validation.AbstractValidation;
 
@@ -191,7 +191,7 @@ public class ModelBean {
 	/**
 	 * If true a reader config with root : 'records' will be added to the model
 	 * object. This configuration is needef it the STORE_READ method return an
-	 * instance of {@link ExtDirectStoreReadResult}
+	 * instance of {@link ExtDirectStoreResult}
 	 * 
 	 * <pre>
 	 * reader : {

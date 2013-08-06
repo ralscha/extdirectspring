@@ -22,7 +22,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 
 /**
  * Annotation to configure different aspects of a model object
@@ -55,7 +55,7 @@ public @interface Model {
 	/**
 	 * If true a reader config with root : 'records' will be added to the model
 	 * object. This configuration is needef it the STORE_READ method return an
-	 * instance of {@link ExtDirectStoreReadResult}
+	 * instance of {@link ExtDirectStoreResult}
 	 * 
 	 * <pre>
 	 * reader : {

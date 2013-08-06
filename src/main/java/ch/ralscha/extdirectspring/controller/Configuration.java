@@ -28,7 +28,7 @@ import org.springframework.util.StringUtils;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.bean.BaseResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.util.JsonHandler;
 
 /**
@@ -169,7 +169,7 @@ public class Configuration {
 	/**
 	 * If alwaysWrapStoreResponse is true, responses of STORE_READ and
 	 * STORE_MODIFY methods are always wrapped in an
-	 * {@link ExtDirectStoreReadResult} object.
+	 * {@link ExtDirectStoreResult} object.
 	 * 
 	 * @param alwaysWrapStoreResponse new flag
 	 */

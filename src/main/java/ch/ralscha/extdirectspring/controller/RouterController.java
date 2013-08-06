@@ -56,6 +56,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.MethodInfo;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
@@ -299,11 +300,12 @@ public class RouterController {
 					} else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo
 							.isType(ExtDirectMethodType.STORE_READ))
 							&& !ExtDirectStoreReadResult.class.isAssignableFrom(result.getClass())
+							&& !ExtDirectStoreResult.class.isAssignableFrom(result.getClass())
 							&& configurationService.getConfiguration().isAlwaysWrapStoreResponse()) {
 						if (result instanceof Collection) {
-							result = new ExtDirectStoreReadResult((Collection) result);
+							result = new ExtDirectStoreResult((Collection) result);
 						} else {
-							result = new ExtDirectStoreReadResult(result);
+							result = new ExtDirectStoreResult(result);
 						}
 					}
 

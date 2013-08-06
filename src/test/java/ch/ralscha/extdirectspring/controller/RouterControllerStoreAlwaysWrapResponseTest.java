@@ -34,7 +34,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.provider.Row;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -42,8 +42,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:/testApplicationContextWrapResponse.xml")
-@Deprecated
-public class RouterControllerStoreReadAlwaysWrapResponseTest {
+public class RouterControllerStoreAlwaysWrapResponseTest {
 
 	@Autowired
 	private WebApplicationContext wac;
@@ -57,10 +56,10 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 
 	@Test
 	public void testNoArgumentsNoRequestParameters() {
-		ExtDirectStoreReadResult<Row> rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderStoreReadDeprecated", "method1", new TypeReference<ExtDirectStoreReadResult<Row>>() {/* nothing_here */
+		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderStoreRead", "method1", new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
 				});
-		RouterControllerStoreReadTest.assert100Rows(new ArrayList<Row>(rows.getRecords()), "");
+		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()), "");
 	}
 
 	@Test
@@ -69,45 +68,45 @@ public class RouterControllerStoreReadAlwaysWrapResponseTest {
 		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
 		storeRead.setQuery("ralph");
 
-		ExtDirectStoreReadResult<Row> rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderStoreReadDeprecated", "method1", new TypeReference<ExtDirectStoreReadResult<Row>>() {/* nothing_here */
+		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderStoreRead", "method1", new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
 				}, storeRead);
-		RouterControllerStoreReadTest.assert100Rows(new ArrayList<Row>(rows.getRecords()), "");
+		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()), "");
 	}
 
 	@Test
 	public void testSupportedArguments() {
 
-		ExtDirectStoreReadResult<Row> rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderStoreReadDeprecated", "method3", new TypeReference<ExtDirectStoreReadResult<Row>>() {// nothing
+		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderStoreRead", "method3", new TypeReference<ExtDirectStoreResult<Row>>() {// nothing
 					// here
 				});
 
-		RouterControllerStoreReadTest.assert100Rows(new ArrayList<Row>(rows.getRecords()), ":true;true:true;en");
+		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()), ":true;true:true;en");
 
 	}
 
 	@Test
 	public void testWithAdditionalParametersOptional() {
-		ExtDirectStoreReadResult<Row> rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderStoreReadDeprecated", "method7", new TypeReference<ExtDirectStoreReadResult<Row>>() {/* nothing_here */
+		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderStoreRead", "method7", new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
 				});
-		RouterControllerStoreReadTest.assert100Rows(new ArrayList<Row>(rows.getRecords()), ":null");
+		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()), ":null");
 
 		Map<String, Object> readRequest = new HashMap<String, Object>();
 		readRequest.put("id", 11);
 		readRequest.put("query", "");
 
-		rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderStoreReadDeprecated", "method7", new TypeReference<ExtDirectStoreReadResult<Row>>() {/* nothing_here */
+		rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderStoreRead", "method7",
+				new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
 				}, readRequest);
-		RouterControllerStoreReadTest.assert100Rows(new ArrayList<Row>(rows.getRecords()), ":11");
+		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()), ":11");
 	}
 
 	@Test
 	public void testCreateWithDataSingle() {
-		ExtDirectStoreReadResult<Row> rows = (ExtDirectStoreReadResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderStoreModifySingle", "create1", new TypeReference<ExtDirectStoreReadResult<Row>>() {
+		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderStoreModifySingle", "create1", new TypeReference<ExtDirectStoreResult<Row>>() {
 					/* nothing here */
 				}, new Row(10, "Ralph", true, "109.55"));
 		assertThat(rows.getRecords()).hasSize(1);

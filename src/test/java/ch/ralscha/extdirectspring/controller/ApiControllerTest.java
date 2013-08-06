@@ -443,6 +443,8 @@ public class ApiControllerTest {
 		RemotingApi remotingApi = new RemotingApi("remoting", url, namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method6", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method7", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method6", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method7", 1, false));
 		remotingApi.addAction("remoteProviderStoreModify", new Action("update4", 1, false));
@@ -467,6 +469,8 @@ public class ApiControllerTest {
 
 		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method6", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method7", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method6", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method7", 1, false));
 		remotingApi.addAction("remoteProviderStoreModify", new Action("update4", 1, false));
@@ -492,6 +496,7 @@ public class ApiControllerTest {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method9", 0, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method5", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method5", 1, false));
 		remotingApi.addAction("remoteProviderStoreModify", new Action("destroy", 1, false));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("destroy", 1, false));
@@ -566,6 +571,17 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method10", 0, false));
 		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method11", 0, false));
 		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method12", 0, false));
+
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method1", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method2", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method3", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method4", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method5", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method6", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method7", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method8", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("methodFilter", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("methodMetadata", 1, false));
 
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method1", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method2", 1, false));
@@ -660,7 +676,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("bookSubService", new Action("delete4", 1, false));
 		remotingApi.addAction("bookSubService", new Action("create3", 1, false));
 		remotingApi.addAction("bookSubService", new Action("create4", 1, false));
-		
+
 		remotingApi.addAction("colorOptionService", new Action("createOne", 1, false));
 		remotingApi.addAction("colorOptionService", new Action("createMultiple", 1, false));
 		remotingApi.addAction("colorOptionService", new Action("updateOne", 1, false));
@@ -764,6 +780,14 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", new Action("method24", 3, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method25", 3, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method26", 3, false));
+
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method1", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method2", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method3", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method4", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method8", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("methodFilter", 1, false));
+		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("methodMetadata", 1, false));
 
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method1", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method2", 1, false));

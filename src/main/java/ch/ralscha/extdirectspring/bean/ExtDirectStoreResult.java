@@ -24,14 +24,13 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
- * Class representing the result of a STORE_READ method call.
+ * Class representing the result of STORE_READ and STORE_MODIFY methods.
  * 
  * @param <T> Type of the entry inside the collection
  */
 @JsonInclude(Include.NON_NULL)
 @JsonPropertyOrder(value = { "metaData", "success", "total", "records" })
-@Deprecated
-public class ExtDirectStoreReadResult<T> {
+public class ExtDirectStoreResult<T> {
 
 	private Long total;
 
@@ -41,36 +40,36 @@ public class ExtDirectStoreReadResult<T> {
 
 	private MetaData metaData;
 
-	public ExtDirectStoreReadResult() {
+	public ExtDirectStoreResult() {
 		// default constructor
 	}
 
 	@SuppressWarnings("unchecked")
-	public ExtDirectStoreReadResult(T record) {
+	public ExtDirectStoreResult(T record) {
 		this((Long) null, Arrays.asList(record), true);
 	}
 
-	public ExtDirectStoreReadResult(T[] record) {
+	public ExtDirectStoreResult(T[] record) {
 		this((Long) null, Arrays.asList(record), true);
 	}
 
-	public ExtDirectStoreReadResult(Collection<T> records) {
+	public ExtDirectStoreResult(Collection<T> records) {
 		this((Long) null, records, true);
 	}
 
-	public ExtDirectStoreReadResult(Integer total, Collection<T> records) {
+	public ExtDirectStoreResult(Integer total, Collection<T> records) {
 		this(total, records, true);
 	}
 
-	public ExtDirectStoreReadResult(Integer total, Collection<T> records, Boolean success) {
+	public ExtDirectStoreResult(Integer total, Collection<T> records, Boolean success) {
 		this(total != null ? Long.valueOf(total) : null, records, success);
 	}
 
-	public ExtDirectStoreReadResult(Long total, Collection<T> records) {
+	public ExtDirectStoreResult(Long total, Collection<T> records) {
 		this(total, records, true);
 	}
 
-	public ExtDirectStoreReadResult(Long total, Collection<T> records, Boolean success) {
+	public ExtDirectStoreResult(Long total, Collection<T> records, Boolean success) {
 		this.total = total;
 		this.records = records;
 		this.success = success;
@@ -88,6 +87,18 @@ public class ExtDirectStoreReadResult<T> {
 		return success;
 	}
 
+	public void setTotal(Long total) {
+		this.total = total;
+	}
+
+	public void setRecords(Collection<T> records) {
+		this.records = records;
+	}
+
+	public void setSuccess(Boolean success) {
+		this.success = success;
+	}
+
 	public Map<String, Object> getMetaData() {
 		if (metaData != null) {
 			return metaData.getMetaData();
@@ -101,8 +112,8 @@ public class ExtDirectStoreReadResult<T> {
 
 	@Override
 	public String toString() {
-		return "ExtDirectStoreReadResult [total=" + total + ", records=" + records + ", success=" + success
-				+ ", metaData=" + metaData + "]";
+		return "ExtDirectStoreResult [total=" + total + ", records=" + records + ", success=" + success + ", metaData="
+				+ metaData + "]";
 	}
 
 }

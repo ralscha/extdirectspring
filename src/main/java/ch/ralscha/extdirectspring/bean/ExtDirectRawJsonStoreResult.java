@@ -24,32 +24,25 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-/**
- * Special result of a DirectStore request. This class is useful if your data is
- * already in JSON format. Add the JSON to the records collection and the
- * response will contain the unfiltered JSON. There is no validation that the
- * added JSON string is valid.
- */
-@Deprecated
-public class ExtDirectRawJsonStoreReadResult extends ExtDirectStoreReadResult<String> {
+public class ExtDirectRawJsonStoreResult extends ExtDirectStoreResult<String> {
 
-	public ExtDirectRawJsonStoreReadResult(Collection<String> records) {
+	public ExtDirectRawJsonStoreResult(Collection<String> records) {
 		super((Long) null, records, true);
 	}
 
-	public ExtDirectRawJsonStoreReadResult(Integer total, Collection<String> records) {
+	public ExtDirectRawJsonStoreResult(Integer total, Collection<String> records) {
 		super(total, records, true);
 	}
 
-	public ExtDirectRawJsonStoreReadResult(Integer total, Collection<String> records, Boolean success) {
+	public ExtDirectRawJsonStoreResult(Integer total, Collection<String> records, Boolean success) {
 		super(total, records, success);
 	}
 
-	public ExtDirectRawJsonStoreReadResult(Long total, Collection<String> records) {
+	public ExtDirectRawJsonStoreResult(Long total, Collection<String> records) {
 		super(total, records, true);
 	}
 
-	public ExtDirectRawJsonStoreReadResult(Long total, Collection<String> records, Boolean success) {
+	public ExtDirectRawJsonStoreResult(Long total, Collection<String> records, Boolean success) {
 		super(total, records, success);
 	}
 

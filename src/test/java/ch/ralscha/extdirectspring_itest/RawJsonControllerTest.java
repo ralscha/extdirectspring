@@ -41,20 +41,26 @@ public class RawJsonControllerTest extends JettyTest {
 
 	@Test
 	public void testRawResponse() throws ClientProtocolException, IOException {
-		testAndCheck("listUsers1", null, true);
-		testAndCheck("listUsers2", 2, true);
-		testAndCheck("listUsers3", 2, false);
-		testAndCheck("listUsers4", 2, true);
-		testAndCheck("listUsers5", 2, true);
+		testAndCheck("rawJsonController", "listUsers1", null, true);
+		testAndCheck("rawJsonController", "listUsers2", 2, true);
+		testAndCheck("rawJsonController", "listUsers3", 2, false);
+		testAndCheck("rawJsonController", "listUsers4", 2, true);
+		testAndCheck("rawJsonController", "listUsers5", 2, true);
+
+		testAndCheck("rawJsonControllerDeprecated", "listUsers1", null, true);
+		testAndCheck("rawJsonControllerDeprecated", "listUsers2", 2, true);
+		testAndCheck("rawJsonControllerDeprecated", "listUsers3", 2, false);
+		testAndCheck("rawJsonControllerDeprecated", "listUsers4", 2, true);
+		testAndCheck("rawJsonControllerDeprecated", "listUsers5", 2, true);
 	}
 
-	private static void testAndCheck(String method, Integer total, boolean success)
+	private static void testAndCheck(String action, String method, Integer total, boolean success)
 			throws UnsupportedEncodingException, IOException, ClientProtocolException, JsonParseException,
 			JsonMappingException {
 		HttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
-		StringEntity postEntity = new StringEntity("{\"action\":\"rawJsonController\",\"method\":\"" + method
+		StringEntity postEntity = new StringEntity("{\"action\":\"" + action + "\",\"method\":\"" + method
 				+ "\",\"data\":[],\"type\":\"rpc\",\"tid\":1}", "UTF-8");
 		post.setEntity(postEntity);
 		post.setHeader("Content-Type", "application/json; charset=UTF-8");
@@ -74,7 +80,7 @@ public class RawJsonControllerTest extends JettyTest {
 
 		assertEquals(method, rootAsMap.get("method"));
 		assertEquals("rpc", rootAsMap.get("type"));
-		assertEquals("rawJsonController", rootAsMap.get("action"));
+		assertEquals(action, rootAsMap.get("action"));
 		assertEquals(1, rootAsMap.get("tid"));
 
 		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
