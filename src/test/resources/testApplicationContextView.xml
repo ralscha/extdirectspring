@@ -11,12 +11,6 @@
     http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
   
-  <context:component-scan base-package="ch.ralscha.extdirectspring">
-    <context:exclude-filter type="regex" expression="ch\.ralscha\.extdirectspring\.view\..*"/>
-  </context:component-scan>
-
+  <context:component-scan base-package="ch.ralscha.extdirectspring"/>
   <mvc:annotation-driven />
-
-  <bean abstract="true" class="ch.ralscha.extdirectspring.util.TestInterface" />
-  
 </beans>

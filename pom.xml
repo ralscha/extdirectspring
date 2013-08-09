@@ -48,7 +48,7 @@
 	</scm>
 
 	<properties>
-		<spring.version>3.2.2.RELEASE</spring.version>
+		<spring.version>3.2.4.RELEASE</spring.version>
 		<jackson.version>2.2.2</jackson.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -277,7 +277,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>4.2.2.Final</version>
+			<version>4.2.3.Final</version>
 			<scope>test</scope>
 		</dependency>
 

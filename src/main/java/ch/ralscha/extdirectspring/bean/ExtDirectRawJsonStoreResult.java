@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public class ExtDirectRawJsonStoreResult extends ExtDirectStoreResult<String> {
 
 	public ExtDirectRawJsonStoreResult(Collection<String> records) {
-		super((Long) null, records, true);
+		super((Long) null, records, true, null);
 	}
 
 	public ExtDirectRawJsonStoreResult(Integer total, Collection<String> records) {
@@ -39,11 +39,11 @@ public class ExtDirectRawJsonStoreResult extends ExtDirectStoreResult<String> {
 	}
 
 	public ExtDirectRawJsonStoreResult(Long total, Collection<String> records) {
-		super(total, records, true);
+		super(total, records, true, null);
 	}
 
 	public ExtDirectRawJsonStoreResult(Long total, Collection<String> records, Boolean success) {
-		super(total, records, success);
+		super(total, records, success, null);
 	}
 
 	@Override

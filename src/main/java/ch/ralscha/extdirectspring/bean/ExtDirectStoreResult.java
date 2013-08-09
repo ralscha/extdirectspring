@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  */
 @JsonInclude(Include.NON_NULL)
 @JsonPropertyOrder(value = { "metaData", "success", "total", "records" })
-public class ExtDirectStoreResult<T> {
+public class ExtDirectStoreResult<T> extends JsonViewHint {
 
 	private Long total;
 
@@ -46,15 +46,15 @@ public class ExtDirectStoreResult<T> {
 
 	@SuppressWarnings("unchecked")
 	public ExtDirectStoreResult(T record) {
-		this((Long) null, Arrays.asList(record), true);
+		this((Long) null, Arrays.asList(record), true, null);
 	}
 
 	public ExtDirectStoreResult(T[] record) {
-		this((Long) null, Arrays.asList(record), true);
+		this((Long) null, Arrays.asList(record), true, null);
 	}
 
 	public ExtDirectStoreResult(Collection<T> records) {
-		this((Long) null, records, true);
+		this((Long) null, records, true, null);
 	}
 
 	public ExtDirectStoreResult(Integer total, Collection<T> records) {
@@ -62,17 +62,22 @@ public class ExtDirectStoreResult<T> {
 	}
 
 	public ExtDirectStoreResult(Integer total, Collection<T> records, Boolean success) {
-		this(total != null ? Long.valueOf(total) : null, records, success);
+		this(total != null ? Long.valueOf(total) : null, records, success, null);
 	}
 
 	public ExtDirectStoreResult(Long total, Collection<T> records) {
-		this(total, records, true);
+		this(total, records, true, null);
 	}
 
-	public ExtDirectStoreResult(Long total, Collection<T> records, Boolean success) {
+	public ExtDirectStoreResult(Long total, Collection<T> records, Class<?> jsonView) {
+		this(total, records, true, jsonView);
+	}
+
+	public ExtDirectStoreResult(Long total, Collection<T> records, Boolean success, Class<?> jsonView) {
 		this.total = total;
 		this.records = records;
 		this.success = success;
+		setJsonView(jsonView);
 	}
 
 	public Long getTotal() {

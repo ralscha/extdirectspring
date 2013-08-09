@@ -37,6 +37,9 @@ public class ExtDirectResponse extends BaseResponse {
 
 	private boolean streamResponse;
 
+	@JsonIgnore
+	private Class<?> jsonView;
+
 	public ExtDirectResponse() {
 		// needs a default constructor for testing
 	}
@@ -84,10 +87,18 @@ public class ExtDirectResponse extends BaseResponse {
 		this.streamResponse = streamResponse;
 	}
 
+	public Class<?> getJsonView() {
+		return jsonView;
+	}
+
+	public void setJsonView(Class<?> jsonView) {
+		this.jsonView = jsonView;
+	}
+
 	@Override
 	public String toString() {
 		return "ExtDirectResponse [tid=" + tid + ", action=" + action + ", method=" + method + ", result=" + result
-				+ "]";
+				+ ", streamResponse=" + streamResponse + ", jsonView=" + jsonView + "]";
 	}
 
 }

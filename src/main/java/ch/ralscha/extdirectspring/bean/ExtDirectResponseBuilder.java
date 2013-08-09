@@ -53,6 +53,8 @@ public class ExtDirectResponseBuilder {
 
 	private final Map<String, Object> result;
 
+	private Class<?> jsonView;
+
 	/**
 	 * Creates a builder that builds and writes the response of a FORM_POST
 	 * method. Sets the successful flag to true, can be changed with the
@@ -215,6 +217,16 @@ public class ExtDirectResponseBuilder {
 	}
 
 	/**
+	 * Sets a specific JSON View (filter) that Jackson uses to serialize the
+	 * response.
+	 * 
+	 * @param jsonView
+	 */
+	public void setJsonView(Class<?> jsonView) {
+		this.jsonView = jsonView;
+	}
+
+	/**
 	 * Builds and writes the response into the OutputStream of
 	 * {@link HttpServletResponse}. This methods has to be called at the end of
 	 * a FORM_POST method.
@@ -225,7 +237,7 @@ public class ExtDirectResponseBuilder {
 			RouterController routerController = RequestContextUtils.getWebApplicationContext(request).getBean(
 					RouterController.class);
 
-			routerController.writeJsonResponse(request, response, extDirectResponse);
+			routerController.writeJsonResponse(request, response, extDirectResponse, jsonView);
 
 		} catch (IOException e) {
 			LogFactory.getLog(getClass()).error("buildAndWrite", e);

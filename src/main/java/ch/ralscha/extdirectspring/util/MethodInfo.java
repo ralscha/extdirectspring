@@ -46,6 +46,8 @@ public final class MethodInfo {
 
 	private final ExtDirectMethodType type;
 
+	private final Class<?> jsonView;
+
 	private final boolean synchronizeOnSession;
 
 	private final boolean streamResponse;
@@ -71,6 +73,12 @@ public final class MethodInfo {
 		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 
 		this.type = extDirectMethodAnnotation.value();
+
+		if (extDirectMethodAnnotation.jsonView() != ExtDirectMethod.NoJsonView.class) {
+			this.jsonView = extDirectMethodAnnotation.jsonView();
+		} else {
+			this.jsonView = null;
+		}
 
 		if (StringUtils.hasText(extDirectMethodAnnotation.group())) {
 			this.group = extDirectMethodAnnotation.group().trim();
@@ -262,6 +270,10 @@ public final class MethodInfo {
 
 	public boolean isType(ExtDirectMethodType methodType) {
 		return this.type == methodType;
+	}
+
+	public Class<?> getJsonView() {
+		return jsonView;
 	}
 
 	public boolean isSynchronizeOnSession() {

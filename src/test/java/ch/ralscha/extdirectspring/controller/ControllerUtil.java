@@ -260,6 +260,38 @@ public class ControllerUtil {
 
 	}
 
+	public static Object sendAndReceiveObject(MockMvc mockMvc, String bean, String method) {
+		int tid = (int) (Math.random() * 1000);
+
+		MvcResult result = null;
+		try {
+			result = performRouterRequest(mockMvc, createEdsRequest(bean, method, false, tid, null), null, null, false);
+		} catch (JsonProcessingException e) {
+			fail("perform post to /router" + e.getMessage());
+			return null;
+		} catch (Exception e) {
+			fail("perform post to /router" + e.getMessage());
+			return null;
+		}
+
+		List<ExtDirectResponse> responses = readDirectResponses(result.getResponse().getContentAsByteArray());
+		assertThat(responses).hasSize(1);
+
+		ExtDirectResponse edResponse = responses.get(0);
+
+		assertThat(edResponse.getAction()).isEqualTo(bean);
+		assertThat(edResponse.getMethod()).isEqualTo(method);
+		assertThat(edResponse.getTid()).isEqualTo(tid);
+		assertThat(edResponse.getWhere()).isNull();
+
+		return edResponse.getResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Map<String, Object> sendAndReceiveMap(MockMvc mockMvc, String bean, String method) {
+		return (Map<String, Object>) sendAndReceiveObject(mockMvc, bean, method);
+	}
+
 	public static <T> T readValue(String json, Class<?> clazz) {
 		try {
 			return (T) mapper.readValue(json, clazz);
