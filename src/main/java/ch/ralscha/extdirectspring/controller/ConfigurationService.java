@@ -15,6 +15,7 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.Executors;
 
@@ -26,6 +27,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.support.WebArgumentResolver;
 
 import ch.ralscha.extdirectspring.util.JsonHandler;
 import ch.ralscha.extdirectspring.util.ParametersResolver;
@@ -87,8 +89,8 @@ public class ConfigurationService implements InitializingBean, DisposableBean {
 			}
 		}
 
-		parametersResolver = new ParametersResolver(configuration.getConversionService(), jsonHandler);
-
+		Collection<WebArgumentResolver> webResolvers = context.getBeansOfType(WebArgumentResolver.class).values();
+		parametersResolver = new ParametersResolver(configuration.getConversionService(), jsonHandler, webResolvers);
 	}
 
 	@Override

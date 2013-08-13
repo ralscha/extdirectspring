@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.util;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -32,9 +33,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
+import org.springframework.web.bind.support.WebArgumentResolver;
+import org.springframework.web.context.request.ServletWebRequest;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
@@ -61,9 +65,13 @@ public final class ParametersResolver {
 
 	private final JsonHandler jsonHandler;
 
-	public ParametersResolver(ConversionService conversionService, JsonHandler jsonHandler) {
+	private final Collection<WebArgumentResolver> webArgumentResolvers;
+
+	public ParametersResolver(ConversionService conversionService, JsonHandler jsonHandler,
+			Collection<WebArgumentResolver> webArgumentResolvers) {
 		this.conversionService = conversionService;
 		this.jsonHandler = jsonHandler;
+		this.webArgumentResolvers = webArgumentResolvers;
 	}
 
 	public Object[] prepareParameters(HttpServletRequest request, HttpServletResponse response, Locale locale,
@@ -197,10 +205,34 @@ public final class ParametersResolver {
 					parameters[paramIndex] = convertValue(jsonValue, methodParameter);
 					jsonParamIndex++;
 				} else {
-					throw new IllegalArgumentException(
-							"Error, parameter mismatch. Please check your remoting method signature to ensure all supported parameters types are used.");
-				}
 
+					log.info("WebResolvers size:" + this.webArgumentResolvers.size());
+					log.info("ParamIndex:" + paramIndex);
+
+					log.info("Request params size:" + request.getParameterMap().isEmpty());
+					log.info("Request params names:" + request.getParameterMap().keySet());
+					log.info("Direct Request:" + directRequest.toString());
+
+					MethodParameter p = new MethodParameter(methodInfo.getMethod(), paramIndex);
+					request.setAttribute("directRequest", directRequest);
+					ServletWebRequest r = new ServletWebRequest(request);
+					Object result = WebArgumentResolver.UNRESOLVED;
+
+					for (WebArgumentResolver resolver : this.webArgumentResolvers) {
+						log.info("Resolving with:" + resolver.getClass().getCanonicalName());
+
+						result = resolver.resolveArgument(p, r);
+						if (result != WebArgumentResolver.UNRESOLVED) {
+							log.info("Resolved by:" + resolver.getClass().getCanonicalName());
+							parameters[paramIndex] = result;
+							break;
+						}
+					}
+					if (result == WebArgumentResolver.UNRESOLVED) {
+						throw new IllegalArgumentException(
+								"Error, parameter mismatch. Please check your remoting method signature to ensure all supported parameters types are used.");
+					}
+				}
 			}
 		}
 
