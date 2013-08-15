@@ -161,7 +161,7 @@ public class RouterController {
 			} catch (Exception e) {
 				log.error("Error polling method '" + beanName + "." + method + "'", e.getCause() != null ? e.getCause()
 						: e);
-				handleException(directPollResponse, e);
+				handleException(directPollResponse, e, request);
 			}
 		} else {
 			log.error("Error invoking method '" + beanName + "." + method + "'. Method or Bean not found");
@@ -220,10 +220,7 @@ public class RouterController {
 				directResponse.setJsonView(getJsonView(formPostResult, methodInfo.getJsonView()));
 			} catch (Exception e) {
 				log.error("Error calling method: " + extMethod, e.getCause() != null ? e.getCause() : e);
-				handleException(directResponse, e);
-				Map<String, Object> result = new HashMap<String, Object>();
-				result.put("success", false);
-				directResponse.setResult(result);
+				directResponse.setResult(handleException(directResponse, e, request));
 			}
 		} else {
 			streamResponse = configurationService.getConfiguration().isStreamResponse();
@@ -371,7 +368,7 @@ public class RouterController {
 
 			} catch (Exception e) {
 				log.error("Error calling method: " + directRequest.getMethod(), e.getCause() != null ? e.getCause() : e);
-				handleException(directResponse, e);
+				handleException(directResponse, e, request);
 			}
 		} else {
 			log.error("Error invoking method '" + directRequest.getAction() + "." + directRequest.getMethod()
@@ -476,8 +473,8 @@ public class RouterController {
 				methodInfo, parameters);
 	}
 
-	private void handleException(BaseResponse response, Exception e) {
-		configurationService.getRouterExceptionHandler().handleException(response, e);
+	private Object handleException(BaseResponse response, Exception e, HttpServletRequest request) {
+		return configurationService.getRouterExceptionHandler().handleException(response, e, request);
 	}
 
 	private void handleMethodNotFoundError(BaseResponse response, String beanName, String methodName) {

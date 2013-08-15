@@ -15,8 +15,10 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import ch.ralscha.extdirectspring.bean.BaseResponse;
 
 public interface RouterExceptionHandler {
-	void handleException(BaseResponse response, Exception e);
+	Object handleException(BaseResponse response, Exception e, HttpServletRequest request);
 }

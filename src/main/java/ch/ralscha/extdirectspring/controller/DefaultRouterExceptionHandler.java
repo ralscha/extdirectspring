@@ -15,6 +15,11 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import ch.ralscha.extdirectspring.bean.BaseResponse;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
@@ -27,7 +32,7 @@ public class DefaultRouterExceptionHandler implements RouterExceptionHandler {
 	}
 	
 	@Override
-	public void handleException(BaseResponse response, Exception e) {
+	public Object handleException(BaseResponse response, Exception e, HttpServletRequest request) {
 		Throwable cause;
 		if (e.getCause() != null) {
 			cause = e.getCause();
@@ -43,7 +48,8 @@ public class DefaultRouterExceptionHandler implements RouterExceptionHandler {
 		} else {
 			response.setWhere(null);
 		}
-
+		Map<String, Object> result = new HashMap<String, Object>();
+        result.put("success", false);
+        return result;
 	}
-
 }
