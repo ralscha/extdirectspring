@@ -477,21 +477,7 @@ public class RouterController {
 	}
 
 	private void handleException(BaseResponse response, Exception e) {
-		Throwable cause;
-		if (e.getCause() != null) {
-			cause = e.getCause();
-		} else {
-			cause = e;
-		}
-
-		response.setType("exception");
-		response.setMessage(configurationService.getConfiguration().getMessage(cause));
-
-		if (configurationService.getConfiguration().isSendStacktrace()) {
-			response.setWhere(ExtDirectSpringUtil.getStackTrace(cause));
-		} else {
-			response.setWhere(null);
-		}
+		configurationService.getRouterExceptionHandler().handleException(response, e);
 	}
 
 	private void handleMethodNotFoundError(BaseResponse response, String beanName, String methodName) {

@@ -44,6 +44,9 @@ public class ConfigurationService implements InitializingBean, DisposableBean {
 	@Autowired(required = false)
 	private JsonHandler jsonHandler;
 
+	@Autowired(required = false)
+	private RouterExceptionHandler routerExceptionHandler;	
+	
 	private ParametersResolver parametersResolver;
 
 	@Override
@@ -59,6 +62,10 @@ public class ConfigurationService implements InitializingBean, DisposableBean {
 
 		if (jsonHandler == null) {
 			jsonHandler = new JsonHandler();
+		}
+		
+		if (routerExceptionHandler == null) {
+			routerExceptionHandler = new DefaultRouterExceptionHandler(this);
 		}
 
 		if (configuration.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.CONCURRENT
@@ -114,6 +121,10 @@ public class ConfigurationService implements InitializingBean, DisposableBean {
 
 	public ParametersResolver getParametersResolver() {
 		return parametersResolver;
+	}
+
+	public RouterExceptionHandler getRouterExceptionHandler() {
+		return routerExceptionHandler;
 	}
 
 }
