@@ -19,8 +19,10 @@ import java.util.Collections;
 
 import javax.servlet.http.HttpServletRequest;
 
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.BaseResponse;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
+import ch.ralscha.extdirectspring.util.MethodInfo;
 
 public class DefaultRouterExceptionHandler implements RouterExceptionHandler {
 
@@ -31,7 +33,7 @@ public class DefaultRouterExceptionHandler implements RouterExceptionHandler {
 	}
 
 	@Override
-	public Object handleException(BaseResponse response, Exception e, HttpServletRequest request) {
+	public Object handleException(MethodInfo methodInfo, BaseResponse response, Exception e, HttpServletRequest request) {
 		Throwable cause;
 		if (e.getCause() != null) {
 			cause = e.getCause();
@@ -48,6 +50,9 @@ public class DefaultRouterExceptionHandler implements RouterExceptionHandler {
 			response.setWhere(null);
 		}
 
-		return Collections.singletonMap("success", false);
+		if (methodInfo.isType(ExtDirectMethodType.FORM_POST)) {
+			return Collections.singletonMap("success", false);
+		}
+		return null;
 	}
 }
