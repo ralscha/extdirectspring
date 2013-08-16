@@ -39,6 +39,8 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 	private Boolean success;
 
 	private MetaData metaData;
+	
+	private String message; 
 
 	public ExtDirectStoreResult() {
 		// default constructor
@@ -120,5 +122,21 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 		return "ExtDirectStoreResult [total=" + total + ", records=" + records + ", success=" + success + ", metaData="
 				+ metaData + "]";
 	}
+
+    /**
+     * @return the message
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * Beware, for this message to be accessible in your callback operation, 
+     * <br>you <strong>must</strong> add in your model definition the messageProperty value to message {@link ch.ralscha.extdirectspring.generator.Model#messageProperty()}
+     * @param message the message to set
+     */
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
 }
