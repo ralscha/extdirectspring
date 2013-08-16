@@ -45,8 +45,8 @@ public class ConfigurationService implements InitializingBean, DisposableBean {
 	private JsonHandler jsonHandler;
 
 	@Autowired(required = false)
-	private RouterExceptionHandler routerExceptionHandler;	
-	
+	private RouterExceptionHandler routerExceptionHandler;
+
 	private ParametersResolver parametersResolver;
 
 	@Override
@@ -63,7 +63,7 @@ public class ConfigurationService implements InitializingBean, DisposableBean {
 		if (jsonHandler == null) {
 			jsonHandler = new JsonHandler();
 		}
-		
+
 		if (routerExceptionHandler == null) {
 			routerExceptionHandler = new DefaultRouterExceptionHandler(this);
 		}
