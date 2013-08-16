@@ -326,6 +326,10 @@ public abstract class ModelGenerator {
 			if (StringUtils.hasText(modelAnnotation.destroyMethod())) {
 				model.setDestroyMethod(modelAnnotation.destroyMethod());
 			}
+			
+			if (StringUtils.hasText(modelAnnotation.messageProperty())) {
+                model.setMessageProperty(modelAnnotation.messageProperty());
+            }
 		}
 
 		final Set<String> hasReadMethod = new HashSet<String>();

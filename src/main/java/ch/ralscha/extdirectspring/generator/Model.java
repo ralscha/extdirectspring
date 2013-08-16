@@ -54,7 +54,7 @@ public @interface Model {
 
 	/**
 	 * If true a reader config with root : 'records' will be added to the model
-	 * object. This configuration is needef it the STORE_READ method return an
+	 * object. This configuration is needed it the STORE_READ method return an
 	 * instance of {@link ExtDirectStoreResult}
 	 * 
 	 * <pre>
@@ -103,5 +103,21 @@ public @interface Model {
 	 * >Ext.data.proxy.Direct#api</a>.
 	 */
 	String destroyMethod() default "";
+	
+	/**
+	 * if set
+	 * add to reader
+	 * 
+     * <pre>
+     * reader : {
+     *   messageProperty : 'your property name'
+     * }
+     * </pre>
+     * 
+     * It is useful to add a customized message in case of error
+	 * See <a href="http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.reader.Reader-cfg-messageProperty">Ext.data.reader.Reader#messageProperty</a>
+	 * 
+	 */
+	String messageProperty() default "";
 
 }

@@ -16,6 +16,7 @@
 package ch.ralscha.extdirectspring.generator;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.util.StringUtils;
@@ -79,7 +80,14 @@ class ProxyObjectWithoutQuotes {
 
 		if (model.isPaging()) {
 			String rootPropertyName = config.getOutputFormat() == OutputFormat.EXTJS4 ? "root" : "rootProperty";
-			this.reader = Collections.singletonMap(rootPropertyName, "records");
+			if(StringUtils.hasText(model.getMessageProperty())){
+	            this.reader = new HashMap<String, String>();
+	            this.reader.put(rootPropertyName, "records");
+	            this.reader.put("messageProperty", model.getMessageProperty());
+	        }else
+	            this.reader = Collections.singletonMap(rootPropertyName, "records");
+		}else if(StringUtils.hasText(model.getMessageProperty())){
+		    this.reader = Collections.singletonMap("messageProperty", model.getMessageProperty());
 		}
 	}
 

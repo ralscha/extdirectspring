@@ -52,6 +52,8 @@ public class ModelBean {
 	private String updateMethod;
 
 	private String destroyMethod;
+	
+	private String messageProperty;
 
 	public String getName() {
 		return name;
@@ -273,5 +275,31 @@ public class ModelBean {
 	public void setDestroyMethod(String destroyMethod) {
 		this.destroyMethod = destroyMethod;
 	}
+
+    /**
+     * @return the messageProperty
+     */
+    public String getMessageProperty() {
+        return messageProperty;
+    }
+
+    /**
+     * if set
+     * add to reader
+     * 
+     * <pre>
+     * reader : {
+     *   messageProperty : 'your property name'
+     * }
+     * </pre>
+     * 
+     * It is useful to add a customized message in case of error
+     * See <a href="http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.reader.Reader-cfg-messageProperty">Ext.data.reader.Reader#messageProperty</a>
+     * 
+     * @param messageProperty the messageProperty to set
+     */
+    public void setMessageProperty(String messageProperty) {
+        this.messageProperty = messageProperty;
+    }
 
 }
