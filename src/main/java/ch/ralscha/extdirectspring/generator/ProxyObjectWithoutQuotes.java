@@ -80,14 +80,15 @@ class ProxyObjectWithoutQuotes {
 
 		if (model.isPaging()) {
 			String rootPropertyName = config.getOutputFormat() == OutputFormat.EXTJS4 ? "root" : "rootProperty";
-			if(StringUtils.hasText(model.getMessageProperty())){
-	            this.reader = new HashMap<String, String>();
-	            this.reader.put(rootPropertyName, "records");
-	            this.reader.put("messageProperty", model.getMessageProperty());
-	        }else
-	            this.reader = Collections.singletonMap(rootPropertyName, "records");
-		}else if(StringUtils.hasText(model.getMessageProperty())){
-		    this.reader = Collections.singletonMap("messageProperty", model.getMessageProperty());
+			if (StringUtils.hasText(model.getMessageProperty())) {
+				this.reader = new HashMap<String, String>();
+				this.reader.put(rootPropertyName, "records");
+				this.reader.put("messageProperty", model.getMessageProperty());
+			} else {
+				this.reader = Collections.singletonMap(rootPropertyName, "records");
+			}
+		} else if (StringUtils.hasText(model.getMessageProperty())) {
+			this.reader = Collections.singletonMap("messageProperty", model.getMessageProperty());
 		}
 	}
 

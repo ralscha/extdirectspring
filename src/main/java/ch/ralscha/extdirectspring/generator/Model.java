@@ -103,19 +103,19 @@ public @interface Model {
 	 * >Ext.data.proxy.Direct#api</a>.
 	 */
 	String destroyMethod() default "";
-	
+
 	/**
-	 * if set
-	 * add to reader
+	 * if set add to reader
 	 * 
-     * <pre>
-     * reader : {
-     *   messageProperty : 'your property name'
-     * }
-     * </pre>
-     * 
-     * It is useful to add a customized message in case of error
-	 * See <a href="http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.reader.Reader-cfg-messageProperty">Ext.data.reader.Reader#messageProperty</a>
+	 * <pre>
+	 * reader : {
+	 *   messageProperty : 'your property name'
+	 * }
+	 * </pre>
+	 * 
+	 * It is useful to add a customized message in case of error See <a href=
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.reader.Reader-cfg-messageProperty"
+	 * >Ext.data.reader.Reader#messageProperty</a>
 	 * 
 	 */
 	String messageProperty() default "";
