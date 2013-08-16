@@ -161,7 +161,7 @@ public class RouterController {
 			} catch (Exception e) {
 				log.error("Error polling method '" + beanName + "." + method + "'", e.getCause() != null ? e.getCause()
 						: e);
-				handleException(directPollResponse, e, request);
+				directPollResponse.setData(handleException(directPollResponse, e, request));
 			}
 		} else {
 			log.error("Error invoking method '" + beanName + "." + method + "'. Method or Bean not found");
@@ -368,7 +368,7 @@ public class RouterController {
 
 			} catch (Exception e) {
 				log.error("Error calling method: " + directRequest.getMethod(), e.getCause() != null ? e.getCause() : e);
-				handleException(directResponse, e, request);
+				directResponse.setResult(handleException(directResponse, e, request));
 			}
 		} else {
 			log.error("Error invoking method '" + directRequest.getAction() + "." + directRequest.getMethod()
