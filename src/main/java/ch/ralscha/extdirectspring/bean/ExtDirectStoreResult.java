@@ -94,16 +94,19 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 		return success;
 	}
 
-	public void setTotal(Long total) {
+	public ExtDirectStoreResult<T> setTotal(Long total) {
 		this.total = total;
+		return this;
 	}
 
-	public void setRecords(Collection<T> records) {
+	public ExtDirectStoreResult<T> setRecords(Collection<T> records) {
 		this.records = records;
+		return this;
 	}
 
-	public void setSuccess(Boolean success) {
+	public ExtDirectStoreResult<T> setSuccess(Boolean success) {
 		this.success = success;
+		return this;
 	}
 
 	public Map<String, Object> getMetaData() {
@@ -113,8 +116,27 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 		return null;
 	}
 
-	public void setMetaData(MetaData metaData) {
+	public ExtDirectStoreResult<T> setMetaData(MetaData metaData) {
 		this.metaData = metaData;
+		return this;
+	}
+
+	/**
+	 * @return the message
+	 */
+	public String getMessage() {
+	    return message;
+	}
+	
+	/**
+	 * Beware, for this message to be accessible in your callback operation, 
+	 * <br>you <strong>must</strong> add in your model definition the messageProperty value to message {@link ch.ralscha.extdirectspring.generator.Model#messageProperty()}
+	 * @param message the message to set
+	 * @return 
+	 */
+	public ExtDirectStoreResult<T> setMessage(String message) {
+	    this.message = message;
+	    return this;
 	}
 
 	@Override
@@ -123,20 +145,5 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 				+ metaData + "]";
 	}
 
-    /**
-     * @return the message
-     */
-    public String getMessage() {
-        return message;
-    }
-
-    /**
-     * Beware, for this message to be accessible in your callback operation, 
-     * <br>you <strong>must</strong> add in your model definition the messageProperty value to message {@link ch.ralscha.extdirectspring.generator.Model#messageProperty()}
-     * @param message the message to set
-     */
-    public void setMessage(String message) {
-        this.message = message;
-    }
 
 }
