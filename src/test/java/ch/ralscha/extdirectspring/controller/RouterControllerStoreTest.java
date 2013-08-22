@@ -512,7 +512,7 @@ public class RouterControllerStoreTest {
 		assertThat(storeResponse.getRecords()).hasSize(50);
 
 	}
-	
+
 	@Test
 	public void testMessageProperty() {
 		Map<String, Object> readRequest = new HashMap<String, Object>();
