@@ -15,7 +15,10 @@ Ext.define("Sch.Bean2",
     } ],
     proxy : {
       type : "direct",
-      directFn : "read"
+      directFn : "read",
+      reader : {
+        messageProperty : "theMessageProperty"
+      }
     }
   }
 });
