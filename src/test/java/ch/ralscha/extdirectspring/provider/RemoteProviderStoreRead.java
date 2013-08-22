@@ -221,7 +221,7 @@ public class RemoteProviderStoreRead {
 
 		}
 
-		return new ExtDirectStoreResult<Row>().setTotal(Long.valueOf(totalSize)).setRecords(rows);
+		return new ExtDirectStoreResult<Row>().setTotal(Long.valueOf(totalSize)).setRecords(rows).setSuccess(true);
 
 	}
 
