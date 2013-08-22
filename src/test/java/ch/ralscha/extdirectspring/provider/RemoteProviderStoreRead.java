@@ -116,6 +116,13 @@ public class RemoteProviderStoreRead {
 		assertThat(servletRequest).isNotNull();
 		return createExtDirectStoreResult(request, ":" + endDate.toString() + ";" + (servletRequest != null));
 	}
+	
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
+	public ExtDirectStoreResult<Row> method9(ExtDirectStoreReadRequest request) {
+		ExtDirectStoreResult<Row> result = createExtDirectStoreResult(request, "");
+		result.setMessage("everything is okay");
+		return result;		
+	}
 
 	private static ExtDirectStoreResult<Row> createExtDirectStoreResult(ExtDirectStoreReadRequest request,
 			final String appendix) {

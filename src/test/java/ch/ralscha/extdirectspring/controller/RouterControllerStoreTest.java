@@ -512,6 +512,21 @@ public class RouterControllerStoreTest {
 		assertThat(storeResponse.getRecords()).hasSize(50);
 
 	}
+	
+	@Test
+	public void testMessageProperty() {
+		Map<String, Object> readRequest = new HashMap<String, Object>();
+		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderStoreRead", "method9", new TypeReference<ExtDirectStoreResult<Row>>() {
+					// nothing here
+				}, readRequest);
+
+		assertThat(storeResponse.getJsonView()).isNull();
+		assertThat(storeResponse.getMessage()).isEqualTo("everything is okay");
+		assertThat(storeResponse.getTotal()).isEqualTo(100L);
+		assertThat(storeResponse.getRecords()).hasSize(50);
+
+	}
 
 	@Test
 	public void testMetadata() throws Exception {

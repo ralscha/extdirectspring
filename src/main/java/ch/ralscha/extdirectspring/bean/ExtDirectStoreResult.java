@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * @param <T> Type of the entry inside the collection
  */
 @JsonInclude(Include.NON_NULL)
-@JsonPropertyOrder(value = { "metaData", "success", "total", "records" })
+@JsonPropertyOrder(value = { "metaData", "success", "total", "records", "message" })
 public class ExtDirectStoreResult<T> extends JsonViewHint {
 
 	private Long total;
@@ -39,8 +39,8 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 	private Boolean success;
 
 	private MetaData metaData;
-	
-	private String message; 
+
+	private String message;
 
 	public ExtDirectStoreResult() {
 		// default constructor
@@ -125,25 +125,27 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 	 * @return the message
 	 */
 	public String getMessage() {
-	    return message;
+		return message;
 	}
-	
+
 	/**
-	 * Beware, for this message to be accessible in your callback operation, 
-	 * <br>you <strong>must</strong> add in your model definition the messageProperty value to message {@link ch.ralscha.extdirectspring.generator.Model#messageProperty()}
+	 * Beware, for this message to be accessible in your callback operation, <br>
+	 * you <strong>must</strong> add in your model definition the
+	 * messageProperty value to message
+	 * {@link ch.ralscha.extdirectspring.generator.Model#messageProperty()}
+	 * 
 	 * @param message the message to set
-	 * @return 
+	 * @return
 	 */
 	public ExtDirectStoreResult<T> setMessage(String message) {
-	    this.message = message;
-	    return this;
+		this.message = message;
+		return this;
 	}
 
 	@Override
 	public String toString() {
 		return "ExtDirectStoreResult [total=" + total + ", records=" + records + ", success=" + success + ", metaData="
-				+ metaData + "]";
+				+ metaData + ", message=" + message + "]";
 	}
-
 
 }

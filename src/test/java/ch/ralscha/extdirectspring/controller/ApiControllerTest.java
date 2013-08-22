@@ -591,6 +591,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method6", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method7", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method8", 1, false));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method9", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("methodFilter", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("methodMetadata", 1, false));
 
@@ -794,6 +795,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method3", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method4", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method8", 1, false));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method9", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("methodFilter", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("methodMetadata", 1, false));
 
