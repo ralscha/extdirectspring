@@ -62,7 +62,11 @@ public class Configuration {
 	private ExecutorService batchedMethodsExecutorService = null;
 
 	private String providerType = "remoting";
+	
+	private String frameDomain = null;
 
+	private String frameDomainScript = "<script type=\"text/javascript\">document.domain = '%s';</script>";
+	
 	private JsonHandler jsonHandler;
 
 	private ConversionService conversionService;
@@ -388,6 +392,34 @@ public class Configuration {
 	 */
 	public void setProviderType(String providerType) {
 		this.providerType = providerType;
+	}
+	
+	public String getFrameDomain() {
+	  return frameDomain;
+	}
+	
+	/**
+	 * Sets the passed domain to be included in the file upload's temporary frame.
+	 * This is used to grant the main document access to the POST response on the frame in a cross-domain environment.
+	 *
+	 * @param frameDomain the new domain to set the frame to
+	 */
+	public void setFrameDomain(String frameDomain) {
+	  this.frameDomain = frameDomain;
+	}
+
+	public String getFrameDomainScript() {
+	  return frameDomainScript;
+	}
+	
+	/**
+	 * Updates the script that is used to set the domain values on the file upload frame.
+	 * This is useful for cross-browser compatibility. If other browsers require a modified script as workaround, frameDomainScript should allow for it.
+	 * 
+	 * @param frameDomainScript the javascript code used to set the frame domain
+	 */
+	public void setFrameDomainScript(String frameDomainScript) {
+	  this.frameDomainScript = frameDomainScript;
 	}
 
 	public ConversionService getConversionService() {
