@@ -412,7 +412,13 @@ public class RouterController {
 
 			responseJson = responseJson.replace("&quot;", "\\&quot;");
 			bos.write(responseJson.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
-			bos.write("</textarea></body></html>".getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
+			
+			String frameDomain = configurationService.getConfiguration().getFrameDomain();
+			String frameDomainScript = "";
+			if(frameDomain != null) {
+				frameDomainScript = String.format(configurationService.getConfiguration().getFrameDomainScript(), frameDomain);
+			}
+			bos.write(("</textarea>" + frameDomainScript + "</body></html>").getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
 
 			response.setContentLength(bos.size());
 			FileCopyUtils.copy(bos.toByteArray(), response.getOutputStream());
