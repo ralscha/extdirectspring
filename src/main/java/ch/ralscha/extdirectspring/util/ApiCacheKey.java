@@ -31,16 +31,19 @@ public final class ApiCacheKey {
 
 	private final String group;
 
+	private final String routerUrl;
+
 	private final boolean debug;
 
 	public ApiCacheKey(String apiNs, String actionNs, String remotingApiVar, String pollingUrlsVar, String sseVar,
-			String group, boolean debug) {
+			String group, String routerUrl, boolean debug) {
 		this.apiNs = apiNs;
 		this.actionNs = actionNs;
 		this.remotingApiVar = remotingApiVar;
 		this.pollingUrlsVar = pollingUrlsVar;
 		this.sseVar = sseVar;
 		this.group = group;
+		this.routerUrl = routerUrl;
 		this.debug = debug;
 	}
 
@@ -54,13 +57,14 @@ public final class ApiCacheKey {
 		return (ExtDirectSpringUtil.equal(apiNs, other.apiNs) && ExtDirectSpringUtil.equal(actionNs, other.actionNs)
 				&& ExtDirectSpringUtil.equal(remotingApiVar, other.remotingApiVar)
 				&& ExtDirectSpringUtil.equal(pollingUrlsVar, other.pollingUrlsVar)
-				&& ExtDirectSpringUtil.equal(sseVar, other.sseVar) && ExtDirectSpringUtil.equal(group, other.group) && ExtDirectSpringUtil
-					.equal(debug, other.debug));
+				&& ExtDirectSpringUtil.equal(sseVar, other.sseVar) && ExtDirectSpringUtil.equal(group, other.group)
+				&& ExtDirectSpringUtil.equal(routerUrl, other.routerUrl) && ExtDirectSpringUtil.equal(debug,
+				other.debug));
 	}
 
 	@Override
 	public int hashCode() {
-		return Arrays.hashCode(new Object[] { apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, group, debug });
+		return Arrays.hashCode(new Object[] { apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, routerUrl, group, debug });
 	}
 
 }

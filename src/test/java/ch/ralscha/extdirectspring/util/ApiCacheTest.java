@@ -31,14 +31,16 @@ public class ApiCacheTest {
 	public void testPutAndGet() {
 		assertThat(ApiCache.INSTANCE).isNotNull();
 
-		ApiCacheKey key1 = new ApiCacheKey(null, null, null, null, null, null, false);
-		ApiCacheKey key2 = new ApiCacheKey(null, null, null, null, null, null, true);
-		ApiCacheKey key3 = new ApiCacheKey(null, null, null, null, null, "group", true);
-		ApiCacheKey key4 = new ApiCacheKey(null, null, null, null, "sse", "group", true);
-		ApiCacheKey key5 = new ApiCacheKey(null, null, null, "polling", "sse", "group", true);
-		ApiCacheKey key6 = new ApiCacheKey(null, null, "remoting", "polling", "sse", "group", true);
-		ApiCacheKey key7 = new ApiCacheKey(null, "action", "remoting", "polling", "sse", "group", true);
-		ApiCacheKey key8 = new ApiCacheKey("api", "action", "remoting", "polling", "sse", "group", true);
+		ApiCacheKey key1 = new ApiCacheKey(null, null, null, null, null, null, null, false);
+		ApiCacheKey key2 = new ApiCacheKey(null, null, null, null, null, null, null, true);
+		ApiCacheKey key3 = new ApiCacheKey(null, null, null, null, null, null, "/router", true);
+		ApiCacheKey key4 = new ApiCacheKey(null, null, null, null, null, "group", "/router", true);
+		ApiCacheKey key5 = new ApiCacheKey(null, null, null, null, "sse", "group", "/router", true);
+		ApiCacheKey key6 = new ApiCacheKey(null, null, null, "polling", "sse", "group", "/router", true);
+		ApiCacheKey key7 = new ApiCacheKey(null, null, "remoting", "polling", "sse", "group", "/router", true);
+		ApiCacheKey key8 = new ApiCacheKey(null, "action", "remoting", "polling", "sse", "group", "/router", true);
+		ApiCacheKey key9 = new ApiCacheKey("api", "action", "remoting", "polling", "sse", "group", "/router", true);
+
 		ApiCache.INSTANCE.put(key1, "one");
 		ApiCache.INSTANCE.put(key3, "three");
 		ApiCache.INSTANCE.put(key4, "four");
@@ -46,6 +48,7 @@ public class ApiCacheTest {
 		ApiCache.INSTANCE.put(key6, "six");
 		ApiCache.INSTANCE.put(key7, "seven");
 		ApiCache.INSTANCE.put(key8, "eight");
+		ApiCache.INSTANCE.put(key9, "nine");
 
 		assertThat(ApiCache.INSTANCE.get(null)).isNull();
 		assertThat(ApiCache.INSTANCE.get(key2)).isNull();
@@ -57,6 +60,7 @@ public class ApiCacheTest {
 		assertThat(ApiCache.INSTANCE.get(key6)).isEqualTo("six");
 		assertThat(ApiCache.INSTANCE.get(key7)).isEqualTo("seven");
 		assertThat(ApiCache.INSTANCE.get(key8)).isEqualTo("eight");
+		assertThat(ApiCache.INSTANCE.get(key9)).isEqualTo("nine");
 
 		assertThat(key1.equals("test")).isFalse();
 		assertThat(key1.equals(null)).isFalse();
@@ -69,6 +73,7 @@ public class ApiCacheTest {
 		assertThat(key6.equals(key6)).isTrue();
 		assertThat(key7.equals(key7)).isTrue();
 		assertThat(key8.equals(key8)).isTrue();
+		assertThat(key9.equals(key9)).isTrue();
 
 		assertThat(key2.equals(key1)).isFalse();
 		assertThat(key3.equals(key1)).isFalse();
@@ -77,7 +82,52 @@ public class ApiCacheTest {
 		assertThat(key6.equals(key1)).isFalse();
 		assertThat(key7.equals(key1)).isFalse();
 		assertThat(key8.equals(key1)).isFalse();
+		assertThat(key9.equals(key1)).isFalse();
 
+		assertThat(key1.equals(key2)).isFalse();
+		assertThat(key3.equals(key2)).isFalse();
+		assertThat(key4.equals(key2)).isFalse();
+		assertThat(key5.equals(key2)).isFalse();
+		assertThat(key6.equals(key2)).isFalse();
+		assertThat(key7.equals(key2)).isFalse();
+		assertThat(key8.equals(key2)).isFalse();
+		assertThat(key9.equals(key2)).isFalse();
+
+		assertThat(key1.equals(key3)).isFalse();
+		assertThat(key2.equals(key3)).isFalse();
+		assertThat(key4.equals(key3)).isFalse();
+		assertThat(key5.equals(key3)).isFalse();
+		assertThat(key6.equals(key3)).isFalse();
+		assertThat(key7.equals(key3)).isFalse();
+		assertThat(key8.equals(key3)).isFalse();
+		assertThat(key9.equals(key3)).isFalse();
+
+		assertThat(key1.equals(key4)).isFalse();
+		assertThat(key2.equals(key4)).isFalse();
+		assertThat(key3.equals(key4)).isFalse();
+		assertThat(key5.equals(key4)).isFalse();
+		assertThat(key6.equals(key4)).isFalse();
+		assertThat(key7.equals(key4)).isFalse();
+		assertThat(key8.equals(key4)).isFalse();
+		assertThat(key9.equals(key4)).isFalse();
+	}
+
+	@Test
+	public void testEqualKeys() {
+		assertThat(ApiCache.INSTANCE).isNotNull();
+		ApiCache.INSTANCE.clear();
+
+		ApiCacheKey keyOne = new ApiCacheKey("api", "action", "remoting", "polling", "sse", "group", "/router", true);
+		ApiCacheKey keyTwo = new ApiCacheKey("api", "action", "remoting", "polling", "sse", "group", "/router", true);
+
+		ApiCache.INSTANCE.put(keyOne, "1");
+
+		assertThat(ApiCache.INSTANCE.get(keyOne)).isEqualTo("1");
+		assertThat(ApiCache.INSTANCE.get(keyTwo)).isEqualTo("1");
+
+		ApiCache.INSTANCE.put(keyTwo, "2");
+		assertThat(ApiCache.INSTANCE.get(keyOne)).isEqualTo("2");
+		assertThat(ApiCache.INSTANCE.get(keyTwo)).isEqualTo("2");
 	}
 
 }
