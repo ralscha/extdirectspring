@@ -18,23 +18,17 @@ ExtDirectSpring is available from the Central Maven Repository.
     <dependency>
       <groupId>ch.ralscha</groupId>
       <artifactId>extdirectspring</artifactId>
-      <version>1.3.6</version>
+      <version>1.3.7</version>
     </dependency>
 ```
 
-There are two *Archetypes* available. Run the following commands in a shell.
+For a quick start there are archetypes available. 
+See the [Maven Setup](https://github.com/ralscha/extdirectspring/wiki/Setup-Maven#archetypes) wiki page for more information.
 
-Simple project with Spring and ExtDirectSpring: [Online](http://demo.rasc.ch/eds-starter-simple-app/) / [Sourcecode](https://github.com/ralscha/archetypes/tree/master/eds-starter-simple-app):
-```
-mvn archetype:generate -DarchetypeArtifactId=eds-starter-simple-archetype -DarchetypeGroupId=ch.rasc -DarchetypeVersion=1.0.15 -DarchetypeRepository=http://repository.rasc.ch  -DgroupId=com.mycompany -DartifactId=mynewapp -Dversion=0.0.1
-```
 
-Complete project with Spring, ExtDirectSpring, Spring Security, JPA (Hibernate), Spring Data JPA and I18n: [Online](http://demo.rasc.ch/e4ds/) / [Sourcecode](https://github.com/ralscha/e4ds-template): 
-```
-mvn archetype:generate -DarchetypeArtifactId=eds-starter-archetype -DarchetypeGroupId=ch.rasc -DarchetypeVersion=1.0.15 -DarchetypeRepository=http://repository.rasc.ch  -DgroupId=com.mycompany -DartifactId=mynewapp -Dversion=0.0.1
-```
-
-After the generate command is finished, change into the project directory, type `mvn tomcat7:run` and open a browser with the URL: `http://localhost:8080`
+##Support
+If you have a question about extdirectspring post it in our [Google Group forum](https://groups.google.com/forum/#!forum/extdirectspring).
+The official Sencha [Ext.Direct forum](http://www.sencha.com/forum/forumdisplay.php?47-Ext.Direct) is a good place to look for an answer if you have a more general Ext.Direct question.  
 
 
 ##Minimal Requirements
