@@ -37,6 +37,15 @@ class ProxyObjectWithoutQuotes {
 	private final String type = "direct";
 
 	private String idParam;
+	
+	@JsonRawValue
+	private Object pageParam = null;
+	
+	@JsonRawValue
+    private Object startParam = null;
+    
+	@JsonRawValue
+	private Object limitParam = null;
 
 	@JsonRawValue
 	private String directFn;
@@ -50,6 +59,13 @@ class ProxyObjectWithoutQuotes {
 			this.idParam = model.getIdProperty();
 		}
 
+		if (model.isDisablePagingParameters()) {
+			Object value = config.getOutputFormat() == OutputFormat.EXTJS4 ? "undefined" : false;
+			pageParam = value;
+			startParam = value;
+			limitParam = value;
+		}
+		
 		boolean hasApiMethods = false;
 		ApiObject apiObject = new ApiObject();
 

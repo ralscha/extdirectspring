@@ -44,6 +44,8 @@ public class ModelBean {
 	private List<AbstractAssociation> associations = new ArrayList<AbstractAssociation>();
 
 	private boolean paging;
+	
+	private boolean disablePagingParameters;
 
 	private String readMethod;
 
@@ -207,6 +209,31 @@ public class ModelBean {
 		this.paging = paging;
 	}
 
+	
+	public boolean isDisablePagingParameters() {
+		return disablePagingParameters;
+	}
+
+	/**
+	 * If set to true the pageParam, startParam and limitParam option of the proxy will be set to undefined.
+	 * This prevents the proxy of sending the page, start and limit parameter to the server. 
+	 * 
+	 * <pre>
+	 *   proxy: {
+     *     type: 'direct',
+     *     pageParam: undefined,
+     *     startParam: undefined,
+     *     limitParam: undefined,
+     *   }
+	 * </pre>
+	 * 
+	 * Default value is false
+	 */	
+	public void setDisablePagingParameters(boolean disablePagingParameters) {
+		this.disablePagingParameters = disablePagingParameters;
+	}
+	
+	
 	public String getReadMethod() {
 		return readMethod;
 	}

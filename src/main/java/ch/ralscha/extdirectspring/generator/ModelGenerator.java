@@ -310,6 +310,7 @@ public abstract class ModelGenerator {
 		if (modelAnnotation != null) {
 			model.setIdProperty(modelAnnotation.idProperty());
 			model.setPaging(modelAnnotation.paging());
+			model.setDisablePagingParameters(modelAnnotation.disablePagingParameters());
 
 			if (StringUtils.hasText(modelAnnotation.createMethod())) {
 				model.setCreateMethod(modelAnnotation.createMethod());
