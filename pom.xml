@@ -178,7 +178,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.3</version>
+			<version>4.3.1</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -191,7 +191,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
-			<version>4.3</version>
+			<version>4.3.1</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -284,7 +284,7 @@
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.18.0-GA</version>
+			<version>3.18.1-GA</version>
 			<scope>test</scope>
 		</dependency>
 
