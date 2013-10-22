@@ -324,6 +324,24 @@ public enum ExtDirectMethodType {
 
 			return true;
 		}
+	},
+	/**
+     * Specifies a method that handles a form post with a Json payload
+     */
+	FORM_POST_JSON {
+
+        @Override
+        public boolean isValid(String methodName, Class<?> clazz, Method method) {
+            
+            ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+            if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
+                log.warn("STORE_MODIFY method '" + methodName
+                        + "' does not support event attribute of @ExtDirectMethod");
+            }
+
+            return true;
+        }
+	    
 	};
 
 	static final Log log = LogFactory.getLog(ExtDirectMethodType.class);

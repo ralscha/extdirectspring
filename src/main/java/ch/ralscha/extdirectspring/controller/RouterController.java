@@ -349,6 +349,11 @@ public class RouterController {
 						} else {
 							result = new ExtDirectStoreResult(result);
 						}
+					}else if (methodInfo.isType(ExtDirectMethodType.FORM_POST_JSON)){
+					    if (result instanceof ExtDirectFormPostResult) {
+					        ExtDirectFormPostResult formPostResult = (ExtDirectFormPostResult) result;
+					        result = formPostResult.getResult();
+					    }
 					}
 
 					directResponse.setResult(result);
