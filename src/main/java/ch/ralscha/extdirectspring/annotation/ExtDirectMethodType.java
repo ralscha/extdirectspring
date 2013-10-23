@@ -22,7 +22,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -335,10 +337,16 @@ public enum ExtDirectMethodType {
             
             ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
             if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
-                log.warn("STORE_MODIFY method '" + methodName
+                log.warn("FORM_POST_JSON method '" + methodName
                         + "' does not support event attribute of @ExtDirectMethod");
             }
 
+            for (Class<?> clazzz : method.getParameterTypes()) {
+                if(clazzz.isAssignableFrom(BindingResult.class)){
+                    log.error("FORM_POST_JSON method '" + methodName + "' must not have a BindingResult parameter");
+                    return false;
+                }
+            }
             return true;
         }
 	    
