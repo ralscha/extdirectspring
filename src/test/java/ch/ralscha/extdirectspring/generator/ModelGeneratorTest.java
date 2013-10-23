@@ -585,7 +585,7 @@ public class ModelGeneratorTest {
 				.isEqualTo(
 						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",fields:[{name:\"id\",type:\"int\"},{name:\"name\",type:\"string\"}],proxy:{type:\"direct\",pageParam:undefined,startParam:undefined,limitParam:undefined,directFn:\"read\",reader:{messageProperty:\"mp\",root:\"records\"}}});");
 	}
-	
+
 	@Test
 	public void testDisablePagingTouch() {
 		ModelBean model = new ModelBean();

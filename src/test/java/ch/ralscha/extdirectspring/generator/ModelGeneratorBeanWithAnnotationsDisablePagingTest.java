@@ -38,22 +38,26 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class,
 				OutputFormat.EXTJS4, true);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true, false);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true,
+				false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class,
 				OutputFormat.TOUCH2, false);
-		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false, false);
+		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false,
+				false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class,
 				OutputFormat.EXTJS4, true);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true, false);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true,
+				false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class,
 				OutputFormat.TOUCH2, true);
-		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true, false);
+		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true,
+				false);
 
 		OutputConfig outputConfig = new OutputConfig();
 		outputConfig.setOutputFormat(OutputFormat.EXTJS4);
@@ -61,8 +65,10 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 		outputConfig.setSurroundApiWithQuotes(true);
 		outputConfig.setIncludeValidation(IncludeValidation.NONE);
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class, outputConfig);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true, true);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class,
+				outputConfig);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true,
+				true);
 
 		outputConfig = new OutputConfig();
 		outputConfig.setOutputFormat(OutputFormat.TOUCH2);
@@ -70,8 +76,10 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 		outputConfig.setSurroundApiWithQuotes(true);
 		outputConfig.setIncludeValidation(IncludeValidation.NONE);
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class, outputConfig);
-		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true, true);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class,
+				outputConfig);
+		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true,
+				true);
 
 		outputConfig = new OutputConfig();
 		outputConfig.setOutputFormat(OutputFormat.EXTJS4);
@@ -79,8 +87,10 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 		outputConfig.setSurroundApiWithQuotes(true);
 		outputConfig.setIncludeValidation(IncludeValidation.NONE);
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class, outputConfig);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false, true);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class,
+				outputConfig);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false,
+				true);
 
 		outputConfig = new OutputConfig();
 		outputConfig.setOutputFormat(OutputFormat.TOUCH2);
@@ -88,8 +98,10 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 		outputConfig.setSurroundApiWithQuotes(true);
 		outputConfig.setIncludeValidation(IncludeValidation.NONE);
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class, outputConfig);
-		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true, true);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class,
+				outputConfig);
+		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true,
+				true);
 	}
 
 	@Test
@@ -97,12 +109,14 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class,
 				OutputFormat.EXTJS4);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false, false);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false,
+				false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class,
 				OutputFormat.TOUCH2);
-		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false, false);
+		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false,
+				false);
 
 		OutputConfig outputConfig = new OutputConfig();
 		outputConfig.setOutputFormat(OutputFormat.EXTJS4);
@@ -110,8 +124,10 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 		outputConfig.setSurroundApiWithQuotes(true);
 		outputConfig.setIncludeValidation(IncludeValidation.NONE);
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class, outputConfig);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false, true);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class,
+				outputConfig);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false,
+				true);
 
 		outputConfig = new OutputConfig();
 		outputConfig.setOutputFormat(OutputFormat.TOUCH2);
@@ -119,8 +135,10 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 		outputConfig.setSurroundApiWithQuotes(true);
 		outputConfig.setIncludeValidation(IncludeValidation.NONE);
 		response = new MockHttpServletResponse();
-		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class, outputConfig);
-		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false, true);
+		ModelGenerator.writeModel(new MockHttpServletRequest(), response, BeanWithAnnotationsDisablePaging.class,
+				outputConfig);
+		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false,
+				true);
 	}
 
 	@Test
@@ -128,11 +146,13 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelBean model = ModelGenerator.createModel(BeanWithAnnotationsDisablePaging.class);
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.EXTJS4);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false, false);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false,
+				false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.TOUCH2);
-		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false, false);
+		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false,
+				false);
 
 		OutputConfig outputConfig = new OutputConfig();
 		outputConfig.setOutputFormat(OutputFormat.EXTJS4);
@@ -142,7 +162,8 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 		response = new MockHttpServletResponse();
 		model = ModelGenerator.createModel(BeanWithAnnotationsDisablePaging.class);
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, outputConfig);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false, true);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false,
+				true);
 
 		outputConfig = new OutputConfig();
 		outputConfig.setOutputFormat(OutputFormat.TOUCH2);
@@ -151,7 +172,8 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 		outputConfig.setIncludeValidation(IncludeValidation.NONE);
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, outputConfig);
-		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false, true);
+		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false,
+				true);
 
 	}
 
@@ -160,19 +182,23 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ModelBean model = ModelGenerator.createModel(BeanWithAnnotationsDisablePaging.class);
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.EXTJS4, false);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false, false);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false,
+				false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.TOUCH2, false);
-		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false, false);
+		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false,
+				false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.EXTJS4, true);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true, false);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true,
+				false);
 
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, OutputFormat.TOUCH2, true);
-		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true, false);
+		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true,
+				false);
 
 		OutputConfig outputConfig = new OutputConfig();
 		outputConfig.setOutputFormat(OutputFormat.EXTJS4);
@@ -182,7 +208,8 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 		response = new MockHttpServletResponse();
 		model = ModelGenerator.createModel(BeanWithAnnotationsDisablePaging.class);
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, outputConfig);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false, true);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false,
+				true);
 
 		outputConfig = new OutputConfig();
 		outputConfig.setOutputFormat(OutputFormat.TOUCH2);
@@ -191,7 +218,8 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 		outputConfig.setIncludeValidation(IncludeValidation.NONE);
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, outputConfig);
-		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false, true);
+		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), false,
+				true);
 
 		outputConfig = new OutputConfig();
 		outputConfig.setOutputFormat(OutputFormat.EXTJS4);
@@ -200,7 +228,8 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 		outputConfig.setIncludeValidation(IncludeValidation.NONE);
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, outputConfig);
-		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true, true);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true,
+				true);
 
 		outputConfig = new OutputConfig();
 		outputConfig.setOutputFormat(OutputFormat.TOUCH2);
@@ -209,24 +238,25 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 		outputConfig.setIncludeValidation(IncludeValidation.NONE);
 		response = new MockHttpServletResponse();
 		ModelGenerator.writeModel(new MockHttpServletRequest(), response, model, outputConfig);
-		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true, true);
+		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging", response.getContentAsString(), true,
+				true);
 	}
 
 	@Test
 	public void testGenerateJavascriptClassOfQOutputFormatBoolean() {
 		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging",
-				ModelGenerator.generateJavascript(BeanWithAnnotationsDisablePaging.class, OutputFormat.EXTJS4, true), true, false);
-		GeneratorTestUtil
-				.compareExtJs4Code("BeanWithAnnotationsDisablePaging",
-						ModelGenerator.generateJavascript(BeanWithAnnotationsDisablePaging.class, OutputFormat.EXTJS4, false),
-						false, false);
+				ModelGenerator.generateJavascript(BeanWithAnnotationsDisablePaging.class, OutputFormat.EXTJS4, true),
+				true, false);
+		GeneratorTestUtil.compareExtJs4Code("BeanWithAnnotationsDisablePaging",
+				ModelGenerator.generateJavascript(BeanWithAnnotationsDisablePaging.class, OutputFormat.EXTJS4, false),
+				false, false);
 
 		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging",
-				ModelGenerator.generateJavascript(BeanWithAnnotationsDisablePaging.class, OutputFormat.TOUCH2, true), true, false);
-		GeneratorTestUtil
-				.compareTouch2Code("BeanWithAnnotationsDisablePaging",
-						ModelGenerator.generateJavascript(BeanWithAnnotationsDisablePaging.class, OutputFormat.TOUCH2, false),
-						false, false);
+				ModelGenerator.generateJavascript(BeanWithAnnotationsDisablePaging.class, OutputFormat.TOUCH2, true),
+				true, false);
+		GeneratorTestUtil.compareTouch2Code("BeanWithAnnotationsDisablePaging",
+				ModelGenerator.generateJavascript(BeanWithAnnotationsDisablePaging.class, OutputFormat.TOUCH2, false),
+				false, false);
 
 		OutputConfig outputConfig = new OutputConfig();
 		outputConfig.setOutputFormat(OutputFormat.EXTJS4);

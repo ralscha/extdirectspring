@@ -29,7 +29,7 @@ import ch.ralscha.extdirectspring.generator.ModelType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Model(value = "Sch.Bean2", idProperty = "id", paging = false, readMethod = "read", messageProperty = "theMessageProperty", disablePagingParameters=true)
+@Model(value = "Sch.Bean2", idProperty = "id", paging = false, readMethod = "read", messageProperty = "theMessageProperty", disablePagingParameters = true)
 public class BeanWithAnnotationsDisablePaging extends Base {
 
 	@Pattern(regexp = "[a-zA-Z]*")

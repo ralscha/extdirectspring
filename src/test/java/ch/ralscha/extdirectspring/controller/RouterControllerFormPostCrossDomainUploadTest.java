@@ -55,7 +55,7 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 	public void setupMockMvc() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
-	
+
 	@Test
 	public void testUpload() throws Exception {
 		MockMultipartHttpServletRequestBuilder request = fileUpload("/router");

@@ -36,39 +36,32 @@ public class FormInfoController3 {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
 	@RequestMapping(value = "/updateInfoJson", method = RequestMethod.POST)
-	public ExtDirectFormPostResult updateInfoJson(
-	        Locale locale, 
-	        HttpServletRequest request, 
-	        HttpServletResponse response, 
-	        @Valid FormInfo formInfo) {
-	    
-	    return new ExtDirectFormPostResult(true);
+	public ExtDirectFormPostResult updateInfoJson(Locale locale, HttpServletRequest request,
+			HttpServletResponse response, @Valid FormInfo formInfo) {
+
+		return new ExtDirectFormPostResult(true);
 	}
-	
+
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
-    public ExtDirectFormPostResult updateInfoJsonDirect(Locale locale, @Valid FormInfo formInfo) {
-	    
-        ExtDirectFormPostResult e = new ExtDirectFormPostResult();
-        e.addResultProperty("name", formInfo.getName().toUpperCase());
-        e.addResultProperty("age", formInfo.getAge() + 10);
-        e.addResultProperty("admin", !formInfo.isAdmin());
-        BigDecimal bd = new BigDecimal("1000");
-        bd = bd.add(formInfo.getSalary());
-        e.addResultProperty("salary", bd);
-        e.addResultProperty("result", formInfo.getResult() + "RESULT");
-        return e;
-    }
-	
+	public ExtDirectFormPostResult updateInfoJsonDirect(Locale locale, @Valid FormInfo formInfo) {
+
+		ExtDirectFormPostResult e = new ExtDirectFormPostResult();
+		e.addResultProperty("name", formInfo.getName().toUpperCase());
+		e.addResultProperty("age", formInfo.getAge() + 10);
+		e.addResultProperty("admin", !formInfo.isAdmin());
+		BigDecimal bd = new BigDecimal("1000");
+		bd = bd.add(formInfo.getSalary());
+		e.addResultProperty("salary", bd);
+		e.addResultProperty("result", formInfo.getResult() + "RESULT");
+		return e;
+	}
+
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
-    public ExtDirectFormPostResult updateInfoJsonDirectError(
-            Locale locale, 
-            HttpServletRequest request, 
-            HttpServletResponse response, 
-            @Valid FormInfo formInfo, 
-            BindingResult result) {
-	    
-	    result.rejectValue("age", "age is wrong");
-        ExtDirectFormPostResult e = new ExtDirectFormPostResult(result);
-        return e;
-    }
+	public ExtDirectFormPostResult updateInfoJsonDirectError(Locale locale, HttpServletRequest request,
+			HttpServletResponse response, @Valid FormInfo formInfo, BindingResult result) {
+
+		result.rejectValue("age", "age is wrong");
+		ExtDirectFormPostResult e = new ExtDirectFormPostResult(result);
+		return e;
+	}
 }

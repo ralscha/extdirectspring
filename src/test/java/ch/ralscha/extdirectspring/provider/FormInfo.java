@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 
 public class FormInfo {
 
-    @NotNull
+	@NotNull
 	private String name;
 
 	private int age;
@@ -93,15 +93,16 @@ public class FormInfo {
 		this.result = result;
 	}
 
-	public FormInfo(){}
+	public FormInfo() {
+	}
 
 	public FormInfo(String name, int age, boolean admin, BigDecimal salary, String result) {
-        super();
-        this.name = name;
-        this.age = age;
-        this.admin = admin;
-        this.salary = salary;
-        this.result = result;
-    }
+		super();
+		this.name = name;
+		this.age = age;
+		this.admin = admin;
+		this.salary = salary;
+		this.result = result;
+	}
 
 }
