@@ -22,6 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -75,7 +76,8 @@ public class RouterControllerFormPostJsonTest {
 		mockMvc.perform(request).andExpect(status().isOk());
 	}
 
-	@Test
+	@SuppressWarnings("unchecked")
+    @Test
     public void testCallFormPostMethod() throws Exception {
         
 	    FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal(12.3), "theResult");
@@ -106,7 +108,8 @@ public class RouterControllerFormPostJsonTest {
                 entry("salary", 1012.3), entry("result", "theResultRESULT"), entry("success", true));
     }
 	
-	@Test
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+    @Test
     public void testCallFormPostMethodError() throws Exception {
         
         FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal(12.3), "theResult");
@@ -133,19 +136,15 @@ public class RouterControllerFormPostJsonTest {
         
         Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
         assertThat(result).hasSize(2).contains(entry("success", false));
+        assertThat(result).hasSize(2).containsKey("errors");
+        Map age = (Map) result.get("errors");
+        assertThat(age).hasSize(1).containsKey("age");
+        ArrayList value = (ArrayList) age.get("age");
+        assertThat(value).contains("age is wrong");
     }
 	
 	@Test
     public void testCallFormPostMethodNotRegistered() throws Exception {
-        
-	    MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
-                .contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
-
-        request.param("extTID", "14");
-        request.param("extAction", "formInfoController3");
-        request.param("extMethod", "updateInfoJsonDirectNotRegistered");
-        request.param("extType", "rpc");
-
-        mockMvc.perform(request).andExpect(status().isOk());
+	    ControllerUtil.sendAndReceive(mockMvc, "formInfoController3", "updateInfoJsonDirectNotRegistered", null);
     }
 }
