@@ -193,7 +193,8 @@ public class ApiController {
 		if (!requestUrlString.contains("/api-debug-doc.js")) {
 			boolean debug = requestUrlString.contains("api-debug.js");
 
-			ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, routerUrl, group, debug);
+			ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, routerUrl,
+					group, debug);
 			String apiString = ApiCache.INSTANCE.get(apiKey);
 			if (apiString == null) {
 				apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar, routerUrl,

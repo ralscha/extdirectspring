@@ -175,17 +175,17 @@ public final class ParametersResolver {
 		} else if (methodInfo.isType(ExtDirectMethodType.FORM_POST)) {
 			throw new IllegalStateException("this controller does not handle form posts");
 		} else if (methodInfo.isType(ExtDirectMethodType.FORM_POST_JSON)) {
-            List<Object> data = (List<Object>) directRequest.getData();
+			List<Object> data = (List<Object>) directRequest.getData();
 
-            if (data != null && data.size() > 0) {
-               Object obj = data.get(0);
-               if (obj instanceof Map) {
-                   remainingParameters = new HashMap<String, Object>((Map<String, Object>) obj);
-                   remainingParameters.remove("records");
-               }
-            }
+			if (data != null && data.size() > 0) {
+				Object obj = data.get(0);
+				if (obj instanceof Map) {
+					remainingParameters = new HashMap<String, Object>((Map<String, Object>) obj);
+					remainingParameters.remove("records");
+				}
+			}
 
-        }
+		}
 
 		List<ParameterInfo> methodParameters = methodInfo.getParameters();
 		Object[] parameters = null;

@@ -37,13 +37,13 @@ class ProxyObjectWithoutQuotes {
 	private final String type = "direct";
 
 	private String idParam;
-	
+
 	@JsonRawValue
 	private Object pageParam = null;
-	
+
 	@JsonRawValue
-    private Object startParam = null;
-    
+	private Object startParam = null;
+
 	@JsonRawValue
 	private Object limitParam = null;
 
@@ -65,7 +65,7 @@ class ProxyObjectWithoutQuotes {
 			startParam = value;
 			limitParam = value;
 		}
-		
+
 		boolean hasApiMethods = false;
 		ApiObject apiObject = new ApiObject();
 
