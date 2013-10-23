@@ -136,7 +136,6 @@ public class RouterControllerFormPostJsonTest {
 		assertThat(edsResponse.getMethod()).isEqualTo("updateInfoJsonDirectError");
 		assertThat(edsResponse.getTid()).isEqualTo(14);
 		assertThat(edsResponse.getWhere()).isNull();
-		assertThat(edsResponse.getType()).isEqualTo("exception");
 	    assertThat(edsResponse.getType()).isEqualTo("rpc");
         
         Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
