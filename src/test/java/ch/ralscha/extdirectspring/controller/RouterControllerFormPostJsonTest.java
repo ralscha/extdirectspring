@@ -22,6 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -133,7 +134,19 @@ public class RouterControllerFormPostJsonTest {
 		assertThat(edsResponse.getMethod()).isEqualTo("updateInfoJsonDirectError");
 		assertThat(edsResponse.getTid()).isEqualTo(14);
 		assertThat(edsResponse.getWhere()).isNull();
-		assertThat(edsResponse.getType()).isEqualTo("exception");
-		assertThat(edsResponse.getMessage()).isEqualTo("Server Error");
+		assertThat(edsResponse.getType()).isEqualTo("rpc");
+
+		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
+		assertThat(result).hasSize(2).contains(entry("success", false));
+		assertThat(result).hasSize(2).containsKey("errors");
+		Map age = (Map) result.get("errors");
+		assertThat(age).hasSize(1).containsKey("age");
+		ArrayList value = (ArrayList) age.get("age");
+		assertThat(value).contains("age is wrong");
+	}
+
+	@Test
+	public void testCallFormPostMethodNotRegistered() throws Exception {
+		ControllerUtil.sendAndReceive(mockMvc, "formInfoController3", "updateInfoJsonDirectNotRegistered", null);
 	}
 }

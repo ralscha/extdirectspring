@@ -648,6 +648,7 @@ public class ApiControllerTest {
 
 		remotingApi.addAction("formInfoController3", new Action("updateInfoJson", 1, false));
 		remotingApi.addAction("formInfoController3", new Action("updateInfoJsonDirect", 1, false));
+		remotingApi.addAction("formInfoController3", new Action("updateInfoJsonDirectError", 1, false));
 
 		remotingApi.addAction("formInfoController2", new Action("updateInfo1", 0, true));
 		remotingApi.addAction("formInfoController2", new Action("updateInfo2", 0, true));
@@ -846,6 +847,7 @@ public class ApiControllerTest {
 
 		remotingApi.addAction("formInfoController3", new Action("updateInfoJson", 1, false));
 		remotingApi.addAction("formInfoController3", new Action("updateInfoJsonDirect", 1, false));
+		remotingApi.addAction("formInfoController3", new Action("updateInfoJsonDirectError", 1, false));		
 
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage4", "message4"));
 
