@@ -64,11 +64,19 @@ public class FormInfoController3 {
             Locale locale, 
             HttpServletRequest request, 
             HttpServletResponse response, 
+            @Valid FormInfo formInfo) {
+	    
+        ExtDirectFormPostResult e = new ExtDirectFormPostResult();
+        e.addError("age", "age is wrong");
+        return e;
+    }
+	
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
+    public void updateInfoJsonDirectNotRegistered(
+            Locale locale, 
+            HttpServletRequest request, 
+            HttpServletResponse response, 
             @Valid FormInfo formInfo, 
             BindingResult result) {
-	    
-	    result.rejectValue("age", "age is wrong");
-        ExtDirectFormPostResult e = new ExtDirectFormPostResult(result);
-        return e;
     }
 }

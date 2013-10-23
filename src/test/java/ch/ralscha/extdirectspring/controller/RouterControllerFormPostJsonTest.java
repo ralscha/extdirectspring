@@ -129,10 +129,23 @@ public class RouterControllerFormPostJsonTest {
         assertThat(edsResponse.getMethod()).isEqualTo("updateInfoJsonDirectError");
         assertThat(edsResponse.getTid()).isEqualTo(14);
         assertThat(edsResponse.getWhere()).isNull();
-        assertThat(edsResponse.getType()).isEqualTo("exception");
-        assertThat(edsResponse.getMessage()).isEqualTo("Server Error");
+        assertThat(edsResponse.getType()).isEqualTo("rpc");
         
         Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
-        assertThat(result).hasSize(1).contains(entry("success", false));
+        assertThat(result).hasSize(2).contains(entry("success", false));
+    }
+	
+	@Test
+    public void testCallFormPostMethodNotRegistered() throws Exception {
+        
+	    MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
+                .contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
+
+        request.param("extTID", "14");
+        request.param("extAction", "formInfoController3");
+        request.param("extMethod", "updateInfoJsonDirectNotRegistered");
+        request.param("extType", "rpc");
+
+        mockMvc.perform(request).andExpect(status().isOk());
     }
 }
