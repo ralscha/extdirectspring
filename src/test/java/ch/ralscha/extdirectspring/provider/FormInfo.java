@@ -18,8 +18,11 @@ package ch.ralscha.extdirectspring.provider;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
 public class FormInfo {
 
+    @NotNull
 	private String name;
 
 	private int age;
@@ -89,5 +92,16 @@ public class FormInfo {
 	public void setResult(String result) {
 		this.result = result;
 	}
+
+	public FormInfo(){}
+
+	public FormInfo(String name, int age, boolean admin, BigDecimal salary, String result) {
+        super();
+        this.name = name;
+        this.age = age;
+        this.admin = admin;
+        this.salary = salary;
+        this.result = result;
+    }
 
 }

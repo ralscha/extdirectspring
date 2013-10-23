@@ -265,6 +265,18 @@ public class ApiControllerTest {
 				.pollingUrlsVar("TEST_POLLING_URLS").sseVar("TEST_SSE").group("group4").build();
 		runTest(mockMvc, params, group4Apis(null));
 	}
+	
+	@Test
+    public void testGroup5() throws Exception {
+        ApiRequestParams params = ApiRequestParams.builder().apiNs("test").actionNs("")
+                .remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS").sseVar("TEST_SSE")
+                .group("group5").build();
+        runTest(mockMvc, params, group5Apis(null));
+
+        params = ApiRequestParams.builder().apiNs("test").remotingApiVar("TEST_REMOTING_API")
+                .pollingUrlsVar("TEST_POLLING_URLS").sseVar("TEST_SSE").group("group5").build();
+        runTest(mockMvc, params, group5Apis(null));
+    }
 
 	@Test
 	public void testGroup1and2() throws Exception {
@@ -526,6 +538,14 @@ public class ApiControllerTest {
 		remotingApi.addSseProvider("sseProvider", "message3");
 		return remotingApi;
 	}
+	
+	private static RemotingApi group5Apis(String namespace) {
+        RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
+        remotingApi.addAction("formInfoController3", new Action("updateInfoJson", 1, false));
+        remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage3", "message3"));
+        remotingApi.addSseProvider("sseProvider", "message3");
+        return remotingApi;
+    }
 
 	private static RemotingApi interfaceApis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
