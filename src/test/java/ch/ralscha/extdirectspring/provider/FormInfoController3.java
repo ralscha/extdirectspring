@@ -26,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
@@ -70,8 +71,14 @@ public class FormInfoController3 {
 
 	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
-	public void updateInfoJsonDirectNotRegistered(Locale locale, HttpServletRequest request,
-			HttpServletResponse response, @Valid FormInfo formInfo, BindingResult result) {
+	public void updateInfoJsonDirectNotRegisteredWithBindingResultAsParameter(Locale locale,
+			HttpServletRequest request, HttpServletResponse response, @Valid FormInfo formInfo, BindingResult result) {
 		// nothing here
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
+	public void updateInfoJsonDirectNotRegisteredWithMultipartFileAsParameter(Locale locale,
+			HttpServletRequest request, HttpServletResponse response, @Valid FormInfo formInfo,
+			MultipartFile multipartFile) {
 	}
 }
