@@ -26,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
@@ -46,7 +47,10 @@ public class FormInfoController3 {
 
 	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
-	public ExtDirectFormPostResult updateInfoJsonDirect(Locale locale, @Valid FormInfo formInfo) {
+	public ExtDirectFormPostResult updateInfoJsonDirect(Locale locale, 
+	        @RequestParam(value = "p1", required = true) Long param1, 
+            @RequestParam(value = "p2", required = true) String param2,
+            @Valid FormInfo formInfo) {
 
 		ExtDirectFormPostResult e = new ExtDirectFormPostResult();
 		e.addResultProperty("name", formInfo.getName().toUpperCase());

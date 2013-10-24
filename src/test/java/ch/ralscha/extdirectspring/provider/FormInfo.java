@@ -17,9 +17,16 @@ package ch.ralscha.extdirectspring.provider;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class FormInfo {
 
 	@NotNull
@@ -36,6 +43,18 @@ public class FormInfo {
 	private double back;
 
 	private String result;
+	
+	private Map<String,Object> any = new HashMap<String, Object>();
+    
+    @JsonAnyGetter
+    public Map<String, Object> any() {
+        return any;
+    }
+
+    @JsonAnySetter
+    public void set(String name, Object value) {
+        this.any.put(name, value);
+    }
 
 	public String getName() {
 		return name;

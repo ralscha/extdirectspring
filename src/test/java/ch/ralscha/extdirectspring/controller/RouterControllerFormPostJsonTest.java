@@ -20,9 +20,11 @@ import static org.fest.assertions.api.Assertions.entry;
 import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +40,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
@@ -76,11 +79,16 @@ public class RouterControllerFormPostJsonTest {
 		mockMvc.perform(request).andExpect(status().isOk());
 	}
 
-	@Test
+	@SuppressWarnings({"unchecked", "null"})
+    @Test
 	public void testCallFormPostMethod() throws Exception {
 
 		FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal(12.3), "theResult");
-
+		
+		//Request Params are sent as part of the json content payload
+		formInfo.set("p1", 1000);
+		formInfo.set("p2", "2nd mandatory param");
+		
 		MvcResult resultMvc = null;
 		try {
 			resultMvc = ControllerUtil.performRouterRequest(mockMvc,
@@ -91,7 +99,6 @@ public class RouterControllerFormPostJsonTest {
 			fail("perform post to /router" + e.getMessage());
 		}
 
-		@SuppressWarnings("null")
 		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(resultMvc.getResponse()
 				.getContentAsByteArray());
 		assertThat(responses).hasSize(1);
@@ -110,6 +117,46 @@ public class RouterControllerFormPostJsonTest {
 				entry("salary", 1012.3), entry("result", "theResultRESULT"), entry("success", true));
 	}
 
+	public void testCallFormPostMethodOld() throws Exception {
+
+        FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal(12.3), "theResult");
+        
+        MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
+                .contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
+
+        request.param("extTID", "14");
+        request.param("extAction", "formInfoController3");
+        request.param("extMethod", "updateInfoJsonDirect");
+        request.param("extType", "rpc");
+        request.param("p1", "1000");
+        request.param("p2", "2nd mandatory param");
+        request.content(new String(ControllerUtil.writeAsByte(formInfo)));
+
+        MvcResult resultMvc = null;
+        try {
+            resultMvc = mockMvc.perform(request).andExpect(status().isOk())
+            .andExpect(content().contentType("application/json;charset=UTF-8")).andExpect(content().encoding("UTF-8"))
+            .andReturn();
+        } catch (JsonProcessingException e) {
+            fail("perform post to /router" + e.getMessage());
+        } catch (Exception e) {
+            fail("perform post to /router" + e.getMessage());
+        }
+
+        ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(resultMvc.getResponse()
+                .getContentAsByteArray());
+
+        assertThat(edsResponse.getAction()).isEqualTo("formInfoController3");
+        assertThat(edsResponse.getMethod()).isEqualTo("updateInfoJsonDirect");
+        assertThat(edsResponse.getTid()).isEqualTo(14);
+        assertThat(edsResponse.getWhere()).isNull();
+        assertThat(edsResponse.getType()).isEqualTo("rpc");
+        assertThat(edsResponse.getMessage()).isNull();
+
+        Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
+        assertThat(result).hasSize(6).contains(entry("name", "RALPH"), entry("age", 30), entry("admin", false),
+                entry("salary", 1012.3), entry("result", "theResultRESULT"), entry("success", true));
+    }
 	@SuppressWarnings({ "unchecked", "null", "rawtypes" })
 	@Test
 	public void testCallFormPostMethodError() throws Exception {
