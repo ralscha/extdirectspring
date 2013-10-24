@@ -147,7 +147,12 @@ public class RouterControllerFormPostJsonTest {
 	}
 
 	@Test
-	public void testCallFormPostMethodNotRegistered() throws Exception {
-		ControllerUtil.sendAndReceive(mockMvc, "formInfoController3", "updateInfoJsonDirectNotRegistered", null);
+	public void testCallFormPostMethodNotRegisteredWithBindingResultAsParameter() throws Exception {
+		ControllerUtil.sendAndReceive(mockMvc, "formInfoController3", "updateInfoJsonDirectNotRegisteredWithBindingResultAsParameter", null);
 	}
+	
+	@Test
+    public void testCallFormPostMethodNotRegisteredWithMultipartFileAsParameter() throws Exception {
+        ControllerUtil.sendAndReceive(mockMvc, "formInfoController3", "updateInfoJsonDirectNotRegisteredWithMultipartFileAsParameter", null);
+    }
 }
