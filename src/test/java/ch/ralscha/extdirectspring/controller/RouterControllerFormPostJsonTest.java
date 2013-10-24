@@ -110,7 +110,7 @@ public class RouterControllerFormPostJsonTest {
 				entry("salary", 1012.3), entry("result", "theResultRESULT"), entry("success", true));
 	}
 
-	@SuppressWarnings({ "unchecked", "null" })
+	@SuppressWarnings({ "unchecked", "null", "rawtypes" })
 	@Test
 	public void testCallFormPostMethodError() throws Exception {
 

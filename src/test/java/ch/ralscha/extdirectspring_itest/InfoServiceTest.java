@@ -26,7 +26,6 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -103,15 +102,17 @@ public class InfoServiceTest extends JettyTest {
 	@Test
 	public void testApiFingerprinted() throws ClientProtocolException, IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
+		CloseableHttpResponse response = null;
 		try {
 			HttpGet g = new HttpGet("http://localhost:9998/controller/api-1.2.1.js?group=itest_info_service");
-			HttpResponse response = client.execute(g);
+			response = client.execute(g);
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
 			ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, true);
 			ApiCache.INSTANCE.clear();
 		} finally {
+			IOUtils.closeQuietly(response);
 			IOUtils.closeQuietly(client);
 		}
 	}

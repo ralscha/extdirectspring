@@ -24,11 +24,11 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
@@ -44,28 +44,30 @@ public class FileUploadServiceTest extends JettyTest {
 	@Test
 	public void testUpload() throws ClientProtocolException, IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
+		CloseableHttpResponse response = null;
 		try {
 
 			HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
 			InputStream is = getClass().getResourceAsStream("/UploadTestFile.txt");
 
-			MultipartEntity mpEntity = new MultipartEntity();
-			ContentBody cbFile = new InputStreamBody(is, "text/plain", "UploadTestFile.txt");
-			mpEntity.addPart("fileUpload", cbFile);
-			mpEntity.addPart("extTID", new StringBody("2", ContentType.DEFAULT_TEXT));
-			mpEntity.addPart("extAction", new StringBody("fileUploadService", ContentType.DEFAULT_TEXT));
-			mpEntity.addPart("extMethod", new StringBody("uploadTest", ContentType.DEFAULT_TEXT));
-			mpEntity.addPart("extType", new StringBody("rpc", ContentType.DEFAULT_TEXT));
-			mpEntity.addPart("extUpload", new StringBody("true", ContentType.DEFAULT_TEXT));
+			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+			ContentBody cbFile = new InputStreamBody(is, ContentType.create("text/plain"), "UploadTestFile.txt");
+			builder.addPart("fileUpload", cbFile);
+			builder.addPart("extTID", new StringBody("2", ContentType.DEFAULT_TEXT));
+			builder.addPart("extAction", new StringBody("fileUploadService", ContentType.DEFAULT_TEXT));
+			builder.addPart("extMethod", new StringBody("uploadTest", ContentType.DEFAULT_TEXT));
+			builder.addPart("extType", new StringBody("rpc", ContentType.DEFAULT_TEXT));
+			builder.addPart("extUpload", new StringBody("true", ContentType.DEFAULT_TEXT));
 
-			mpEntity.addPart("name", new StringBody("Jimöäü", Charset.forName("UTF-8")));
-			mpEntity.addPart("firstName", new StringBody("Ralph", ContentType.DEFAULT_TEXT));
-			mpEntity.addPart("age", new StringBody("25", ContentType.DEFAULT_TEXT));
-			mpEntity.addPart("email", new StringBody("test@test.ch", ContentType.DEFAULT_TEXT));
+			builder.addPart("name",
+					new StringBody("Jimöäü", ContentType.create("text/plain", Charset.forName("UTF-8"))));
+			builder.addPart("firstName", new StringBody("Ralph", ContentType.DEFAULT_TEXT));
+			builder.addPart("age", new StringBody("25", ContentType.DEFAULT_TEXT));
+			builder.addPart("email", new StringBody("test@test.ch", ContentType.DEFAULT_TEXT));
 
-			post.setEntity(mpEntity);
-			HttpResponse response = client.execute(post);
+			post.setEntity(builder.build());
+			response = client.execute(post);
 			HttpEntity resEntity = response.getEntity();
 
 			assertThat(resEntity).isNotNull();
@@ -100,6 +102,7 @@ public class FileUploadServiceTest extends JettyTest {
 
 			is.close();
 		} finally {
+			IOUtils.closeQuietly(response);
 			IOUtils.closeQuietly(client);
 		}
 	}

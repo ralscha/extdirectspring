@@ -23,8 +23,8 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -43,6 +43,7 @@ public class TransactionalServiceTest extends JettyTest {
 			JsonParseException, JsonMappingException {
 
 		CloseableHttpClient client = HttpClientBuilder.create().build();
+		CloseableHttpResponse response = null;
 		try {
 			HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
@@ -53,7 +54,7 @@ public class TransactionalServiceTest extends JettyTest {
 			post.setEntity(postEntity);
 			post.setHeader("Content-Type", "application/json; charset=UTF-8");
 
-			HttpResponse response = client.execute(post);
+			response = client.execute(post);
 			HttpEntity entity = response.getEntity();
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
@@ -71,6 +72,7 @@ public class TransactionalServiceTest extends JettyTest {
 			assertThat(rootAsMap.get("action")).isEqualTo("transactionalService");
 			assertThat(rootAsMap.get("tid")).isEqualTo(1);
 		} finally {
+			IOUtils.closeQuietly(response);
 			IOUtils.closeQuietly(client);
 		}
 	}
@@ -80,6 +82,7 @@ public class TransactionalServiceTest extends JettyTest {
 			JsonParseException, JsonMappingException {
 
 		CloseableHttpClient client = HttpClientBuilder.create().build();
+		CloseableHttpResponse response = null;
 		try {
 
 			HttpPost post = new HttpPost("http://localhost:9998/controller/router");
@@ -91,7 +94,7 @@ public class TransactionalServiceTest extends JettyTest {
 			post.setEntity(postEntity);
 			post.setHeader("Content-Type", "application/json; charset=UTF-8");
 
-			HttpResponse response = client.execute(post);
+			response = client.execute(post);
 			HttpEntity entity = response.getEntity();
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
@@ -108,6 +111,7 @@ public class TransactionalServiceTest extends JettyTest {
 			assertThat(rootAsMap.get("action")).isEqualTo("transactionalServiceImpl");
 			assertThat(rootAsMap.get("tid")).isEqualTo(1);
 		} finally {
+			IOUtils.closeQuietly(response);
 			IOUtils.closeQuietly(client);
 		}
 	}

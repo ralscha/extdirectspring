@@ -31,6 +31,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -183,10 +184,11 @@ public class SimpleServiceTest extends JettyTest2 {
 	public void testPoll() throws ClientProtocolException, IOException {
 		String _id = String.valueOf(id.incrementAndGet());
 		CloseableHttpClient client = HttpClientBuilder.create().build();
+		CloseableHttpResponse response = null;
 		try {
 
 			HttpGet get = new HttpGet("http://localhost:9998/controller/poll/simpleService/poll/poll?id=" + _id);
-			HttpResponse response = client.execute(get);
+			response = client.execute(get);
 
 			assertThat(response.getFirstHeader("Content-Type").getValue()).isEqualTo("application/json;charset=UTF-8");
 
@@ -197,6 +199,7 @@ public class SimpleServiceTest extends JettyTest2 {
 			assertThat(rootAsMap.get("name")).isEqualTo("poll");
 			assertThat(rootAsMap.get("data")).isEqualTo(_id);
 		} finally {
+			IOUtils.closeQuietly(response);
 			IOUtils.closeQuietly(client);
 		}
 	}
@@ -206,10 +209,11 @@ public class SimpleServiceTest extends JettyTest2 {
 	public void testSse() throws ClientProtocolException, IOException {
 		String _id = String.valueOf(id.incrementAndGet());
 		CloseableHttpClient client = HttpClientBuilder.create().build();
+		CloseableHttpResponse response = null;
 		try {
 
 			HttpGet get = new HttpGet("http://localhost:9998/controller/sse/simpleService/sse?id=" + _id);
-			HttpResponse response = client.execute(get);
+			response = client.execute(get);
 
 			assertThat(response.getFirstHeader("Content-Type").getValue()).isEqualTo("text/event-stream;charset=UTF-8");
 
@@ -218,6 +222,7 @@ public class SimpleServiceTest extends JettyTest2 {
 			assertThat(parts[0]).isEqualTo("id:" + _id);
 			assertThat(parts[1]).isEqualTo("data:d" + _id);
 		} finally {
+			IOUtils.closeQuietly(response);
 			IOUtils.closeQuietly(client);
 		}
 	}

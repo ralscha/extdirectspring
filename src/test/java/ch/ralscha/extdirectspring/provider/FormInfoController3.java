@@ -76,9 +76,11 @@ public class FormInfoController3 {
 		// nothing here
 	}
 
+	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
 	public void updateInfoJsonDirectNotRegisteredWithMultipartFileAsParameter(Locale locale,
 			HttpServletRequest request, HttpServletResponse response, @Valid FormInfo formInfo,
 			MultipartFile multipartFile) {
+		// nothing here
 	}
 }
