@@ -22,16 +22,18 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
@@ -41,60 +43,65 @@ public class FileUploadServiceTest extends JettyTest {
 
 	@Test
 	public void testUpload() throws ClientProtocolException, IOException {
-		HttpClient client = new DefaultHttpClient();
-		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
+		CloseableHttpClient client = HttpClientBuilder.create().build();
+		try {
 
-		InputStream is = getClass().getResourceAsStream("/UploadTestFile.txt");
+			HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
-		MultipartEntity mpEntity = new MultipartEntity();
-		ContentBody cbFile = new InputStreamBody(is, "text/plain", "UploadTestFile.txt");
-		mpEntity.addPart("fileUpload", cbFile);
-		mpEntity.addPart("extTID", new StringBody("2"));
-		mpEntity.addPart("extAction", new StringBody("fileUploadService"));
-		mpEntity.addPart("extMethod", new StringBody("uploadTest"));
-		mpEntity.addPart("extType", new StringBody("rpc"));
-		mpEntity.addPart("extUpload", new StringBody("true"));
+			InputStream is = getClass().getResourceAsStream("/UploadTestFile.txt");
 
-		mpEntity.addPart("name", new StringBody("Jimöäü", Charset.forName("UTF-8")));
-		mpEntity.addPart("firstName", new StringBody("Ralph"));
-		mpEntity.addPart("age", new StringBody("25"));
-		mpEntity.addPart("email", new StringBody("test@test.ch"));
+			MultipartEntity mpEntity = new MultipartEntity();
+			ContentBody cbFile = new InputStreamBody(is, "text/plain", "UploadTestFile.txt");
+			mpEntity.addPart("fileUpload", cbFile);
+			mpEntity.addPart("extTID", new StringBody("2", ContentType.DEFAULT_TEXT));
+			mpEntity.addPart("extAction", new StringBody("fileUploadService", ContentType.DEFAULT_TEXT));
+			mpEntity.addPart("extMethod", new StringBody("uploadTest", ContentType.DEFAULT_TEXT));
+			mpEntity.addPart("extType", new StringBody("rpc", ContentType.DEFAULT_TEXT));
+			mpEntity.addPart("extUpload", new StringBody("true", ContentType.DEFAULT_TEXT));
 
-		post.setEntity(mpEntity);
-		HttpResponse response = client.execute(post);
-		HttpEntity resEntity = response.getEntity();
+			mpEntity.addPart("name", new StringBody("Jimöäü", Charset.forName("UTF-8")));
+			mpEntity.addPart("firstName", new StringBody("Ralph", ContentType.DEFAULT_TEXT));
+			mpEntity.addPart("age", new StringBody("25", ContentType.DEFAULT_TEXT));
+			mpEntity.addPart("email", new StringBody("test@test.ch", ContentType.DEFAULT_TEXT));
 
-		assertThat(resEntity).isNotNull();
-		String responseString = EntityUtils.toString(resEntity);
+			post.setEntity(mpEntity);
+			HttpResponse response = client.execute(post);
+			HttpEntity resEntity = response.getEntity();
 
-		String prefix = "<html><body><textarea>";
-		String postfix = "</textarea></body></html>";
-		assertThat(responseString).startsWith(prefix);
-		assertThat(responseString).endsWith(postfix);
+			assertThat(resEntity).isNotNull();
+			String responseString = EntityUtils.toString(resEntity);
 
-		String json = responseString.substring(prefix.length(), responseString.length() - postfix.length());
+			String prefix = "<html><body><textarea>";
+			String postfix = "</textarea></body></html>";
+			assertThat(responseString).startsWith(prefix);
+			assertThat(responseString).endsWith(postfix);
 
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, Object> rootAsMap = mapper.readValue(json, Map.class);
-		assertThat(rootAsMap).hasSize(5);
-		assertThat(rootAsMap.get("method")).isEqualTo("uploadTest");
-		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
-		assertThat(rootAsMap.get("action")).isEqualTo("fileUploadService");
-		assertThat(rootAsMap.get("tid")).isEqualTo(2);
+			String json = responseString.substring(prefix.length(), responseString.length() - postfix.length());
 
-		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertThat(result).hasSize(7);
-		assertThat(result.get("name")).isEqualTo("Jimöäü");
-		assertThat(result.get("firstName")).isEqualTo("Ralph");
-		assertThat(result.get("age")).isEqualTo(25);
-		assertThat(result.get("e-mail")).isEqualTo("test@test.ch");
-		assertThat(result.get("fileName")).isEqualTo("UploadTestFile.txt");
-		assertThat(result.get("fileContents")).isEqualTo("contents of upload file");
-		assertThat(result.get("success")).isEqualTo(true);
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> rootAsMap = mapper.readValue(json, Map.class);
+			assertThat(rootAsMap).hasSize(5);
+			assertThat(rootAsMap.get("method")).isEqualTo("uploadTest");
+			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
+			assertThat(rootAsMap.get("action")).isEqualTo("fileUploadService");
+			assertThat(rootAsMap.get("tid")).isEqualTo(2);
 
-		EntityUtils.consume(resEntity);
-		client.getConnectionManager().shutdown();
-		is.close();
+			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
+			assertThat(result).hasSize(7);
+			assertThat(result.get("name")).isEqualTo("Jimöäü");
+			assertThat(result.get("firstName")).isEqualTo("Ralph");
+			assertThat(result.get("age")).isEqualTo(25);
+			assertThat(result.get("e-mail")).isEqualTo("test@test.ch");
+			assertThat(result.get("fileName")).isEqualTo("UploadTestFile.txt");
+			assertThat(result.get("fileContents")).isEqualTo("contents of upload file");
+			assertThat(result.get("success")).isEqualTo(true);
+
+			EntityUtils.consume(resEntity);
+
+			is.close();
+		} finally {
+			IOUtils.closeQuietly(client);
+		}
 	}
 
 }

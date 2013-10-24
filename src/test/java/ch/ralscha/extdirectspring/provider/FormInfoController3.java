@@ -34,6 +34,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 @Controller
 public class FormInfoController3 {
 
+	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
 	@RequestMapping(value = "/updateInfoJson", method = RequestMethod.POST)
 	public ExtDirectFormPostResult updateInfoJson(Locale locale, HttpServletRequest request,
@@ -42,6 +43,7 @@ public class FormInfoController3 {
 		return new ExtDirectFormPostResult(true);
 	}
 
+	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
 	public ExtDirectFormPostResult updateInfoJsonDirect(Locale locale, @Valid FormInfo formInfo) {
 
@@ -56,6 +58,7 @@ public class FormInfoController3 {
 		return e;
 	}
 
+	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
 	public ExtDirectFormPostResult updateInfoJsonDirectError(Locale locale, HttpServletRequest request,
 			HttpServletResponse response, @Valid FormInfo formInfo) {
@@ -65,8 +68,10 @@ public class FormInfoController3 {
 		return e;
 	}
 
+	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
 	public void updateInfoJsonDirectNotRegistered(Locale locale, HttpServletRequest request,
 			HttpServletResponse response, @Valid FormInfo formInfo, BindingResult result) {
+		// nothing here
 	}
 }

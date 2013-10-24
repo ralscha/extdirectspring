@@ -23,16 +23,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,7 +42,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class UserServiceTest extends JettyTest {
 
-	private HttpClient client;
+	private CloseableHttpClient client;
 
 	private HttpPost post;
 
@@ -48,8 +50,13 @@ public class UserServiceTest extends JettyTest {
 
 	@Before
 	public void beforeTest() {
-		client = new DefaultHttpClient();
+		client = HttpClientBuilder.create().build();
 		post = new HttpPost("http://localhost:9998/controller/router");
+	}
+
+	@After
+	public void afterTest() {
+		IOUtils.closeQuietly(client);
 	}
 
 	@Test

@@ -847,7 +847,7 @@ public class ApiControllerTest {
 
 		remotingApi.addAction("formInfoController3", new Action("updateInfoJson", 1, false));
 		remotingApi.addAction("formInfoController3", new Action("updateInfoJsonDirect", 1, false));
-		remotingApi.addAction("formInfoController3", new Action("updateInfoJsonDirectError", 1, false));		
+		remotingApi.addAction("formInfoController3", new Action("updateInfoJsonDirectError", 1, false));
 
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "handleMessage4", "message4"));
 

@@ -91,6 +91,7 @@ public class RouterControllerFormPostJsonTest {
 			fail("perform post to /router" + e.getMessage());
 		}
 
+		@SuppressWarnings("null")
 		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(resultMvc.getResponse()
 				.getContentAsByteArray());
 		assertThat(responses).hasSize(1);
@@ -109,6 +110,7 @@ public class RouterControllerFormPostJsonTest {
 				entry("salary", 1012.3), entry("result", "theResultRESULT"), entry("success", true));
 	}
 
+	@SuppressWarnings({ "unchecked", "null" })
 	@Test
 	public void testCallFormPostMethodError() throws Exception {
 
