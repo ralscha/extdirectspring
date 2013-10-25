@@ -76,16 +76,16 @@ public class RouterControllerFormPostJsonTest {
 		mockMvc.perform(request).andExpect(status().isOk());
 	}
 
-	@SuppressWarnings({"unchecked", "null"})
-    @Test
+	@SuppressWarnings({ "unchecked", "null" })
+	@Test
 	public void testCallFormPostMethod() throws Exception {
 
 		FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal(12.3), "theResult");
-		
-		//Request Params are sent as part of the json content payload
+
+		// Request Params are sent as part of the json content payload
 		formInfo.set("p1", 1000);
 		formInfo.set("p2", "2nd mandatory param");
-		
+
 		MvcResult resultMvc = null;
 		try {
 			resultMvc = ControllerUtil.performRouterRequest(mockMvc,

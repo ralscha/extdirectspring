@@ -43,18 +43,18 @@ public class FormInfo {
 	private double back;
 
 	private String result;
-	
-	private Map<String,Object> any = new HashMap<String, Object>();
-    
-    @JsonAnyGetter
-    public Map<String, Object> any() {
-        return any;
-    }
 
-    @JsonAnySetter
-    public void set(String name, Object value) {
-        this.any.put(name, value);
-    }
+	private final Map<String, Object> any = new HashMap<String, Object>();
+
+	@JsonAnyGetter
+	public Map<String, Object> any() {
+		return any;
+	}
+
+	@JsonAnySetter
+	public void set(String name, Object value) {
+		this.any.put(name, value);
+	}
 
 	public String getName() {
 		return name;
