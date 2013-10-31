@@ -18,7 +18,7 @@ ExtDirectSpring is available from the Central Maven Repository.
     <dependency>
       <groupId>ch.ralscha</groupId>
       <artifactId>extdirectspring</artifactId>
-      <version>1.3.7</version>
+      <version>1.3.8</version>
     </dependency>
 ```
 
