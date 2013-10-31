@@ -164,6 +164,9 @@ public final class MethodInfo {
 		case FORM_POST:
 			this.action = new Action(method.getName(), 0, true);
 			break;
+		case FORM_POST_JSON:
+			this.action = new Action(method.getName(), 1, null);
+			break;
 		case POLL:
 			this.pollingProvider = new PollingProvider(beanName, method.getName(), extDirectMethodAnnotation.event());
 			break;

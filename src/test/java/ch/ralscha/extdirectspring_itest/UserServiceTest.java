@@ -23,16 +23,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,7 +42,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class UserServiceTest extends JettyTest {
 
-	private HttpClient client;
+	private CloseableHttpClient client;
 
 	private HttpPost post;
 
@@ -48,8 +50,13 @@ public class UserServiceTest extends JettyTest {
 
 	@Before
 	public void beforeTest() {
-		client = new DefaultHttpClient();
+		client = HttpClientBuilder.create().build();
 		post = new HttpPost("http://localhost:9998/controller/router");
+	}
+
+	@After
+	public void afterTest() {
+		IOUtils.closeQuietly(client);
 	}
 
 	@Test
@@ -67,27 +74,31 @@ public class UserServiceTest extends JettyTest {
 
 		post.setEntity(postEntity);
 
-		HttpResponse response = client.execute(post);
-		HttpEntity entity = response.getEntity();
-		assertThat(entity).isNotNull();
-		String responseString = EntityUtils.toString(entity);
+		CloseableHttpResponse response = client.execute(post);
+		try {
+			HttpEntity entity = response.getEntity();
+			assertThat(entity).isNotNull();
+			String responseString = EntityUtils.toString(entity);
 
-		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-		assertThat(rootAsMap).hasSize(5);
-		assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
-		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
-		assertThat(rootAsMap.get("action")).isEqualTo("userService");
-		assertThat(rootAsMap.get("tid")).isEqualTo(2);
+			Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+			assertThat(rootAsMap).hasSize(5);
+			assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
+			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
+			assertThat(rootAsMap.get("action")).isEqualTo("userService");
+			assertThat(rootAsMap.get("tid")).isEqualTo(2);
 
-		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertThat(result).hasSize(4);
-		assertThat(result.get("name")).isEqualTo("Joe");
-		assertThat(result.get("age")).isEqualTo(30);
-		assertThat(result.get("success")).isEqualTo(false);
+			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
+			assertThat(result).hasSize(4);
+			assertThat(result.get("name")).isEqualTo("Joe");
+			assertThat(result.get("age")).isEqualTo(30);
+			assertThat(result.get("success")).isEqualTo(false);
 
-		Map<String, Object> errors = (Map<String, Object>) result.get("errors");
-		assertThat(errors).hasSize(1);
-		assertThat((List<String>) errors.get("email")).containsOnly("may not be empty");
+			Map<String, Object> errors = (Map<String, Object>) result.get("errors");
+			assertThat(errors).hasSize(1);
+			assertThat((List<String>) errors.get("email")).containsOnly("may not be empty");
+		} finally {
+			IOUtils.closeQuietly(response);
+		}
 	}
 
 	@Test
@@ -106,28 +117,32 @@ public class UserServiceTest extends JettyTest {
 
 		post.setEntity(postEntity);
 
-		HttpResponse response = client.execute(post);
-		HttpEntity entity = response.getEntity();
-		assertThat(entity).isNotNull();
-		String responseString = EntityUtils.toString(entity);
+		CloseableHttpResponse response = client.execute(post);
+		try {
+			HttpEntity entity = response.getEntity();
+			assertThat(entity).isNotNull();
+			String responseString = EntityUtils.toString(entity);
 
-		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-		assertThat(rootAsMap).hasSize(5);
-		assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
-		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
-		assertThat(rootAsMap.get("action")).isEqualTo("userService");
-		assertThat(rootAsMap.get("tid")).isEqualTo(3);
+			Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+			assertThat(rootAsMap).hasSize(5);
+			assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
+			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
+			assertThat(rootAsMap.get("action")).isEqualTo("userService");
+			assertThat(rootAsMap.get("tid")).isEqualTo(3);
 
-		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertThat(result).hasSize(4);
-		assertThat(result.get("name")).isEqualTo("Oliver");
-		assertThat(result.get("age")).isEqualTo(35);
-		assertThat(result.get("success")).isEqualTo(false);
+			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
+			assertThat(result).hasSize(4);
+			assertThat(result.get("name")).isEqualTo("Oliver");
+			assertThat(result.get("age")).isEqualTo(35);
+			assertThat(result.get("success")).isEqualTo(false);
 
-		Map<String, Object> errors = (Map<String, Object>) result.get("errors");
-		assertThat(errors).hasSize(2);
-		assertThat((List<String>) errors.get("email")).contains("may not be empty", "another email error");
-		assertThat((List<String>) errors.get("name")).contains("a name error");
+			Map<String, Object> errors = (Map<String, Object>) result.get("errors");
+			assertThat(errors).hasSize(2);
+			assertThat((List<String>) errors.get("email")).contains("may not be empty", "another email error");
+			assertThat((List<String>) errors.get("name")).contains("a name error");
+		} finally {
+			IOUtils.closeQuietly(response);
+		}
 	}
 
 	@Test
@@ -146,22 +161,26 @@ public class UserServiceTest extends JettyTest {
 
 		post.setEntity(postEntity);
 
-		HttpResponse response = client.execute(post);
-		HttpEntity entity = response.getEntity();
-		assertThat(entity).isNotNull();
-		String responseString = EntityUtils.toString(entity);
+		CloseableHttpResponse response = client.execute(post);
+		try {
+			HttpEntity entity = response.getEntity();
+			assertThat(entity).isNotNull();
+			String responseString = EntityUtils.toString(entity);
 
-		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-		assertThat(rootAsMap).hasSize(5);
-		assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
-		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
-		assertThat(rootAsMap.get("action")).isEqualTo("userService");
-		assertThat(rootAsMap.get("tid")).isEqualTo(3);
+			Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+			assertThat(rootAsMap).hasSize(5);
+			assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
+			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
+			assertThat(rootAsMap.get("action")).isEqualTo("userService");
+			assertThat(rootAsMap.get("tid")).isEqualTo(3);
 
-		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertThat(result).hasSize(3);
-		assertThat(result.get("name")).isEqualTo("Jim");
-		assertThat(result.get("age")).isEqualTo(25);
-		assertThat(result.get("success")).isEqualTo(true);
+			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
+			assertThat(result).hasSize(3);
+			assertThat(result.get("name")).isEqualTo("Jim");
+			assertThat(result.get("age")).isEqualTo(25);
+			assertThat(result.get("success")).isEqualTo(true);
+		} finally {
+			IOUtils.closeQuietly(response);
+		}
 	}
 }

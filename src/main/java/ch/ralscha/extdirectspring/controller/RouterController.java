@@ -349,6 +349,11 @@ public class RouterController {
 						} else {
 							result = new ExtDirectStoreResult(result);
 						}
+					} else if (methodInfo.isType(ExtDirectMethodType.FORM_POST_JSON)) {
+						if (result instanceof ExtDirectFormPostResult) {
+							ExtDirectFormPostResult formPostResult = (ExtDirectFormPostResult) result;
+							result = formPostResult.getResult();
+						}
 					}
 
 					directResponse.setResult(result);
@@ -412,11 +417,12 @@ public class RouterController {
 
 			responseJson = responseJson.replace("&quot;", "\\&quot;");
 			bos.write(responseJson.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
-			
+
 			String frameDomain = configurationService.getConfiguration().getFrameDomain();
 			String frameDomainScript = "";
-			if(frameDomain != null) {
-				frameDomainScript = String.format(configurationService.getConfiguration().getFrameDomainScript(), frameDomain);
+			if (frameDomain != null) {
+				frameDomainScript = String.format(configurationService.getConfiguration().getFrameDomainScript(),
+						frameDomain);
 			}
 			bos.write(("</textarea>" + frameDomainScript + "</body></html>").getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
 

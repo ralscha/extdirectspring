@@ -562,4 +562,51 @@ public class ModelGeneratorTest {
 						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",fields:[{name:\"id\",type:\"int\"},{name:\"name\",type:\"string\"}],proxy:{type:\"direct\",directFn:\"read\",reader:{messageProperty:\"mp\",root:\"records\"}}});");
 	}
 
+	@Test
+	public void testDisablePagingExtJS() {
+		ModelBean model = new ModelBean();
+		model.setName("App.User");
+		model.setPaging(true);
+		model.setMessageProperty("mp");
+		model.setReadMethod("read");
+		model.setDisablePagingParameters(true);
+
+		ModelFieldBean idField = new ModelFieldBean("id", ModelType.INTEGER);
+		model.addField(idField);
+		ModelFieldBean nameField = new ModelFieldBean("name", ModelType.STRING);
+		model.addField(nameField);
+
+		OutputConfig config = new OutputConfig();
+		config.setOutputFormat(OutputFormat.EXTJS4);
+		config.setDebug(false);
+		config.setSurroundApiWithQuotes(true);
+		String code = ModelGenerator.generateJavascript(model, config);
+		assertThat(code)
+				.isEqualTo(
+						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",fields:[{name:\"id\",type:\"int\"},{name:\"name\",type:\"string\"}],proxy:{type:\"direct\",pageParam:undefined,startParam:undefined,limitParam:undefined,directFn:\"read\",reader:{messageProperty:\"mp\",root:\"records\"}}});");
+	}
+
+	@Test
+	public void testDisablePagingTouch() {
+		ModelBean model = new ModelBean();
+		model.setName("App.User");
+		model.setPaging(true);
+		model.setMessageProperty("mp");
+		model.setReadMethod("read");
+		model.setDisablePagingParameters(true);
+
+		ModelFieldBean idField = new ModelFieldBean("id", ModelType.INTEGER);
+		model.addField(idField);
+		ModelFieldBean nameField = new ModelFieldBean("name", ModelType.STRING);
+		model.addField(nameField);
+
+		OutputConfig config = new OutputConfig();
+		config.setOutputFormat(OutputFormat.TOUCH2);
+		config.setDebug(false);
+		config.setSurroundApiWithQuotes(true);
+		String code = ModelGenerator.generateJavascript(model, config);
+		assertThat(code)
+				.isEqualTo(
+						"Ext.define(\"App.User\",{extend:\"Ext.data.Model\",config:{fields:[{name:\"id\",type:\"int\"},{name:\"name\",type:\"string\"}],proxy:{type:\"direct\",pageParam:false,startParam:false,limitParam:false,directFn:\"read\",reader:{rootProperty:\"records\",messageProperty:\"mp\"}}}});");
+	}
 }

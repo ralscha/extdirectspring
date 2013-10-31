@@ -22,16 +22,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -39,14 +41,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ExceptionFormPostServiceTest extends JettyTest {
 
-	private HttpClient client;
+	private CloseableHttpClient client;
 
 	private HttpPost post;
 
 	@Before
 	public void beforeTest() {
-		client = new DefaultHttpClient();
+		client = HttpClientBuilder.create().build();
 		post = new HttpPost("http://localhost:9998/controller/router");
+	}
+
+	@After
+	public void afterTest() {
+		IOUtils.closeQuietly(client);
 	}
 
 	@Test
@@ -63,7 +70,7 @@ public class ExceptionFormPostServiceTest extends JettyTest {
 
 		post.setEntity(postEntity);
 
-		HttpResponse response = client.execute(post);
+		CloseableHttpResponse response = client.execute(post);
 		HttpEntity entity = response.getEntity();
 		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
@@ -80,7 +87,7 @@ public class ExceptionFormPostServiceTest extends JettyTest {
 		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 		assertThat(result).hasSize(1);
 		assertThat((Boolean) result.get("success")).isFalse();
-
+		IOUtils.closeQuietly(response);
 	}
 
 	@Test
@@ -97,7 +104,7 @@ public class ExceptionFormPostServiceTest extends JettyTest {
 
 		post.setEntity(postEntity);
 
-		HttpResponse response = client.execute(post);
+		CloseableHttpResponse response = client.execute(post);
 		HttpEntity entity = response.getEntity();
 		assertThat(entity).isNotNull();
 		String responseString = EntityUtils.toString(entity);
@@ -110,6 +117,6 @@ public class ExceptionFormPostServiceTest extends JettyTest {
 		assertThat(rootAsMap.get("action")).isEqualTo("exceptionFormPostService");
 		assertThat(rootAsMap.get("tid")).isEqualTo(3);
 		assertThat(rootAsMap.get("message")).isEqualTo("Server Error");
-
+		IOUtils.closeQuietly(response);
 	}
 }

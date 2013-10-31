@@ -50,7 +50,7 @@ public class DefaultRouterExceptionHandler implements RouterExceptionHandler {
 			response.setWhere(null);
 		}
 
-		if (methodInfo.isType(ExtDirectMethodType.FORM_POST)) {
+		if (methodInfo.isType(ExtDirectMethodType.FORM_POST) || methodInfo.isType(ExtDirectMethodType.FORM_POST_JSON)) {
 			return Collections.singletonMap("success", false);
 		}
 		return null;

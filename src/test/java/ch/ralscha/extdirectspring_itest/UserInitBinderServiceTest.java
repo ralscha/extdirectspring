@@ -23,16 +23,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,7 +42,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class UserInitBinderServiceTest extends JettyTest {
 
-	private HttpClient client;
+	private CloseableHttpClient client;
 
 	private HttpPost post;
 
@@ -48,8 +50,13 @@ public class UserInitBinderServiceTest extends JettyTest {
 
 	@Before
 	public void beforeTest() {
-		client = new DefaultHttpClient();
+		client = HttpClientBuilder.create().build();
 		post = new HttpPost("http://localhost:9998/controller/router");
+	}
+
+	@After
+	public void afterTest() {
+		IOUtils.closeQuietly(client);
 	}
 
 	@Test
@@ -71,27 +78,31 @@ public class UserInitBinderServiceTest extends JettyTest {
 
 		post.setEntity(postEntity);
 
-		HttpResponse response = client.execute(post);
-		HttpEntity entity = response.getEntity();
-		assertThat(entity).isNotNull();
-		String responseString = EntityUtils.toString(entity);
+		CloseableHttpResponse response = client.execute(post);
+		try {
+			HttpEntity entity = response.getEntity();
+			assertThat(entity).isNotNull();
+			String responseString = EntityUtils.toString(entity);
 
-		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-		assertThat(rootAsMap).hasSize(5);
-		assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
-		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
-		assertThat(rootAsMap.get("action")).isEqualTo("userServiceInitBinderService");
-		assertThat(rootAsMap.get("tid")).isEqualTo(1);
+			Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+			assertThat(rootAsMap).hasSize(5);
+			assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
+			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
+			assertThat(rootAsMap.get("action")).isEqualTo("userServiceInitBinderService");
+			assertThat(rootAsMap.get("tid")).isEqualTo(1);
 
-		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertThat(result).hasSize(6);
-		assertThat(result.get("name")).isEqualTo("Garner");
-		assertThat(result.get("firstName")).isEqualTo("Joe");
-		assertThat(result.get("age")).isEqualTo(28);
-		assertThat(result.get("email")).isEqualTo("test@test.com");
-		assertThat(result.get("flag")).isEqualTo(false);
-		assertThat(result.get("dateOfBirth")).isNull();
-		assertThat(result.get("success")).isEqualTo(true);
+			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
+			assertThat(result).hasSize(6);
+			assertThat(result.get("name")).isEqualTo("Garner");
+			assertThat(result.get("firstName")).isEqualTo("Joe");
+			assertThat(result.get("age")).isEqualTo(28);
+			assertThat(result.get("email")).isEqualTo("test@test.com");
+			assertThat(result.get("flag")).isEqualTo(false);
+			assertThat(result.get("dateOfBirth")).isNull();
+			assertThat(result.get("success")).isEqualTo(true);
+		} finally {
+			IOUtils.closeQuietly(response);
+		}
 	}
 
 	@Test
@@ -113,27 +124,31 @@ public class UserInitBinderServiceTest extends JettyTest {
 
 		post.setEntity(postEntity);
 
-		HttpResponse response = client.execute(post);
-		HttpEntity entity = response.getEntity();
-		assertThat(entity).isNotNull();
-		String responseString = EntityUtils.toString(entity);
+		CloseableHttpResponse response = client.execute(post);
+		try {
+			HttpEntity entity = response.getEntity();
+			assertThat(entity).isNotNull();
+			String responseString = EntityUtils.toString(entity);
 
-		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-		assertThat(rootAsMap).hasSize(5);
-		assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
-		assertThat(rootAsMap.get("type")).isEqualTo("rpc");
-		assertThat(rootAsMap.get("action")).isEqualTo("userServiceInitBinderService");
-		assertThat(rootAsMap.get("tid")).isEqualTo(2);
+			Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+			assertThat(rootAsMap).hasSize(5);
+			assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
+			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
+			assertThat(rootAsMap.get("action")).isEqualTo("userServiceInitBinderService");
+			assertThat(rootAsMap.get("tid")).isEqualTo(2);
 
-		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertThat(result).hasSize(7);
-		assertThat(result.get("name")).isEqualTo("Bacon");
-		assertThat(result.get("firstName")).isEqualTo("Kevin");
-		assertThat(result.get("age")).isEqualTo(45);
-		assertThat(result.get("email")).isEqualTo("kevin@test.com");
-		assertThat(result.get("flag")).isEqualTo(true);
-		assertThat(result.get("dateOfBirth")).isEqualTo("1966-12-21");
-		assertThat(result.get("success")).isEqualTo(true);
+			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
+			assertThat(result).hasSize(7);
+			assertThat(result.get("name")).isEqualTo("Bacon");
+			assertThat(result.get("firstName")).isEqualTo("Kevin");
+			assertThat(result.get("age")).isEqualTo(45);
+			assertThat(result.get("email")).isEqualTo("kevin@test.com");
+			assertThat(result.get("flag")).isEqualTo(true);
+			assertThat(result.get("dateOfBirth")).isEqualTo("1966-12-21");
+			assertThat(result.get("success")).isEqualTo(true);
+		} finally {
+			IOUtils.closeQuietly(response);
+		}
 	}
 
 }

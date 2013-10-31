@@ -39,6 +39,15 @@ class ProxyObjectWithoutQuotes {
 	private String idParam;
 
 	@JsonRawValue
+	private Object pageParam = null;
+
+	@JsonRawValue
+	private Object startParam = null;
+
+	@JsonRawValue
+	private Object limitParam = null;
+
+	@JsonRawValue
 	private String directFn;
 
 	private ApiObject api;
@@ -48,6 +57,13 @@ class ProxyObjectWithoutQuotes {
 	public ProxyObjectWithoutQuotes(ModelBean model, OutputConfig config) {
 		if (StringUtils.hasText(model.getIdProperty()) && !model.getIdProperty().equals("id")) {
 			this.idParam = model.getIdProperty();
+		}
+
+		if (model.isDisablePagingParameters()) {
+			Object value = config.getOutputFormat() == OutputFormat.EXTJS4 ? "undefined" : false;
+			pageParam = value;
+			startParam = value;
+			limitParam = value;
 		}
 
 		boolean hasApiMethods = false;

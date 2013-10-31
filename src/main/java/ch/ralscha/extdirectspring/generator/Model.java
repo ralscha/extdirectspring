@@ -68,6 +68,24 @@ public @interface Model {
 	boolean paging() default false;
 
 	/**
+	 * If set to true the pageParam, startParam and limitParam option of the
+	 * proxy will be set to undefined. This prevents the proxy of sending the
+	 * page, start and limit parameter to the server.
+	 * 
+	 * <pre>
+	 *   proxy: {
+	 *     type: 'direct',
+	 *     pageParam: undefined,
+	 *     startParam: undefined,
+	 *     limitParam: undefined,
+	 *   }
+	 * </pre>
+	 * 
+	 * Default value is false
+	 */
+	boolean disablePagingParameters() default false;
+
+	/**
 	 * Specifies the read method. This is a ExtDirect reference in the form
 	 * action.methodName. See <a href=
 	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.data.proxy.Direct-cfg-api"

@@ -26,14 +26,17 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.junit.ContiPerfRule;
@@ -85,25 +88,37 @@ public class SimpleServiceTest extends JettyTest2 {
 	@Test
 	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleApiDebug() throws IllegalStateException, IOException {
-		HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_simple");
-		handleApi(client, get, false);
+		CloseableHttpClient client = HttpClientBuilder.create().build();
+		try {
+			HttpGet get = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_simple");
+			handleApi(client, get, false);
+		} finally {
+			IOUtils.closeQuietly(client);
+		}
 	}
 
 	@Test
 	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleApi() throws IllegalStateException, IOException {
-		HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet("http://localhost:9998/controller/api.js?group=itest_simple");
-		handleApi(client, get, false);
+		CloseableHttpClient client = HttpClientBuilder.create().build();
+		try {
+			HttpGet get = new HttpGet("http://localhost:9998/controller/api.js?group=itest_simple");
+			handleApi(client, get, false);
+		} finally {
+			IOUtils.closeQuietly(client);
+		}
 	}
 
 	@Test
 	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleApiFingerprinted() throws IllegalStateException, IOException {
-		HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet("http://localhost:9998/controller/api-1.0.0.js?group=itest_simple");
-		handleApi(client, get, true);
+		CloseableHttpClient client = HttpClientBuilder.create().build();
+		try {
+			HttpGet get = new HttpGet("http://localhost:9998/controller/api-1.0.0.js?group=itest_simple");
+			handleApi(client, get, true);
+		} finally {
+			IOUtils.closeQuietly(client);
+		}
 	}
 
 	private static void handleApi(HttpClient client, HttpGet get, boolean fingerprinted) throws IOException,
@@ -154,44 +169,62 @@ public class SimpleServiceTest extends JettyTest2 {
 	@Test
 	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleCall() throws IllegalStateException, IOException {
-		HttpClient client = new DefaultHttpClient();
-		postToUpperCase("ralph", client);
-		postToUpperCase("renee", client);
-		postToUpperCase("andrea", client);
+		CloseableHttpClient client = HttpClientBuilder.create().build();
+		try {
+			postToUpperCase("ralph", client);
+			postToUpperCase("renee", client);
+			postToUpperCase("andrea", client);
+		} finally {
+			IOUtils.closeQuietly(client);
+		}
 	}
 
 	@Test
 	@PerfTest(invocations = 150, threads = 5)
 	public void testPoll() throws ClientProtocolException, IOException {
 		String _id = String.valueOf(id.incrementAndGet());
-		HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet("http://localhost:9998/controller/poll/simpleService/poll/poll?id=" + _id);
-		HttpResponse response = client.execute(get);
+		CloseableHttpClient client = HttpClientBuilder.create().build();
+		CloseableHttpResponse response = null;
+		try {
 
-		assertThat(response.getFirstHeader("Content-Type").getValue()).isEqualTo("application/json;charset=UTF-8");
+			HttpGet get = new HttpGet("http://localhost:9998/controller/poll/simpleService/poll/poll?id=" + _id);
+			response = client.execute(get);
 
-		String responseString = EntityUtils.toString(response.getEntity());
-		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-		assertThat(rootAsMap).hasSize(3);
-		assertThat(rootAsMap.get("type")).isEqualTo("event");
-		assertThat(rootAsMap.get("name")).isEqualTo("poll");
-		assertThat(rootAsMap.get("data")).isEqualTo(_id);
+			assertThat(response.getFirstHeader("Content-Type").getValue()).isEqualTo("application/json;charset=UTF-8");
+
+			String responseString = EntityUtils.toString(response.getEntity());
+			Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+			assertThat(rootAsMap).hasSize(3);
+			assertThat(rootAsMap.get("type")).isEqualTo("event");
+			assertThat(rootAsMap.get("name")).isEqualTo("poll");
+			assertThat(rootAsMap.get("data")).isEqualTo(_id);
+		} finally {
+			IOUtils.closeQuietly(response);
+			IOUtils.closeQuietly(client);
+		}
 	}
 
 	@Test
 	@PerfTest(invocations = 150, threads = 5)
 	public void testSse() throws ClientProtocolException, IOException {
 		String _id = String.valueOf(id.incrementAndGet());
-		HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet("http://localhost:9998/controller/sse/simpleService/sse?id=" + _id);
-		HttpResponse response = client.execute(get);
+		CloseableHttpClient client = HttpClientBuilder.create().build();
+		CloseableHttpResponse response = null;
+		try {
 
-		assertThat(response.getFirstHeader("Content-Type").getValue()).isEqualTo("text/event-stream;charset=UTF-8");
+			HttpGet get = new HttpGet("http://localhost:9998/controller/sse/simpleService/sse?id=" + _id);
+			response = client.execute(get);
 
-		String responseString = EntityUtils.toString(response.getEntity());
-		String[] parts = responseString.split("\\n");
-		assertThat(parts[0]).isEqualTo("id:" + _id);
-		assertThat(parts[1]).isEqualTo("data:d" + _id);
+			assertThat(response.getFirstHeader("Content-Type").getValue()).isEqualTo("text/event-stream;charset=UTF-8");
+
+			String responseString = EntityUtils.toString(response.getEntity());
+			String[] parts = responseString.split("\\n");
+			assertThat(parts[0]).isEqualTo("id:" + _id);
+			assertThat(parts[1]).isEqualTo("data:d" + _id);
+		} finally {
+			IOUtils.closeQuietly(response);
+			IOUtils.closeQuietly(client);
+		}
 	}
 
 	private static void postToUpperCase(String text, HttpClient client) throws UnsupportedEncodingException,
@@ -227,26 +260,33 @@ public class SimpleServiceTest extends JettyTest2 {
 	@Test
 	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleNamedCall() throws IllegalStateException, IOException {
-		HttpClient client = new DefaultHttpClient();
-		postToEcho(Collections.singletonList("\"userId\":\"ralph\", \"logLevel\": 100"),
-				Collections.singletonList("UserId: ralph LogLevel: 100"), client);
-		postToEcho(Collections.singletonList("\"userId\":\"tom\""),
-				Collections.singletonList("UserId: tom LogLevel: 10"), client);
-		postToEcho(Collections.singletonList("\"userId\":\"renee\", \"logLevel\": 1"),
-				Collections.singletonList("UserId: renee LogLevel: 1"), client);
-		postToEcho(Collections.singletonList("\"userId\":\"andrea\""),
-				Collections.singletonList("UserId: andrea LogLevel: 10"), client);
+		CloseableHttpClient client = HttpClientBuilder.create().build();
+		try {
+			postToEcho(Collections.singletonList("\"userId\":\"ralph\", \"logLevel\": 100"),
+					Collections.singletonList("UserId: ralph LogLevel: 100"), client);
+			postToEcho(Collections.singletonList("\"userId\":\"tom\""),
+					Collections.singletonList("UserId: tom LogLevel: 10"), client);
+			postToEcho(Collections.singletonList("\"userId\":\"renee\", \"logLevel\": 1"),
+					Collections.singletonList("UserId: renee LogLevel: 1"), client);
+			postToEcho(Collections.singletonList("\"userId\":\"andrea\""),
+					Collections.singletonList("UserId: andrea LogLevel: 10"), client);
+		} finally {
+			IOUtils.closeQuietly(client);
+		}
 	}
 
 	@Test
 	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleNamedCallBatched() throws IllegalStateException, IOException {
-		HttpClient client = new DefaultHttpClient();
-		postToEcho(Arrays.asList("\"userId\":\"Ralph\", \"logLevel\": 100", "\"userId\":\"Tom\"",
-				"\"userId\":\"Renee\", \"logLevel\": 1", "\"userId\":\"Andrea\""), Arrays.asList(
-				"UserId: Ralph LogLevel: 100", "UserId: Tom LogLevel: 10", "UserId: Renee LogLevel: 1",
-				"UserId: Andrea LogLevel: 10"), client);
-
+		CloseableHttpClient client = HttpClientBuilder.create().build();
+		try {
+			postToEcho(Arrays.asList("\"userId\":\"Ralph\", \"logLevel\": 100", "\"userId\":\"Tom\"",
+					"\"userId\":\"Renee\", \"logLevel\": 1", "\"userId\":\"Andrea\""), Arrays.asList(
+					"UserId: Ralph LogLevel: 100", "UserId: Tom LogLevel: 10", "UserId: Renee LogLevel: 1",
+					"UserId: Andrea LogLevel: 10"), client);
+		} finally {
+			IOUtils.closeQuietly(client);
+		}
 	}
 
 	private static void postToEcho(List<String> datas, List<String> expectedResult, HttpClient client)
