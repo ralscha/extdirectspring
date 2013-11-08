@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.bean;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -81,7 +82,11 @@ public class ExtDirectFormPostResult {
 				String message = fieldError.getDefaultMessage();
 				if (messageSource != null) {
 					Locale loc = (locale != null ? locale : Locale.getDefault());
-					message = messageSource.getMessage(fieldError.getCode(), fieldError.getArguments(), loc);
+					for (String code : fieldError.getCodes()) {
+					    message = messageSource.getMessage(code, fieldError.getArguments(), loc);
+					    if (message != null)
+					        break;
+                    }
 				}
 				List<String> fieldErrors = errorMap.get(fieldError.getField());
 
