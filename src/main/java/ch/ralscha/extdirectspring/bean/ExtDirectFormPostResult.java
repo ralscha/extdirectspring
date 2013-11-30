@@ -103,61 +103,67 @@ public class ExtDirectFormPostResult {
 		}
 	}
 
-    /**
-     * resolve the messages codes along the implementation described in {@link org.springframework.validation.DefaultMessageCodesResolver}<br>
-     * stop at first message found<br>
-     * method is useless if no specific validation message have been set (example: javax.validation.constraints.NotNull.message.fax=Fax number is mandatory)<br> 
-     * it will behave {@link #addErrors(Locale, MessageSource, BindingResult)} with a big overhead
-     * 
-     * @param locale locale for internationalization
-     * @param messageSource source of validation code and message
-     * @param bindingResult Errors list to resolve
-     * @return this {@link #ExtDirectFormPostResult} for easy chaining
-     */
-    public ExtDirectFormPostResult addErrorsResolveCode(Locale locale, MessageSource messageSource, BindingResult bindingResult) {
-        if (bindingResult != null && bindingResult.hasFieldErrors()) {
-            Map<String, List<String>> errorMap = new HashMap<String, List<String>>();
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                String message = fieldError.getDefaultMessage();
-                if (messageSource != null) {
-                    Locale loc = (locale != null ? locale : Locale.getDefault());
-                    for (String code : fieldError.getCodes()) {
-                        try {
-                            message = messageSource.getMessage(code, fieldError.getArguments(), loc);
-                        } catch (Exception e) {
-                            /**
-                             * expected if code/message doesn't exist, default behavior
-                             * to counter that, set to your message bundle, 
-                             * {@link org.springframework.context.support.AbstractMessageSource#setUseCodeAsDefaultMessage(true)}
-                             * beware of side effects
-                             */
-                        }
-                        if (message != null && !message.equals(code))
-                            break;
-                    }
-                }
-                List<String> fieldErrors = errorMap.get(fieldError.getField());
+	/**
+	 * resolve the messages codes along the implementation described in
+	 * {@link org.springframework.validation.DefaultMessageCodesResolver}<br>
+	 * stop at first message found<br>
+	 * method is useless if no specific validation message have been set
+	 * (example: javax.validation.constraints.NotNull.message.fax=Fax number is
+	 * mandatory)<br>
+	 * it will behave {@link #addErrors(Locale, MessageSource, BindingResult)}
+	 * with a big overhead
+	 * 
+	 * @param locale locale for internationalization
+	 * @param messageSource source of validation code and message
+	 * @param bindingResult Errors list to resolve
+	 * @return this {@link #ExtDirectFormPostResult} for easy chaining
+	 */
+	public ExtDirectFormPostResult addErrorsResolveCode(Locale locale, MessageSource messageSource,
+			BindingResult bindingResult) {
+		if (bindingResult != null && bindingResult.hasFieldErrors()) {
+			Map<String, List<String>> errorMap = new HashMap<String, List<String>>();
+			for (FieldError fieldError : bindingResult.getFieldErrors()) {
+				String message = fieldError.getDefaultMessage();
+				if (messageSource != null) {
+					Locale loc = (locale != null ? locale : Locale.getDefault());
+					for (String code : fieldError.getCodes()) {
+						try {
+							message = messageSource.getMessage(code, fieldError.getArguments(), loc);
+						} catch (Exception e) {
+							/**
+							 * expected if code/message doesn't exist, default
+							 * behavior to counter that, set to your message
+							 * bundle,
+							 * {@link org.springframework.context.support.AbstractMessageSource#setUseCodeAsDefaultMessage(true)}
+							 * beware of side effects
+							 */
+						}
+						if (message != null && !message.equals(code)) {
+							break;
+						}
+					}
+				}
+				List<String> fieldErrors = errorMap.get(fieldError.getField());
 
-                if (fieldErrors == null) {
-                    fieldErrors = new ArrayList<String>();
-                    errorMap.put(fieldError.getField(), fieldErrors);
-                }
+				if (fieldErrors == null) {
+					fieldErrors = new ArrayList<String>();
+					errorMap.put(fieldError.getField(), fieldErrors);
+				}
 
-                fieldErrors.add(message);
-            }
-            if (errorMap.isEmpty()) {
-                addResultProperty(SUCCESS_PROPERTY, true);
-            } else {
-                addResultProperty(ERRORS_PROPERTY, errorMap);
-                addResultProperty(SUCCESS_PROPERTY, false);
-            }
-        } else {
-            setSuccess(true);
-        }
-        return this;
-    }
-	
-	
+				fieldErrors.add(message);
+			}
+			if (errorMap.isEmpty()) {
+				addResultProperty(SUCCESS_PROPERTY, true);
+			} else {
+				addResultProperty(ERRORS_PROPERTY, errorMap);
+				addResultProperty(SUCCESS_PROPERTY, false);
+			}
+		} else {
+			setSuccess(true);
+		}
+		return this;
+	}
+
 	/**
 	 * Adds one error message to a specific field. Does not overwrite already
 	 * existing errors.

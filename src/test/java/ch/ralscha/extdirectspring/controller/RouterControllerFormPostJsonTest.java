@@ -76,7 +76,7 @@ public class RouterControllerFormPostJsonTest {
 		mockMvc.perform(request).andExpect(status().isOk());
 	}
 
-	@SuppressWarnings({ "unchecked", "null" })
+	@SuppressWarnings({ "null" })
 	@Test
 	public void testCallFormPostMethod() throws Exception {
 
