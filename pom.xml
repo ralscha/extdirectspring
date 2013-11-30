@@ -48,8 +48,8 @@
 	</scm>
 
 	<properties>
-		<spring.version>3.2.4.RELEASE</spring.version>
-		<jackson.version>2.2.3</jackson.version>
+		<spring.version>3.2.5.RELEASE</spring.version>
+		<jackson.version>2.3.0</jackson.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
