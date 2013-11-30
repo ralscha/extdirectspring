@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.generator;
 import java.io.IOException;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -30,6 +31,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * Represents one field in a {@link ModelBean}
  */
 @JsonInclude(Include.NON_NULL)
+@JsonPropertyOrder(value = { "name", "type", "defaultValue", "dateFormat", "useNull", "mapping" })
 public class ModelFieldBean {
 	private String name;
 
