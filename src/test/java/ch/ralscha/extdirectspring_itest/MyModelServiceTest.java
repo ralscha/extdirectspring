@@ -18,7 +18,6 @@ package ch.ralscha.extdirectspring_itest;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +25,6 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -75,7 +73,7 @@ public class MyModelServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void testApi() throws ClientProtocolException, IOException {
+	public void testApi() throws IOException {
 		HttpGet g = new HttpGet("http://localhost:9998/controller/api.js?group=itest_base_service");
 		CloseableHttpResponse response = client.execute(g);
 		try {
@@ -90,7 +88,7 @@ public class MyModelServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void testApiDebug() throws ClientProtocolException, IOException {
+	public void testApiDebug() throws IOException {
 		HttpGet g = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_base_service");
 		CloseableHttpResponse response = client.execute(g);
 		try {
@@ -105,7 +103,7 @@ public class MyModelServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void testApiFingerprinted() throws ClientProtocolException, IOException {
+	public void testApiFingerprinted() throws IOException {
 		HttpGet g = new HttpGet("http://localhost:9998/controller/api-1.1.1.js?group=itest_base_service");
 		CloseableHttpResponse response = client.execute(g);
 		try {
@@ -120,14 +118,13 @@ public class MyModelServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void testPost() throws ClientProtocolException, IOException {
+	public void testPost() throws IOException {
 		callMethod("update");
 		callMethod("method1");
 		callMethod("method2");
 	}
 
-	private void callMethod(String method) throws UnsupportedEncodingException, IOException, ClientProtocolException,
-			JsonParseException, JsonMappingException {
+	private void callMethod(String method) throws IOException, JsonParseException, JsonMappingException {
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
 		formparams.add(new BasicNameValuePair("extAction", "myModelService"));

@@ -16,5 +16,5 @@
 package ch.ralscha.extdirectspring.generator;
 
 public enum IncludeValidation {
-	NONE, BUILTIN, ALL;
+	NONE, BUILTIN, ALL
 }

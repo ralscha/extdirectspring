@@ -18,12 +18,10 @@ package ch.ralscha.extdirectspring_itest;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -39,8 +37,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class SecuredServiceTest extends JettyTest {
 
 	@Test
-	public void callSetDate() throws UnsupportedEncodingException, IOException, ClientProtocolException,
-			JsonParseException, JsonMappingException {
+	public void callSetDate() throws IOException, JsonParseException, JsonMappingException {
 
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;

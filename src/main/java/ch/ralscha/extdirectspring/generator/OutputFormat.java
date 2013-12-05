@@ -16,7 +16,7 @@
 package ch.ralscha.extdirectspring.generator;
 
 /**
- * Enumeration of all possible output formates for the model generator.
+ * Enumeration of all possible output formats for the model generator.
  * Difference between Touch and ExtJS is the config system that Touch uses.
  */
 public enum OutputFormat {
@@ -28,5 +28,5 @@ public enum OutputFormat {
 	/**
 	 * Orders the model generator to create Touch2 compatible code.
 	 */
-	TOUCH2;
+	TOUCH2
 }

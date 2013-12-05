@@ -27,7 +27,6 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -64,7 +63,7 @@ public class InfoServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void testApi() throws ClientProtocolException, IOException {
+	public void testApi() throws IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {
@@ -82,7 +81,7 @@ public class InfoServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void testApiDebug() throws ClientProtocolException, IOException {
+	public void testApiDebug() throws IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {
@@ -100,7 +99,7 @@ public class InfoServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void testApiFingerprinted() throws ClientProtocolException, IOException {
+	public void testApiFingerprinted() throws IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {
@@ -118,17 +117,17 @@ public class InfoServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void testPostFirst() throws ClientProtocolException, IOException {
+	public void testPostFirst() throws IOException {
 		testInfoPost("updateInfo");
 	}
 
 	@Test
-	public void testPostSecond() throws ClientProtocolException, IOException {
+	public void testPostSecond() throws IOException {
 		testInfoPost("updateInfo2nd");
 	}
 
 	@Test
-	public void testUpdateInfoUser1() throws ClientProtocolException, IOException {
+	public void testUpdateInfoUser1() throws IOException {
 
 		Locale.setDefault(Locale.US);
 
@@ -137,32 +136,31 @@ public class InfoServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void testUpdateInfoUser2() throws ClientProtocolException, IOException {
+	public void testUpdateInfoUser2() throws IOException {
 		Locale.setDefault(Locale.GERMAN);
 		testUserPost("updateInfoUser2", "keine gültige E-Mail-Adresse", entry("lc", "ralph"), entry("success", false));
 
 	}
 
 	@Test
-	public void testUpdateInfoUser3() throws ClientProtocolException, IOException {
+	public void testUpdateInfoUser3() throws IOException {
 		Locale.setDefault(Locale.US);
 		testUserPost("updateInfoUser3", "Wrong E-Mail", entry("lc", "ralph"), entry("success", false));
 	}
 
 	@Test
-	public void testUpdateInfoUser4() throws ClientProtocolException, IOException {
+	public void testUpdateInfoUser4() throws IOException {
 		Locale.setDefault(Locale.US);
 		testUserPost("updateInfoUser4", "Wrong E-Mail", entry("lc", "ralph"), entry("success", true));
 	}
 
 	@Test
-	public void testUpdateInfoUser5() throws ClientProtocolException, IOException {
+	public void testUpdateInfoUser5() throws IOException {
 		Locale.setDefault(Locale.US);
 		testUserPost("updateInfoUser5", "Wrong E-Mail", entry("lc", "ralph"), entry("success", false));
 	}
 
-	private static void testUserPost(String method, String errorMsg, MapEntry... entries)
-			throws ClientProtocolException, IOException {
+	private static void testUserPost(String method, String errorMsg, MapEntry... entries) throws IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {
@@ -218,7 +216,7 @@ public class InfoServiceTest extends JettyTest {
 		}
 	}
 
-	private static void testInfoPost(String method) throws ClientProtocolException, IOException {
+	private static void testInfoPost(String method) throws IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {

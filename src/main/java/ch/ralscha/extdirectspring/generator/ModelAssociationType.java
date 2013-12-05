@@ -16,5 +16,5 @@
 package ch.ralscha.extdirectspring.generator;
 
 public enum ModelAssociationType {
-	BELONGS_TO, HAS_MANY, HAS_ONE;
+	BELONGS_TO, HAS_MANY, HAS_ONE
 }

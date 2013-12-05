@@ -133,7 +133,7 @@ public @interface ModelAssociation {
 	 * 
 	 * Setting this property fixes a problem in Ext JS when there are two
 	 * associations that use the same class type (Ext JS only sets one
-	 * assocation correctly).
+	 * association correctly).
 	 * 
 	 * Warning: instanceName is a private config field in Ext JS and it can
 	 * change anytime.

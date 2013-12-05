@@ -25,7 +25,6 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -53,7 +52,7 @@ public class InfoControllerTest extends JettyTest {
 	}
 
 	@Test
-	public void testApi() throws ClientProtocolException, IOException {
+	public void testApi() throws IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {
@@ -71,7 +70,7 @@ public class InfoControllerTest extends JettyTest {
 	}
 
 	@Test
-	public void testApiDebug() throws ClientProtocolException, IOException {
+	public void testApiDebug() throws IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {
@@ -89,7 +88,7 @@ public class InfoControllerTest extends JettyTest {
 	}
 
 	@Test
-	public void testApiFingerprinted() throws ClientProtocolException, IOException {
+	public void testApiFingerprinted() throws IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {
@@ -107,7 +106,7 @@ public class InfoControllerTest extends JettyTest {
 	}
 
 	@Test
-	public void testPost() throws ClientProtocolException, IOException {
+	public void testPost() throws IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {

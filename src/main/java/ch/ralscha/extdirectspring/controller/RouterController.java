@@ -64,9 +64,7 @@ import ch.ralscha.extdirectspring.util.MethodInfo;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
 
 import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -184,7 +182,7 @@ public class RouterController {
 
 		ExtDirectResponse directResponse = new ExtDirectResponse(request);
 		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(extAction, extMethod);
-		Class<?> jsonView = null;
+
 		boolean streamResponse;
 
 		if (methodInfo != null && methodInfo.getForwardPath() != null) {
@@ -196,7 +194,7 @@ public class RouterController {
 			HandlerMethod handlerMethod = methodInfo.getHandlerMethod();
 			try {
 
-				ModelAndView modelAndView = null;
+				ModelAndView modelAndView;
 
 				if (configurationService.getConfiguration().isSynchronizeOnSession()
 						|| methodInfo.isSynchronizeOnSession()) {
@@ -226,7 +224,7 @@ public class RouterController {
 			log.error("Error invoking method '" + extAction + "." + extMethod + "'. Method  or Bean not found");
 			handleMethodNotFoundError(directResponse, extAction, extMethod);
 		}
-		writeJsonResponse(response, directResponse, jsonView, streamResponse, ExtDirectSpringUtil.isMultipart(request));
+		writeJsonResponse(response, directResponse, null, streamResponse, ExtDirectSpringUtil.isMultipart(request));
 
 		return null;
 	}
@@ -256,8 +254,7 @@ public class RouterController {
 	}
 
 	private void handleMethodCallsConcurrent(List<ExtDirectRequest> directRequests, HttpServletRequest request,
-			HttpServletResponse response, Locale locale) throws JsonGenerationException, JsonMappingException,
-			IOException {
+			HttpServletResponse response, Locale locale) throws IOException {
 
 		Class<?> jsonView = null;
 
@@ -295,8 +292,7 @@ public class RouterController {
 	}
 
 	private void handleMethodCallsSequential(List<ExtDirectRequest> directRequests, HttpServletRequest request,
-			HttpServletResponse response, Locale locale) throws JsonGenerationException, JsonMappingException,
-			IOException {
+			HttpServletResponse response, Locale locale) throws IOException {
 		List<ExtDirectResponse> directResponses = new ArrayList<ExtDirectResponse>(directRequests.size());
 		boolean streamResponse = configurationService.getConfiguration().isStreamResponse();
 		Class<?> jsonView = null;
@@ -384,20 +380,19 @@ public class RouterController {
 	}
 
 	public void writeJsonResponse(HttpServletRequest request, HttpServletResponse response, Object responseObject,
-			Class<?> jsonView) throws IOException, JsonGenerationException, JsonMappingException {
+			Class<?> jsonView) throws IOException {
 		writeJsonResponse(response, responseObject, jsonView, configurationService.getConfiguration()
 				.isStreamResponse(), ExtDirectSpringUtil.isMultipart(request));
 	}
 
 	private void writeJsonResponse(HttpServletResponse response, Object responseObject, Class<?> jsonView,
-			boolean streamResponse) throws IOException, JsonGenerationException, JsonMappingException {
+			boolean streamResponse) throws IOException {
 		writeJsonResponse(response, responseObject, jsonView, streamResponse, false);
 	}
 
 	@SuppressWarnings("resource")
 	public void writeJsonResponse(HttpServletResponse response, Object responseObject, Class<?> jsonView,
-			boolean streamResponse, boolean isMultipart) throws IOException, JsonGenerationException,
-			JsonMappingException {
+			boolean streamResponse, boolean isMultipart) throws IOException {
 
 		ObjectMapper objectMapper = configurationService.getJsonHandler().getMapper();
 

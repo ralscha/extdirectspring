@@ -272,7 +272,7 @@ public class Configuration {
 	 * @return exception message
 	 */
 	public String getMessage(Throwable exception) {
-		String message = null;
+		String message;
 		if (getExceptionToMessage() != null) {
 			message = getExceptionToMessage().get(exception.getClass());
 			if (StringUtils.hasText(message)) {

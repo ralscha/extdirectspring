@@ -51,14 +51,13 @@ public class Filter {
 				// a filter from store.filter, create a Filter depending on the
 				// type of the value
 				String property = (String) jsonData.get("property");
-				Object filterValue = source;
 
-				if (filterValue instanceof Number) {
-					return new NumericFilter(property, (Number) filterValue, null);
-				} else if (filterValue instanceof Boolean) {
-					return new BooleanFilter(property, (Boolean) filterValue);
+				if (source instanceof Number) {
+					return new NumericFilter(property, (Number) source, null);
+				} else if (source instanceof Boolean) {
+					return new BooleanFilter(property, (Boolean) source);
 				}
-				return new StringFilter(property, filterValue != null ? filterValue.toString() : null);
+				return new StringFilter(property, source != null ? source.toString() : null);
 			}
 
 			return null;
@@ -86,12 +85,11 @@ public class Filter {
 			String value = (String) source;
 			return new DateFilter(field, value, Comparison.fromString(comparison));
 		} else if (type.equals("list") || type.equals("combo")) {
-			Object value = source;
-			if (value instanceof String) {
-				String[] values = ((String) value).split(",");
+			if (source instanceof String) {
+				String[] values = ((String) source).split(",");
 				return new ListFilter(field, Arrays.asList(values));
 			}
-			return new ListFilter(field, (List<String>) value);
+			return new ListFilter(field, (List<String>) source);
 		} else if (type.equals("boolean")) {
 			boolean value = (Boolean) source;
 			return new BooleanFilter(field, value);

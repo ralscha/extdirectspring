@@ -39,7 +39,6 @@ public class BookSubService extends BaseService<Book> {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")
 	public ExtDirectStoreResult<Book> readWithPaging(ExtDirectStoreReadRequest request) {
 		int total = request.getPage() + request.getLimit() + request.getStart();
-		ExtDirectStoreResult<Book> response = new ExtDirectStoreResult<Book>(total, read());
-		return response;
+		return new ExtDirectStoreResult<Book>(total, read());
 	}
 }

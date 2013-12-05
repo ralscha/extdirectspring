@@ -194,7 +194,7 @@ public class ModelBean {
 
 	/**
 	 * If true a reader config with root : 'records' will be added to the model
-	 * object. This configuration is needef it the STORE_READ method return an
+	 * object. This configuration is needed it the STORE_READ method return an
 	 * instance of {@link ExtDirectStoreResult}
 	 * 
 	 * <pre>

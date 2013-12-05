@@ -44,9 +44,7 @@ public class GroupInfo {
 		String property = (String) jsonData.get("property");
 		String direction = (String) jsonData.get("direction");
 
-		GroupInfo sortInfo = new GroupInfo(property, SortDirection.fromString(direction));
-
-		return sortInfo;
+		return new GroupInfo(property, SortDirection.fromString(direction));
 	}
 
 	@Override

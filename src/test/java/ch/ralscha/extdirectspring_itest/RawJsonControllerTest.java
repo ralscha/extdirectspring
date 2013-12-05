@@ -19,13 +19,11 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -41,7 +39,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class RawJsonControllerTest extends JettyTest {
 
 	@Test
-	public void testRawResponse() throws ClientProtocolException, IOException {
+	public void testRawResponse() throws IOException {
 		testAndCheck("rawJsonController", "listUsers1", null, true);
 		testAndCheck("rawJsonController", "listUsers2", 2, true);
 		testAndCheck("rawJsonController", "listUsers3", 2, false);
@@ -55,9 +53,8 @@ public class RawJsonControllerTest extends JettyTest {
 		testAndCheck("rawJsonControllerDeprecated", "listUsers5", 2, true);
 	}
 
-	private static void testAndCheck(String action, String method, Integer total, boolean success)
-			throws UnsupportedEncodingException, IOException, ClientProtocolException, JsonParseException,
-			JsonMappingException {
+	private static void testAndCheck(String action, String method, Integer total, boolean success) throws IOException,
+			JsonParseException, JsonMappingException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {

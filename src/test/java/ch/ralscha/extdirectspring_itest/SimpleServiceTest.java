@@ -18,7 +18,6 @@ package ch.ralscha.extdirectspring_itest;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +28,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -122,7 +120,7 @@ public class SimpleServiceTest extends JettyTest2 {
 	}
 
 	private static void handleApi(HttpClient client, HttpGet get, boolean fingerprinted) throws IOException,
-			ClientProtocolException, JsonParseException, JsonMappingException {
+			JsonParseException, JsonMappingException {
 		HttpResponse response = client.execute(get);
 		HttpEntity entity = response.getEntity();
 		assertThat(entity).isNotNull();
@@ -181,7 +179,7 @@ public class SimpleServiceTest extends JettyTest2 {
 
 	@Test
 	@PerfTest(invocations = 150, threads = 5)
-	public void testPoll() throws ClientProtocolException, IOException {
+	public void testPoll() throws IOException {
 		String _id = String.valueOf(id.incrementAndGet());
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
@@ -206,7 +204,7 @@ public class SimpleServiceTest extends JettyTest2 {
 
 	@Test
 	@PerfTest(invocations = 150, threads = 5)
-	public void testSse() throws ClientProtocolException, IOException {
+	public void testSse() throws IOException {
 		String _id = String.valueOf(id.incrementAndGet());
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
@@ -227,8 +225,8 @@ public class SimpleServiceTest extends JettyTest2 {
 		}
 	}
 
-	private static void postToUpperCase(String text, HttpClient client) throws UnsupportedEncodingException,
-			IOException, ClientProtocolException, JsonParseException, JsonMappingException {
+	private static void postToUpperCase(String text, HttpClient client) throws IOException, JsonParseException,
+			JsonMappingException {
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
 		StringEntity postEntity = new StringEntity(
@@ -290,8 +288,7 @@ public class SimpleServiceTest extends JettyTest2 {
 	}
 
 	private static void postToEcho(List<String> datas, List<String> expectedResult, HttpClient client)
-			throws UnsupportedEncodingException, IOException, ClientProtocolException, JsonParseException,
-			JsonMappingException {
+			throws IOException, JsonParseException, JsonMappingException {
 
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 

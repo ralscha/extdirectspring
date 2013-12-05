@@ -26,7 +26,6 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -60,7 +59,7 @@ public class UserInitBinderServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void testPostWithoutDate() throws ClientProtocolException, IOException {
+	public void testPostWithoutDate() throws IOException {
 		Locale.setDefault(Locale.ENGLISH);
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "1"));
@@ -106,7 +105,7 @@ public class UserInitBinderServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void testPostWithDate() throws ClientProtocolException, IOException {
+	public void testPostWithDate() throws IOException {
 		Locale.setDefault(Locale.ENGLISH);
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "2"));

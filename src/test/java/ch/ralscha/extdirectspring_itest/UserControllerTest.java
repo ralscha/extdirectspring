@@ -26,7 +26,6 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -60,7 +59,7 @@ public class UserControllerTest extends JettyTest {
 	}
 
 	@Test
-	public void testPostWithErrors() throws ClientProtocolException, IOException {
+	public void testPostWithErrors() throws IOException {
 		Locale.setDefault(Locale.ENGLISH);
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "2"));
@@ -102,7 +101,7 @@ public class UserControllerTest extends JettyTest {
 	}
 
 	@Test
-	public void testPostWithMoreErrors() throws ClientProtocolException, IOException {
+	public void testPostWithMoreErrors() throws IOException {
 		Locale.setDefault(Locale.ENGLISH);
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
@@ -146,7 +145,7 @@ public class UserControllerTest extends JettyTest {
 	}
 
 	@Test
-	public void testPostWithoutErrors() throws ClientProtocolException, IOException {
+	public void testPostWithoutErrors() throws IOException {
 
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));

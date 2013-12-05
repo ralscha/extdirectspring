@@ -24,7 +24,6 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
@@ -42,7 +41,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class FileUploadServiceTest extends JettyTest {
 
 	@Test
-	public void testUpload() throws ClientProtocolException, IOException {
+	public void testUpload() throws IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {

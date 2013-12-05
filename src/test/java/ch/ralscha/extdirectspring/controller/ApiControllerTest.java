@@ -418,8 +418,7 @@ public class ApiControllerTest {
 	}
 
 	private static RemotingApi noApis(String namespace) {
-		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
-		return remotingApi;
+		return new RemotingApi("remoting", "/router", namespace);
 	}
 
 	static RemotingApi group1Apis(String namespace) {

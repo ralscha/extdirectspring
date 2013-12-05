@@ -49,12 +49,11 @@ public class SSEHandler {
 		SSEWriter sseWriter = new SSEWriter(response);
 
 		if (methodInfo != null) {
-
 			try {
 
 				Object[] parameters = configurationService.getParametersResolver().prepareParameters(request, response,
 						locale, methodInfo, sseWriter);
-				Object methodReturnValue = null;
+				Object methodReturnValue;
 
 				if (configurationService.getConfiguration().isSynchronizeOnSession()
 						|| methodInfo.isSynchronizeOnSession()) {

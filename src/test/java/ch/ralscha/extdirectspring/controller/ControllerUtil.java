@@ -246,11 +246,9 @@ public class ControllerUtil {
 			if (expectedResultOrType == Void.TYPE) {
 				assertThat(edResponse.getResult()).isNull();
 			} else if (expectedResultOrType instanceof Class<?>) {
-				Object r = ControllerUtil.convertValue(edResponse.getResult(), (Class<?>) expectedResultOrType);
-				return r;
+				return ControllerUtil.convertValue(edResponse.getResult(), (Class<?>) expectedResultOrType);
 			} else if (expectedResultOrType instanceof TypeReference) {
-				Object r = ControllerUtil.convertValue(edResponse.getResult(), (TypeReference<?>) expectedResultOrType);
-				return r;
+				return ControllerUtil.convertValue(edResponse.getResult(), (TypeReference<?>) expectedResultOrType);
 			} else {
 				assertThat(edResponse.getResult()).isEqualTo(expectedResultOrType);
 			}

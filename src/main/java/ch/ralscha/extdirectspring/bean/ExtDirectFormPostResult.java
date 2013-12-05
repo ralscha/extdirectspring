@@ -185,7 +185,7 @@ public class ExtDirectFormPostResult {
 	 * already existing errors.
 	 * 
 	 * @param field the name of the field
-	 * @param error a collection of error messages
+	 * @param errors a collection of error messages
 	 */
 	public void addErrors(String field, List<String> errors) {
 		Assert.notNull(field, "field must not be null");

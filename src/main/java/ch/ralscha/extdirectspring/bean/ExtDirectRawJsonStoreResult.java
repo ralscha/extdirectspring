@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.Collection;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -62,7 +61,7 @@ public class ExtDirectRawJsonStoreResult extends ExtDirectStoreResult<String> {
 
 		@Override
 		public void serialize(Collection<String> values, JsonGenerator jgen, SerializerProvider provider)
-				throws IOException, JsonProcessingException {
+				throws IOException {
 
 			StringBuilder sb = new StringBuilder();
 			sb.append("[");

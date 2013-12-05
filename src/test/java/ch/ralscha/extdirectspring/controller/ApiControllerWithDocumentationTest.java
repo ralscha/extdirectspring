@@ -21,7 +21,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -241,7 +240,7 @@ public class ApiControllerWithDocumentationTest {
 		doRequestWithoutDocs("/api.js");
 	}
 
-	private void doRequestWithoutDocs(String url) throws Exception, UnsupportedEncodingException {
+	private void doRequestWithoutDocs(String url) throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns").actionNs("actionns").group("doc")
 				.configuration(configurationService.getConfiguration()).build();
 		MockHttpServletRequestBuilder request = get(url).accept(MediaType.ALL).characterEncoding("UTF-8");

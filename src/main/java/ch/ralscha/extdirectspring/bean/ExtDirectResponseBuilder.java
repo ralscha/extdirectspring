@@ -94,7 +94,7 @@ public class ExtDirectResponseBuilder {
 	 * {@link ExtDirectResponse#setWhere(String)} according to the
 	 * {@link Configuration}.
 	 * 
-	 * This is a method primarly used for implementations of
+	 * This is a method primarily used for implementations of
 	 * {@link HandlerExceptionResolver}.
 	 * 
 	 * @param exception the exception that was thrown.
@@ -104,7 +104,7 @@ public class ExtDirectResponseBuilder {
 		unsuccessful();
 
 		WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
-		Configuration configuration = null;
+		Configuration configuration;
 		try {
 			configuration = ctx.getBean(Configuration.class);
 		} catch (NoSuchBeanDefinitionException e) {

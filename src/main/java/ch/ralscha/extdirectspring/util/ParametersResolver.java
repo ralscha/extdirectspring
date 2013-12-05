@@ -332,7 +332,7 @@ public final class ParametersResolver {
 			}
 
 		}
-		return value;
+		return null;
 	}
 
 	private Map<String, Object> fillReadRequestFromMap(ExtDirectStoreReadRequest to, Map<String, Object> from) {

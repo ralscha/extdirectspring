@@ -25,7 +25,6 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -57,7 +56,7 @@ public class ExceptionFormPostServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void testExceptionHandling() throws ClientProtocolException, IOException {
+	public void testExceptionHandling() throws IOException {
 
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
@@ -91,7 +90,7 @@ public class ExceptionFormPostServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void testNonExistingMethod() throws ClientProtocolException, IOException {
+	public void testNonExistingMethod() throws IOException {
 
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));

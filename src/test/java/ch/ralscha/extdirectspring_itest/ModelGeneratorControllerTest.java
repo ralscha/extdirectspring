@@ -20,7 +20,6 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -33,7 +32,7 @@ import ch.ralscha.extdirectspring.generator.GeneratorTestUtil;
 public class ModelGeneratorControllerTest extends JettyTest {
 
 	@Test
-	public void testAuthor() throws ClientProtocolException, IOException {
+	public void testAuthor() throws IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {
@@ -59,7 +58,7 @@ public class ModelGeneratorControllerTest extends JettyTest {
 	}
 
 	@Test
-	public void testBook() throws ClientProtocolException, IOException {
+	public void testBook() throws IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {

@@ -22,7 +22,6 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -208,8 +207,7 @@ public class ModelFieldBean {
 
 	private final static class ModelTypeSerializer extends JsonSerializer<ModelType> {
 		@Override
-		public void serialize(ModelType value, JsonGenerator jgen, SerializerProvider provider) throws IOException,
-				JsonProcessingException {
+		public void serialize(ModelType value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
 			jgen.writeString(value.getJsName());
 
 		}

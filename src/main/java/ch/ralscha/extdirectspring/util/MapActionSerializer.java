@@ -27,7 +27,6 @@ import ch.ralscha.extdirectspring.bean.api.Action;
 import ch.ralscha.extdirectspring.bean.api.ActionDoc;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
@@ -35,7 +34,7 @@ public class MapActionSerializer extends JsonSerializer<Map<String, List<Action>
 
 	@Override
 	public void serialize(Map<String, List<Action>> value, JsonGenerator jgen, SerializerProvider provider)
-			throws IOException, JsonProcessingException {
+			throws IOException {
 		if (null != value) {
 			jgen.writeStartObject();
 			for (Entry<String, List<Action>> entry : value.entrySet()) {

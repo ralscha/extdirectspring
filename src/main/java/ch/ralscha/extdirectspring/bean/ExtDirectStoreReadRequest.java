@@ -149,7 +149,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return the field/property name on which the grouping should occur.<br>
-	 *         Ext JS 4.x and Touch 2 can send more than one group infos. Use
+	 *         Ext JS 4.x and Touch 2 can send more than one group info. Use
 	 *         {@link #getGroups()} instead.
 	 */
 	public String getGroupBy() {

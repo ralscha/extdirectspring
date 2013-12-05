@@ -58,7 +58,7 @@ public class JsonHandler {
 	 * null and logs the exception.
 	 * 
 	 * @param obj the source object
-	 * @return obj JSON string, <code>null</code> if an exception occured
+	 * @return obj JSON string, <code>null</code> if an exception occurred
 	 */
 	public String writeValueAsString(Object obj) {
 		return writeValueAsString(obj, false);
@@ -71,7 +71,7 @@ public class JsonHandler {
 	 * @param obj the source object
 	 * @param indent if true JSON is written in a human readable format, if
 	 *            false JSON is written on one line
-	 * @return obj JSON string, <code>null</code> if an exception occured
+	 * @return obj JSON string, <code>null</code> if an exception occurred
 	 */
 	public String writeValueAsString(Object obj, boolean indent) {
 		try {

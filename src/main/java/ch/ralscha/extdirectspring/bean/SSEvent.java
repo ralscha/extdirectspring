@@ -58,7 +58,7 @@ public class SSEvent {
 	/**
 	 * Sets the data part of the Server-Sent Event response.
 	 * 
-	 * @param data the actual payload of the reponse
+	 * @param data the actual payload of the response
 	 */
 	public void setData(String data) {
 		this.data = data;
@@ -67,7 +67,7 @@ public class SSEvent {
 	/**
 	 * Sets the data part of the Server-Sent Event response.
 	 * 
-	 * @param data the actual payload of the reponse. Converted to a String by
+	 * @param data the actual payload of the response. Converted to a String by
 	 *            calling the object's toString() method. If null data is set to
 	 *            null.
 	 */

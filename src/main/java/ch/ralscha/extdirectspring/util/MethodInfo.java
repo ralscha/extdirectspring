@@ -42,7 +42,7 @@ import ch.ralscha.extdirectspring.bean.api.PollingProvider;
  */
 public final class MethodInfo {
 
-	private String group;
+	private final String group;
 
 	private final ExtDirectMethodType type;
 

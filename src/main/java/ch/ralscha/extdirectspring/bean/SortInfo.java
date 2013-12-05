@@ -47,9 +47,7 @@ public class SortInfo {
 		String property = (String) jsonData.get("property");
 		String direction = (String) jsonData.get("direction");
 
-		SortInfo sortInfo = new SortInfo(property, SortDirection.fromString(direction));
-
-		return sortInfo;
+		return new SortInfo(property, SortDirection.fromString(direction));
 	}
 
 	@Override

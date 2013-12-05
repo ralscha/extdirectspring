@@ -27,7 +27,7 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
  * This class allows you to send server sent events in a streaming fashion. Add
- * this class as a paramter to the method and send {@link SSEvent} with
+ * this class as a parameter to the method and send {@link SSEvent} with
  * {@link #write(SSEvent)} to the client.
  * <p>
  * Example:

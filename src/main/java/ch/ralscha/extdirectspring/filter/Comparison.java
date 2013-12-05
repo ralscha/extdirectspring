@@ -15,6 +15,7 @@
  */
 package ch.ralscha.extdirectspring.filter;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -27,9 +28,7 @@ public enum Comparison {
 
 	private Comparison(String... values) {
 		externalValues = new HashSet<String>();
-		for (String value : values) {
-			externalValues.add(value);
-		}
+		Collections.addAll(externalValues, values);
 	}
 
 	public boolean is(String externalValue) {

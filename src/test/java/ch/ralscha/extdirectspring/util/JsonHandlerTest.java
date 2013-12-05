@@ -33,9 +33,7 @@ import org.springframework.util.StringUtils;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -175,7 +173,7 @@ public class JsonHandlerTest {
 	}
 
 	@Test
-	public void testJsonList() throws JsonGenerationException, JsonMappingException, IOException {
+	public void testJsonList() throws IOException {
 		JsonHandler jsonHandler = new JsonHandler();
 		jsonHandler.setMapper(new ObjectMapper());
 		List<ExtDirectRequest> requests = new ArrayList<ExtDirectRequest>();
