@@ -511,6 +511,8 @@
 						<exclude>**/*.txt</exclude>
 						<exclude>**/*.md</exclude>
 						<exclude>**/*.json</exclude>
+						<exclude>**/*.py</exclude>
+						<exclude>**/*.yml</exclude>
 						<exclude>**/.gitignore</exclude>
 					</excludes>
 					<strictCheck>true</strictCheck>
