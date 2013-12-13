@@ -234,7 +234,6 @@ public class ApiControllerTest {
 			assertThat(expires.getDayOfMonth()).isEqualTo(inSixMonths.getDayOfMonth());
 			assertThat(expires.getHourOfDay()).isEqualTo(inSixMonths.getHourOfDay());
 			assertThat(expires.getMinuteOfDay()).isEqualTo(inSixMonths.getMinuteOfDay());
-
 		}
 	}
 
@@ -307,11 +306,11 @@ public class ApiControllerTest {
 	public void testFullRouterUrl() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("apiNs").actionNs("").remotingApiVar("TEST_RMT_API")
 				.pollingUrlsVar("TEST_POLL_URLS").sseVar("TEST_SSE").fullRouterUrl(true).group("group2").build();
-		runTest(mockMvc, params, group2Apis(null, "http://localhost:80/router"));
+		runTest(mockMvc, params, group2Apis(null, "http://localhost/router"));
 
 		params = ApiRequestParams.builder().apiNs("apiNs").remotingApiVar("TEST_RMT_API")
 				.pollingUrlsVar("TEST_POLL_URLS").sseVar("TEST_SSE").fullRouterUrl(true).group("group2").build();
-		runTest(mockMvc, params, group2Apis(null, "http://localhost:80/router"));
+		runTest(mockMvc, params, group2Apis(null, "http://localhost/router"));
 
 		params = ApiRequestParams.builder().apiNs("apiNs").actionNs("").remotingApiVar("TEST_RMT_API")
 				.pollingUrlsVar("TEST_POLL_URLS").sseVar("TEST_SSE").fullRouterUrl(false).group("group2").build();
@@ -326,12 +325,12 @@ public class ApiControllerTest {
 	public void testFormat() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().actionNs("").apiNs("apiNs").remotingApiVar("TEST_RMT_API")
 				.pollingUrlsVar("TEST_POLL_URLS").sseVar("TEST_SSE").group("group2").format("json").build();
-		runTest(mockMvc, params, group2Apis(null, "http://localhost:80/router"));
+		runTest(mockMvc, params, group2Apis(null, "http://localhost/router"));
 
 		params = ApiRequestParams.builder().actionNs("ns").apiNs("").remotingApiVar("TEST_RMT_API")
 				.pollingUrlsVar("TEST_POLL_URLS").sseVar("TEST_SSE").group("group2").format("json").fullRouterUrl(true)
 				.build();
-		runTest(mockMvc, params, group2Apis("ns", "http://localhost:80/router"));
+		runTest(mockMvc, params, group2Apis("ns", "http://localhost/router"));
 	}
 
 	@Test
@@ -449,8 +448,6 @@ public class ApiControllerTest {
 		RemotingApi remotingApi = new RemotingApi("remoting", url, namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method6", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method7", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method6", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method7", 1, false));
 		remotingApi.addAction("remoteProviderStoreModify", new Action("update4", 1, false));
@@ -475,8 +472,6 @@ public class ApiControllerTest {
 
 		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method6", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method7", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method6", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method7", 1, false));
 		remotingApi.addAction("remoteProviderStoreModify", new Action("update4", 1, false));
@@ -502,7 +497,6 @@ public class ApiControllerTest {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method9", 0, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method5", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method5", 1, false));
 		remotingApi.addAction("remoteProviderStoreModify", new Action("destroy", 1, false));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("destroy", 1, false));
@@ -577,17 +571,6 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method10", 0, false));
 		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method11", 0, false));
 		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method12", 0, false));
-
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method1", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method2", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method3", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method4", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method5", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method6", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method7", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method8", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("methodFilter", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("methodMetadata", 1, false));
 
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method1", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method2", 1, false));
@@ -688,14 +671,6 @@ public class ApiControllerTest {
 		remotingApi.addAction("bookSubService", new Action("create3", 1, false));
 		remotingApi.addAction("bookSubService", new Action("create4", 1, false));
 
-		remotingApi.addAction("colorOptionService", new Action("createOne", 1, false));
-		remotingApi.addAction("colorOptionService", new Action("createMultiple", 1, false));
-		remotingApi.addAction("colorOptionService", new Action("updateOne", 1, false));
-		remotingApi.addAction("colorOptionService", new Action("updateMultiple", 1, false));
-		remotingApi.addAction("colorOptionService", new Action("destroyOne", 1, false));
-		remotingApi.addAction("colorOptionService", new Action("destroyMultiple", 1, false));
-		remotingApi.addAction("colorOptionService", new Action("simpleMethod", 2, false));
-
 		remotingApi.addAction("remoteProviderSimpleNamed", new Action("method1", new ArrayList<String>()));
 		remotingApi.addAction("remoteProviderSimpleNamed", new Action("method2", Arrays.asList("i", "d", "s")));
 		remotingApi.addAction("remoteProviderSimpleNamed", new Action("method3", Arrays.asList("userName")));
@@ -791,14 +766,6 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", new Action("method24", 3, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method25", 3, false));
 		remotingApi.addAction("remoteProviderSimple", new Action("method26", 3, false));
-
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method1", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method2", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method3", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method4", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("method8", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("methodFilter", 1, false));
-		remotingApi.addAction("remoteProviderStoreReadDeprecated", new Action("methodMetadata", 1, false));
 
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method1", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method2", 1, false));
