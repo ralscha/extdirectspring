@@ -45,12 +45,6 @@ public class RawJsonControllerTest extends JettyTest {
 		testAndCheck("rawJsonController", "listUsers3", 2, false);
 		testAndCheck("rawJsonController", "listUsers4", 2, true);
 		testAndCheck("rawJsonController", "listUsers5", 2, true);
-
-		testAndCheck("rawJsonControllerDeprecated", "listUsers1", null, true);
-		testAndCheck("rawJsonControllerDeprecated", "listUsers2", 2, true);
-		testAndCheck("rawJsonControllerDeprecated", "listUsers3", 2, false);
-		testAndCheck("rawJsonControllerDeprecated", "listUsers4", 2, true);
-		testAndCheck("rawJsonControllerDeprecated", "listUsers5", 2, true);
 	}
 
 	private static void testAndCheck(String action, String method, Integer total, boolean success) throws IOException,

@@ -55,7 +55,6 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
-import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.bean.JsonViewHint;
 import ch.ralscha.extdirectspring.bean.ModelAndJsonView;
@@ -337,7 +336,6 @@ public class RouterController {
 						result = formLoadResult;
 					} else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo
 							.isType(ExtDirectMethodType.STORE_READ))
-							&& !ExtDirectStoreReadResult.class.isAssignableFrom(result.getClass())
 							&& !ExtDirectStoreResult.class.isAssignableFrom(result.getClass())
 							&& configurationService.getConfiguration().isAlwaysWrapStoreResponse()) {
 						if (result instanceof Collection) {
@@ -432,7 +430,7 @@ public class RouterController {
 
 			if (!streamResponse) {
 				ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
-				JsonGenerator jsonGenerator = objectMapper.getFactory().createJsonGenerator(bos, JsonEncoding.UTF8);
+				JsonGenerator jsonGenerator = objectMapper.getFactory().createGenerator(bos, JsonEncoding.UTF8);
 
 				if (jsonView == null) {
 					objectMapper.writeValue(jsonGenerator, responseObject);
@@ -444,8 +442,8 @@ public class RouterController {
 				outputStream.write(bos.toByteArray());
 				jsonGenerator.close();
 			} else {
-				JsonGenerator jsonGenerator = objectMapper.getFactory().createJsonGenerator(outputStream,
-						JsonEncoding.UTF8);
+				JsonGenerator jsonGenerator = objectMapper.getFactory()
+						.createGenerator(outputStream, JsonEncoding.UTF8);
 				if (jsonView == null) {
 					objectMapper.writeValue(jsonGenerator, responseObject);
 				} else {
