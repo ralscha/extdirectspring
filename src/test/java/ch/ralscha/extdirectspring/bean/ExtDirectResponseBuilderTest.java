@@ -23,13 +23,13 @@ import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.context.support.GenericWebApplicationContext;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import ch.ralscha.extdirectspring.controller.ControllerUtil;
@@ -37,11 +37,12 @@ import ch.ralscha.extdirectspring.controller.ControllerUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@WebAppConfiguration
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class ExtDirectResponseBuilderTest {
 
 	@Autowired
-	private DefaultListableBeanFactory applicationContext;
+	private WebApplicationContext wac;
 
 	@Test
 	public void testBuilder() {
@@ -81,8 +82,7 @@ public class ExtDirectResponseBuilderTest {
 	public void testBuilderUploadResponse() throws IOException {
 
 		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
-		GenericWebApplicationContext ctx = new GenericWebApplicationContext(applicationContext);
-		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, ctx);
+		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, wac);
 
 		request.setParameter("extAction", "action");
 		request.setParameter("extMethod", "method");
@@ -117,7 +117,6 @@ public class ExtDirectResponseBuilderTest {
 		assertThat((Boolean) result.get("success")).isTrue();
 		assertThat(result.get("text")).isEqualTo("a lot of 'text'");
 		assertThat(result.get("additionalProperty")).isEqualTo(false);
-		ctx.close();
 	}
 
 	@Test
@@ -160,11 +159,9 @@ public class ExtDirectResponseBuilderTest {
 		checkResponse(servletResponse, false);
 	}
 
-	@SuppressWarnings("resource")
 	private MockHttpServletRequest createRequest() {
 		MockHttpServletRequest request = new MockHttpServletRequest();
-		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, new GenericWebApplicationContext(
-				applicationContext));
+		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, wac);
 
 		request.setParameter("extAction", "action");
 		request.setParameter("extMethod", "method");
