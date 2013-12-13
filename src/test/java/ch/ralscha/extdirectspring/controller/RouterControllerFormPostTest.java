@@ -49,7 +49,7 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration("classpath:/testApplicationContext.xml")
+@ContextConfiguration("classpath:/testApplicationContextN.xml")
 public class RouterControllerFormPostTest {
 
 	@Autowired
