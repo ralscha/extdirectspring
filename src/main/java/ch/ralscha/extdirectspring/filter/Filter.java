@@ -47,11 +47,10 @@ public class Filter {
 		Object source = jsonData.get("value");
 
 		if (type == null) {
-			if (jsonData.containsKey("property") && jsonData.containsKey("value")) {
+			String property = (String) jsonData.get("property");
+			if (property != null) {
 				// a filter from store.filter, create a Filter depending on the
 				// type of the value
-				String property = (String) jsonData.get("property");
-
 				if (source instanceof Number) {
 					return new NumericFilter(property, (Number) source, null);
 				} else if (source instanceof Boolean) {

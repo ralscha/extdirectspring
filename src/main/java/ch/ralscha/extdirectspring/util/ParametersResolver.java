@@ -351,13 +351,19 @@ public final class ParametersResolver {
 							});
 
 					for (Map<String, Object> rawFilter : rawFilters) {
-						filters.add(Filter.createFilter(rawFilter, conversionService));
+						Filter filter = Filter.createFilter(rawFilter, conversionService);
+						if (filter != null) {
+							filters.add(filter);
+						}
 					}
 				} else if (value instanceof List) {
 					@SuppressWarnings("unchecked")
 					List<Map<String, Object>> filterList = (List<Map<String, Object>>) value;
-					for (Map<String, Object> filter : filterList) {
-						filters.add(Filter.createFilter(filter, conversionService));
+					for (Map<String, Object> rawFilter : filterList) {
+						Filter filter = Filter.createFilter(rawFilter, conversionService);
+						if (filter != null) {
+							filters.add(filter);
+						}
 					}
 				}
 				to.setFilters(filters);

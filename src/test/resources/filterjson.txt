@@ -18,3 +18,4 @@
 {"action":"remoteProviderStoreRead","method":"methodFilter","data":[{"type":18,"start":0,"limit":50,"sort":"company","dir":"ASC","filter":"[{\"type\":\"date\",\"comparison\":\"=\",\"value\":\"07/01/2010\",\"field\":\"date\"}]"}],"type":"rpc","tid":18}
 {"action":"remoteProviderStoreRead","method":"methodFilter","data":[{"type":19,"start":0,"limit":50,"sort":"company","dir":"ASC","filter":"[{\"type\":\"string\",\"value\":null,\"field\":\"name\"}]"}],"type":"rpc","tid":19}
 {"action":"remoteProviderStoreRead","method":"methodFilter","data":[{"type":20,"start":0,"limit":50,"sort":"company","dir":"ASC","filter":"[{\"value\":null,\"property\":\"firstname\"}]"}],"type":"rpc","tid":20}
+{"action":"remoteProviderStoreRead","method":"methodFilter","data":[{"type":21,"start":0,"limit":50,"sort":"company","dir":"ASC","filter":"[{\"property\":\"firstname\"}]"}],"type":"rpc","tid":21}

@@ -539,6 +539,8 @@ public class FilterTest {
 		json.put("property", "aField");
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertThat(filter).isNull();
+		StringFilter stringFilter = (StringFilter) filter;
+		assertThat(stringFilter.getField()).isEqualTo("aField");
+		assertThat(stringFilter.getValue()).isNull();
 	}
 }
