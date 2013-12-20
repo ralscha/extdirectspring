@@ -119,7 +119,7 @@ public final class ExtDirectSpringUtil {
 	private final static long secondsInAMonth = 30L * 24L * 60L * 60L;
 
 	/**
-	 * Adds Vary, Expires, ETag and Cache-Control response headers.
+	 * Adds Expires, ETag and Cache-Control response headers.
 	 * 
 	 * @param response the HTTP servlet response
 	 * @param etag the calculated etag (md5) of the response
@@ -137,7 +137,6 @@ public final class ExtDirectSpringUtil {
 			seconds = 6L * secondsInAMonth;
 		}
 
-		response.setHeader("Vary", "Accept-Encoding");
 		response.setDateHeader("Expires", System.currentTimeMillis() + (seconds * 1000L));
 		response.setHeader("ETag", etag);
 		response.setHeader("Cache-Control", "public, max-age=" + seconds);

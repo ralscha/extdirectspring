@@ -137,7 +137,6 @@ public class SimpleServiceTest extends JettyTest2 {
 			assertThat(response.getFirstHeader("Content-Type").getValue()).isEqualTo(
 					"application/javascript;charset=UTF-8");
 			assertThat(response.getFirstHeader("Content-Length")).isNotNull();
-			assertThat(response.getFirstHeader("Vary").getValue()).isEqualTo("Accept-Encoding");
 
 			String expiresString = response.getFirstHeader("Expires").getValue();
 			DateTimeFormatter fmt = DateTimeFormat.forPattern("E, dd MMM yyyy HH:mm:ss ZZZ").withLocale(Locale.ENGLISH);
@@ -157,7 +156,6 @@ public class SimpleServiceTest extends JettyTest2 {
 			assertThat(response.getFirstHeader("Content-Type").getValue()).isEqualTo(
 					"application/javascript;charset=UTF-8");
 			assertThat(response.getFirstHeader("Content-Length")).isNotNull();
-			assertThat(response.getFirstHeader("Vary")).isNull();
 			assertThat(response.getFirstHeader("Expires")).isNull();
 			assertThat(response.getFirstHeader("ETag")).isNull();
 			assertThat(response.getFirstHeader("Cache-Control")).isNull();

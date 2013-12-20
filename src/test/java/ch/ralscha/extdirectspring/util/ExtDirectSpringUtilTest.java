@@ -95,20 +95,19 @@ public class ExtDirectSpringUtilTest {
 	public void testAddCacheHeaders() {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		ExtDirectSpringUtil.addCacheHeaders(response, "1", null);
-		assertResponse(response, 4, "1", 6);
+		assertResponse(response, 3, "1", 6);
 
 		response = new MockHttpServletResponse();
 		ExtDirectSpringUtil.addCacheHeaders(response, "2", 1);
-		assertResponse(response, 4, "2", 1);
+		assertResponse(response, 3, "2", 1);
 
 		response = new MockHttpServletResponse();
 		ExtDirectSpringUtil.addCacheHeaders(response, "3", 12);
-		assertResponse(response, 4, "3", 12);
+		assertResponse(response, 3, "3", 12);
 	}
 
 	private static void assertResponse(MockHttpServletResponse response, int noOfHeaders, String etag, int month) {
 		assertThat(response.getHeaderNames()).hasSize(noOfHeaders);
-		assertThat(response.getHeader("Vary")).isEqualTo("Accept-Encoding");
 		assertThat(response.getHeader("ETag")).isEqualTo(etag);
 		assertThat(response.getHeader("Cache-Control")).isEqualTo("public, max-age=" + (month * 30 * 24 * 60 * 60));
 
@@ -138,7 +137,7 @@ public class ExtDirectSpringUtilTest {
 		ExtDirectSpringUtil.handleCacheableResponse(request, response, data, contentType);
 
 		assertThat(response.getStatus()).isEqualTo(200);
-		assertResponse(response, 6, etag, 6);
+		assertResponse(response, 5, etag, 6);
 		assertThat(response.getContentLength()).isEqualTo(data.length);
 		assertThat(response.getContentType()).isEqualTo(contentType);
 		assertThat(response.getContentAsByteArray()).isEqualTo(data);
@@ -164,7 +163,7 @@ public class ExtDirectSpringUtilTest {
 		etag = "\"0" + DigestUtils.md5DigestAsHex(data) + '"';
 		ExtDirectSpringUtil.handleCacheableResponse(request, response, data, contentType);
 		assertThat(response.getStatus()).isEqualTo(200);
-		assertResponse(response, 6, etag, 6);
+		assertResponse(response, 5, etag, 6);
 		assertThat(response.getContentLength()).isEqualTo(data.length);
 		assertThat(response.getContentType()).isEqualTo(contentType);
 		assertThat(response.getContentAsByteArray()).isEqualTo(data);

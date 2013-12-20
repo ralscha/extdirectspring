@@ -221,8 +221,7 @@ public class ApiControllerTest {
 
 			MockHttpServletResponse response = result.getResponse();
 
-			assertThat(response.getHeaderNames()).hasSize(6);
-			assertThat(response.getHeader("Vary")).isEqualTo("Accept-Encoding");
+			assertThat(response.getHeaderNames()).hasSize(5);
 			assertThat(response.getHeader("ETag")).isNotNull();
 			assertThat(response.getHeader("Cache-Control")).isEqualTo("public, max-age=" + (6 * 30 * 24 * 60 * 60));
 
