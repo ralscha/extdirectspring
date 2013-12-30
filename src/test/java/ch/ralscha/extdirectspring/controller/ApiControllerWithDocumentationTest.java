@@ -35,6 +35,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -61,10 +62,13 @@ public class ApiControllerWithDocumentationTest {
 	public void setupApiController() throws Exception {
 		ApiCache.INSTANCE.clear();
 
-		configurationService.getConfiguration().setTimeout(15000);
-		configurationService.getConfiguration().setEnableBuffer(false);
-		configurationService.getConfiguration().setMaxRetries(5);
-		configurationService.getConfiguration().setStreamResponse(true);
+		Configuration config = new Configuration();
+		config.setTimeout(15000);
+		config.setEnableBuffer(false);
+		config.setMaxRetries(5);
+		config.setStreamResponse(true);
+		ReflectionTestUtils.setField(configurationService, "configuration", config);
+		configurationService.afterPropertiesSet();
 
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}

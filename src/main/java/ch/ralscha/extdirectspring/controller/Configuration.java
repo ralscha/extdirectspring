@@ -47,6 +47,20 @@ public class Configuration {
 
 	private boolean synchronizeOnSession = false;
 
+	private String apiNs = "Ext.app";
+
+	private String actionNs = null;
+
+	private String remotingApiVar = "REMOTING_API";
+
+	private String pollingUrlsVar = "POLLING_URLS";
+
+	private String sseVar = "SSE";
+
+	private boolean fullRouterUrl = false;
+
+	private String baseRouterUrl = null;
+
 	private Integer timeout = null;
 
 	private Integer maxRetries = null;
@@ -423,6 +437,117 @@ public class Configuration {
 	 */
 	public void setFrameDomainScript(String frameDomainScript) {
 		this.frameDomainScript = frameDomainScript;
+	}
+
+	public String getApiNs() {
+		return apiNs;
+	}
+
+	/**
+	 * Sets the name of the namespace in which the remotingApiVar variable will
+	 * reside.
+	 * <p>
+	 * Defaults to Ext.app
+	 * 
+	 * @param apiNs new namespace
+	 */
+	public void setApiNs(String apiNs) {
+		this.apiNs = apiNs;
+	}
+
+	public String getActionNs() {
+		return actionNs;
+	}
+
+	/**
+	 * Sets the name of the namespace in which the actions will reside.
+	 * <p>
+	 * Defaults to none
+	 * 
+	 * @param apiNs new namespace
+	 */
+	public void setActionNs(String actionNs) {
+		this.actionNs = actionNs;
+	}
+
+	public String getRemotingApiVar() {
+		return remotingApiVar;
+	}
+
+	/**
+	 * Changes the name of the remoting api variable.
+	 * <p>
+	 * Defaults to REMOTING_API
+	 * 
+	 * @param remotingApiVar new remoting api varaible name
+	 */
+	public void setRemotingApiVar(String remotingApiVar) {
+		this.remotingApiVar = remotingApiVar;
+	}
+
+	public String getPollingUrlsVar() {
+		return pollingUrlsVar;
+	}
+
+	/**
+	 * Changes the name of the polling urls object variable
+	 * <p>
+	 * Defaults to POLLING_URLS
+	 * 
+	 * @param pollingUrlsVar new polling urls object variable name
+	 */
+	public void setPollingUrlsVar(String pollingUrlsVar) {
+		this.pollingUrlsVar = pollingUrlsVar;
+	}
+
+	public String getSseVar() {
+		return sseVar;
+	}
+
+	/**
+	 * Changes the name of the SSE urls object variable
+	 * <p>
+	 * Defaults to SSE
+	 * 
+	 * @param sseVar new SSE urls object variable name
+	 */
+	public void setSseVar(String sseVar) {
+		this.sseVar = sseVar;
+	}
+
+	public boolean isFullRouterUrl() {
+		return fullRouterUrl;
+	}
+
+	/**
+	 * Specifies if the router property should contain the full URL including
+	 * protocol, server name, port number, and server path (true) or only the
+	 * server path (false)
+	 * <p>
+	 * Defaults to false
+	 * 
+	 * @param fullRouterUrl new flag value
+	 */
+	public void setFullRouterUrl(boolean fullRouterUrl) {
+		this.fullRouterUrl = fullRouterUrl;
+	}
+
+	public String getBaseRouterUrl() {
+		return baseRouterUrl;
+	}
+
+	/**
+	 * If not null the {@link ApiController} does not use the url of the request
+	 * to determine the router url instead he uses the value of this variable as
+	 * the base and adds /router, /poll and /sse.<br>
+	 * The fullRouterUrl setting is ignored when this variable is not null
+	 * <p>
+	 * Defaults to null.
+	 * 
+	 * @param baseRouterUrl new base router url
+	 */
+	public void setBaseRouterUrl(String baseRouterUrl) {
+		this.baseRouterUrl = baseRouterUrl;
 	}
 
 	public ConversionService getConversionService() {

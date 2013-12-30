@@ -87,7 +87,7 @@ public class ApiController {
 			@RequestParam(value = "pollingUrlsVar", required = false) String pollingUrlsVar,
 			@RequestParam(value = "sseVar", required = false) String sseVar,
 			@RequestParam(value = "group", required = false) String group,
-			@RequestParam(value = "fullRouterUrl", required = false, defaultValue = "false") boolean fullRouterUrl,
+			@RequestParam(value = "fullRouterUrl", required = false) Boolean fullRouterUrl,
 			@RequestParam(value = "format", required = false) String format,
 			@RequestParam(value = "baseRouterUrl", required = false) String baseRouterUrl, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
@@ -140,9 +140,9 @@ public class ApiController {
 	 *            POLLING_URLS
 	 * @param sseVar name of the SSE urls object. Defaults to SSE
 	 * @param group name of the api group. Multiple groups delimited with comma
-	 * @param fullRouterUrl if true the router property contains the full
-	 *            request URL with method, server and port. Defaults to false
-	 *            returns only the URL without method, server and port
+	 * @param fullRouterUrl if true the router property contains the full URL
+	 *            with protocol, server name, port number, and server path.
+	 *            Defaults to false returns only the URL with server path
 	 * @param request the HTTP servlet request
 	 * @param response the HTTP servlet response
 	 * @throws IOException
@@ -155,7 +155,7 @@ public class ApiController {
 			@RequestParam(value = "pollingUrlsVar", required = false) String pollingUrlsVar,
 			@RequestParam(value = "sseVar", required = false) String sseVar,
 			@RequestParam(value = "group", required = false) String group,
-			@RequestParam(value = "fullRouterUrl", required = false, defaultValue = "false") boolean fullRouterUrl,
+			@RequestParam(value = "fullRouterUrl", required = false) Boolean fullRouterUrl,
 			@RequestParam(value = "baseRouterUrl", required = false) String baseRouterUrl, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 
@@ -167,14 +167,20 @@ public class ApiController {
 				.getConfiguration().getJsContentType());
 	}
 
-	private String buildAndCacheApiString(String requestApiNs, String actionNs, String requestRemotingApiVar,
-			String requestPollingUrlsVar, String requestSseVar, String group, boolean fullRouterUrl,
-			String baseRouterUrl, HttpServletRequest request) {
+	private String buildAndCacheApiString(String requestApiNs, String requestActionNs, String requestRemotingApiVar,
+			String requestPollingUrlsVar, String requestSseVar, String group, Boolean requestFullRouterUrl,
+			String requestBaseRouterUrl, HttpServletRequest request) {
 
-		String apiNs = requestApiNs != null ? requestApiNs : "Ext.app";
-		String remotingApiVar = requestRemotingApiVar != null ? requestRemotingApiVar : "REMOTING_API";
-		String pollingUrlsVar = requestPollingUrlsVar != null ? requestPollingUrlsVar : "POLLING_URLS";
-		String sseVar = requestSseVar != null ? requestSseVar : "SSE";
+		Configuration configuration = configurationService.getConfiguration();
+		String apiNs = requestApiNs != null ? requestApiNs : configuration.getApiNs();
+		String remotingApiVar = requestRemotingApiVar != null ? requestRemotingApiVar : configuration
+				.getRemotingApiVar();
+		String pollingUrlsVar = requestPollingUrlsVar != null ? requestPollingUrlsVar : configuration
+				.getPollingUrlsVar();
+		String sseVar = requestSseVar != null ? requestSseVar : configuration.getSseVar();
+		boolean fullRouterUrl = requestFullRouterUrl != null ? requestFullRouterUrl : configuration.isFullRouterUrl();
+		String actionNs = requestActionNs != null ? requestActionNs : configuration.getActionNs();
+		String baseRouterUrl = requestBaseRouterUrl != null ? requestBaseRouterUrl : configuration.getBaseRouterUrl();
 
 		String requestUrlString;
 
@@ -354,11 +360,16 @@ public class ApiController {
 		return sb.toString();
 	}
 
-	private String buildApiJson(String requestApiNs, String actionNs, String requestRemotingApiVar, String routerUrl,
-			String group, boolean debug) {
+	private String buildApiJson(String requestApiNs, String requestActionNs, String requestRemotingApiVar,
+			String routerUrl, String group, boolean debug) {
 
-		String apiNs = requestApiNs != null ? requestApiNs : "Ext.app";
-		String remotingApiVar = requestRemotingApiVar != null ? requestRemotingApiVar : "REMOTING_API";
+		Configuration configuration = configurationService.getConfiguration();
+		String apiNs = requestApiNs != null ? requestApiNs : configuration.getApiNs();
+
+		String remotingApiVar = requestRemotingApiVar != null ? requestRemotingApiVar : configuration
+				.getRemotingApiVar();
+
+		String actionNs = requestActionNs != null ? requestActionNs : configuration.getActionNs();
 
 		RemotingApi remotingApi = new RemotingApi(configurationService.getConfiguration().getProviderType(), routerUrl,
 				actionNs);
