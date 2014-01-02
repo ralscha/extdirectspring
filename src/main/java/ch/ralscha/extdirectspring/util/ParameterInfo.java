@@ -18,8 +18,8 @@ package ch.ralscha.extdirectspring.util;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.GenericTypeResolver;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.util.StringUtils;
@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.ValueConstants;
  */
 public final class ParameterInfo {
 
-	private static final LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
+	private static final DefaultParameterNameDiscoverer discoverer = new DefaultParameterNameDiscoverer();
 
 	private String name;
 
