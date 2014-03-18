@@ -226,6 +226,7 @@ public final class ParametersResolver {
 
 					MethodParameter p = new MethodParameter(methodInfo.getMethod(), paramIndex);
 					request.setAttribute("directRequest", directRequest);
+					request.setAttribute("extDirectStoreReadRequest", extDirectStoreReadRequest);
 					ServletWebRequest r = new ServletWebRequest(request);
 					Object result = WebArgumentResolver.UNRESOLVED;
 
