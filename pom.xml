@@ -48,7 +48,7 @@
 	</scm>
 
 	<properties>
-		<jackson.version>2.3.3</jackson.version>
+		<jackson.version>2.4.0-rc3</jackson.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -57,7 +57,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
-				<version>4.0.3.RELEASE</version>
+				<version>4.0.4.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -131,14 +131,14 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>1.7.4</version>
+			<version>1.8.0</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>1.7.4</version>
+			<version>1.8.0</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -269,7 +269,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.4.177</version>
+			<version>1.4.178</version>
 			<scope>test</scope>
 		</dependency>
 
