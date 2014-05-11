@@ -47,8 +47,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Spring managed controller that handles /api.jsp, /api-debug.js,
- * /api-debug-doc.js and /api-{fingerprinted}.js requests.
+ * Spring managed controller that handles /api.jsp, /api-debug.js, /api-debug-doc.js and /api-{fingerprinted}.js
+ * requests.
  */
 @Controller
 public class ApiController {
@@ -57,24 +57,18 @@ public class ApiController {
 	private ConfigurationService configurationService;
 
 	/**
-	 * Method that handles api.js and api-debug.js calls. Generates a javascript
-	 * with the necessary code for Ext Direct.
+	 * Method that handles api.js and api-debug.js calls. Generates a javascript with the necessary code for Ext Direct.
 	 * 
-	 * @param apiNs name of the namespace the variable remotingApiVar will live
-	 *            in. Defaults to Ext.app
+	 * @param apiNs name of the namespace the variable remotingApiVar will live in. Defaults to Ext.app
 	 * @param actionNs name of the namespace the action will live in.
-	 * @param remotingApiVar name of the remoting api variable. Defaults to
-	 *            REMOTING_API
-	 * @param pollingUrlsVar name of the polling urls object. Defaults to
-	 *            POLLING_URLS
+	 * @param remotingApiVar name of the remoting api variable. Defaults to REMOTING_API
+	 * @param pollingUrlsVar name of the polling urls object. Defaults to POLLING_URLS
 	 * @param sseVar name of the SSE urls object. Defaults to SSE
 	 * @param group name of the api group. Multiple groups delimited with comma
-	 * @param fullRouterUrl if true the router property contains the full
-	 *            request URL with method, server and port. Defaults to false
-	 *            returns only the URL without method, server and port
-	 * @param format only valid value is "json2. Ext Designer sends this
-	 *            parameter and the response is a JSON. Defaults to null and
-	 *            response is Javascript.
+	 * @param fullRouterUrl if true the router property contains the full request URL with method, server and port.
+	 *            Defaults to false returns only the URL without method, server and port
+	 * @param format only valid value is "json2. Ext Designer sends this parameter and the response is a JSON. Defaults
+	 *            to null and response is Javascript.
 	 * @param request the HTTP servlet request
 	 * @param response the HTTP servlet response
 	 * @throws IOException
@@ -127,22 +121,17 @@ public class ApiController {
 	}
 
 	/**
-	 * Method that handles fingerprinted api.js calls (i.e.
-	 * http://server/.../api-1.0.1.js). Generates a javascript with the
-	 * necessary code for Ext Direct.
+	 * Method that handles fingerprinted api.js calls (i.e. http://server/.../api-1.0.1.js). Generates a javascript with
+	 * the necessary code for Ext Direct.
 	 * 
-	 * @param apiNs name of the namespace the variable remotingApiVar will live
-	 *            in. Defaults to Ext.app
+	 * @param apiNs name of the namespace the variable remotingApiVar will live in. Defaults to Ext.app
 	 * @param actionNs name of the namespace the action will live in.
-	 * @param remotingApiVar name of the remoting api variable. Defaults to
-	 *            REMOTING_API
-	 * @param pollingUrlsVar name of the polling urls object. Defaults to
-	 *            POLLING_URLS
+	 * @param remotingApiVar name of the remoting api variable. Defaults to REMOTING_API
+	 * @param pollingUrlsVar name of the polling urls object. Defaults to POLLING_URLS
 	 * @param sseVar name of the SSE urls object. Defaults to SSE
 	 * @param group name of the api group. Multiple groups delimited with comma
-	 * @param fullRouterUrl if true the router property contains the full URL
-	 *            with protocol, server name, port number, and server path.
-	 *            Defaults to false returns only the URL with server path
+	 * @param fullRouterUrl if true the router property contains the full URL with protocol, server name, port number,
+	 *            and server path. Defaults to false returns only the URL with server path
 	 * @param request the HTTP servlet request
 	 * @param response the HTTP servlet response
 	 * @throws IOException

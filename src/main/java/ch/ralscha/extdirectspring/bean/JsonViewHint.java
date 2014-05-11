@@ -20,14 +20,13 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * Specifies a Json View (filter) that Jackson uses to serialize the response. A
- * model class can subclass this class and set jsonView.
+ * Specifies a Json View (filter) that Jackson uses to serialize the response. A model class can subclass this class and
+ * set jsonView.
  * <p>
- * If the property jsonView is set it overrides a jsonView specified on
- * {@link ExtDirectMethod#jsonView()}.
+ * If the property jsonView is set it overrides a jsonView specified on {@link ExtDirectMethod#jsonView()}.
  * <p>
- * To disable a JsonView specified on {@link ExtDirectMethod#jsonView()} set the
- * property jsonView to {@link ExtDirectMethod.NoJsonView}.
+ * To disable a JsonView specified on {@link ExtDirectMethod#jsonView()} set the property jsonView to
+ * {@link ExtDirectMethod.NoJsonView}.
  */
 public class JsonViewHint {
 

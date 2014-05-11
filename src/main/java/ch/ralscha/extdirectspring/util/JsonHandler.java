@@ -54,8 +54,7 @@ public class JsonHandler {
 	}
 
 	/**
-	 * Converts an object into a JSON string. In case of an exception returns
-	 * null and logs the exception.
+	 * Converts an object into a JSON string. In case of an exception returns null and logs the exception.
 	 * 
 	 * @param obj the source object
 	 * @return obj JSON string, <code>null</code> if an exception occurred
@@ -65,12 +64,10 @@ public class JsonHandler {
 	}
 
 	/**
-	 * Converts an object into a JSON string. In case of an exceptions returns
-	 * null and logs the exception.
+	 * Converts an object into a JSON string. In case of an exceptions returns null and logs the exception.
 	 * 
 	 * @param obj the source object
-	 * @param indent if true JSON is written in a human readable format, if
-	 *            false JSON is written on one line
+	 * @param indent if true JSON is written in a human readable format, if false JSON is written on one line
 	 * @return obj JSON string, <code>null</code> if an exception occurred
 	 */
 	public String writeValueAsString(Object obj, boolean indent) {
@@ -86,13 +83,12 @@ public class JsonHandler {
 	}
 
 	/**
-	 * Converts a JSON string into an object. In case of an exception returns
-	 * null and logs the exception.
+	 * Converts a JSON string into an object. In case of an exception returns null and logs the exception.
 	 * 
 	 * @param <T> type of the object to create
 	 * @param json string with the JSON
-	 * @param typeReference {@link TypeReference} instance of the desired result
-	 *            type {@link com.fasterxml.jackson.core.type.TypeReference}
+	 * @param typeReference {@link TypeReference} instance of the desired result type
+	 *            {@link com.fasterxml.jackson.core.type.TypeReference}
 	 * @return the created object, null if there was an exception
 	 */
 	public <T> T readValue(String json, TypeReference<T> typeReference) {
@@ -105,8 +101,7 @@ public class JsonHandler {
 	}
 
 	/**
-	 * Converts a JSON string into an object. In case of an exception returns
-	 * null and logs the exception.
+	 * Converts a JSON string into an object. In case of an exception returns null and logs the exception.
 	 * 
 	 * @param <T> type of the object to create
 	 * @param json string with the JSON
@@ -123,8 +118,8 @@ public class JsonHandler {
 	}
 
 	/**
-	 * Converts a JSON string into an object. The input is read from an
-	 * InputStream. In case of an exception returns null and logs the exception.
+	 * Converts a JSON string into an object. The input is read from an InputStream. In case of an exception returns
+	 * null and logs the exception.
 	 * 
 	 * @param is a InputStream
 	 * @param clazz class of object to create

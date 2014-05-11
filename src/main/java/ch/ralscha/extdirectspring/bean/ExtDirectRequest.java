@@ -64,8 +64,7 @@ public class ExtDirectRequest {
 	}
 
 	/**
-	 * @return the transaction ID that is associated with this request. The
-	 *         response has to return the same tid
+	 * @return the transaction ID that is associated with this request. The response has to return the same tid
 	 */
 	public int getTid() {
 		return tid;
@@ -76,8 +75,7 @@ public class ExtDirectRequest {
 	}
 
 	/**
-	 * @return the type of the message. "event" for polling or "rpc" for a
-	 *         method call
+	 * @return the type of the message. "event" for polling or "rpc" for a method call
 	 */
 	public String getType() {
 		return type;

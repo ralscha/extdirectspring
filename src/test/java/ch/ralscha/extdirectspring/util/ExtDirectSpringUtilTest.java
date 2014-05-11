@@ -109,7 +109,7 @@ public class ExtDirectSpringUtilTest {
 	private static void assertResponse(MockHttpServletResponse response, int noOfHeaders, String etag, int month) {
 		assertThat(response.getHeaderNames()).hasSize(noOfHeaders);
 		assertThat(response.getHeader("ETag")).isEqualTo(etag);
-		assertThat(response.getHeader("Cache-Control")).isEqualTo("public, max-age=" + (month * 30 * 24 * 60 * 60));
+		assertThat(response.getHeader("Cache-Control")).isEqualTo("public, max-age=" + month * 30 * 24 * 60 * 60);
 
 		Long expiresMillis = (Long) response.getHeaderValue("Expires");
 		DateTime expires = new DateTime(expiresMillis, DateTimeZone.UTC);

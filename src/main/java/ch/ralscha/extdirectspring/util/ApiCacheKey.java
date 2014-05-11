@@ -54,12 +54,12 @@ public final class ApiCacheKey {
 		}
 
 		ApiCacheKey other = (ApiCacheKey) o;
-		return (ExtDirectSpringUtil.equal(apiNs, other.apiNs) && ExtDirectSpringUtil.equal(actionNs, other.actionNs)
+		return ExtDirectSpringUtil.equal(apiNs, other.apiNs) && ExtDirectSpringUtil.equal(actionNs, other.actionNs)
 				&& ExtDirectSpringUtil.equal(remotingApiVar, other.remotingApiVar)
 				&& ExtDirectSpringUtil.equal(pollingUrlsVar, other.pollingUrlsVar)
 				&& ExtDirectSpringUtil.equal(sseVar, other.sseVar) && ExtDirectSpringUtil.equal(group, other.group)
-				&& ExtDirectSpringUtil.equal(routerUrl, other.routerUrl) && ExtDirectSpringUtil.equal(debug,
-				other.debug));
+				&& ExtDirectSpringUtil.equal(routerUrl, other.routerUrl)
+				&& ExtDirectSpringUtil.equal(debug, other.debug);
 	}
 
 	@Override

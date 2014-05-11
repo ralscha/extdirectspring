@@ -67,8 +67,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * Main router controller that handles polling, form handler and normal Ext
- * Direct calls.
+ * Main router controller that handles polling, form handler and normal Ext Direct calls.
  */
 @Controller
 public class RouterController {

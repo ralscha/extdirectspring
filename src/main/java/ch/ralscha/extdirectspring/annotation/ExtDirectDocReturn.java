@@ -32,8 +32,7 @@ public @interface ExtDirectDocReturn {
 	/**
 	 * (Optional) name of return properties
 	 * <p/>
-	 * add a &#64;return {property} for each of the properties the method will
-	 * return
+	 * add a &#64;return {property} for each of the properties the method will return
 	 * <p/>
 	 * Defaults to empty.
 	 */

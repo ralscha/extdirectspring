@@ -38,10 +38,10 @@ import java.lang.annotation.Target;
  return "methodDoc() called";
  }
 
- will produce this comment inserted in api-debug-doc.js 
+ will produce this comment inserted in api-debug-doc.js
 
  /**
- * @deprecated 
+ * @deprecated
  * methodDoc: this method is used to test the documentation generation
  * @author: dbs
  * @version: 0.1
@@ -57,8 +57,7 @@ import java.lang.annotation.Target;
  *\/
  */
 /**
- * These are only used for api-debug-doc.js generation to self documents the
- * client server interface.
+ * These are only used for api-debug-doc.js generation to self documents the client server interface.
  * <p/>
  * see example above
  */
@@ -69,8 +68,7 @@ import java.lang.annotation.Target;
 public @interface ExtDirectMethodDocumentation {
 
 	/**
-	 * (Optional) the method comment if method description is empty, the
-	 * documentation for this method will be skipped
+	 * (Optional) the method comment if method description is empty, the documentation for this method will be skipped
 	 */
 	String value() default "";
 
@@ -93,8 +91,7 @@ public @interface ExtDirectMethodDocumentation {
 	String version() default "1.0";
 
 	/**
-	 * (Optional) Parameters documentation that are to be placed on the api
-	 * method.
+	 * (Optional) Parameters documentation that are to be placed on the api method.
 	 * <p/>
 	 * Defaults to no parameters.
 	 */

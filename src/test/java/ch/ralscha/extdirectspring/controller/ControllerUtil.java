@@ -310,8 +310,7 @@ public class ControllerUtil {
 	public static List<ExtDirectResponse> readDirectResponses(byte[] response) {
 		try {
 			return mapper.readValue(response, new TypeReference<List<ExtDirectResponse>>() {/*
-																							 * nothing
-																							 * here
+																							 * nothing here
 																							 */
 			});
 		} catch (JsonParseException e) {

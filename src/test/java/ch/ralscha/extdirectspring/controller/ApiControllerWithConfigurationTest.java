@@ -269,7 +269,7 @@ public class ApiControllerWithConfigurationTest {
 
 			assertThat(response.getHeaderNames()).hasSize(5);
 			assertThat(response.getHeader("ETag")).isNotNull();
-			assertThat(response.getHeader("Cache-Control")).isEqualTo("public, max-age=" + (6 * 30 * 24 * 60 * 60));
+			assertThat(response.getHeader("Cache-Control")).isEqualTo("public, max-age=" + 6 * 30 * 24 * 60 * 60);
 
 			Long expiresMillis = (Long) response.getHeaderValue("Expires");
 			DateTime expires = new DateTime(expiresMillis, DateTimeZone.UTC);
@@ -1143,8 +1143,8 @@ public class ApiControllerWithConfigurationTest {
 			}
 
 			List<String> params = (List<String>) action.get("params");
-			assertTrue((params != null && expectedAction.getParams() != null)
-					|| (params == null && expectedAction.getParams() == null));
+			assertTrue(params != null && expectedAction.getParams() != null || params == null
+					&& expectedAction.getParams() == null);
 
 			if (expectedAction.getParams() != null) {
 				assertThat(params).hasSize(expectedAction.getParams().size());

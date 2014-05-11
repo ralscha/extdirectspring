@@ -37,8 +37,7 @@ import ch.ralscha.extdirectspring.bean.api.ActionDoc;
 import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 
 /**
- * Object holds information about a method like the method itself and a list of
- * parameters.
+ * Object holds information about a method like the method itself and a list of parameters.
  */
 public final class MethodInfo {
 
@@ -93,7 +92,7 @@ public final class MethodInfo {
 			this.method = method;
 			this.parameters = buildParameterList(clazz, method);
 
-			this.collectionType = (extDirectMethodAnnotation.entryClass() == Object.class) ? null
+			this.collectionType = extDirectMethodAnnotation.entryClass() == Object.class ? null
 					: extDirectMethodAnnotation.entryClass();
 
 			if (this.collectionType == null) {
@@ -182,8 +181,8 @@ public final class MethodInfo {
 	}
 
 	/**
-	 * The rule is: whatever has been given is taken as is the API documentation
-	 * is non critical, so any discrepancies will be silently ignored
+	 * The rule is: whatever has been given is taken as is the API documentation is non critical, so any discrepancies
+	 * will be silently ignored
 	 * 
 	 * @param documentation
 	 * @return ActionDoc
@@ -230,8 +229,8 @@ public final class MethodInfo {
 	}
 
 	private static boolean hasValue(RequestMapping requestMapping) {
-		return (requestMapping != null && requestMapping.value() != null && requestMapping.value().length > 0 && StringUtils
-				.hasText(requestMapping.value()[0]));
+		return requestMapping != null && requestMapping.value() != null && requestMapping.value().length > 0
+				&& StringUtils.hasText(requestMapping.value()[0]);
 	}
 
 	private static List<ParameterInfo> buildParameterList(Class<?> clazz, Method method) {
@@ -304,8 +303,8 @@ public final class MethodInfo {
 	}
 
 	/**
-	 * Find a method that is annotated with a specific annotation. Starts with
-	 * the method and goes up to the superclasses of the class.
+	 * Find a method that is annotated with a specific annotation. Starts with the method and goes up to the
+	 * superclasses of the class.
 	 * 
 	 * @param method the starting method
 	 * @param annotation the annotation to look for

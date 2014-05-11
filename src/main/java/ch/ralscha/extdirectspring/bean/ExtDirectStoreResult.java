@@ -130,8 +130,7 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 
 	/**
 	 * Beware, for this message to be accessible in your callback operation, <br>
-	 * you <strong>must</strong> add in your model definition the
-	 * messageProperty value to message
+	 * you <strong>must</strong> add in your model definition the messageProperty value to message
 	 * {@link ch.ralscha.extdirectspring.generator.Model#messageProperty()}
 	 * 
 	 * @param message the message to set

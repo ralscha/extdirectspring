@@ -66,9 +66,8 @@ public class ExtDirectFormPostResult {
 	}
 
 	/**
-	 * Extracts errors from the bindingResult and inserts them into the error
-	 * properties. Sets the property success to false if there are errors. Sets
-	 * the property success to true if there are no errors.
+	 * Extracts errors from the bindingResult and inserts them into the error properties. Sets the property success to
+	 * false if there are errors. Sets the property success to true if there are no errors.
 	 * 
 	 * @param locale
 	 * @param messageSource
@@ -80,7 +79,7 @@ public class ExtDirectFormPostResult {
 			for (FieldError fieldError : bindingResult.getFieldErrors()) {
 				String message = fieldError.getDefaultMessage();
 				if (messageSource != null) {
-					Locale loc = (locale != null ? locale : Locale.getDefault());
+					Locale loc = locale != null ? locale : Locale.getDefault();
 					message = messageSource.getMessage(fieldError.getCode(), fieldError.getArguments(), loc);
 				}
 				List<String> fieldErrors = errorMap.get(fieldError.getField());
@@ -107,11 +106,9 @@ public class ExtDirectFormPostResult {
 	 * resolve the messages codes along the implementation described in
 	 * {@link org.springframework.validation.DefaultMessageCodesResolver}<br>
 	 * stop at first message found<br>
-	 * method is useless if no specific validation message have been set
-	 * (example: javax.validation.constraints.NotNull.message.fax=Fax number is
-	 * mandatory)<br>
-	 * it will behave {@link #addErrors(Locale, MessageSource, BindingResult)}
-	 * with a big overhead
+	 * method is useless if no specific validation message have been set (example:
+	 * javax.validation.constraints.NotNull.message.fax=Fax number is mandatory)<br>
+	 * it will behave {@link #addErrors(Locale, MessageSource, BindingResult)} with a big overhead
 	 * 
 	 * @param locale locale for internationalization
 	 * @param messageSource source of validation code and message
@@ -125,15 +122,14 @@ public class ExtDirectFormPostResult {
 			for (FieldError fieldError : bindingResult.getFieldErrors()) {
 				String message = fieldError.getDefaultMessage();
 				if (messageSource != null) {
-					Locale loc = (locale != null ? locale : Locale.getDefault());
+					Locale loc = locale != null ? locale : Locale.getDefault();
 					for (String code : fieldError.getCodes()) {
 						try {
 							message = messageSource.getMessage(code, fieldError.getArguments(), loc);
 						} catch (Exception e) {
 							/**
-							 * expected if code/message doesn't exist, default
-							 * behavior to counter that, set to your message
-							 * bundle,
+							 * expected if code/message doesn't exist, default behavior to counter that, set to your
+							 * message bundle,
 							 * {@link org.springframework.context.support.AbstractMessageSource#setUseCodeAsDefaultMessage(true)}
 							 * beware of side effects
 							 */
@@ -165,8 +161,7 @@ public class ExtDirectFormPostResult {
 	}
 
 	/**
-	 * Adds one error message to a specific field. Does not overwrite already
-	 * existing errors.
+	 * Adds one error message to a specific field. Does not overwrite already existing errors.
 	 * 
 	 * @param field the name of the field
 	 * @param error the error message
@@ -181,8 +176,7 @@ public class ExtDirectFormPostResult {
 	}
 
 	/**
-	 * Adds multiple error messages to a specific field. Does not overwrite
-	 * already existing errors.
+	 * Adds multiple error messages to a specific field. Does not overwrite already existing errors.
 	 * 
 	 * @param field the name of the field
 	 * @param errors a collection of error messages

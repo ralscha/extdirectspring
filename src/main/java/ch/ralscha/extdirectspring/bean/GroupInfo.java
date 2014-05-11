@@ -18,9 +18,8 @@ package ch.ralscha.extdirectspring.bean;
 import java.util.Map;
 
 /**
- * Class contains information about the property/field on which to perform the
- * grouping and if sort is ascending or descending. Ext JS can send more than
- * one group info in one request.
+ * Class contains information about the property/field on which to perform the grouping and if sort is ascending or
+ * descending. Ext JS can send more than one group info in one request.
  */
 public class GroupInfo {
 	private final String property;

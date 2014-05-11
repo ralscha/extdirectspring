@@ -45,9 +45,9 @@ public class MapActionSerializer extends JsonSerializer<Map<String, List<Action>
 					// PrettyPrinter is not set the generator is on one line
 					// mode
 					if (jgen.getPrettyPrinter() != null && action instanceof ActionDoc) {// insertion
-																							// of
-																							// doc
-																							// here
+						// of
+						// doc
+						// here
 						ActionDoc actionDoc = (ActionDoc) action;
 						jgen.writeRaw("\n\t/**");
 						if (actionDoc.isDeprecated()) {

@@ -39,8 +39,7 @@ import ch.ralscha.extdirectspring.controller.RouterController;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
- * An utility class that helps building the response for a FORM_POST method. The
- * response is written directly into the
+ * An utility class that helps building the response for a FORM_POST method. The response is written directly into the
  * {@link HttpServletResponse#getOutputStream()} with {@link #buildAndWrite()}.
  */
 public class ExtDirectResponseBuilder {
@@ -56,9 +55,8 @@ public class ExtDirectResponseBuilder {
 	private Class<?> jsonView;
 
 	/**
-	 * Creates a builder that builds and writes the response of a FORM_POST
-	 * method. Sets the successful flag to true, can be changed with the
-	 * {@link #successful()} and {@link #unsuccessful()} methods.
+	 * Creates a builder that builds and writes the response of a FORM_POST method. Sets the successful flag to true,
+	 * can be changed with the {@link #successful()} and {@link #unsuccessful()} methods.
 	 * 
 	 * @param request the current http servlet request object
 	 * @param response the current http servlet response object
@@ -88,14 +86,11 @@ public class ExtDirectResponseBuilder {
 	}
 
 	/**
-	 * Creates an "exception" response. Calls
-	 * {@link ExtDirectResponse#setType(String)} with a value of "exception".
-	 * Calls {@link ExtDirectResponse#setMessage(String)} and
-	 * {@link ExtDirectResponse#setWhere(String)} according to the
-	 * {@link Configuration}.
+	 * Creates an "exception" response. Calls {@link ExtDirectResponse#setType(String)} with a value of "exception".
+	 * Calls {@link ExtDirectResponse#setMessage(String)} and {@link ExtDirectResponse#setWhere(String)} according to
+	 * the {@link Configuration}.
 	 * 
-	 * This is a method primarily used for implementations of
-	 * {@link HandlerExceptionResolver}.
+	 * This is a method primarily used for implementations of {@link HandlerExceptionResolver}.
 	 * 
 	 * @param exception the exception that was thrown.
 	 * @return this instance
@@ -124,8 +119,8 @@ public class ExtDirectResponseBuilder {
 	}
 
 	/**
-	 * Adds an "errors" property in the response if there are any errors in the
-	 * bindingResult. Sets the success flag to false if there are errors.
+	 * Adds an "errors" property in the response if there are any errors in the bindingResult. Sets the success flag to
+	 * false if there are errors.
 	 * 
 	 * @param bindingResult
 	 * @return this instance
@@ -136,8 +131,8 @@ public class ExtDirectResponseBuilder {
 	}
 
 	/**
-	 * Adds an "errors" property in the response if there are any errors in the
-	 * bindingResult. Sets the success flag to false if there are errors.
+	 * Adds an "errors" property in the response if there are any errors in the bindingResult. Sets the success flag to
+	 * false if there are errors.
 	 * 
 	 * @param locale
 	 * @param messageSource
@@ -151,7 +146,7 @@ public class ExtDirectResponseBuilder {
 			for (FieldError fieldError : bindingResult.getFieldErrors()) {
 				String message = fieldError.getDefaultMessage();
 				if (messageSource != null) {
-					Locale loc = (locale != null ? locale : Locale.getDefault());
+					Locale loc = locale != null ? locale : Locale.getDefault();
 					message = messageSource.getMessage(fieldError.getCode(), fieldError.getArguments(), loc);
 				}
 				List<String> fieldErrors = errorMap.get(fieldError.getField());
@@ -217,8 +212,7 @@ public class ExtDirectResponseBuilder {
 	}
 
 	/**
-	 * Sets a specific JSON View (filter) that Jackson uses to serialize the
-	 * response.
+	 * Sets a specific JSON View (filter) that Jackson uses to serialize the response.
 	 * 
 	 * @param jsonView
 	 */
@@ -227,9 +221,8 @@ public class ExtDirectResponseBuilder {
 	}
 
 	/**
-	 * Builds and writes the response into the OutputStream of
-	 * {@link HttpServletResponse}. This methods has to be called at the end of
-	 * a FORM_POST method.
+	 * Builds and writes the response into the OutputStream of {@link HttpServletResponse}. This methods has to be
+	 * called at the end of a FORM_POST method.
 	 */
 	public void buildAndWrite() {
 

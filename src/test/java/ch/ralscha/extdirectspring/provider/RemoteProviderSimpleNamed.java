@@ -204,8 +204,8 @@ public class RemoteProviderSimpleNamed {
 	public String methodArray1(String name, TestObject[] array) {
 		StringBuilder sb = new StringBuilder();
 		if (array != null) {
-			for (int i = 0; i < array.length; i++) {
-				sb.append(array[i].toString());
+			for (TestObject element : array) {
+				sb.append(element.toString());
 				sb.append("-");
 			}
 		}
@@ -216,8 +216,8 @@ public class RemoteProviderSimpleNamed {
 	public String methodArray2(String name, @RequestParam(required = false) TestObject[] array) {
 		StringBuilder sb = new StringBuilder();
 		if (array != null) {
-			for (int i = 0; i < array.length; i++) {
-				sb.append(array[i].toString());
+			for (TestObject element : array) {
+				sb.append(element.toString());
 			}
 		}
 		return String.format("4->%s;%s", name, sb.toString());
@@ -227,8 +227,8 @@ public class RemoteProviderSimpleNamed {
 	public String methodArray3(String name, TestObject... array) {
 		StringBuilder sb = new StringBuilder();
 		if (array != null) {
-			for (int i = 0; i < array.length; i++) {
-				sb.append(array[i].toString());
+			for (TestObject element : array) {
+				sb.append(element.toString());
 				sb.append("-");
 			}
 		}
@@ -239,8 +239,8 @@ public class RemoteProviderSimpleNamed {
 	public String methodArray4(String name, @RequestParam(required = false) TestObject... array) {
 		StringBuilder sb = new StringBuilder();
 		if (array != null) {
-			for (int i = 0; i < array.length; i++) {
-				sb.append(array[i].toString());
+			for (TestObject element : array) {
+				sb.append(element.toString());
 			}
 		}
 		return String.format("6->%s;%s", name, sb.toString());
@@ -339,9 +339,9 @@ public class RemoteProviderSimpleNamed {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + ((active == null) ? 0 : active.hashCode());
-			result = prime * result + ((age == null) ? 0 : age.hashCode());
-			result = prime * result + ((name == null) ? 0 : name.hashCode());
+			result = prime * result + (active == null ? 0 : active.hashCode());
+			result = prime * result + (age == null ? 0 : age.hashCode());
+			result = prime * result + (name == null ? 0 : name.hashCode());
 			return result;
 		}
 

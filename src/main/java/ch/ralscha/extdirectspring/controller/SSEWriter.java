@@ -26,9 +26,8 @@ import ch.ralscha.extdirectspring.bean.SSEvent;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
 /**
- * This class allows you to send server sent events in a streaming fashion. Add
- * this class as a parameter to the method and send {@link SSEvent} with
- * {@link #write(SSEvent)} to the client.
+ * This class allows you to send server sent events in a streaming fashion. Add this class as a parameter to the method
+ * and send {@link SSEvent} with {@link #write(SSEvent)} to the client.
  * <p>
  * Example:
  * 
@@ -36,7 +35,7 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
  *  {@literal @}ExtDirectMethod(ExtDirectMethodType.SSE)
  *  public void sse(SSEWriter sseWriter) {
  *    SSEvent event = new SSEvent();
- *    event.set....	    
+ *    event.set....
  *    sseWriter.write(event);
  *    //do something else or wait for something or ...
  *    sseWriter.write(event);
@@ -58,12 +57,10 @@ public class SSEWriter {
 	}
 
 	/**
-	 * Creates a {@link SSEvent} object and sets the data property to the
-	 * provided parameter. Then it writes the event into the servlet output
-	 * stream and flushes the response.
+	 * Creates a {@link SSEvent} object and sets the data property to the provided parameter. Then it writes the event
+	 * into the servlet output stream and flushes the response.
 	 * 
-	 * @param data the value that becomes the data part of the {@link SSEvent}.
-	 *            If null nothing is written.
+	 * @param data the value that becomes the data part of the {@link SSEvent}. If null nothing is written.
 	 * @throws IOException
 	 */
 	public void write(Object data) throws IOException {
@@ -75,8 +72,8 @@ public class SSEWriter {
 	}
 
 	/**
-	 * Writes the event into the servlet output stream and flushes the response.
-	 * The method does not close the output stream.
+	 * Writes the event into the servlet output stream and flushes the response. The method does not close the output
+	 * stream.
 	 * 
 	 * @param sseEvent the event object
 	 * @throws IOException

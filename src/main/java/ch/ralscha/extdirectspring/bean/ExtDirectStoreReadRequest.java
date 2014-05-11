@@ -88,8 +88,8 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
-	 * @return the start row from where to send records back for a paging
-	 *         request. start = {@link #getLimit()} * ({@link #getPage()}-1)
+	 * @return the start row from where to send records back for a paging request. start = {@link #getLimit()} * (
+	 *         {@link #getPage()}-1)
 	 */
 	public Integer getStart() {
 		return start;
@@ -101,8 +101,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return sorting order. "ASC" or "DESC".<br>
-	 *         Ext JS 4.x and Touch 2 can send more than one sorters. Use
-	 *         {@link #getSorters()} instead.
+	 *         Ext JS 4.x and Touch 2 can send more than one sorters. Use {@link #getSorters()} instead.
 	 * @see #isAscendingSort()
 	 * @see #isDescendingSort()
 	 */
@@ -116,28 +115,25 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return true if sorting order is ascending.<br>
-	 *         Ext JS 4.x and Touch 2 can send more than one sorters. Use
-	 *         {@link #getSorters()} instead.
+	 *         Ext JS 4.x and Touch 2 can send more than one sorters. Use {@link #getSorters()} instead.
 	 */
 	@JsonIgnore
 	public boolean isAscendingSort() {
-		return (SortDirection.fromString(getDir()) == SortDirection.ASCENDING);
+		return SortDirection.fromString(getDir()) == SortDirection.ASCENDING;
 	}
 
 	/**
 	 * @return true if sorting order is descending.<br>
-	 *         Ext JS 4.x and Touch 2 can send more than one sorters. Use
-	 *         {@link #getSorters()} instead.
+	 *         Ext JS 4.x and Touch 2 can send more than one sorters. Use {@link #getSorters()} instead.
 	 */
 	@JsonIgnore
 	public boolean isDescendingSort() {
-		return (SortDirection.fromString(getDir()) == SortDirection.DESCENDING);
+		return SortDirection.fromString(getDir()) == SortDirection.DESCENDING;
 	}
 
 	/**
 	 * @return the field/property on which the sort should be applied.<br>
-	 *         Ext JS 4.x and Touch 2 can send more than one sorters. Use
-	 *         {@link #getSorters()} instead.
+	 *         Ext JS 4.x and Touch 2 can send more than one sorters. Use {@link #getSorters()} instead.
 	 */
 	public String getSort() {
 		return sort;
@@ -149,8 +145,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return the field/property name on which the grouping should occur.<br>
-	 *         Ext JS 4.x and Touch 2 can send more than one group info. Use
-	 *         {@link #getGroups()} instead.
+	 *         Ext JS 4.x and Touch 2 can send more than one group info. Use {@link #getGroups()} instead.
 	 */
 	public String getGroupBy() {
 		return groupBy;
@@ -162,8 +157,7 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return sorting order for a grouping request. "ASC" or "DESC".<br>
-	 *         Ext JS 4.x and Touch 2 can send more than one group info. Use
-	 *         {@link #getGroups()} instead.
+	 *         Ext JS 4.x and Touch 2 can send more than one group info. Use {@link #getGroups()} instead.
 	 */
 	public String getGroupDir() {
 		return groupDir;
@@ -175,22 +169,20 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * @return true if grouping sorting order is ascending.<br>
-	 *         Ext JS 4.x and Touch 2 can send more than one group info. Use
-	 *         {@link #getGroups()} instead.
+	 *         Ext JS 4.x and Touch 2 can send more than one group info. Use {@link #getGroups()} instead.
 	 */
 	@JsonIgnore
 	public boolean isAscendingGroupSort() {
-		return (SortDirection.fromString(getGroupDir()) == SortDirection.ASCENDING);
+		return SortDirection.fromString(getGroupDir()) == SortDirection.ASCENDING;
 	}
 
 	/**
 	 * @return true if grouping sorting order is descending.<br>
-	 *         Ext JS 4.x and Touch 2 can send more than one group info. Use
-	 *         {@link #getGroups()} instead.
+	 *         Ext JS 4.x and Touch 2 can send more than one group info. Use {@link #getGroups()} instead.
 	 */
 	@JsonIgnore
 	public boolean isDescendingGroupSort() {
-		return (SortDirection.fromString(getGroupDir()) == SortDirection.DESCENDING);
+		return SortDirection.fromString(getGroupDir()) == SortDirection.DESCENDING;
 	}
 
 	/**
@@ -225,8 +217,7 @@ public class ExtDirectStoreReadRequest {
 	 * Returns all filters for a field
 	 * 
 	 * @param field name of the field
-	 * @return a collection of filters for the field. Empty collection if no
-	 *         filter exists
+	 * @return a collection of filters for the field. Empty collection if no filter exists
 	 */
 	public List<Filter> getAllFiltersForField(String field) {
 		List<Filter> foundFilters = new ArrayList<Filter>();
@@ -249,8 +240,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
-	 * @return page number of a paging request. page = ({@link #getStart()} /
-	 *         {@link #getLimit()}) + 1
+	 * @return page number of a paging request. page = ({@link #getStart()} / {@link #getLimit()}) + 1
 	 */
 	public Integer getPage() {
 		return page;

@@ -38,9 +38,8 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 public enum ExtDirectMethodType {
 
 	/**
-	 * Specifies a simple remote method. This type of method can have any
-	 * parameter and any return type but must not contain a parameter with @RequestParam
-	 * annotated.
+	 * Specifies a simple remote method. This type of method can have any parameter and any return type but must not
+	 * contain a parameter with @RequestParam annotated.
 	 */
 	SIMPLE {
 		@Override
@@ -74,8 +73,8 @@ public enum ExtDirectMethodType {
 	},
 
 	/**
-	 * Specifies a simple remote method with named parameters. This type of
-	 * method can have any parameter and any return type.
+	 * Specifies a simple remote method with named parameters. This type of method can have any parameter and any return
+	 * type.
 	 */
 	SIMPLE_NAMED {
 		@Override
@@ -141,8 +140,7 @@ public enum ExtDirectMethodType {
 	},
 
 	/**
-	 * Specifies a method that handles create, update or destroy calls from
-	 * DirectStore.
+	 * Specifies a method that handles create, update or destroy calls from DirectStore.
 	 */
 	STORE_MODIFY {
 		@Override
@@ -159,11 +157,9 @@ public enum ExtDirectMethodType {
 	},
 
 	/**
-	 * Specifies a method that handles a form post (with or without upload). A
-	 * FORM_POST method must not return anything. This type of method must be
-	 * annotated with @RequestMapping. @RequestMapping must contain a value and
-	 * a method of type RequestMethod.POST. This kind of method must be member
-	 * of a bean annotated with @Controller.
+	 * Specifies a method that handles a form post (with or without upload). A FORM_POST method must not return
+	 * anything. This type of method must be annotated with @RequestMapping. @RequestMapping must contain a value and a
+	 * method of type RequestMethod.POST. This kind of method must be member of a bean annotated with @Controller.
 	 */
 	FORM_POST {
 		@Override
@@ -208,11 +204,11 @@ public enum ExtDirectMethodType {
 				boolean hasValue = false;
 
 				if (classAnnotation != null) {
-					hasValue = (classAnnotation.value() != null && classAnnotation.value().length > 0);
+					hasValue = classAnnotation.value() != null && classAnnotation.value().length > 0;
 				}
 
 				if (methodAnnotation != null && !hasValue) {
-					hasValue = (methodAnnotation.value() != null && methodAnnotation.value().length > 0);
+					hasValue = methodAnnotation.value() != null && methodAnnotation.value().length > 0;
 				}
 
 				if (!hasValue) {
@@ -367,14 +363,11 @@ public enum ExtDirectMethodType {
 	static final Log log = LogFactory.getLog(ExtDirectMethodType.class);
 
 	/**
-	 * Checks if the annotated method contains non supported annotation
-	 * properties and contains non supported parameters and/or parameter
-	 * annotations. Method logs warnings and errors. Check is running during
-	 * startup of the application. If return value is false the method is not
-	 * registered and cannot be called from the client.
+	 * Checks if the annotated method contains non supported annotation properties and contains non supported parameters
+	 * and/or parameter annotations. Method logs warnings and errors. Check is running during startup of the
+	 * application. If return value is false the method is not registered and cannot be called from the client.
 	 * 
-	 * @param beanAndMethodName Name of the bean and method for logging purpose.
-	 *            e.g. 'bean.methodname'
+	 * @param beanAndMethodName Name of the bean and method for logging purpose. e.g. 'bean.methodname'
 	 * @param clazz The class where the method is member of
 	 * @param method The annotated method
 	 * 

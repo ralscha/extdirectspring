@@ -90,14 +90,12 @@ public class Configuration {
 	}
 
 	/**
-	 * Changes the default message when an exception occurred and there is no
-	 * mapping found in {@link #getExceptionToMessage()} and
-	 * {@link #isSendExceptionMessage()} is false.
+	 * Changes the default message when an exception occurred and there is no mapping found in
+	 * {@link #getExceptionToMessage()} and {@link #isSendExceptionMessage()} is false.
 	 * <p>
 	 * Default value is "Server Error".
 	 * <p>
-	 * This value is set into {@link ExtDirectResponse#setMessage(String)} and
-	 * sent to the client.
+	 * This value is set into {@link ExtDirectResponse#setMessage(String)} and sent to the client.
 	 * 
 	 * @see #setExceptionToMessage(Map)
 	 * @see #setDefaultExceptionMessage(String)
@@ -115,10 +113,9 @@ public class Configuration {
 	/**
 	 * Changes the way {@link ExtDirectResponse#setMessage(String)} is called.
 	 * <p>
-	 * If this flag is set to true and an exception occurred instead of
-	 * {@link #getDefaultExceptionMessage()} {@link Throwable#getMessage()} is
-	 * put into the message field of the response. Only if there is no mapping
-	 * found in {@link #getExceptionToMessage()}.
+	 * If this flag is set to true and an exception occurred instead of {@link #getDefaultExceptionMessage()}
+	 * {@link Throwable#getMessage()} is put into the message field of the response. Only if there is no mapping found
+	 * in {@link #getExceptionToMessage()}.
 	 * <p>
 	 * Default value is false.
 	 * 
@@ -136,9 +133,8 @@ public class Configuration {
 	}
 
 	/**
-	 * If sendStacktrace is true, the library sends, in case of an exception,
-	 * the full stacktrace in {@link BaseResponse#setWhere(String)} back to the
-	 * client.
+	 * If sendStacktrace is true, the library sends, in case of an exception, the full stacktrace in
+	 * {@link BaseResponse#setWhere(String)} back to the client.
 	 * <p>
 	 * Should only set to true in development.
 	 * <p>
@@ -157,19 +153,15 @@ public class Configuration {
 	/**
 	 * Sets the new exception-to-message map.
 	 * <p>
-	 * If there is a mapping for the exception in
-	 * {@link #getExceptionToMessage()} and the value is not null put this value
-	 * in {@link ExtDirectResponse#setMessage(String)}.
+	 * If there is a mapping for the exception in {@link #getExceptionToMessage()} and the value is not null put this
+	 * value in {@link ExtDirectResponse#setMessage(String)}.
 	 * <p>
-	 * If there is a mapping for the exception in
-	 * {@link #getExceptionToMessage()} and the value is null use
+	 * If there is a mapping for the exception in {@link #getExceptionToMessage()} and the value is null use
 	 * {@link Throwable#getMessage()}.
 	 * <p>
-	 * If there is no mapping and {@link #isSendExceptionMessage()} is true use
-	 * {@link Throwable#getMessage()}.
+	 * If there is no mapping and {@link #isSendExceptionMessage()} is true use {@link Throwable#getMessage()}.
 	 * <p>
-	 * If there is no mapping and {@link #isSendExceptionMessage()} is false use
-	 * {@link #getDefaultExceptionMessage()}.
+	 * If there is no mapping and {@link #isSendExceptionMessage()} is false use {@link #getDefaultExceptionMessage()}.
 	 * 
 	 * @see #setDefaultExceptionMessage(String)
 	 * @see #setSendExceptionMessage(boolean)
@@ -185,8 +177,7 @@ public class Configuration {
 	}
 
 	/**
-	 * If alwaysWrapStoreResponse is true, responses of STORE_READ and
-	 * STORE_MODIFY methods are always wrapped in an
+	 * If alwaysWrapStoreResponse is true, responses of STORE_READ and STORE_MODIFY methods are always wrapped in an
 	 * {@link ExtDirectStoreResult} object.
 	 * 
 	 * @param alwaysWrapStoreResponse new flag
@@ -200,13 +191,12 @@ public class Configuration {
 	}
 
 	/**
-	 * If synchronizeOnSession is true, execution of all methods is synchronized
-	 * on the session object. To serialize parallel invocations from the same
-	 * client and to prevent concurrency issues if the server accesses global or
+	 * If synchronizeOnSession is true, execution of all methods is synchronized on the session object. To serialize
+	 * parallel invocations from the same client and to prevent concurrency issues if the server accesses global or
 	 * session resources.
 	 * <p>
-	 * Instead of globally enable this it's possible to set the flag on a per
-	 * method basis with {@link ExtDirectMethod#synchronizeOnSession()}.
+	 * Instead of globally enable this it's possible to set the flag on a per method basis with
+	 * {@link ExtDirectMethod#synchronizeOnSession()}.
 	 * 
 	 * @param synchronizeOnSession new flag
 	 */
@@ -219,11 +209,9 @@ public class Configuration {
 	}
 
 	/**
-	 * Sets the timeout in milliseconds for remote calls. This parameter is part
-	 * of the configuration object api.js sends to the client and configures the
-	 * timeout property of the <a href=
-	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.direct.RemotingProvider"
-	 * >RemotingProvider</a>.
+	 * Sets the timeout in milliseconds for remote calls. This parameter is part of the configuration object api.js
+	 * sends to the client and configures the timeout property of the <a href=
+	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.direct.RemotingProvider" >RemotingProvider</a>.
 	 * 
 	 * @param timeout new timeout value
 	 */
@@ -236,11 +224,9 @@ public class Configuration {
 	}
 
 	/**
-	 * Sets the number of times the client will try to send a message to the
-	 * server before throwing a failure. Default value is 1. This parameter is
-	 * part of the configuration object api.js sends to the client and
-	 * configures the maxRetries property of the <a href=
-	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.direct.RemotingProvider"
+	 * Sets the number of times the client will try to send a message to the server before throwing a failure. Default
+	 * value is 1. This parameter is part of the configuration object api.js sends to the client and configures the
+	 * maxRetries property of the <a href= "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.direct.RemotingProvider"
 	 * >RemotingProvider</a>.
 	 * 
 	 * @param maxRetries new number of max retries
@@ -254,16 +240,13 @@ public class Configuration {
 	}
 
 	/**
-	 * true or false to enable or disable combining of method calls. If a number
-	 * is specified this is the amount of time in milliseconds to wait before
-	 * sending a batched request. Calls which are received within the specified
-	 * timeframe will be concatenated together and sent in a single request,
-	 * optimizing the application by reducing the amount of round trips that
-	 * have to be made to the server.
+	 * true or false to enable or disable combining of method calls. If a number is specified this is the amount of time
+	 * in milliseconds to wait before sending a batched request. Calls which are received within the specified timeframe
+	 * will be concatenated together and sent in a single request, optimizing the application by reducing the amount of
+	 * round trips that have to be made to the server.
 	 * <p>
-	 * This parameter is part of the configuration object api.js sends to the
-	 * client and configures the enableBuffer property of the <a href=
-	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.direct.RemotingProvider"
+	 * This parameter is part of the configuration object api.js sends to the client and configures the enableBuffer
+	 * property of the <a href= "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.direct.RemotingProvider"
 	 * >RemotingProvider</a>.
 	 * <p>
 	 * Defaults to: 10
@@ -275,8 +258,7 @@ public class Configuration {
 	}
 
 	/**
-	 * Returns an error message for the supplied exception and based on this
-	 * configuration.
+	 * Returns an error message for the supplied exception and based on this configuration.
 	 * 
 	 * @see #setDefaultExceptionMessage(String)
 	 * @see #setSendExceptionMessage(boolean)
@@ -311,16 +293,15 @@ public class Configuration {
 	}
 
 	/**
-	 * If streamResponse is true, the JSON response will be directly written
-	 * into the {@link HttpServletResponse#getOutputStream()} without setting
-	 * the Content-Length header. The old ExtDirectSpring 1.0.x behavior.
+	 * If streamResponse is true, the JSON response will be directly written into the
+	 * {@link HttpServletResponse#getOutputStream()} without setting the Content-Length header. The old ExtDirectSpring
+	 * 1.0.x behavior.
 	 * <p>
-	 * If false the {@link RouterController} writes the JSON into an internal
-	 * buffer, sets the Content-Length header in {@link HttpServletResponse} and
-	 * writes the buffer into {@link HttpServletResponse#getOutputStream()}.
+	 * If false the {@link RouterController} writes the JSON into an internal buffer, sets the Content-Length header in
+	 * {@link HttpServletResponse} and writes the buffer into {@link HttpServletResponse#getOutputStream()}.
 	 * <p>
-	 * Instead of globally enable this it's possible to set the flag on a per
-	 * method basis with {@link ExtDirectMethod#streamResponse()}.
+	 * Instead of globally enable this it's possible to set the flag on a per method basis with
+	 * {@link ExtDirectMethod#streamResponse()}.
 	 * <p>
 	 * Default value is false
 	 * 
@@ -333,10 +314,8 @@ public class Configuration {
 	/**
 	 * Specifies the Content-Type for api.js and api-debug.js.
 	 * <p>
-	 * Until version 1.2.1 extdirectspring sends "application/x-javascript". But
-	 * according to <a
-	 * href="http://www.rfc-editor.org/rfc/rfc4329.txt">RFC4329</a> the official
-	 * mime type is 'application/javascript'.
+	 * Until version 1.2.1 extdirectspring sends "application/x-javascript". But according to <a
+	 * href="http://www.rfc-editor.org/rfc/rfc4329.txt">RFC4329</a> the official mime type is 'application/javascript'.
 	 * <p>
 	 * Default value is "application/javascript"
 	 * 
@@ -355,11 +334,9 @@ public class Configuration {
 	}
 
 	/**
-	 * Specifies how batched methods sent from the client should be executed on
-	 * the server. {@link BatchedMethodsExecutionPolicy#SEQUENTIAL} executes
-	 * methods one after the other.
-	 * {@link BatchedMethodsExecutionPolicy#CONCURRENT} executes methods
-	 * concurrently with the help of a thread pool.
+	 * Specifies how batched methods sent from the client should be executed on the server.
+	 * {@link BatchedMethodsExecutionPolicy#SEQUENTIAL} executes methods one after the other.
+	 * {@link BatchedMethodsExecutionPolicy#CONCURRENT} executes methods concurrently with the help of a thread pool.
 	 * 
 	 * <p>
 	 * Default value is {@link BatchedMethodsExecutionPolicy#SEQUENTIAL}
@@ -379,10 +356,9 @@ public class Configuration {
 	/**
 	 * Sets the thread pool used for executing batched methods concurrently.
 	 * <p>
-	 * If batchedMethodsExecutionPolicy is set to
-	 * {@link BatchedMethodsExecutionPolicy#CONCURRENT} but no
-	 * batchedMethodsExecutorService is specified the library creates a
-	 * {@link Executors#newFixedThreadPool(int)} with 5 threads.
+	 * If batchedMethodsExecutionPolicy is set to {@link BatchedMethodsExecutionPolicy#CONCURRENT} but no
+	 * batchedMethodsExecutorService is specified the library creates a {@link Executors#newFixedThreadPool(int)} with 5
+	 * threads.
 	 * 
 	 * @see #setBatchedMethodsExecutionPolicy(BatchedMethodsExecutionPolicy)
 	 * @param batchedMethodsExecutorService the new thread pool
@@ -396,11 +372,9 @@ public class Configuration {
 	}
 
 	/**
-	 * Sets the type of the provider. The type is sent to the client in the api
-	 * configuration.
+	 * Sets the type of the provider. The type is sent to the client in the api configuration.
 	 * <p>
-	 * Default value is "remoting" and it creates an Ext.direct.RemotingProvider
-	 * on the client side.
+	 * Default value is "remoting" and it creates an Ext.direct.RemotingProvider on the client side.
 	 * 
 	 * @param providerType new provider type
 	 */
@@ -413,9 +387,8 @@ public class Configuration {
 	}
 
 	/**
-	 * Sets the passed domain to be included in the file upload's temporary
-	 * frame. This is used to grant the main document access to the POST
-	 * response on the frame in a cross-domain environment.
+	 * Sets the passed domain to be included in the file upload's temporary frame. This is used to grant the main
+	 * document access to the POST response on the frame in a cross-domain environment.
 	 * 
 	 * @param frameDomain the new domain to set the frame to
 	 */
@@ -428,10 +401,9 @@ public class Configuration {
 	}
 
 	/**
-	 * Updates the script that is used to set the domain values on the file
-	 * upload frame. This is useful for cross-browser compatibility. If other
-	 * browsers require a modified script as workaround, frameDomainScript
-	 * should allow for it.
+	 * Updates the script that is used to set the domain values on the file upload frame. This is useful for
+	 * cross-browser compatibility. If other browsers require a modified script as workaround, frameDomainScript should
+	 * allow for it.
 	 * 
 	 * @param frameDomainScript the javascript code used to set the frame domain
 	 */
@@ -444,8 +416,7 @@ public class Configuration {
 	}
 
 	/**
-	 * Sets the name of the namespace in which the remotingApiVar variable will
-	 * reside.
+	 * Sets the name of the namespace in which the remotingApiVar variable will reside.
 	 * <p>
 	 * Defaults to Ext.app
 	 * 
@@ -520,9 +491,8 @@ public class Configuration {
 	}
 
 	/**
-	 * Specifies if the router property should contain the full URL including
-	 * protocol, server name, port number, and server path (true) or only the
-	 * server path (false)
+	 * Specifies if the router property should contain the full URL including protocol, server name, port number, and
+	 * server path (true) or only the server path (false)
 	 * <p>
 	 * Defaults to false
 	 * 
@@ -537,9 +507,8 @@ public class Configuration {
 	}
 
 	/**
-	 * If not null the {@link ApiController} does not use the url of the request
-	 * to determine the router url instead he uses the value of this variable as
-	 * the base and adds /router, /poll and /sse.<br>
+	 * If not null the {@link ApiController} does not use the url of the request to determine the router url instead he
+	 * uses the value of this variable as the base and adds /router, /poll and /sse.<br>
 	 * The fullRouterUrl setting is ignored when this variable is not null
 	 * <p>
 	 * Defaults to null.

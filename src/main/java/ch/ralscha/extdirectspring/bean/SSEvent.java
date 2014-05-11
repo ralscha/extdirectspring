@@ -16,11 +16,11 @@
 package ch.ralscha.extdirectspring.bean;
 
 /**
- * Class represents a response in a Server-Sent Event roundtrip. A SSE method
- * can either return a String or an instance of this class.
+ * Class represents a response in a Server-Sent Event roundtrip. A SSE method can either return a String or an instance
+ * of this class.
  * <p>
- * The library maps every property to the corresponding keyword in a Server-Sent
- * Event response. If a property in this class is null it will be ignored.
+ * The library maps every property to the corresponding keyword in a Server-Sent Event response. If a property in this
+ * class is null it will be ignored.
  * <p>
  * See <a href="http://www.w3.org/TR/eventsource/">Server-Sent Specification</a>
  */
@@ -41,9 +41,8 @@ public class SSEvent {
 	}
 
 	/**
-	 * Sets the event source's last event ID. Next time the client reconnects to
-	 * the server it will send a HTTP Header Last-Event-ID with the current last
-	 * event ID. This value does not have to be a number it can be any string.
+	 * Sets the event source's last event ID. Next time the client reconnects to the server it will send a HTTP Header
+	 * Last-Event-ID with the current last event ID. This value does not have to be a number it can be any string.
 	 * 
 	 * @param id new event source's last event id
 	 */
@@ -67,9 +66,8 @@ public class SSEvent {
 	/**
 	 * Sets the data part of the Server-Sent Event response.
 	 * 
-	 * @param data the actual payload of the response. Converted to a String by
-	 *            calling the object's toString() method. If null data is set to
-	 *            null.
+	 * @param data the actual payload of the response. Converted to a String by calling the object's toString() method.
+	 *            If null data is set to null.
 	 */
 	public void setData(Object data) {
 		if (data != null) {
@@ -84,8 +82,8 @@ public class SSEvent {
 	}
 
 	/**
-	 * Sets the retry value. This specifies how long the client is waiting after
-	 * a disconnect before he tries to open a new connection to the server.
+	 * Sets the retry value. This specifies how long the client is waiting after a disconnect before he tries to open a
+	 * new connection to the server.
 	 * <p>
 	 * Default value is 3000 (3 seconds).
 	 * 
@@ -100,9 +98,8 @@ public class SSEvent {
 	}
 
 	/**
-	 * Name of the event. On the client side the corresponding event is fired
-	 * after receiving this response. If empty the default event 'message' will
-	 * be fired
+	 * Name of the event. On the client side the corresponding event is fired after receiving this response. If empty
+	 * the default event 'message' will be fired
 	 * 
 	 * @param event the new name of the event
 	 */
@@ -115,9 +112,8 @@ public class SSEvent {
 	}
 
 	/**
-	 * Adds a comment to this event. In the response this is a line starting
-	 * with : (colon) following by the text from this property. Comments will be
-	 * ignored by the client but may be useful for debugging.
+	 * Adds a comment to this event. In the response this is a line starting with : (colon) following by the text from
+	 * this property. Comments will be ignored by the client but may be useful for debugging.
 	 * 
 	 * @param comment the new comment for this event
 	 */
