@@ -89,6 +89,9 @@ public class RouterController {
 	@Autowired
 	private ConfigurationService configurationService;
 
+	@Autowired
+	private MethodInfoCache methodInfoCache;
+
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
 	public void poll(@PathVariable("beanName") String beanName,
 			@PathVariable("method") String method, @PathVariable("event") String event,
@@ -98,7 +101,7 @@ public class RouterController {
 		ExtDirectPollResponse directPollResponse = new ExtDirectPollResponse();
 		directPollResponse.setName(event);
 
-		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(beanName, method);
+		MethodInfo methodInfo = methodInfoCache.get(beanName, method);
 		boolean streamResponse;
 		Class<?> jsonView = null;
 
@@ -196,7 +199,7 @@ public class RouterController {
 			@RequestParam("extMethod") String extMethod) throws IOException {
 
 		ExtDirectResponse directResponse = new ExtDirectResponse(request);
-		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(extAction, extMethod);
+		MethodInfo methodInfo = methodInfoCache.get(extAction, extMethod);
 
 		boolean streamResponse;
 
@@ -360,7 +363,7 @@ public class RouterController {
 			HttpServletRequest request, HttpServletResponse response, Locale locale) {
 		ExtDirectResponse directResponse = new ExtDirectResponse(directRequest);
 
-		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(directRequest.getAction(),
+		MethodInfo methodInfo = methodInfoCache.get(directRequest.getAction(),
 				directRequest.getMethod());
 
 		if (methodInfo != null) {

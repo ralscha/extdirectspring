@@ -56,6 +56,9 @@ public class ApiController {
 	@Autowired
 	private ConfigurationService configurationService;
 
+	@Autowired
+	private MethodInfoCache methodInfoCache;
+
 	/**
 	 * Method that handles api.js and api-debug.js calls. Generates a javascript with the
 	 * necessary code for Ext Direct.
@@ -409,9 +412,9 @@ public class ApiController {
 
 	}
 
-	private static void buildRemotingApi(RemotingApi remotingApi, String requestedGroup) {
+	private void buildRemotingApi(RemotingApi remotingApi, String requestedGroup) {
 		String group = requestedGroup != null ? requestedGroup.trim() : requestedGroup;
-		for (Map.Entry<MethodInfoCache.Key, MethodInfo> entry : MethodInfoCache.INSTANCE) {
+		for (Map.Entry<MethodInfoCache.Key, MethodInfo> entry : methodInfoCache) {
 			MethodInfo methodInfo = entry.getValue();
 			if (isSameGroup(group, methodInfo.getGroup())) {
 				if (methodInfo.getAction() != null) {

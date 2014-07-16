@@ -20,6 +20,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -45,6 +46,9 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 		Ordered {
 
 	private static final Log log = LogFactory.getLog(RouterController.class);
+
+	@Autowired
+	private MethodInfoCache methodInfoCache;
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -73,7 +77,7 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 				final String beanAndMethodName = beanName + "." + method.getName();
 				if (directMethodAnnotation.value().isValid(beanAndMethodName, userType,
 						method)) {
-					MethodInfoCache.INSTANCE.put(beanName, handlerType, method,
+					methodInfoCache.put(beanName, handlerType, method,
 							event.getApplicationContext());
 
 					// /CLOVER:OFF

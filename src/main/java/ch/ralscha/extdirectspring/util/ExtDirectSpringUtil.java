@@ -95,9 +95,10 @@ public final class ExtDirectSpringUtil {
 
 	public static Object invoke(HttpServletRequest request, HttpServletResponse response,
 			Locale locale, ApplicationContext context, ExtDirectRequest directRequest,
-			ParametersResolver parametersResolver) throws Exception {
+			ParametersResolver parametersResolver, MethodInfoCache cache)
+			throws Exception {
 
-		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(directRequest.getAction(),
+		MethodInfo methodInfo = cache.get(directRequest.getAction(),
 				directRequest.getMethod());
 		Object[] resolvedParams = parametersResolver.resolveParameters(request, response,
 				locale, directRequest, methodInfo);

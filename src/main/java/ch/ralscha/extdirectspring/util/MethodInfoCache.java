@@ -23,21 +23,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
 
 /**
  * A simple cache for methods with key beanName/methodName
  */
-public enum MethodInfoCache implements
+@Service
+public class MethodInfoCache implements
 		Iterable<Map.Entry<MethodInfoCache.Key, MethodInfo>> {
-
-	/**
-	 * Singleton enum pattern
-	 */
-	INSTANCE;
 
 	private final Map<Key, MethodInfo> cache;
 
-	private MethodInfoCache() {
+	public MethodInfoCache() {
 		cache = new HashMap<Key, MethodInfo>();
 	}
 

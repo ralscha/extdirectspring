@@ -40,10 +40,13 @@ public class SSEHandler {
 	@Autowired
 	private ConfigurationService configurationService;
 
+	@Autowired
+	private MethodInfoCache methodInfoCache;
+
 	public void handle(String beanName, String method, HttpServletRequest request,
 			HttpServletResponse response, Locale locale) throws Exception {
 
-		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(beanName, method);
+		MethodInfo methodInfo = methodInfoCache.get(beanName, method);
 
 		SSEvent result = null;
 		SSEWriter sseWriter = new SSEWriter(response);

@@ -69,9 +69,12 @@ public class ApiControllerWithConfigurationTest {
 	@Autowired
 	private ConfigurationService configurationService;
 
+	@Autowired
+	private MethodInfoCache methodInfoCache;
+
 	@Before
 	public void setupApiController() throws Exception {
-		MethodInfoCache.INSTANCE.clear();
+		methodInfoCache.clear();
 		ApiCache.INSTANCE.clear();
 		wac.publishEvent(new ContextRefreshedEvent(wac));
 
