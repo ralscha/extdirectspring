@@ -51,11 +51,11 @@ public class AppExceptionHandlerTest {
 	@Test
 	public void testExceptionInMapping() throws Exception {
 
-		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple", "method4b", 2, new Object[] { 3,
-				"xxx", "string.param" });
+		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple",
+				"method4b", 2, new Object[] { 3, "xxx", "string.param" });
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
-				.getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result
+				.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -71,12 +71,12 @@ public class AppExceptionHandlerTest {
 	@Test
 	public void testBeanOrMethodNotFound() throws Exception {
 
-		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple2", "method4", 2, new Object[] { 3,
-				2.5, "string.param" });
+		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple2",
+				"method4", 2, new Object[] { 3, 2.5, "string.param" });
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
-				.getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result
+				.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -92,11 +92,12 @@ public class AppExceptionHandlerTest {
 
 	@Test
 	public void testExceptionInMappingWithNullValue() throws Exception {
-		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple", "method11b", 3, null);
+		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple",
+				"method11b", 3, null);
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
-				.getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result
+				.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -111,11 +112,12 @@ public class AppExceptionHandlerTest {
 
 	@Test
 	public void testExceptionNotInMapping() throws Exception {
-		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple", "method11", 3, null);
+		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple",
+				"method11", 3, null);
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
-				.getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result
+				.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);

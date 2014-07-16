@@ -67,14 +67,17 @@ public class InfoServiceTest extends JettyTest {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {
-			HttpGet g = new HttpGet("http://localhost:9998/controller/api.js?group=itest_info_service");
+			HttpGet g = new HttpGet(
+					"http://localhost:9998/controller/api.js?group=itest_info_service");
 			response = client.execute(g);
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
-			ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
+			ApiControllerTest.compare(responseString, contentType, api(),
+					ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, false);
 			ApiCache.INSTANCE.clear();
-		} finally {
+		}
+		finally {
 			IOUtils.closeQuietly(response);
 			IOUtils.closeQuietly(client);
 		}
@@ -85,14 +88,17 @@ public class InfoServiceTest extends JettyTest {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {
-			HttpGet g = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_info_service");
+			HttpGet g = new HttpGet(
+					"http://localhost:9998/controller/api-debug.js?group=itest_info_service");
 			response = client.execute(g);
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
-			ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
+			ApiControllerTest.compare(responseString, contentType, api(),
+					ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, false);
 			ApiCache.INSTANCE.clear();
-		} finally {
+		}
+		finally {
 			IOUtils.closeQuietly(response);
 			IOUtils.closeQuietly(client);
 		}
@@ -103,14 +109,17 @@ public class InfoServiceTest extends JettyTest {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {
-			HttpGet g = new HttpGet("http://localhost:9998/controller/api-1.2.1.js?group=itest_info_service");
+			HttpGet g = new HttpGet(
+					"http://localhost:9998/controller/api-1.2.1.js?group=itest_info_service");
 			response = client.execute(g);
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
-			ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
+			ApiControllerTest.compare(responseString, contentType, api(),
+					ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, true);
 			ApiCache.INSTANCE.clear();
-		} finally {
+		}
+		finally {
 			IOUtils.closeQuietly(response);
 			IOUtils.closeQuietly(client);
 		}
@@ -131,36 +140,41 @@ public class InfoServiceTest extends JettyTest {
 
 		Locale.setDefault(Locale.US);
 
-		testUserPost("updateInfoUser1", "not a well-formed email address", entry("lc", "ralph"),
-				entry("success", false));
+		testUserPost("updateInfoUser1", "not a well-formed email address",
+				entry("lc", "ralph"), entry("success", false));
 	}
 
 	@Test
 	public void testUpdateInfoUser2() throws IOException {
 		Locale.setDefault(Locale.GERMAN);
-		testUserPost("updateInfoUser2", "keine gültige E-Mail-Adresse", entry("lc", "ralph"), entry("success", false));
+		testUserPost("updateInfoUser2", "keine gültige E-Mail-Adresse",
+				entry("lc", "ralph"), entry("success", false));
 
 	}
 
 	@Test
 	public void testUpdateInfoUser3() throws IOException {
 		Locale.setDefault(Locale.US);
-		testUserPost("updateInfoUser3", "Wrong E-Mail", entry("lc", "ralph"), entry("success", false));
+		testUserPost("updateInfoUser3", "Wrong E-Mail", entry("lc", "ralph"),
+				entry("success", false));
 	}
 
 	@Test
 	public void testUpdateInfoUser4() throws IOException {
 		Locale.setDefault(Locale.US);
-		testUserPost("updateInfoUser4", "Wrong E-Mail", entry("lc", "ralph"), entry("success", true));
+		testUserPost("updateInfoUser4", "Wrong E-Mail", entry("lc", "ralph"),
+				entry("success", true));
 	}
 
 	@Test
 	public void testUpdateInfoUser5() throws IOException {
 		Locale.setDefault(Locale.US);
-		testUserPost("updateInfoUser5", "Wrong E-Mail", entry("lc", "ralph"), entry("success", false));
+		testUserPost("updateInfoUser5", "Wrong E-Mail", entry("lc", "ralph"),
+				entry("success", false));
 	}
 
-	private static void testUserPost(String method, String errorMsg, MapEntry... entries) throws IOException {
+	private static void testUserPost(String method, String errorMsg, MapEntry... entries)
+			throws IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {
@@ -177,7 +191,8 @@ public class InfoServiceTest extends JettyTest {
 			formparams.add(new BasicNameValuePair("age", "1"));
 			formparams.add(new BasicNameValuePair("email", "invalidEmail"));
 
-			UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
+			UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams,
+					"UTF-8");
 
 			post.setEntity(postEntity);
 
@@ -206,11 +221,14 @@ public class InfoServiceTest extends JettyTest {
 			Map<String, Object> errors = (Map<String, Object>) result.get("errors");
 			if (errorMsg != null) {
 				assertThat(errors).isNotNull();
-				assertThat(((List<String>) errors.get("email")).get(0)).isEqualTo(errorMsg);
-			} else {
+				assertThat(((List<String>) errors.get("email")).get(0)).isEqualTo(
+						errorMsg);
+			}
+			else {
 				assertThat(errors).isNull();
 			}
-		} finally {
+		}
+		finally {
 			IOUtils.closeQuietly(response);
 			IOUtils.closeQuietly(client);
 		}
@@ -229,7 +247,8 @@ public class InfoServiceTest extends JettyTest {
 			formparams.add(new BasicNameValuePair("extType", "rpc"));
 			formparams.add(new BasicNameValuePair("extUpload", "false"));
 			formparams.add(new BasicNameValuePair("userName", "RALPH"));
-			UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
+			UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams,
+					"UTF-8");
 
 			post.setEntity(postEntity);
 
@@ -250,7 +269,8 @@ public class InfoServiceTest extends JettyTest {
 			assertThat(result).hasSize(2);
 			assertThat(result.get("user-name-lower-case")).isEqualTo("ralph");
 			assertThat(result.get("success")).isEqualTo(true);
-		} finally {
+		}
+		finally {
 			IOUtils.closeQuietly(response);
 			IOUtils.closeQuietly(client);
 		}

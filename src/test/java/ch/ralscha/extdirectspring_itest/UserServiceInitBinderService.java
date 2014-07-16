@@ -33,8 +33,10 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 @Service
 public class UserServiceInitBinderService {
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_userib_service")
-	public ExtDirectFormPostResult updateUser(@Valid UserExtended user, BindingResult result) {
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST,
+			group = "itest_userib_service")
+	public ExtDirectFormPostResult updateUser(@Valid UserExtended user,
+			BindingResult result) {
 
 		ExtDirectFormPostResult resp = new ExtDirectFormPostResult(result);
 		resp.addResultProperty("name", user.getName());
@@ -44,7 +46,8 @@ public class UserServiceInitBinderService {
 
 		if (user.getDateOfBirth() != null) {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			resp.addResultProperty("dateOfBirth", dateFormat.format(user.getDateOfBirth()));
+			resp.addResultProperty("dateOfBirth",
+					dateFormat.format(user.getDateOfBirth()));
 		}
 
 		resp.addResultProperty("flag", user.isFlag());

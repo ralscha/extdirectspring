@@ -37,7 +37,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class SecuredServiceTest extends JettyTest {
 
 	@Test
-	public void callSetDate() throws IOException, JsonParseException, JsonMappingException {
+	public void callSetDate() throws IOException, JsonParseException,
+			JsonMappingException {
 
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
@@ -58,17 +59,19 @@ public class SecuredServiceTest extends JettyTest {
 			String responseString = EntityUtils.toString(entity);
 
 			assertThat(responseString).isNotNull();
-			assertThat(responseString.startsWith("[") && responseString.endsWith("]")).isTrue();
+			assertThat(responseString.startsWith("[") && responseString.endsWith("]"))
+					.isTrue();
 			ObjectMapper mapper = new ObjectMapper();
-			Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
-					Map.class);
+			Map<String, Object> rootAsMap = mapper.readValue(
+					responseString.substring(1, responseString.length() - 1), Map.class);
 			assertThat(rootAsMap).hasSize(5);
 			assertThat(rootAsMap.get("result")).isEqualTo("102,26.04.2012");
 			assertThat(rootAsMap.get("method")).isEqualTo("setDate");
 			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
 			assertThat(rootAsMap.get("action")).isEqualTo("securedService");
 			assertThat(rootAsMap.get("tid")).isEqualTo(1);
-		} finally {
+		}
+		finally {
 			IOUtils.closeQuietly(response);
 			IOUtils.closeQuietly(client);
 		}

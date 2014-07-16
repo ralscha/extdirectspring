@@ -55,32 +55,36 @@ public class ExtDirectFormPostResult {
 		setSuccess(success);
 	}
 
-	public ExtDirectFormPostResult(Locale locale, MessageSource messageSource, BindingResult bindingResult) {
+	public ExtDirectFormPostResult(Locale locale, MessageSource messageSource,
+			BindingResult bindingResult) {
 		addErrors(locale, messageSource, bindingResult);
 	}
 
-	public ExtDirectFormPostResult(Locale locale, MessageSource messageSource, BindingResult bindingResult,
-			boolean success) {
+	public ExtDirectFormPostResult(Locale locale, MessageSource messageSource,
+			BindingResult bindingResult, boolean success) {
 		addErrors(locale, messageSource, bindingResult);
 		setSuccess(success);
 	}
 
 	/**
-	 * Extracts errors from the bindingResult and inserts them into the error properties. Sets the property success to
-	 * false if there are errors. Sets the property success to true if there are no errors.
-	 * 
+	 * Extracts errors from the bindingResult and inserts them into the error properties.
+	 * Sets the property success to false if there are errors. Sets the property success
+	 * to true if there are no errors.
+	 *
 	 * @param locale
 	 * @param messageSource
 	 * @param bindingResult
 	 */
-	private void addErrors(Locale locale, MessageSource messageSource, BindingResult bindingResult) {
+	private void addErrors(Locale locale, MessageSource messageSource,
+			BindingResult bindingResult) {
 		if (bindingResult != null && bindingResult.hasFieldErrors()) {
 			Map<String, List<String>> errorMap = new HashMap<String, List<String>>();
 			for (FieldError fieldError : bindingResult.getFieldErrors()) {
 				String message = fieldError.getDefaultMessage();
 				if (messageSource != null) {
 					Locale loc = locale != null ? locale : Locale.getDefault();
-					message = messageSource.getMessage(fieldError.getCode(), fieldError.getArguments(), loc);
+					message = messageSource.getMessage(fieldError.getCode(),
+							fieldError.getArguments(), loc);
 				}
 				List<String> fieldErrors = errorMap.get(fieldError.getField());
 
@@ -93,11 +97,13 @@ public class ExtDirectFormPostResult {
 			}
 			if (errorMap.isEmpty()) {
 				addResultProperty(SUCCESS_PROPERTY, true);
-			} else {
+			}
+			else {
 				addResultProperty(ERRORS_PROPERTY, errorMap);
 				addResultProperty(SUCCESS_PROPERTY, false);
 			}
-		} else {
+		}
+		else {
 			setSuccess(true);
 		}
 	}
@@ -108,15 +114,16 @@ public class ExtDirectFormPostResult {
 	 * stop at first message found<br>
 	 * method is useless if no specific validation message have been set (example:
 	 * javax.validation.constraints.NotNull.message.fax=Fax number is mandatory)<br>
-	 * it will behave {@link #addErrors(Locale, MessageSource, BindingResult)} with a big overhead
-	 * 
+	 * it will behave {@link #addErrors(Locale, MessageSource, BindingResult)} with a big
+	 * overhead
+	 *
 	 * @param locale locale for internationalization
 	 * @param messageSource source of validation code and message
 	 * @param bindingResult Errors list to resolve
 	 * @return this {@link #ExtDirectFormPostResult} for easy chaining
 	 */
-	public ExtDirectFormPostResult addErrorsResolveCode(Locale locale, MessageSource messageSource,
-			BindingResult bindingResult) {
+	public ExtDirectFormPostResult addErrorsResolveCode(Locale locale,
+			MessageSource messageSource, BindingResult bindingResult) {
 		if (bindingResult != null && bindingResult.hasFieldErrors()) {
 			Map<String, List<String>> errorMap = new HashMap<String, List<String>>();
 			for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -125,11 +132,13 @@ public class ExtDirectFormPostResult {
 					Locale loc = locale != null ? locale : Locale.getDefault();
 					for (String code : fieldError.getCodes()) {
 						try {
-							message = messageSource.getMessage(code, fieldError.getArguments(), loc);
-						} catch (Exception e) {
+							message = messageSource.getMessage(code,
+									fieldError.getArguments(), loc);
+						}
+						catch (Exception e) {
 							/**
-							 * expected if code/message doesn't exist, default behavior to counter that, set to your
-							 * message bundle,
+							 * expected if code/message doesn't exist, default behavior to
+							 * counter that, set to your message bundle,
 							 * {@link org.springframework.context.support.AbstractMessageSource#setUseCodeAsDefaultMessage(true)}
 							 * beware of side effects
 							 */
@@ -150,19 +159,22 @@ public class ExtDirectFormPostResult {
 			}
 			if (errorMap.isEmpty()) {
 				addResultProperty(SUCCESS_PROPERTY, true);
-			} else {
+			}
+			else {
 				addResultProperty(ERRORS_PROPERTY, errorMap);
 				addResultProperty(SUCCESS_PROPERTY, false);
 			}
-		} else {
+		}
+		else {
 			setSuccess(true);
 		}
 		return this;
 	}
 
 	/**
-	 * Adds one error message to a specific field. Does not overwrite already existing errors.
-	 * 
+	 * Adds one error message to a specific field. Does not overwrite already existing
+	 * errors.
+	 *
 	 * @param field the name of the field
 	 * @param error the error message
 	 */
@@ -176,8 +188,9 @@ public class ExtDirectFormPostResult {
 	}
 
 	/**
-	 * Adds multiple error messages to a specific field. Does not overwrite already existing errors.
-	 * 
+	 * Adds multiple error messages to a specific field. Does not overwrite already
+	 * existing errors.
+	 *
 	 * @param field the name of the field
 	 * @param errors a collection of error messages
 	 */
@@ -186,7 +199,8 @@ public class ExtDirectFormPostResult {
 		Assert.notNull(errors, "field must not be null");
 
 		// do not overwrite existing errors
-		Map<String, List<String>> errorMap = (Map<String, List<String>>) result.get(ERRORS_PROPERTY);
+		Map<String, List<String>> errorMap = (Map<String, List<String>>) result
+				.get(ERRORS_PROPERTY);
 		if (errorMap == null) {
 			errorMap = new HashMap<String, List<String>>();
 			addResultProperty(ERRORS_PROPERTY, errorMap);

@@ -80,7 +80,8 @@ public class RouterControllerFormPostJsonTest {
 	@Test
 	public void testCallFormPostMethod() throws Exception {
 
-		FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal(12.3), "theResult");
+		FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal(12.3),
+				"theResult");
 
 		// Request Params are sent as part of the json content payload
 		formInfo.set("p1", 1000);
@@ -88,16 +89,19 @@ public class RouterControllerFormPostJsonTest {
 
 		MvcResult resultMvc = null;
 		try {
-			resultMvc = ControllerUtil.performRouterRequest(mockMvc,
-					ControllerUtil.createEdsRequest("formInfoController3", "updateInfoJsonDirect", 14, formInfo));
-		} catch (JsonProcessingException e) {
+			resultMvc = ControllerUtil.performRouterRequest(mockMvc, ControllerUtil
+					.createEdsRequest("formInfoController3", "updateInfoJsonDirect", 14,
+							formInfo));
+		}
+		catch (JsonProcessingException e) {
 			fail("perform post to /router" + e.getMessage());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			fail("perform post to /router" + e.getMessage());
 		}
 
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(resultMvc.getResponse()
-				.getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(resultMvc
+				.getResponse().getContentAsByteArray());
 		assertThat(responses).hasSize(1);
 
 		ExtDirectResponse edsResponse = responses.get(0);
@@ -110,28 +114,33 @@ public class RouterControllerFormPostJsonTest {
 		assertThat(edsResponse.getMessage()).isNull();
 
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
-		assertThat(result).hasSize(6).contains(entry("name", "RALPH"), entry("age", 30), entry("admin", false),
-				entry("salary", 1012.3), entry("result", "theResultRESULT"), entry("success", true));
+		assertThat(result).hasSize(6).contains(entry("name", "RALPH"), entry("age", 30),
+				entry("admin", false), entry("salary", 1012.3),
+				entry("result", "theResultRESULT"), entry("success", true));
 	}
 
 	@SuppressWarnings({ "unchecked", "null", "rawtypes" })
 	@Test
 	public void testCallFormPostMethodError() throws Exception {
 
-		FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal(12.3), "theResult");
+		FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal(12.3),
+				"theResult");
 
 		MvcResult resultMvc = null;
 		try {
-			resultMvc = ControllerUtil.performRouterRequest(mockMvc,
-					ControllerUtil.createEdsRequest("formInfoController3", "updateInfoJsonDirectError", 14, formInfo));
-		} catch (JsonProcessingException e) {
+			resultMvc = ControllerUtil.performRouterRequest(mockMvc, ControllerUtil
+					.createEdsRequest("formInfoController3", "updateInfoJsonDirectError",
+							14, formInfo));
+		}
+		catch (JsonProcessingException e) {
 			fail("perform post to /router" + e.getMessage());
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			fail("perform post to /router" + e.getMessage());
 		}
 
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(resultMvc.getResponse()
-				.getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(resultMvc
+				.getResponse().getContentAsByteArray());
 		assertThat(responses).hasSize(1);
 
 		ExtDirectResponse edsResponse = responses.get(0);
@@ -152,13 +161,15 @@ public class RouterControllerFormPostJsonTest {
 	}
 
 	@Test
-	public void testCallFormPostMethodNotRegisteredWithBindingResultAsParameter() throws Exception {
+	public void testCallFormPostMethodNotRegisteredWithBindingResultAsParameter()
+			throws Exception {
 		ControllerUtil.sendAndReceive(mockMvc, "formInfoController3",
 				"updateInfoJsonDirectNotRegisteredWithBindingResultAsParameter", null);
 	}
 
 	@Test
-	public void testCallFormPostMethodNotRegisteredWithMultipartFileAsParameter() throws Exception {
+	public void testCallFormPostMethodNotRegisteredWithMultipartFileAsParameter()
+			throws Exception {
 		ControllerUtil.sendAndReceive(mockMvc, "formInfoController3",
 				"updateInfoJsonDirectNotRegisteredWithMultipartFileAsParameter", null);
 	}

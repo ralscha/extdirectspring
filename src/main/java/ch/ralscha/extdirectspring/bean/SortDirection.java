@@ -17,7 +17,7 @@ package ch.ralscha.extdirectspring.bean;
 
 /**
  * Enumeration of possible sort directions.
- * 
+ *
  * @see SortInfo
  */
 public enum SortDirection {
@@ -36,7 +36,8 @@ public enum SortDirection {
 	public static SortDirection fromString(String name) {
 		if (ASCENDING.getName().equalsIgnoreCase(name)) {
 			return ASCENDING;
-		} else if (DESCENDING.getName().equalsIgnoreCase(name)) {
+		}
+		else if (DESCENDING.getName().equalsIgnoreCase(name)) {
 			return DESCENDING;
 		}
 

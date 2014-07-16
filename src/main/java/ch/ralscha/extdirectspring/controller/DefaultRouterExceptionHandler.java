@@ -33,11 +33,13 @@ public class DefaultRouterExceptionHandler implements RouterExceptionHandler {
 	}
 
 	@Override
-	public Object handleException(MethodInfo methodInfo, BaseResponse response, Exception e, HttpServletRequest request) {
+	public Object handleException(MethodInfo methodInfo, BaseResponse response,
+			Exception e, HttpServletRequest request) {
 		Throwable cause;
 		if (e.getCause() != null) {
 			cause = e.getCause();
-		} else {
+		}
+		else {
 			cause = e;
 		}
 
@@ -46,11 +48,13 @@ public class DefaultRouterExceptionHandler implements RouterExceptionHandler {
 
 		if (configurationService.getConfiguration().isSendStacktrace()) {
 			response.setWhere(ExtDirectSpringUtil.getStackTrace(cause));
-		} else {
+		}
+		else {
 			response.setWhere(null);
 		}
 
-		if (methodInfo.isType(ExtDirectMethodType.FORM_POST) || methodInfo.isType(ExtDirectMethodType.FORM_POST_JSON)) {
+		if (methodInfo.isType(ExtDirectMethodType.FORM_POST)
+				|| methodInfo.isType(ExtDirectMethodType.FORM_POST_JSON)) {
 			return Collections.singletonMap("success", false);
 		}
 		return null;

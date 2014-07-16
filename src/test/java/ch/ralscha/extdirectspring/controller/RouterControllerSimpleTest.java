@@ -67,28 +67,32 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testBeanNotFound() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProvider", "method1", null, 3, 2.5, "string.param");
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProvider", "method1", null, 3, 2.5,
+				"string.param");
 	}
 
 	@Test
 	public void testMethodNotFound() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method4", null, 3, 2.5, "string.param");
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method4", null,
+				3, 2.5, "string.param");
 	}
 
 	@Test
 	public void testNoParameters() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method1", "method1() called");
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method1",
+				"method1() called");
 	}
 
 	@Test
 	public void testNoParametersWithRequestParameter() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method1", "method1() called", 1,
-				"requestparameter");
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method1",
+				"method1() called", 1, "requestparameter");
 	}
 
 	@Test
 	public void testNoParameters2() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method2", "method2() called");
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method2",
+				"method2() called");
 	}
 
 	@Test
@@ -99,8 +103,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testWithParametersWithTypeConversion() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method3", "method3() called-10-4.2-20", "10",
-				"4.2", 20);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method3",
+				"method3() called-10-4.2-20", "10", "4.2", 20);
 	}
 
 	@Test
@@ -110,46 +114,53 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testResultTrue() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method5", (Object) true, "ralph");
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method5",
+				(Object) true, "ralph");
 	}
 
 	@Test
 	public void testResultFalse() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method5", (Object) false, "joe");
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method5",
+				(Object) false, "joe");
 	}
 
 	@Test
 	public void testResultNull() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method5", Void.TYPE, "martin");
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method5",
+				Void.TYPE, "martin");
 
 	}
 
 	@Test
 	public void testIntParameterAndResult() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method6", 30, 10, 20);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method6", 30, 10,
+				20);
 	}
 
 	@Test
 	public void testIntParameterAndResultWithTypeConversion() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method6", 70, "30", "40");
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method6", 70,
+				"30", "40");
 	}
 
 	@Test
 	public void testResultStringNull() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method7", Void.TYPE);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method7",
+				Void.TYPE);
 	}
 
 	@Test
 	public void testReturnsObject() {
-		FormInfo info = (FormInfo) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method8",
-				FormInfo.class, 7.34);
+		FormInfo info = (FormInfo) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderSimple", "method8", FormInfo.class, 7.34);
 
 		assertThat(info.getBack()).isEqualTo(7.34);
 		assertThat(info.isAdmin()).isEqualTo(false);
 		assertThat(info.getAge()).isEqualTo(32);
 		assertThat(info.getName()).isEqualTo("John");
 		assertThat(info.getSalary()).isEqualTo(new BigDecimal("8720.2"));
-		assertThat(info.getBirthday()).isEqualTo(new GregorianCalendar(1986, Calendar.JULY, 22).getTime());
+		assertThat(info.getBirthday()).isEqualTo(
+				new GregorianCalendar(1986, Calendar.JULY, 22).getTime());
 	}
 
 	@Test
@@ -160,15 +171,15 @@ public class RouterControllerSimpleTest {
 	@Test
 	public void testTypeConversion() {
 		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method10",
-				"method10() called-true-c-ACTIVE-14-21-3.14-10.01-1-2", "true", "c", "ACTIVE", "14", "21", "3.14",
-				"10.01", "1", "2");
+				"method10() called-true-c-ACTIVE-14-21-3.14-10.01-1-2", "true", "c",
+				"ACTIVE", "14", "21", "3.14", "10.01", "1", "2");
 	}
 
 	@Test
 	public void testMixParameterAndSupportedParameters() {
 		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method13",
-				"method13() called-true-c-ACTIVE-14-21-3.14-10.01-1-2", "true", "c", "ACTIVE", "14", "21", "3.14",
-				"10.01", "1", "2");
+				"method13() called-true-c-ACTIVE-14-21-3.14-10.01-1-2", "true", "c",
+				"ACTIVE", "14", "21", "3.14", "10.01", "1", "2");
 	}
 
 	@Test
@@ -176,16 +187,19 @@ public class RouterControllerSimpleTest {
 
 		DateTime today = new DateTime();
 
-		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderSimple", "method14", Map.class, ISODateTimeFormat.dateTime().print(today),
-				"normalParameter", ISODateTimeFormat.date().print(today), "99.9%");
+		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil
+				.sendAndReceive(mockMvc, "remoteProviderSimple", "method14", Map.class,
+						ISODateTimeFormat.dateTime().print(today), "normalParameter",
+						ISODateTimeFormat.date().print(today), "99.9%");
 
 		assertThat(resultMap.get("endDate")).isEqualTo(today.getMillis());
 		ObjectMapper mapper = new ObjectMapper();
 
-		Map<String, Object> expectedValue = mapper.readValue(mapper.writeValueAsString(today.toLocalDate()), Map.class);
+		Map<String, Object> expectedValue = mapper.readValue(
+				mapper.writeValueAsString(today.toLocalDate()), Map.class);
 
-		assertThat((Map<String, Object>) resultMap.get("jodaLocalDate")).isEqualTo(expectedValue);
+		assertThat((Map<String, Object>) resultMap.get("jodaLocalDate")).isEqualTo(
+				expectedValue);
 		assertThat(resultMap.get("percent")).isEqualTo(0.999);
 		assertThat(resultMap.get("normalParameter")).isEqualTo("normalParameter");
 		assertThat(resultMap.get("remoteAddr")).isEqualTo("127.0.0.1");
@@ -202,7 +216,8 @@ public class RouterControllerSimpleTest {
 	public void methodRequiredHeaderWithoutValue() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("header", "headerValue");
-		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderSimple", "method15", "1;v;headerValue", 1, "v");
+		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderSimple",
+				"method15", "1;v;headerValue", 1, "v");
 	}
 
 	@Test
@@ -212,7 +227,8 @@ public class RouterControllerSimpleTest {
 		headers.add("anotherName", "headerValue1");
 		headers.add("anotherName", "headerValue2");
 
-		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderSimple", "method16", "11;headerValue1", 11);
+		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderSimple",
+				"method16", "11;headerValue1", 11);
 	}
 
 	@Test
@@ -221,24 +237,28 @@ public class RouterControllerSimpleTest {
 		headers.add("header", "headerValue");
 		headers.add("anotherName", "headerValue1");
 
-		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderSimple", "method17", "headerValue1");
+		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderSimple",
+				"method17", "headerValue1");
 	}
 
 	@Test
 	public void methodRequiredHeaderWithValueAndDefault2() throws Exception {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method17", "default");
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method17",
+				"default");
 	}
 
 	@Test
 	public void methodOptionalHeaderWithoutValueAndDefault1() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("header", "headerValue");
-		ControllerUtil.sendAndReceiveWithSession(mockMvc, headers, "remoteProviderSimple", "method18", "headerValue");
+		ControllerUtil.sendAndReceiveWithSession(mockMvc, headers,
+				"remoteProviderSimple", "method18", "headerValue");
 	}
 
 	@Test
 	public void methodOptionalHeaderWithoutValueAndDefault2() throws Exception {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method18", "default");
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method18",
+				"default");
 	}
 
 	@Test
@@ -246,8 +266,8 @@ public class RouterControllerSimpleTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("last", "lastHeader");
 
-		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderSimple", "method19",
-				"100;default1;default2;lastHeader", 100);
+		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderSimple",
+				"method19", "100;default1;default2;lastHeader", 100);
 	}
 
 	@Test
@@ -256,8 +276,8 @@ public class RouterControllerSimpleTest {
 		headers.add("last", "lastHeader");
 		headers.add("header2", "2ndHeader");
 
-		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderSimple", "method19",
-				"100;default1;2ndHeader;lastHeader", 100);
+		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderSimple",
+				"method19", "100;default1;2ndHeader;lastHeader", 100);
 	}
 
 	@Test
@@ -267,7 +287,8 @@ public class RouterControllerSimpleTest {
 		headers.add("header1", "1st");
 		headers.add("header2", "2nd");
 
-		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderSimple", "method19", "100;1st;2nd;last", 100);
+		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderSimple",
+				"method19", "100;1st;2nd;last", 100);
 	}
 
 	@Test
@@ -276,57 +297,63 @@ public class RouterControllerSimpleTest {
 		headers.add("intHeader", "2");
 		headers.add("booleanHeader", "true");
 
-		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderSimple", "method20", "2;true");
-		ControllerUtil.sendAndReceiveWithSession(mockMvc, headers, "remoteProviderSimple", "method20", "2;true");
+		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderSimple",
+				"method20", "2;true");
+		ControllerUtil.sendAndReceiveWithSession(mockMvc, headers,
+				"remoteProviderSimple", "method20", "2;true");
 	}
 
 	@Test
 	public void methodWithSimpleCollections() throws Exception {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method21", "Ralph;one-two-;10", "Ralph",
-				new String[] { "one", "two" }, 10);
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method21", "Ralph;one-;11", "Ralph",
-				new String[] { "one" }, 11);
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method21", "Ralph;;12", "Ralph",
-				new String[] {}, 12);
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method21", "Ralph;;13", "Ralph", null, 13);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method21",
+				"Ralph;one-two-;10", "Ralph", new String[] { "one", "two" }, 10);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method21",
+				"Ralph;one-;11", "Ralph", new String[] { "one" }, 11);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method21",
+				"Ralph;;12", "Ralph", new String[] {}, 12);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method21",
+				"Ralph;;13", "Ralph", null, 13);
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method22", "aStr;1+2+;20", "aStr", new int[] {
-				1, 2 }, 20);
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method22", "aStr;1+2+3+;21", "aStr", new int[] {
-				3, 1, 2 }, 21);
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method22", "aStr;3+;22", "aStr",
-				new int[] { 3 }, 22);
-		ControllerUtil
-				.sendAndReceive(mockMvc, "remoteProviderSimple", "method22", "aStr;;23", "aStr", new int[] {}, 23);
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method22", "aStr;;24", "aStr", null, 24);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method22",
+				"aStr;1+2+;20", "aStr", new int[] { 1, 2 }, 20);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method22",
+				"aStr;1+2+3+;21", "aStr", new int[] { 3, 1, 2 }, 21);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method22",
+				"aStr;3+;22", "aStr", new int[] { 3 }, 22);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method22",
+				"aStr;;23", "aStr", new int[] {}, 23);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method22",
+				"aStr;;24", "aStr", null, 24);
 	}
 
 	@Test
 	public void methodWithSimpleArrays() throws Exception {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method23", "Ralph;one-two-;10", "Ralph",
-				new String[] { "one", "two" }, 10);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method23",
+				"Ralph;one-two-;10", "Ralph", new String[] { "one", "two" }, 10);
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method23", "Ralph;one-;11", "Ralph",
-				new String[] { "one" }, 11);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method23",
+				"Ralph;one-;11", "Ralph", new String[] { "one" }, 11);
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method23", "Ralph;;12", "Ralph",
-				new String[] {}, 12);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method23",
+				"Ralph;;12", "Ralph", new String[] {}, 12);
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method23", "Ralph;;13", "Ralph", null, 13);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method23",
+				"Ralph;;13", "Ralph", null, 13);
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method24", "aStr;1+2+;20", "aStr", 20,
-				new int[] { 1, 2 });
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method24",
+				"aStr;1+2+;20", "aStr", 20, new int[] { 1, 2 });
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method24", "aStr;3+1+2+;21", "aStr", 21,
-				new int[] { 3, 1, 2 });
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method24",
+				"aStr;3+1+2+;21", "aStr", 21, new int[] { 3, 1, 2 });
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method24", "aStr;3+;22", "aStr", 22,
-				new int[] { 3 });
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method24",
+				"aStr;3+;22", "aStr", 22, new int[] { 3 });
 
-		ControllerUtil
-				.sendAndReceive(mockMvc, "remoteProviderSimple", "method24", "aStr;;23", "aStr", 23, new int[] {});
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method24",
+				"aStr;;23", "aStr", 23, new int[] {});
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method24", "aStr;;24", "aStr", 24, null);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method24",
+				"aStr;;24", "aStr", 24, null);
 	}
 
 	@Test
@@ -335,16 +362,18 @@ public class RouterControllerSimpleTest {
 		BusinessObject bo2 = new BusinessObject(2, "two", new BigDecimal("2.22"));
 		BusinessObject bo3 = new BusinessObject(3, "three", new BigDecimal("3.33"));
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method25", "a;" + bo1.toString() + "-;1", "a",
-				new BusinessObject[] { bo1 }, 1);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method25", "a;"
+				+ bo1.toString() + "-;1", "a", new BusinessObject[] { bo1 }, 1);
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method25", "b;" + bo1 + "-" + bo2 + "-" + bo3
-				+ "-;2", "b", new BusinessObject[] { bo1, bo2, bo3 }, 2);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method25", "b;"
+				+ bo1 + "-" + bo2 + "-" + bo3 + "-;2", "b", new BusinessObject[] { bo1,
+				bo2, bo3 }, 2);
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method25", "c;;3", "c",
-				new BusinessObject[] {}, 3);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method25",
+				"c;;3", "c", new BusinessObject[] {}, 3);
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method25", "d;;3", "d", null, 3);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method25",
+				"d;;3", "d", null, 3);
 	}
 
 	@Test
@@ -353,15 +382,17 @@ public class RouterControllerSimpleTest {
 		BusinessObject bo2 = new BusinessObject(5, "five", new BigDecimal("5.55"));
 		BusinessObject bo3 = new BusinessObject(6, "six", new BigDecimal("6.66"));
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method26", "e;" + bo1.toString() + "-;4", "e",
-				new BusinessObject[] { bo1 }, 4);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method26", "e;"
+				+ bo1.toString() + "-;4", "e", new BusinessObject[] { bo1 }, 4);
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method26", "f;" + bo1 + "-" + bo2 + "-" + bo3
-				+ "-;5", "f", new BusinessObject[] { bo1, bo2, bo3 }, 5);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method26", "f;"
+				+ bo1 + "-" + bo2 + "-" + bo3 + "-;5", "f", new BusinessObject[] { bo1,
+				bo2, bo3 }, 5);
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method26", "g;;6", "g",
-				new BusinessObject[] {}, 6);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method26",
+				"g;;6", "g", new BusinessObject[] {}, 6);
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method26", "h;;7", "h", null, 7);
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method26",
+				"h;;7", "h", null, 7);
 	}
 }

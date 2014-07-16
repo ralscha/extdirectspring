@@ -34,8 +34,10 @@ public class SupportedParametersTest {
 		assertThat(SupportedParameters.values().length).isEqualTo(6);
 		assertThat(SupportedParameters.isSupported(String.class)).isFalse();
 		assertThat(SupportedParameters.isSupported(null)).isFalse();
-		assertThat(SupportedParameters.isSupported(MockHttpServletResponse.class)).isTrue();
-		assertThat(SupportedParameters.isSupported(MockHttpServletRequest.class)).isTrue();
+		assertThat(SupportedParameters.isSupported(MockHttpServletResponse.class))
+				.isTrue();
+		assertThat(SupportedParameters.isSupported(MockHttpServletRequest.class))
+				.isTrue();
 		assertThat(SupportedParameters.isSupported(MockHttpSession.class)).isTrue();
 		assertThat(SupportedParameters.isSupported(Locale.class)).isTrue();
 		assertThat(SupportedParameters.isSupported(Principal.class)).isTrue();
@@ -44,24 +46,34 @@ public class SupportedParametersTest {
 
 	@Test
 	public void testResolveParameter() {
-		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
+		MockHttpServletRequest request = new MockHttpServletRequest("POST",
+				"/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		Locale en = Locale.ENGLISH;
 
-		assertThat(SupportedParameters.resolveParameter(String.class, request, response, en)).isNull();
-		assertThat(SupportedParameters.resolveParameter(MockHttpServletRequest.class, request, response, en)).isSameAs(
-				request);
-		assertThat(SupportedParameters.resolveParameter(MockHttpSession.class, request, response, en)).isSameAs(
-				request.getSession());
-		assertThat(SupportedParameters.resolveParameter(Principal.class, request, response, en)).isSameAs(
-				request.getUserPrincipal());
-		assertThat(SupportedParameters.resolveParameter(MockHttpServletResponse.class, request, response, en))
-				.isSameAs(response);
-		assertThat(SupportedParameters.resolveParameter(Locale.class, request, response, en)).isSameAs(en);
+		assertThat(
+				SupportedParameters.resolveParameter(String.class, request, response, en))
+				.isNull();
+		assertThat(
+				SupportedParameters.resolveParameter(MockHttpServletRequest.class,
+						request, response, en)).isSameAs(request);
+		assertThat(
+				SupportedParameters.resolveParameter(MockHttpSession.class, request,
+						response, en)).isSameAs(request.getSession());
+		assertThat(
+				SupportedParameters.resolveParameter(Principal.class, request, response,
+						en)).isSameAs(request.getUserPrincipal());
+		assertThat(
+				SupportedParameters.resolveParameter(MockHttpServletResponse.class,
+						request, response, en)).isSameAs(response);
+		assertThat(
+				SupportedParameters.resolveParameter(Locale.class, request, response, en))
+				.isSameAs(en);
 
 		SSEWriter sseWriter = new SSEWriter(response);
-		assertThat(SupportedParameters.resolveParameter(SSEWriter.class, request, response, en, sseWriter)).isSameAs(
-				sseWriter);
+		assertThat(
+				SupportedParameters.resolveParameter(SSEWriter.class, request, response,
+						en, sseWriter)).isSameAs(sseWriter);
 	}
 
 }

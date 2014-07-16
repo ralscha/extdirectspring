@@ -19,10 +19,10 @@ import ch.ralscha.extdirectspring.controller.Configuration;
 
 /**
  * Superclass for response object that are sent to an Ext Direct client.
- * 
+ *
  * @see ExtDirectPollResponse
  * @see ExtDirectResponse
- * 
+ *
  */
 public class BaseResponse {
 
@@ -44,7 +44,7 @@ public class BaseResponse {
 	 * <li>"event": response from a polling method <br>
 	 * <li>"rpc": response from a remote method call
 	 * </ul>
-	 * 
+	 *
 	 * @param type the new type of the response
 	 */
 	public void setType(String type) {
@@ -56,9 +56,9 @@ public class BaseResponse {
 	}
 
 	/**
-	 * Sets an error message if type is "exception". In all other cases this should not be called and message should be
-	 * null.
-	 * 
+	 * Sets an error message if type is "exception". In all other cases this should not be
+	 * called and message should be null.
+	 *
 	 * @param message the error message
 	 */
 	public void setMessage(String message) {
@@ -70,11 +70,11 @@ public class BaseResponse {
 	}
 
 	/**
-	 * Contains a detailed description (stacktrace) of the error if type is "exception" and sendStacktrace is set to
-	 * true in {@link Configuration}.
-	 * 
+	 * Contains a detailed description (stacktrace) of the error if type is "exception"
+	 * and sendStacktrace is set to true in {@link Configuration}.
+	 *
 	 * @param where the detailed error description (stacktrace)
-	 * 
+	 *
 	 * @see Configuration#setSendStacktrace(boolean)
 	 */
 	public void setWhere(String where) {

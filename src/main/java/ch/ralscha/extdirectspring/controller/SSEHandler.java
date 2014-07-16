@@ -40,8 +40,8 @@ public class SSEHandler {
 	@Autowired
 	private ConfigurationService configurationService;
 
-	public void handle(String beanName, String method, HttpServletRequest request, HttpServletResponse response,
-			Locale locale) throws Exception {
+	public void handle(String beanName, String method, HttpServletRequest request,
+			HttpServletResponse response, Locale locale) throws Exception {
 
 		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(beanName, method);
 
@@ -51,8 +51,9 @@ public class SSEHandler {
 		if (methodInfo != null) {
 			try {
 
-				Object[] parameters = configurationService.getParametersResolver().prepareParameters(request, response,
-						locale, methodInfo, sseWriter);
+				Object[] parameters = configurationService.getParametersResolver()
+						.prepareParameters(request, response, locale, methodInfo,
+								sseWriter);
 				Object methodReturnValue;
 
 				if (configurationService.getConfiguration().isSynchronizeOnSession()
@@ -62,32 +63,40 @@ public class SSEHandler {
 						Object mutex = WebUtils.getSessionMutex(session);
 						synchronized (mutex) {
 							methodReturnValue = ExtDirectSpringUtil.invoke(
-									configurationService.getApplicationContext(), beanName, methodInfo, parameters);
+									configurationService.getApplicationContext(),
+									beanName, methodInfo, parameters);
 						}
-					} else {
-						methodReturnValue = ExtDirectSpringUtil.invoke(configurationService.getApplicationContext(),
-								beanName, methodInfo, parameters);
 					}
-				} else {
-					methodReturnValue = ExtDirectSpringUtil.invoke(configurationService.getApplicationContext(),
-							beanName, methodInfo, parameters);
+					else {
+						methodReturnValue = ExtDirectSpringUtil.invoke(
+								configurationService.getApplicationContext(), beanName,
+								methodInfo, parameters);
+					}
+				}
+				else {
+					methodReturnValue = ExtDirectSpringUtil.invoke(
+							configurationService.getApplicationContext(), beanName,
+							methodInfo, parameters);
 				}
 
 				if (methodReturnValue instanceof SSEvent) {
 					result = (SSEvent) methodReturnValue;
-				} else if (methodReturnValue != null) {
+				}
+				else if (methodReturnValue != null) {
 					result = new SSEvent();
 					result.setData(methodReturnValue.toString());
 				}
 
-			} catch (Exception e) {
-				log.error("Error polling method '" + beanName + "." + method + "'", e.getCause() != null ? e.getCause()
-						: e);
+			}
+			catch (Exception e) {
+				log.error("Error polling method '" + beanName + "." + method + "'",
+						e.getCause() != null ? e.getCause() : e);
 
 				Throwable cause;
 				if (e.getCause() != null) {
 					cause = e.getCause();
-				} else {
+				}
+				else {
 					cause = e;
 				}
 
@@ -99,15 +108,19 @@ public class SSEHandler {
 					result.setComment(ExtDirectSpringUtil.getStackTrace(cause));
 				}
 			}
-		} else {
-			log.error("Error invoking method '" + beanName + "." + method + "'. Method or Bean not found");
+		}
+		else {
+			log.error("Error invoking method '" + beanName + "." + method
+					+ "'. Method or Bean not found");
 
 			result = new SSEvent();
 			result.setEvent("error");
-			result.setData(configurationService.getConfiguration().getDefaultExceptionMessage());
+			result.setData(configurationService.getConfiguration()
+					.getDefaultExceptionMessage());
 
 			if (configurationService.getConfiguration().isSendStacktrace()) {
-				result.setComment("Bean or Method '" + beanName + "." + method + "' not found");
+				result.setComment("Bean or Method '" + beanName + "." + method
+						+ "' not found");
 			}
 		}
 

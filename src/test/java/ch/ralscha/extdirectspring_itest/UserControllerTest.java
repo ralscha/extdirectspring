@@ -94,8 +94,10 @@ public class UserControllerTest extends JettyTest {
 
 			Map<String, Object> errors = (Map<String, Object>) result.get("errors");
 			assertThat(errors).hasSize(1);
-			assertThat((List<String>) errors.get("email")).containsOnly("may not be empty");
-		} finally {
+			assertThat((List<String>) errors.get("email")).containsOnly(
+					"may not be empty");
+		}
+		finally {
 			IOUtils.closeQuietly(response);
 		}
 	}
@@ -137,9 +139,11 @@ public class UserControllerTest extends JettyTest {
 
 			Map<String, Object> errors = (Map<String, Object>) result.get("errors");
 			assertThat(errors).hasSize(2);
-			assertThat((List<String>) errors.get("email")).contains("may not be empty", "another email error");
+			assertThat((List<String>) errors.get("email")).contains("may not be empty",
+					"another email error");
 			assertThat((List<String>) errors.get("name")).contains("a name error");
-		} finally {
+		}
+		finally {
 			IOUtils.closeQuietly(response);
 		}
 	}
@@ -178,7 +182,8 @@ public class UserControllerTest extends JettyTest {
 			assertThat(result.get("name")).isEqualTo("Jim");
 			assertThat(result.get("age")).isEqualTo(25);
 			assertThat(result.get("success")).isEqualTo(true);
-		} finally {
+		}
+		finally {
 			IOUtils.closeQuietly(response);
 		}
 	}

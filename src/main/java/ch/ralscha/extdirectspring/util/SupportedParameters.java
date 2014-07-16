@@ -31,8 +31,9 @@ import ch.ralscha.extdirectspring.controller.SSEWriter;
  */
 enum SupportedParameters {
 
-	SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class), SESSION(HttpSession.class), LOCALE(
-			Locale.class), PRINCIPAL(Principal.class), SSE_WRITER(SSEWriter.class);
+	SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class), SESSION(
+			HttpSession.class), LOCALE(Locale.class), PRINCIPAL(Principal.class), SSE_WRITER(
+			SSEWriter.class);
 
 	private final Class<?> clazz;
 
@@ -49,7 +50,7 @@ enum SupportedParameters {
 
 	/**
 	 * Checks if the class is a supported parameter type.
-	 * 
+	 *
 	 * @param clazz
 	 * @return true if is supported, else false
 	 */
@@ -64,25 +65,31 @@ enum SupportedParameters {
 		return false;
 	}
 
-	public static Object resolveParameter(Class<?> parameterType, HttpServletRequest request,
-			HttpServletResponse response, Locale locale) {
+	public static Object resolveParameter(Class<?> parameterType,
+			HttpServletRequest request, HttpServletResponse response, Locale locale) {
 		return resolveParameter(parameterType, request, response, locale, null);
 	}
 
-	public static Object resolveParameter(Class<?> parameterType, HttpServletRequest request,
-			HttpServletResponse response, Locale locale, SSEWriter sseWriter) {
+	public static Object resolveParameter(Class<?> parameterType,
+			HttpServletRequest request, HttpServletResponse response, Locale locale,
+			SSEWriter sseWriter) {
 
 		if (SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
 			return request;
-		} else if (SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
+		}
+		else if (SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
 			return response;
-		} else if (SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
+		}
+		else if (SESSION.getSupportedClass().isAssignableFrom(parameterType)) {
 			return request.getSession();
-		} else if (PRINCIPAL.getSupportedClass().isAssignableFrom(parameterType)) {
+		}
+		else if (PRINCIPAL.getSupportedClass().isAssignableFrom(parameterType)) {
 			return request.getUserPrincipal();
-		} else if (LOCALE.getSupportedClass().equals(parameterType)) {
+		}
+		else if (LOCALE.getSupportedClass().equals(parameterType)) {
 			return locale;
-		} else if (SSE_WRITER.getSupportedClass().equals(parameterType)) {
+		}
+		else if (SSE_WRITER.getSupportedClass().equals(parameterType)) {
 			return sseWriter;
 		}
 

@@ -26,7 +26,8 @@ import ch.ralscha.extdirectspring.util.MethodInfo;
 public class AppExceptionHandler implements RouterExceptionHandler {
 
 	@Override
-	public Object handleException(MethodInfo methodInfo, BaseResponse response, Exception e, HttpServletRequest request) {
+	public Object handleException(MethodInfo methodInfo, BaseResponse response,
+			Exception e, HttpServletRequest request) {
 		response.setType("exception");
 		response.setMessage("Houston, we have a problem");
 		response.setWhere("Space");

@@ -39,7 +39,8 @@ public class BookService {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")
 	public ExtDirectStoreResult<Book> readWithPaging(ExtDirectStoreReadRequest request) {
 		long total = request.getPage() + request.getLimit() + request.getStart();
-		return new ExtDirectStoreResult<Book>().setTotal(total).setRecords(read()).setSuccess(true);
+		return new ExtDirectStoreResult<Book>().setTotal(total).setRecords(read())
+				.setSuccess(true);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")

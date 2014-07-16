@@ -60,18 +60,19 @@ public class RouterControllerTreeLoadTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 
-		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderTreeLoad", "method1",
-				new TypeReference<List<Node>>() {/* nothinghere */
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderTreeLoad", "method1", new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1", false), new Node("n2", "Node 2", false),
-				new Node("n3", "Node 3", false), new Node("n4", "Node 4", false), new Node("n5", "Node 5", false));
+		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1", false),
+				new Node("n2", "Node 2", false), new Node("n3", "Node 3", false),
+				new Node("n4", "Node 4", false), new Node("n5", "Node 5", false));
 
 		requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "n1");
 
-		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderTreeLoad", "method1",
-				new TypeReference<List<Node>>() {/* nothinghere */
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderTreeLoad", "method1", new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		assertThat(nodes).hasSize(5).containsSequence(new Node("id1", "Node 1.1", true),
@@ -87,27 +88,34 @@ public class RouterControllerTreeLoadTest {
 		requestParameters.put("foo", "foo");
 		requestParameters.put("today", ISODateTimeFormat.date().print(new LocalDate()));
 
-		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderTreeLoad", "method2",
-				new TypeReference<List<Node>>() {/* nothinghere */
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderTreeLoad", "method2", new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		String appendix = ":foo;" + new LocalDate().toString();
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5).containsSequence(
+				new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false),
+				new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false),
+				new Node("n5", "Node 5" + appendix, false));
 
 		requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
-		requestParameters.put("today", ISODateTimeFormat.date().print(new LocalDate().plusDays(10)));
+		requestParameters.put("today",
+				ISODateTimeFormat.date().print(new LocalDate().plusDays(10)));
 
-		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderTreeLoad", "method2",
-				new TypeReference<List<Node>>() {/* nothinghere */
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderTreeLoad", "method2", new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		appendix = ":defaultValue;" + new LocalDate().plusDays(10).toString();
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5).containsSequence(
+				new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false),
+				new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false),
+				new Node("n5", "Node 5" + appendix, false));
 	}
 
 	@Test
@@ -115,29 +123,35 @@ public class RouterControllerTreeLoadTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 
-		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderTreeLoad", "method3",
-				new TypeReference<List<Node>>() {/* nothinghere */
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderTreeLoad", "method3", new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		String appendix = ":defaultValue;true;true;true;en";
 
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5).containsSequence(
+				new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false),
+				new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false),
+				new Node("n5", "Node 5" + appendix, false));
 
 		requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "n2");
 		requestParameters.put("foo", "f");
 
-		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderTreeLoad", "method3",
-				new TypeReference<List<Node>>() {/* nothinghere */
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderTreeLoad", "method3", new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		appendix = ":f;true;true;true;en";
 
-		assertThat(nodes).hasSize(5).containsSequence(new Node("id1", "Node 2.1" + appendix, true),
-				new Node("id2", "Node 2.2" + appendix, true), new Node("id3", "Node 2.3" + appendix, true),
-				new Node("id4", "Node 2.4" + appendix, true), new Node("id5", "Node 2.5" + appendix, true));
+		assertThat(nodes).hasSize(5).containsSequence(
+				new Node("id1", "Node 2.1" + appendix, true),
+				new Node("id2", "Node 2.2" + appendix, true),
+				new Node("id3", "Node 2.3" + appendix, true),
+				new Node("id4", "Node 2.4" + appendix, true),
+				new Node("id5", "Node 2.5" + appendix, true));
 	}
 
 	@Test
@@ -157,27 +171,33 @@ public class RouterControllerTreeLoadTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 
-		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderTreeLoad",
-				method, new TypeReference<List<Node>>() {/* nothinghere */
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, headers,
+				"remoteProviderTreeLoad", method, new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		String appendix = ":true;true;true";
 
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5).containsSequence(
+				new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false),
+				new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false),
+				new Node("n5", "Node 5" + appendix, false));
 
 		headers = new HttpHeaders();
 		headers.add("aHeader", "false");
 
-		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderTreeLoad", method,
-				new TypeReference<List<Node>>() {/* nothinghere */
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, headers,
+				"remoteProviderTreeLoad", method, new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		appendix = ":false;true;true";
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5).containsSequence(
+				new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false),
+				new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false),
+				new Node("n5", "Node 5" + appendix, false));
 	}
 
 	@Test
@@ -185,8 +205,8 @@ public class RouterControllerTreeLoadTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 
-		Node node = (Node) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderTreeLoad", "method6", Node.class,
-				requestParameters);
+		Node node = (Node) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderTreeLoad", "method6", Node.class, requestParameters);
 
 		assertThat(node.id).isEqualTo("n1");
 		assertThat(node.text).isEqualTo("Node 1;true;true");

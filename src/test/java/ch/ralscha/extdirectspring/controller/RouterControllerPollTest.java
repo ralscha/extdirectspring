@@ -52,8 +52,8 @@ public class RouterControllerPollTest {
 	@Test
 	public void pollBeanDoesNotExists() throws Exception {
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProviderXY", "handleMessage1",
-				"message1", null, null);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProviderXY", "handleMessage1", "message1", null, null);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("exception");
@@ -65,8 +65,8 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollNoArguments() throws Exception {
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "handleMessage1",
-				"message1", null, null);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "handleMessage1", "message1", null, null);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -78,8 +78,8 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollSupportedArguments() throws Exception {
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "handleMessage2",
-				"message2", null, null);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "handleMessage2", "message2", null, null);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -94,8 +94,8 @@ public class RouterControllerPollTest {
 		Map<String, String> params = new LinkedHashMap<String, String>();
 		params.put("id", "2");
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "handleMessage3",
-				"message3", params, null);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "handleMessage3", "message3", params, null);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -108,8 +108,8 @@ public class RouterControllerPollTest {
 	@Test
 	public void pollRequiredArgumentNoRequestParameter() throws Exception {
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "handleMessage3",
-				"message3", null, null);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "handleMessage3", "message3", null, null);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("exception");
@@ -124,8 +124,8 @@ public class RouterControllerPollTest {
 		Map<String, String> params = new LinkedHashMap<String, String>();
 		params.put("id", "7");
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "handleMessage4",
-				"message4", params, null);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "handleMessage4", "message4", params, null);
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
 		assertThat(resp.getName()).isEqualTo("message4");
@@ -136,8 +136,8 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollDefaultValueArgumentWithoutRequestParameter() throws Exception {
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "handleMessage4",
-				"message4", null, null, true);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "handleMessage4", "message4", null, null, true);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -152,8 +152,8 @@ public class RouterControllerPollTest {
 		Map<String, String> params = new LinkedHashMap<String, String>();
 		params.put("id", "3");
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "handleMessage5",
-				"message5", params, null);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "handleMessage5", "message5", params, null);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -165,8 +165,8 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollNotRequiredArgumentWithoutRequestParameter() throws Exception {
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "handleMessage5",
-				"message5", null, null);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "handleMessage5", "message5", null, null);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -181,8 +181,8 @@ public class RouterControllerPollTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("header", "headerValue");
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "message7", "message7",
-				null, headers);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "message7", "message7", null, headers);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -202,8 +202,8 @@ public class RouterControllerPollTest {
 		headers.add("anotherName", "headerValue1");
 		headers.add("anotherName", "headerValue2");
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "message8", "message8",
-				params, headers);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "message8", "message8", params, headers);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -215,7 +215,8 @@ public class RouterControllerPollTest {
 		params.clear();
 		params.put("id", "2");
 
-		resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "message8", "message8", params, null, true);
+		resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "message8",
+				"message8", params, null, true);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("exception");
@@ -231,8 +232,8 @@ public class RouterControllerPollTest {
 		headers.add("header", "headerValue");
 		headers.add("anotherName", "headerValue1");
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "message9", "message9",
-				null, headers);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "message9", "message9", null, headers);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -245,8 +246,8 @@ public class RouterControllerPollTest {
 	@Test
 	public void pollRequiredHeaderWithValueAndDefault2() throws Exception {
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "message9", "message9",
-				null, null);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "message9", "message9", null, null);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -262,8 +263,8 @@ public class RouterControllerPollTest {
 		headers.add("header", "headerValue");
 		headers.add("anotherName", "headerValue1");
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "message10",
-				"message10", null, headers);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "message10", "message10", null, headers);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -275,8 +276,8 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollOptionalHeaderWithoutValueAndDefault2() throws Exception {
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "message10",
-				"message10", null, null);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "message10", "message10", null, null);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -291,8 +292,8 @@ public class RouterControllerPollTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("last", "lastHeader");
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "message11",
-				"message11", null, headers);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "message11", "message11", null, headers);
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
 		assertThat(resp.getName()).isEqualTo("message11");
@@ -310,8 +311,8 @@ public class RouterControllerPollTest {
 		headers.add("last", "lastHeader");
 		headers.add("header2", "2ndHeader");
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "message11",
-				"message11", params, headers);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "message11", "message11", params, headers);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -331,8 +332,8 @@ public class RouterControllerPollTest {
 		headers.add("header1", "1st");
 		headers.add("header2", "2nd");
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "message11",
-				"message11", params, headers);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "message11", "message11", params, headers);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -349,8 +350,8 @@ public class RouterControllerPollTest {
 		headers.add("intHeader", "2");
 		headers.add("booleanHeader", "true");
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "message12",
-				"message12", null, headers);
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "message12", "message12", null, headers);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");

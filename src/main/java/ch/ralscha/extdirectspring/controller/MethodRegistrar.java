@@ -35,12 +35,14 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
 
 /**
- * Spring application listener that listens for ContextRefreshedEvent events. If such an event is received the listener
- * will scan for ExtDirectMethod annotated methods in the current ApplicationContext. Found methods will be cached in
- * the {@link MethodInfoCache}. The class also reports warnings and errors of misconfigured methods.
+ * Spring application listener that listens for ContextRefreshedEvent events. If such an
+ * event is received the listener will scan for ExtDirectMethod annotated methods in the
+ * current ApplicationContext. Found methods will be cached in the {@link MethodInfoCache}
+ * . The class also reports warnings and errors of misconfigured methods.
  */
 @Service
-public class MethodRegistrar implements ApplicationListener<ContextRefreshedEvent>, Ordered {
+public class MethodRegistrar implements ApplicationListener<ContextRefreshedEvent>,
+		Ordered {
 
 	private static final Log log = LogFactory.getLog(RouterController.class);
 
@@ -56,22 +58,28 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 			Class<?> handlerType = context.getType(beanName);
 			final Class<?> userType = ClassUtils.getUserClass(handlerType);
 
-			Set<Method> methods = HandlerMethodSelector.selectMethods(userType, new MethodFilter() {
-				@Override
-				public boolean matches(Method method) {
-					return AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) != null;
-				}
-			});
+			Set<Method> methods = HandlerMethodSelector.selectMethods(userType,
+					new MethodFilter() {
+						@Override
+						public boolean matches(Method method) {
+							return AnnotationUtils.findAnnotation(method,
+									ExtDirectMethod.class) != null;
+						}
+					});
 
 			for (Method method : methods) {
-				ExtDirectMethod directMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+				ExtDirectMethod directMethodAnnotation = AnnotationUtils.findAnnotation(
+						method, ExtDirectMethod.class);
 				final String beanAndMethodName = beanName + "." + method.getName();
-				if (directMethodAnnotation.value().isValid(beanAndMethodName, userType, method)) {
-					MethodInfoCache.INSTANCE.put(beanName, handlerType, method, event.getApplicationContext());
+				if (directMethodAnnotation.value().isValid(beanAndMethodName, userType,
+						method)) {
+					MethodInfoCache.INSTANCE.put(beanName, handlerType, method,
+							event.getApplicationContext());
 
 					// /CLOVER:OFF
 					if (log.isDebugEnabled()) {
-						String info = "Register " + beanAndMethodName + "(" + directMethodAnnotation.value();
+						String info = "Register " + beanAndMethodName + "("
+								+ directMethodAnnotation.value();
 						if (StringUtils.hasText(directMethodAnnotation.group())) {
 							info += ", " + directMethodAnnotation.group();
 						}

@@ -31,8 +31,10 @@ public class InfoController {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_info")
 	@RequestMapping(value = "/info", method = RequestMethod.POST)
-	public void updateInfo(HttpServletRequest request, HttpServletResponse response, Info info) {
+	public void updateInfo(HttpServletRequest request, HttpServletResponse response,
+			Info info) {
 		ExtDirectResponseBuilder.create(request, response)
-				.addResultProperty("userNameLowerCase", info.getUserName().toLowerCase()).buildAndWrite();
+				.addResultProperty("userNameLowerCase", info.getUserName().toLowerCase())
+				.buildAndWrite();
 	}
 }

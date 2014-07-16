@@ -73,14 +73,16 @@ public class RouterControllerSimpleNamedTest {
 
 	@Test
 	public void testNoParameters() {
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method1", "method1() called", null);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"method1", "method1() called", null);
 	}
 
 	@Test
 	public void testNoParametersWithRequestParameter() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("requestparameter", "aValue");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method1", "method1() called", params);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"method1", "method1() called", params);
 	}
 
 	@Test
@@ -89,8 +91,8 @@ public class RouterControllerSimpleNamedTest {
 		params.put("d", 2.1);
 		params.put("s", "aString");
 		params.put("i", 30);
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method2",
-				"method2() called-30-2.100-aString", params);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"method2", "method2() called-30-2.100-aString", params);
 	}
 
 	@Test
@@ -99,7 +101,8 @@ public class RouterControllerSimpleNamedTest {
 		params.put("i", 20);
 		params.put("de", 2.1);
 		params.put("s", "aString");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method2", null, params);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"method2", null, params);
 	}
 
 	@Test
@@ -107,7 +110,8 @@ public class RouterControllerSimpleNamedTest {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("i", 20);
 		params.put("s", "aString");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method2", null, params);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"method2", null, params);
 	}
 
 	@Test
@@ -116,29 +120,32 @@ public class RouterControllerSimpleNamedTest {
 		params.put("i", "30");
 		params.put("s", 100.45);
 		params.put("d", "3.141");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method2",
-				"method2() called-30-3.141-100.45", params);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"method2", "method2() called-30-3.141-100.45", params);
 	}
 
 	@Test
 	public void testResultTrue() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("userName", "ralph");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method3", true, params);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"method3", true, params);
 	}
 
 	@Test
 	public void testResultFalse() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("userName", "joe");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method3", false, params);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"method3", false, params);
 	}
 
 	@Test
 	public void testResultNull() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("userName", "martin");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method3", Void.TYPE, params);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"method3", Void.TYPE, params);
 	}
 
 	@Test
@@ -146,7 +153,8 @@ public class RouterControllerSimpleNamedTest {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("a", 10);
 		params.put("b", 20);
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method4", 30, params);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"method4", 30, params);
 	}
 
 	@Test
@@ -154,27 +162,30 @@ public class RouterControllerSimpleNamedTest {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("b", "40");
 		params.put("a", "30");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method4", 70, params);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"method4", 70, params);
 	}
 
 	@Test
 	public void testReturnsObject() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("d", 7.34);
-		FormInfo info = (FormInfo) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method5",
-				FormInfo.class, params);
+		FormInfo info = (FormInfo) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "method5", FormInfo.class, params);
 
 		assertThat(info.getBack()).isEqualTo(7.34);
 		assertThat(info.isAdmin()).isEqualTo(false);
 		assertThat(info.getAge()).isEqualTo(32);
 		assertThat(info.getName()).isEqualTo("John");
 		assertThat(info.getSalary()).isEqualTo(new BigDecimal("8720.2"));
-		assertThat(info.getBirthday()).isEqualTo(new GregorianCalendar(1986, Calendar.JULY, 22).getTime());
+		assertThat(info.getBirthday()).isEqualTo(
+				new GregorianCalendar(1986, Calendar.JULY, 22).getTime());
 	}
 
 	@Test
 	public void testSupportedArguments() {
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method6", 42, null);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"method6", 42, null);
 	}
 
 	@Test
@@ -189,8 +200,9 @@ public class RouterControllerSimpleNamedTest {
 		params.put("aDouble", "3.14");
 		params.put("aFloat", "10.01");
 		params.put("aShort", "1");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method7",
-				"method7() called-true-c-PENDING-14-21-3.14-10.01-1-2", params);
+		ControllerUtil
+				.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method7",
+						"method7() called-true-c-PENDING-14-21-3.14-10.01-1-2", params);
 	}
 
 	@Test
@@ -205,8 +217,9 @@ public class RouterControllerSimpleNamedTest {
 		params.put("aInt", "14");
 		params.put("aShort", "1");
 		params.put("aByte", "2");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method10",
-				"method10() called-true-c-PENDING-14-21-3.14-10.01-1-2", params);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"method10", "method10() called-true-c-PENDING-14-21-3.14-10.01-1-2",
+				params);
 	}
 
 	@Test
@@ -214,8 +227,8 @@ public class RouterControllerSimpleNamedTest {
 		Row aRow = new Row(104, "myRow", true, "100.45");
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("aRow", aRow);
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method9",
-				"Row [id=104, name=myRow, admin=true, salary=100.45]", params);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"method9", "Row [id=104, name=myRow, admin=true, salary=100.45]", params);
 	}
 
 	@Test
@@ -229,15 +242,18 @@ public class RouterControllerSimpleNamedTest {
 		params.put("normalParameter", "normalParameter");
 		params.put("percent", "99.9%");
 
-		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil.sendAndReceiveNamed(mockMvc,
-				"remoteProviderSimpleNamed", "method11", Map.class, params);
+		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil
+				.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "method11",
+						Map.class, params);
 
 		assertThat(resultMap.get("endDate")).isEqualTo(today.getMillis());
 		ObjectMapper mapper = new ObjectMapper();
 
-		Map<String, Object> expectedValue = mapper.readValue(mapper.writeValueAsString(today.toLocalDate()), Map.class);
+		Map<String, Object> expectedValue = mapper.readValue(
+				mapper.writeValueAsString(today.toLocalDate()), Map.class);
 
-		assertThat((Map<String, Object>) resultMap.get("jodaLocalDate")).isEqualTo(expectedValue);
+		assertThat((Map<String, Object>) resultMap.get("jodaLocalDate")).isEqualTo(
+				expectedValue);
 		assertThat(resultMap.get("percent")).isEqualTo(0.999);
 		assertThat(resultMap.get("normalParameter")).isEqualTo("normalParameter");
 		assertThat(resultMap.get("remoteAddr")).isEqualTo("127.0.0.1");
@@ -251,8 +267,8 @@ public class RouterControllerSimpleNamedTest {
 		params.put("lastName", expectedResult.getName());
 		params.put("theAge", expectedResult.getAge());
 		params.put("active", expectedResult.getActive());
-		ResultObject result = (ResultObject) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
-				"methodRP1", ResultObject.class, params);
+		ResultObject result = (ResultObject) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "methodRP1", ResultObject.class, params);
 		assertThat(result).isEqualTo(expectedResult);
 	}
 
@@ -262,9 +278,10 @@ public class RouterControllerSimpleNamedTest {
 		params.put("name", "first");
 		TestObject ce = new TestObject(23, "Meier", false, new BigDecimal("100.23"));
 		params.put("collections", Collections.singleton(ce));
-		String result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
-				"methodCollection1", String.class, params);
-		assertThat(result).isEqualTo("1->first;[TestObject [id=23, name=Meier, active=false, amount=100.23]]");
+		String result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "methodCollection1", String.class, params);
+		assertThat(result).isEqualTo(
+				"1->first;[TestObject [id=23, name=Meier, active=false, amount=100.23]]");
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("name", "2nd");
@@ -274,8 +291,8 @@ public class RouterControllerSimpleNamedTest {
 		list.add(new TestObject(3, "Three", true, new BigDecimal("1.3")));
 
 		params.put("collections", list);
-		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "methodCollection1",
-				String.class, params);
+		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "methodCollection1", String.class, params);
 		assertThat(result)
 				.isEqualTo(
 						"1->2nd;[TestObject [id=1, name=One, active=true, amount=1.1], TestObject [id=2, name=Two, active=false, amount=1.2], TestObject [id=3, name=Three, active=true, amount=1.3]]");
@@ -283,18 +300,19 @@ public class RouterControllerSimpleNamedTest {
 		params = new LinkedHashMap<String, Object>();
 		params.put("name", "3rd");
 		params.put("collections", Collections.emptyList());
-		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "methodCollection1",
-				String.class, params);
+		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "methodCollection1", String.class, params);
 		assertThat(result).isEqualTo("1->3rd;[]");
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("name", "4");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "methodCollection1", null, params);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"methodCollection1", null, params);
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("name", "4");
-		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "methodCollection2",
-				String.class, params);
+		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "methodCollection2", String.class, params);
 		assertThat(result).isEqualTo("2->4;null");
 	}
 
@@ -304,9 +322,10 @@ public class RouterControllerSimpleNamedTest {
 		params.put("name", "Joan1");
 		TestObject ce = new TestObject(33, "Meier", true, new BigDecimal("33.334"));
 		params.put("collections", Collections.singleton(ce));
-		String result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
-				"methodCollection3", String.class, params);
-		assertThat(result).isEqualTo("3->Joan1;[{id=33, name=Meier, active=true, amount=33.334}]");
+		String result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "methodCollection3", String.class, params);
+		assertThat(result).isEqualTo(
+				"3->Joan1;[{id=33, name=Meier, active=true, amount=33.334}]");
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("name", "Joan2");
@@ -316,8 +335,8 @@ public class RouterControllerSimpleNamedTest {
 		list.add(new TestObject(3, "3", true, new BigDecimal("1.3")));
 
 		params.put("collections", list);
-		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "methodCollection3",
-				String.class, params);
+		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "methodCollection3", String.class, params);
 		assertThat(result)
 				.isEqualTo(
 						"3->Joan2;[{id=1, name=1, active=true, amount=1.1}, {id=2, name=2, active=false, amount=1.2}, {id=3, name=3, active=true, amount=1.3}]");
@@ -325,8 +344,8 @@ public class RouterControllerSimpleNamedTest {
 		params = new LinkedHashMap<String, Object>();
 		params.put("name", "Joan3");
 		params.put("collections", Collections.emptyList());
-		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "methodCollection3",
-				String.class, params);
+		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "methodCollection3", String.class, params);
 		assertThat(result).isEqualTo("3->Joan3;[]");
 	}
 
@@ -336,9 +355,10 @@ public class RouterControllerSimpleNamedTest {
 		params.put("name", "arr1");
 		TestObject ce = new TestObject(23, "Meier", false, new BigDecimal("100.23"));
 		params.put("array", Collections.singleton(ce));
-		String result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
-				"methodArray1", String.class, params);
-		assertThat(result).isEqualTo("3->arr1;TestObject [id=23, name=Meier, active=false, amount=100.23]-");
+		String result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "methodArray1", String.class, params);
+		assertThat(result).isEqualTo(
+				"3->arr1;TestObject [id=23, name=Meier, active=false, amount=100.23]-");
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("name", "arr2");
@@ -348,8 +368,8 @@ public class RouterControllerSimpleNamedTest {
 		list.add(new TestObject(3, "Three", true, new BigDecimal("1.3")));
 
 		params.put("array", list);
-		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "methodArray1",
-				String.class, params);
+		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "methodArray1", String.class, params);
 		assertThat(result)
 				.isEqualTo(
 						"3->arr2;TestObject [id=1, name=One, active=true, amount=1.1]-TestObject [id=2, name=Two, active=false, amount=1.2]-TestObject [id=3, name=Three, active=true, amount=1.3]-");
@@ -357,18 +377,19 @@ public class RouterControllerSimpleNamedTest {
 		params = new LinkedHashMap<String, Object>();
 		params.put("name", "arr3");
 		params.put("array", Collections.emptyList());
-		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "methodArray1",
-				String.class, params);
+		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "methodArray1", String.class, params);
 		assertThat(result).isEqualTo("3->arr3;");
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("name", "arr4");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "methodArray1", null, params);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"methodArray1", null, params);
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("name", "arr4");
-		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "methodArray2",
-				String.class, params);
+		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "methodArray2", String.class, params);
 		assertThat(result).isEqualTo("4->arr4;");
 	}
 
@@ -378,9 +399,10 @@ public class RouterControllerSimpleNamedTest {
 		params.put("name", "arre1");
 		TestObject ce = new TestObject(24, "Kiere", false, new BigDecimal("1001.23"));
 		params.put("array", Collections.singleton(ce));
-		String result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
-				"methodArray3", String.class, params);
-		assertThat(result).isEqualTo("5->arre1;TestObject [id=24, name=Kiere, active=false, amount=1001.23]-");
+		String result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "methodArray3", String.class, params);
+		assertThat(result).isEqualTo(
+				"5->arre1;TestObject [id=24, name=Kiere, active=false, amount=1001.23]-");
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("name", "arre2");
@@ -390,8 +412,8 @@ public class RouterControllerSimpleNamedTest {
 		list.add(new TestObject(3, "Three3", true, new BigDecimal("1.3")));
 
 		params.put("array", list);
-		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "methodArray3",
-				String.class, params);
+		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "methodArray3", String.class, params);
 		assertThat(result)
 				.isEqualTo(
 						"5->arre2;TestObject [id=1, name=One1, active=true, amount=1.1]-TestObject [id=2, name=Two2, active=false, amount=1.2]-TestObject [id=3, name=Three3, active=true, amount=1.3]-");
@@ -399,18 +421,19 @@ public class RouterControllerSimpleNamedTest {
 		params = new LinkedHashMap<String, Object>();
 		params.put("name", "arre3");
 		params.put("array", Collections.emptyList());
-		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "methodArray3",
-				String.class, params);
+		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "methodArray3", String.class, params);
 		assertThat(result).isEqualTo("5->arre3;");
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("name", "arre4");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "methodArray3", null, params);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"methodArray3", null, params);
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("name", "arre4");
-		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed", "methodArray4",
-				String.class, params);
+		result = (String) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderSimpleNamed", "methodArray4", String.class, params);
 		assertThat(result).isEqualTo("6->arre4;");
 	}
 
@@ -422,77 +445,100 @@ public class RouterControllerSimpleNamedTest {
 		params.put("lastName", "Olstead");
 		params.put("theAge", "33");
 		params.put("active", false);
-		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP2", true, 2, params);
+		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
+				"methodRP2", true, 2, params);
 		multiRequests.add(edRequest);
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
-				.getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP2", 2, new ResultObject("Olstead", 33, false), responses);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result
+				.getResponse().getContentAsByteArray());
+		assertResponse("remoteProviderSimpleNamed", "methodRP2", 2, new ResultObject(
+				"Olstead", 33, false), responses);
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("theAge", "33");
 		params.put("active", false);
-		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP2", true, 3, params);
+		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
+				"methodRP2", true, 3, params);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP2", 3, new ResultObject("myName", 33, false), responses);
+		responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
+		assertResponse("remoteProviderSimpleNamed", "methodRP2", 3, new ResultObject(
+				"myName", 33, false), responses);
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("lastName", "Olstead");
 		params.put("active", false);
-		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP2", true, 4, params);
+		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
+				"methodRP2", true, 4, params);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP2", 4, new ResultObject("Olstead", 20, false), responses);
+		responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
+		assertResponse("remoteProviderSimpleNamed", "methodRP2", 4, new ResultObject(
+				"Olstead", 20, false), responses);
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("lastName", "Olstead");
 		params.put("theAge", 36);
-		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP2", true, 5, params);
+		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
+				"methodRP2", true, 5, params);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP2", 5, new ResultObject("Olstead", 36, true), responses);
+		responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
+		assertResponse("remoteProviderSimpleNamed", "methodRP2", 5, new ResultObject(
+				"Olstead", 36, true), responses);
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("active", false);
-		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP2", true, 6, params);
+		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
+				"methodRP2", true, 6, params);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP2", 6, new ResultObject("myName", 20, false), responses);
+		responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
+		assertResponse("remoteProviderSimpleNamed", "methodRP2", 6, new ResultObject(
+				"myName", 20, false), responses);
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("lastName", "Miller");
-		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP2", true, 7, params);
+		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
+				"methodRP2", true, 7, params);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP2", 7, new ResultObject("Miller", 20, true), responses);
+		responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
+		assertResponse("remoteProviderSimpleNamed", "methodRP2", 7, new ResultObject(
+				"Miller", 20, true), responses);
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("theAge", 55);
-		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP2", true, 8, params);
+		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
+				"methodRP2", true, 8, params);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP2", 8, new ResultObject("myName", 55, true), responses);
+		responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
+		assertResponse("remoteProviderSimpleNamed", "methodRP2", 8, new ResultObject(
+				"myName", 55, true), responses);
 
 		params = new LinkedHashMap<String, Object>();
-		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP2", true, 9, params);
+		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
+				"methodRP2", true, 9, params);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP2", 9, new ResultObject("myName", 20, true), responses);
+		responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
+		assertResponse("remoteProviderSimpleNamed", "methodRP2", 9, new ResultObject(
+				"myName", 20, true), responses);
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
@@ -503,24 +549,25 @@ public class RouterControllerSimpleNamedTest {
 		sb.replace(sb.length() - 1, sb.length(), "]");
 
 		result = ControllerUtil.performRouterRequest(mockMvc, sb.toString());
-		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
+		responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 		assertThat(responses).hasSize(8);
-		assertResponse("remoteProviderSimpleNamed", "methodRP2", 2, new ResultObject("Olstead", 33, false),
-				responses.subList(0, 1));
-		assertResponse("remoteProviderSimpleNamed", "methodRP2", 3, new ResultObject("myName", 33, false),
-				responses.subList(1, 2));
-		assertResponse("remoteProviderSimpleNamed", "methodRP2", 4, new ResultObject("Olstead", 20, false),
-				responses.subList(2, 3));
-		assertResponse("remoteProviderSimpleNamed", "methodRP2", 5, new ResultObject("Olstead", 36, true),
-				responses.subList(3, 4));
-		assertResponse("remoteProviderSimpleNamed", "methodRP2", 6, new ResultObject("myName", 20, false),
-				responses.subList(4, 5));
-		assertResponse("remoteProviderSimpleNamed", "methodRP2", 7, new ResultObject("Miller", 20, true),
-				responses.subList(5, 6));
-		assertResponse("remoteProviderSimpleNamed", "methodRP2", 8, new ResultObject("myName", 55, true),
-				responses.subList(6, 7));
-		assertResponse("remoteProviderSimpleNamed", "methodRP2", 9, new ResultObject("myName", 20, true),
-				responses.subList(7, 8));
+		assertResponse("remoteProviderSimpleNamed", "methodRP2", 2, new ResultObject(
+				"Olstead", 33, false), responses.subList(0, 1));
+		assertResponse("remoteProviderSimpleNamed", "methodRP2", 3, new ResultObject(
+				"myName", 33, false), responses.subList(1, 2));
+		assertResponse("remoteProviderSimpleNamed", "methodRP2", 4, new ResultObject(
+				"Olstead", 20, false), responses.subList(2, 3));
+		assertResponse("remoteProviderSimpleNamed", "methodRP2", 5, new ResultObject(
+				"Olstead", 36, true), responses.subList(3, 4));
+		assertResponse("remoteProviderSimpleNamed", "methodRP2", 6, new ResultObject(
+				"myName", 20, false), responses.subList(4, 5));
+		assertResponse("remoteProviderSimpleNamed", "methodRP2", 7, new ResultObject(
+				"Miller", 20, true), responses.subList(5, 6));
+		assertResponse("remoteProviderSimpleNamed", "methodRP2", 8, new ResultObject(
+				"myName", 55, true), responses.subList(6, 7));
+		assertResponse("remoteProviderSimpleNamed", "methodRP2", 9, new ResultObject(
+				"myName", 20, true), responses.subList(7, 8));
 	}
 
 	@Test
@@ -531,78 +578,101 @@ public class RouterControllerSimpleNamedTest {
 		params.put("lastName", "Olstead");
 		params.put("theAge", "33");
 		params.put("active", false);
-		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP3", true, 2, params);
+		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
+				"methodRP3", true, 2, params);
 		multiRequests.add(edRequest);
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
-				.getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP3", 2, new ResultObject("Olstead", 33, false), responses);
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result
+				.getResponse().getContentAsByteArray());
+		assertResponse("remoteProviderSimpleNamed", "methodRP3", 2, new ResultObject(
+				"Olstead", 33, false), responses);
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("theAge", "33");
 		params.put("active", false);
-		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP3", true, 3, params);
+		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
+				"methodRP3", true, 3, params);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP3", 3, new ResultObject(null, 33, false), responses);
+		responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
+		assertResponse("remoteProviderSimpleNamed", "methodRP3", 3, new ResultObject(
+				null, 33, false), responses);
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("lastName", "Olstead");
 		params.put("active", false);
-		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP3", true, 4, params);
+		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
+				"methodRP3", true, 4, params);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP3", 4, new ResultObject("Olstead", null, false), responses);
+		responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
+		assertResponse("remoteProviderSimpleNamed", "methodRP3", 4, new ResultObject(
+				"Olstead", null, false), responses);
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("lastName", "Olstead");
 		params.put("theAge", 36);
-		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP3", true, 5, params);
+		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
+				"methodRP3", true, 5, params);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP3", 5, new ResultObject("Olstead", 36, null), responses);
+		responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
+		assertResponse("remoteProviderSimpleNamed", "methodRP3", 5, new ResultObject(
+				"Olstead", 36, null), responses);
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("active", false);
-		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP3", true, 6, params);
+		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
+				"methodRP3", true, 6, params);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP3", 6, new ResultObject(null, null, false), responses);
+		responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
+		assertResponse("remoteProviderSimpleNamed", "methodRP3", 6, new ResultObject(
+				null, null, false), responses);
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("lastName", "Miller");
-		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP3", true, 7, params);
+		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
+				"methodRP3", true, 7, params);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP3", 7, new ResultObject("Miller", null, null), responses);
+		responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
+		assertResponse("remoteProviderSimpleNamed", "methodRP3", 7, new ResultObject(
+				"Miller", null, null), responses);
 
 		params = new LinkedHashMap<String, Object>();
 		params.put("theAge", 55);
-		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP3", true, 8, params);
+		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
+				"methodRP3", true, 8, params);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP3", 8, new ResultObject(null, 55, null), responses);
+		responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
+		assertResponse("remoteProviderSimpleNamed", "methodRP3", 8, new ResultObject(
+				null, 55, null), responses);
 
 		params = new LinkedHashMap<String, Object>();
-		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP3", true, 9, params);
+		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
+				"methodRP3", true, 9, params);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
-		assertResponse("remoteProviderSimpleNamed", "methodRP3", 9, new ResultObject(null, null, null), responses);
+		responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
+		assertResponse("remoteProviderSimpleNamed", "methodRP3", 9, new ResultObject(
+				null, null, null), responses);
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
@@ -613,28 +683,29 @@ public class RouterControllerSimpleNamedTest {
 		sb.replace(sb.length() - 1, sb.length(), "]");
 
 		result = ControllerUtil.performRouterRequest(mockMvc, sb.toString());
-		responses = ControllerUtil.readDirectResponses(result.getResponse().getContentAsByteArray());
+		responses = ControllerUtil.readDirectResponses(result.getResponse()
+				.getContentAsByteArray());
 		assertThat(responses).hasSize(8);
-		assertResponse("remoteProviderSimpleNamed", "methodRP3", 2, new ResultObject("Olstead", 33, false),
-				responses.subList(0, 1));
-		assertResponse("remoteProviderSimpleNamed", "methodRP3", 3, new ResultObject(null, 33, false),
-				responses.subList(1, 2));
-		assertResponse("remoteProviderSimpleNamed", "methodRP3", 4, new ResultObject("Olstead", null, false),
-				responses.subList(2, 3));
-		assertResponse("remoteProviderSimpleNamed", "methodRP3", 5, new ResultObject("Olstead", 36, null),
-				responses.subList(3, 4));
-		assertResponse("remoteProviderSimpleNamed", "methodRP3", 6, new ResultObject(null, null, false),
-				responses.subList(4, 5));
-		assertResponse("remoteProviderSimpleNamed", "methodRP3", 7, new ResultObject("Miller", null, null),
-				responses.subList(5, 6));
-		assertResponse("remoteProviderSimpleNamed", "methodRP3", 8, new ResultObject(null, 55, null),
-				responses.subList(6, 7));
-		assertResponse("remoteProviderSimpleNamed", "methodRP3", 9, new ResultObject(null, null, null),
-				responses.subList(7, 8));
+		assertResponse("remoteProviderSimpleNamed", "methodRP3", 2, new ResultObject(
+				"Olstead", 33, false), responses.subList(0, 1));
+		assertResponse("remoteProviderSimpleNamed", "methodRP3", 3, new ResultObject(
+				null, 33, false), responses.subList(1, 2));
+		assertResponse("remoteProviderSimpleNamed", "methodRP3", 4, new ResultObject(
+				"Olstead", null, false), responses.subList(2, 3));
+		assertResponse("remoteProviderSimpleNamed", "methodRP3", 5, new ResultObject(
+				"Olstead", 36, null), responses.subList(3, 4));
+		assertResponse("remoteProviderSimpleNamed", "methodRP3", 6, new ResultObject(
+				null, null, false), responses.subList(4, 5));
+		assertResponse("remoteProviderSimpleNamed", "methodRP3", 7, new ResultObject(
+				"Miller", null, null), responses.subList(5, 6));
+		assertResponse("remoteProviderSimpleNamed", "methodRP3", 8, new ResultObject(
+				null, 55, null), responses.subList(6, 7));
+		assertResponse("remoteProviderSimpleNamed", "methodRP3", 9, new ResultObject(
+				null, null, null), responses.subList(7, 8));
 	}
 
-	private static void assertResponse(String bean, String method, int tid, ResultObject expectedResult,
-			List<ExtDirectResponse> responses) {
+	private static void assertResponse(String bean, String method, int tid,
+			ResultObject expectedResult, List<ExtDirectResponse> responses) {
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -645,7 +716,8 @@ public class RouterControllerSimpleNamedTest {
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
 
-		ResultObject result = ControllerUtil.convertValue(resp.getResult(), ResultObject.class);
+		ResultObject result = ControllerUtil.convertValue(resp.getResult(),
+				ResultObject.class);
 
 		assertThat(result).isEqualTo(expectedResult);
 	}

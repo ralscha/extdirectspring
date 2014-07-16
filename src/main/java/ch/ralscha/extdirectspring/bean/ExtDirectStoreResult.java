@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * Class representing the result of STORE_READ and STORE_MODIFY methods.
- * 
+ *
  * @param <T> Type of the entry inside the collection
  */
 @JsonInclude(Include.NON_NULL)
@@ -75,7 +75,8 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 		this(total, records, true, jsonView);
 	}
 
-	public ExtDirectStoreResult(Long total, Collection<T> records, Boolean success, Class<?> jsonView) {
+	public ExtDirectStoreResult(Long total, Collection<T> records, Boolean success,
+			Class<?> jsonView) {
 		this.total = total;
 		this.records = records;
 		this.success = success;
@@ -130,9 +131,9 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 
 	/**
 	 * Beware, for this message to be accessible in your callback operation, <br>
-	 * you <strong>must</strong> add in your model definition the messageProperty value to message
-	 * {@link ch.ralscha.extdirectspring.generator.Model#messageProperty()}
-	 * 
+	 * you <strong>must</strong> add in your model definition the messageProperty value to
+	 * message {@link ch.ralscha.extdirectspring.generator.Model#messageProperty()}
+	 *
 	 * @param message the message to set
 	 * @return
 	 */
@@ -143,8 +144,9 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 
 	@Override
 	public String toString() {
-		return "ExtDirectStoreResult [total=" + total + ", records=" + records + ", success=" + success + ", metaData="
-				+ metaData + ", message=" + message + "]";
+		return "ExtDirectStoreResult [total=" + total + ", records=" + records
+				+ ", success=" + success + ", metaData=" + metaData + ", message="
+				+ message + "]";
 	}
 
 }

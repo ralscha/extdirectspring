@@ -67,20 +67,21 @@ public final class ParametersResolver {
 
 	private final Collection<WebArgumentResolver> webArgumentResolvers;
 
-	public ParametersResolver(ConversionService conversionService, JsonHandler jsonHandler,
-			Collection<WebArgumentResolver> webArgumentResolvers) {
+	public ParametersResolver(ConversionService conversionService,
+			JsonHandler jsonHandler, Collection<WebArgumentResolver> webArgumentResolvers) {
 		this.conversionService = conversionService;
 		this.jsonHandler = jsonHandler;
 		this.webArgumentResolvers = webArgumentResolvers;
 	}
 
-	public Object[] prepareParameters(HttpServletRequest request, HttpServletResponse response, Locale locale,
-			MethodInfo methodInfo) {
+	public Object[] prepareParameters(HttpServletRequest request,
+			HttpServletResponse response, Locale locale, MethodInfo methodInfo) {
 		return prepareParameters(request, response, locale, methodInfo, null);
 	}
 
-	public Object[] prepareParameters(HttpServletRequest request, HttpServletResponse response, Locale locale,
-			MethodInfo methodInfo, SSEWriter sseWriter) {
+	public Object[] prepareParameters(HttpServletRequest request,
+			HttpServletResponse response, Locale locale, MethodInfo methodInfo,
+			SSEWriter sseWriter) {
 		List<ParameterInfo> methodParameters = methodInfo.getParameters();
 		Object[] parameters = null;
 		if (!methodParameters.isEmpty()) {
@@ -90,12 +91,17 @@ public final class ParametersResolver {
 				ParameterInfo methodParameter = methodParameters.get(paramIndex);
 
 				if (methodParameter.isSupportedParameter()) {
-					parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(), request,
-							response, locale, sseWriter);
-				} else if (methodParameter.isHasRequestHeaderAnnotation()) {
-					parameters[paramIndex] = resolveRequestHeader(request, methodParameter);
-				} else {
-					parameters[paramIndex] = resolveRequestParam(request, null, methodParameter);
+					parameters[paramIndex] = SupportedParameters.resolveParameter(
+							methodParameter.getType(), request, response, locale,
+							sseWriter);
+				}
+				else if (methodParameter.isHasRequestHeaderAnnotation()) {
+					parameters[paramIndex] = resolveRequestHeader(request,
+							methodParameter);
+				}
+				else {
+					parameters[paramIndex] = resolveRequestParam(request, null,
+							methodParameter);
 				}
 
 			}
@@ -104,8 +110,9 @@ public final class ParametersResolver {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Object[] resolveParameters(HttpServletRequest request, HttpServletResponse response, Locale locale,
-			ExtDirectRequest directRequest, MethodInfo methodInfo) throws Exception {
+	public Object[] resolveParameters(HttpServletRequest request,
+			HttpServletResponse response, Locale locale, ExtDirectRequest directRequest,
+			MethodInfo methodInfo) throws Exception {
 
 		int jsonParamIndex = 0;
 		Map<String, Object> remainingParameters = null;
@@ -114,7 +121,8 @@ public final class ParametersResolver {
 		List<Object> directStoreModifyRecords = null;
 		Class<?> directStoreEntryClass;
 
-		if (methodInfo.isType(ExtDirectMethodType.STORE_READ) || methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
+		if (methodInfo.isType(ExtDirectMethodType.STORE_READ)
+				|| methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
 				|| methodInfo.isType(ExtDirectMethodType.TREE_LOAD)) {
 
 			List<Object> data = (List<Object>) directRequest.getData();
@@ -122,65 +130,80 @@ public final class ParametersResolver {
 			if (data != null && data.size() > 0) {
 				if (methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
 					extDirectStoreReadRequest = new ExtDirectStoreReadRequest();
-					remainingParameters = fillReadRequestFromMap(extDirectStoreReadRequest,
-							(Map<String, Object>) data.get(0));
-				} else {
+					remainingParameters = fillReadRequestFromMap(
+							extDirectStoreReadRequest, (Map<String, Object>) data.get(0));
+				}
+				else {
 					remainingParameters = (Map<String, Object>) data.get(0);
 				}
 				jsonParamIndex = 1;
 			}
-		} else if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)) {
+		}
+		else if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)) {
 			directStoreEntryClass = methodInfo.getCollectionType();
 			List<Object> data = (List<Object>) directRequest.getData();
 
 			if (directStoreEntryClass != null && data != null && data.size() > 0) {
 				Object obj = data.get(0);
 				if (obj instanceof List) {
-					directStoreModifyRecords = convertObjectEntriesToType((List<Object>) obj, directStoreEntryClass);
-				} else {
+					directStoreModifyRecords = convertObjectEntriesToType(
+							(List<Object>) obj, directStoreEntryClass);
+				}
+				else {
 					Map<String, Object> jsonData = (Map<String, Object>) obj;
 					Object records = jsonData.get("records");
 					if (records != null) {
 						if (records instanceof List) {
-							directStoreModifyRecords = convertObjectEntriesToType((List<Object>) records,
-									directStoreEntryClass);
-						} else {
+							directStoreModifyRecords = convertObjectEntriesToType(
+									(List<Object>) records, directStoreEntryClass);
+						}
+						else {
 							directStoreModifyRecords = new ArrayList<Object>();
-							directStoreModifyRecords.add(jsonHandler.convertValue(records, directStoreEntryClass));
+							directStoreModifyRecords.add(jsonHandler.convertValue(
+									records, directStoreEntryClass));
 						}
 						remainingParameters = new HashMap<String, Object>(jsonData);
 						remainingParameters.remove("records");
-					} else {
+					}
+					else {
 						directStoreModifyRecords = new ArrayList<Object>();
-						directStoreModifyRecords.add(jsonHandler.convertValue(jsonData, directStoreEntryClass));
+						directStoreModifyRecords.add(jsonHandler.convertValue(jsonData,
+								directStoreEntryClass));
 					}
 				}
 				jsonParamIndex = 1;
 
-			} else if (data != null && data.size() > 0) {
+			}
+			else if (data != null && data.size() > 0) {
 				Object obj = data.get(0);
 				if (obj instanceof Map) {
-					remainingParameters = new HashMap<String, Object>((Map<String, Object>) obj);
+					remainingParameters = new HashMap<String, Object>(
+							(Map<String, Object>) obj);
 					remainingParameters.remove("records");
 				}
 			}
-		} else if (methodInfo.isType(ExtDirectMethodType.SIMPLE_NAMED)) {
+		}
+		else if (methodInfo.isType(ExtDirectMethodType.SIMPLE_NAMED)) {
 			Map<String, Object> data = (Map<String, Object>) directRequest.getData();
 			if (data != null && data.size() > 0) {
 				remainingParameters = new HashMap<String, Object>(data);
 			}
 
-		} else if (methodInfo.isType(ExtDirectMethodType.POLL)) {
+		}
+		else if (methodInfo.isType(ExtDirectMethodType.POLL)) {
 			throw new IllegalStateException("this controller does not handle poll calls");
-		} else if (methodInfo.isType(ExtDirectMethodType.FORM_POST)) {
+		}
+		else if (methodInfo.isType(ExtDirectMethodType.FORM_POST)) {
 			throw new IllegalStateException("this controller does not handle form posts");
-		} else if (methodInfo.isType(ExtDirectMethodType.FORM_POST_JSON)) {
+		}
+		else if (methodInfo.isType(ExtDirectMethodType.FORM_POST_JSON)) {
 			List<Object> data = (List<Object>) directRequest.getData();
 
 			if (data != null && data.size() > 0) {
 				Object obj = data.get(0);
 				if (obj instanceof Map) {
-					remainingParameters = new HashMap<String, Object>((Map<String, Object>) obj);
+					remainingParameters = new HashMap<String, Object>(
+							(Map<String, Object>) obj);
 					remainingParameters.remove("records");
 				}
 			}
@@ -197,25 +220,39 @@ public final class ParametersResolver {
 				ParameterInfo methodParameter = methodParameters.get(paramIndex);
 
 				if (methodParameter.isSupportedParameter()) {
-					parameters[paramIndex] = SupportedParameters.resolveParameter(methodParameter.getType(), request,
-							response, locale);
-				} else if (ExtDirectStoreReadRequest.class.isAssignableFrom(methodParameter.getType())) {
+					parameters[paramIndex] = SupportedParameters.resolveParameter(
+							methodParameter.getType(), request, response, locale);
+				}
+				else if (ExtDirectStoreReadRequest.class.isAssignableFrom(methodParameter
+						.getType())) {
 					parameters[paramIndex] = extDirectStoreReadRequest;
-				} else if (directStoreModifyRecords != null && methodParameter.getCollectionType() != null) {
+				}
+				else if (directStoreModifyRecords != null
+						&& methodParameter.getCollectionType() != null) {
 					parameters[paramIndex] = directStoreModifyRecords;
-				} else if (methodParameter.isHasRequestParamAnnotation()) {
-					parameters[paramIndex] = resolveRequestParam(null, remainingParameters, methodParameter);
-				} else if (methodParameter.isHasRequestHeaderAnnotation()) {
-					parameters[paramIndex] = resolveRequestHeader(request, methodParameter);
-				} else if (remainingParameters != null && remainingParameters.containsKey(methodParameter.getName())) {
+				}
+				else if (methodParameter.isHasRequestParamAnnotation()) {
+					parameters[paramIndex] = resolveRequestParam(null,
+							remainingParameters, methodParameter);
+				}
+				else if (methodParameter.isHasRequestHeaderAnnotation()) {
+					parameters[paramIndex] = resolveRequestHeader(request,
+							methodParameter);
+				}
+				else if (remainingParameters != null
+						&& remainingParameters.containsKey(methodParameter.getName())) {
 					Object jsonValue = remainingParameters.get(methodParameter.getName());
 					parameters[paramIndex] = convertValue(jsonValue, methodParameter);
-				} else if (directRequest.getData() != null && directRequest.getData() instanceof List
+				}
+				else if (directRequest.getData() != null
+						&& directRequest.getData() instanceof List
 						&& ((List<Object>) directRequest.getData()).size() > jsonParamIndex) {
-					Object jsonValue = ((List<Object>) directRequest.getData()).get(jsonParamIndex);
+					Object jsonValue = ((List<Object>) directRequest.getData())
+							.get(jsonParamIndex);
 					parameters[paramIndex] = convertValue(jsonValue, methodParameter);
 					jsonParamIndex++;
-				} else {
+				}
+				else {
 
 					log.info("WebResolvers size:" + this.webArgumentResolvers.size());
 					log.info("ParamIndex:" + paramIndex);
@@ -224,18 +261,22 @@ public final class ParametersResolver {
 					log.info("Request params names:" + request.getParameterMap().keySet());
 					log.info("Direct Request:" + directRequest.toString());
 
-					MethodParameter p = new MethodParameter(methodInfo.getMethod(), paramIndex);
+					MethodParameter p = new MethodParameter(methodInfo.getMethod(),
+							paramIndex);
 					request.setAttribute("directRequest", directRequest);
-					request.setAttribute("extDirectStoreReadRequest", extDirectStoreReadRequest);
+					request.setAttribute("extDirectStoreReadRequest",
+							extDirectStoreReadRequest);
 					ServletWebRequest r = new ServletWebRequest(request);
 					Object result = WebArgumentResolver.UNRESOLVED;
 
 					for (WebArgumentResolver resolver : this.webArgumentResolvers) {
-						log.info("Resolving with:" + resolver.getClass().getCanonicalName());
+						log.info("Resolving with:"
+								+ resolver.getClass().getCanonicalName());
 
 						result = resolver.resolveArgument(p, r);
 						if (result != WebArgumentResolver.UNRESOLVED) {
-							log.info("Resolved by:" + resolver.getClass().getCanonicalName());
+							log.info("Resolved by:"
+									+ resolver.getClass().getCanonicalName());
 							parameters[paramIndex] = result;
 							break;
 						}
@@ -251,16 +292,18 @@ public final class ParametersResolver {
 		return parameters;
 	}
 
-	public Object resolveRequestParam(HttpServletRequest request, Map<String, Object> valueContainer,
-			final ParameterInfo parameterInfo) {
+	public Object resolveRequestParam(HttpServletRequest request,
+			Map<String, Object> valueContainer, final ParameterInfo parameterInfo) {
 
 		if (parameterInfo.getName() != null) {
 			Object value;
 			if (request != null) {
 				value = request.getParameter(parameterInfo.getName());
-			} else if (valueContainer != null) {
+			}
+			else if (valueContainer != null) {
 				value = valueContainer.get(parameterInfo.getName());
-			} else {
+			}
+			else {
 				value = null;
 			}
 
@@ -273,7 +316,8 @@ public final class ParametersResolver {
 			}
 
 			if (parameterInfo.isRequired()) {
-				throw new IllegalStateException("Missing parameter '" + parameterInfo.getName() + "' of type ["
+				throw new IllegalStateException("Missing parameter '"
+						+ parameterInfo.getName() + "' of type ["
 						+ parameterInfo.getTypeDescriptor().getType() + "]");
 			}
 		}
@@ -281,7 +325,8 @@ public final class ParametersResolver {
 		return null;
 	}
 
-	public Object resolveRequestHeader(HttpServletRequest request, ParameterInfo parameterInfo) {
+	public Object resolveRequestHeader(HttpServletRequest request,
+			ParameterInfo parameterInfo) {
 		String value = request.getHeader(parameterInfo.getName());
 
 		if (value == null) {
@@ -293,8 +338,8 @@ public final class ParametersResolver {
 		}
 
 		if (parameterInfo.isRequired()) {
-			throw new IllegalStateException("Missing header '" + parameterInfo.getName() + "' of type ["
-					+ parameterInfo.getTypeDescriptor().getType() + "]");
+			throw new IllegalStateException("Missing header '" + parameterInfo.getName()
+					+ "' of type [" + parameterInfo.getTypeDescriptor().getType() + "]");
 		}
 
 		return null;
@@ -304,31 +349,38 @@ public final class ParametersResolver {
 		if (value != null) {
 			if (methodParameter.getType().equals(value.getClass())) {
 				return value;
-			} else if (conversionService.canConvert(TypeDescriptor.forObject(value),
+			}
+			else if (conversionService.canConvert(TypeDescriptor.forObject(value),
 					methodParameter.getTypeDescriptor())) {
 
 				try {
-					return conversionService.convert(value, TypeDescriptor.forObject(value),
+					return conversionService.convert(value,
+							TypeDescriptor.forObject(value),
 							methodParameter.getTypeDescriptor());
-				} catch (ConversionFailedException e) {
+				}
+				catch (ConversionFailedException e) {
 					// ignore this exception for collections and arrays.
 					// try to convert the value with jackson
 					TypeFactory typeFactory = jsonHandler.getMapper().getTypeFactory();
 					if (methodParameter.getTypeDescriptor().isCollection()) {
 						JavaType type = CollectionType.construct(
 								methodParameter.getType(),
-								typeFactory.constructType(methodParameter.getTypeDescriptor()
-										.getElementTypeDescriptor().getType()));
+								typeFactory.constructType(methodParameter
+										.getTypeDescriptor().getElementTypeDescriptor()
+										.getType()));
 						return jsonHandler.convertValue(value, type);
-					} else if (methodParameter.getTypeDescriptor().isArray()) {
-						JavaType type = typeFactory.constructArrayType(methodParameter.getTypeDescriptor()
-								.getElementTypeDescriptor().getType());
+					}
+					else if (methodParameter.getTypeDescriptor().isArray()) {
+						JavaType type = typeFactory
+								.constructArrayType(methodParameter.getTypeDescriptor()
+										.getElementTypeDescriptor().getType());
 						return jsonHandler.convertValue(value, type);
 					}
 
 					throw e;
 				}
-			} else {
+			}
+			else {
 				return jsonHandler.convertValue(value, methodParameter.getType());
 			}
 
@@ -336,7 +388,8 @@ public final class ParametersResolver {
 		return null;
 	}
 
-	private Map<String, Object> fillReadRequestFromMap(ExtDirectStoreReadRequest to, Map<String, Object> from) {
+	private Map<String, Object> fillReadRequestFromMap(ExtDirectStoreReadRequest to,
+			Map<String, Object> from) {
 		Set<String> foundParameters = new HashSet<String>();
 
 		for (Entry<String, Object> entry : from.entrySet()) {
@@ -347,7 +400,8 @@ public final class ParametersResolver {
 				List<Filter> filters = new ArrayList<Filter>();
 
 				if (value instanceof String) {
-					List<Map<String, Object>> rawFilters = jsonHandler.readValue((String) value,
+					List<Map<String, Object>> rawFilters = jsonHandler.readValue(
+							(String) value,
 							new TypeReference<List<Map<String, Object>>>() {/* empty */
 							});
 
@@ -357,7 +411,8 @@ public final class ParametersResolver {
 							filters.add(filter);
 						}
 					}
-				} else if (value instanceof List) {
+				}
+				else if (value instanceof List) {
 					@SuppressWarnings("unchecked")
 					List<Map<String, Object>> filterList = (List<Map<String, Object>>) value;
 					for (Map<String, Object> rawFilter : filterList) {
@@ -369,7 +424,8 @@ public final class ParametersResolver {
 				}
 				to.setFilters(filters);
 				foundParameters.add(key);
-			} else if (key.equals("sort") && value != null && value instanceof List) {
+			}
+			else if (key.equals("sort") && value != null && value instanceof List) {
 
 				List<SortInfo> sorters = new ArrayList<SortInfo>();
 				@SuppressWarnings("unchecked")
@@ -381,7 +437,8 @@ public final class ParametersResolver {
 
 				to.setSorters(sorters);
 				foundParameters.add(key);
-			} else if (key.equals("group") && value != null && value instanceof List) {
+			}
+			else if (key.equals("group") && value != null && value instanceof List) {
 				List<GroupInfo> groups = new ArrayList<GroupInfo>();
 				@SuppressWarnings("unchecked")
 				List<Map<String, Object>> rawGroups = (List<Map<String, Object>>) value;
@@ -392,21 +449,28 @@ public final class ParametersResolver {
 
 				to.setGroups(groups);
 				foundParameters.add(key);
-			} else {
+			}
+			else {
 
-				PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(to.getClass(), key);
+				PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(
+						to.getClass(), key);
 				if (descriptor != null && descriptor.getWriteMethod() != null) {
 					try {
 
-						descriptor.getWriteMethod().invoke(to,
-								conversionService.convert(value, descriptor.getPropertyType()));
+						descriptor.getWriteMethod().invoke(
+								to,
+								conversionService.convert(value,
+										descriptor.getPropertyType()));
 
 						foundParameters.add(key);
-					} catch (IllegalArgumentException e) {
+					}
+					catch (IllegalArgumentException e) {
 						log.error("fillObjectFromMap", e);
-					} catch (IllegalAccessException e) {
+					}
+					catch (IllegalAccessException e) {
 						log.error("fillObjectFromMap", e);
-					} catch (InvocationTargetException e) {
+					}
+					catch (InvocationTargetException e) {
 						log.error("fillObjectFromMap", e);
 					}
 				}
@@ -419,7 +483,8 @@ public final class ParametersResolver {
 			if (to.getPage() != null && to.getStart() == null) {
 				to.setStart(to.getLimit() * (to.getPage() - 1));
 				// the else if is still valid for extjs 3 code
-			} else if (to.getPage() == null && to.getStart() != null) {
+			}
+			else if (to.getPage() == null && to.getStart() != null) {
 				to.setPage(to.getStart() / to.getLimit() + 1);
 			}
 		}
@@ -432,7 +497,8 @@ public final class ParametersResolver {
 
 		if (to.getGroupBy() != null && to.getGroupDir() != null) {
 			List<GroupInfo> groups = new ArrayList<GroupInfo>();
-			groups.add(new GroupInfo(to.getGroupBy(), SortDirection.fromString(to.getGroupDir())));
+			groups.add(new GroupInfo(to.getGroupBy(), SortDirection.fromString(to
+					.getGroupDir())));
 			to.setGroups(groups);
 		}
 
@@ -447,11 +513,13 @@ public final class ParametersResolver {
 		return remainingParameters;
 	}
 
-	private List<Object> convertObjectEntriesToType(List<Object> records, Class<?> directStoreType) {
+	private List<Object> convertObjectEntriesToType(List<Object> records,
+			Class<?> directStoreType) {
 		if (records != null) {
 			List<Object> convertedList = new ArrayList<Object>();
 			for (Object record : records) {
-				Object convertedObject = jsonHandler.convertValue(record, directStoreType);
+				Object convertedObject = jsonHandler
+						.convertValue(record, directStoreType);
 				convertedList.add(convertedObject);
 			}
 			return convertedList;

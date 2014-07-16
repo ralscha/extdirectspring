@@ -42,8 +42,8 @@ public class RemoteProviderStoreModifyArray {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, event = "test")
-	public Row[] create2(List<Row> rows, HttpServletResponse response, HttpServletRequest request,
-			final HttpSession session, Locale locale) {
+	public Row[] create2(List<Row> rows, HttpServletResponse response,
+			HttpServletRequest request, final HttpSession session, Locale locale) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
@@ -65,7 +65,8 @@ public class RemoteProviderStoreModifyArray {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public Row[] update3(List<Row> rows, @RequestParam(value = "id", defaultValue = "1") int id,
+	public Row[] update3(List<Row> rows,
+			@RequestParam(value = "id", defaultValue = "1") int id,
 			final HttpServletRequest servletRequest) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
@@ -73,13 +74,16 @@ public class RemoteProviderStoreModifyArray {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group2")
-	public Row[] update4(@RequestParam(value = "id", required = false) Integer id,
-			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate yesterday, final List<Row> rows) {
+	public Row[] update4(
+			@RequestParam(value = "id", required = false) Integer id,
+			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate yesterday,
+			final List<Row> rows) {
 
 		if (id == null) {
 			assertThat(id).isNull();
 			assertThat(yesterday).isNull();
-		} else {
+		}
+		else {
 			assertThat(yesterday).isNotNull();
 			assertThat(yesterday).isEqualTo(new LocalDate().minusDays(1));
 			assertThat(id).isEqualTo(Integer.valueOf(11));

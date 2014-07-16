@@ -63,7 +63,8 @@ public class UserInitBinderServiceTest extends JettyTest {
 		Locale.setDefault(Locale.ENGLISH);
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "1"));
-		formparams.add(new BasicNameValuePair("extAction", "userServiceInitBinderService"));
+		formparams
+				.add(new BasicNameValuePair("extAction", "userServiceInitBinderService"));
 		formparams.add(new BasicNameValuePair("extMethod", "updateUser"));
 		formparams.add(new BasicNameValuePair("extType", "rpc"));
 		formparams.add(new BasicNameValuePair("extUpload", "false"));
@@ -99,7 +100,8 @@ public class UserInitBinderServiceTest extends JettyTest {
 			assertThat(result.get("flag")).isEqualTo(false);
 			assertThat(result.get("dateOfBirth")).isNull();
 			assertThat(result.get("success")).isEqualTo(true);
-		} finally {
+		}
+		finally {
 			IOUtils.closeQuietly(response);
 		}
 	}
@@ -109,7 +111,8 @@ public class UserInitBinderServiceTest extends JettyTest {
 		Locale.setDefault(Locale.ENGLISH);
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "2"));
-		formparams.add(new BasicNameValuePair("extAction", "userServiceInitBinderService"));
+		formparams
+				.add(new BasicNameValuePair("extAction", "userServiceInitBinderService"));
 		formparams.add(new BasicNameValuePair("extMethod", "updateUser"));
 		formparams.add(new BasicNameValuePair("extType", "rpc"));
 		formparams.add(new BasicNameValuePair("extUpload", "false"));
@@ -145,7 +148,8 @@ public class UserInitBinderServiceTest extends JettyTest {
 			assertThat(result.get("flag")).isEqualTo(true);
 			assertThat(result.get("dateOfBirth")).isEqualTo("1966-12-21");
 			assertThat(result.get("success")).isEqualTo(true);
-		} finally {
+		}
+		finally {
 			IOUtils.closeQuietly(response);
 		}
 	}

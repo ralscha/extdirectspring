@@ -105,7 +105,8 @@ public class SimpleMethodTest extends BaseViewTest {
 	}
 
 	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
-		Map<String, Object> result = ControllerUtil.sendAndReceiveMap(mockMvc, bean, method);
+		Map<String, Object> result = ControllerUtil.sendAndReceiveMap(mockMvc, bean,
+				method);
 		assertThat(result).hasSize(expectedEntries.length);
 		assertThat(result).contains(expectedEntries);
 	}

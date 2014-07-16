@@ -37,7 +37,8 @@ import ch.ralscha.extdirectspring.bean.api.ActionDoc;
 import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 
 /**
- * Object holds information about a method like the method itself and a list of parameters.
+ * Object holds information about a method like the method itself and a list of
+ * parameters.
  */
 public final class MethodInfo {
 
@@ -67,21 +68,25 @@ public final class MethodInfo {
 
 	private String sseMethod;
 
-	public MethodInfo(Class<?> clazz, ApplicationContext context, String beanName, Method method) {
+	public MethodInfo(Class<?> clazz, ApplicationContext context, String beanName,
+			Method method) {
 
-		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(
+				method, ExtDirectMethod.class);
 
 		this.type = extDirectMethodAnnotation.value();
 
 		if (extDirectMethodAnnotation.jsonView() != ExtDirectMethod.NoJsonView.class) {
 			this.jsonView = extDirectMethodAnnotation.jsonView();
-		} else {
+		}
+		else {
 			this.jsonView = null;
 		}
 
 		if (StringUtils.hasText(extDirectMethodAnnotation.group())) {
 			this.group = extDirectMethodAnnotation.group().trim();
-		} else {
+		}
+		else {
 			this.group = null;
 		}
 
@@ -104,11 +109,14 @@ public final class MethodInfo {
 					}
 				}
 			}
-		} else {
+		}
+		else {
 			if (method.getReturnType().equals(Void.TYPE)) {
 
-				RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-				RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
+				RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method,
+						RequestMapping.class);
+				RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz,
+						RequestMapping.class);
 
 				String path = null;
 				if (hasValue(classAnnotation)) {
@@ -119,7 +127,8 @@ public final class MethodInfo {
 					String methodPath = methodAnnotation.value()[0];
 					if (path != null) {
 						path = path + methodPath;
-					} else {
+					}
+					else {
 						path = methodPath;
 					}
 				}
@@ -130,8 +139,10 @@ public final class MethodInfo {
 					}
 					this.forwardPath = "forward:" + path;
 				}
-			} else {
-				this.handlerMethod = new HandlerMethod(beanName, context, method).createWithResolvedBean();
+			}
+			else {
+				this.handlerMethod = new HandlerMethod(beanName, context, method)
+						.createWithResolvedBean();
 			}
 		}
 
@@ -139,7 +150,8 @@ public final class MethodInfo {
 		case SIMPLE:
 			int paramLength = 0;
 			for (ParameterInfo parameter : this.parameters) {
-				if (!parameter.isSupportedParameter() && !parameter.isHasRequestHeaderAnnotation()) {
+				if (!parameter.isSupportedParameter()
+						&& !parameter.isHasRequestHeaderAnnotation()) {
 					paramLength++;
 				}
 			}
@@ -148,7 +160,8 @@ public final class MethodInfo {
 		case SIMPLE_NAMED:
 			List<String> parameterNames = new ArrayList<String>();
 			for (ParameterInfo parameter : this.parameters) {
-				if (!parameter.isSupportedParameter() && !parameter.isHasRequestHeaderAnnotation()) {
+				if (!parameter.isSupportedParameter()
+						&& !parameter.isHasRequestHeaderAnnotation()) {
 					parameterNames.add(parameter.getName());
 				}
 			}
@@ -167,30 +180,35 @@ public final class MethodInfo {
 			this.action = new Action(method.getName(), 1, null);
 			break;
 		case POLL:
-			this.pollingProvider = new PollingProvider(beanName, method.getName(), extDirectMethodAnnotation.event());
+			this.pollingProvider = new PollingProvider(beanName, method.getName(),
+					extDirectMethodAnnotation.event());
 			break;
 		case SSE:
 			this.sseMethod = method.getName();
 			break;
 		default:
-			throw new IllegalStateException("ExtDirectMethodType: " + type + " does not exists");
+			throw new IllegalStateException("ExtDirectMethodType: " + type
+					+ " does not exists");
 		}
 
-		this.action = extractDocumentationAnnotations(extDirectMethodAnnotation.documentation());
+		this.action = extractDocumentationAnnotations(extDirectMethodAnnotation
+				.documentation());
 
 	}
 
 	/**
-	 * The rule is: whatever has been given is taken as is the API documentation is non critical, so any discrepancies
-	 * will be silently ignored
-	 * 
+	 * The rule is: whatever has been given is taken as is the API documentation is non
+	 * critical, so any discrepancies will be silently ignored
+	 *
 	 * @param documentation
 	 * @return ActionDoc
 	 */
-	private Action extractDocumentationAnnotations(ExtDirectMethodDocumentation documentation) {
+	private Action extractDocumentationAnnotations(
+			ExtDirectMethodDocumentation documentation) {
 		if (!documentation.value().isEmpty()) {
-			ActionDoc actionDoc = new ActionDoc(getAction(), documentation.value(), documentation.author(),
-					documentation.version(), documentation.deprecated());
+			ActionDoc actionDoc = new ActionDoc(getAction(), documentation.value(),
+					documentation.author(), documentation.version(),
+					documentation.deprecated());
 			ExtDirectDocParameters docParameters = documentation.parameters();
 			if (null != docParameters) {
 				String[] params = docParameters.params();
@@ -198,10 +216,13 @@ public final class MethodInfo {
 						: docParameters.descriptions();
 				if (params.length == descriptions.length) {
 					for (int i = 0; i < params.length; i++) {
-						actionDoc.getParameters().put(params[i],
-								descriptions[i] == null ? "No description" : descriptions[i]);
+						actionDoc.getParameters().put(
+								params[i],
+								descriptions[i] == null ? "No description"
+										: descriptions[i]);
 					}
-				} else {
+				}
+				else {
 					LogFactory
 							.getLog(MethodInfo.class)
 							.info("Documentation: skip generation of parameters, params size is different from descriptions size");
@@ -210,14 +231,17 @@ public final class MethodInfo {
 			ExtDirectDocReturn docReturn = documentation.returnMethod();
 			if (null != docReturn) {
 				String[] properties = docReturn.properties();
-				String[] descriptions = docReturn.descriptions() == null ? new String[properties.length] : docReturn
-						.descriptions();
+				String[] descriptions = docReturn.descriptions() == null ? new String[properties.length]
+						: docReturn.descriptions();
 				if (properties.length == descriptions.length) {
 					for (int i = 0; i < properties.length; i++) {
-						actionDoc.getReturnMethod().put(properties[i],
-								descriptions[i] == null ? "No description" : descriptions[i]);
+						actionDoc.getReturnMethod().put(
+								properties[i],
+								descriptions[i] == null ? "No description"
+										: descriptions[i]);
 					}
-				} else {
+				}
+				else {
 					LogFactory
 							.getLog(MethodInfo.class)
 							.info("Documentation: skip generation of return method properties, properties size is different from descriptions size");
@@ -229,7 +253,8 @@ public final class MethodInfo {
 	}
 
 	private static boolean hasValue(RequestMapping requestMapping) {
-		return requestMapping != null && requestMapping.value() != null && requestMapping.value().length > 0
+		return requestMapping != null && requestMapping.value() != null
+				&& requestMapping.value().length > 0
 				&& StringUtils.hasText(requestMapping.value()[0]);
 	}
 
@@ -238,7 +263,8 @@ public final class MethodInfo {
 
 		Class<?>[] parameterTypes = method.getParameterTypes();
 
-		Method methodWithAnnotation = findMethodWithAnnotation(method, ExtDirectMethod.class);
+		Method methodWithAnnotation = findMethodWithAnnotation(method,
+				ExtDirectMethod.class);
 		if (methodWithAnnotation == null) {
 			methodWithAnnotation = method;
 		}
@@ -303,14 +329,15 @@ public final class MethodInfo {
 	}
 
 	/**
-	 * Find a method that is annotated with a specific annotation. Starts with the method and goes up to the
-	 * superclasses of the class.
-	 * 
+	 * Find a method that is annotated with a specific annotation. Starts with the method
+	 * and goes up to the superclasses of the class.
+	 *
 	 * @param method the starting method
 	 * @param annotation the annotation to look for
 	 * @return the method if there is a annotated method, else null
 	 */
-	public static Method findMethodWithAnnotation(Method method, Class<? extends Annotation> annotation) {
+	public static Method findMethodWithAnnotation(Method method,
+			Class<? extends Annotation> annotation) {
 		if (method.isAnnotationPresent(annotation)) {
 			return method;
 		}
@@ -318,11 +345,13 @@ public final class MethodInfo {
 		Class<?> cl = method.getDeclaringClass();
 		while (cl != null && cl != Object.class) {
 			try {
-				Method equivalentMethod = cl.getDeclaredMethod(method.getName(), method.getParameterTypes());
+				Method equivalentMethod = cl.getDeclaredMethod(method.getName(),
+						method.getParameterTypes());
 				if (equivalentMethod.isAnnotationPresent(annotation)) {
 					return equivalentMethod;
 				}
-			} catch (NoSuchMethodException e) {
+			}
+			catch (NoSuchMethodException e) {
 				// do nothing here
 			}
 			cl = cl.getSuperclass();

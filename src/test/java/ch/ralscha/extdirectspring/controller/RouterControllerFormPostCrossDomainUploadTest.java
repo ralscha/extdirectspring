@@ -59,7 +59,8 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 	@Test
 	public void testUpload() throws Exception {
 		MockMultipartHttpServletRequestBuilder request = fileUpload("/router");
-		request.accept(MediaType.ALL).characterEncoding("UTF-8").session(new MockHttpSession());
+		request.accept(MediaType.ALL).characterEncoding("UTF-8")
+				.session(new MockHttpSession());
 
 		request.param("extTID", "1");
 		request.param("extAction", "uploadService");
@@ -70,8 +71,8 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 		request.file("fileUpload", "the content of the file".getBytes());
 
 		MvcResult resultMvc = mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentType("text/html;charset=UTF-8")).andExpect(content().encoding("UTF-8"))
-				.andReturn();
+				.andExpect(content().contentType("text/html;charset=UTF-8"))
+				.andExpect(content().encoding("UTF-8")).andReturn();
 
 		String response = resultMvc.getResponse().getContentAsString();
 		String prefix = "<html><body><textarea>";

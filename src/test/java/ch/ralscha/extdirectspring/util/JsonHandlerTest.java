@@ -64,7 +64,8 @@ public class JsonHandlerTest {
 		String expected = "{\"one\":1,\"two\":\"2\",\"three\":null,\"four\":false,\"five\":[1,2]}";
 		assertEquals(expected, jsonHandler.writeValueAsString(map));
 
-		JsonTestBean testBean = new JsonTestBean(1, "2", null, false, new Integer[] { 1, 2 });
+		JsonTestBean testBean = new JsonTestBean(1, "2", null, false, new Integer[] { 1,
+				2 });
 		expected = "{\"a\":1,\"b\":\"2\",\"c\":null,\"d\":false,\"e\":[1,2]}";
 		assertEquals(expected, jsonHandler.writeValueAsString(testBean));
 
@@ -86,11 +87,14 @@ public class JsonHandlerTest {
 		map.put("five", new int[] { 1, 2 });
 
 		String expected = "{\n  \"one\" : 1,\n  \"two\" : \"2\",\n  \"three\" : null,\n  \"four\" : false,\n  \"five\" : [ 1, 2 ]\n}";
-		assertEquals(expected, jsonHandler.writeValueAsString(map, true).replace("\r", ""));
+		assertEquals(expected, jsonHandler.writeValueAsString(map, true)
+				.replace("\r", ""));
 
-		JsonTestBean testBean = new JsonTestBean(1, "2", null, false, new Integer[] { 1, 2 });
+		JsonTestBean testBean = new JsonTestBean(1, "2", null, false, new Integer[] { 1,
+				2 });
 		expected = "{\n  \"a\" : 1,\n  \"b\" : \"2\",\n  \"c\" : null,\n  \"d\" : false,\n  \"e\" : [ 1, 2 ]\n}";
-		assertEquals(expected, jsonHandler.writeValueAsString(testBean, true).replace("\r", ""));
+		assertEquals(expected,
+				jsonHandler.writeValueAsString(testBean, true).replace("\r", ""));
 
 	}
 
@@ -98,8 +102,9 @@ public class JsonHandlerTest {
 	public void testdeserializeStringTypeReferenceOfT() {
 		JsonHandler jsonHandler = new JsonHandler();
 		String json = "[\"1\",\"2\",\"3\",\"4\"]";
-		List<String> result = jsonHandler.readValue(json, new TypeReference<List<String>>() {/* empty */
-		});
+		List<String> result = jsonHandler.readValue(json,
+				new TypeReference<List<String>>() {/* empty */
+				});
 		assertEquals(4, result.size());
 		assertEquals("1", result.get(0));
 		assertEquals("2", result.get(1));
@@ -166,7 +171,8 @@ public class JsonHandlerTest {
 		assertThat(desReq).isNotNull();
 
 		assertEquals(req.getAction(), desReq.getAction());
-		assertArrayEquals((Object[]) req.getData(), ((List<Object>) desReq.getData()).toArray());
+		assertArrayEquals((Object[]) req.getData(),
+				((List<Object>) desReq.getData()).toArray());
 		assertEquals(req.getMethod(), desReq.getMethod());
 		assertEquals(req.getTid(), desReq.getTid());
 		assertEquals(req.getType(), desReq.getType());
@@ -197,8 +203,9 @@ public class JsonHandlerTest {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(requests);
 
-		List<ExtDirectRequest> desRequests = jsonHandler.readValue(json, new TypeReference<List<ExtDirectRequest>>() {/* empty */
-		});
+		List<ExtDirectRequest> desRequests = jsonHandler.readValue(json,
+				new TypeReference<List<ExtDirectRequest>>() {/* empty */
+				});
 
 		assertEquals(requests.size(), desRequests.size());
 		for (int i = 0; i < requests.size(); i++) {
@@ -206,7 +213,8 @@ public class JsonHandlerTest {
 			ExtDirectRequest desReq = desRequests.get(i);
 
 			assertEquals(req.getAction(), desReq.getAction());
-			assertArrayEquals((Object[]) req.getData(), ((List<Object>) desReq.getData()).toArray());
+			assertArrayEquals((Object[]) req.getData(),
+					((List<Object>) desReq.getData()).toArray());
 			assertEquals(req.getMethod(), desReq.getMethod());
 			assertEquals(req.getTid(), desReq.getTid());
 			assertEquals(req.getType(), desReq.getType());

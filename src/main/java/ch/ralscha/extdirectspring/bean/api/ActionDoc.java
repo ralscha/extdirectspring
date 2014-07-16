@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /**
- * 
+ *
  */
 package ch.ralscha.extdirectspring.bean.api;
 
@@ -57,7 +57,8 @@ public class ActionDoc extends Action {
 		super(name, params);
 	}
 
-	public ActionDoc(Action toCopy, String methodComment, String author, String version, boolean deprecated) {
+	public ActionDoc(Action toCopy, String methodComment, String author, String version,
+			boolean deprecated) {
 		super(toCopy);
 		this.methodComment = methodComment;
 		this.author = author;

@@ -36,21 +36,24 @@ public class FormInfoController2 {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
 	@RequestMapping(value = "/updateInfo1", method = RequestMethod.POST)
-	public void updateInfo1(Locale locale, HttpServletRequest request, HttpServletResponse response,
-			final FormInfo formInfo, BindingResult result) {
-		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();
+	public void updateInfo1(Locale locale, HttpServletRequest request,
+			HttpServletResponse response, final FormInfo formInfo, BindingResult result) {
+		ExtDirectResponseBuilder.create(request, response).addErrors(result)
+				.buildAndWrite();
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3", event = "test")
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3",
+			event = "test")
 	@RequestMapping(method = RequestMethod.POST)
-	public void updateInfo2(Locale locale, HttpServletRequest request, HttpServletResponse response,
-			final FormInfo formInfo, BindingResult result) {
-		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();
+	public void updateInfo2(Locale locale, HttpServletRequest request,
+			HttpServletResponse response, final FormInfo formInfo, BindingResult result) {
+		ExtDirectResponseBuilder.create(request, response).addErrors(result)
+				.buildAndWrite();
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
-	public void invalidMethod(Locale locale, HttpServletRequest request, HttpServletResponse response,
-			FormInfo formInfo, BindingResult result) {
+	public void invalidMethod(Locale locale, HttpServletRequest request,
+			HttpServletResponse response, FormInfo formInfo, BindingResult result) {
 		// dummy test method
 	}
 

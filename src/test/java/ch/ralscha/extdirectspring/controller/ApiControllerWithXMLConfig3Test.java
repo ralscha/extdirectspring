@@ -53,8 +53,8 @@ public class ApiControllerWithXMLConfig3Test {
 		config.setMaxRetries(6);
 		config.setStreamResponse(true);
 
-		ApiRequestParams params = ApiRequestParams.builder().apiNs("test").group("group2").configuration(config)
-				.build();
+		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
+				.group("group2").configuration(config).build();
 		ApiControllerTest.runTest(mockMvc, params, ApiControllerTest.group2Apis(null));
 
 		ApiControllerTest.runTest(mockMvc, params, ApiControllerTest.group2Apis(null));

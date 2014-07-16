@@ -37,7 +37,8 @@ public class DateFilter extends Filter {
 
 	@Override
 	public String toString() {
-		return "DateFilter [value=" + value + ", comparison=" + comparison + ", getField()=" + getField() + "]";
+		return "DateFilter [value=" + value + ", comparison=" + comparison
+				+ ", getField()=" + getField() + "]";
 	}
 
 }

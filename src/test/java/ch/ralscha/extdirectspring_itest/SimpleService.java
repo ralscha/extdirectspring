@@ -35,12 +35,14 @@ public class SimpleService {
 		return null;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "itest_simple", streamResponse = true)
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "itest_simple",
+			streamResponse = true)
 	public String echo(String userId, @RequestParam(defaultValue = "10") int logLevel) {
 		// Simulate some work
 		try {
 			TimeUnit.MILLISECONDS.sleep(200);
-		} catch (InterruptedException e) {
+		}
+		catch (InterruptedException e) {
 			// do nothing here
 		}
 		return String.format("UserId: %s LogLevel: %d", userId, logLevel);
@@ -51,7 +53,8 @@ public class SimpleService {
 		return id;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "itest_simple", streamResponse = true)
+	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "itest_simple",
+			streamResponse = true)
 	public SSEvent sse(@RequestParam String id) {
 		SSEvent event = new SSEvent();
 		event.setId(id);

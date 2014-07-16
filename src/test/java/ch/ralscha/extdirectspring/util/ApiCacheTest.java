@@ -31,15 +31,23 @@ public class ApiCacheTest {
 	public void testPutAndGet() {
 		assertThat(ApiCache.INSTANCE).isNotNull();
 
-		ApiCacheKey key1 = new ApiCacheKey(null, null, null, null, null, null, null, false);
+		ApiCacheKey key1 = new ApiCacheKey(null, null, null, null, null, null, null,
+				false);
 		ApiCacheKey key2 = new ApiCacheKey(null, null, null, null, null, null, null, true);
-		ApiCacheKey key3 = new ApiCacheKey(null, null, null, null, null, null, "/router", true);
-		ApiCacheKey key4 = new ApiCacheKey(null, null, null, null, null, "group", "/router", true);
-		ApiCacheKey key5 = new ApiCacheKey(null, null, null, null, "sse", "group", "/router", true);
-		ApiCacheKey key6 = new ApiCacheKey(null, null, null, "polling", "sse", "group", "/router", true);
-		ApiCacheKey key7 = new ApiCacheKey(null, null, "remoting", "polling", "sse", "group", "/router", true);
-		ApiCacheKey key8 = new ApiCacheKey(null, "action", "remoting", "polling", "sse", "group", "/router", true);
-		ApiCacheKey key9 = new ApiCacheKey("api", "action", "remoting", "polling", "sse", "group", "/router", true);
+		ApiCacheKey key3 = new ApiCacheKey(null, null, null, null, null, null, "/router",
+				true);
+		ApiCacheKey key4 = new ApiCacheKey(null, null, null, null, null, "group",
+				"/router", true);
+		ApiCacheKey key5 = new ApiCacheKey(null, null, null, null, "sse", "group",
+				"/router", true);
+		ApiCacheKey key6 = new ApiCacheKey(null, null, null, "polling", "sse", "group",
+				"/router", true);
+		ApiCacheKey key7 = new ApiCacheKey(null, null, "remoting", "polling", "sse",
+				"group", "/router", true);
+		ApiCacheKey key8 = new ApiCacheKey(null, "action", "remoting", "polling", "sse",
+				"group", "/router", true);
+		ApiCacheKey key9 = new ApiCacheKey("api", "action", "remoting", "polling", "sse",
+				"group", "/router", true);
 
 		ApiCache.INSTANCE.put(key1, "one");
 		ApiCache.INSTANCE.put(key3, "three");
@@ -117,8 +125,10 @@ public class ApiCacheTest {
 		assertThat(ApiCache.INSTANCE).isNotNull();
 		ApiCache.INSTANCE.clear();
 
-		ApiCacheKey keyOne = new ApiCacheKey("api", "action", "remoting", "polling", "sse", "group", "/router", true);
-		ApiCacheKey keyTwo = new ApiCacheKey("api", "action", "remoting", "polling", "sse", "group", "/router", true);
+		ApiCacheKey keyOne = new ApiCacheKey("api", "action", "remoting", "polling",
+				"sse", "group", "/router", true);
+		ApiCacheKey keyTwo = new ApiCacheKey("api", "action", "remoting", "polling",
+				"sse", "group", "/router", true);
 
 		ApiCache.INSTANCE.put(keyOne, "1");
 

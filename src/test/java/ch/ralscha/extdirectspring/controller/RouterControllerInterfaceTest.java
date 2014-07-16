@@ -61,7 +61,8 @@ public class RouterControllerInterfaceTest {
 
 	@Test
 	public void testNoParameters() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderImplementation", "method2", "method2() called");
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderImplementation", "method2",
+				"method2() called");
 	}
 
 	@Test
@@ -77,8 +78,9 @@ public class RouterControllerInterfaceTest {
 		readRequest.put("lastName", "Smith");
 		readRequest.put("active", true);
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc, "remoteProviderImplementation",
-				"storeRead", new TypeReference<List<Row>>() {/* nothing_here */
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderImplementation", "storeRead",
+				new TypeReference<List<Row>>() {/* nothing_here */
 				}, readRequest);
 
 		assertThat(rows).hasSize(1);

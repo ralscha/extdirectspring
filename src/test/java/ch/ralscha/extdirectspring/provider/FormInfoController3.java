@@ -39,17 +39,18 @@ public class FormInfoController3 {
 	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
 	@RequestMapping(value = "/updateInfoJson", method = RequestMethod.POST)
-	public ExtDirectFormPostResult updateInfoJson(Locale locale, HttpServletRequest request,
-			HttpServletResponse response, @Valid FormInfo formInfo) {
+	public ExtDirectFormPostResult updateInfoJson(Locale locale,
+			HttpServletRequest request, HttpServletResponse response,
+			@Valid FormInfo formInfo) {
 
 		return new ExtDirectFormPostResult(true);
 	}
 
 	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
-	public ExtDirectFormPostResult updateInfoJsonDirect(Locale locale,
-			@RequestParam(value = "p1", required = true) Long param1,
-			@RequestParam(value = "p2", required = true) String param2, @Valid FormInfo formInfo) {
+	public ExtDirectFormPostResult updateInfoJsonDirect(Locale locale, @RequestParam(
+			value = "p1", required = true) Long param1, @RequestParam(value = "p2",
+			required = true) String param2, @Valid FormInfo formInfo) {
 
 		ExtDirectFormPostResult e = new ExtDirectFormPostResult();
 		e.addResultProperty("name", formInfo.getName().toUpperCase());
@@ -64,8 +65,9 @@ public class FormInfoController3 {
 
 	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
-	public ExtDirectFormPostResult updateInfoJsonDirectError(Locale locale, HttpServletRequest request,
-			HttpServletResponse response, @Valid FormInfo formInfo) {
+	public ExtDirectFormPostResult updateInfoJsonDirectError(Locale locale,
+			HttpServletRequest request, HttpServletResponse response,
+			@Valid FormInfo formInfo) {
 
 		ExtDirectFormPostResult e = new ExtDirectFormPostResult();
 		e.addError("age", "age is wrong");
@@ -74,16 +76,17 @@ public class FormInfoController3 {
 
 	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
-	public void updateInfoJsonDirectNotRegisteredWithBindingResultAsParameter(Locale locale,
-			HttpServletRequest request, HttpServletResponse response, @Valid FormInfo formInfo, BindingResult result) {
+	public void updateInfoJsonDirectNotRegisteredWithBindingResultAsParameter(
+			Locale locale, HttpServletRequest request, HttpServletResponse response,
+			@Valid FormInfo formInfo, BindingResult result) {
 		// nothing here
 	}
 
 	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
-	public void updateInfoJsonDirectNotRegisteredWithMultipartFileAsParameter(Locale locale,
-			HttpServletRequest request, HttpServletResponse response, @Valid FormInfo formInfo,
-			MultipartFile multipartFile) {
+	public void updateInfoJsonDirectNotRegisteredWithMultipartFileAsParameter(
+			Locale locale, HttpServletRequest request, HttpServletResponse response,
+			@Valid FormInfo formInfo, MultipartFile multipartFile) {
 		// nothing here
 	}
 }

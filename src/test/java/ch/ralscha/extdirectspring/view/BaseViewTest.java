@@ -20,18 +20,22 @@ import org.fest.assertions.data.MapEntry;
 public class BaseViewTest {
 
 	protected MapEntry[] noView() {
-		return new MapEntry[] { MapEntry.entry("id", 1), MapEntry.entry("firstName", "firstName"),
+		return new MapEntry[] { MapEntry.entry("id", 1),
+				MapEntry.entry("firstName", "firstName"),
 				MapEntry.entry("lastName", "lastName"), MapEntry.entry("phone", "phone"),
-				MapEntry.entry("address", "address"), MapEntry.entry("secretKey", "mySecret") };
+				MapEntry.entry("address", "address"),
+				MapEntry.entry("secretKey", "mySecret") };
 	}
 
 	protected MapEntry[] summaryView() {
-		return new MapEntry[] { MapEntry.entry("id", 1), MapEntry.entry("firstName", "firstName"),
+		return new MapEntry[] { MapEntry.entry("id", 1),
+				MapEntry.entry("firstName", "firstName"),
 				MapEntry.entry("lastName", "lastName") };
 	}
 
 	protected MapEntry[] detailView() {
-		return new MapEntry[] { MapEntry.entry("id", 1), MapEntry.entry("firstName", "firstName"),
+		return new MapEntry[] { MapEntry.entry("id", 1),
+				MapEntry.entry("firstName", "firstName"),
 				MapEntry.entry("lastName", "lastName"), MapEntry.entry("phone", "phone"),
 				MapEntry.entry("address", "address") };
 	}

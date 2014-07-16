@@ -62,7 +62,8 @@ public class MetaData {
 
 	public void addField(Field field) {
 
-		List<Map<String, Object>> fields = (List<Map<String, Object>>) metaData.get("fields");
+		List<Map<String, Object>> fields = (List<Map<String, Object>>) metaData
+				.get("fields");
 
 		if (fields == null) {
 			fields = new ArrayList<Map<String, Object>>();

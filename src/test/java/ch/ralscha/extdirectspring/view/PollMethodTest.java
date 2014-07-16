@@ -109,11 +109,13 @@ public class PollMethodTest extends BaseViewTest {
 	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
 		ExtDirectPollResponse response;
 		try {
-			response = ControllerUtil.performPollRequest(mockMvc, bean, method, "theEvent", null, null);
+			response = ControllerUtil.performPollRequest(mockMvc, bean, method,
+					"theEvent", null, null);
 			Map<String, Object> data = (Map<String, Object>) response.getData();
 			assertThat(data).hasSize(expectedEntries.length);
 			assertThat(data).contains(expectedEntries);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			fail("call poll method: " + e.getMessage());
 		}
 

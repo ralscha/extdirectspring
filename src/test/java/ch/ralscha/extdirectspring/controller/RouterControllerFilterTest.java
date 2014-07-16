@@ -62,7 +62,8 @@ public class RouterControllerFilterTest {
 	@BeforeClass
 	public static void readJson() throws IOException {
 		jsonList = new ArrayList<String>();
-		InputStream is = RouterControllerFilterTest.class.getResourceAsStream("/filterjson.txt");
+		InputStream is = RouterControllerFilterTest.class
+				.getResourceAsStream("/filterjson.txt");
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		String line = null;
 		while ((line = br.readLine()) != null) {
@@ -78,8 +79,8 @@ public class RouterControllerFilterTest {
 		int index = 1;
 		for (String json : jsonList) {
 			MvcResult result = ControllerUtil.performRouterRequest(mockMvc, json);
-			List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
-					.getContentAsByteArray());
+			List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result
+					.getResponse().getContentAsByteArray());
 
 			assertThat(responses).hasSize(1);
 			ExtDirectResponse resp = responses.get(0);
@@ -91,9 +92,10 @@ public class RouterControllerFilterTest {
 			assertThat(resp.getWhere()).isNull();
 			assertThat(resp.getResult()).isNotNull();
 
-			List<Row> rows = ControllerUtil.convertValue(resp.getResult(), new TypeReference<List<Row>>() {
-				// nothing here
-			});
+			List<Row> rows = ControllerUtil.convertValue(resp.getResult(),
+					new TypeReference<List<Row>>() {
+						// nothing here
+					});
 
 			assertThat(rows).hasSize(1);
 			assertThat(rows.get(0).getId()).isEqualTo(index);

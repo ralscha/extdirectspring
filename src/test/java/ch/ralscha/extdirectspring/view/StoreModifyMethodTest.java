@@ -112,9 +112,11 @@ public class StoreModifyMethodTest extends BaseViewTest {
 
 		if (obj instanceof List) {
 			records = (List<Map<String, Object>>) obj;
-		} else {
+		}
+		else {
 			Map<String, Object> result = (Map<String, Object>) obj;
-			assertThat(result).hasSize(2).contains(MapEntry.entry("success", true)).containsKey("records");
+			assertThat(result).hasSize(2).contains(MapEntry.entry("success", true))
+					.containsKey("records");
 			records = (List<Map<String, Object>>) result.get("records");
 		}
 
@@ -126,8 +128,10 @@ public class StoreModifyMethodTest extends BaseViewTest {
 			for (MapEntry entry : expectedEntries) {
 				if (entry.key.equals("id")) {
 					assertThat(model).contains(MapEntry.entry("id", i));
-				} else {
-					assertThat(model).contains(MapEntry.entry(entry.key, "" + entry.value + i));
+				}
+				else {
+					assertThat(model).contains(
+							MapEntry.entry(entry.key, "" + entry.value + i));
 				}
 			}
 		}

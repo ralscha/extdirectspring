@@ -30,14 +30,14 @@ public class MyModelService extends BaseService<MyModel> {
 
 	@Override
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_base_service")
-	public ExtDirectFormPostResult method1(HttpServletRequest request, HttpServletResponse response, MyModel model,
-			final BindingResult result) {
+	public ExtDirectFormPostResult method1(HttpServletRequest request,
+			HttpServletResponse response, MyModel model, final BindingResult result) {
 		return new ExtDirectFormPostResult(result);
 	}
 
 	@Override
-	public ExtDirectFormPostResult method2(HttpServletRequest request, HttpServletResponse response, MyModel model,
-			final BindingResult result) {
+	public ExtDirectFormPostResult method2(HttpServletRequest request,
+			HttpServletResponse response, MyModel model, final BindingResult result) {
 		return new ExtDirectFormPostResult(result);
 	}
 }

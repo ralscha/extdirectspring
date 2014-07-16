@@ -51,19 +51,26 @@ public class FileUploadControllerTest extends JettyTest {
 			is = getClass().getResourceAsStream("/UploadTestFile.txt");
 
 			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-			ContentBody cbFile = new InputStreamBody(is, ContentType.create("text/plain"), "UploadTestFile.txt");
+			ContentBody cbFile = new InputStreamBody(is,
+					ContentType.create("text/plain"), "UploadTestFile.txt");
 			builder.addPart("fileUpload", cbFile);
 			builder.addPart("extTID", new StringBody("2", ContentType.DEFAULT_TEXT));
-			builder.addPart("extAction", new StringBody("fileUploadController", ContentType.DEFAULT_TEXT));
-			builder.addPart("extMethod", new StringBody("uploadTest", ContentType.DEFAULT_TEXT));
+			builder.addPart("extAction", new StringBody("fileUploadController",
+					ContentType.DEFAULT_TEXT));
+			builder.addPart("extMethod", new StringBody("uploadTest",
+					ContentType.DEFAULT_TEXT));
 			builder.addPart("extType", new StringBody("rpc", ContentType.DEFAULT_TEXT));
 			builder.addPart("extUpload", new StringBody("true", ContentType.DEFAULT_TEXT));
 
-			builder.addPart("name",
-					new StringBody("Jimöäü", ContentType.create("text/plain", Charset.forName("UTF-8"))));
-			builder.addPart("firstName", new StringBody("Ralph", ContentType.DEFAULT_TEXT));
+			builder.addPart(
+					"name",
+					new StringBody("Jimöäü", ContentType.create("text/plain",
+							Charset.forName("UTF-8"))));
+			builder.addPart("firstName",
+					new StringBody("Ralph", ContentType.DEFAULT_TEXT));
 			builder.addPart("age", new StringBody("25", ContentType.DEFAULT_TEXT));
-			builder.addPart("email", new StringBody("test@test.ch", ContentType.DEFAULT_TEXT));
+			builder.addPart("email", new StringBody("test@test.ch",
+					ContentType.DEFAULT_TEXT));
 
 			post.setEntity(builder.build());
 			response = client.execute(post);
@@ -77,7 +84,8 @@ public class FileUploadControllerTest extends JettyTest {
 			assertThat(responseString).startsWith(prefix);
 			assertThat(responseString).endsWith(postfix);
 
-			String json = responseString.substring(prefix.length(), responseString.length() - postfix.length());
+			String json = responseString.substring(prefix.length(),
+					responseString.length() - postfix.length());
 
 			ObjectMapper mapper = new ObjectMapper();
 			Map<String, Object> rootAsMap = mapper.readValue(json, Map.class);
@@ -98,7 +106,8 @@ public class FileUploadControllerTest extends JettyTest {
 			assertThat(result.get("success")).isEqualTo(true);
 
 			EntityUtils.consume(resEntity);
-		} finally {
+		}
+		finally {
 			IOUtils.closeQuietly(response);
 			IOUtils.closeQuietly(is);
 			IOUtils.closeQuietly(client);

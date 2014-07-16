@@ -53,8 +53,8 @@ public class ApiControllerWithXMLConfig1Test {
 		config.setMaxRetries(5);
 		config.setStreamResponse(true);
 
-		ApiRequestParams params = ApiRequestParams.builder().group("group1").configuration(config)
-				.providerType("websocket").build();
+		ApiRequestParams params = ApiRequestParams.builder().group("group1")
+				.configuration(config).providerType("websocket").build();
 		ApiControllerTest.runTest(mockMvc, params, ApiControllerTest.group1Apis(null));
 	}
 

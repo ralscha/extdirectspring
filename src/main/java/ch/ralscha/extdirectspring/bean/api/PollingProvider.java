@@ -31,7 +31,8 @@ public final class PollingProvider {
 
 		if (StringUtils.hasText(event)) {
 			this.event = event.trim();
-		} else {
+		}
+		else {
 			this.event = method;
 		}
 	}

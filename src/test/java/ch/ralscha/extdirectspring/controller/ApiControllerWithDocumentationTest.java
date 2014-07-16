@@ -76,9 +76,9 @@ public class ApiControllerWithDocumentationTest {
 	/**
 	 * to test the following need to activate Feature 'ALLOW_COMMENTS' for jackson parser
 	 * <p>
-	 * typical error is com.fasterxml.jackson.core.JsonParseException: Unexpected character ('/' (code 47)): maybe a
-	 * (non-standard) comment?
-	 * 
+	 * typical error is com.fasterxml.jackson.core.JsonParseException: Unexpected
+	 * character ('/' (code 47)): maybe a (non-standard) comment?
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -86,14 +86,17 @@ public class ApiControllerWithDocumentationTest {
 		ActionDoc doc = callApi("method1");
 
 		assertThat(doc.isDeprecated()).isTrue();
-		assertThat(doc.getMethodComment()).isEqualTo("this method is used to test the documentation generation");
+		assertThat(doc.getMethodComment()).isEqualTo(
+				"this method is used to test the documentation generation");
 		assertThat(doc.getAuthor()).isEqualTo("dbs");
 		assertThat(doc.getVersion()).isEqualTo("0.1");
 		assertThat(doc.getParameters()).hasSize(5);
-		assertThat(doc.getParameters()).contains(entry("a", "property a integer"), entry("b", "property b string"),
-				entry("c", "property c string"), entry("d", "property d boolean"), entry("e", "array of integers"));
+		assertThat(doc.getParameters()).contains(entry("a", "property a integer"),
+				entry("b", "property b string"), entry("c", "property c string"),
+				entry("d", "property d boolean"), entry("e", "array of integers"));
 		assertThat(doc.getReturnMethod()).hasSize(2);
-		assertThat(doc.getReturnMethod()).contains(entry("errors", "list of failed fields"),
+		assertThat(doc.getReturnMethod()).contains(
+				entry("errors", "list of failed fields"),
 				entry("success", "true for success, false otherwise"));
 	}
 
@@ -180,7 +183,8 @@ public class ApiControllerWithDocumentationTest {
 		assertThat(doc.getVersion()).isEqualTo("0.8");
 		assertThat(doc.getParameters()).isEmpty();
 		assertThat(doc.getReturnMethod()).hasSize(2);
-		assertThat(doc.getReturnMethod()).contains(entry("p1", "p1 desc"), entry("p2", "p2 desc"));
+		assertThat(doc.getReturnMethod()).contains(entry("p1", "p1 desc"),
+				entry("p2", "p2 desc"));
 	}
 
 	@Test
@@ -206,7 +210,8 @@ public class ApiControllerWithDocumentationTest {
 		assertThat(doc.getParameters()).hasSize(1);
 		assertThat(doc.getParameters()).contains(entry("a", "a desc"));
 		assertThat(doc.getReturnMethod()).hasSize(2);
-		assertThat(doc.getReturnMethod()).contains(entry("p1", "p1 desc"), entry("p2", "p2 desc"));
+		assertThat(doc.getReturnMethod()).contains(entry("p1", "p1 desc"),
+				entry("p2", "p2 desc"));
 
 	}
 
@@ -219,7 +224,8 @@ public class ApiControllerWithDocumentationTest {
 		assertThat(doc.getAuthor()).isEmpty();
 		assertThat(doc.getVersion()).isEqualTo("1.0");
 		assertThat(doc.getParameters()).hasSize(2);
-		assertThat(doc.getParameters()).contains(entry("a", "a desc"), entry("b", "b desc"));
+		assertThat(doc.getParameters()).contains(entry("a", "a desc"),
+				entry("b", "b desc"));
 		assertThat(doc.getReturnMethod()).isEmpty();
 	}
 
@@ -244,9 +250,11 @@ public class ApiControllerWithDocumentationTest {
 	}
 
 	private void doRequestWithoutDocs(String url) throws Exception {
-		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns").actionNs("actionns").group("doc")
+		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns")
+				.actionNs("actionns").group("doc")
 				.configuration(configurationService.getConfiguration()).build();
-		MockHttpServletRequestBuilder request = get(url).accept(MediaType.ALL).characterEncoding("UTF-8");
+		MockHttpServletRequestBuilder request = get(url).accept(MediaType.ALL)
+				.characterEncoding("UTF-8");
 		request.param("apiNs", params.getApiNs());
 		request.param("actionNs", params.getActionNs());
 		request.param("group", params.getGroup());
@@ -254,16 +262,18 @@ public class ApiControllerWithDocumentationTest {
 		MvcResult result = mockMvc.perform(request).andExpect(status().isOk())
 				.andExpect(content().contentType("application/javascript")).andReturn();
 
-		ApiControllerTest.compare(result, ApiControllerTest.groupApisWithDoc("actionns"), params);
+		ApiControllerTest.compare(result, ApiControllerTest.groupApisWithDoc("actionns"),
+				params);
 		Assert.doesNotContain("/**", result.getResponse().getContentAsString(),
 				"generation of api.js should not contain method documentation");
 	}
 
 	private ActionDoc callApi(String method) throws Exception {
-		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns").actionNs("actionns").group("doc")
+		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns")
+				.actionNs("actionns").group("doc")
 				.configuration(configurationService.getConfiguration()).build();
-		MockHttpServletRequestBuilder request = get("/api-debug-doc.js").accept(MediaType.ALL).characterEncoding(
-				"UTF-8");
+		MockHttpServletRequestBuilder request = get("/api-debug-doc.js").accept(
+				MediaType.ALL).characterEncoding("UTF-8");
 		request.param("apiNs", params.getApiNs());
 		request.param("actionNs", params.getActionNs());
 		request.param("group", params.getGroup());
@@ -271,12 +281,15 @@ public class ApiControllerWithDocumentationTest {
 		MvcResult result = mockMvc.perform(request).andExpect(status().isOk())
 				.andExpect(content().contentType("application/javascript")).andReturn();
 
-		ApiControllerTest.compare(result, ApiControllerTest.groupApisWithDoc("actionns"), params);
-		ActionDoc doc = getCommentForMethod(result.getResponse().getContentAsString(), method);
+		ApiControllerTest.compare(result, ApiControllerTest.groupApisWithDoc("actionns"),
+				params);
+		ActionDoc doc = getCommentForMethod(result.getResponse().getContentAsString(),
+				method);
 		return doc;
 	}
 
-	private final static Pattern COMMENT_PATTERN = Pattern.compile("/\\*\\*([^/]*)\\*/", Pattern.MULTILINE);
+	private final static Pattern COMMENT_PATTERN = Pattern.compile("/\\*\\*([^/]*)\\*/",
+			Pattern.MULTILINE);
 
 	private static ActionDoc getCommentForMethod(String apiString, String method) {
 		ActionDoc doc = new ActionDoc(method, Collections.<String> emptyList());
@@ -297,7 +310,8 @@ public class ApiControllerWithDocumentationTest {
 
 			p = block.indexOf(method);
 			if (p != -1) {
-				doc.setMethodComment(block.substring(p + method.length() + 2, block.indexOf('\n', p)));
+				doc.setMethodComment(block.substring(p + method.length() + 2,
+						block.indexOf('\n', p)));
 			}
 
 			Map<String, String> params = new HashMap<String, String>();
@@ -318,7 +332,8 @@ public class ApiControllerWithDocumentationTest {
 				p = block.indexOf('[', p);
 				while (p != -1) {
 					int p2 = block.indexOf(']', p);
-					returns.put(block.substring(p + 1, p2), block.substring(p2 + 2, block.indexOf('\n', p2)));
+					returns.put(block.substring(p + 1, p2),
+							block.substring(p2 + 2, block.indexOf('\n', p2)));
 					p = block.indexOf('[', p2);
 				}
 			}

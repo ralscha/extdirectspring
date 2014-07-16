@@ -33,7 +33,8 @@ public class ExtDirectRawJsonStoreResult extends ExtDirectStoreResult<String> {
 		super(total, records, true);
 	}
 
-	public ExtDirectRawJsonStoreResult(Integer total, Collection<String> records, Boolean success) {
+	public ExtDirectRawJsonStoreResult(Integer total, Collection<String> records,
+			Boolean success) {
 		super(total, records, success);
 	}
 
@@ -41,7 +42,8 @@ public class ExtDirectRawJsonStoreResult extends ExtDirectStoreResult<String> {
 		super(total, records, true, null);
 	}
 
-	public ExtDirectRawJsonStoreResult(Long total, Collection<String> records, Boolean success) {
+	public ExtDirectRawJsonStoreResult(Long total, Collection<String> records,
+			Boolean success) {
 		super(total, records, success, null);
 	}
 
@@ -53,15 +55,17 @@ public class ExtDirectRawJsonStoreResult extends ExtDirectStoreResult<String> {
 
 	@Override
 	public String toString() {
-		return "ExtDirectRawJsonStoreResult [getRecords()=" + getRecords() + ", getTotal()=" + getTotal()
-				+ ", isSuccess()=" + isSuccess() + ", getMetaData()=" + getMetaData() + "]";
+		return "ExtDirectRawJsonStoreResult [getRecords()=" + getRecords()
+				+ ", getTotal()=" + getTotal() + ", isSuccess()=" + isSuccess()
+				+ ", getMetaData()=" + getMetaData() + "]";
 	}
 
-	private final static class CollectionStringSerializer extends JsonSerializer<Collection<String>> {
+	private final static class CollectionStringSerializer extends
+			JsonSerializer<Collection<String>> {
 
 		@Override
-		public void serialize(Collection<String> values, JsonGenerator jgen, SerializerProvider provider)
-				throws IOException {
+		public void serialize(Collection<String> values, JsonGenerator jgen,
+				SerializerProvider provider) throws IOException {
 
 			StringBuilder sb = new StringBuilder();
 			sb.append("[");

@@ -37,7 +37,7 @@ public class JsonHandler {
 
 	/**
 	 * Sets a new instance of {@link ObjectMapper}.
-	 * 
+	 *
 	 * @param mapper a new object mapper. must not be <code>null</code>
 	 */
 	public void setMapper(ObjectMapper mapper) {
@@ -54,8 +54,9 @@ public class JsonHandler {
 	}
 
 	/**
-	 * Converts an object into a JSON string. In case of an exception returns null and logs the exception.
-	 * 
+	 * Converts an object into a JSON string. In case of an exception returns null and
+	 * logs the exception.
+	 *
 	 * @param obj the source object
 	 * @return obj JSON string, <code>null</code> if an exception occurred
 	 */
@@ -64,10 +65,12 @@ public class JsonHandler {
 	}
 
 	/**
-	 * Converts an object into a JSON string. In case of an exceptions returns null and logs the exception.
-	 * 
+	 * Converts an object into a JSON string. In case of an exceptions returns null and
+	 * logs the exception.
+	 *
 	 * @param obj the source object
-	 * @param indent if true JSON is written in a human readable format, if false JSON is written on one line
+	 * @param indent if true JSON is written in a human readable format, if false JSON is
+	 * written on one line
 	 * @return obj JSON string, <code>null</code> if an exception occurred
 	 */
 	public String writeValueAsString(Object obj, boolean indent) {
@@ -76,33 +79,37 @@ public class JsonHandler {
 				return mapper.writer().withDefaultPrettyPrinter().writeValueAsString(obj);
 			}
 			return mapper.writeValueAsString(obj);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			LogFactory.getLog(JsonHandler.class).info("serialize object to json", e);
 			return null;
 		}
 	}
 
 	/**
-	 * Converts a JSON string into an object. In case of an exception returns null and logs the exception.
-	 * 
+	 * Converts a JSON string into an object. In case of an exception returns null and
+	 * logs the exception.
+	 *
 	 * @param <T> type of the object to create
 	 * @param json string with the JSON
 	 * @param typeReference {@link TypeReference} instance of the desired result type
-	 *            {@link com.fasterxml.jackson.core.type.TypeReference}
+	 * {@link com.fasterxml.jackson.core.type.TypeReference}
 	 * @return the created object, null if there was an exception
 	 */
 	public <T> T readValue(String json, TypeReference<T> typeReference) {
 		try {
 			return (T) mapper.readValue(json, typeReference);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
 			return null;
 		}
 	}
 
 	/**
-	 * Converts a JSON string into an object. In case of an exception returns null and logs the exception.
-	 * 
+	 * Converts a JSON string into an object. In case of an exception returns null and
+	 * logs the exception.
+	 *
 	 * @param <T> type of the object to create
 	 * @param json string with the JSON
 	 * @param clazz class of object to create
@@ -111,16 +118,17 @@ public class JsonHandler {
 	public <T> T readValue(String json, Class<T> clazz) {
 		try {
 			return mapper.readValue(json, clazz);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
 			return null;
 		}
 	}
 
 	/**
-	 * Converts a JSON string into an object. The input is read from an InputStream. In case of an exception returns
-	 * null and logs the exception.
-	 * 
+	 * Converts a JSON string into an object. The input is read from an InputStream. In
+	 * case of an exception returns null and logs the exception.
+	 *
 	 * @param is a InputStream
 	 * @param clazz class of object to create
 	 * @return the converted object, null if there is an exception
@@ -128,7 +136,8 @@ public class JsonHandler {
 	public Object readValue(InputStream is, Class<Object> clazz) {
 		try {
 			return mapper.readValue(is, clazz);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
 			return null;
 		}
@@ -136,7 +145,7 @@ public class JsonHandler {
 
 	/**
 	 * Converts one object into another.
-	 * 
+	 *
 	 * @param object the source
 	 * @param clazz the type of the target
 	 * @return the converted object
@@ -147,7 +156,7 @@ public class JsonHandler {
 
 	/**
 	 * Converts one object into another.
-	 * 
+	 *
 	 * @param object the source
 	 * @param toValueTypeRef the type of the target
 	 * @return the converted object

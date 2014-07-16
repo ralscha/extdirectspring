@@ -60,7 +60,8 @@ public class RouterControllerSseTest {
 
 	@Test
 	public void sseBeanDoesNotExists() throws Exception {
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProviderXY", "message1", null, null);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProviderXY",
+				"message1", null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -78,12 +79,14 @@ public class RouterControllerSseTest {
 		ReflectionTestUtils.setField(configurationService, "configuration", config);
 		configurationService.afterPropertiesSet();
 
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProviderXY", "message1", null, null);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProviderXY",
+				"message1", null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
 		assertThat(event.getEvent()).isEqualTo("error");
-		assertThat(event.getComment()).isEqualTo("Bean or Method 'sseProviderXY.message1' not found");
+		assertThat(event.getComment()).isEqualTo(
+				"Bean or Method 'sseProviderXY.message1' not found");
 		assertThat(event.getData()).isEqualTo("Server Error");
 		assertThat(event.getId()).isNull();
 		assertThat(event.getRetry()).isNull();
@@ -92,7 +95,8 @@ public class RouterControllerSseTest {
 	@Test
 	public void sseNoArguments() throws Exception {
 
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message1", null, null);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message1", null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -105,7 +109,8 @@ public class RouterControllerSseTest {
 
 	@Test
 	public void sseSupportedArguments() throws Exception {
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message2", null, null);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message2", null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -121,7 +126,8 @@ public class RouterControllerSseTest {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("id", "2");
 
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message3", params, null);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message3", params, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -135,7 +141,8 @@ public class RouterControllerSseTest {
 	@Test
 	public void sseRequiredArgumentNoRequestParameter() throws Exception {
 
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message3", null, null);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message3", null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -153,7 +160,8 @@ public class RouterControllerSseTest {
 		ReflectionTestUtils.setField(configurationService, "configuration", config);
 		configurationService.afterPropertiesSet();
 
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message3", null, null);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message3", null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -170,7 +178,8 @@ public class RouterControllerSseTest {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("id", "7");
 
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message4", params, null);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message4", params, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -184,7 +193,8 @@ public class RouterControllerSseTest {
 
 	@Test
 	public void sseDefaultValueArgumentWithoutRequestParameter() throws Exception {
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message4", null, null, true);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message4", null, null, true);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -200,7 +210,8 @@ public class RouterControllerSseTest {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("id", "3");
 
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message5", params, null);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message5", params, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -213,7 +224,8 @@ public class RouterControllerSseTest {
 
 	@Test
 	public void sseNotRequiredArgumentWithoutRequestParameter() throws Exception {
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message5", null, null);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message5", null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -229,7 +241,8 @@ public class RouterControllerSseTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("header", "headerValue");
 
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message7", null, headers);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message7", null, headers);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -250,7 +263,8 @@ public class RouterControllerSseTest {
 		headers.add("anotherName", "headerValue1");
 		headers.add("anotherName", "headerValue2");
 
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message8", params, headers);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message8", params, headers);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -263,7 +277,8 @@ public class RouterControllerSseTest {
 		params.clear();
 		params.put("id", "2");
 
-		events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message8", params, null, true);
+		events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message8",
+				params, null, true);
 		assertThat(events).hasSize(1);
 		event = events.get(0);
 
@@ -280,7 +295,8 @@ public class RouterControllerSseTest {
 		headers.add("header", "headerValue");
 		headers.add("anotherName", "headerValue1");
 
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message9", null, headers);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message9", null, headers);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -294,7 +310,8 @@ public class RouterControllerSseTest {
 	@Test
 	public void sseRequiredHeaderWithValueAndDefault2() throws Exception {
 
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message9", null, null);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message9", null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -312,7 +329,8 @@ public class RouterControllerSseTest {
 		headers.add("header", "headerValue");
 		headers.add("anotherName", "headerValue1");
 
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message10", null, headers);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message10", null, headers);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -325,7 +343,8 @@ public class RouterControllerSseTest {
 
 	@Test
 	public void sseOptionalHeaderWithoutValueAndDefault2() throws Exception {
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message10", null, null);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message10", null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -341,7 +360,8 @@ public class RouterControllerSseTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("last", "lastHeader");
 
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message11", null, headers);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message11", null, headers);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -361,7 +381,8 @@ public class RouterControllerSseTest {
 		headers.add("last", "lastHeader");
 		headers.add("header2", "2ndHeader");
 
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message11", params, headers);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message11", params, headers);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -382,7 +403,8 @@ public class RouterControllerSseTest {
 		headers.add("header1", "1st");
 		headers.add("header2", "2nd");
 
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message11", params, headers);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message11", params, headers);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -399,7 +421,8 @@ public class RouterControllerSseTest {
 		headers.add("intHeader", "2");
 		headers.add("booleanHeader", "true");
 
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message12", null, headers);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message12", null, headers);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -412,7 +435,8 @@ public class RouterControllerSseTest {
 
 	@Test
 	public void sseWithWriterAndStringReturn() throws Exception {
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message13", null, null);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message13", null, null);
 		assertThat(events).hasSize(5);
 
 		SSEvent event = events.get(0);
@@ -453,7 +477,8 @@ public class RouterControllerSseTest {
 
 	@Test
 	public void sseWithWriterAndSSEventReturn() throws Exception {
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message14", null, null);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message14", null, null);
 		assertThat(events).hasSize(3);
 
 		SSEvent event = events.get(0);
@@ -480,7 +505,8 @@ public class RouterControllerSseTest {
 
 	@Test
 	public void sseWithWriterAndVoidReturn() throws Exception {
-		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message15", null, null);
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"message15", null, null);
 		assertThat(events).hasSize(4);
 
 		SSEvent event = events.get(0);

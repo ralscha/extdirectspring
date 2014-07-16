@@ -69,9 +69,10 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
-	public List<Row> method3(HttpServletResponse response, HttpServletRequest request, HttpSession session,
-			Locale locale) {
-		return createRows(":" + (response != null) + ";" + (request != null) + ";" + (session != null) + ";" + locale);
+	public List<Row> method3(HttpServletResponse response, HttpServletRequest request,
+			HttpSession session, Locale locale) {
+		return createRows(":" + (response != null) + ";" + (request != null) + ";"
+				+ (session != null) + ";" + locale);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, entryClass = String.class)
@@ -80,8 +81,8 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group3")
-	public ExtDirectStoreResult<Row> method5(ExtDirectStoreReadRequest request, Locale locale,
-			@RequestParam(value = "id") int id) {
+	public ExtDirectStoreResult<Row> method5(ExtDirectStoreReadRequest request,
+			Locale locale, @RequestParam(value = "id") int id) {
 		assertThat(id).isEqualTo(10);
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
@@ -92,29 +93,34 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
-	public ExtDirectStoreResult<Row> method6(@RequestParam(value = "id", defaultValue = "1") int id,
-			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
+	public ExtDirectStoreResult<Row> method6(@RequestParam(value = "id",
+			defaultValue = "1") int id, final HttpServletRequest servletRequest,
+			ExtDirectStoreReadRequest request) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
-		return createExtDirectStoreResult(request, ":" + id + ";" + (servletRequest != null));
+		return createExtDirectStoreResult(request, ":" + id + ";"
+				+ (servletRequest != null));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
 	public List<Row> method7(@RequestParam(value = "id", required = false) Integer id) {
 		if (id == null) {
 			assertThat(id).isNull();
-		} else {
+		}
+		else {
 			assertThat(id).isEqualTo(Integer.valueOf(11));
 		}
 		return createRows(":" + id);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
-	public ExtDirectStoreResult<Row> method8(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
+	public ExtDirectStoreResult<Row> method8(
+			@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
 			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(endDate).isNotNull();
 		assertThat(servletRequest).isNotNull();
-		return createExtDirectStoreResult(request, ":" + endDate.toString() + ";" + (servletRequest != null));
+		return createExtDirectStoreResult(request, ":" + endDate.toString() + ";"
+				+ (servletRequest != null));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
@@ -124,8 +130,8 @@ public class RemoteProviderStoreRead {
 		return result;
 	}
 
-	private static ExtDirectStoreResult<Row> createExtDirectStoreResult(ExtDirectStoreReadRequest request,
-			final String appendix) {
+	private static ExtDirectStoreResult<Row> createExtDirectStoreResult(
+			ExtDirectStoreReadRequest request, final String appendix) {
 		List<Row> rows = createRows(appendix);
 
 		int totalSize = rows.size();
@@ -139,7 +145,8 @@ public class RemoteProviderStoreRead {
 						iterator.remove();
 					}
 				}
-			} else if ("firstname".equals(request.getQuery())) {
+			}
+			else if ("firstname".equals(request.getQuery())) {
 				for (Iterator<Row> iterator = rows.listIterator(); iterator.hasNext();) {
 					Row row = iterator.next();
 					if (!row.getName().startsWith("firstname")) {
@@ -158,7 +165,8 @@ public class RemoteProviderStoreRead {
 
 				if (sortInfo.getDirection() == SortDirection.ASCENDING) {
 					Collections.sort(rows);
-				} else {
+				}
+				else {
 					Collections.sort(rows, new Comparator<Row>() {
 
 						// @Override
@@ -168,12 +176,14 @@ public class RemoteProviderStoreRead {
 						}
 					});
 				}
-			} else if (StringUtils.hasText(request.getSort())) {
+			}
+			else if (StringUtils.hasText(request.getSort())) {
 				assertThat(request.getSort()).isEqualTo("id");
 
 				if (request.isAscendingSort()) {
 					Collections.sort(rows);
-				} else if (request.isDescendingSort()) {
+				}
+				else if (request.isDescendingSort()) {
 					Collections.sort(rows, new Comparator<Row>() {
 
 						// @Override
@@ -192,7 +202,8 @@ public class RemoteProviderStoreRead {
 				assertThat(groupInfo.getProperty()).isEqualTo("id");
 				if (groupInfo.getDirection() == SortDirection.ASCENDING) {
 					Collections.sort(rows);
-				} else {
+				}
+				else {
 					Collections.sort(rows, new Comparator<Row>() {
 
 						// @Override
@@ -203,12 +214,14 @@ public class RemoteProviderStoreRead {
 					});
 				}
 
-			} else if (StringUtils.hasText(request.getGroupBy())) {
+			}
+			else if (StringUtils.hasText(request.getGroupBy())) {
 				assertThat(request.getGroupBy()).isEqualTo("id");
 
 				if (request.isAscendingGroupSort()) {
 					Collections.sort(rows);
-				} else if (request.isDescendingGroupSort()) {
+				}
+				else if (request.isDescendingGroupSort()) {
 					Collections.sort(rows, new Comparator<Row>() {
 
 						// @Override
@@ -221,14 +234,17 @@ public class RemoteProviderStoreRead {
 			}
 
 			if (request.getStart() != null && request.getLimit() != null) {
-				rows = rows.subList(request.getStart(), Math.min(totalSize, request.getStart() + request.getLimit()));
-			} else {
+				rows = rows.subList(request.getStart(),
+						Math.min(totalSize, request.getStart() + request.getLimit()));
+			}
+			else {
 				rows = rows.subList(0, 50);
 			}
 
 		}
 
-		return new ExtDirectStoreResult<Row>().setTotal(Long.valueOf(totalSize)).setRecords(rows).setSuccess(true);
+		return new ExtDirectStoreResult<Row>().setTotal(Long.valueOf(totalSize))
+				.setRecords(rows).setSuccess(true);
 
 	}
 
@@ -236,7 +252,8 @@ public class RemoteProviderStoreRead {
 		List<Row> rows = new ArrayList<Row>();
 		for (int i = 0; i < 100; i += 2) {
 			rows.add(new Row(i, "name: " + i + appendix, true, "" + (1000 + i)));
-			rows.add(new Row(i + 1, "firstname: " + (i + 1) + appendix, false, "" + (10 + i + 1)));
+			rows.add(new Row(i + 1, "firstname: " + (i + 1) + appendix, false, ""
+					+ (10 + i + 1)));
 		}
 		return rows;
 	}
@@ -294,7 +311,8 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
-	public List<Row> methodFilter(@RequestParam("type") int type, ExtDirectStoreReadRequest request) {
+	public List<Row> methodFilter(@RequestParam("type") int type,
+			ExtDirectStoreReadRequest request) {
 
 		List<Filter> filters = new ArrayList<Filter>(request.getFilters());
 		switch (type) {
@@ -342,7 +360,8 @@ public class RemoteProviderStoreRead {
 			assertThat(nf2).isSameAs((NumericFilter) filters.get(0));
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("id");
-			assertThat(allFiltersForField).containsExactly(filters.get(0), filters.get(1));
+			assertThat(allFiltersForField)
+					.containsExactly(filters.get(0), filters.get(1));
 
 			assertThat(request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
@@ -455,7 +474,8 @@ public class RemoteProviderStoreRead {
 			assertThat(df2).isSameAs((DateFilter) filters.get(0));
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("date");
-			assertThat(allFiltersForField).containsExactly(filters.get(0), filters.get(1));
+			assertThat(allFiltersForField)
+					.containsExactly(filters.get(0), filters.get(1));
 
 			return createResult(type);
 		}

@@ -23,7 +23,7 @@ import org.springframework.core.convert.ConversionService;
 
 /**
  * Base class for all filter implementation.
- * 
+ *
  * @see BooleanFilter
  * @see DateFilter
  * @see ListFilter
@@ -42,7 +42,8 @@ public class Filter {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Filter createFilter(Map<String, Object> jsonData, ConversionService conversionService) {
+	public static Filter createFilter(Map<String, Object> jsonData,
+			ConversionService conversionService) {
 		String type = (String) jsonData.get("type");
 		Object source = jsonData.get("value");
 
@@ -53,10 +54,12 @@ public class Filter {
 				// type of the value
 				if (source instanceof Number) {
 					return new NumericFilter(property, (Number) source, null);
-				} else if (source instanceof Boolean) {
+				}
+				else if (source instanceof Boolean) {
 					return new BooleanFilter(property, (Boolean) source);
 				}
-				return new StringFilter(property, source != null ? source.toString() : null);
+				return new StringFilter(property, source != null ? source.toString()
+						: null);
 			}
 
 			return null;
@@ -73,23 +76,27 @@ public class Filter {
 			}
 			Number value = conversionService.convert(source, Number.class);
 			return new NumericFilter(field, value, Comparison.fromString(comparison));
-		} else if (type.equals("string")) {
+		}
+		else if (type.equals("string")) {
 			String value = (String) source;
 			return new StringFilter(field, value);
-		} else if (type.equals("date")) {
+		}
+		else if (type.equals("date")) {
 			String comparison = (String) jsonData.get("comparison");
 			if (comparison == null) {
 				comparison = (String) jsonData.get("operator");
 			}
 			String value = (String) source;
 			return new DateFilter(field, value, Comparison.fromString(comparison));
-		} else if (type.equals("list") || type.equals("combo")) {
+		}
+		else if (type.equals("list") || type.equals("combo")) {
 			if (source instanceof String) {
 				String[] values = ((String) source).split(",");
 				return new ListFilter(field, Arrays.asList(values));
 			}
 			return new ListFilter(field, (List<String>) source);
-		} else if (type.equals("boolean")) {
+		}
+		else if (type.equals("boolean")) {
 			boolean value = (Boolean) source;
 			return new BooleanFilter(field, value);
 		}

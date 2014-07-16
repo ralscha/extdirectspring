@@ -30,7 +30,8 @@ public class FormLoadMethodService extends BaseViewService {
 		return createEmployee();
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, jsonView = Views.Summary.class)
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD,
+			jsonView = Views.Summary.class)
 	public Employee annotationSummaryView() {
 		return createEmployee();
 	}
@@ -50,12 +51,14 @@ public class FormLoadMethodService extends BaseViewService {
 		return new ModelAndJsonView(createEmployee(), Views.Detail.class);
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, jsonView = Views.Summary.class)
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD,
+			jsonView = Views.Summary.class)
 	public ModelAndJsonView overrideMajDetailView() {
 		return new ModelAndJsonView(createEmployee(), Views.Detail.class);
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, jsonView = Views.Summary.class)
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD,
+			jsonView = Views.Summary.class)
 	public ModelAndJsonView overrideMajNoView() {
 		return new ModelAndJsonView(createEmployee(), ExtDirectMethod.NoJsonView.class);
 	}
@@ -70,12 +73,14 @@ public class FormLoadMethodService extends BaseViewService {
 		return createEmployeeWithJsonView(Views.Detail.class);
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, jsonView = Views.Summary.class)
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD,
+			jsonView = Views.Summary.class)
 	public EmployeeWithJsonView overrideSubclassDetailView() {
 		return createEmployeeWithJsonView(Views.Detail.class);
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, jsonView = Views.Summary.class)
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD,
+			jsonView = Views.Summary.class)
 	public EmployeeWithJsonView overrideSubclassNoView() {
 		return createEmployeeWithJsonView(ExtDirectMethod.NoJsonView.class);
 	}
@@ -94,14 +99,16 @@ public class FormLoadMethodService extends BaseViewService {
 		return result;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, jsonView = Views.Summary.class)
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD,
+			jsonView = Views.Summary.class)
 	public ExtDirectFormLoadResult overrideResultDetailView() {
 		ExtDirectFormLoadResult result = new ExtDirectFormLoadResult(createEmployee());
 		result.setJsonView(Views.Detail.class);
 		return result;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, jsonView = Views.Summary.class)
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD,
+			jsonView = Views.Summary.class)
 	public ExtDirectFormLoadResult overrideResultNoView() {
 		ExtDirectFormLoadResult result = new ExtDirectFormLoadResult(createEmployee());
 		result.setJsonView(ExtDirectMethod.NoJsonView.class);

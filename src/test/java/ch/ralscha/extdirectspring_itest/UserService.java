@@ -28,8 +28,10 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 @Service
 public class UserService {
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_user_service", synchronizeOnSession = true)
-	public ExtDirectFormPostResult updateUser(HttpServletRequest request, @Valid User user, BindingResult result) {
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_user_service",
+			synchronizeOnSession = true)
+	public ExtDirectFormPostResult updateUser(HttpServletRequest request,
+			@Valid User user, BindingResult result) {
 
 		if (request.getParameter("addemailerror") != null) {
 			result.rejectValue("email", "", "another email error");

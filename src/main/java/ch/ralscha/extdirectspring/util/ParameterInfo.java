@@ -28,7 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ValueConstants;
 
 /**
- * Object holds information about a parameter. i.e. the name, type and the attributes of a RequestParam annotation.
+ * Object holds information about a parameter. i.e. the name, type and the attributes of a
+ * RequestParam annotation.
  */
 public final class ParameterInfo {
 
@@ -57,7 +58,8 @@ public final class ParameterInfo {
 		this.name = methodParam.getParameterName();
 		this.typeDescriptor = new TypeDescriptor(methodParam);
 
-		this.supportedParameter = SupportedParameters.isSupported(typeDescriptor.getObjectType());
+		this.supportedParameter = SupportedParameters.isSupported(typeDescriptor
+				.getObjectType());
 
 		Annotation[] paramAnnotations = methodParam.getParameterAnnotations();
 
@@ -68,19 +70,20 @@ public final class ParameterInfo {
 					this.name = requestParam.value();
 				}
 				this.required = requestParam.required();
-				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestParam.defaultValue()) ? null
-						: requestParam.defaultValue();
+				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestParam
+						.defaultValue()) ? null : requestParam.defaultValue();
 				this.hasRequestParamAnnotation = true;
 				this.hasRequestHeaderAnnotation = false;
 				break;
-			} else if (RequestHeader.class.isInstance(paramAnn)) {
+			}
+			else if (RequestHeader.class.isInstance(paramAnn)) {
 				RequestHeader requestHeader = (RequestHeader) paramAnn;
 				if (StringUtils.hasText(requestHeader.value())) {
 					this.name = requestHeader.value();
 				}
 				this.required = requestHeader.required();
-				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestHeader.defaultValue()) ? null
-						: requestHeader.defaultValue();
+				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestHeader
+						.defaultValue()) ? null : requestHeader.defaultValue();
 				this.hasRequestParamAnnotation = false;
 				this.hasRequestHeaderAnnotation = true;
 				break;
@@ -93,7 +96,8 @@ public final class ParameterInfo {
 	}
 
 	public Class<?> getCollectionType() {
-		if (typeDescriptor.isCollection() && typeDescriptor.getElementTypeDescriptor() != null) {
+		if (typeDescriptor.isCollection()
+				&& typeDescriptor.getElementTypeDescriptor() != null) {
 			return typeDescriptor.getElementTypeDescriptor().getType();
 		}
 		return null;

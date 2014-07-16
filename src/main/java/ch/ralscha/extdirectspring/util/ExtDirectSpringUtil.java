@@ -47,7 +47,7 @@ public final class ExtDirectSpringUtil {
 
 	/**
 	 * Checks if two objects are equal. Returns true if both objects are null
-	 * 
+	 *
 	 * @param a object one
 	 * @param b object two
 	 * @return true if objects are equal
@@ -58,7 +58,7 @@ public final class ExtDirectSpringUtil {
 
 	/**
 	 * Checks if the request is a multipart request
-	 * 
+	 *
 	 * @param request the HTTP servlet request
 	 * @return true if request is a Multipart request (file upload)
 	 */
@@ -72,7 +72,7 @@ public final class ExtDirectSpringUtil {
 
 	/**
 	 * Invokes a method on a Spring managed bean.
-	 * 
+	 *
 	 * @param context a Spring application context
 	 * @param beanName the name of the bean
 	 * @param methodInfo the methodInfo object
@@ -82,8 +82,10 @@ public final class ExtDirectSpringUtil {
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public static Object invoke(ApplicationContext context, String beanName, MethodInfo methodInfo,
-			final Object[] params) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+	public static Object invoke(ApplicationContext context, String beanName,
+			MethodInfo methodInfo, final Object[] params)
+			throws IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
 		Object bean = context.getBean(beanName);
 
 		Method handlerMethod = methodInfo.getMethod();
@@ -91,19 +93,20 @@ public final class ExtDirectSpringUtil {
 		return handlerMethod.invoke(bean, params);
 	}
 
-	public static Object invoke(HttpServletRequest request, HttpServletResponse response, Locale locale,
-			ApplicationContext context, ExtDirectRequest directRequest, ParametersResolver parametersResolver)
-			throws Exception {
+	public static Object invoke(HttpServletRequest request, HttpServletResponse response,
+			Locale locale, ApplicationContext context, ExtDirectRequest directRequest,
+			ParametersResolver parametersResolver) throws Exception {
 
-		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(directRequest.getAction(), directRequest.getMethod());
-		Object[] resolvedParams = parametersResolver.resolveParameters(request, response, locale, directRequest,
-				methodInfo);
+		MethodInfo methodInfo = MethodInfoCache.INSTANCE.get(directRequest.getAction(),
+				directRequest.getMethod());
+		Object[] resolvedParams = parametersResolver.resolveParameters(request, response,
+				locale, directRequest, methodInfo);
 		return invoke(context, directRequest.getAction(), methodInfo, resolvedParams);
 	}
 
 	/**
 	 * Converts a stacktrace into a String
-	 * 
+	 *
 	 * @param t a Throwable
 	 * @return the whole stacktrace in a String
 	 */
@@ -120,19 +123,21 @@ public final class ExtDirectSpringUtil {
 
 	/**
 	 * Adds Expires, ETag and Cache-Control response headers.
-	 * 
+	 *
 	 * @param response the HTTP servlet response
 	 * @param etag the calculated etag (md5) of the response
-	 * @param month number of months the response can be cached. Added to the Expires and Cache-Control header. If null
-	 *            defaults to 6 months.
+	 * @param month number of months the response can be cached. Added to the Expires and
+	 * Cache-Control header. If null defaults to 6 months.
 	 */
-	public static void addCacheHeaders(HttpServletResponse response, String etag, Integer month) {
+	public static void addCacheHeaders(HttpServletResponse response, String etag,
+			Integer month) {
 		Assert.notNull(etag, "ETag must not be null");
 
 		long seconds;
 		if (month != null) {
 			seconds = month * secondsInAMonth;
-		} else {
+		}
+		else {
 			seconds = 6L * secondsInAMonth;
 		}
 
@@ -142,18 +147,21 @@ public final class ExtDirectSpringUtil {
 	}
 
 	/**
-	 * Checks etag and sends back HTTP status 304 if not modified. If modified sets content type and content length,
-	 * adds cache headers ( {@link #addCacheHeaders(HttpServletResponse, String, Integer)}), writes the data into the
-	 * {@link HttpServletResponse#getOutputStream()} and flushes it.
-	 * 
+	 * Checks etag and sends back HTTP status 304 if not modified. If modified sets
+	 * content type and content length, adds cache headers (
+	 * {@link #addCacheHeaders(HttpServletResponse, String, Integer)}), writes the data
+	 * into the {@link HttpServletResponse#getOutputStream()} and flushes it.
+	 *
 	 * @param request the HTTP servlet request
 	 * @param response the HTTP servlet response
 	 * @param data the response data
-	 * @param contentType the content type of the data (i.e. "application/javascript;charset=UTF-8")
+	 * @param contentType the content type of the data (i.e.
+	 * "application/javascript;charset=UTF-8")
 	 * @throws IOException
 	 */
-	public static void handleCacheableResponse(HttpServletRequest request, HttpServletResponse response, byte[] data,
-			String contentType) throws IOException {
+	public static void handleCacheableResponse(HttpServletRequest request,
+			HttpServletResponse response, byte[] data, String contentType)
+			throws IOException {
 		String ifNoneMatch = request.getHeader("If-None-Match");
 		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + "\"";
 

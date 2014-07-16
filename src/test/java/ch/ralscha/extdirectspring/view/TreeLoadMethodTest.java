@@ -86,8 +86,8 @@ public class TreeLoadMethodTest extends BaseViewTest {
 	}
 
 	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
-		List<Map<String, Object>> result = (List<Map<String, Object>>) ControllerUtil.sendAndReceiveObject(mockMvc,
-				bean, method);
+		List<Map<String, Object>> result = (List<Map<String, Object>>) ControllerUtil
+				.sendAndReceiveObject(mockMvc, bean, method);
 		assertThat(result).hasSize(2);
 		for (int i = 1; i <= result.size(); i++) {
 			Map<String, Object> model = result.get(i - 1);
@@ -96,8 +96,10 @@ public class TreeLoadMethodTest extends BaseViewTest {
 			for (MapEntry entry : expectedEntries) {
 				if (entry.key.equals("id")) {
 					assertThat(model).contains(MapEntry.entry("id", i));
-				} else {
-					assertThat(model).contains(MapEntry.entry(entry.key, "" + entry.value + i));
+				}
+				else {
+					assertThat(model).contains(
+							MapEntry.entry(entry.key, "" + entry.value + i));
 				}
 			}
 		}

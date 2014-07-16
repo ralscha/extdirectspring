@@ -64,7 +64,8 @@ public class ExtDirectRequest {
 	}
 
 	/**
-	 * @return the transaction ID that is associated with this request. The response has to return the same tid
+	 * @return the transaction ID that is associated with this request. The response has
+	 * to return the same tid
 	 */
 	public int getTid() {
 		return tid;
@@ -87,8 +88,8 @@ public class ExtDirectRequest {
 
 	@Override
 	public String toString() {
-		return "ExtDirectRequest [action=" + action + ", method=" + method + ", type=" + type + ", tid=" + tid
-				+ ", data=" + data + "]";
+		return "ExtDirectRequest [action=" + action + ", method=" + method + ", type="
+				+ type + ", tid=" + tid + ", data=" + data + "]";
 	}
 
 }

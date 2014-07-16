@@ -125,7 +125,8 @@ public class FormLoadMethodTest extends BaseViewTest {
 	}
 
 	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
-		Map<String, Object> result = ControllerUtil.sendAndReceiveMap(mockMvc, bean, method);
+		Map<String, Object> result = ControllerUtil.sendAndReceiveMap(mockMvc, bean,
+				method);
 		assertThat(result).hasSize(2).contains(MapEntry.entry("success", true));
 		Map<String, Object> data = (Map<String, Object>) result.get("data");
 		assertThat(data).hasSize(expectedEntries.length);

@@ -149,14 +149,15 @@ public class ExceptionHandlingTest {
 	}
 
 	private ExtDirectResponse runTest(Configuration configuration) throws Exception {
-		ReflectionTestUtils.setField(configurationService, "configuration", configuration);
+		ReflectionTestUtils
+				.setField(configurationService, "configuration", configuration);
 		configurationService.afterPropertiesSet();
 
-		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple", "method4b", 2, new Object[] { 3,
-				"xxx", "string.param" });
+		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple",
+				"method4b", 2, new Object[] { 3, "xxx", "string.param" });
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
-				.getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result
+				.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -166,20 +167,23 @@ public class ExceptionHandlingTest {
 		assertThat(resp.getTid()).isEqualTo(2);
 		assertThat(resp.getResult()).isNull();
 
-		ReflectionTestUtils.setField(configurationService, "configuration", new Configuration());
+		ReflectionTestUtils.setField(configurationService, "configuration",
+				new Configuration());
 		configurationService.afterPropertiesSet();
 
 		return resp;
 	}
 
 	private ExtDirectResponse runTest11(Configuration configuration) throws Exception {
-		ReflectionTestUtils.setField(configurationService, "configuration", configuration);
+		ReflectionTestUtils
+				.setField(configurationService, "configuration", configuration);
 		configurationService.afterPropertiesSet();
 
-		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple", "method11", 3, null);
+		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple",
+				"method11", 3, null);
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result.getResponse()
-				.getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result
+				.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -189,7 +193,8 @@ public class ExceptionHandlingTest {
 		assertThat(resp.getTid()).isEqualTo(3);
 		assertThat(resp.getResult()).isNull();
 
-		ReflectionTestUtils.setField(configurationService, "configuration", new Configuration());
+		ReflectionTestUtils.setField(configurationService, "configuration",
+				new Configuration());
 		configurationService.afterPropertiesSet();
 
 		return resp;

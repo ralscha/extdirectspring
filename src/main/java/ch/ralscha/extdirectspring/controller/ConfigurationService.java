@@ -70,34 +70,46 @@ public class ConfigurationService implements InitializingBean, DisposableBean {
 
 		if (configuration.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.CONCURRENT
 				&& configuration.getBatchedMethodsExecutorService() == null) {
-			configuration.setBatchedMethodsExecutorService(Executors.newFixedThreadPool(5));
+			configuration.setBatchedMethodsExecutorService(Executors
+					.newFixedThreadPool(5));
 		}
 
 		if (configuration.getConversionService() == null) {
-			Map<String, ConversionService> conversionServices = context.getBeansOfType(ConversionService.class);
+			Map<String, ConversionService> conversionServices = context
+					.getBeansOfType(ConversionService.class);
 			if (conversionServices.isEmpty()) {
-				configuration.setConversionService(new DefaultFormattingConversionService());
-			} else if (conversionServices.size() == 1) {
-				configuration.setConversionService(conversionServices.values().iterator().next());
-			} else {
+				configuration
+						.setConversionService(new DefaultFormattingConversionService());
+			}
+			else if (conversionServices.size() == 1) {
+				configuration.setConversionService(conversionServices.values().iterator()
+						.next());
+			}
+			else {
 				if (conversionServices.containsKey("mvcConversionService")) {
-					configuration.setConversionService(conversionServices.get("mvcConversionService"));
-				} else {
-					for (ConversionService conversionService : conversionServices.values()) {
+					configuration.setConversionService(conversionServices
+							.get("mvcConversionService"));
+				}
+				else {
+					for (ConversionService conversionService : conversionServices
+							.values()) {
 						if (conversionService instanceof FormattingConversionService) {
 							configuration.setConversionService(conversionService);
 							break;
 						}
 					}
 					if (configuration.getConversionService() == null) {
-						configuration.setConversionService(conversionServices.values().iterator().next());
+						configuration.setConversionService(conversionServices.values()
+								.iterator().next());
 					}
 				}
 			}
 		}
 
-		Collection<WebArgumentResolver> webResolvers = context.getBeansOfType(WebArgumentResolver.class).values();
-		parametersResolver = new ParametersResolver(configuration.getConversionService(), jsonHandler, webResolvers);
+		Collection<WebArgumentResolver> webResolvers = context.getBeansOfType(
+				WebArgumentResolver.class).values();
+		parametersResolver = new ParametersResolver(configuration.getConversionService(),
+				jsonHandler, webResolvers);
 	}
 
 	@Override

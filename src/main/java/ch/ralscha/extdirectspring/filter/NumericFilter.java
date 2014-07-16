@@ -37,7 +37,8 @@ public class NumericFilter extends Filter {
 
 	@Override
 	public String toString() {
-		return "NumericFilter [value=" + value + ", comparison=" + comparison + ", getField()=" + getField() + "]";
+		return "NumericFilter [value=" + value + ", comparison=" + comparison
+				+ ", getField()=" + getField() + "]";
 	}
 
 }
