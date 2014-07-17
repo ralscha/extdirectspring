@@ -325,6 +325,7 @@ public class ControllerUtil {
 		return (Map<String, Object>) sendAndReceiveObject(mockMvc, bean, method);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T> T readValue(String json, Class<?> clazz) {
 		try {
 			return (T) mapper.readValue(json, clazz);

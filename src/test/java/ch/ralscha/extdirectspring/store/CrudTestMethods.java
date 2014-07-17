@@ -81,7 +81,7 @@ public class CrudTestMethods {
 		ExtDirectStoreResult<Book> storeResponse = ControllerUtil.convertValue(
 				resp.getResult(), new TypeReference<ExtDirectStoreResult<Book>>() {/* nothing_here */
 				});
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(51));
+		assertThat(storeResponse.getTotal()).isEqualTo(51L);
 		assertThat(storeResponse.isSuccess()).isTrue();
 		assertThat(storeResponse.getRecords().size()).isEqualTo(2);
 
@@ -407,7 +407,7 @@ public class CrudTestMethods {
 		assertThat(book.getIsbn()).isEqualTo("DELETED_1847198708");
 
 		book = it.next();
-		assertThat(book.getId()).isEqualTo(Integer.valueOf(10));
+		assertThat(book.getId()).isEqualTo(10);
 		assertThat(book.getTitle()).isNull();
 		assertThat(book.getIsbn()).isEqualTo("DELETED_1849511209");
 	}

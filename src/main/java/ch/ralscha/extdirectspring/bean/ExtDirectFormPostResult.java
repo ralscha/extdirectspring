@@ -96,11 +96,11 @@ public class ExtDirectFormPostResult {
 				fieldErrors.add(message);
 			}
 			if (errorMap.isEmpty()) {
-				addResultProperty(SUCCESS_PROPERTY, true);
+				addResultProperty(SUCCESS_PROPERTY, Boolean.TRUE);
 			}
 			else {
 				addResultProperty(ERRORS_PROPERTY, errorMap);
-				addResultProperty(SUCCESS_PROPERTY, false);
+				addResultProperty(SUCCESS_PROPERTY, Boolean.FALSE);
 			}
 		}
 		else {
@@ -158,11 +158,11 @@ public class ExtDirectFormPostResult {
 				fieldErrors.add(message);
 			}
 			if (errorMap.isEmpty()) {
-				addResultProperty(SUCCESS_PROPERTY, true);
+				addResultProperty(SUCCESS_PROPERTY, Boolean.TRUE);
 			}
 			else {
 				addResultProperty(ERRORS_PROPERTY, errorMap);
-				addResultProperty(SUCCESS_PROPERTY, false);
+				addResultProperty(SUCCESS_PROPERTY, Boolean.FALSE);
 			}
 		}
 		else {
@@ -184,7 +184,7 @@ public class ExtDirectFormPostResult {
 
 		addErrors(field, Collections.singletonList(error));
 
-		addResultProperty(SUCCESS_PROPERTY, false);
+		addResultProperty(SUCCESS_PROPERTY, Boolean.FALSE);
 	}
 
 	/**
@@ -194,6 +194,7 @@ public class ExtDirectFormPostResult {
 	 * @param field the name of the field
 	 * @param errors a collection of error messages
 	 */
+	@SuppressWarnings("unchecked")
 	public void addErrors(String field, List<String> errors) {
 		Assert.notNull(field, "field must not be null");
 		Assert.notNull(errors, "field must not be null");
@@ -213,7 +214,7 @@ public class ExtDirectFormPostResult {
 		}
 		fieldErrors.addAll(errors);
 
-		addResultProperty(SUCCESS_PROPERTY, false);
+		addResultProperty(SUCCESS_PROPERTY, Boolean.FALSE);
 	}
 
 	public void addResultProperty(String key, Object value) {

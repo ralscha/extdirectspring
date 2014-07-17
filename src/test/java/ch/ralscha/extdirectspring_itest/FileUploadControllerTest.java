@@ -95,6 +95,7 @@ public class FileUploadControllerTest extends JettyTest {
 			assertThat(rootAsMap.get("action")).isEqualTo("fileUploadController");
 			assertThat(rootAsMap.get("tid")).isEqualTo(2);
 
+			@SuppressWarnings("unchecked")
 			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 			assertThat(result).hasSize(7);
 			assertThat(result.get("name")).isEqualTo("Jimöäü");
@@ -103,7 +104,7 @@ public class FileUploadControllerTest extends JettyTest {
 			assertThat(result.get("email")).isEqualTo("test@test.ch");
 			assertThat(result.get("fileName")).isEqualTo("UploadTestFile.txt");
 			assertThat(result.get("fileContents")).isEqualTo("contents of upload file");
-			assertThat(result.get("success")).isEqualTo(true);
+			assertThat(result.get("success")).isEqualTo(Boolean.TRUE);
 
 			EntityUtils.consume(resEntity);
 		}

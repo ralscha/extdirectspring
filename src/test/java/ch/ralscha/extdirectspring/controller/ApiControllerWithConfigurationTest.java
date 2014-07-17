@@ -164,7 +164,7 @@ public class ApiControllerWithConfigurationTest {
 	@Test
 	public void testWithActionNamespaceCustomConfig() throws Exception {
 		Configuration config = new Configuration();
-		config.setEnableBuffer(false);
+		config.setEnableBuffer(Boolean.FALSE);
 		config.setTimeout(10000);
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns")
@@ -196,7 +196,7 @@ public class ApiControllerWithConfigurationTest {
 	@Test
 	public void testEmptyGroupCustomConfig() throws Exception {
 		Configuration config = new Configuration();
-		config.setEnableBuffer(true);
+		config.setEnableBuffer(Boolean.TRUE);
 		config.setTimeout(33333);
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
@@ -209,7 +209,7 @@ public class ApiControllerWithConfigurationTest {
 	@Test
 	public void testBlankStringGroupCustomConfig() throws Exception {
 		Configuration config = new Configuration();
-		config.setEnableBuffer(true);
+		config.setEnableBuffer(Boolean.TRUE);
 		config.setTimeout(33333);
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
@@ -231,7 +231,7 @@ public class ApiControllerWithConfigurationTest {
 	@Test
 	public void testUnknownGroupCustomConfig() throws Exception {
 		Configuration config = new Configuration();
-		config.setEnableBuffer(true);
+		config.setEnableBuffer(Boolean.TRUE);
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
@@ -385,25 +385,25 @@ public class ApiControllerWithConfigurationTest {
 	public void testFullRouterUrl() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("apiNs").actionNs("")
 				.remotingApiVar("TEST_RMT_API").pollingUrlsVar("TEST_POLL_URLS")
-				.sseVar("TEST_SSE").fullRouterUrl(true).group("group2").build();
+				.sseVar("TEST_SSE").fullRouterUrl(Boolean.TRUE).group("group2").build();
 		updateConfiguration(params, null);
 		runTest(mockMvc, params, group2Apis(null, "http://localhost/router"));
 
 		params = ApiRequestParams.builder().apiNs("apiNs").remotingApiVar("TEST_RMT_API")
-				.pollingUrlsVar("TEST_POLL_URLS").sseVar("TEST_SSE").fullRouterUrl(true)
-				.group("group2").build();
+				.pollingUrlsVar("TEST_POLL_URLS").sseVar("TEST_SSE")
+				.fullRouterUrl(Boolean.TRUE).group("group2").build();
 		updateConfiguration(params, null);
 		runTest(mockMvc, params, group2Apis(null, "http://localhost/router"));
 
 		params = ApiRequestParams.builder().apiNs("apiNs").actionNs("")
 				.remotingApiVar("TEST_RMT_API").pollingUrlsVar("TEST_POLL_URLS")
-				.sseVar("TEST_SSE").fullRouterUrl(false).group("group2").build();
+				.sseVar("TEST_SSE").fullRouterUrl(Boolean.FALSE).group("group2").build();
 		updateConfiguration(params, null);
 		runTest(mockMvc, params, group2Apis(null, "/router"));
 
 		params = ApiRequestParams.builder().apiNs("apiNs").remotingApiVar("TEST_RMT_API")
-				.pollingUrlsVar("TEST_POLL_URLS").sseVar("TEST_SSE").fullRouterUrl(false)
-				.group("group2").build();
+				.pollingUrlsVar("TEST_POLL_URLS").sseVar("TEST_SSE")
+				.fullRouterUrl(Boolean.FALSE).group("group2").build();
 		updateConfiguration(params, null);
 		runTest(mockMvc, params, group2Apis(null, "/router"));
 	}
@@ -418,8 +418,8 @@ public class ApiControllerWithConfigurationTest {
 
 		params = ApiRequestParams.builder().actionNs("ns").apiNs("")
 				.remotingApiVar("TEST_RMT_API").pollingUrlsVar("TEST_POLL_URLS")
-				.sseVar("TEST_SSE").group("group2").format("json").fullRouterUrl(true)
-				.build();
+				.sseVar("TEST_SSE").group("group2").format("json")
+				.fullRouterUrl(Boolean.TRUE).build();
 		updateConfiguration(params, null);
 		runTest(mockMvc, params, group2Apis("ns", "http://localhost/router"));
 	}
@@ -437,8 +437,8 @@ public class ApiControllerWithConfigurationTest {
 	public void testBaseRouterUrlWithEndingSlash() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().actionNs("").apiNs("an")
 				.remotingApiVar("rapi").pollingUrlsVar("papi").sseVar("sseapi")
-				.group("group2").fullRouterUrl(true).baseRouterUrl("service/test/")
-				.build();
+				.group("group2").fullRouterUrl(Boolean.TRUE)
+				.baseRouterUrl("service/test/").build();
 		updateConfiguration(params, null);
 		runTest(mockMvc, params, group2Apis(null, "service/test/router"));
 	}
@@ -503,47 +503,63 @@ public class ApiControllerWithConfigurationTest {
 
 	static RemotingApi group1Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
-		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0, false));
-		remotingApi.addAction("remoteProviderTreeLoad", new Action("method1", 1, false));
+		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderTreeLoad", new Action("method1", 1,
+				Boolean.FALSE));
 		return remotingApi;
 	}
 
 	static RemotingApi groupApisWithDoc(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method1", 0, false));
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method2", 0, false));
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method3", 0, false));
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method4", 0, false));
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method5", 0, false));
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method6", 0, false));
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method7", 0, false));
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method8", 0, false));
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method9", 0, false));
-		remotingApi
-				.addAction("remoteProviderSimpleDoc", new Action("method10", 0, false));
-		remotingApi
-				.addAction("remoteProviderSimpleDoc", new Action("method11", 0, false));
-		remotingApi
-				.addAction("remoteProviderSimpleDoc", new Action("method12", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method1", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method2", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method3", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method4", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method5", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method6", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method7", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method8", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method9", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method10", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method11", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method12", 0,
+				Boolean.FALSE));
 		return remotingApi;
 	}
 
 	private static RemotingApi group2Apis(String namespace, String url) {
 		RemotingApi remotingApi = new RemotingApi("remoting", url, namespace);
-		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method6", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method7", 1, false));
-		remotingApi.addAction("remoteProviderStoreModify",
-				new Action("update4", 1, false));
+		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method6", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method7", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreModify", new Action("update4", 1,
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update4", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("update4",
-				1, false));
+				1, Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("update4", 1,
-				false));
-		remotingApi.addAction("formInfoController", new Action("upload", 0, true));
-		remotingApi.addAction("uploadService", new Action("upload", 0, true));
+				Boolean.FALSE));
+		remotingApi
+				.addAction("formInfoController", new Action("upload", 0, Boolean.TRUE));
+		remotingApi.addAction("uploadService", new Action("upload", 0, Boolean.TRUE));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
 				"handleMessage1", "message1"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
@@ -558,23 +574,30 @@ public class ApiControllerWithConfigurationTest {
 
 	private static RemotingApi group1and2Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
-		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0, false));
-		remotingApi.addAction("remoteProviderTreeLoad", new Action("method1", 1, false));
+		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderTreeLoad", new Action("method1", 1,
+				Boolean.FALSE));
 
-		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method6", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method7", 1, false));
-		remotingApi.addAction("remoteProviderStoreModify",
-				new Action("update4", 1, false));
+		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method6", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method7", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreModify", new Action("update4", 1,
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update4", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("update4",
-				1, false));
+				1, Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("update4", 1,
-				false));
-		remotingApi.addAction("formInfoController", new Action("upload", 0, true));
-		remotingApi.addAction("uploadService", new Action("upload", 0, true));
+				Boolean.FALSE));
+		remotingApi
+				.addAction("formInfoController", new Action("upload", 0, Boolean.TRUE));
+		remotingApi.addAction("uploadService", new Action("upload", 0, Boolean.TRUE));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
 				"handleMessage1", "message1"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
@@ -593,23 +616,32 @@ public class ApiControllerWithConfigurationTest {
 
 	private static RemotingApi group3Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
-		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method9", 0, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method5", 1, false));
-		remotingApi.addAction("remoteProviderStoreModify",
-				new Action("destroy", 1, false));
+		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method9", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method5", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreModify", new Action("destroy", 1,
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("destroy", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("destroy", 1,
-				false));
-		remotingApi.addAction("remoteProviderFormLoad", new Action("method1", 1, false));
-		remotingApi.addAction("remoteProviderFormLoad", new Action("method5", 1, false));
-		remotingApi.addAction("formInfoController", new Action("updateInfo", 0, true));
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderFormLoad", new Action("method1", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderFormLoad", new Action("method5", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("formInfoController", new Action("updateInfo", 0,
+				Boolean.TRUE));
 		remotingApi.addAction("formInfoController", new Action("updateInfoDirect", 0,
-				true));
-		remotingApi.addAction("formInfoController2", new Action("updateInfo1", 0, true));
-		remotingApi.addAction("formInfoController2", new Action("updateInfo2", 0, true));
-		remotingApi.addAction("remoteProviderTreeLoad", new Action("method3", 1, false));
+				Boolean.TRUE));
+		remotingApi.addAction("formInfoController2", new Action("updateInfo1", 0,
+				Boolean.TRUE));
+		remotingApi.addAction("formInfoController2", new Action("updateInfo2", 0,
+				Boolean.TRUE));
+		remotingApi.addAction("remoteProviderTreeLoad", new Action("method3", 1,
+				Boolean.FALSE));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
 				"handleMessage5", "message5"));
 		remotingApi.addSseProvider("sseProvider", "message5");
@@ -627,196 +659,266 @@ public class ApiControllerWithConfigurationTest {
 	private static RemotingApi interfaceApis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
 		remotingApi.addAction("remoteProviderImplementation", new Action("storeRead", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderImplementation", new Action("method2", 0,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderImplementation", new Action("method3", 3,
-				false));
+				Boolean.FALSE));
 		return remotingApi;
 	}
 
 	private static RemotingApi allApis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
-		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method2", 0, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method4b", 3, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method6", 2, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method7", 0, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method8", 1, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method9", 0, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method10", 9, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method11", 0, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method11b", 0, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method12", 1, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method13", 9, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method14", 4, false));
+		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method2", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method4b", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method6", 2,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method7", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method8", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method9", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method10", 9,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method11", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method11b", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method12", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method13", 9,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method14", 4,
+				Boolean.FALSE));
 
-		remotingApi.addAction("remoteProviderSimple", new Action("method15", 2, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method16", 1, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method17", 0, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method18", 0, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method19", 1, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method20", 0, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method21", 3, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method22", 3, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method23", 3, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method24", 3, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method25", 3, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method26", 3, false));
+		remotingApi.addAction("remoteProviderSimple", new Action("method15", 2,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method16", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method17", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method18", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method19", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method20", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method21", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method22", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method23", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method24", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method25", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method26", 3,
+				Boolean.FALSE));
 
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method1", 0, false));
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method2", 0, false));
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method3", 0, false));
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method4", 0, false));
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method5", 0, false));
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method6", 0, false));
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method7", 0, false));
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method8", 0, false));
-		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method9", 0, false));
-		remotingApi
-				.addAction("remoteProviderSimpleDoc", new Action("method10", 0, false));
-		remotingApi
-				.addAction("remoteProviderSimpleDoc", new Action("method11", 0, false));
-		remotingApi
-				.addAction("remoteProviderSimpleDoc", new Action("method12", 0, false));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method1", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method2", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method3", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method4", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method5", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method6", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method7", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method8", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method9", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method10", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method11", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method12", 0,
+				Boolean.FALSE));
 
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method1", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method2", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method3", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method4", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method5", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method6", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method7", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method8", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method9", 1, false));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method1", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method2", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method3", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method4", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method5", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method6", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method7", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method8", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method9", 1,
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("methodFilter", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("methodMetadata", 1,
-				false));
+				Boolean.FALSE));
 
-		remotingApi.addAction("remoteProviderStoreModify",
-				new Action("create1", 1, false));
-		remotingApi.addAction("remoteProviderStoreModify",
-				new Action("create2", 1, false));
-		remotingApi.addAction("remoteProviderStoreModify",
-				new Action("update1", 1, false));
-		remotingApi.addAction("remoteProviderStoreModify",
-				new Action("update2", 1, false));
-		remotingApi.addAction("remoteProviderStoreModify",
-				new Action("update3", 1, false));
-		remotingApi.addAction("remoteProviderStoreModify",
-				new Action("update4", 1, false));
-		remotingApi.addAction("remoteProviderStoreModify",
-				new Action("destroy", 1, false));
+		remotingApi.addAction("remoteProviderStoreModify", new Action("create1", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreModify", new Action("create2", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreModify", new Action("update1", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreModify", new Action("update2", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreModify", new Action("update3", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreModify", new Action("update4", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreModify", new Action("destroy", 1,
+				Boolean.FALSE));
 
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("create1", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("create2", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update1", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update2", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update3", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update4", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("destroy", 1,
-				false));
+				Boolean.FALSE));
 
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("create1",
-				1, false));
+				1, Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("create2",
-				1, false));
+				1, Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("update1",
-				1, false));
+				1, Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("update2",
-				1, false));
+				1, Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("update3",
-				1, false));
+				1, Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("update4",
-				1, false));
+				1, Boolean.FALSE));
 
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("create1", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("create2", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("update1", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("update2", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("update3", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("update4", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("destroy", 1,
-				false));
+				Boolean.FALSE));
 
-		remotingApi.addAction("remoteProviderFormLoad", new Action("method1", 1, false));
-		remotingApi.addAction("remoteProviderFormLoad", new Action("method2", 1, false));
-		remotingApi.addAction("remoteProviderFormLoad", new Action("method3", 1, false));
-		remotingApi.addAction("remoteProviderFormLoad", new Action("method4", 1, false));
-		remotingApi.addAction("remoteProviderFormLoad", new Action("method5", 1, false));
-		remotingApi.addAction("remoteProviderFormLoad", new Action("method6", 1, false));
-		remotingApi.addAction("remoteProviderFormLoad", new Action("method7", 1, false));
+		remotingApi.addAction("remoteProviderFormLoad", new Action("method1", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderFormLoad", new Action("method2", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderFormLoad", new Action("method3", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderFormLoad", new Action("method4", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderFormLoad", new Action("method5", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderFormLoad", new Action("method6", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderFormLoad", new Action("method7", 1,
+				Boolean.FALSE));
 
-		remotingApi.addAction("formInfoController", new Action("updateInfo", 0, true));
+		remotingApi.addAction("formInfoController", new Action("updateInfo", 0,
+				Boolean.TRUE));
 		remotingApi.addAction("formInfoController", new Action("updateInfoDirect", 0,
-				true));
-		remotingApi.addAction("formInfoController", new Action("upload", 0, true));
-		remotingApi.addAction("uploadService", new Action("upload", 0, true));
+				Boolean.TRUE));
+		remotingApi
+				.addAction("formInfoController", new Action("upload", 0, Boolean.TRUE));
+		remotingApi.addAction("uploadService", new Action("upload", 0, Boolean.TRUE));
 
 		remotingApi.addAction("formInfoController3", new Action("updateInfoJson", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("formInfoController3", new Action("updateInfoJsonDirect",
-				1, false));
+				1, Boolean.FALSE));
 		remotingApi.addAction("formInfoController3", new Action(
-				"updateInfoJsonDirectError", 1, false));
+				"updateInfoJsonDirectError", 1, Boolean.FALSE));
 
-		remotingApi.addAction("formInfoController2", new Action("updateInfo1", 0, true));
-		remotingApi.addAction("formInfoController2", new Action("updateInfo2", 0, true));
+		remotingApi.addAction("formInfoController2", new Action("updateInfo1", 0,
+				Boolean.TRUE));
+		remotingApi.addAction("formInfoController2", new Action("updateInfo2", 0,
+				Boolean.TRUE));
 
-		remotingApi.addAction("remoteProviderTreeLoad", new Action("method1", 1, false));
-		remotingApi.addAction("remoteProviderTreeLoad", new Action("method2", 1, false));
-		remotingApi.addAction("remoteProviderTreeLoad", new Action("method3", 1, false));
-		remotingApi.addAction("remoteProviderTreeLoad", new Action("method4", 1, false));
-		remotingApi.addAction("remoteProviderTreeLoad", new Action("method5", 1, false));
-		remotingApi.addAction("remoteProviderTreeLoad", new Action("method6", 1, false));
+		remotingApi.addAction("remoteProviderTreeLoad", new Action("method1", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderTreeLoad", new Action("method2", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderTreeLoad", new Action("method3", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderTreeLoad", new Action("method4", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderTreeLoad", new Action("method5", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderTreeLoad", new Action("method6", 1,
+				Boolean.FALSE));
 
 		remotingApi.addAction("remoteProviderImplementation", new Action("storeRead", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderImplementation", new Action("method2", 0,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderImplementation", new Action("method3", 3,
-				false));
+				Boolean.FALSE));
 
-		remotingApi.addAction("bookService", new Action("read", 1, false));
-		remotingApi.addAction("bookService", new Action("readWithPaging", 1, false));
-		remotingApi.addAction("bookService", new Action("update3", 1, false));
-		remotingApi.addAction("bookService", new Action("update4", 1, false));
-		remotingApi.addAction("bookService", new Action("delete3", 1, false));
-		remotingApi.addAction("bookService", new Action("delete4", 1, false));
-		remotingApi.addAction("bookService", new Action("create3", 1, false));
-		remotingApi.addAction("bookService", new Action("create4", 1, false));
-		remotingApi.addAction("bookSubAopService", new Action("read", 1, false));
-		remotingApi
-				.addAction("bookSubAopService", new Action("readWithPaging", 1, false));
-		remotingApi.addAction("bookSubAopService", new Action("update3", 1, false));
-		remotingApi.addAction("bookSubAopService", new Action("update4", 1, false));
-		remotingApi.addAction("bookSubAopService", new Action("delete3", 1, false));
-		remotingApi.addAction("bookSubAopService", new Action("delete4", 1, false));
-		remotingApi.addAction("bookSubAopService", new Action("create3", 1, false));
-		remotingApi.addAction("bookSubAopService", new Action("create4", 1, false));
-		remotingApi.addAction("bookSubService", new Action("read", 1, false));
-		remotingApi.addAction("bookSubService", new Action("readWithPaging", 1, false));
-		remotingApi.addAction("bookSubService", new Action("update3", 1, false));
-		remotingApi.addAction("bookSubService", new Action("update4", 1, false));
-		remotingApi.addAction("bookSubService", new Action("delete3", 1, false));
-		remotingApi.addAction("bookSubService", new Action("delete4", 1, false));
-		remotingApi.addAction("bookSubService", new Action("create3", 1, false));
-		remotingApi.addAction("bookSubService", new Action("create4", 1, false));
+		remotingApi.addAction("bookService", new Action("read", 1, Boolean.FALSE));
+		remotingApi.addAction("bookService", new Action("readWithPaging", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("bookService", new Action("update3", 1, Boolean.FALSE));
+		remotingApi.addAction("bookService", new Action("update4", 1, Boolean.FALSE));
+		remotingApi.addAction("bookService", new Action("delete3", 1, Boolean.FALSE));
+		remotingApi.addAction("bookService", new Action("delete4", 1, Boolean.FALSE));
+		remotingApi.addAction("bookService", new Action("create3", 1, Boolean.FALSE));
+		remotingApi.addAction("bookService", new Action("create4", 1, Boolean.FALSE));
+		remotingApi.addAction("bookSubAopService", new Action("read", 1, Boolean.FALSE));
+		remotingApi.addAction("bookSubAopService", new Action("readWithPaging", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("bookSubAopService",
+				new Action("update3", 1, Boolean.FALSE));
+		remotingApi.addAction("bookSubAopService",
+				new Action("update4", 1, Boolean.FALSE));
+		remotingApi.addAction("bookSubAopService",
+				new Action("delete3", 1, Boolean.FALSE));
+		remotingApi.addAction("bookSubAopService",
+				new Action("delete4", 1, Boolean.FALSE));
+		remotingApi.addAction("bookSubAopService",
+				new Action("create3", 1, Boolean.FALSE));
+		remotingApi.addAction("bookSubAopService",
+				new Action("create4", 1, Boolean.FALSE));
+		remotingApi.addAction("bookSubService", new Action("read", 1, Boolean.FALSE));
+		remotingApi.addAction("bookSubService", new Action("readWithPaging", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("bookSubService", new Action("update3", 1, Boolean.FALSE));
+		remotingApi.addAction("bookSubService", new Action("update4", 1, Boolean.FALSE));
+		remotingApi.addAction("bookSubService", new Action("delete3", 1, Boolean.FALSE));
+		remotingApi.addAction("bookSubService", new Action("delete4", 1, Boolean.FALSE));
+		remotingApi.addAction("bookSubService", new Action("create3", 1, Boolean.FALSE));
+		remotingApi.addAction("bookSubService", new Action("create4", 1, Boolean.FALSE));
 
 		remotingApi.addAction("remoteProviderSimpleNamed", new Action("method1",
 				new ArrayList<String>()));
@@ -914,103 +1016,141 @@ public class ApiControllerWithConfigurationTest {
 
 	private static RemotingApi emptyGroupApis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
-		remotingApi.addAction("remoteProviderSimple", new Action("method2", 0, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method4b", 3, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method6", 2, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method7", 0, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method8", 1, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method10", 9, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method11", 0, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method11b", 0, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method12", 1, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method13", 9, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method14", 4, false));
+		remotingApi.addAction("remoteProviderSimple", new Action("method2", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method4b", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method6", 2,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method7", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method8", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method10", 9,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method11", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method11b", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method12", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method13", 9,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method14", 4,
+				Boolean.FALSE));
 
-		remotingApi.addAction("remoteProviderSimple", new Action("method15", 2, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method16", 1, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method17", 0, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method18", 0, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method19", 1, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method20", 0, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method21", 3, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method22", 3, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method23", 3, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method24", 3, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method25", 3, false));
-		remotingApi.addAction("remoteProviderSimple", new Action("method26", 3, false));
+		remotingApi.addAction("remoteProviderSimple", new Action("method15", 2,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method16", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method17", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method18", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method19", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method20", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method21", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method22", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method23", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method24", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method25", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method26", 3,
+				Boolean.FALSE));
 
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method1", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method2", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method3", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method4", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method8", 1, false));
-		remotingApi.addAction("remoteProviderStoreRead", new Action("method9", 1, false));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method1", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method2", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method3", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method4", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method8", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method9", 1,
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("methodFilter", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("methodMetadata", 1,
-				false));
+				Boolean.FALSE));
 
-		remotingApi.addAction("remoteProviderStoreModify",
-				new Action("create1", 1, false));
-		remotingApi.addAction("remoteProviderStoreModify",
-				new Action("create2", 1, false));
-		remotingApi.addAction("remoteProviderStoreModify",
-				new Action("update1", 1, false));
-		remotingApi.addAction("remoteProviderStoreModify",
-				new Action("update2", 1, false));
-		remotingApi.addAction("remoteProviderStoreModify",
-				new Action("update3", 1, false));
+		remotingApi.addAction("remoteProviderStoreModify", new Action("create1", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreModify", new Action("create2", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreModify", new Action("update1", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreModify", new Action("update2", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreModify", new Action("update3", 1,
+				Boolean.FALSE));
 
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("create1", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("create2", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update1", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update2", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyArray", new Action("update3", 1,
-				false));
+				Boolean.FALSE));
 
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("create1",
-				1, false));
+				1, Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("create2",
-				1, false));
+				1, Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("update1",
-				1, false));
+				1, Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("update2",
-				1, false));
+				1, Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifyInterface", new Action("update3",
-				1, false));
+				1, Boolean.FALSE));
 
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("create1", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("create2", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("update1", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("update2", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreModifySingle", new Action("update3", 1,
-				false));
+				Boolean.FALSE));
 
-		remotingApi.addAction("remoteProviderFormLoad", new Action("method2", 1, false));
-		remotingApi.addAction("remoteProviderFormLoad", new Action("method3", 1, false));
-		remotingApi.addAction("remoteProviderFormLoad", new Action("method4", 1, false));
-		remotingApi.addAction("remoteProviderFormLoad", new Action("method6", 1, false));
-		remotingApi.addAction("remoteProviderFormLoad", new Action("method7", 1, false));
+		remotingApi.addAction("remoteProviderFormLoad", new Action("method2", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderFormLoad", new Action("method3", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderFormLoad", new Action("method4", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderFormLoad", new Action("method6", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderFormLoad", new Action("method7", 1,
+				Boolean.FALSE));
 
-		remotingApi.addAction("remoteProviderTreeLoad", new Action("method2", 1, false));
-		remotingApi.addAction("remoteProviderTreeLoad", new Action("method4", 1, false));
-		remotingApi.addAction("remoteProviderTreeLoad", new Action("method5", 1, false));
-		remotingApi.addAction("remoteProviderTreeLoad", new Action("method6", 1, false));
+		remotingApi.addAction("remoteProviderTreeLoad", new Action("method2", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderTreeLoad", new Action("method4", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderTreeLoad", new Action("method5", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderTreeLoad", new Action("method6", 1,
+				Boolean.FALSE));
 
 		remotingApi.addAction("formInfoController3", new Action("updateInfoJson", 1,
-				false));
+				Boolean.FALSE));
 		remotingApi.addAction("formInfoController3", new Action("updateInfoJsonDirect",
-				1, false));
+				1, Boolean.FALSE));
 		remotingApi.addAction("formInfoController3", new Action(
-				"updateInfoJsonDirectError", 1, false));
+				"updateInfoJsonDirectError", 1, Boolean.FALSE));
 
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
 				"handleMessage4", "message4"));
@@ -1019,6 +1159,7 @@ public class ApiControllerWithConfigurationTest {
 		return remotingApi;
 	}
 
+	@SuppressWarnings("unchecked")
 	private static void compareJson(MvcResult result, RemotingApi remotingApi,
 			ApiRequestParams params) throws IOException {
 		String content = result.getResponse().getContentAsString();
@@ -1075,6 +1216,7 @@ public class ApiControllerWithConfigurationTest {
 				.getContentType(), remotingApi, params);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void compare(String contentString, String contentTypeString,
 			RemotingApi remotingApi, ApiRequestParams params) {
 
@@ -1327,6 +1469,7 @@ public class ApiControllerWithConfigurationTest {
 				assertThat(action.containsKey("formHandler")).isFalse();
 			}
 
+			@SuppressWarnings("unchecked")
 			List<String> params = (List<String>) action.get("params");
 			assertTrue(params != null && expectedAction.getParams() != null
 					|| params == null && expectedAction.getParams() == null);

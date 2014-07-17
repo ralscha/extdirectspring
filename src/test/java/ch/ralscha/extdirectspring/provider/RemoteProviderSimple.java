@@ -85,10 +85,10 @@ public class RemoteProviderSimple {
 	@ExtDirectMethod(group = "group2,group3", entryClass = String.class)
 	public Boolean method5(String userName) {
 		if ("ralph".equals(userName)) {
-			return true;
+			return Boolean.TRUE;
 		}
 		else if ("joe".equals(userName)) {
-			return false;
+			return Boolean.FALSE;
 		}
 		return null;
 	}

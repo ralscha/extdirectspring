@@ -40,6 +40,13 @@ public class ExtDirectSpringUtilTest {
 		assertThat(ExtDirectSpringUtil.equal(false, true)).isFalse();
 		assertThat(ExtDirectSpringUtil.equal(false, null)).isFalse();
 
+		assertThat(ExtDirectSpringUtil.equal(Boolean.TRUE, Boolean.TRUE)).isTrue();
+		assertThat(ExtDirectSpringUtil.equal(Boolean.FALSE, Boolean.FALSE)).isTrue();
+
+		assertThat(ExtDirectSpringUtil.equal(Boolean.TRUE, Boolean.FALSE)).isFalse();
+		assertThat(ExtDirectSpringUtil.equal(Boolean.FALSE, Boolean.TRUE)).isFalse();
+		assertThat(ExtDirectSpringUtil.equal(Boolean.FALSE, null)).isFalse();
+
 		assertThat(ExtDirectSpringUtil.equal("a", "a")).isTrue();
 		assertThat(ExtDirectSpringUtil.equal("a", "b")).isFalse();
 		assertThat(ExtDirectSpringUtil.equal(null, "a")).isFalse();

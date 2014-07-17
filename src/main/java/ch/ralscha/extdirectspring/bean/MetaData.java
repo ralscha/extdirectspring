@@ -60,6 +60,7 @@ public class MetaData {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void addField(Field field) {
 
 		List<Map<String, Object>> fields = (List<Map<String, Object>>) metaData

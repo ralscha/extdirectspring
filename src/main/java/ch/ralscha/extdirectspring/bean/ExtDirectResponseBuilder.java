@@ -167,11 +167,11 @@ public class ExtDirectResponseBuilder {
 				fieldErrors.add(message);
 			}
 			if (errorMap.isEmpty()) {
-				addResultProperty("success", true);
+				addResultProperty("success", Boolean.TRUE);
 			}
 			else {
 				addResultProperty("errors", errorMap);
-				addResultProperty("success", false);
+				addResultProperty("success", Boolean.FALSE);
 			}
 		}
 		return this;
@@ -195,7 +195,7 @@ public class ExtDirectResponseBuilder {
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder successful() {
-		result.put("success", true);
+		result.put("success", Boolean.TRUE);
 		return this;
 	}
 
@@ -205,7 +205,7 @@ public class ExtDirectResponseBuilder {
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder unsuccessful() {
-		result.put("success", false);
+		result.put("success", Boolean.FALSE);
 		return this;
 	}
 

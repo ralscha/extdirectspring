@@ -44,6 +44,7 @@ public class ExtDirectResponseBuilderTest {
 	@Autowired
 	private WebApplicationContext wac;
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testBuilder() {
 
@@ -67,7 +68,7 @@ public class ExtDirectResponseBuilderTest {
 		Map<String, Object> data = (Map<String, Object>) response.getResult();
 		assertThat(data).hasSize(2);
 		assertThat(data.get("additionalProperty")).isEqualTo(11);
-		assertThat(data.get("success")).isEqualTo(true);
+		assertThat(data.get("success")).isEqualTo(Boolean.TRUE);
 
 		servletResponse = new MockHttpServletResponse();
 		ExtDirectResponseBuilder.create(request, servletResponse).unsuccessful()
@@ -77,7 +78,7 @@ public class ExtDirectResponseBuilderTest {
 		data = (Map<String, Object>) response.getResult();
 		assertThat(data).hasSize(2);
 		assertThat(data.get("additionalProperty")).isEqualTo(9);
-		assertThat(data.get("success")).isEqualTo(false);
+		assertThat(data.get("success")).isEqualTo(Boolean.FALSE);
 	}
 
 	@Test
@@ -93,7 +94,7 @@ public class ExtDirectResponseBuilderTest {
 
 		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
 		ExtDirectResponseBuilder.create(request, servletResponse)
-				.addResultProperty("additionalProperty", false)
+				.addResultProperty("additionalProperty", Boolean.FALSE)
 				.addResultProperty("text", "a lot of &quot;text&quot;").buildAndWrite();
 
 		assertThat(servletResponse.getContentType()).isEqualTo("text/html;charset=UTF-8");
@@ -117,11 +118,12 @@ public class ExtDirectResponseBuilderTest {
 		assertThat(header.get("type")).isEqualTo("type");
 		assertThat(header.get("tid")).isEqualTo(1);
 
+		@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>) header.get("result");
 		assertThat(result).hasSize(3);
 		assertThat((Boolean) result.get("success")).isTrue();
 		assertThat(result.get("text")).isEqualTo("a lot of 'text'");
-		assertThat(result.get("additionalProperty")).isEqualTo(false);
+		assertThat(result.get("additionalProperty")).isEqualTo(Boolean.FALSE);
 	}
 
 	@Test
@@ -192,6 +194,7 @@ public class ExtDirectResponseBuilderTest {
 		assertThat(response.getWhere()).isNull();
 		assertThat(response.getMessage()).isNull();
 
+		@SuppressWarnings("unchecked")
 		Map<String, Object> data = (Map<String, Object>) response.getResult();
 		assertThat(data).hasSize(1);
 		assertThat(data.get("success")).isEqualTo(flag);

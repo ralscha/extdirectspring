@@ -52,20 +52,20 @@ public class JsonHandlerTest {
 		assertEquals("null", jsonHandler.writeValueAsString(null));
 		assertEquals("\"a\"", jsonHandler.writeValueAsString("a"));
 		assertEquals("1", jsonHandler.writeValueAsString(1));
-		assertEquals("true", jsonHandler.writeValueAsString(true));
+		assertEquals("true", jsonHandler.writeValueAsString(Boolean.TRUE));
 
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		map.put("one", 1);
 		map.put("two", "2");
 		map.put("three", null);
-		map.put("four", false);
+		map.put("four", Boolean.FALSE);
 		map.put("five", new int[] { 1, 2 });
 
 		String expected = "{\"one\":1,\"two\":\"2\",\"three\":null,\"four\":false,\"five\":[1,2]}";
 		assertEquals(expected, jsonHandler.writeValueAsString(map));
 
-		JsonTestBean testBean = new JsonTestBean(1, "2", null, false, new Integer[] { 1,
-				2 });
+		JsonTestBean testBean = new JsonTestBean(1, "2", null, Boolean.FALSE,
+				new Integer[] { 1, 2 });
 		expected = "{\"a\":1,\"b\":\"2\",\"c\":null,\"d\":false,\"e\":[1,2]}";
 		assertEquals(expected, jsonHandler.writeValueAsString(testBean));
 
@@ -77,21 +77,21 @@ public class JsonHandlerTest {
 		assertEquals("null", jsonHandler.writeValueAsString(null, true));
 		assertEquals("\"a\"", jsonHandler.writeValueAsString("a", true));
 		assertEquals("1", jsonHandler.writeValueAsString(1, true));
-		assertEquals("true", jsonHandler.writeValueAsString(true, true));
+		assertEquals("true", jsonHandler.writeValueAsString(Boolean.TRUE, true));
 
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		map.put("one", 1);
 		map.put("two", "2");
 		map.put("three", null);
-		map.put("four", false);
+		map.put("four", Boolean.FALSE);
 		map.put("five", new int[] { 1, 2 });
 
 		String expected = "{\n  \"one\" : 1,\n  \"two\" : \"2\",\n  \"three\" : null,\n  \"four\" : false,\n  \"five\" : [ 1, 2 ]\n}";
 		assertEquals(expected, jsonHandler.writeValueAsString(map, true)
 				.replace("\r", ""));
 
-		JsonTestBean testBean = new JsonTestBean(1, "2", null, false, new Integer[] { 1,
-				2 });
+		JsonTestBean testBean = new JsonTestBean(1, "2", null, Boolean.FALSE,
+				new Integer[] { 1, 2 });
 		expected = "{\n  \"a\" : 1,\n  \"b\" : \"2\",\n  \"c\" : null,\n  \"d\" : false,\n  \"e\" : [ 1, 2 ]\n}";
 		assertEquals(expected,
 				jsonHandler.writeValueAsString(testBean, true).replace("\r", ""));
@@ -153,6 +153,7 @@ public class JsonHandlerTest {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testJsonUtilObject() {
 		JsonHandler jsonHandler = new JsonHandler();
@@ -178,6 +179,7 @@ public class JsonHandlerTest {
 		assertEquals(req.getType(), desReq.getType());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testJsonList() throws IOException {
 		JsonHandler jsonHandler = new JsonHandler();

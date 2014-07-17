@@ -106,6 +106,7 @@ public class PollMethodTest extends BaseViewTest {
 		callMethod("pollMethodService", "overrideSubclassNoView", noView());
 	}
 
+	@SuppressWarnings("unchecked")
 	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
 		ExtDirectPollResponse response;
 		try {

@@ -42,6 +42,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:/testApplicationContextWrapResponse.xml")
+@SuppressWarnings("unchecked")
 public class RouterControllerStoreAlwaysWrapResponseTest {
 
 	@Autowired

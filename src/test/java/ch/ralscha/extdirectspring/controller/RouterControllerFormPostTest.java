@@ -162,12 +162,14 @@ public class RouterControllerFormPostTest {
 		assertThat(edsResponse.getAction()).isEqualTo("formInfoController");
 		assertThat(edsResponse.getMethod()).isEqualTo("updateInfoDirect");
 
+		@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
 		assertThat(result).hasSize(6).contains(entry("name", "RALPH"), entry("age", 30),
-				entry("admin", false), entry("salary", 1012.3),
-				entry("result", "theResultRESULT"), entry("success", true));
+				entry("admin", Boolean.FALSE), entry("salary", 1012.3),
+				entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testUpload() throws Exception {
 		MockMultipartHttpServletRequestBuilder request = fileUpload("/router");
@@ -211,7 +213,7 @@ public class RouterControllerFormPostTest {
 		assertThat(result).contains(entry("e-mail", null), entry("age", 20),
 				entry("name", "Ralph"), entry("fileName", ""),
 				entry("fileContents", "the content of the file"),
-				entry("firstName", null), entry("success", true));
+				entry("firstName", null), entry("success", Boolean.TRUE));
 		Map<String, Object> error = (Map<String, Object>) result.get("errors");
 		assertThat(error).containsKey("email");
 		assertThat((List<String>) error.get("email")).containsExactly("may not be empty");

@@ -64,10 +64,10 @@ public class RemoteProviderSimpleNamed {
 			event = "test")
 	public Boolean method3(String userName) {
 		if ("ralph".equals(userName)) {
-			return true;
+			return Boolean.TRUE;
 		}
 		else if ("joe".equals(userName)) {
-			return false;
+			return Boolean.FALSE;
 		}
 		return null;
 	}

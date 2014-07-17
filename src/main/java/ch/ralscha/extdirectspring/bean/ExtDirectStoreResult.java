@@ -48,19 +48,19 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 
 	@SuppressWarnings("unchecked")
 	public ExtDirectStoreResult(T record) {
-		this((Long) null, Arrays.asList(record), true, null);
+		this((Long) null, Arrays.asList(record), Boolean.TRUE, null);
 	}
 
 	public ExtDirectStoreResult(T[] record) {
-		this((Long) null, Arrays.asList(record), true, null);
+		this((Long) null, Arrays.asList(record), Boolean.TRUE, null);
 	}
 
 	public ExtDirectStoreResult(Collection<T> records) {
-		this((Long) null, records, true, null);
+		this((Long) null, records, Boolean.TRUE, null);
 	}
 
 	public ExtDirectStoreResult(Integer total, Collection<T> records) {
-		this(total, records, true);
+		this(total, records, Boolean.TRUE);
 	}
 
 	public ExtDirectStoreResult(Integer total, Collection<T> records, Boolean success) {
@@ -68,11 +68,11 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 	}
 
 	public ExtDirectStoreResult(Long total, Collection<T> records) {
-		this(total, records, true, null);
+		this(total, records, Boolean.TRUE, null);
 	}
 
 	public ExtDirectStoreResult(Long total, Collection<T> records, Class<?> jsonView) {
-		this(total, records, true, jsonView);
+		this(total, records, Boolean.TRUE, jsonView);
 	}
 
 	public ExtDirectStoreResult(Long total, Collection<T> records, Boolean success,

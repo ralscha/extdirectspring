@@ -49,7 +49,7 @@ public class ApiControllerWithXMLConfig1Test {
 
 		Configuration config = new Configuration();
 		config.setTimeout(15000);
-		config.setEnableBuffer(false);
+		config.setEnableBuffer(Boolean.FALSE);
 		config.setMaxRetries(5);
 		config.setStreamResponse(true);
 

@@ -71,12 +71,13 @@ public class RouterControllerInterfaceTest {
 				"method3() called-21-3.1-aString2", 21, 3.1, "aString2");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testWithRequestParamAnnotation() {
 
 		Map<String, Object> readRequest = new HashMap<String, Object>();
 		readRequest.put("lastName", "Smith");
-		readRequest.put("active", true);
+		readRequest.put("active", Boolean.TRUE);
 
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc,
 				"remoteProviderImplementation", "storeRead",

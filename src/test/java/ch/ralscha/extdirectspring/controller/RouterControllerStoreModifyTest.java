@@ -47,6 +47,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:/testApplicationContext.xml")
+@SuppressWarnings("unchecked")
 public class RouterControllerStoreModifyTest {
 
 	@Autowired

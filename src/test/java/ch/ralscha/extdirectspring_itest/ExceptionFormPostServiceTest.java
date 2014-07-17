@@ -83,6 +83,7 @@ public class ExceptionFormPostServiceTest extends JettyTest {
 		assertThat(rootAsMap.get("tid")).isEqualTo(3);
 		assertThat(rootAsMap.get("message")).isEqualTo("a null pointer");
 
+		@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 		assertThat(result).hasSize(1);
 		assertThat((Boolean) result.get("success")).isFalse();

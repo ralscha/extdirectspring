@@ -47,7 +47,8 @@ public class InfoControllerTest extends JettyTest {
 
 	private static RemotingApi api() {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/controller/router", null);
-		remotingApi.addAction("infoController", new Action("updateInfo", 0, true));
+		remotingApi
+				.addAction("infoController", new Action("updateInfo", 0, Boolean.TRUE));
 		return remotingApi;
 	}
 
@@ -146,10 +147,11 @@ public class InfoControllerTest extends JettyTest {
 			assertThat(rootAsMap.get("action")).isEqualTo("infoController");
 			assertThat(rootAsMap.get("tid")).isEqualTo(1);
 
+			@SuppressWarnings("unchecked")
 			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 			assertThat(result).hasSize(2);
 			assertThat(result.get("userNameLowerCase")).isEqualTo("ralph");
-			assertThat(result.get("success")).isEqualTo(true);
+			assertThat(result.get("success")).isEqualTo(Boolean.TRUE);
 		}
 		finally {
 			IOUtils.closeQuietly(response);

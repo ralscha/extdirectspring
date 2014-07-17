@@ -242,10 +242,10 @@ public class ApiController {
 		if (enableBuffer instanceof String && StringUtils.hasText((String) enableBuffer)) {
 			String enableBufferString = (String) enableBuffer;
 			if (enableBufferString.equalsIgnoreCase("true")) {
-				remotingApi.setEnableBuffer(true);
+				remotingApi.setEnableBuffer(Boolean.TRUE);
 			}
 			else if (enableBufferString.equalsIgnoreCase("false")) {
-				remotingApi.setEnableBuffer(false);
+				remotingApi.setEnableBuffer(Boolean.FALSE);
 			}
 			else {
 				Integer enableBufferMs = NumberUtils.parseNumber(enableBufferString,

@@ -113,10 +113,11 @@ public class RouterControllerFormPostJsonTest {
 		assertThat(edsResponse.getType()).isEqualTo("rpc");
 		assertThat(edsResponse.getMessage()).isNull();
 
+		@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
 		assertThat(result).hasSize(6).contains(entry("name", "RALPH"), entry("age", 30),
-				entry("admin", false), entry("salary", 1012.3),
-				entry("result", "theResultRESULT"), entry("success", true));
+				entry("admin", Boolean.FALSE), entry("salary", 1012.3),
+				entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
 	}
 
 	@SuppressWarnings({ "unchecked", "null", "rawtypes" })
@@ -152,7 +153,7 @@ public class RouterControllerFormPostJsonTest {
 		assertThat(edsResponse.getType()).isEqualTo("rpc");
 
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
-		assertThat(result).hasSize(2).contains(entry("success", false));
+		assertThat(result).hasSize(2).contains(entry("success", Boolean.FALSE));
 		assertThat(result).hasSize(2).containsKey("errors");
 		Map age = (Map) result.get("errors");
 		assertThat(age).hasSize(1).containsKey("age");

@@ -475,7 +475,7 @@ public class FilterTest {
 		Map<String, Object> json = new HashMap<String, Object>();
 		json.put("field", "aField");
 		json.put("type", "boolean");
-		json.put("value", false);
+		json.put("value", Boolean.FALSE);
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertThat(filter).isInstanceOf(BooleanFilter.class);
@@ -489,7 +489,7 @@ public class FilterTest {
 		Map<String, Object> json = new HashMap<String, Object>();
 		json.put("property", "aField");
 		json.put("type", "boolean");
-		json.put("value", false);
+		json.put("value", Boolean.FALSE);
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertThat(filter).isInstanceOf(BooleanFilter.class);
@@ -502,7 +502,7 @@ public class FilterTest {
 	public void testBooleanFilterWithoutType() {
 		Map<String, Object> json = new HashMap<String, Object>();
 		json.put("property", "aField");
-		json.put("value", false);
+		json.put("value", Boolean.FALSE);
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertThat(filter).isInstanceOf(BooleanFilter.class);

@@ -47,6 +47,7 @@ public class RawJsonControllerTest extends JettyTest {
 		testAndCheck("rawJsonController", "listUsers5", 2, true);
 	}
 
+	@SuppressWarnings("unchecked")
 	private static void testAndCheck(String action, String method, Integer total,
 			boolean success) throws IOException, JsonParseException, JsonMappingException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();

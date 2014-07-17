@@ -33,7 +33,7 @@ public class AppExceptionHandler implements RouterExceptionHandler {
 		response.setWhere("Space");
 
 		if (methodInfo.isType(ExtDirectMethodType.FORM_POST)) {
-			return Collections.singletonMap("success", false);
+			return Collections.singletonMap("success", Boolean.FALSE);
 		}
 
 		return null;

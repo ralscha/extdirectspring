@@ -68,7 +68,8 @@ public class SimpleServiceTest extends JettyTest2 {
 
 	private static RemotingApi api() {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/controller/router", null);
-		remotingApi.addAction("simpleService", new Action("toUpperCase", 1, false));
+		remotingApi.addAction("simpleService",
+				new Action("toUpperCase", 1, Boolean.FALSE));
 		remotingApi.addAction("simpleService",
 				new Action("echo", Arrays.asList("userId", "logLevel")));
 

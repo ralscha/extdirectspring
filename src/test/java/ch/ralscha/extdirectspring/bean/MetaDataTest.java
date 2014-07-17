@@ -39,6 +39,7 @@ public class MetaDataTest {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testComplexMetaData() {
 		MetaData metaData = new MetaData();
 		metaData.setIdProperty("id");

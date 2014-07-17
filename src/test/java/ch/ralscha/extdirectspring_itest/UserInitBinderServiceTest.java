@@ -39,6 +39,7 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@SuppressWarnings("unchecked")
 public class UserInitBinderServiceTest extends JettyTest {
 
 	private CloseableHttpClient client;
@@ -97,9 +98,9 @@ public class UserInitBinderServiceTest extends JettyTest {
 			assertThat(result.get("firstName")).isEqualTo("Joe");
 			assertThat(result.get("age")).isEqualTo(28);
 			assertThat(result.get("email")).isEqualTo("test@test.com");
-			assertThat(result.get("flag")).isEqualTo(false);
+			assertThat(result.get("flag")).isEqualTo(Boolean.FALSE);
 			assertThat(result.get("dateOfBirth")).isNull();
-			assertThat(result.get("success")).isEqualTo(true);
+			assertThat(result.get("success")).isEqualTo(Boolean.TRUE);
 		}
 		finally {
 			IOUtils.closeQuietly(response);
@@ -145,9 +146,9 @@ public class UserInitBinderServiceTest extends JettyTest {
 			assertThat(result.get("firstName")).isEqualTo("Kevin");
 			assertThat(result.get("age")).isEqualTo(45);
 			assertThat(result.get("email")).isEqualTo("kevin@test.com");
-			assertThat(result.get("flag")).isEqualTo(true);
+			assertThat(result.get("flag")).isEqualTo(Boolean.TRUE);
 			assertThat(result.get("dateOfBirth")).isEqualTo("1966-12-21");
-			assertThat(result.get("success")).isEqualTo(true);
+			assertThat(result.get("success")).isEqualTo(Boolean.TRUE);
 		}
 		finally {
 			IOUtils.closeQuietly(response);

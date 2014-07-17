@@ -66,9 +66,11 @@ public class MyModelControlerTest extends JettyTest {
 
 	private static RemotingApi api() {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/controller/router", null);
-		remotingApi.addAction("myModelController", new Action("method1", 0, true));
-		remotingApi.addAction("myModelController", new Action("method2", 0, true));
-		remotingApi.addAction("myModelController", new Action("update", 0, true));
+		remotingApi
+				.addAction("myModelController", new Action("method1", 0, Boolean.TRUE));
+		remotingApi
+				.addAction("myModelController", new Action("method2", 0, Boolean.TRUE));
+		remotingApi.addAction("myModelController", new Action("update", 0, Boolean.TRUE));
 		return remotingApi;
 	}
 
@@ -160,6 +162,7 @@ public class MyModelControlerTest extends JettyTest {
 			assertThat(rootAsMap.get("action")).isEqualTo("myModelController");
 			assertThat(rootAsMap.get("tid")).isEqualTo(3);
 
+			@SuppressWarnings("unchecked")
 			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 			assertThat((Boolean) result.get("success")).isTrue();
 		}

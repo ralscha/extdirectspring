@@ -85,6 +85,7 @@ public class TreeLoadMethodTest extends BaseViewTest {
 		callMethod("treeLoadMethodService", "overrideMajNoView", noView());
 	}
 
+	@SuppressWarnings("unchecked")
 	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
 		List<Map<String, Object>> result = (List<Map<String, Object>>) ControllerUtil
 				.sendAndReceiveObject(mockMvc, bean, method);

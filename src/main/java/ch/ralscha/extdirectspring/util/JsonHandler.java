@@ -96,6 +96,7 @@ public class JsonHandler {
 	 * {@link com.fasterxml.jackson.core.type.TypeReference}
 	 * @return the created object, null if there was an exception
 	 */
+	@SuppressWarnings("unchecked")
 	public <T> T readValue(String json, TypeReference<T> typeReference) {
 		try {
 			return (T) mapper.readValue(json, typeReference);

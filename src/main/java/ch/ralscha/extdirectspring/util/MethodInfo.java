@@ -174,7 +174,7 @@ public final class MethodInfo {
 			this.action = new Action(method.getName(), 1, null);
 			break;
 		case FORM_POST:
-			this.action = new Action(method.getName(), 0, true);
+			this.action = new Action(method.getName(), 0, Boolean.TRUE);
 			break;
 		case FORM_POST_JSON:
 			this.action = new Action(method.getName(), 1, null);

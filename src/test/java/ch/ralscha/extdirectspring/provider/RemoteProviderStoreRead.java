@@ -244,7 +244,7 @@ public class RemoteProviderStoreRead {
 		}
 
 		return new ExtDirectStoreResult<Row>().setTotal(Long.valueOf(totalSize))
-				.setRecords(rows).setSuccess(true);
+				.setRecords(rows).setSuccess(Boolean.TRUE);
 
 	}
 
@@ -272,36 +272,36 @@ public class RemoteProviderStoreRead {
 			field.setType(DataType.INTEGER);
 			field.addCustomProperty("header", "ID");
 			field.addCustomProperty("width", 20);
-			field.addCustomProperty("sortable", true);
-			field.addCustomProperty("resizable", true);
-			field.addCustomProperty("hideable", false);
+			field.addCustomProperty("sortable", Boolean.TRUE);
+			field.addCustomProperty("resizable", Boolean.TRUE);
+			field.addCustomProperty("hideable", Boolean.FALSE);
 			metaData.addField(field);
 
 			field = new Field("name");
 			field.setType(DataType.STRING);
 			field.addCustomProperty("header", "Name");
 			field.addCustomProperty("width", 70);
-			field.addCustomProperty("sortable", true);
-			field.addCustomProperty("resizable", true);
-			field.addCustomProperty("hideable", false);
+			field.addCustomProperty("sortable", Boolean.TRUE);
+			field.addCustomProperty("resizable", Boolean.TRUE);
+			field.addCustomProperty("hideable", Boolean.FALSE);
 			metaData.addField(field);
 
 			field = new Field("admin");
 			field.setType(DataType.BOOLEAN);
 			field.addCustomProperty("header", "Administrator");
 			field.addCustomProperty("width", 30);
-			field.addCustomProperty("sortable", true);
-			field.addCustomProperty("resizable", true);
-			field.addCustomProperty("hideable", true);
+			field.addCustomProperty("sortable", Boolean.TRUE);
+			field.addCustomProperty("resizable", Boolean.TRUE);
+			field.addCustomProperty("hideable", Boolean.TRUE);
 			metaData.addField(field);
 
 			field = new Field("salary");
 			field.setType(DataType.FLOAT);
 			field.addCustomProperty("header", "Salary");
 			field.addCustomProperty("width", 50);
-			field.addCustomProperty("sortable", false);
-			field.addCustomProperty("resizable", true);
-			field.addCustomProperty("hideable", true);
+			field.addCustomProperty("sortable", Boolean.FALSE);
+			field.addCustomProperty("resizable", Boolean.TRUE);
+			field.addCustomProperty("hideable", Boolean.TRUE);
 			metaData.addField(field);
 
 			response.setMetaData(metaData);

@@ -44,7 +44,7 @@ public class FieldTest {
 		Map<String, Object> fieldData = aField.getFieldData();
 		assertThat(fieldData).hasSize(6);
 		assertThat(fieldData).contains(entry("name", "fieldName"));
-		assertThat(fieldData).contains(entry("allowBlank", true));
+		assertThat(fieldData).contains(entry("allowBlank", Boolean.TRUE));
 		assertThat(fieldData).contains(entry("dateFormat", "Y-m-d"));
 		assertThat(fieldData).contains(entry("type", "date"));
 		assertThat(fieldData).contains(entry("customProperty1", 10));

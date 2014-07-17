@@ -51,6 +51,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:/testApplicationContext.xml")
+@SuppressWarnings("unchecked")
 public class RouterControllerStoreTest {
 
 	@Autowired
@@ -127,7 +128,7 @@ public class RouterControllerStoreTest {
 		Map<String, Object> storeRead = new LinkedHashMap<String, Object>();
 		storeRead.put("query", "name");
 		ExtDirectStoreResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(50));
+		assertThat(storeResponse.getTotal()).isEqualTo(50L);
 		assertThat(storeResponse.getRecords()).hasSize(50);
 		for (Row row : storeResponse.getRecords()) {
 			assertThat(row.getName().startsWith("name")).isTrue();
@@ -136,7 +137,7 @@ public class RouterControllerStoreTest {
 		storeRead = new LinkedHashMap<String, Object>();
 		storeRead.put("query", "firstname");
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(50));
+		assertThat(storeResponse.getTotal()).isEqualTo(50L);
 		assertThat(storeResponse.getRecords()).hasSize(50);
 		for (Row row : storeResponse.getRecords()) {
 			assertThat(row.getName()).startsWith("firstname");
@@ -151,7 +152,7 @@ public class RouterControllerStoreTest {
 
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
+		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(10);
 		int id = 10;
 		for (Row row : storeResponse.getRecords()) {
@@ -168,7 +169,7 @@ public class RouterControllerStoreTest {
 
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
+		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(10);
 		id = 79;
 		for (Row row : storeResponse.getRecords()) {
@@ -185,7 +186,7 @@ public class RouterControllerStoreTest {
 
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
+		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(10);
 		id = 10;
 		for (Row row : storeResponse.getRecords()) {
@@ -202,7 +203,7 @@ public class RouterControllerStoreTest {
 
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
+		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(10);
 		id = 79;
 		for (Row row : storeResponse.getRecords()) {
@@ -220,7 +221,7 @@ public class RouterControllerStoreTest {
 
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
+		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(10);
 		id = 0;
 		for (Row row : storeResponse.getRecords()) {
@@ -238,7 +239,7 @@ public class RouterControllerStoreTest {
 
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
+		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(10);
 		id = 10;
 		for (Row row : storeResponse.getRecords()) {
@@ -262,7 +263,7 @@ public class RouterControllerStoreTest {
 		storeRead.put("start", "10");
 		ExtDirectStoreResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
+		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(10);
 		int id = 10;
 		for (Row row : storeResponse.getRecords()) {
@@ -282,7 +283,7 @@ public class RouterControllerStoreTest {
 		storeRead.put("start", "20");
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
+		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(10);
 		id = 79;
 		for (Row row : storeResponse.getRecords()) {
@@ -308,7 +309,7 @@ public class RouterControllerStoreTest {
 		storeRead.put("page", "2");
 		ExtDirectStoreResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
+		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(10);
 		int id = 10;
 		for (Row row : storeResponse.getRecords()) {
@@ -329,7 +330,7 @@ public class RouterControllerStoreTest {
 		storeRead.put("page", "3");
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
+		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(10);
 		id = 79;
 		for (Row row : storeResponse.getRecords()) {
@@ -350,7 +351,7 @@ public class RouterControllerStoreTest {
 		storeRead.put("page", "2");
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
+		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(10);
 		id = 10;
 		for (Row row : storeResponse.getRecords()) {
@@ -371,7 +372,7 @@ public class RouterControllerStoreTest {
 		storeRead.put("page", "3");
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
+		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(10);
 		id = 79;
 		for (Row row : storeResponse.getRecords()) {
@@ -392,7 +393,7 @@ public class RouterControllerStoreTest {
 		storeRead.put("page", "1");
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
+		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(10);
 		id = 0;
 		for (Row row : storeResponse.getRecords()) {
@@ -413,7 +414,7 @@ public class RouterControllerStoreTest {
 		storeRead.put("page", "2");
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(100));
+		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(10);
 		id = 10;
 		for (Row row : storeResponse.getRecords()) {
@@ -460,7 +461,7 @@ public class RouterControllerStoreTest {
 							// nothing here
 						}, readRequest);
 
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(50));
+		assertThat(storeResponse.getTotal()).isEqualTo(50L);
 		assertThat(storeResponse.getRecords()).hasSize(50);
 		for (Row row : storeResponse.getRecords()) {
 			assertThat(row.getName().startsWith("name")).isTrue();
@@ -484,7 +485,7 @@ public class RouterControllerStoreTest {
 							// nothing here
 						}, readRequest);
 
-		assertThat(storeResponse.getTotal()).isEqualTo(Integer.valueOf(50));
+		assertThat(storeResponse.getTotal()).isEqualTo(50L);
 		assertThat(storeResponse.getRecords()).hasSize(50);
 		int i = 1;
 		for (Row row : storeResponse.getRecords()) {
@@ -593,36 +594,36 @@ public class RouterControllerStoreTest {
 		assertThat(field1).contains(entry("type", "int"));
 		assertThat(field1).contains(entry("header", "ID"));
 		assertThat(field1).contains(entry("width", 20));
-		assertThat(field1).contains(entry("sortable", true));
-		assertThat(field1).contains(entry("resizable", true));
-		assertThat(field1).contains(entry("hideable", false));
+		assertThat(field1).contains(entry("sortable", Boolean.TRUE));
+		assertThat(field1).contains(entry("resizable", Boolean.TRUE));
+		assertThat(field1).contains(entry("hideable", Boolean.FALSE));
 
 		Map<String, Object> field2 = fields.get(1);
 		assertThat(field2).contains(entry("name", "name"));
 		assertThat(field2).contains(entry("type", "string"));
 		assertThat(field2).contains(entry("header", "Name"));
 		assertThat(field2).contains(entry("width", 70));
-		assertThat(field2).contains(entry("sortable", true));
-		assertThat(field2).contains(entry("resizable", true));
-		assertThat(field2).contains(entry("hideable", false));
+		assertThat(field2).contains(entry("sortable", Boolean.TRUE));
+		assertThat(field2).contains(entry("resizable", Boolean.TRUE));
+		assertThat(field2).contains(entry("hideable", Boolean.FALSE));
 
 		Map<String, Object> field3 = fields.get(2);
 		assertThat(field3).contains(entry("name", "admin"));
 		assertThat(field3).contains(entry("type", "boolean"));
 		assertThat(field3).contains(entry("header", "Administrator"));
 		assertThat(field3).contains(entry("width", 30));
-		assertThat(field3).contains(entry("sortable", true));
-		assertThat(field3).contains(entry("resizable", true));
-		assertThat(field3).contains(entry("hideable", true));
+		assertThat(field3).contains(entry("sortable", Boolean.TRUE));
+		assertThat(field3).contains(entry("resizable", Boolean.TRUE));
+		assertThat(field3).contains(entry("hideable", Boolean.TRUE));
 
 		Map<String, Object> field4 = fields.get(3);
 		assertThat(field4).contains(entry("name", "salary"));
 		assertThat(field4).contains(entry("type", "float"));
 		assertThat(field4).contains(entry("header", "Salary"));
 		assertThat(field4).contains(entry("width", 50));
-		assertThat(field4).contains(entry("sortable", false));
-		assertThat(field4).contains(entry("resizable", true));
-		assertThat(field4).contains(entry("hideable", true));
+		assertThat(field4).contains(entry("sortable", Boolean.FALSE));
+		assertThat(field4).contains(entry("resizable", Boolean.TRUE));
+		assertThat(field4).contains(entry("hideable", Boolean.TRUE));
 
 	}
 

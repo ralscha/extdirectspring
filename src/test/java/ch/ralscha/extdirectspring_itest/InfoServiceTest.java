@@ -50,14 +50,20 @@ public class InfoServiceTest extends JettyTest {
 
 	private static RemotingApi api() {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/controller/router", null);
-		remotingApi.addAction("infoService", new Action("updateInfo", 0, true));
-		remotingApi.addAction("infoService", new Action("updateInfo2nd", 0, true));
+		remotingApi.addAction("infoService", new Action("updateInfo", 0, Boolean.TRUE));
+		remotingApi
+				.addAction("infoService", new Action("updateInfo2nd", 0, Boolean.TRUE));
 
-		remotingApi.addAction("infoService", new Action("updateInfoUser1", 0, true));
-		remotingApi.addAction("infoService", new Action("updateInfoUser2", 0, true));
-		remotingApi.addAction("infoService", new Action("updateInfoUser3", 0, true));
-		remotingApi.addAction("infoService", new Action("updateInfoUser4", 0, true));
-		remotingApi.addAction("infoService", new Action("updateInfoUser5", 0, true));
+		remotingApi.addAction("infoService", new Action("updateInfoUser1", 0,
+				Boolean.TRUE));
+		remotingApi.addAction("infoService", new Action("updateInfoUser2", 0,
+				Boolean.TRUE));
+		remotingApi.addAction("infoService", new Action("updateInfoUser3", 0,
+				Boolean.TRUE));
+		remotingApi.addAction("infoService", new Action("updateInfoUser4", 0,
+				Boolean.TRUE));
+		remotingApi.addAction("infoService", new Action("updateInfoUser5", 0,
+				Boolean.TRUE));
 
 		return remotingApi;
 	}
@@ -141,14 +147,14 @@ public class InfoServiceTest extends JettyTest {
 		Locale.setDefault(Locale.US);
 
 		testUserPost("updateInfoUser1", "not a well-formed email address",
-				entry("lc", "ralph"), entry("success", false));
+				entry("lc", "ralph"), entry("success", Boolean.FALSE));
 	}
 
 	@Test
 	public void testUpdateInfoUser2() throws IOException {
 		Locale.setDefault(Locale.GERMAN);
 		testUserPost("updateInfoUser2", "keine gültige E-Mail-Adresse",
-				entry("lc", "ralph"), entry("success", false));
+				entry("lc", "ralph"), entry("success", Boolean.FALSE));
 
 	}
 
@@ -156,23 +162,24 @@ public class InfoServiceTest extends JettyTest {
 	public void testUpdateInfoUser3() throws IOException {
 		Locale.setDefault(Locale.US);
 		testUserPost("updateInfoUser3", "Wrong E-Mail", entry("lc", "ralph"),
-				entry("success", false));
+				entry("success", Boolean.FALSE));
 	}
 
 	@Test
 	public void testUpdateInfoUser4() throws IOException {
 		Locale.setDefault(Locale.US);
 		testUserPost("updateInfoUser4", "Wrong E-Mail", entry("lc", "ralph"),
-				entry("success", true));
+				entry("success", Boolean.TRUE));
 	}
 
 	@Test
 	public void testUpdateInfoUser5() throws IOException {
 		Locale.setDefault(Locale.US);
 		testUserPost("updateInfoUser5", "Wrong E-Mail", entry("lc", "ralph"),
-				entry("success", false));
+				entry("success", Boolean.FALSE));
 	}
 
+	@SuppressWarnings("unchecked")
 	private static void testUserPost(String method, String errorMsg, MapEntry... entries)
 			throws IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
@@ -234,6 +241,7 @@ public class InfoServiceTest extends JettyTest {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private static void testInfoPost(String method) throws IOException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
@@ -268,7 +276,7 @@ public class InfoServiceTest extends JettyTest {
 			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 			assertThat(result).hasSize(2);
 			assertThat(result.get("user-name-lower-case")).isEqualTo("ralph");
-			assertThat(result.get("success")).isEqualTo(true);
+			assertThat(result.get("success")).isEqualTo(Boolean.TRUE);
 		}
 		finally {
 			IOUtils.closeQuietly(response);

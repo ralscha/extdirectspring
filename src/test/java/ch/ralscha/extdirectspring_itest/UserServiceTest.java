@@ -39,6 +39,7 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@SuppressWarnings("unchecked")
 public class UserServiceTest extends JettyTest {
 
 	private CloseableHttpClient client;
@@ -90,7 +91,7 @@ public class UserServiceTest extends JettyTest {
 			assertThat(result).hasSize(4);
 			assertThat(result.get("name")).isEqualTo("Joe");
 			assertThat(result.get("age")).isEqualTo(30);
-			assertThat(result.get("success")).isEqualTo(false);
+			assertThat(result.get("success")).isEqualTo(Boolean.FALSE);
 
 			Map<String, Object> errors = (Map<String, Object>) result.get("errors");
 			assertThat(errors).hasSize(1);
@@ -135,7 +136,7 @@ public class UserServiceTest extends JettyTest {
 			assertThat(result).hasSize(4);
 			assertThat(result.get("name")).isEqualTo("Oliver");
 			assertThat(result.get("age")).isEqualTo(35);
-			assertThat(result.get("success")).isEqualTo(false);
+			assertThat(result.get("success")).isEqualTo(Boolean.FALSE);
 
 			Map<String, Object> errors = (Map<String, Object>) result.get("errors");
 			assertThat(errors).hasSize(2);
@@ -181,7 +182,7 @@ public class UserServiceTest extends JettyTest {
 			assertThat(result).hasSize(3);
 			assertThat(result.get("name")).isEqualTo("Jim");
 			assertThat(result.get("age")).isEqualTo(25);
-			assertThat(result.get("success")).isEqualTo(true);
+			assertThat(result.get("success")).isEqualTo(Boolean.TRUE);
 		}
 		finally {
 			IOUtils.closeQuietly(response);

@@ -115,13 +115,13 @@ public class RouterControllerSimpleTest {
 	@Test
 	public void testResultTrue() {
 		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method5",
-				(Object) true, "ralph");
+				Boolean.TRUE, "ralph");
 	}
 
 	@Test
 	public void testResultFalse() {
 		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method5",
-				(Object) false, "joe");
+				Boolean.FALSE, "joe");
 	}
 
 	@Test
@@ -183,6 +183,7 @@ public class RouterControllerSimpleTest {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testWithConversion() throws IOException {
 
 		DateTime today = new DateTime();
