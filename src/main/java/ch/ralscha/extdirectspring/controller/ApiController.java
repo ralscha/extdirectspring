@@ -59,6 +59,9 @@ public class ApiController {
 	@Autowired
 	private MethodInfoCache methodInfoCache;
 
+	@Autowired
+	private ApiCache apiCache;
+
 	/**
 	 * Method that handles api.js and api-debug.js calls. Generates a javascript with the
 	 * necessary code for Ext Direct.
@@ -212,12 +215,12 @@ public class ApiController {
 
 			ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar,
 					pollingUrlsVar, sseVar, routerUrl, group, debug);
-			String apiString = ApiCache.INSTANCE.get(apiKey);
+			String apiString = apiCache.get(apiKey);
 			if (apiString == null) {
 				apiString = buildApiString(apiNs, actionNs, remotingApiVar,
 						pollingUrlsVar, sseVar, routerUrl, basePollUrl, baseSseUrl,
 						group, debug, false);
-				ApiCache.INSTANCE.put(apiKey, apiString);
+				apiCache.put(apiKey, apiString);
 			}
 			return apiString;
 		}

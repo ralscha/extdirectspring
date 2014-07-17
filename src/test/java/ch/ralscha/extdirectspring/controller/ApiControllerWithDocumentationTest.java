@@ -58,9 +58,12 @@ public class ApiControllerWithDocumentationTest {
 	@Autowired
 	private ConfigurationService configurationService;
 
+	@Autowired
+	private ApiCache apiCache;
+
 	@Before
 	public void setupApiController() throws Exception {
-		ApiCache.INSTANCE.clear();
+		apiCache.clear();
 
 		Configuration config = new Configuration();
 		config.setTimeout(15000);

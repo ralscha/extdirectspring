@@ -29,7 +29,7 @@ public class ApiCacheTest {
 
 	@Test
 	public void testPutAndGet() {
-		assertThat(ApiCache.INSTANCE).isNotNull();
+		ApiCache cache = new ApiCache();
 
 		ApiCacheKey key1 = new ApiCacheKey(null, null, null, null, null, null, null,
 				false);
@@ -49,26 +49,26 @@ public class ApiCacheTest {
 		ApiCacheKey key9 = new ApiCacheKey("api", "action", "remoting", "polling", "sse",
 				"group", "/router", true);
 
-		ApiCache.INSTANCE.put(key1, "one");
-		ApiCache.INSTANCE.put(key3, "three");
-		ApiCache.INSTANCE.put(key4, "four");
-		ApiCache.INSTANCE.put(key5, "five");
-		ApiCache.INSTANCE.put(key6, "six");
-		ApiCache.INSTANCE.put(key7, "seven");
-		ApiCache.INSTANCE.put(key8, "eight");
-		ApiCache.INSTANCE.put(key9, "nine");
+		cache.put(key1, "one");
+		cache.put(key3, "three");
+		cache.put(key4, "four");
+		cache.put(key5, "five");
+		cache.put(key6, "six");
+		cache.put(key7, "seven");
+		cache.put(key8, "eight");
+		cache.put(key9, "nine");
 
-		assertThat(ApiCache.INSTANCE.get(null)).isNull();
-		assertThat(ApiCache.INSTANCE.get(key2)).isNull();
-		assertThat(ApiCache.INSTANCE.get(key1)).isNotNull();
-		assertThat(ApiCache.INSTANCE.get(key1)).isEqualTo("one");
-		assertThat(ApiCache.INSTANCE.get(key3)).isEqualTo("three");
-		assertThat(ApiCache.INSTANCE.get(key4)).isEqualTo("four");
-		assertThat(ApiCache.INSTANCE.get(key5)).isEqualTo("five");
-		assertThat(ApiCache.INSTANCE.get(key6)).isEqualTo("six");
-		assertThat(ApiCache.INSTANCE.get(key7)).isEqualTo("seven");
-		assertThat(ApiCache.INSTANCE.get(key8)).isEqualTo("eight");
-		assertThat(ApiCache.INSTANCE.get(key9)).isEqualTo("nine");
+		assertThat(cache.get(null)).isNull();
+		assertThat(cache.get(key2)).isNull();
+		assertThat(cache.get(key1)).isNotNull();
+		assertThat(cache.get(key1)).isEqualTo("one");
+		assertThat(cache.get(key3)).isEqualTo("three");
+		assertThat(cache.get(key4)).isEqualTo("four");
+		assertThat(cache.get(key5)).isEqualTo("five");
+		assertThat(cache.get(key6)).isEqualTo("six");
+		assertThat(cache.get(key7)).isEqualTo("seven");
+		assertThat(cache.get(key8)).isEqualTo("eight");
+		assertThat(cache.get(key9)).isEqualTo("nine");
 
 		assertThat(key1.equals("test")).isFalse();
 		assertThat(key1.equals(null)).isFalse();
@@ -122,22 +122,21 @@ public class ApiCacheTest {
 
 	@Test
 	public void testEqualKeys() {
-		assertThat(ApiCache.INSTANCE).isNotNull();
-		ApiCache.INSTANCE.clear();
+		ApiCache cache = new ApiCache();
 
 		ApiCacheKey keyOne = new ApiCacheKey("api", "action", "remoting", "polling",
 				"sse", "group", "/router", true);
 		ApiCacheKey keyTwo = new ApiCacheKey("api", "action", "remoting", "polling",
 				"sse", "group", "/router", true);
 
-		ApiCache.INSTANCE.put(keyOne, "1");
+		cache.put(keyOne, "1");
 
-		assertThat(ApiCache.INSTANCE.get(keyOne)).isEqualTo("1");
-		assertThat(ApiCache.INSTANCE.get(keyTwo)).isEqualTo("1");
+		assertThat(cache.get(keyOne)).isEqualTo("1");
+		assertThat(cache.get(keyTwo)).isEqualTo("1");
 
-		ApiCache.INSTANCE.put(keyTwo, "2");
-		assertThat(ApiCache.INSTANCE.get(keyOne)).isEqualTo("2");
-		assertThat(ApiCache.INSTANCE.get(keyTwo)).isEqualTo("2");
+		cache.put(keyTwo, "2");
+		assertThat(cache.get(keyOne)).isEqualTo("2");
+		assertThat(cache.get(keyTwo)).isEqualTo("2");
 	}
 
 }

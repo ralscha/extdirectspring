@@ -36,11 +36,14 @@ public class ApiControllerWithXMLConfig3Test {
 	@Autowired
 	private WebApplicationContext wac;
 
+	@Autowired
+	private ApiCache apiCache;
+
 	private MockMvc mockMvc;
 
 	@Before
 	public void setupApiController() throws Exception {
-		ApiCache.INSTANCE.clear();
+		apiCache.clear();
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
 

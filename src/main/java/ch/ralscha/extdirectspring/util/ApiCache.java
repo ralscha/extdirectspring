@@ -19,16 +19,14 @@ import java.lang.ref.SoftReference;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public enum ApiCache {
+import org.springframework.stereotype.Service;
 
-	/**
-	 * Singleton enum pattern
-	 */
-	INSTANCE;
+@Service
+public class ApiCache {
 
 	private final Map<ApiCacheKey, SoftReference<String>> cache;
 
-	private ApiCache() {
+	public ApiCache() {
 		cache = new ConcurrentHashMap<ApiCacheKey, SoftReference<String>>();
 	}
 

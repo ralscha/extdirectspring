@@ -72,10 +72,13 @@ public class ApiControllerTest {
 	@Autowired
 	private MethodInfoCache methodInfoCache;
 
+	@Autowired
+	private ApiCache apiCache;
+
 	@Before
 	public void setupApiController() throws Exception {
 		methodInfoCache.clear();
-		ApiCache.INSTANCE.clear();
+		apiCache.clear();
 		wac.publishEvent(new ContextRefreshedEvent(wac));
 
 		Configuration config = new Configuration();
@@ -202,9 +205,9 @@ public class ApiControllerTest {
 	public void testGroup1() throws Exception {
 		testGroup1(null, null);
 		testGroup1(null, null);
-		ApiCache.INSTANCE.clear();
+		apiCache.clear();
 		testGroup1(null, "-1.0.0");
-		ApiCache.INSTANCE.clear();
+		apiCache.clear();
 		testGroup1(null, "-fingerprinted");
 	}
 
@@ -217,7 +220,7 @@ public class ApiControllerTest {
 
 		testGroup1(config, null);
 		testGroup1(config, null);
-		ApiCache.INSTANCE.clear();
+		apiCache.clear();
 		testGroup1(config, "-1.0.0");
 	}
 
