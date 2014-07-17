@@ -80,17 +80,23 @@ public class RouterController {
 
 	private static final Log log = LogFactory.getLog(RouterController.class);
 
-	@Autowired
-	private RequestMappingHandlerAdapter handlerAdapter;
+	private final RequestMappingHandlerAdapter handlerAdapter;
+
+	private final SSEHandler sseHandler;
+
+	private final ConfigurationService configurationService;
+
+	private final MethodInfoCache methodInfoCache;
 
 	@Autowired
-	private SSEHandler sseHandler;
-
-	@Autowired
-	private ConfigurationService configurationService;
-
-	@Autowired
-	private MethodInfoCache methodInfoCache;
+	public RouterController(RequestMappingHandlerAdapter handlerAdapter,
+			SSEHandler sseHandler, ConfigurationService configurationService,
+			MethodInfoCache methodInfoCache) {
+		this.handlerAdapter = handlerAdapter;
+		this.sseHandler = sseHandler;
+		this.configurationService = configurationService;
+		this.methodInfoCache = methodInfoCache;
+	}
 
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
 	public void poll(@PathVariable("beanName") String beanName,

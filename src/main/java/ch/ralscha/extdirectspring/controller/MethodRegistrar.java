@@ -47,8 +47,12 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 
 	private static final Log log = LogFactory.getLog(RouterController.class);
 
+	private final MethodInfoCache methodInfoCache;
+
 	@Autowired
-	private MethodInfoCache methodInfoCache;
+	public MethodRegistrar(MethodInfoCache methodInfoCache) {
+		this.methodInfoCache = methodInfoCache;
+	}
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {

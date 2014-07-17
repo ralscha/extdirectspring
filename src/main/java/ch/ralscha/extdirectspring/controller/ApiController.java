@@ -53,14 +53,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 public class ApiController {
 
-	@Autowired
-	private ConfigurationService configurationService;
+	private final ConfigurationService configurationService;
+
+	private final MethodInfoCache methodInfoCache;
+
+	private final ApiCache apiCache;
 
 	@Autowired
-	private MethodInfoCache methodInfoCache;
-
-	@Autowired
-	private ApiCache apiCache;
+	public ApiController(ConfigurationService configurationService,
+			MethodInfoCache methodInfoCache, ApiCache apiCache) {
+		this.configurationService = configurationService;
+		this.methodInfoCache = methodInfoCache;
+		this.apiCache = apiCache;
+	}
 
 	/**
 	 * Method that handles api.js and api-debug.js calls. Generates a javascript with the

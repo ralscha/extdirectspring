@@ -37,11 +37,16 @@ public class SSEHandler {
 
 	private static final Log log = LogFactory.getLog(SSEHandler.class);
 
-	@Autowired
-	private ConfigurationService configurationService;
+	private final ConfigurationService configurationService;
+
+	private final MethodInfoCache methodInfoCache;
 
 	@Autowired
-	private MethodInfoCache methodInfoCache;
+	public SSEHandler(ConfigurationService configurationService,
+			MethodInfoCache methodInfoCache) {
+		this.configurationService = configurationService;
+		this.methodInfoCache = methodInfoCache;
+	}
 
 	public void handle(String beanName, String method, HttpServletRequest request,
 			HttpServletResponse response, Locale locale) throws Exception {
