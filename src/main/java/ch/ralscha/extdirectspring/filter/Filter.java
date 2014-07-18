@@ -69,7 +69,8 @@ public class Filter {
 		if (field == null) {
 			field = (String) jsonData.get("property");
 		}
-		if (type.equals("numeric") || type.equals("int") || type.equals("float")) {
+		if (type.equals("numeric") || type.equals("int") || type.equals("float")
+				|| type.equals("number")) {
 			String comparison = (String) jsonData.get("comparison");
 			if (comparison == null) {
 				comparison = (String) jsonData.get("operator");
