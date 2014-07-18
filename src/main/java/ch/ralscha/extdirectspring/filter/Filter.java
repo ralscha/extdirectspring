@@ -33,12 +33,19 @@ import org.springframework.core.convert.ConversionService;
 public class Filter {
 	private final String field;
 
-	public Filter(String field) {
+	private final Comparison comparison;
+
+	public Filter(String field, Comparison comparison) {
 		this.field = field;
+		this.comparison = comparison;
 	}
 
 	public String getField() {
 		return field;
+	}
+
+	public Comparison getComparison() {
+		return comparison;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -56,10 +63,10 @@ public class Filter {
 					return new NumericFilter(property, (Number) source, null);
 				}
 				else if (source instanceof Boolean) {
-					return new BooleanFilter(property, (Boolean) source);
+					return new BooleanFilter(property, (Boolean) source, null);
 				}
 				return new StringFilter(property, source != null ? source.toString()
-						: null);
+						: null, null);
 			}
 
 			return null;
@@ -71,35 +78,37 @@ public class Filter {
 		}
 		if (type.equals("numeric") || type.equals("int") || type.equals("float")
 				|| type.equals("number")) {
-			String comparison = (String) jsonData.get("comparison");
-			if (comparison == null) {
-				comparison = (String) jsonData.get("operator");
-			}
 			Number value = conversionService.convert(source, Number.class);
-			return new NumericFilter(field, value, Comparison.fromString(comparison));
+			return new NumericFilter(field, value, getComparison(jsonData));
 		}
 		else if (type.equals("string")) {
-			String value = (String) source;
-			return new StringFilter(field, value);
+			return new StringFilter(field, (String) source, getComparison(jsonData));
 		}
 		else if (type.equals("date")) {
-			String comparison = (String) jsonData.get("comparison");
-			if (comparison == null) {
-				comparison = (String) jsonData.get("operator");
-			}
-			String value = (String) source;
-			return new DateFilter(field, value, Comparison.fromString(comparison));
+			return new DateFilter(field, (String) source, getComparison(jsonData));
 		}
 		else if (type.equals("list") || type.equals("combo")) {
 			if (source instanceof String) {
 				String[] values = ((String) source).split(",");
-				return new ListFilter(field, Arrays.asList(values));
+				return new ListFilter(field, Arrays.asList(values),
+						getComparison(jsonData));
 			}
-			return new ListFilter(field, (List<String>) source);
+			return new ListFilter(field, (List<String>) source, getComparison(jsonData));
 		}
 		else if (type.equals("boolean")) {
-			boolean value = (Boolean) source;
-			return new BooleanFilter(field, value);
+			return new BooleanFilter(field, (Boolean) source, getComparison(jsonData));
+		}
+
+		return null;
+	}
+
+	private static Comparison getComparison(Map<String, Object> jsonData) {
+		String comparison = (String) jsonData.get("comparison");
+		if (comparison == null) {
+			comparison = (String) jsonData.get("operator");
+		}
+		if (comparison != null) {
+			return Comparison.fromString(comparison);
 		}
 
 		return null;

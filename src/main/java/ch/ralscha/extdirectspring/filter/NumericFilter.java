@@ -19,25 +19,18 @@ public class NumericFilter extends Filter {
 
 	private final Number value;
 
-	private final Comparison comparison;
-
 	public NumericFilter(String field, Number value, Comparison comparison) {
-		super(field);
+		super(field, comparison);
 		this.value = value;
-		this.comparison = comparison;
 	}
 
 	public Number getValue() {
 		return value;
 	}
 
-	public Comparison getComparison() {
-		return comparison;
-	}
-
 	@Override
 	public String toString() {
-		return "NumericFilter [value=" + value + ", comparison=" + comparison
+		return "NumericFilter [value=" + value + ", comparison=" + getComparison()
 				+ ", getField()=" + getField() + "]";
 	}
 

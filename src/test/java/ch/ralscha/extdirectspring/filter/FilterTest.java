@@ -31,47 +31,6 @@ public class FilterTest {
 	private static final GenericConversionService genericConversionService = new DefaultFormattingConversionService();
 
 	@Test
-	public void testStringFilter() {
-		Map<String, Object> json = new HashMap<String, Object>();
-		json.put("field", "aField");
-		json.put("type", "string");
-		json.put("value", "aString");
-
-		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertThat(filter).isInstanceOf(StringFilter.class);
-		StringFilter stringFilter = (StringFilter) filter;
-		assertThat(stringFilter.getField()).isEqualTo("aField");
-		assertThat(stringFilter.getValue()).isEqualTo("aString");
-	}
-
-	@Test
-	public void testStringPropertyFilter() {
-		Map<String, Object> json = new HashMap<String, Object>();
-		json.put("property", "aField");
-		json.put("type", "string");
-		json.put("value", "aString");
-
-		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertThat(filter).isInstanceOf(StringFilter.class);
-		StringFilter stringFilter = (StringFilter) filter;
-		assertThat(stringFilter.getField()).isEqualTo("aField");
-		assertThat(stringFilter.getValue()).isEqualTo("aString");
-	}
-
-	@Test
-	public void testStringFilterWithoutType() {
-		Map<String, Object> json = new HashMap<String, Object>();
-		json.put("property", "aField");
-		json.put("value", "aString");
-
-		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertThat(filter).isInstanceOf(StringFilter.class);
-		StringFilter stringFilter = (StringFilter) filter;
-		assertThat(stringFilter.getField()).isEqualTo("aField");
-		assertThat(stringFilter.getValue()).isEqualTo("aString");
-	}
-
-	@Test
 	public void testDateFilterGT() {
 		Map<String, Object> json = new HashMap<String, Object>();
 		json.put("field", "aField");
