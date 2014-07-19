@@ -225,47 +225,6 @@ public class FilterTest {
 	}
 
 	@Test
-	public void testBooleanFilter() {
-		Map<String, Object> json = new HashMap<String, Object>();
-		json.put("field", "aField");
-		json.put("type", "boolean");
-		json.put("value", Boolean.FALSE);
-
-		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertThat(filter).isInstanceOf(BooleanFilter.class);
-		BooleanFilter booleanFilter = (BooleanFilter) filter;
-		assertThat(booleanFilter.getField()).isEqualTo("aField");
-		assertThat(booleanFilter.getValue()).isEqualTo(false);
-	}
-
-	@Test
-	public void testBooleanPropertyFilter() {
-		Map<String, Object> json = new HashMap<String, Object>();
-		json.put("property", "aField");
-		json.put("type", "boolean");
-		json.put("value", Boolean.FALSE);
-
-		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertThat(filter).isInstanceOf(BooleanFilter.class);
-		BooleanFilter booleanFilter = (BooleanFilter) filter;
-		assertThat(booleanFilter.getField()).isEqualTo("aField");
-		assertThat(booleanFilter.getValue()).isEqualTo(false);
-	}
-
-	@Test
-	public void testBooleanFilterWithoutType() {
-		Map<String, Object> json = new HashMap<String, Object>();
-		json.put("property", "aField");
-		json.put("value", Boolean.FALSE);
-
-		Filter filter = Filter.createFilter(json, genericConversionService);
-		assertThat(filter).isInstanceOf(BooleanFilter.class);
-		BooleanFilter booleanFilter = (BooleanFilter) filter;
-		assertThat(booleanFilter.getField()).isEqualTo("aField");
-		assertThat(booleanFilter.getValue()).isEqualTo(false);
-	}
-
-	@Test
 	public void testNotExistsFilter() {
 		Map<String, Object> json = new HashMap<String, Object>();
 		json.put("field", "aField");

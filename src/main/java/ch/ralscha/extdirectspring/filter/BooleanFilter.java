@@ -17,14 +17,14 @@ package ch.ralscha.extdirectspring.filter;
 
 public class BooleanFilter extends Filter {
 
-	private final boolean value;
+	private final Boolean value;
 
-	public BooleanFilter(String field, boolean value, Comparison comparison) {
+	public BooleanFilter(String field, Boolean value, Comparison comparison) {
 		super(field, comparison);
 		this.value = value;
 	}
 
-	public boolean getValue() {
+	public Boolean getValue() {
 		return value;
 	}
 
