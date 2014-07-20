@@ -456,7 +456,7 @@ public class Configuration {
 	 * <p>
 	 * Defaults to none
 	 *
-	 * @param apiNs new namespace
+	 * @param actionNs new namespace
 	 */
 	public void setActionNs(String actionNs) {
 		this.actionNs = actionNs;

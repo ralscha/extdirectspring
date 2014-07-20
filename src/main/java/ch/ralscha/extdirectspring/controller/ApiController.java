@@ -83,6 +83,8 @@ public class ApiController {
 	 * server and port
 	 * @param format only valid value is "json2. Ext Designer sends this parameter and the
 	 * response is a JSON. Defaults to null and response is Javascript.
+	 * @param baseRouterUrl Sets the path to the router, poll and sse controllers. If set
+	 * overrides default behavior that uses request.getRequestURI
 	 * @param request the HTTP servlet request
 	 * @param response the HTTP servlet response
 	 * @throws IOException
@@ -155,6 +157,8 @@ public class ApiController {
 	 * @param fullRouterUrl if true the router property contains the full URL with
 	 * protocol, server name, port number, and server path. Defaults to false returns only
 	 * the URL with server path
+	 * @param baseRouterUrl Sets the path to the router, poll and sse controllers. If set
+	 * overrides default behavior that uses request.getRequestURI
 	 * @param request the HTTP servlet request
 	 * @param response the HTTP servlet response
 	 * @throws IOException

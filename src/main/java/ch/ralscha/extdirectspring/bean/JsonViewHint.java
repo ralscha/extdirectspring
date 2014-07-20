@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * {@link ExtDirectMethod#jsonView()}.
  * <p>
  * To disable a JsonView specified on {@link ExtDirectMethod#jsonView()} set the property
- * jsonView to {@link ExtDirectMethod.NoJsonView}.
+ * jsonView to {@link ch.ralscha.extdirectspring.annotation.ExtDirectMethod.NoJsonView}.
  */
 public class JsonViewHint {
 
