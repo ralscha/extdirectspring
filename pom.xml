@@ -13,7 +13,7 @@
 
 	<groupId>ch.ralscha</groupId>
 	<artifactId>extdirectspring</artifactId>
-	<version>1.4.2-SNAPSHOT</version>
+	<version>1.4.2</version>
 
 	<inceptionYear>2010</inceptionYear>
 
