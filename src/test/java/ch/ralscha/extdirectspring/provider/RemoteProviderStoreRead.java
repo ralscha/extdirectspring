@@ -310,6 +310,7 @@ public class RemoteProviderStoreRead {
 		return response;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public List<Row> methodFilter(@RequestParam("type") int type,
 			ExtDirectStoreReadRequest request) {
@@ -325,6 +326,12 @@ public class RemoteProviderStoreRead {
 			assertThat(nf.getValue()).isEqualTo(2);
 			assertThat(nf.getField()).isEqualTo("id");
 			assertThat(nf.getComparison()).isEqualTo(Comparison.EQUAL);
+			if (type == 15) {
+				assertThat(nf.getRawComparison()).isEqualTo("=");
+			}
+			else {
+				assertThat(nf.getRawComparison()).isEqualTo("eq");
+			}
 
 			NumericFilter nf2 = request.getFirstFilterForField("id");
 			assertThat(nf2).isSameAs(nf);
@@ -350,11 +357,23 @@ public class RemoteProviderStoreRead {
 			assertThat(nf.getValue()).isEqualTo(100);
 			assertThat(nf.getField()).isEqualTo("id");
 			assertThat(nf.getComparison()).isEqualTo(Comparison.LESS_THAN);
+			if (type == 16) {
+				assertThat(nf.getRawComparison()).isEqualTo("<");
+			}
+			else {
+				assertThat(nf.getRawComparison()).isEqualTo("lt");
+			}
 
 			nf = (NumericFilter) filters.get(1);
 			assertThat(nf.getValue()).isEqualTo(90);
 			assertThat(nf.getField()).isEqualTo("id");
 			assertThat(nf.getComparison()).isEqualTo(Comparison.GREATER_THAN);
+			if (type == 16) {
+				assertThat(nf.getRawComparison()).isEqualTo(">");
+			}
+			else {
+				assertThat(nf.getRawComparison()).isEqualTo("gt");
+			}
 
 			NumericFilter nf2 = request.getFirstFilterForField("id");
 			assertThat(nf2).isSameAs((NumericFilter) filters.get(0));
@@ -423,12 +442,12 @@ public class RemoteProviderStoreRead {
 			assertThat(filters).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
-			ListFilter lf1 = (ListFilter) filters.get(0);
+			ListFilter<String> lf1 = (ListFilter) filters.get(0);
 			assertThat(lf1.getValue().size()).isEqualTo(1);
 			assertThat(lf1.getValue().get(0)).isEqualTo("small");
 			assertThat(lf1.getField()).isEqualTo("size");
 
-			ListFilter lf2 = request.getFirstFilterForField("size");
+			ListFilter<String> lf2 = request.getFirstFilterForField("size");
 			assertThat(lf2).isSameAs(lf1);
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
@@ -440,13 +459,13 @@ public class RemoteProviderStoreRead {
 			assertThat(filters).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
-			ListFilter lf1 = (ListFilter) filters.get(0);
+			ListFilter<String> lf1 = (ListFilter) filters.get(0);
 			assertThat(lf1.getValue().size()).isEqualTo(2);
 			assertThat(lf1.getValue().get(0)).isEqualTo("small");
 			assertThat(lf1.getValue().get(1)).isEqualTo("medium");
 			assertThat(lf1.getField()).isEqualTo("size");
 
-			ListFilter lf2 = request.getFirstFilterForField("size");
+			ListFilter<String> lf2 = request.getFirstFilterForField("size");
 			assertThat(lf2).isSameAs(lf1);
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
@@ -465,10 +484,23 @@ public class RemoteProviderStoreRead {
 			assertThat(df.getField()).isEqualTo("date");
 			assertThat(df.getComparison()).isEqualTo(Comparison.LESS_THAN);
 
+			if (type == 17) {
+				assertThat(df.getRawComparison()).isEqualTo("<");
+			}
+			else {
+				assertThat(df.getRawComparison()).isEqualTo("lt");
+			}
+
 			df = (DateFilter) filters.get(1);
 			assertThat(df.getValue()).isEqualTo("07/01/2010");
 			assertThat(df.getField()).isEqualTo("date");
 			assertThat(df.getComparison()).isEqualTo(Comparison.GREATER_THAN);
+			if (type == 17) {
+				assertThat(df.getRawComparison()).isEqualTo(">");
+			}
+			else {
+				assertThat(df.getRawComparison()).isEqualTo("gt");
+			}
 
 			DateFilter df2 = request.getFirstFilterForField("date");
 			assertThat(df2).isSameAs((DateFilter) filters.get(0));
@@ -488,6 +520,12 @@ public class RemoteProviderStoreRead {
 			assertThat(df1.getValue()).isEqualTo("07/01/2010");
 			assertThat(df1.getField()).isEqualTo("date");
 			assertThat(df1.getComparison()).isEqualTo(Comparison.EQUAL);
+			if (type == 18) {
+				assertThat(df1.getRawComparison()).isEqualTo("=");
+			}
+			else {
+				assertThat(df1.getRawComparison()).isEqualTo("eq");
+			}
 
 			DateFilter df2 = request.getFirstFilterForField("date");
 			assertThat(df2).isSameAs(df1);
@@ -521,6 +559,7 @@ public class RemoteProviderStoreRead {
 			assertThat(nf1.getValue()).isEqualTo(1);
 			assertThat(nf1.getField()).isEqualTo("level");
 			assertThat(nf1.getComparison()).isNull();
+			assertThat(nf1.getRawComparison()).isNull();
 
 			NumericFilter nf2 = request.getFirstFilterForField("level");
 			assertThat(nf2).isSameAs(nf1);
@@ -550,12 +589,12 @@ public class RemoteProviderStoreRead {
 			assertThat(filters).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
-			ListFilter lf1 = (ListFilter) filters.get(0);
+			ListFilter<String> lf1 = (ListFilter) filters.get(0);
 			assertThat(lf1.getValue().size()).isEqualTo(1);
 			assertThat(lf1.getValue().get(0)).isEqualTo("small");
 			assertThat(lf1.getField()).isEqualTo("size");
 
-			ListFilter lf2 = request.getFirstFilterForField("size");
+			ListFilter<String> lf2 = request.getFirstFilterForField("size");
 			assertThat(lf2).isSameAs(lf1);
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
@@ -567,13 +606,13 @@ public class RemoteProviderStoreRead {
 			assertThat(filters).hasSize(1);
 			assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
-			ListFilter lf1 = (ListFilter) filters.get(0);
+			ListFilter<String> lf1 = (ListFilter) filters.get(0);
 			assertThat(lf1.getValue().size()).isEqualTo(2);
 			assertThat(lf1.getValue().get(0)).isEqualTo("small");
 			assertThat(lf1.getValue().get(1)).isEqualTo("medium");
 			assertThat(lf1.getField()).isEqualTo("size");
 
-			ListFilter lf2 = request.getFirstFilterForField("size");
+			ListFilter<String> lf2 = request.getFirstFilterForField("size");
 			assertThat(lf2).isSameAs(lf1);
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
@@ -629,7 +668,308 @@ public class RemoteProviderStoreRead {
 
 			return createResult(type);
 		}
+		case 22: {
+			assertThat(request.getFilters()).hasSize(1);
+			assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
 
+			NumericFilter nf = (NumericFilter) filters.get(0);
+			assertThat(nf.getValue()).isEqualTo(2);
+			assertThat(nf.getField()).isEqualTo("id");
+			assertThat(nf.getComparison()).isEqualTo(Comparison.EQUAL);
+			assertThat(nf.getRawComparison()).isEqualTo("eq");
+
+			NumericFilter nf2 = request.getFirstFilterForField("id");
+			assertThat(nf2).isSameAs(nf);
+
+			List<Filter> allFiltersForField = request.getAllFiltersForField("id");
+			assertThat(allFiltersForField).hasSize(1);
+			Filter nf3 = allFiltersForField.iterator().next();
+			assertThat(nf3).isInstanceOf(NumericFilter.class);
+			assertThat(nf3).isSameAs(nf);
+
+			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat(request.getAllFiltersForField("xy")).isEmpty();
+
+			assertThat(request.getSorters()).hasSize(1);
+			SortInfo sortInfo = request.getSorters().iterator().next();
+			assertThat(sortInfo.getDirection()).isEqualTo(SortDirection.ASCENDING);
+			assertThat(sortInfo.getProperty()).isEqualTo("company");
+
+			return createResult(type);
+		}
+		case 23: {
+			assertThat(request.getFilters()).hasSize(2);
+			assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
+			assertThat(filters.get(1)).isInstanceOf(NumericFilter.class);
+
+			NumericFilter nf = (NumericFilter) filters.get(0);
+			assertThat(nf.getValue()).isEqualTo(100);
+			assertThat(nf.getField()).isEqualTo("id");
+			assertThat(nf.getComparison()).isEqualTo(Comparison.LESS_THAN);
+			assertThat(nf.getRawComparison()).isEqualTo("lt");
+
+			nf = (NumericFilter) filters.get(1);
+			assertThat(nf.getValue()).isEqualTo(90);
+			assertThat(nf.getField()).isEqualTo("id");
+			assertThat(nf.getComparison()).isEqualTo(Comparison.GREATER_THAN);
+			assertThat(nf.getRawComparison()).isEqualTo("gt");
+
+			NumericFilter nf2 = request.getFirstFilterForField("id");
+			assertThat(nf2).isSameAs((NumericFilter) filters.get(0));
+
+			List<Filter> allFiltersForField = request.getAllFiltersForField("id");
+			assertThat(allFiltersForField)
+					.containsExactly(filters.get(0), filters.get(1));
+
+			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat(request.getAllFiltersForField("xy")).isEmpty();
+
+			assertThat(request.getSorters()).hasSize(1);
+			SortInfo sortInfo = request.getSorters().iterator().next();
+			assertThat(sortInfo.getDirection()).isEqualTo(SortDirection.ASCENDING);
+			assertThat(sortInfo.getProperty()).isEqualTo("company");
+
+			return createResult(type);
+		}
+		case 24: {
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0)).isInstanceOf(BooleanFilter.class);
+
+			BooleanFilter bf1 = (BooleanFilter) filters.get(0);
+			assertThat(bf1.getValue()).isEqualTo(true);
+			assertThat(bf1.getField()).isEqualTo("visible");
+			assertThat(bf1.getComparison()).isEqualTo(Comparison.EQUAL);
+			assertThat(bf1.getRawComparison()).isEqualTo("=");
+
+			BooleanFilter bf2 = request.getFirstFilterForField("visible");
+			assertThat(bf2).isSameAs(bf1);
+
+			List<Filter> allFiltersForField = request.getAllFiltersForField("visible");
+			assertThat(allFiltersForField).containsExactly(bf1);
+
+			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat(request.getAllFiltersForField("xy")).isEmpty();
+
+			assertThat(request.getSorters()).hasSize(1);
+			SortInfo sortInfo = request.getSorters().iterator().next();
+			assertThat(sortInfo.getDirection()).isEqualTo(SortDirection.ASCENDING);
+			assertThat(sortInfo.getProperty()).isEqualTo("company");
+
+			return createResult(type);
+		}
+		case 25: {
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0)).isInstanceOf(BooleanFilter.class);
+
+			BooleanFilter bf1 = (BooleanFilter) filters.get(0);
+			assertThat(bf1.getValue()).isEqualTo(false);
+			assertThat(bf1.getField()).isEqualTo("visible");
+			assertThat(bf1.getComparison()).isEqualTo(Comparison.EQUAL);
+			assertThat(bf1.getRawComparison()).isEqualTo("=");
+
+			BooleanFilter bf2 = request.getFirstFilterForField("visible");
+			assertThat(bf2).isSameAs(bf1);
+
+			List<Filter> allFiltersForField = request.getAllFiltersForField("visible");
+			assertThat(allFiltersForField).containsExactly(bf1);
+
+			assertThat(request.getSorters()).hasSize(1);
+			SortInfo sortInfo = request.getSorters().iterator().next();
+			assertThat(sortInfo.getDirection()).isEqualTo(SortDirection.ASCENDING);
+			assertThat(sortInfo.getProperty()).isEqualTo("company");
+
+			return createResult(type);
+		}
+		case 26: {
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0)).isInstanceOf(StringFilter.class);
+
+			StringFilter sf1 = (StringFilter) filters.get(0);
+			assertThat(sf1.getValue()).isEqualTo("abb");
+			assertThat(sf1.getField()).isEqualTo("company");
+			assertThat(sf1.getComparison()).isEqualTo(Comparison.LIKE);
+			assertThat(sf1.getRawComparison()).isEqualTo("like");
+
+			StringFilter sf2 = request.getFirstFilterForField("company");
+			assertThat(sf2).isSameAs(sf1);
+
+			List<Filter> allFiltersForField = request.getAllFiltersForField("company");
+			assertThat(allFiltersForField).containsExactly(sf1);
+
+			assertThat(request.getSorters()).hasSize(1);
+			SortInfo sortInfo = request.getSorters().iterator().next();
+			assertThat(sortInfo.getDirection()).isEqualTo(SortDirection.ASCENDING);
+			assertThat(sortInfo.getProperty()).isEqualTo("company");
+
+			return createResult(type);
+		}
+		case 27: {
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
+
+			ListFilter<String> lf1 = (ListFilter) filters.get(0);
+			assertThat(lf1.getValue().size()).isEqualTo(1);
+			assertThat(lf1.getValue().get(0)).isEqualTo("small");
+			assertThat(lf1.getField()).isEqualTo("size");
+			assertThat(lf1.getComparison()).isEqualTo(Comparison.IN);
+			assertThat(lf1.getRawComparison()).isEqualTo("in");
+
+			ListFilter<String> lf2 = request.getFirstFilterForField("size");
+			assertThat(lf2).isSameAs(lf1);
+
+			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
+			assertThat(allFiltersForField).containsExactly(lf1);
+
+			assertThat(request.getSorters()).hasSize(1);
+			SortInfo sortInfo = request.getSorters().iterator().next();
+			assertThat(sortInfo.getDirection()).isEqualTo(SortDirection.ASCENDING);
+			assertThat(sortInfo.getProperty()).isEqualTo("company");
+
+			return createResult(type);
+		}
+		case 28: {
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
+
+			ListFilter<String> lf1 = (ListFilter) filters.get(0);
+			assertThat(lf1.getValue().size()).isEqualTo(2);
+			assertThat(lf1.getValue().get(0)).isEqualTo("small");
+			assertThat(lf1.getValue().get(1)).isEqualTo("medium");
+			assertThat(lf1.getField()).isEqualTo("size");
+			assertThat(lf1.getComparison()).isEqualTo(Comparison.IN);
+			assertThat(lf1.getRawComparison()).isEqualTo("in");
+
+			ListFilter<String> lf2 = request.getFirstFilterForField("size");
+			assertThat(lf2).isSameAs(lf1);
+
+			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
+			assertThat(allFiltersForField).containsExactly(lf1);
+
+			assertThat(request.getSorters()).hasSize(1);
+			SortInfo sortInfo = request.getSorters().iterator().next();
+			assertThat(sortInfo.getDirection()).isEqualTo(SortDirection.ASCENDING);
+			assertThat(sortInfo.getProperty()).isEqualTo("company");
+
+			return createResult(type);
+		}
+		case 29: {
+			assertThat(request.getFilters()).hasSize(1);
+			assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
+
+			NumericFilter nf = (NumericFilter) filters.get(0);
+			assertThat(nf.getValue()).isEqualTo(1407103200000L);
+			assertThat(nf.getField()).isEqualTo("date");
+			assertThat(nf.getComparison()).isEqualTo(Comparison.EQUAL);
+			assertThat(nf.getRawComparison()).isEqualTo("eq");
+
+			NumericFilter nf2 = request.getFirstFilterForField("date");
+			assertThat(nf2).isSameAs(nf);
+
+			List<Filter> allFiltersForField = request.getAllFiltersForField("date");
+			assertThat(allFiltersForField).hasSize(1);
+			Filter nf3 = allFiltersForField.iterator().next();
+			assertThat(nf3).isInstanceOf(NumericFilter.class);
+			assertThat(nf3).isSameAs(nf);
+
+			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat(request.getAllFiltersForField("xy")).isEmpty();
+
+			assertThat(request.getSorters()).hasSize(1);
+			SortInfo sortInfo = request.getSorters().iterator().next();
+			assertThat(sortInfo.getDirection()).isEqualTo(SortDirection.ASCENDING);
+			assertThat(sortInfo.getProperty()).isEqualTo("company");
+
+			return createResult(type);
+		}
+		case 30: {
+			assertThat(request.getFilters()).hasSize(2);
+			assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
+			assertThat(filters.get(1)).isInstanceOf(NumericFilter.class);
+
+			NumericFilter nf = (NumericFilter) filters.get(0);
+			assertThat(nf.getValue()).isEqualTo(1407448800000L);
+			assertThat(nf.getField()).isEqualTo("date");
+			assertThat(nf.getComparison()).isEqualTo(Comparison.LESS_THAN);
+			assertThat(nf.getRawComparison()).isEqualTo("lt");
+
+			nf = (NumericFilter) filters.get(1);
+			assertThat(nf.getValue()).isEqualTo(1406844000000L);
+			assertThat(nf.getField()).isEqualTo("date");
+			assertThat(nf.getComparison()).isEqualTo(Comparison.GREATER_THAN);
+			assertThat(nf.getRawComparison()).isEqualTo("gt");
+
+			NumericFilter nf2 = request.getFirstFilterForField("date");
+			assertThat(nf2).isSameAs((NumericFilter) filters.get(0));
+
+			List<Filter> allFiltersForField = request.getAllFiltersForField("date");
+			assertThat(allFiltersForField)
+					.containsExactly(filters.get(0), filters.get(1));
+
+			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat(request.getAllFiltersForField("xy")).isEmpty();
+
+			assertThat(request.getSorters()).hasSize(1);
+			SortInfo sortInfo = request.getSorters().iterator().next();
+			assertThat(sortInfo.getDirection()).isEqualTo(SortDirection.ASCENDING);
+			assertThat(sortInfo.getProperty()).isEqualTo("company");
+
+			return createResult(type);
+		}
+		case 31: {
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
+
+			ListFilter<Integer> lf1 = (ListFilter) filters.get(0);
+			assertThat(lf1.getValue().size()).isEqualTo(1);
+			assertThat(lf1.getValue().get(0)).isEqualTo(1);
+			assertThat(lf1.getField()).isEqualTo("size");
+			assertThat(lf1.getComparison()).isEqualTo(Comparison.IN);
+			assertThat(lf1.getRawComparison()).isEqualTo("in");
+
+			ListFilter<Integer> lf2 = request.getFirstFilterForField("size");
+			assertThat(lf2).isSameAs(lf1);
+
+			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
+			assertThat(allFiltersForField).containsExactly(lf1);
+
+			assertThat(request.getSorters()).hasSize(1);
+			SortInfo sortInfo = request.getSorters().iterator().next();
+			assertThat(sortInfo.getDirection()).isEqualTo(SortDirection.ASCENDING);
+			assertThat(sortInfo.getProperty()).isEqualTo("company");
+			assertThat(request.getPage()).isEqualTo(1);
+			assertThat(request.getStart()).isEqualTo(0);
+			assertThat(request.getLimit()).isEqualTo(50);
+
+			return createResult(type);
+		}
+		case 32: {
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
+
+			ListFilter<Integer> lf1 = (ListFilter) filters.get(0);
+			assertThat(lf1.getValue().size()).isEqualTo(2);
+			assertThat(lf1.getValue().get(0)).isEqualTo(1);
+			assertThat(lf1.getValue().get(1)).isEqualTo(2);
+			assertThat(lf1.getField()).isEqualTo("size");
+			assertThat(lf1.getComparison()).isEqualTo(Comparison.IN);
+			assertThat(lf1.getRawComparison()).isEqualTo("in");
+
+			ListFilter<Integer> lf2 = request.getFirstFilterForField("size");
+			assertThat(lf2).isSameAs(lf1);
+
+			List<Filter> allFiltersForField = request.getAllFiltersForField("size");
+			assertThat(allFiltersForField).containsExactly(lf1);
+
+			assertThat(request.getSorters()).hasSize(1);
+			SortInfo sortInfo = request.getSorters().iterator().next();
+			assertThat(sortInfo.getDirection()).isEqualTo(SortDirection.ASCENDING);
+			assertThat(sortInfo.getProperty()).isEqualTo("company");
+			assertThat(request.getPage()).isEqualTo(1);
+			assertThat(request.getStart()).isEqualTo(0);
+			assertThat(request.getLimit()).isEqualTo(50);
+
+			return createResult(type);
+		}
 		default: // do nothing
 		}
 

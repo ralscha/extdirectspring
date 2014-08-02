@@ -103,7 +103,7 @@ public class RouterControllerFilterTest {
 			index++;
 		}
 
-		assertThat(index).isEqualTo(22);
+		assertThat(index).isEqualTo(33);
 
 	}
 

@@ -44,6 +44,7 @@ public class FilterTest {
 		assertThat(dateFilter.getField()).isEqualTo("aField");
 		assertThat(dateFilter.getValue()).isEqualTo("12.12.2010");
 		assertSame(Comparison.GREATER_THAN, dateFilter.getComparison());
+		assertThat(dateFilter.getRawComparison()).isEqualTo("gt");
 	}
 
 	@Test
@@ -60,6 +61,7 @@ public class FilterTest {
 		assertThat(dateFilter.getField()).isEqualTo("aField2");
 		assertThat(dateFilter.getValue()).isEqualTo("13.12.2010");
 		assertSame(Comparison.GREATER_THAN_OR_EQUAL, dateFilter.getComparison());
+		assertThat(dateFilter.getRawComparison()).isEqualTo("gte");
 	}
 
 	@Test
@@ -76,6 +78,7 @@ public class FilterTest {
 		assertThat(dateFilter.getField()).isEqualTo("aField3");
 		assertThat(dateFilter.getValue()).isEqualTo("11.12.2010");
 		assertSame(Comparison.LESS_THAN_OR_EQUAL, dateFilter.getComparison());
+		assertThat(dateFilter.getRawComparison()).isEqualTo("lte");
 	}
 
 	@Test
@@ -92,6 +95,7 @@ public class FilterTest {
 		assertThat(dateFilter.getField()).isEqualTo("aField4");
 		assertThat(dateFilter.getValue()).isEqualTo("11.11.2010");
 		assertSame(Comparison.NOT_EQUAL, dateFilter.getComparison());
+		assertThat(dateFilter.getRawComparison()).isEqualTo("ne");
 	}
 
 	@Test
@@ -108,6 +112,7 @@ public class FilterTest {
 		assertThat(dateFilter.getField()).isEqualTo("aField5");
 		assertThat(dateFilter.getValue()).isEqualTo("11.11.2011");
 		assertSame(Comparison.EQUAL, dateFilter.getComparison());
+		assertThat(dateFilter.getRawComparison()).isEqualTo("eq");
 	}
 
 	@Test
@@ -124,6 +129,7 @@ public class FilterTest {
 		assertThat(dateFilter.getField()).isEqualTo("aField");
 		assertThat(dateFilter.getValue()).isEqualTo("12.12.2010");
 		assertSame(Comparison.GREATER_THAN, dateFilter.getComparison());
+		assertThat(dateFilter.getRawComparison()).isEqualTo("gt");
 	}
 
 	@Test
@@ -140,6 +146,7 @@ public class FilterTest {
 		assertThat(dateFilter.getField()).isEqualTo("aField2");
 		assertThat(dateFilter.getValue()).isEqualTo("13.12.2010");
 		assertSame(Comparison.GREATER_THAN_OR_EQUAL, dateFilter.getComparison());
+		assertThat(dateFilter.getRawComparison()).isEqualTo("gte");
 	}
 
 	@Test
@@ -156,6 +163,7 @@ public class FilterTest {
 		assertThat(dateFilter.getField()).isEqualTo("aField3");
 		assertThat(dateFilter.getValue()).isEqualTo("11.12.2010");
 		assertSame(Comparison.LESS_THAN_OR_EQUAL, dateFilter.getComparison());
+		assertThat(dateFilter.getRawComparison()).isEqualTo("lte");
 	}
 
 	@Test
@@ -172,6 +180,7 @@ public class FilterTest {
 		assertThat(dateFilter.getField()).isEqualTo("aField4");
 		assertThat(dateFilter.getValue()).isEqualTo("11.11.2010");
 		assertSame(Comparison.NOT_EQUAL, dateFilter.getComparison());
+		assertThat(dateFilter.getRawComparison()).isEqualTo("ne");
 	}
 
 	@Test
@@ -188,8 +197,10 @@ public class FilterTest {
 		assertThat(dateFilter.getField()).isEqualTo("aField5");
 		assertThat(dateFilter.getValue()).isEqualTo("11.11.2011");
 		assertSame(Comparison.EQUAL, dateFilter.getComparison());
+		assertThat(dateFilter.getRawComparison()).isEqualTo("eq");
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testListFilter() {
 		Map<String, Object> json = new HashMap<String, Object>();
@@ -199,14 +210,18 @@ public class FilterTest {
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertThat(filter).isInstanceOf(ListFilter.class);
-		ListFilter listFilter = (ListFilter) filter;
+		assertThat(filter.getRawComparison()).isNull();
+		assertThat(filter.getComparison()).isNull();
+		ListFilter<String> listFilter = (ListFilter) filter;
 		assertThat(listFilter.getField()).isEqualTo("aField");
 
 		List<String> list = listFilter.getValue();
 		assertThat(list).hasSize(3);
 		assertThat(list).contains("one", "two", "three");
+
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testListPropertyFilter() {
 		Map<String, Object> json = new HashMap<String, Object>();
@@ -216,7 +231,9 @@ public class FilterTest {
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
 		assertThat(filter).isInstanceOf(ListFilter.class);
-		ListFilter listFilter = (ListFilter) filter;
+		assertThat(filter.getRawComparison()).isNull();
+		assertThat(filter.getComparison()).isNull();
+		ListFilter<String> listFilter = (ListFilter) filter;
 		assertThat(listFilter.getField()).isEqualTo("aField");
 
 		List<String> list = listFilter.getValue();
@@ -255,5 +272,7 @@ public class FilterTest {
 		StringFilter stringFilter = (StringFilter) filter;
 		assertThat(stringFilter.getField()).isEqualTo("aField");
 		assertThat(stringFilter.getValue()).isNull();
+		assertThat(filter.getRawComparison()).isNull();
+		assertThat(filter.getComparison()).isNull();
 	}
 }

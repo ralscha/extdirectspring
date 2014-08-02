@@ -17,23 +17,25 @@ package ch.ralscha.extdirectspring.filter;
 
 import java.util.List;
 
-public class ListFilter extends Filter {
+public class ListFilter<T> extends Filter {
 
-	private final List<String> value;
+	private final List<T> value;
 
-	public ListFilter(String field, List<String> value, Comparison comparison) {
-		super(field, comparison);
+	public ListFilter(String field, List<T> value, String rawComparison,
+			Comparison comparison) {
+		super(field, rawComparison, comparison);
 		this.value = value;
 	}
 
-	public List<String> getValue() {
+	public List<T> getValue() {
 		return value;
 	}
 
 	@Override
 	public String toString() {
-		return "ListFilter [value=" + value + ", comparison=" + getComparison()
-				+ ", getField()=" + getField() + "]";
+		return "ListFilter [value=" + value + ", getField()=" + getField()
+				+ ", getRawComparison()=" + getRawComparison() + ", getComparison()="
+				+ getComparison() + "]";
 	}
 
 }

@@ -27,17 +27,16 @@ public class ListFilterTest {
 	@Test
 	public void testList() {
 		String[] values = { "one", "two", "three" };
-		ListFilter filter = new ListFilter("field", Arrays.asList(values), null);
+		ListFilter<String> filter = new ListFilter<String>("field",
+				Arrays.asList(values), null, null);
 
 		List<String> list = filter.getValue();
 		assertThat(list).hasSize(3);
 		assertThat(list).contains("one", "two", "three");
 
+		assertThat(filter.getRawComparison()).isNull();
 		assertThat(filter.getComparison()).isNull();
 		assertThat(filter.getField()).isEqualTo("field");
-		assertThat(filter.toString())
-				.isEqualTo(
-						"ListFilter [value=[one, two, three], comparison=null, getField()=field]");
 	}
 
 }

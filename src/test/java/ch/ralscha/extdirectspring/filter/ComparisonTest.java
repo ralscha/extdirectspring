@@ -15,9 +15,8 @@
  */
 package ch.ralscha.extdirectspring.filter;
 
+import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertSame;
-
-import java.util.NoSuchElementException;
 
 import org.junit.Test;
 
@@ -54,8 +53,7 @@ public class ComparisonTest {
 		assertSame(Comparison.NOT_EQUAL, Comparison.fromString("!="));
 	}
 
-	@Test(expected = NoSuchElementException.class)
-	public void testFromStringException() {
-		Comparison.fromString("xy");
+	public void testNotFound() {
+		assertThat(Comparison.fromString("xy")).isNull();
 	}
 }

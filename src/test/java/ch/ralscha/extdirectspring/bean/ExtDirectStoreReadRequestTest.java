@@ -38,7 +38,7 @@ public class ExtDirectStoreReadRequestTest {
 		request.setFilters(null);
 		assertThat(request.getFilters()).isEmpty();
 
-		StringFilter sf = new StringFilter("field", "10", null);
+		StringFilter sf = new StringFilter("field", "10", null, null);
 		List<Filter> filters = new ArrayList<Filter>();
 		filters.add(sf);
 		request.setFilters(filters);

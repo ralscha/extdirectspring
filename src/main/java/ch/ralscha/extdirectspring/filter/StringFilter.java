@@ -19,8 +19,9 @@ public class StringFilter extends Filter {
 
 	private final String value;
 
-	public StringFilter(String field, String value, Comparison comparison) {
-		super(field, comparison);
+	public StringFilter(String field, String value, String rawComparison,
+			Comparison comparison) {
+		super(field, rawComparison, comparison);
 		this.value = value;
 	}
 
@@ -30,8 +31,9 @@ public class StringFilter extends Filter {
 
 	@Override
 	public String toString() {
-		return "StringFilter [value=" + value + ", comparison=" + getComparison()
-				+ ", getField()=" + getField() + "]";
+		return "StringFilter [value=" + value + ", getField()=" + getField()
+				+ ", getRawComparison()=" + getRawComparison() + ", getComparison()="
+				+ getComparison() + "]";
 	}
 
 }

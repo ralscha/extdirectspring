@@ -19,8 +19,9 @@ public class DateFilter extends Filter {
 
 	private final String value;
 
-	public DateFilter(String field, String value, Comparison comparison) {
-		super(field, comparison);
+	public DateFilter(String field, String value, String rawComparison,
+			Comparison comparison) {
+		super(field, rawComparison, comparison);
 		this.value = value;
 	}
 
@@ -30,8 +31,9 @@ public class DateFilter extends Filter {
 
 	@Override
 	public String toString() {
-		return "DateFilter [value=" + value + ", comparison=" + getComparison()
-				+ ", getField()=" + getField() + "]";
+		return "DateFilter [value=" + value + ", getField()=" + getField()
+				+ ", getRawComparison()=" + getRawComparison() + ", getComparison()="
+				+ getComparison() + "]";
 	}
 
 }

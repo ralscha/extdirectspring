@@ -30,22 +30,20 @@ public class BooleanFilterTest {
 
 	@Test
 	public void testFalseFilter() {
-		BooleanFilter filter = new BooleanFilter("field", false, null);
+		BooleanFilter filter = new BooleanFilter("field", false, null, null);
 		assertThat(filter.getValue()).isEqualTo(false);
 		assertThat(filter.getField()).isEqualTo("field");
+		assertThat(filter.getRawComparison()).isNull();
 		assertThat(filter.getComparison()).isNull();
-		assertThat(filter.toString()).isEqualTo(
-				"BooleanFilter [value=false, comparison=null, getField()=field]");
 	}
 
 	@Test
 	public void testTrueFilter() {
-		BooleanFilter filter = new BooleanFilter("xy", true, null);
+		BooleanFilter filter = new BooleanFilter("xy", true, null, null);
 		assertThat(filter.getValue()).isEqualTo(true);
 		assertThat(filter.getField()).isEqualTo("xy");
+		assertThat(filter.getRawComparison()).isNull();
 		assertThat(filter.getComparison()).isNull();
-		assertThat(filter.toString()).isEqualTo(
-				"BooleanFilter [value=true, comparison=null, getField()=xy]");
 	}
 
 	@Test

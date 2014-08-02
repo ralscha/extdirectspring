@@ -17,7 +17,6 @@ package ch.ralscha.extdirectspring.filter;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 public enum Comparison {
@@ -44,8 +43,7 @@ public enum Comparison {
 				}
 			}
 		}
-		throw new NoSuchElementException("Comparison value: '" + externalValue
-				+ "' not supported");
+		return null;
 	}
 
 }

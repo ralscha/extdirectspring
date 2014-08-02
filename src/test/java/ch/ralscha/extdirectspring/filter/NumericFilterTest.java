@@ -91,6 +91,7 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getField()).isEqualTo("aField3");
 		assertThat(numericFilter.getValue().intValue()).isEqualTo(1);
 		assertSame(Comparison.EQUAL, numericFilter.getComparison());
+		assertThat(numericFilter.getRawComparison()).isEqualTo("eq");
 	}
 
 	@Test
@@ -107,6 +108,7 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getField()).isEqualTo("aField4");
 		assertThat(numericFilter.getValue().intValue()).isEqualTo(3);
 		assertSame(Comparison.NOT_EQUAL, numericFilter.getComparison());
+		assertThat(numericFilter.getRawComparison()).isEqualTo("ne");
 	}
 
 	@Test
@@ -123,6 +125,7 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getField()).isEqualTo("aField5");
 		assertThat(numericFilter.getValue().intValue()).isEqualTo(4);
 		assertSame(Comparison.GREATER_THAN_OR_EQUAL, numericFilter.getComparison());
+		assertThat(numericFilter.getRawComparison()).isEqualTo("gte");
 	}
 
 	@Test
@@ -139,6 +142,7 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getField()).isEqualTo("aField6");
 		assertThat(numericFilter.getValue().intValue()).isEqualTo(5);
 		assertSame(Comparison.LESS_THAN_OR_EQUAL, numericFilter.getComparison());
+		assertThat(numericFilter.getRawComparison()).isEqualTo("lte");
 	}
 
 	@Test
@@ -155,6 +159,7 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getField()).isEqualTo("aField");
 		assertThat(numericFilter.getValue()).isEqualTo(12);
 		assertSame(Comparison.LESS_THAN, numericFilter.getComparison());
+		assertThat(numericFilter.getRawComparison()).isEqualTo("lt");
 	}
 
 	@Test
@@ -171,6 +176,7 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getField()).isEqualTo("aField2");
 		assertThat(numericFilter.getValue()).isEqualTo(13);
 		assertSame(Comparison.GREATER_THAN, numericFilter.getComparison());
+		assertThat(numericFilter.getRawComparison()).isEqualTo("gt");
 	}
 
 	@Test
@@ -187,6 +193,7 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getField()).isEqualTo("aField3");
 		assertThat(numericFilter.getValue().intValue()).isEqualTo(1);
 		assertSame(Comparison.EQUAL, numericFilter.getComparison());
+		assertThat(numericFilter.getRawComparison()).isEqualTo("eq");
 	}
 
 	@Test
@@ -203,6 +210,7 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getField()).isEqualTo("aField4");
 		assertThat(numericFilter.getValue().intValue()).isEqualTo(3);
 		assertSame(Comparison.NOT_EQUAL, numericFilter.getComparison());
+		assertThat(numericFilter.getRawComparison()).isEqualTo("ne");
 	}
 
 	@Test
@@ -219,6 +227,7 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getField()).isEqualTo("aField5");
 		assertThat(numericFilter.getValue().intValue()).isEqualTo(4);
 		assertSame(Comparison.GREATER_THAN_OR_EQUAL, numericFilter.getComparison());
+		assertThat(numericFilter.getRawComparison()).isEqualTo("gte");
 	}
 
 	@Test
@@ -235,6 +244,7 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getField()).isEqualTo("aField6");
 		assertThat(numericFilter.getValue().intValue()).isEqualTo(5);
 		assertSame(Comparison.LESS_THAN_OR_EQUAL, numericFilter.getComparison());
+		assertThat(numericFilter.getRawComparison()).isEqualTo("lte");
 	}
 
 	@Test
@@ -248,27 +258,33 @@ public class NumericFilterTest {
 		NumericFilter numericFilter = (NumericFilter) filter;
 		assertThat(numericFilter.getField()).isEqualTo("aField");
 		assertThat(numericFilter.getValue()).isEqualTo(10);
+		assertThat(numericFilter.getRawComparison()).isNull();
+		assertThat(numericFilter.getComparison()).isNull();
 	}
 
 	@Test
 	public void testNumeric() {
-		NumericFilter filter = new NumericFilter("field", 42, Comparison.GREATER_THAN);
+		NumericFilter filter = new NumericFilter("field", 42, "gt",
+				Comparison.GREATER_THAN);
 		assertThat(filter.getValue()).isEqualTo(42);
 		assertThat(filter.getField()).isEqualTo("field");
-		assertThat(filter.toString()).isEqualTo(
-				"NumericFilter [value=42, comparison=GREATER_THAN, getField()=field]");
+		assertThat(filter.getRawComparison()).isEqualTo("gt");
+		assertThat(filter.getComparison()).isEqualTo(Comparison.GREATER_THAN);
+		assertThat(filter.getRawComparison()).isEqualTo("gt");
 
-		filter = new NumericFilter("xy", 23, Comparison.EQUAL);
+		filter = new NumericFilter("xy", 23, "eq", Comparison.EQUAL);
 		assertThat(filter.getValue()).isEqualTo(23);
 		assertThat(filter.getField()).isEqualTo("xy");
-		assertThat(filter.toString()).isEqualTo(
-				"NumericFilter [value=23, comparison=EQUAL, getField()=xy]");
+		assertThat(filter.getRawComparison()).isEqualTo("eq");
+		assertThat(filter.getComparison()).isEqualTo(Comparison.EQUAL);
+		assertThat(filter.getRawComparison()).isEqualTo("eq");
 
-		filter = new NumericFilter("field", 44, Comparison.LESS_THAN_OR_EQUAL);
+		filter = new NumericFilter("field", 44, "lte", Comparison.LESS_THAN_OR_EQUAL);
 		assertThat(filter.getValue()).isEqualTo(44);
 		assertThat(filter.getField()).isEqualTo("field");
-		assertThat(filter.toString())
-				.isEqualTo(
-						"NumericFilter [value=44, comparison=LESS_THAN_OR_EQUAL, getField()=field]");
+		assertThat(filter.getRawComparison()).isEqualTo("lte");
+		assertThat(filter.getComparison()).isEqualTo(Comparison.LESS_THAN_OR_EQUAL);
+		assertThat(filter.getRawComparison()).isEqualTo("lte");
+
 	}
 }

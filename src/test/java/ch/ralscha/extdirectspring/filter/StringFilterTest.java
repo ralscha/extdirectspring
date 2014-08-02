@@ -30,12 +30,12 @@ public class StringFilterTest {
 
 	@Test
 	public void testString() {
-		StringFilter filter = new StringFilter("field", "value", null);
+		StringFilter filter = new StringFilter("field", "value", null, null);
 		assertThat(filter.getValue()).isEqualTo("value");
 		assertThat(filter.getField()).isEqualTo("field");
+		assertThat(filter.getRawComparison()).isNull();
 		assertThat(filter.getComparison()).isNull();
-		assertThat(filter.toString()).isEqualTo(
-				"StringFilter [value=value, comparison=null, getField()=field]");
+		assertThat(filter.getRawComparison()).isNull();
 	}
 
 	@Test
@@ -50,6 +50,8 @@ public class StringFilterTest {
 		StringFilter stringFilter = (StringFilter) filter;
 		assertThat(stringFilter.getField()).isEqualTo("aField");
 		assertThat(stringFilter.getValue()).isEqualTo("aString");
+		assertThat(stringFilter.getRawComparison()).isNull();
+		assertThat(stringFilter.getComparison()).isNull();
 	}
 
 	@Test
@@ -66,6 +68,7 @@ public class StringFilterTest {
 		assertThat(stringFilter.getField()).isEqualTo("aField");
 		assertThat(stringFilter.getValue()).isEqualTo("aString");
 		assertThat(stringFilter.getComparison()).isEqualTo(Comparison.LIKE);
+		assertThat(stringFilter.getRawComparison()).isEqualTo("like");
 	}
 
 	@Test
@@ -82,6 +85,7 @@ public class StringFilterTest {
 		assertThat(stringFilter.getField()).isEqualTo("aField");
 		assertThat(stringFilter.getValue()).isEqualTo("aString");
 		assertThat(stringFilter.getComparison()).isEqualTo(Comparison.EQUAL);
+		assertThat(stringFilter.getRawComparison()).isEqualTo("eq");
 	}
 
 	@Test
@@ -96,6 +100,8 @@ public class StringFilterTest {
 		StringFilter stringFilter = (StringFilter) filter;
 		assertThat(stringFilter.getField()).isEqualTo("aField");
 		assertThat(stringFilter.getValue()).isEqualTo("aString");
+		assertThat(stringFilter.getRawComparison()).isNull();
+		assertThat(stringFilter.getComparison()).isNull();
 	}
 
 	@Test
@@ -112,6 +118,7 @@ public class StringFilterTest {
 		assertThat(stringFilter.getField()).isEqualTo("aField");
 		assertThat(stringFilter.getValue()).isEqualTo("aString");
 		assertThat(stringFilter.getComparison()).isEqualTo(Comparison.LIKE);
+		assertThat(stringFilter.getRawComparison()).isEqualTo("LIKE");
 	}
 
 	@Test
@@ -128,6 +135,7 @@ public class StringFilterTest {
 		assertThat(stringFilter.getField()).isEqualTo("aField");
 		assertThat(stringFilter.getValue()).isEqualTo("aString");
 		assertThat(stringFilter.getComparison()).isEqualTo(Comparison.EQUAL);
+		assertThat(stringFilter.getRawComparison()).isEqualTo("=");
 	}
 
 	@Test
@@ -141,6 +149,8 @@ public class StringFilterTest {
 		StringFilter stringFilter = (StringFilter) filter;
 		assertThat(stringFilter.getField()).isEqualTo("aField");
 		assertThat(stringFilter.getValue()).isEqualTo("aString");
+		assertThat(stringFilter.getRawComparison()).isNull();
+		assertThat(stringFilter.getComparison()).isNull();
 	}
 
 }
