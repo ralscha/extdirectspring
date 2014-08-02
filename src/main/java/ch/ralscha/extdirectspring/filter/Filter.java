@@ -55,6 +55,10 @@ public class Filter {
 		return comparison;
 	}
 
+	public String getOperator() {
+		return rawComparison;
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static Filter createFilter(Map<String, Object> jsonData,
 			ConversionService conversionService) {
