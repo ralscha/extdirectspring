@@ -153,4 +153,20 @@ public class StringFilterTest {
 		assertThat(stringFilter.getComparison()).isNull();
 	}
 
+	@Test
+	public void testUnknownOperation() {
+		Map<String, Object> json = new HashMap<String, Object>();
+		json.put("property", "aField");
+		json.put("value", "aString");
+		json.put("operator", "fuzzy");
+
+		Filter filter = Filter.createFilter(json, genericConversionService);
+		assertThat(filter).isInstanceOf(StringFilter.class);
+		StringFilter stringFilter = (StringFilter) filter;
+		assertThat(stringFilter.getField()).isEqualTo("aField");
+		assertThat(stringFilter.getValue()).isEqualTo("aString");
+		assertThat(stringFilter.getComparison()).isNull();
+		assertThat(stringFilter.getRawComparison()).isEqualTo("fuzzy");
+	}
+
 }

@@ -970,6 +970,29 @@ public class RemoteProviderStoreRead {
 
 			return createResult(type);
 		}
+		case 33: {
+			assertThat(filters).hasSize(1);
+			assertThat(filters.get(0)).isInstanceOf(StringFilter.class);
+
+			StringFilter sf1 = (StringFilter) filters.get(0);
+			assertThat(sf1.getValue()).isEqualTo("abb");
+			assertThat(sf1.getField()).isEqualTo("company");
+			assertThat(sf1.getComparison()).isNull();
+			assertThat(sf1.getRawComparison()).isEqualTo("fuzzy");
+
+			StringFilter sf2 = request.getFirstFilterForField("company");
+			assertThat(sf2).isSameAs(sf1);
+
+			List<Filter> allFiltersForField = request.getAllFiltersForField("company");
+			assertThat(allFiltersForField).containsExactly(sf1);
+
+			assertThat(request.getSorters()).hasSize(1);
+			SortInfo sortInfo = request.getSorters().iterator().next();
+			assertThat(sortInfo.getDirection()).isEqualTo(SortDirection.ASCENDING);
+			assertThat(sortInfo.getProperty()).isEqualTo("company");
+
+			return createResult(type);
+		}
 		default: // do nothing
 		}
 
