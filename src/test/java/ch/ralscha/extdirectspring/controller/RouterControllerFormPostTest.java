@@ -74,7 +74,7 @@ public class RouterControllerFormPostTest {
 		parameters.put("extType", "rpc");
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, null, parameters,
-				null, false);
+				null, null, false);
 		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(result
 				.getResponse().getContentAsByteArray());
 
@@ -100,7 +100,7 @@ public class RouterControllerFormPostTest {
 		parameters.put("extMethod", "method1");
 		parameters.put("extType", "rpc");
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, null, parameters,
-				null, false);
+				null, null, false);
 		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(result
 				.getResponse().getContentAsByteArray());
 
@@ -151,7 +151,7 @@ public class RouterControllerFormPostTest {
 		parameters.put("result", "theResult");
 
 		MvcResult resultMvc = ControllerUtil.performRouterRequest(mockMvc, null,
-				parameters, null, false);
+				parameters, null, null, false);
 		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(resultMvc
 				.getResponse().getContentAsByteArray());
 

@@ -727,6 +727,14 @@ public class ApiControllerWithConfigurationTest {
 				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderSimple", new Action("method26", 3,
 				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method27", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method28", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method29", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method30", 0,
+				Boolean.FALSE));
 
 		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method1", 0,
 				Boolean.FALSE));
@@ -986,18 +994,30 @@ public class ApiControllerWithConfigurationTest {
 				"handleMessage5", "message5"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message6",
 				"message6"));
-		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message7",
-				"message7"));
-		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message8",
-				"message8"));
-		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message9",
-				"message9"));
-		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message10",
-				"message10"));
-		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message11",
-				"message11"));
-		remotingApi.addPollingProvider(new PollingProvider("pollProvider", "message12",
-				"message12"));
+		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
+				"messageRequestHeader1", "messageRequestHeader1"));
+		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
+				"messageRequestHeader2", "messageRequestHeader2"));
+		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
+				"messageRequestHeader3", "messageRequestHeader3"));
+		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
+				"messageRequestHeader4", "messageRequestHeader4"));
+		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
+				"messageRequestHeader5", "messageRequestHeader5"));
+		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
+				"messageRequestHeader6", "messageRequestHeader6"));
+		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
+				"messageCookieValue1", "messageCookieValue1"));
+		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
+				"messageCookieValue2", "messageCookieValue2"));
+		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
+				"messageCookieValue3", "messageCookieValue3"));
+		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
+				"messageCookieValue4", "messageCookieValue4"));
+		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
+				"messageCookieValue5", "messageCookieValue5"));
+		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
+				"messageCookieValue6", "messageCookieValue6"));
 
 		remotingApi.addSseProvider("sseProvider", "message1");
 		remotingApi.addSseProvider("sseProvider", "message2");
@@ -1005,12 +1025,18 @@ public class ApiControllerWithConfigurationTest {
 		remotingApi.addSseProvider("sseProvider", "message4");
 		remotingApi.addSseProvider("sseProvider", "message5");
 		remotingApi.addSseProvider("sseProvider", "message6");
-		remotingApi.addSseProvider("sseProvider", "message7");
-		remotingApi.addSseProvider("sseProvider", "message8");
-		remotingApi.addSseProvider("sseProvider", "message9");
-		remotingApi.addSseProvider("sseProvider", "message10");
-		remotingApi.addSseProvider("sseProvider", "message11");
-		remotingApi.addSseProvider("sseProvider", "message12");
+		remotingApi.addSseProvider("sseProvider", "messageRequestHeader1");
+		remotingApi.addSseProvider("sseProvider", "messageRequestHeader2");
+		remotingApi.addSseProvider("sseProvider", "messageRequestHeader3");
+		remotingApi.addSseProvider("sseProvider", "messageRequestHeader4");
+		remotingApi.addSseProvider("sseProvider", "messageRequestHeader5");
+		remotingApi.addSseProvider("sseProvider", "messageRequestHeader6");
+		remotingApi.addSseProvider("sseProvider", "messageCookieValue1");
+		remotingApi.addSseProvider("sseProvider", "messageCookieValue2");
+		remotingApi.addSseProvider("sseProvider", "messageCookieValue3");
+		remotingApi.addSseProvider("sseProvider", "messageCookieValue4");
+		remotingApi.addSseProvider("sseProvider", "messageCookieValue5");
+		remotingApi.addSseProvider("sseProvider", "messageCookieValue6");
 		remotingApi.addSseProvider("sseProvider", "message13");
 		remotingApi.addSseProvider("sseProvider", "message14");
 		remotingApi.addSseProvider("sseProvider", "message15");
@@ -1065,6 +1091,14 @@ public class ApiControllerWithConfigurationTest {
 		remotingApi.addAction("remoteProviderSimple", new Action("method25", 3,
 				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderSimple", new Action("method26", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method27", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method28", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method29", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimple", new Action("method30", 0,
 				Boolean.FALSE));
 
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method1", 1,

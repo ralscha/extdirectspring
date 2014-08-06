@@ -28,6 +28,7 @@ import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -119,10 +120,12 @@ public class RemoteProviderTreeLoad {
 	public List<Node> method3(@RequestParam("node") String node,
 			HttpServletResponse response, final HttpServletRequest request,
 			@RequestParam(defaultValue = "defaultValue") String foo,
-			final HttpSession session, Locale locale, Principal principal) {
+			@CookieValue String theCookie, final HttpSession session, Locale locale,
+			Principal principal) {
 
-		return createTreeList(node, ":" + foo + ";" + (response != null) + ";"
-				+ (request != null) + ";" + (session != null) + ";" + locale);
+		return createTreeList(node, ":" + foo + ";" + theCookie + ";"
+				+ (response != null) + ";" + (request != null) + ";" + (session != null)
+				+ ";" + locale);
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.TREE_LOAD)

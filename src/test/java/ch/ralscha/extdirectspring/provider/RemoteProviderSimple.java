@@ -40,6 +40,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -311,6 +312,28 @@ public class RemoteProviderSimple {
 			}
 		}
 		return name + ";" + sb.toString() + ";" + id;
+	}
+
+	@ExtDirectMethod
+	public String method27(@CookieValue Integer intCookie,
+			@CookieValue Boolean booleanCookie) {
+		return intCookie + ";" + booleanCookie;
+	}
+
+	@ExtDirectMethod
+	public String method28(@CookieValue(required = false,
+			defaultValue = "theDefaultValue") String stringCookie) {
+		return stringCookie;
+	}
+
+	@ExtDirectMethod
+	public String method29(@CookieValue(value = "nameOfTheCookie") String aStr) {
+		return aStr;
+	}
+
+	@ExtDirectMethod
+	public String method30(@CookieValue(required = false) String stringCookie) {
+		return stringCookie;
 	}
 
 	public static final class BusinessObject {

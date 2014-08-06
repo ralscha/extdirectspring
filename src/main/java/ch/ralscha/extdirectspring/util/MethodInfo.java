@@ -151,7 +151,8 @@ public final class MethodInfo {
 			int paramLength = 0;
 			for (ParameterInfo parameter : this.parameters) {
 				if (!parameter.isSupportedParameter()
-						&& !parameter.isHasRequestHeaderAnnotation()) {
+						&& !parameter.isHasRequestHeaderAnnotation()
+						&& !parameter.isHasCookieValueAnnotation()) {
 					paramLength++;
 				}
 			}
@@ -161,7 +162,8 @@ public final class MethodInfo {
 			List<String> parameterNames = new ArrayList<String>();
 			for (ParameterInfo parameter : this.parameters) {
 				if (!parameter.isSupportedParameter()
-						&& !parameter.isHasRequestHeaderAnnotation()) {
+						&& !parameter.isHasRequestHeaderAnnotation()
+						&& !parameter.isHasCookieValueAnnotation()) {
 					parameterNames.add(parameter.getName());
 				}
 			}

@@ -23,6 +23,7 @@ import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ValueConstants;
@@ -44,6 +45,8 @@ public final class ParameterInfo {
 	private boolean hasRequestParamAnnotation;
 
 	private boolean hasRequestHeaderAnnotation;
+
+	private boolean hasCookieValueAnnotation;
 
 	private boolean required;
 
@@ -74,6 +77,7 @@ public final class ParameterInfo {
 						.defaultValue()) ? null : requestParam.defaultValue();
 				this.hasRequestParamAnnotation = true;
 				this.hasRequestHeaderAnnotation = false;
+				this.hasCookieValueAnnotation = false;
 				break;
 			}
 			else if (RequestHeader.class.isInstance(paramAnn)) {
@@ -86,6 +90,20 @@ public final class ParameterInfo {
 						.defaultValue()) ? null : requestHeader.defaultValue();
 				this.hasRequestParamAnnotation = false;
 				this.hasRequestHeaderAnnotation = true;
+				this.hasCookieValueAnnotation = false;
+				break;
+			}
+			else if (CookieValue.class.isInstance(paramAnn)) {
+				CookieValue cookieValue = (CookieValue) paramAnn;
+				if (StringUtils.hasText(cookieValue.value())) {
+					this.name = cookieValue.value();
+				}
+				this.required = cookieValue.required();
+				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(cookieValue
+						.defaultValue()) ? null : cookieValue.defaultValue();
+				this.hasRequestParamAnnotation = false;
+				this.hasRequestHeaderAnnotation = false;
+				this.hasCookieValueAnnotation = true;
 				break;
 			}
 		}
@@ -113,6 +131,10 @@ public final class ParameterInfo {
 
 	public boolean isHasRequestHeaderAnnotation() {
 		return hasRequestHeaderAnnotation;
+	}
+
+	public boolean isHasCookieValueAnnotation() {
+		return hasCookieValueAnnotation;
 	}
 
 	public boolean isRequired() {

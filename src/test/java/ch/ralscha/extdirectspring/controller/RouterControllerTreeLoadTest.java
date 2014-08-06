@@ -17,9 +17,12 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.Cookie;
 
 import org.joda.time.LocalDate;
 import org.joda.time.format.ISODateTimeFormat;
@@ -126,11 +129,15 @@ public class RouterControllerTreeLoadTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 
-		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderTreeLoad", "method3", new TypeReference<List<Node>>() {/* nothinghere */
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("theCookie", "value"));
+
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, false,
+				null, cookies, "remoteProviderTreeLoad", "method3", false,
+				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
-		String appendix = ":defaultValue;true;true;true;en";
+		String appendix = ":defaultValue;value;true;true;true;en";
 
 		assertThat(nodes).hasSize(5).containsSequence(
 				new Node("n1", "Node 1" + appendix, false),
@@ -143,11 +150,12 @@ public class RouterControllerTreeLoadTest {
 		requestParameters.put("node", "n2");
 		requestParameters.put("foo", "f");
 
-		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderTreeLoad", "method3", new TypeReference<List<Node>>() {/* nothinghere */
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, false, null, cookies,
+				"remoteProviderTreeLoad", "method3", false,
+				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
-		appendix = ":f;true;true;true;en";
+		appendix = ":f;value;true;true;true;en";
 
 		assertThat(nodes).hasSize(5).containsSequence(
 				new Node("id1", "Node 2.1" + appendix, true),

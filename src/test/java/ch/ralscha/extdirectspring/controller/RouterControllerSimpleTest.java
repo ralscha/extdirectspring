@@ -19,10 +19,15 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.servlet.http.Cookie;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
@@ -396,4 +401,43 @@ public class RouterControllerSimpleTest {
 		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method26",
 				"h;;7", "h", null, 7);
 	}
+
+	@Test
+	public void methodWithRequiredCookieValue() {
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("intCookie", "1"));
+		cookies.add(new Cookie("booleanCookie", "true"));
+		ControllerUtil.sendAndReceive(mockMvc, null, cookies, "remoteProviderSimple",
+				"method27", "1;true", (Object[]) null);
+		ControllerUtil.sendAndReceive(mockMvc, null, null, "remoteProviderSimple",
+				"method27", null, (Object[]) null);
+	}
+
+	@Test
+	public void methodWithNonRequiredAndDefaultValueCookieValue() {
+		ControllerUtil.sendAndReceive(mockMvc, null, null, "remoteProviderSimple",
+				"method28", "theDefaultValue", (Object[]) null);
+		ControllerUtil.sendAndReceive(mockMvc, null,
+				Collections.singletonList(new Cookie("stringCookie", "str")),
+				"remoteProviderSimple", "method28", "str", (Object[]) null);
+	}
+
+	@Test
+	public void methodWithDifferentNameCookieValue() {
+		ControllerUtil.sendAndReceive(mockMvc, null,
+				Collections.singletonList(new Cookie("nameOfTheCookie", "cookieValue")),
+				"remoteProviderSimple", "method29", "cookieValue", (Object[]) null);
+		ControllerUtil.sendAndReceive(mockMvc, null, null, "remoteProviderSimple",
+				"method29", null, (Object[]) null);
+	}
+
+	@Test
+	public void methodWithNonRequiredCookieValue() {
+		ControllerUtil.sendAndReceive(mockMvc, null,
+				Collections.singletonList(new Cookie("stringCookie", "aString")),
+				"remoteProviderSimple", "method30", "aString", (Object[]) null);
+		ControllerUtil.sendAndReceive(mockMvc, null, null, "remoteProviderSimple",
+				"method30", Void.TYPE, (Object[]) null);
+	}
+
 }

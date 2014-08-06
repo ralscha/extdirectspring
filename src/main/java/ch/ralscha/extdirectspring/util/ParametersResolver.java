@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -39,6 +40,8 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.web.bind.support.WebArgumentResolver;
 import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.util.UrlPathHelper;
+import org.springframework.web.util.WebUtils;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
@@ -60,6 +63,8 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 public final class ParametersResolver {
 
 	private static final Log log = LogFactory.getLog(ParametersResolver.class);
+
+	private final UrlPathHelper urlPathHelper = new UrlPathHelper();
 
 	private final ConversionService conversionService;
 
@@ -98,6 +103,9 @@ public final class ParametersResolver {
 				else if (methodParameter.isHasRequestHeaderAnnotation()) {
 					parameters[paramIndex] = resolveRequestHeader(request,
 							methodParameter);
+				}
+				else if (methodParameter.isHasCookieValueAnnotation()) {
+					parameters[paramIndex] = resolveCookieValue(request, methodParameter);
 				}
 				else {
 					parameters[paramIndex] = resolveRequestParam(request, null,
@@ -239,6 +247,9 @@ public final class ParametersResolver {
 					parameters[paramIndex] = resolveRequestHeader(request,
 							methodParameter);
 				}
+				else if (methodParameter.isHasCookieValueAnnotation()) {
+					parameters[paramIndex] = resolveCookieValue(request, methodParameter);
+				}
 				else if (remainingParameters != null
 						&& remainingParameters.containsKey(methodParameter.getName())) {
 					Object jsonValue = remainingParameters.get(methodParameter.getName());
@@ -343,6 +354,32 @@ public final class ParametersResolver {
 		}
 
 		return null;
+	}
+
+	public Object resolveCookieValue(HttpServletRequest request,
+			ParameterInfo parameterInfo) {
+
+		Cookie cookieValue = WebUtils.getCookie(request, parameterInfo.getName());
+		String value = null;
+
+		if (cookieValue != null) {
+			value = urlPathHelper.decodeRequestString(request, cookieValue.getValue());
+		}
+		else {
+			value = parameterInfo.getDefaultValue();
+		}
+
+		if (value != null) {
+			return convertValue(value, parameterInfo);
+		}
+
+		if (parameterInfo.isRequired()) {
+			throw new IllegalStateException("Missing cookie '" + parameterInfo.getName()
+					+ "' of type [" + parameterInfo.getTypeDescriptor().getType() + "]");
+		}
+
+		return null;
+
 	}
 
 	private Object convertValue(Object value, ParameterInfo methodParameter) {

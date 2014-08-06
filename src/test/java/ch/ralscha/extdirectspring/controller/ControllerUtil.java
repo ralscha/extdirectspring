@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+
 import org.apache.commons.logging.LogFactory;
 import org.fest.util.Arrays;
 import org.springframework.http.HttpHeaders;
@@ -63,15 +65,27 @@ public class ControllerUtil {
 	public static ExtDirectPollResponse performPollRequest(MockMvc mockMvc, String bean,
 			String method, String event, Map<String, String> params, HttpHeaders headers)
 			throws Exception {
-		return performPollRequest(mockMvc, bean, method, event, params, headers, false);
+		return performPollRequest(mockMvc, bean, method, event, params, headers, null,
+				false);
 	}
 
 	public static ExtDirectPollResponse performPollRequest(MockMvc mockMvc, String bean,
 			String method, String event, Map<String, String> params, HttpHeaders headers,
-			boolean withSession) throws Exception {
+			List<Cookie> cookies) throws Exception {
+		return performPollRequest(mockMvc, bean, method, event, params, headers, cookies,
+				false);
+	}
+
+	public static ExtDirectPollResponse performPollRequest(MockMvc mockMvc, String bean,
+			String method, String event, Map<String, String> params, HttpHeaders headers,
+			List<Cookie> cookies, boolean withSession) throws Exception {
 		MockHttpServletRequestBuilder request = post(
 				"/poll/" + bean + "/" + method + "/" + event).accept(MediaType.ALL)
 				.contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
+
+		if (cookies != null) {
+			request.cookie(cookies.toArray(new Cookie[cookies.size()]));
+		}
 
 		if (withSession) {
 			request.session(new MockHttpSession());
@@ -95,18 +109,22 @@ public class ControllerUtil {
 	}
 
 	public static List<SSEvent> performSseRequest(MockMvc mockMvc, String bean,
-			String method, Map<String, String> params, HttpHeaders headers)
-			throws Exception {
-		return performSseRequest(mockMvc, bean, method, params, headers, false);
+			String method, Map<String, String> params, HttpHeaders headers,
+			List<Cookie> cookies) throws Exception {
+		return performSseRequest(mockMvc, bean, method, params, headers, cookies, false);
 	}
 
 	public static List<SSEvent> performSseRequest(MockMvc mockMvc, String bean,
 			String method, Map<String, String> params, HttpHeaders headers,
-			boolean withSession) throws Exception {
+			List<Cookie> cookies, boolean withSession) throws Exception {
 		MockHttpServletRequestBuilder request = post("/sse/" + bean + "/" + method)
 				.accept(MediaType.ALL)
 				.contentType(MediaType.parseMediaType("text/event-stream"))
 				.characterEncoding("UTF-8");
+
+		if (cookies != null) {
+			request.cookie(cookies.toArray(new Cookie[cookies.size()]));
+		}
 
 		if (withSession) {
 			request.session(new MockHttpSession());
@@ -131,15 +149,19 @@ public class ControllerUtil {
 
 	public static MvcResult performRouterRequest(MockMvc mockMvc, String content)
 			throws Exception {
-		return performRouterRequest(mockMvc, content, null, null, false);
+		return performRouterRequest(mockMvc, content, null, null, null, false);
 	}
 
 	public static MvcResult performRouterRequest(MockMvc mockMvc, String content,
-			Map<String, String> params, HttpHeaders headers, boolean withSession)
-			throws Exception {
+			Map<String, String> params, HttpHeaders headers, List<Cookie> cookies,
+			boolean withSession) throws Exception {
 
 		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
 				.contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
+
+		if (cookies != null) {
+			request.cookie(cookies.toArray(new Cookie[cookies.size()]));
+		}
 
 		if (withSession) {
 			request.session(new MockHttpSession());
@@ -205,32 +227,46 @@ public class ControllerUtil {
 	public static Object sendAndReceive(MockMvc mockMvc, HttpHeaders headers,
 			String bean, String method, Object expectedResultOrType,
 			Object... requestData) {
-		return sendAndReceive(mockMvc, false, headers, bean, method, false,
+		return sendAndReceive(mockMvc, false, headers, null, bean, method, false,
+				expectedResultOrType, requestData);
+	}
+
+	public static Object sendAndReceive(MockMvc mockMvc, HttpHeaders headers,
+			List<Cookie> cookies, String bean, String method,
+			Object expectedResultOrType, Object... requestData) {
+		return sendAndReceive(mockMvc, false, headers, cookies, bean, method, false,
 				expectedResultOrType, requestData);
 	}
 
 	public static Object sendAndReceive(MockMvc mockMvc, String bean, String method,
 			Object expectedResultOrType, Object... requestData) {
-		return sendAndReceive(mockMvc, false, null, bean, method, false,
+		return sendAndReceive(mockMvc, false, null, null, bean, method, false,
 				expectedResultOrType, requestData);
 	}
 
 	public static Object sendAndReceiveNamed(MockMvc mockMvc, String bean, String method,
 			Object expectedResultOrType, Map<String, Object> requestData) {
-		return sendAndReceive(mockMvc, false, null, bean, method, true,
+		return sendAndReceive(mockMvc, false, null, null, bean, method, true,
 				expectedResultOrType, new Object[] { requestData });
 	}
 
 	public static Object sendAndReceiveWithSession(MockMvc mockMvc, HttpHeaders headers,
 			String bean, String method, Object expectedResultOrType,
 			Object... requestData) {
-		return sendAndReceive(mockMvc, true, headers, bean, method, true,
+		return sendAndReceive(mockMvc, true, headers, null, bean, method, true,
+				expectedResultOrType, new Object[] { requestData });
+	}
+
+	public static Object sendAndReceiveWithSession(MockMvc mockMvc, HttpHeaders headers,
+			List<Cookie> cookies, String bean, String method,
+			Object expectedResultOrType, Object... requestData) {
+		return sendAndReceive(mockMvc, true, headers, cookies, bean, method, true,
 				expectedResultOrType, new Object[] { requestData });
 	}
 
 	public static Object sendAndReceive(MockMvc mockMvc, boolean withSession,
-			HttpHeaders headers, String bean, String method, boolean namedParameters,
-			Object expectedResultOrType, Object... requestData) {
+			HttpHeaders headers, List<Cookie> cookies, String bean, String method,
+			boolean namedParameters, Object expectedResultOrType, Object... requestData) {
 
 		int tid = (int) (Math.random() * 1000);
 
@@ -238,7 +274,7 @@ public class ControllerUtil {
 		try {
 			result = performRouterRequest(mockMvc,
 					createEdsRequest(bean, method, namedParameters, tid, requestData),
-					null, headers, withSession);
+					null, headers, cookies, withSession);
 		}
 		catch (JsonProcessingException e) {
 			fail("perform post to /router" + e.getMessage());
@@ -294,7 +330,8 @@ public class ControllerUtil {
 		MvcResult result = null;
 		try {
 			result = performRouterRequest(mockMvc,
-					createEdsRequest(bean, method, false, tid, null), null, null, false);
+					createEdsRequest(bean, method, false, tid, null), null, null, null,
+					false);
 		}
 		catch (JsonProcessingException e) {
 			fail("perform post to /router" + e.getMessage());

@@ -17,8 +17,12 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.Cookie;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -137,7 +141,7 @@ public class RouterControllerPollTest {
 	@Test
 	public void pollDefaultValueArgumentWithoutRequestParameter() throws Exception {
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
-				"pollProvider", "handleMessage4", "message4", null, null, true);
+				"pollProvider", "handleMessage4", "message4", null, null, null, true);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -182,11 +186,12 @@ public class RouterControllerPollTest {
 		headers.add("header", "headerValue");
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
-				"pollProvider", "message7", "message7", null, headers);
+				"pollProvider", "messageRequestHeader1", "messageRequestHeader1", null,
+				headers);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
-		assertThat(resp.getName()).isEqualTo("message7");
+		assertThat(resp.getName()).isEqualTo("messageRequestHeader1");
 		assertThat(resp.getData()).isEqualTo("null;null;headerValue");
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
@@ -203,11 +208,12 @@ public class RouterControllerPollTest {
 		headers.add("anotherName", "headerValue2");
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
-				"pollProvider", "message8", "message8", params, headers);
+				"pollProvider", "messageRequestHeader2", "messageRequestHeader2", params,
+				headers);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
-		assertThat(resp.getName()).isEqualTo("message8");
+		assertThat(resp.getName()).isEqualTo("messageRequestHeader2");
 		assertThat(resp.getData()).isEqualTo("1;headerValue1");
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
@@ -215,12 +221,28 @@ public class RouterControllerPollTest {
 		params.clear();
 		params.put("id", "2");
 
-		resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider", "message8",
-				"message8", params, null, true);
+		resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider",
+				"messageRequestHeader2", "messageRequestHeader2", params, null, null,
+				true);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("exception");
-		assertThat(resp.getName()).isEqualTo("message8");
+		assertThat(resp.getName()).isEqualTo("messageRequestHeader2");
+		assertThat(resp.getData()).isNull();
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isEqualTo("Server Error");
+
+		params.clear();
+		params.put("id", "3");
+		headers = new HttpHeaders();
+		headers.add("header", "headerValue");
+		resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider",
+				"messageRequestHeader2", "messageRequestHeader2", params, headers, null,
+				true);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getName()).isEqualTo("messageRequestHeader2");
 		assertThat(resp.getData()).isNull();
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isEqualTo("Server Error");
@@ -233,11 +255,12 @@ public class RouterControllerPollTest {
 		headers.add("anotherName", "headerValue1");
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
-				"pollProvider", "message9", "message9", null, headers);
+				"pollProvider", "messageRequestHeader3", "messageRequestHeader3", null,
+				headers);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
-		assertThat(resp.getName()).isEqualTo("message9");
+		assertThat(resp.getName()).isEqualTo("messageRequestHeader3");
 		assertThat(resp.getData()).isEqualTo("headerValue1");
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
@@ -247,11 +270,12 @@ public class RouterControllerPollTest {
 	public void pollRequiredHeaderWithValueAndDefault2() throws Exception {
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
-				"pollProvider", "message9", "message9", null, null);
+				"pollProvider", "messageRequestHeader3", "messageRequestHeader3", null,
+				null);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
-		assertThat(resp.getName()).isEqualTo("message9");
+		assertThat(resp.getName()).isEqualTo("messageRequestHeader3");
 		assertThat(resp.getData()).isEqualTo("default");
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
@@ -264,11 +288,12 @@ public class RouterControllerPollTest {
 		headers.add("anotherName", "headerValue1");
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
-				"pollProvider", "message10", "message10", null, headers);
+				"pollProvider", "messageRequestHeader4", "messageRequestHeader4", null,
+				headers);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
-		assertThat(resp.getName()).isEqualTo("message10");
+		assertThat(resp.getName()).isEqualTo("messageRequestHeader4");
 		assertThat(resp.getData()).isEqualTo("headerValue");
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
@@ -277,11 +302,12 @@ public class RouterControllerPollTest {
 	@Test
 	public void pollOptionalHeaderWithoutValueAndDefault2() throws Exception {
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
-				"pollProvider", "message10", "message10", null, null);
+				"pollProvider", "messageRequestHeader4", "messageRequestHeader4", null,
+				null);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
-		assertThat(resp.getName()).isEqualTo("message10");
+		assertThat(resp.getName()).isEqualTo("messageRequestHeader4");
 		assertThat(resp.getData()).isEqualTo("default");
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
@@ -293,10 +319,11 @@ public class RouterControllerPollTest {
 		headers.add("last", "lastHeader");
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
-				"pollProvider", "message11", "message11", null, headers);
+				"pollProvider", "messageRequestHeader5", "messageRequestHeader5", null,
+				headers);
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
-		assertThat(resp.getName()).isEqualTo("message11");
+		assertThat(resp.getName()).isEqualTo("messageRequestHeader5");
 		assertThat(resp.getData()).isEqualTo("null;default1;default2;lastHeader");
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
@@ -312,11 +339,12 @@ public class RouterControllerPollTest {
 		headers.add("header2", "2ndHeader");
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
-				"pollProvider", "message11", "message11", params, headers);
+				"pollProvider", "messageRequestHeader5", "messageRequestHeader5", params,
+				headers);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
-		assertThat(resp.getName()).isEqualTo("message11");
+		assertThat(resp.getName()).isEqualTo("messageRequestHeader5");
 		assertThat(resp.getData()).isEqualTo("33;default1;2ndHeader;lastHeader");
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
@@ -333,11 +361,12 @@ public class RouterControllerPollTest {
 		headers.add("header2", "2nd");
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
-				"pollProvider", "message11", "message11", params, headers);
+				"pollProvider", "messageRequestHeader5", "messageRequestHeader5", params,
+				headers);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
-		assertThat(resp.getName()).isEqualTo("message11");
+		assertThat(resp.getName()).isEqualTo("messageRequestHeader5");
 		assertThat(resp.getData()).isEqualTo("44;1st;2nd;last");
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
@@ -351,14 +380,236 @@ public class RouterControllerPollTest {
 		headers.add("booleanHeader", "true");
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
-				"pollProvider", "message12", "message12", null, headers);
+				"pollProvider", "messageRequestHeader6", "messageRequestHeader6", null,
+				headers);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
-		assertThat(resp.getName()).isEqualTo("message12");
+		assertThat(resp.getName()).isEqualTo("messageRequestHeader6");
 		assertThat(resp.getData()).isEqualTo("2;true");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	// CookieValue
+
+	@Test
+	public void pollRequiredCookieWithoutValue() throws Exception {
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("cookie", "cookieValue"));
+
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "messageCookieValue1", "messageCookieValue1", null, null,
+				cookies);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("messageCookieValue1");
+		assertThat(resp.getData()).isEqualTo("null;null;cookieValue");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollRequiredCookieWithValue() throws Exception {
+		Map<String, String> params = new LinkedHashMap<String, String>();
+		params.put("id", "1");
+
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("cookie", "cookieValue"));
+		cookies.add(new Cookie("anotherName", "cookieValue1"));
+		cookies.add(new Cookie("anotherName", "cookieValue2"));
+
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "messageCookieValue2", "messageCookieValue2", params,
+				null, cookies);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("messageCookieValue2");
+		assertThat(resp.getData()).isEqualTo("1;cookieValue1");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+
+		params.clear();
+		params.put("id", "2");
+
+		resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider",
+				"messageCookieValue2", "messageCookieValue2", params, null, null, true);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getName()).isEqualTo("messageCookieValue2");
+		assertThat(resp.getData()).isNull();
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isEqualTo("Server Error");
+
+		params.clear();
+		params.put("id", "3");
+		cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("cookie", "cookieValue"));
+		resp = ControllerUtil
+				.performPollRequest(mockMvc, "pollProvider", "messageCookieValue2",
+						"messageCookieValue2", params, null, cookies, true);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getName()).isEqualTo("messageCookieValue2");
+		assertThat(resp.getData()).isNull();
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isEqualTo("Server Error");
+	}
+
+	@Test
+	public void pollRequiredCookieWithValueAndDefault1() throws Exception {
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("cookie", "cookieValue"));
+		cookies.add(new Cookie("anotherName", "cookieValue1"));
+
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "messageCookieValue3", "messageCookieValue3", null, null,
+				cookies);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("messageCookieValue3");
+		assertThat(resp.getData()).isEqualTo("cookieValue1");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollRequiredCookieWithValueAndDefault2() throws Exception {
+
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "messageCookieValue3", "messageCookieValue3", null, null);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("messageCookieValue3");
+		assertThat(resp.getData()).isEqualTo("default");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollOptionalCookieWithoutValueAndDefault1() throws Exception {
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("cookie", "cookieValue"));
+		cookies.add(new Cookie("anotherName", "cookieValue1"));
+
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "messageCookieValue4", "messageCookieValue4", null, null,
+				cookies);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("messageCookieValue4");
+		assertThat(resp.getData()).isEqualTo("cookieValue");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollOptionalCookieWithoutValueAndDefault2() throws Exception {
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "messageCookieValue4", "messageCookieValue4", null, null);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("messageCookieValue4");
+		assertThat(resp.getData()).isEqualTo("default");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollMultipleCookies1() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("requestHeader", "aRequestHeader");
+
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("last", "lastCookie"));
+
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "messageCookieValue5", "messageCookieValue5", null,
+				headers, cookies);
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("messageCookieValue5");
+		assertThat(resp.getData()).isEqualTo(
+				"aRequestHeader;null;default1;default2;lastCookie");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollMultipleCookies2() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("requestHeader", "aRequestHeader");
+
+		Map<String, String> params = new LinkedHashMap<String, String>();
+		params.put("id", "33");
+
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("last", "lastCookie"));
+		cookies.add(new Cookie("cookie2", "2ndCookie"));
+
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "messageCookieValue5", "messageCookieValue5", params,
+				headers, cookies);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("messageCookieValue5");
+		assertThat(resp.getData()).isEqualTo(
+				"aRequestHeader;33;default1;2ndCookie;lastCookie");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollMultipleCookies3() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("requestHeader", "aRequestHeader");
+
+		Map<String, String> params = new LinkedHashMap<String, String>();
+		params.put("id", "44");
+
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("last", "last"));
+		cookies.add(new Cookie("cookie1", "1st"));
+		cookies.add(new Cookie("cookie2", "2nd"));
+
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "messageCookieValue5", "messageCookieValue5", params,
+				headers, cookies);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("messageCookieValue5");
+		assertThat(resp.getData()).isEqualTo("aRequestHeader;44;1st;2nd;last");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void pollCookieWithConversion() throws Exception {
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("intCookie", "2"));
+		cookies.add(new Cookie("booleanCookie", "true"));
+
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"pollProvider", "messageCookieValue6", "messageCookieValue6", null, null,
+				cookies);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("messageCookieValue6");
+		assertThat(resp.getData()).isEqualTo("theHeader;2;true");
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
 
 	}
+
 }

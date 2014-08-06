@@ -17,9 +17,12 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.Cookie;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -61,7 +64,7 @@ public class RouterControllerSseTest {
 	@Test
 	public void sseBeanDoesNotExists() throws Exception {
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProviderXY",
-				"message1", null, null);
+				"message1", null, null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -80,7 +83,7 @@ public class RouterControllerSseTest {
 		configurationService.afterPropertiesSet();
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProviderXY",
-				"message1", null, null);
+				"message1", null, null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -96,7 +99,7 @@ public class RouterControllerSseTest {
 	public void sseNoArguments() throws Exception {
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message1", null, null);
+				"message1", null, null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -110,7 +113,7 @@ public class RouterControllerSseTest {
 	@Test
 	public void sseSupportedArguments() throws Exception {
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message2", null, null);
+				"message2", null, null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -127,7 +130,7 @@ public class RouterControllerSseTest {
 		params.put("id", "2");
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message3", params, null);
+				"message3", params, null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -142,7 +145,7 @@ public class RouterControllerSseTest {
 	public void sseRequiredArgumentNoRequestParameter() throws Exception {
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message3", null, null);
+				"message3", null, null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -161,7 +164,7 @@ public class RouterControllerSseTest {
 		configurationService.afterPropertiesSet();
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message3", null, null);
+				"message3", null, null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -179,7 +182,7 @@ public class RouterControllerSseTest {
 		params.put("id", "7");
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message4", params, null);
+				"message4", params, null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -194,7 +197,7 @@ public class RouterControllerSseTest {
 	@Test
 	public void sseDefaultValueArgumentWithoutRequestParameter() throws Exception {
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message4", null, null, true);
+				"message4", null, null, null, true);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -211,7 +214,7 @@ public class RouterControllerSseTest {
 		params.put("id", "3");
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message5", params, null);
+				"message5", params, null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -225,7 +228,7 @@ public class RouterControllerSseTest {
 	@Test
 	public void sseNotRequiredArgumentWithoutRequestParameter() throws Exception {
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message5", null, null);
+				"message5", null, null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -242,7 +245,7 @@ public class RouterControllerSseTest {
 		headers.add("header", "headerValue");
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message7", null, headers);
+				"messageRequestHeader1", null, headers, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -264,7 +267,7 @@ public class RouterControllerSseTest {
 		headers.add("anotherName", "headerValue2");
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message8", params, headers);
+				"messageRequestHeader2", params, headers, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
@@ -277,8 +280,8 @@ public class RouterControllerSseTest {
 		params.clear();
 		params.put("id", "2");
 
-		events = ControllerUtil.performSseRequest(mockMvc, "sseProvider", "message8",
-				params, null, true);
+		events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"messageRequestHeader2", params, null, null, true);
 		assertThat(events).hasSize(1);
 		event = events.get(0);
 
@@ -296,11 +299,11 @@ public class RouterControllerSseTest {
 		headers.add("anotherName", "headerValue1");
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message9", null, headers);
+				"messageRequestHeader3", null, headers, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
-		assertThat(event.getEvent()).isEqualTo("message9");
+		assertThat(event.getEvent()).isEqualTo("messageRequestHeader3");
 		assertThat(event.getComment()).isNull();
 		assertThat(event.getData()).isEqualTo("headerValue1");
 		assertThat(event.getId()).isNull();
@@ -311,11 +314,11 @@ public class RouterControllerSseTest {
 	public void sseRequiredHeaderWithValueAndDefault2() throws Exception {
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message9", null, null);
+				"messageRequestHeader3", null, null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
-		assertThat(event.getEvent()).isEqualTo("message9");
+		assertThat(event.getEvent()).isEqualTo("messageRequestHeader3");
 		assertThat(event.getComment()).isNull();
 		assertThat(event.getData()).isEqualTo("default");
 		assertThat(event.getId()).isNull();
@@ -330,11 +333,11 @@ public class RouterControllerSseTest {
 		headers.add("anotherName", "headerValue1");
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message10", null, headers);
+				"messageRequestHeader4", null, headers, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
-		assertThat(event.getEvent()).isEqualTo("message10");
+		assertThat(event.getEvent()).isEqualTo("messageRequestHeader4");
 		assertThat(event.getComment()).isEqualTo("comment of message headerValue");
 		assertThat(event.getData()).isEqualTo("headerValue");
 		assertThat(event.getId()).isNull();
@@ -344,11 +347,11 @@ public class RouterControllerSseTest {
 	@Test
 	public void sseOptionalHeaderWithoutValueAndDefault2() throws Exception {
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message10", null, null);
+				"messageRequestHeader4", null, null, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
-		assertThat(event.getEvent()).isEqualTo("message10");
+		assertThat(event.getEvent()).isEqualTo("messageRequestHeader4");
 		assertThat(event.getComment()).isEqualTo("comment of message default");
 		assertThat(event.getData()).isEqualTo("default");
 		assertThat(event.getId()).isNull();
@@ -361,11 +364,11 @@ public class RouterControllerSseTest {
 		headers.add("last", "lastHeader");
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message11", null, headers);
+				"messageRequestHeader5", null, headers, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
-		assertThat(event.getEvent()).isEqualTo("message11");
+		assertThat(event.getEvent()).isEqualTo("messageRequestHeader5");
 		assertThat(event.getComment()).isEqualTo("comment of message null");
 		assertThat(event.getData()).isEqualTo("null;default1;default2;lastHeader");
 		assertThat(event.getId()).isEqualTo("122");
@@ -382,11 +385,11 @@ public class RouterControllerSseTest {
 		headers.add("header2", "2ndHeader");
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message11", params, headers);
+				"messageRequestHeader5", params, headers, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
-		assertThat(event.getEvent()).isEqualTo("message11");
+		assertThat(event.getEvent()).isEqualTo("messageRequestHeader5");
 		assertThat(event.getComment()).isEqualTo("comment of message 33");
 		assertThat(event.getData()).isEqualTo("33;default1;2ndHeader;lastHeader");
 		assertThat(event.getId()).isEqualTo("122");
@@ -404,11 +407,11 @@ public class RouterControllerSseTest {
 		headers.add("header2", "2nd");
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message11", params, headers);
+				"messageRequestHeader5", params, headers, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
-		assertThat(event.getEvent()).isEqualTo("message11");
+		assertThat(event.getEvent()).isEqualTo("messageRequestHeader5");
 		assertThat(event.getComment()).isEqualTo("comment of message 44");
 		assertThat(event.getData()).isEqualTo("44;1st;2nd;last");
 		assertThat(event.getId()).isEqualTo("122");
@@ -422,11 +425,11 @@ public class RouterControllerSseTest {
 		headers.add("booleanHeader", "true");
 
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message12", null, headers);
+				"messageRequestHeader6", null, headers, null);
 		assertThat(events).hasSize(1);
 		SSEvent event = events.get(0);
 
-		assertThat(event.getEvent()).isEqualTo("message12");
+		assertThat(event.getEvent()).isEqualTo("messageRequestHeader6");
 		assertThat(event.getComment()).isEqualTo("comment");
 		assertThat(event.getData()).isEqualTo("2;true");
 		assertThat(event.getId()).isEqualTo("123");
@@ -436,7 +439,7 @@ public class RouterControllerSseTest {
 	@Test
 	public void sseWithWriterAndStringReturn() throws Exception {
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message13", null, null);
+				"message13", null, null, null);
 		assertThat(events).hasSize(5);
 
 		SSEvent event = events.get(0);
@@ -478,7 +481,7 @@ public class RouterControllerSseTest {
 	@Test
 	public void sseWithWriterAndSSEventReturn() throws Exception {
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message14", null, null);
+				"message14", null, null, null);
 		assertThat(events).hasSize(3);
 
 		SSEvent event = events.get(0);
@@ -506,7 +509,7 @@ public class RouterControllerSseTest {
 	@Test
 	public void sseWithWriterAndVoidReturn() throws Exception {
 		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
-				"message15", null, null);
+				"message15", null, null, null);
 		assertThat(events).hasSize(4);
 
 		SSEvent event = events.get(0);
@@ -537,4 +540,213 @@ public class RouterControllerSseTest {
 		assertThat(event.getId()).isNull();
 		assertThat(event.getRetry()).isEqualTo(10);
 	}
+
+	@Test
+	public void sseRequiredCookieWithoutValue() throws Exception {
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("cookie", "cookieValue"));
+
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"messageCookieValue1", null, null, cookies);
+		assertThat(events).hasSize(1);
+		SSEvent event = events.get(0);
+
+		assertThat(event.getEvent()).isNull();
+		assertThat(event.getComment()).isNull();
+		assertThat(event.getData()).startsWith("null;null;cookieValue");
+		assertThat(event.getId()).isEqualTo("1");
+		assertThat(event.getRetry()).isNull();
+	}
+
+	@Test
+	public void sseRequiredCookieWithValue() throws Exception {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("id", "1");
+
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("cookie", "cookieValue"));
+		cookies.add(new Cookie("anotherName", "cookieValue1"));
+		cookies.add(new Cookie("anotherName", "cookieValue2"));
+
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"messageCookieValue2", params, null, cookies);
+		assertThat(events).hasSize(1);
+		SSEvent event = events.get(0);
+
+		assertThat(event.getEvent()).isNull();
+		assertThat(event.getComment()).isNull();
+		assertThat(event.getData()).startsWith("1;cookieValue1");
+		assertThat(event.getId()).isNull();
+		assertThat(event.getRetry()).isNull();
+
+		params.clear();
+		params.put("id", "2");
+
+		events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"messageCookieValue2", params, null, null, true);
+		assertThat(events).hasSize(1);
+		event = events.get(0);
+
+		assertThat(event.getEvent()).isEqualTo("error");
+		assertThat(event.getComment()).isNull();
+		assertThat(event.getData()).startsWith("Server Error");
+		assertThat(event.getId()).isNull();
+		assertThat(event.getRetry()).isNull();
+	}
+
+	@Test
+	public void sseRequiredCookieWithValueAndDefault1() throws Exception {
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("cookie", "cookieValue"));
+		cookies.add(new Cookie("anotherName", "cookieValue1"));
+
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"messageCookieValue3", null, null, cookies);
+		assertThat(events).hasSize(1);
+		SSEvent event = events.get(0);
+
+		assertThat(event.getEvent()).isEqualTo("messageCookieValue3");
+		assertThat(event.getComment()).isNull();
+		assertThat(event.getData()).isEqualTo("cookieValue1");
+		assertThat(event.getId()).isNull();
+		assertThat(event.getRetry()).isNull();
+	}
+
+	@Test
+	public void sseRequiredCookieWithValueAndDefault2() throws Exception {
+
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"messageCookieValue3", null, null, null);
+		assertThat(events).hasSize(1);
+		SSEvent event = events.get(0);
+
+		assertThat(event.getEvent()).isEqualTo("messageCookieValue3");
+		assertThat(event.getComment()).isNull();
+		assertThat(event.getData()).isEqualTo("default");
+		assertThat(event.getId()).isNull();
+		assertThat(event.getRetry()).isNull();
+	}
+
+	@Test
+	public void sseOptionalCookieWithoutValueAndDefault1() throws Exception {
+
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("cookie", "cookieValue"));
+		cookies.add(new Cookie("anotherName", "cookieValue1"));
+
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"messageCookieValue4", null, null, cookies);
+		assertThat(events).hasSize(1);
+		SSEvent event = events.get(0);
+
+		assertThat(event.getEvent()).isEqualTo("messageCookieValue4");
+		assertThat(event.getComment()).isEqualTo("comment of message cookieValue");
+		assertThat(event.getData()).isEqualTo("cookieValue");
+		assertThat(event.getId()).isNull();
+		assertThat(event.getRetry()).isNull();
+	}
+
+	@Test
+	public void sseOptionalCookieWithoutValueAndDefault2() throws Exception {
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"messageCookieValue4", null, null, null);
+		assertThat(events).hasSize(1);
+		SSEvent event = events.get(0);
+
+		assertThat(event.getEvent()).isEqualTo("messageCookieValue4");
+		assertThat(event.getComment()).isEqualTo("comment of message default");
+		assertThat(event.getData()).isEqualTo("default");
+		assertThat(event.getId()).isNull();
+		assertThat(event.getRetry()).isNull();
+	}
+
+	@Test
+	public void sseMultipleCookies1() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("requestHeader", "aRequestHeader");
+
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("last", "lastCookie"));
+
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"messageCookieValue5", null, headers, cookies);
+		assertThat(events).hasSize(1);
+		SSEvent event = events.get(0);
+
+		assertThat(event.getEvent()).isEqualTo("messageCookieValue5");
+		assertThat(event.getComment()).isEqualTo("comment of message null");
+		assertThat(event.getData()).isEqualTo(
+				"aRequestHeader;null;default1;default2;lastCookie");
+		assertThat(event.getId()).isEqualTo("122");
+		assertThat(event.getRetry()).isNull();
+	}
+
+	@Test
+	public void sseMultipleCookies2() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("requestHeader", "aRequestHeader");
+
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("id", "33");
+
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("last", "lastCookie"));
+		cookies.add(new Cookie("cookie2", "2ndCookie"));
+
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"messageCookieValue5", params, headers, cookies);
+		assertThat(events).hasSize(1);
+		SSEvent event = events.get(0);
+
+		assertThat(event.getEvent()).isEqualTo("messageCookieValue5");
+		assertThat(event.getComment()).isEqualTo("comment of message 33");
+		assertThat(event.getData()).isEqualTo(
+				"aRequestHeader;33;default1;2ndCookie;lastCookie");
+		assertThat(event.getId()).isEqualTo("122");
+		assertThat(event.getRetry()).isNull();
+	}
+
+	@Test
+	public void sseMultipleCookies3() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("requestHeader", "aRequestHeader");
+
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("id", "44");
+
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("last", "last"));
+		cookies.add(new Cookie("cookie1", "1st"));
+		cookies.add(new Cookie("cookie2", "2nd"));
+
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"messageCookieValue5", params, headers, cookies);
+		assertThat(events).hasSize(1);
+		SSEvent event = events.get(0);
+
+		assertThat(event.getEvent()).isEqualTo("messageCookieValue5");
+		assertThat(event.getComment()).isEqualTo("comment of message 44");
+		assertThat(event.getData()).isEqualTo("aRequestHeader;44;1st;2nd;last");
+		assertThat(event.getId()).isEqualTo("122");
+		assertThat(event.getRetry()).isNull();
+	}
+
+	@Test
+	public void sseCookieWithConversion() throws Exception {
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("intCookie", "2"));
+		cookies.add(new Cookie("booleanCookie", "true"));
+
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc, "sseProvider",
+				"messageCookieValue6", null, null, cookies);
+		assertThat(events).hasSize(1);
+		SSEvent event = events.get(0);
+
+		assertThat(event.getEvent()).isEqualTo("messageCookieValue6");
+		assertThat(event.getComment()).isEqualTo("comment");
+		assertThat(event.getData()).isEqualTo("theHeader;2;true");
+		assertThat(event.getId()).isEqualTo("123");
+		assertThat(event.getRetry()).isEqualTo(10000);
+	}
+
 }
