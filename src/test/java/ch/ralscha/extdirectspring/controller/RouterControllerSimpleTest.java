@@ -408,9 +408,9 @@ public class RouterControllerSimpleTest {
 		cookies.add(new Cookie("intCookie", "1"));
 		cookies.add(new Cookie("booleanCookie", "true"));
 		ControllerUtil.sendAndReceive(mockMvc, null, cookies, "remoteProviderSimple",
-				"method27", "1;true", (Object[]) null);
-		ControllerUtil.sendAndReceive(mockMvc, null, null, "remoteProviderSimple",
-				"method27", null, (Object[]) null);
+				"method27", "1;true", (Object) null);
+		ControllerUtil.sendAndReceive(mockMvc, null, Collections.emptyList(), "remoteProviderSimple",
+				"method27", null, (Object) null);
 	}
 
 	@Test
@@ -419,14 +419,14 @@ public class RouterControllerSimpleTest {
 				"method28", "theDefaultValue", (Object[]) null);
 		ControllerUtil.sendAndReceive(mockMvc, null,
 				Collections.singletonList(new Cookie("stringCookie", "str")),
-				"remoteProviderSimple", "method28", "str", (Object[]) null);
+				"remoteProviderSimple", "method28", "str", (Object) null);
 	}
 
 	@Test
 	public void methodWithDifferentNameCookieValue() {
 		ControllerUtil.sendAndReceive(mockMvc, null,
 				Collections.singletonList(new Cookie("nameOfTheCookie", "cookieValue")),
-				"remoteProviderSimple", "method29", "cookieValue", (Object[]) null);
+				"remoteProviderSimple", "method29", "cookieValue", (Object) null);
 		ControllerUtil.sendAndReceive(mockMvc, null, null, "remoteProviderSimple",
 				"method29", null, (Object[]) null);
 	}
@@ -435,9 +435,18 @@ public class RouterControllerSimpleTest {
 	public void methodWithNonRequiredCookieValue() {
 		ControllerUtil.sendAndReceive(mockMvc, null,
 				Collections.singletonList(new Cookie("stringCookie", "aString")),
-				"remoteProviderSimple", "method30", "aString", (Object[]) null);
+				"remoteProviderSimple", "method30", "aString", (Object) null);
 		ControllerUtil.sendAndReceive(mockMvc, null, null, "remoteProviderSimple",
 				"method30", Void.TYPE, (Object[]) null);
+	}
+	
+	@Test
+	public void methodWithOptional() {
+		ControllerUtil.sendAndReceive(mockMvc, 
+				"remoteProviderSimple", "methodWithOptional", "default value", (Object)null);
+		
+		ControllerUtil.sendAndReceive(mockMvc, 
+				"remoteProviderSimple", "methodWithOptional", "one", "one");
 	}
 
 }

@@ -342,7 +342,7 @@ public class RemoteProviderStoreRead {
 			assertThat(nf3).isInstanceOf(NumericFilter.class);
 			assertThat(nf3).isSameAs(nf);
 
-			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat((Filter)request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
 			return createResult(type);
@@ -382,7 +382,7 @@ public class RemoteProviderStoreRead {
 			assertThat(allFiltersForField)
 					.containsExactly(filters.get(0), filters.get(1));
 
-			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat((Filter)request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
 			return createResult(type);
@@ -401,7 +401,7 @@ public class RemoteProviderStoreRead {
 			List<Filter> allFiltersForField = request.getAllFiltersForField("visible");
 			assertThat(allFiltersForField).containsExactly(bf1);
 
-			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat((Filter)request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
 			return createResult(type);
@@ -687,7 +687,7 @@ public class RemoteProviderStoreRead {
 			assertThat(nf3).isInstanceOf(NumericFilter.class);
 			assertThat(nf3).isSameAs(nf);
 
-			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat((Filter)request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
 			assertThat(request.getSorters()).hasSize(1);
@@ -721,7 +721,7 @@ public class RemoteProviderStoreRead {
 			assertThat(allFiltersForField)
 					.containsExactly(filters.get(0), filters.get(1));
 
-			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat((Filter)request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
 			assertThat(request.getSorters()).hasSize(1);
@@ -747,7 +747,7 @@ public class RemoteProviderStoreRead {
 			List<Filter> allFiltersForField = request.getAllFiltersForField("visible");
 			assertThat(allFiltersForField).containsExactly(bf1);
 
-			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat((Filter)request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
 			assertThat(request.getSorters()).hasSize(1);
@@ -871,7 +871,7 @@ public class RemoteProviderStoreRead {
 			assertThat(nf3).isInstanceOf(NumericFilter.class);
 			assertThat(nf3).isSameAs(nf);
 
-			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat((Filter)request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
 			assertThat(request.getSorters()).hasSize(1);
@@ -905,7 +905,7 @@ public class RemoteProviderStoreRead {
 			assertThat(allFiltersForField)
 					.containsExactly(filters.get(0), filters.get(1));
 
-			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat((Filter)request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
 			assertThat(request.getSorters()).hasSize(1);

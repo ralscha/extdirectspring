@@ -159,7 +159,7 @@ public class ControllerUtil {
 		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
 				.contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
 
-		if (cookies != null) {
+		if (cookies != null && !cookies.isEmpty()) {
 			request.cookie(cookies.toArray(new Cookie[cookies.size()]));
 		}
 

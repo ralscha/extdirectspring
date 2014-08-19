@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -336,6 +337,11 @@ public class RemoteProviderSimple {
 		return stringCookie;
 	}
 
+	@ExtDirectMethod
+	public String methodWithOptional(Optional<String> param1) {
+		return param1.orElse("default value");
+	}
+	
 	public static final class BusinessObject {
 		private int id;
 
