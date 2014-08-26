@@ -38,6 +38,8 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
+import org.springframework.expression.Expression;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.web.bind.support.WebArgumentResolver;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.util.UrlPathHelper;
@@ -72,6 +74,9 @@ public final class ParametersResolver {
 
 	private final Collection<WebArgumentResolver> webArgumentResolvers;
 
+	private final Expression getPrincipalExpression = new SpelExpressionParser()
+			.parseExpression("T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication()?.getPrincipal()");
+
 	public ParametersResolver(ConversionService conversionService,
 			JsonHandler jsonHandler, Collection<WebArgumentResolver> webArgumentResolvers) {
 		this.conversionService = conversionService;
@@ -100,12 +105,15 @@ public final class ParametersResolver {
 							methodParameter.getType(), request, response, locale,
 							sseWriter);
 				}
-				else if (methodParameter.isHasRequestHeaderAnnotation()) {
+				else if (methodParameter.hasRequestHeaderAnnotation()) {
 					parameters[paramIndex] = resolveRequestHeader(request,
 							methodParameter);
 				}
-				else if (methodParameter.isHasCookieValueAnnotation()) {
+				else if (methodParameter.hasCookieValueAnnotation()) {
 					parameters[paramIndex] = resolveCookieValue(request, methodParameter);
+				}
+				else if (methodParameter.hasAuthenticationPrincipalAnnotation()) {
+					parameters[paramIndex] = resolveAuthenticationPrincipal(methodParameter);
 				}
 				else {
 					parameters[paramIndex] = resolveRequestParam(request, null,
@@ -239,16 +247,19 @@ public final class ParametersResolver {
 						&& methodParameter.getCollectionType() != null) {
 					parameters[paramIndex] = directStoreModifyRecords;
 				}
-				else if (methodParameter.isHasRequestParamAnnotation()) {
+				else if (methodParameter.hasRequestParamAnnotation()) {
 					parameters[paramIndex] = resolveRequestParam(null,
 							remainingParameters, methodParameter);
 				}
-				else if (methodParameter.isHasRequestHeaderAnnotation()) {
+				else if (methodParameter.hasRequestHeaderAnnotation()) {
 					parameters[paramIndex] = resolveRequestHeader(request,
 							methodParameter);
 				}
-				else if (methodParameter.isHasCookieValueAnnotation()) {
+				else if (methodParameter.hasCookieValueAnnotation()) {
 					parameters[paramIndex] = resolveCookieValue(request, methodParameter);
+				}
+				else if (methodParameter.hasAuthenticationPrincipalAnnotation()) {
+					parameters[paramIndex] = resolveAuthenticationPrincipal(methodParameter);
 				}
 				else if (remainingParameters != null
 						&& remainingParameters.containsKey(methodParameter.getName())) {
@@ -303,7 +314,7 @@ public final class ParametersResolver {
 		return parameters;
 	}
 
-	public Object resolveRequestParam(HttpServletRequest request,
+	private Object resolveRequestParam(HttpServletRequest request,
 			Map<String, Object> valueContainer, final ParameterInfo parameterInfo) {
 
 		if (parameterInfo.getName() != null) {
@@ -336,7 +347,7 @@ public final class ParametersResolver {
 		return null;
 	}
 
-	public Object resolveRequestHeader(HttpServletRequest request,
+	private Object resolveRequestHeader(HttpServletRequest request,
 			ParameterInfo parameterInfo) {
 		String value = request.getHeader(parameterInfo.getName());
 
@@ -356,7 +367,7 @@ public final class ParametersResolver {
 		return null;
 	}
 
-	public Object resolveCookieValue(HttpServletRequest request,
+	private Object resolveCookieValue(HttpServletRequest request,
 			ParameterInfo parameterInfo) {
 
 		Cookie cookieValue = WebUtils.getCookie(request, parameterInfo.getName());
@@ -379,7 +390,20 @@ public final class ParametersResolver {
 		}
 
 		return null;
+	}
 
+	private Object resolveAuthenticationPrincipal(ParameterInfo parameterInfo) {
+		Object principal = getPrincipalExpression.getValue();
+
+		if (principal != null
+				&& !parameterInfo.getType().isAssignableFrom(principal.getClass())) {
+			if (parameterInfo.authenticationPrincipalAnnotationErrorOnInvalidType()) {
+				throw new ClassCastException(principal + " is not assignable to "
+						+ parameterInfo.getType());
+			}
+			return null;
+		}
+		return principal;
 	}
 
 	private Object convertValue(Object value, ParameterInfo methodParameter) {

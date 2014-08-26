@@ -150,9 +150,7 @@ public final class MethodInfo {
 		case SIMPLE:
 			int paramLength = 0;
 			for (ParameterInfo parameter : this.parameters) {
-				if (!parameter.isSupportedParameter()
-						&& !parameter.isHasRequestHeaderAnnotation()
-						&& !parameter.isHasCookieValueAnnotation()) {
+				if (parameter.isClientParameter()) {
 					paramLength++;
 				}
 			}
@@ -161,9 +159,7 @@ public final class MethodInfo {
 		case SIMPLE_NAMED:
 			List<String> parameterNames = new ArrayList<String>();
 			for (ParameterInfo parameter : this.parameters) {
-				if (!parameter.isSupportedParameter()
-						&& !parameter.isHasRequestHeaderAnnotation()
-						&& !parameter.isHasCookieValueAnnotation()) {
+				if (parameter.isClientParameter()) {
 					parameterNames.add(parameter.getName());
 				}
 			}

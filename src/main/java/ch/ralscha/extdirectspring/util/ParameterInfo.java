@@ -21,6 +21,7 @@ import java.lang.reflect.Method;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -48,6 +49,8 @@ public final class ParameterInfo {
 
 	private boolean hasCookieValueAnnotation;
 
+	private Boolean hasAuthenticationPrincipalAnnotation;
+
 	private boolean required;
 
 	private String defaultValue;
@@ -67,6 +70,12 @@ public final class ParameterInfo {
 		Annotation[] paramAnnotations = methodParam.getParameterAnnotations();
 
 		for (Annotation paramAnn : paramAnnotations) {
+
+			this.hasRequestParamAnnotation = false;
+			this.hasRequestHeaderAnnotation = false;
+			this.hasCookieValueAnnotation = false;
+			this.hasAuthenticationPrincipalAnnotation = null;
+
 			if (RequestParam.class.isInstance(paramAnn)) {
 				RequestParam requestParam = (RequestParam) paramAnn;
 				if (StringUtils.hasText(requestParam.value())) {
@@ -76,8 +85,6 @@ public final class ParameterInfo {
 				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestParam
 						.defaultValue()) ? null : requestParam.defaultValue();
 				this.hasRequestParamAnnotation = true;
-				this.hasRequestHeaderAnnotation = false;
-				this.hasCookieValueAnnotation = false;
 				break;
 			}
 			else if (RequestHeader.class.isInstance(paramAnn)) {
@@ -88,9 +95,7 @@ public final class ParameterInfo {
 				this.required = requestHeader.required();
 				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestHeader
 						.defaultValue()) ? null : requestHeader.defaultValue();
-				this.hasRequestParamAnnotation = false;
 				this.hasRequestHeaderAnnotation = true;
-				this.hasCookieValueAnnotation = false;
 				break;
 			}
 			else if (CookieValue.class.isInstance(paramAnn)) {
@@ -101,10 +106,15 @@ public final class ParameterInfo {
 				this.required = cookieValue.required();
 				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(cookieValue
 						.defaultValue()) ? null : cookieValue.defaultValue();
-				this.hasRequestParamAnnotation = false;
-				this.hasRequestHeaderAnnotation = false;
 				this.hasCookieValueAnnotation = true;
 				break;
+			}
+			else if (paramAnn
+					.annotationType()
+					.getName()
+					.equals("org.springframework.security.web.bind.annotation.AuthenticationPrincipal")) {
+				hasAuthenticationPrincipalAnnotation = (Boolean) AnnotationUtils
+						.getValue(paramAnn, "errorOnInvalidType");
 			}
 		}
 	}
@@ -125,16 +135,25 @@ public final class ParameterInfo {
 		return name;
 	}
 
-	public boolean isHasRequestParamAnnotation() {
+	public boolean hasRequestParamAnnotation() {
 		return hasRequestParamAnnotation;
 	}
 
-	public boolean isHasRequestHeaderAnnotation() {
+	public boolean hasRequestHeaderAnnotation() {
 		return hasRequestHeaderAnnotation;
 	}
 
-	public boolean isHasCookieValueAnnotation() {
+	public boolean hasCookieValueAnnotation() {
 		return hasCookieValueAnnotation;
+	}
+
+	public boolean hasAuthenticationPrincipalAnnotation() {
+		return hasAuthenticationPrincipalAnnotation != null;
+	}
+
+	public boolean authenticationPrincipalAnnotationErrorOnInvalidType() {
+		return hasAuthenticationPrincipalAnnotation != null ? hasAuthenticationPrincipalAnnotation
+				: false;
 	}
 
 	public boolean isRequired() {
@@ -151,6 +170,11 @@ public final class ParameterInfo {
 
 	public TypeDescriptor getTypeDescriptor() {
 		return typeDescriptor;
+	}
+
+	public boolean isClientParameter() {
+		return !isSupportedParameter() && !hasRequestHeaderAnnotation()
+				&& !hasCookieValueAnnotation() && !hasAuthenticationPrincipalAnnotation();
 	}
 
 }
