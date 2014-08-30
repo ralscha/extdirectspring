@@ -21,6 +21,8 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
@@ -30,9 +32,16 @@ public class SecuredService {
 
 	@ExtDirectMethod(group = "secured")
 	@PreAuthorize("isAnonymous()")
-	public String setDate(String id, @DateTimeFormat(pattern = "dd/MM/yyyy") Date date) {
+	public String setDate(String id, @DateTimeFormat(pattern = "dd/MM/yyyy") Date date,
+			@AuthenticationPrincipal UserDetails ud) {
 		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-		return id + "," + dateFormat.format(date);
+		return id + "," + dateFormat.format(date) + ","
+				+ (ud != null ? ud.getUsername() : "");
 	}
 
+	@ExtDirectMethod(group = "secured")
+	@PreAuthorize("isAuthenticated()")
+	public String secret(String param, @AuthenticationPrincipal UserDetails ud) {
+		return param.toUpperCase() + "," + (ud != null ? ud.getUsername() : "");
+	}
 }
