@@ -38,6 +38,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
+import org.springframework.util.ClassUtils;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.web.bind.support.WebArgumentResolver;
@@ -76,6 +77,20 @@ public final class ParametersResolver {
 
 	private final Expression getPrincipalExpression = new SpelExpressionParser()
 			.parseExpression("T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication()?.getPrincipal()");
+
+	/** Java 8's java.util.Optional.empty() */
+	private static Object javaUtilOptionalEmpty = null;
+
+	static {
+		try {
+			Class<?> clazz = ClassUtils.forName("java.util.Optional",
+					ParametersResolver.class.getClassLoader());
+			javaUtilOptionalEmpty = ClassUtils.getMethod(clazz, "empty").invoke(null);
+		}
+		catch (Exception ex) {
+			// Java 8 not available - conversion to Optional not supported then.
+		}
+	}
 
 	public ParametersResolver(ConversionService conversionService,
 			JsonHandler jsonHandler, Collection<WebArgumentResolver> webArgumentResolvers) {
@@ -337,6 +352,12 @@ public final class ParametersResolver {
 				return convertValue(value, parameterInfo);
 			}
 
+			// value is null and the parameter is java.util.Optional then return an empty
+			// Optional
+			if (parameterInfo.isJavaUtilOptional()) {
+				return javaUtilOptionalEmpty;
+			}
+
 			if (parameterInfo.isRequired()) {
 				throw new IllegalStateException("Missing parameter '"
 						+ parameterInfo.getName() + "' of type ["
@@ -357,6 +378,12 @@ public final class ParametersResolver {
 
 		if (value != null) {
 			return convertValue(value, parameterInfo);
+		}
+
+		// value is null and the parameter is java.util.Optional then return an empty
+		// Optional
+		if (parameterInfo.isJavaUtilOptional()) {
+			return javaUtilOptionalEmpty;
 		}
 
 		if (parameterInfo.isRequired()) {
@@ -382,6 +409,12 @@ public final class ParametersResolver {
 
 		if (value != null) {
 			return convertValue(value, parameterInfo);
+		}
+
+		// value is null and the parameter is java.util.Optional then return an empty
+		// Optional
+		if (parameterInfo.isJavaUtilOptional()) {
+			return javaUtilOptionalEmpty;
 		}
 
 		if (parameterInfo.isRequired()) {
@@ -445,7 +478,10 @@ public final class ParametersResolver {
 				return jsonHandler.convertValue(value, methodParameter.getType());
 			}
 
+		} else if (methodParameter.isJavaUtilOptional()) {
+			return javaUtilOptionalEmpty;
 		}
+		
 		return null;
 	}
 

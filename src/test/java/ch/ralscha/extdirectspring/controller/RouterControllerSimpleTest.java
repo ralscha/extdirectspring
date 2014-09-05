@@ -439,5 +439,14 @@ public class RouterControllerSimpleTest {
 		ControllerUtil.sendAndReceive(mockMvc, null, null, "remoteProviderSimple",
 				"method30", Void.TYPE, (Object[]) null);
 	}
+	
+	@Test
+	public void methodWithOptional() {
+		ControllerUtil.sendAndReceive(mockMvc, 
+				"remoteProviderSimple", "methodWithOptional", "default value", (Object)null);
+		
+		ControllerUtil.sendAndReceive(mockMvc, 
+				"remoteProviderSimple", "methodWithOptional", "one", "one");
+	}
 
 }
