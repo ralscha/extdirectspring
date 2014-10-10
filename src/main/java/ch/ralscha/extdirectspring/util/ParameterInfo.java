@@ -53,7 +53,7 @@ public final class ParameterInfo {
 
 	private boolean required;
 
-	private boolean javaUtilOptional;
+	private final boolean javaUtilOptional;
 
 	private String defaultValue;
 
@@ -67,7 +67,7 @@ public final class ParameterInfo {
 		this.typeDescriptor = new TypeDescriptor(methodParam);
 
 		Class<?> paramType = methodParam.getParameterType();
-		javaUtilOptional = (paramType.getName().equals("java.util.Optional"));
+		javaUtilOptional = paramType.getName().equals("java.util.Optional");
 
 		this.supportedParameter = SupportedParameters.isSupported(typeDescriptor
 				.getObjectType());
