@@ -48,7 +48,7 @@
 	</scm>
 
 	<properties>
-		<jackson.version>2.4.2</jackson.version>
+		<jackson.version>2.4.3</jackson.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -57,7 +57,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
-				<version>4.1.0.RELEASE</version>
+				<version>4.1.1.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -173,7 +173,7 @@
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
-			<version>2.4</version>
+			<version>2.5</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -220,7 +220,7 @@
 		<dependency>
 			<groupId>org.databene</groupId>
 			<artifactId>contiperf</artifactId>
-			<version>2.2.0</version>
+			<version>2.3.4</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -275,6 +275,12 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>4.3.6.Final</version>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>xml-apis</artifactId>
+					<groupId>xml-apis</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -294,14 +300,14 @@
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
-			<version>8.1.14.v20131031</version>
+			<version>8.1.9.v20130131</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-webapp</artifactId>
-			<version>8.1.14.v20131031</version>
+			<version>8.1.9.v20130131</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -380,28 +386,6 @@
 			</plugin>
 
 			<plugin>
-				<groupId>com.atlassian.maven.plugins</groupId>
-				<artifactId>maven-clover2-plugin</artifactId>
-				<version>3.1.10.1</version>
-				<configuration>
-					<includesTestSourceRoots>true</includesTestSourceRoots>
-					<methodContexts>
-						<toString>(.* )?public String toString\(\).*</toString>
-						<extDirectSpringUtilConstructor>.*private ExtDirectSpringUtil\(\).*</extDirectSpringUtilConstructor>
-						<extDirectSpringUtilinvoke>.*public static Object invoke\(HttpServletRequest request.*</extDirectSpringUtilinvoke>
-					</methodContexts>
-					<excludes>
-						<exclude>**/ch/ralscha/extdirectspring/bean/ExtDirectStoreResponse.java</exclude>
-						<exclude>**/ch/ralscha/extdirectspring/bean/ExtDirectRawJsonStoreResponse.java</exclude>
-					</excludes>
-					<contextFilters>toString,extDirectSpringUtilConstructor,extDirectSpringUtilinvoke</contextFilters>
-					<license><![CDATA[
-					nqnMRdMcPMnTVgXvLUhKHiOBOMpPaqbbGHWgAhuMntGQiDC
-					mj2L0DkB6BZ2OlhgEfP55Vnz22K>xA7GYjQAlGpmmg<P1S5 qONOwSoMQNMpMRooppOXvoNoonnpqPoRQqxxsUWmStxvwTS tXtSnXuWvPRnRMnmqmUUnppsrtommmmmmUUnppsrtommmmm mUU5JJW4bsbilmjbkqW17UUnmmmm ]]></license>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
 				<version>2.6</version>
@@ -468,12 +452,6 @@
 							<groupId>org.codehaus.mojo</groupId>
 							<artifactId>cobertura-maven-plugin</artifactId>
 							<version>2.6</version>
-						</plugin>
-
-						<plugin>
-							<groupId>com.atlassian.maven.plugins</groupId>
-							<artifactId>maven-clover2-plugin</artifactId>
-							<version>3.1.8</version>
 						</plugin>
 
 					</reportPlugins>
