@@ -478,10 +478,11 @@ public final class ParametersResolver {
 				return jsonHandler.convertValue(value, methodParameter.getType());
 			}
 
-		} else if (methodParameter.isJavaUtilOptional()) {
+		}
+		else if (methodParameter.isJavaUtilOptional()) {
 			return javaUtilOptionalEmpty;
 		}
-		
+
 		return null;
 	}
 

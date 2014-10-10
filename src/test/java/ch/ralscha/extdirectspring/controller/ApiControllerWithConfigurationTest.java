@@ -736,7 +736,7 @@ public class ApiControllerWithConfigurationTest {
 		remotingApi.addAction("remoteProviderSimple", new Action("method30", 0,
 				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderSimple", new Action("methodWithOptional", 1,
-				Boolean.FALSE));		
+				Boolean.FALSE));
 
 		remotingApi.addAction("remoteProviderSimpleDoc", new Action("method1", 0,
 				Boolean.FALSE));
@@ -1103,7 +1103,7 @@ public class ApiControllerWithConfigurationTest {
 		remotingApi.addAction("remoteProviderSimple", new Action("method30", 0,
 				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderSimple", new Action("methodWithOptional", 1,
-				Boolean.FALSE));		
+				Boolean.FALSE));
 
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method1", 1,
 				Boolean.FALSE));

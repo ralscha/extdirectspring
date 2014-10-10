@@ -341,7 +341,7 @@ public class RemoteProviderSimple {
 	public String methodWithOptional(Optional<String> param1) {
 		return param1.orElse("default value");
 	}
-	
+
 	public static final class BusinessObject {
 		private int id;
 
