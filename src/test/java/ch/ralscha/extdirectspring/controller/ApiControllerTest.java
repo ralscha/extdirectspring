@@ -401,7 +401,7 @@ public class ApiControllerTest {
 		return doTest(mockMvc, url, params, expectedApi);
 	}
 
-	private static MvcResult doTest(MockMvc mockMvc, String url, ApiRequestParams params,
+	public static MvcResult doTest(MockMvc mockMvc, String url, ApiRequestParams params,
 			RemotingApi expectedApi) throws Exception {
 		MockHttpServletRequestBuilder request = get(url).accept(MediaType.ALL)
 				.characterEncoding("UTF-8");
@@ -455,7 +455,7 @@ public class ApiControllerTest {
 		return result;
 	}
 
-	private static RemotingApi noApis(String namespace) {
+	public static RemotingApi noApis(String namespace) {
 		return new RemotingApi("remoting", "/router", namespace);
 	}
 
@@ -497,7 +497,7 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	private static RemotingApi group2Apis(String namespace, String url) {
+	public static RemotingApi group2Apis(String namespace, String url) {
 		RemotingApi remotingApi = new RemotingApi("remoting", url, namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method3", 3,
 				Boolean.FALSE));
@@ -530,7 +530,7 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	private static RemotingApi group1and2Apis(String namespace) {
+	public static RemotingApi group1and2Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0,
 				Boolean.FALSE));
@@ -572,7 +572,7 @@ public class ApiControllerTest {
 		return group2Apis(namespace, "/router");
 	}
 
-	private static RemotingApi group3Apis(String namespace) {
+	public static RemotingApi group3Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method5", 1,
 				Boolean.FALSE));
@@ -606,7 +606,7 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	private static RemotingApi group4Apis(String namespace) {
+	public static RemotingApi group4Apis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
 				"handleMessage3", "message3"));
@@ -614,7 +614,7 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	private static RemotingApi interfaceApis(String namespace) {
+	public static RemotingApi interfaceApis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
 		remotingApi.addAction("remoteProviderImplementation", new Action("storeRead", 1,
 				Boolean.FALSE));
@@ -625,7 +625,7 @@ public class ApiControllerTest {
 		return remotingApi;
 	}
 
-	private static RemotingApi allApis(String namespace) {
+	public static RemotingApi allApis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method1", 0,
 				Boolean.FALSE));
@@ -997,10 +997,43 @@ public class ApiControllerTest {
 		remotingApi.addSseProvider("sseProvider", "message13");
 		remotingApi.addSseProvider("sseProvider", "message14");
 		remotingApi.addSseProvider("sseProvider", "message15");
+
+		remotingApi.addAction("remoteProviderOptional", new Action("method1", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("method2", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("method4", 2,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("method5", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("method6", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("method7", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("method8", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("method9", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("method10", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("method11", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("method12", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("method13", 3,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("method16", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("method17", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("method18", 0,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("method19", 0,
+				Boolean.FALSE));
 		return remotingApi;
 	}
 
-	private static RemotingApi emptyGroupApis(String namespace) {
+	public static RemotingApi emptyGroupApis(String namespace) {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
 		remotingApi.addAction("remoteProviderSimple", new Action("method2", 0,
 				Boolean.FALSE));
@@ -1156,7 +1189,7 @@ public class ApiControllerTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void compareJson(MvcResult result, RemotingApi remotingApi,
+	public static void compareJson(MvcResult result, RemotingApi remotingApi,
 			ApiRequestParams params) throws IOException {
 		String content = result.getResponse().getContentAsString();
 		assertThat(result.getResponse().getContentType()).isEqualTo(
@@ -1431,7 +1464,7 @@ public class ApiControllerTest {
 		}
 	}
 
-	private static void compareSse(List<String> expectedActions,
+	public static void compareSse(List<String> expectedActions,
 			Map<String, String> actions, String beanName, String url) {
 		assertThat(actions).isNotEmpty();
 		assertThat(actions).hasSize(expectedActions.size());
@@ -1443,7 +1476,7 @@ public class ApiControllerTest {
 	}
 
 	@SuppressWarnings({ "null", "unchecked" })
-	private static void compare(List<Action> expectedActions,
+	public static void compare(List<Action> expectedActions,
 			List<Map<String, Object>> actions) {
 		assertThat(actions).hasSize(expectedActions.size());
 		for (Action expectedAction : expectedActions) {
@@ -1479,7 +1512,7 @@ public class ApiControllerTest {
 	}
 
 	@SuppressWarnings("null")
-	private static int assertContains(String extNsLine, String[] lines) {
+	public static int assertContains(String extNsLine, String[] lines) {
 		if (lines == null) {
 			fail("no lines");
 		}
@@ -1496,7 +1529,7 @@ public class ApiControllerTest {
 	}
 
 	@SuppressWarnings("null")
-	private static void assertDoesNotContains(String extNsLine, String[] lines) {
+	public static void assertDoesNotContains(String extNsLine, String[] lines) {
 		if (lines == null) {
 			fail("no lines");
 		}
