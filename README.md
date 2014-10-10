@@ -33,7 +33,7 @@ The official Sencha [Ext.Direct forum](http://www.sencha.com/forum/forumdisplay.
 
 
 ##Minimal Requirements
- * Spring 3.0.7+ (Version 1.1.3), Spring 3.1.2+ (Version 1.2.3), Spring 3.2.1+ (Version 1.3.1), Spring 4.0.0+ (Version 1.4.3)
- * Servlet 2.4+ Container (Version <= 1.3.9), Servlet 3.0+ (Version 1.4.3)
- * Java 1.5 (Version 1.1.3), Java 1.6 (Version 1.2.3, 1.3.1, 1.4.3)
- * Ext JS 3+, Sencha Touch 2 
+ * Spring 3.0.7+ (Version 1.1.3), Spring 3.1.2+ (Version 1.2.3), Spring 3.2.1+ (Version 1.3.1), Spring 4.0.0+ (Version 1.4.3), Spring 4.1.2+ (Version 1.5.0)
+ * Servlet 2.4+ Container (Version <= 1.3.9), Servlet 3.0+ (Version 1.4.3, 1.5.0)
+ * Java 1.5 (Version 1.1.3), Java 1.6 (Version 1.2.3, 1.3.1, 1.4.3, 1.5.0)
+ * Ext JS 3+, Ext JS 4+, Ext JS 5+, Sencha Touch 2 
