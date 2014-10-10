@@ -21,7 +21,7 @@ import org.springframework.context.annotation.ComponentScan;
  * No-op marker interface. Helps to configure extdirectspring in a type-safe way with
  * {@link ComponentScan#basePackageClasses()}
  * <p>
- * 
+ *
  * <pre>
  *   {@literal @}Configuration
  *   {@literal @}ComponentScan(basePackageClasses=ExtDirectSpring.class)
