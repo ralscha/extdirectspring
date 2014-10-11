@@ -23,10 +23,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.servlet.http.Cookie;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
@@ -35,6 +38,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -707,6 +711,65 @@ public class RouterControllerSimpleNamedTest {
 				null, 55, null), responses.subList(6, 7));
 		assertResponse("remoteProviderSimpleNamed", "methodRP3", 9, new ResultObject(
 				null, null, null), responses.subList(7, 8));
+	}
+
+	@Test
+	public void testCookie() {
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("aSimpleCookie", "ralph"));
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("i", 99L);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, null, cookies,
+				"remoteProviderSimpleNamed", "withCookie", "99:ralph", params);
+
+		params = new HashMap<String, Object>();
+		params.put("i", 102L);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, null, null,
+				"remoteProviderSimpleNamed", "withCookie", "102:defaultCookie", params);
+
+		cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("aSimpleCookie", "ralph2"));
+		params = new HashMap<String, Object>();
+		params.put("i", 102L);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, null, cookies,
+				"remoteProviderSimpleNamed", "withRequiredCookie", "102:ralph2", params);
+
+		params = new HashMap<String, Object>();
+		params.put("i", 102L);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, null, null,
+				"remoteProviderSimpleNamed", "withRequiredCookie", null, params);
+	}
+
+	@Test
+	public void testRequestHeader() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("aSimpleHeader", "theHeaderValue");
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("bd", new BigDecimal("1.1"));
+		ControllerUtil.sendAndReceiveNamed(mockMvc, headers, null,
+				"remoteProviderSimpleNamed", "withRequestHeader", "1.1:theHeaderValue",
+				params);
+
+		params = new HashMap<String, Object>();
+		params.put("bd", new BigDecimal("1.2"));
+		ControllerUtil.sendAndReceiveNamed(mockMvc, null, null,
+				"remoteProviderSimpleNamed", "withRequestHeader", "1.2:defaultHeader",
+				params);
+
+		headers = new HttpHeaders();
+		headers.add("aSimpleHeader", "theHeaderValue2");
+
+		params = new HashMap<String, Object>();
+		params.put("bd", new BigDecimal("1.2"));
+		ControllerUtil.sendAndReceiveNamed(mockMvc, headers, null,
+				"remoteProviderSimpleNamed", "withRequiredRequestHeader",
+				"1.2:theHeaderValue2", params);
+
+		params = new HashMap<String, Object>();
+		params.put("bd", new BigDecimal("1.3"));
+		ControllerUtil.sendAndReceiveNamed(mockMvc, null, null,
+				"remoteProviderSimpleNamed", "withRequiredRequestHeader", null, params);
 	}
 
 	private static void assertResponse(String bean, String method, int tid,

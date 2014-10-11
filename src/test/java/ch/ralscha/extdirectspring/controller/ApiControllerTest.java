@@ -939,6 +939,15 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimpleNamed",
 				new Action("methodRP3", Arrays.asList("lastName", "theAge", "active")));
 
+		remotingApi.addAction("remoteProviderSimpleNamed", new Action("withCookie",
+				Arrays.asList("i")));
+		remotingApi.addAction("remoteProviderSimpleNamed", new Action(
+				"withRequiredCookie", Arrays.asList("i")));
+		remotingApi.addAction("remoteProviderSimpleNamed", new Action(
+				"withRequestHeader", Arrays.asList("bd")));
+		remotingApi.addAction("remoteProviderSimpleNamed", new Action(
+				"withRequiredRequestHeader", Arrays.asList("bd")));
+
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
 				"handleMessage1", "message1"));
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
@@ -1041,6 +1050,18 @@ public class ApiControllerTest {
 				"opoll4", "opoll4"));
 		remotingApi.addPollingProvider(new PollingProvider("remoteProviderOptional",
 				"opoll5", "opoll5"));
+
+		remotingApi.addAction("remoteProviderOptional",
+				new Action("namedMethod1", Arrays.asList("i", "d", "s")));
+		remotingApi
+				.addAction(
+						"remoteProviderOptional",
+						new Action("namedMethod2", Arrays.asList("lastName", "theAge",
+								"active")));
+		remotingApi.addAction("remoteProviderOptional",
+				new Action("namedMethod3", Arrays.asList("i")));
+		remotingApi.addAction("remoteProviderOptional",
+				new Action("namedMethod4", Arrays.asList("bd")));
 
 		return remotingApi;
 	}

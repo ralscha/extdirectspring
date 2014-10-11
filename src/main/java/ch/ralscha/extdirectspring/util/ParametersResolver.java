@@ -289,6 +289,10 @@ public final class ParametersResolver {
 					parameters[paramIndex] = convertValue(jsonValue, methodParameter);
 					jsonParamIndex++;
 				}
+				else if (methodInfo.isType(ExtDirectMethodType.SIMPLE_NAMED)
+						&& methodParameter.isJavaUtilOptional()) {
+					parameters[paramIndex] = javaUtilOptionalEmpty;
+				}
 				else {
 
 					log.info("WebResolvers size:" + this.webArgumentResolvers.size());

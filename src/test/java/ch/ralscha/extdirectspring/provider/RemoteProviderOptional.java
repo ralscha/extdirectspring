@@ -26,6 +26,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.provider.RemoteProviderSimpleNamed.ResultObject;
 
 @Service
 public class RemoteProviderOptional {
@@ -207,4 +209,34 @@ public class RemoteProviderOptional {
 				+ cookie.orElse("cookie"));
 	}
 
+	@OptionalNamedMethod
+	public Optional<String> namedMethod1(Optional<Long> i, Optional<Double> d,
+			Optional<String> s) {
+		return Optional.of(String.format("namedMethod1() called-%d-%.3f-%s",
+				i.orElse(-1L), d.orElse(3.141), s.orElse("default")));
+	}
+
+	@OptionalNamedMethod
+	public Optional<ResultObject> namedMethod2(HttpSession session, @RequestParam(
+			value = "lastName") Optional<String> name,
+			@RequestParam(value = "theAge") Optional<Integer> age,
+			Optional<Boolean> active) {
+		assertThat(session).isNotNull();
+		return Optional.of(new ResultObject(name.get(), age.orElse(21), active
+				.orElse(true)));
+	}
+
+	@OptionalNamedMethod
+	public Optional<String> namedMethod3(
+			@CookieValue("aSimpleCookie") Optional<String> cookie, Optional<Long> i) {
+		return Optional.of(i.orElse(100L) + ":" + cookie.orElse("defaultCookieValue"));
+	}
+
+	@OptionalNamedMethod
+	public Optional<String> namedMethod4(
+			@RequestHeader("aSimpleHeader") Optional<String> header,
+			Optional<BigDecimal> bd) {
+		return Optional.of(bd.orElse(new BigDecimal("3.141")) + ":"
+				+ header.orElse("defaultHeaderValue"));
+	}
 }

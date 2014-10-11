@@ -17,10 +17,10 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -28,8 +28,6 @@ import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -44,9 +42,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
-import ch.ralscha.extdirectspring.provider.RemoteProviderSimple.BusinessObject;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import ch.ralscha.extdirectspring.provider.RemoteProviderSimpleNamed.ResultObject;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -398,4 +394,108 @@ public class RouterControllerOptionalTest {
 		assertThat(resp.getMessage()).isNull();
 	}
 
+	@Test
+	public void testNamed1() {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("d", 2.1);
+		params.put("s", "aString");
+		params.put("i", 30);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderOptional",
+				"namedMethod1", "namedMethod1() called-30-2.100-aString", params);
+
+		params = new HashMap<String, Object>();
+		params.put("i", 20);
+		params.put("de", 2.1);
+		params.put("s", "aString");
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderOptional",
+				"namedMethod1", "namedMethod1() called-20-3.141-aString", params);
+
+		params = new HashMap<String, Object>();
+		params.put("i", 20);
+		params.put("s", "aString");
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderOptional",
+				"namedMethod1", "namedMethod1() called-20-3.141-aString", params);
+
+		params = new HashMap<String, Object>();
+		params.put("i", "30");
+		params.put("s", 100.45);
+		params.put("d", "3.141");
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderOptional",
+				"namedMethod1", "namedMethod1() called-30-3.141-100.45", params);
+
+		params = new HashMap<String, Object>();
+		params.put("s", "aString");
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderOptional",
+				"namedMethod1", "namedMethod1() called--1-3.141-aString", params);
+
+		params = new HashMap<String, Object>();
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderOptional",
+				"namedMethod1", "namedMethod1() called--1-3.141-default", params);
+	}
+
+	@Test
+	public void testNamed2() {
+		ResultObject expectedResult = new ResultObject("Miller", 10, Boolean.TRUE);
+		Map<String, Object> params = new LinkedHashMap<String, Object>();
+		params.put("lastName", expectedResult.getName());
+		params.put("theAge", expectedResult.getAge());
+		params.put("active", expectedResult.getActive());
+		ResultObject result = (ResultObject) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderOptional", "namedMethod2", ResultObject.class, params);
+		assertThat(result).isEqualTo(expectedResult);
+
+		expectedResult = new ResultObject("Ralph", 21, Boolean.FALSE);
+		params = new LinkedHashMap<String, Object>();
+		params.put("lastName", expectedResult.getName());
+		params.put("active", expectedResult.getActive());
+		result = (ResultObject) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderOptional", "namedMethod2", ResultObject.class, params);
+		assertThat(result).isEqualTo(expectedResult);
+
+		expectedResult = new ResultObject("Joe", 21, Boolean.TRUE);
+		params = new LinkedHashMap<String, Object>();
+		params.put("lastName", expectedResult.getName());
+		result = (ResultObject) ControllerUtil.sendAndReceiveNamed(mockMvc,
+				"remoteProviderOptional", "namedMethod2", ResultObject.class, params);
+		assertThat(result).isEqualTo(expectedResult);
+	}
+
+	@Test
+	public void testNamed3() {
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("aSimpleCookie", "ralph"));
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("i", 99L);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, null, cookies,
+				"remoteProviderOptional", "namedMethod3", "99:ralph", params);
+
+		params = new HashMap<String, Object>();
+		params.put("i", 101L);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, null, null, "remoteProviderOptional",
+				"namedMethod3", "101:defaultCookieValue", params);
+
+		params = new HashMap<String, Object>();
+		ControllerUtil.sendAndReceiveNamed(mockMvc, null, null, "remoteProviderOptional",
+				"namedMethod3", "100:defaultCookieValue", params);
+	}
+
+	@Test
+	public void testNamed4() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("aSimpleHeader", "theHeaderValue");
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("bd", new BigDecimal("1.1"));
+		ControllerUtil.sendAndReceiveNamed(mockMvc, headers, null,
+				"remoteProviderOptional", "namedMethod4", "1.1:theHeaderValue", params);
+
+		params = new HashMap<String, Object>();
+		params.put("bd", new BigDecimal("1.2"));
+		ControllerUtil.sendAndReceiveNamed(mockMvc, null, null, "remoteProviderOptional",
+				"namedMethod4", "1.2:defaultHeaderValue", params);
+
+		params = new HashMap<String, Object>();
+		ControllerUtil.sendAndReceiveNamed(mockMvc, null, null, "remoteProviderOptional",
+				"namedMethod4", "3.141:defaultHeaderValue", params);
+	}
 }

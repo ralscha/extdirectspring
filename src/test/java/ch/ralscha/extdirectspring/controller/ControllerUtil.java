@@ -244,6 +244,13 @@ public class ControllerUtil {
 				expectedResultOrType, requestData);
 	}
 
+	public static Object sendAndReceiveNamed(MockMvc mockMvc, HttpHeaders headers,
+			List<Cookie> cookies, String bean, String method,
+			Object expectedResultOrType, Map<String, Object> requestData) {
+		return sendAndReceive(mockMvc, false, headers, cookies, bean, method, true,
+				expectedResultOrType, new Object[] { requestData });
+	}
+
 	public static Object sendAndReceiveNamed(MockMvc mockMvc, String bean, String method,
 			Object expectedResultOrType, Map<String, Object> requestData) {
 		return sendAndReceive(mockMvc, false, null, null, bean, method, true,

@@ -37,6 +37,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
@@ -255,6 +257,30 @@ public class RemoteProviderSimpleNamed {
 			}
 		}
 		return String.format("6->%s;%s", name, sb.toString());
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public String withCookie(@CookieValue(value = "aSimpleCookie", required = false,
+			defaultValue = "defaultCookie") String cookie, Long i) {
+		return i + ":" + cookie;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public String withRequiredCookie(@CookieValue(value = "aSimpleCookie") String cookie,
+			Long i) {
+		return i + ":" + cookie;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public String withRequestHeader(@RequestHeader(value = "aSimpleHeader",
+			required = false, defaultValue = "defaultHeader") String header, BigDecimal bd) {
+		return bd + ":" + header;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public String withRequiredRequestHeader(
+			@RequestHeader(value = "aSimpleHeader") String header, BigDecimal bd) {
+		return bd + ":" + header;
 	}
 
 	public static class TestObject {
