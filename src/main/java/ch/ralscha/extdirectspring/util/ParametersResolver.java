@@ -219,7 +219,6 @@ public final class ParametersResolver {
 			if (data != null && data.size() > 0) {
 				remainingParameters = new HashMap<String, Object>(data);
 			}
-
 		}
 		else if (methodInfo.isType(ExtDirectMethodType.POLL)) {
 			throw new IllegalStateException("this controller does not handle poll calls");
@@ -289,11 +288,18 @@ public final class ParametersResolver {
 					parameters[paramIndex] = convertValue(jsonValue, methodParameter);
 					jsonParamIndex++;
 				}
-				else if (methodInfo.isType(ExtDirectMethodType.SIMPLE_NAMED)
-						&& methodParameter.isJavaUtilOptional()) {
-					parameters[paramIndex] = javaUtilOptionalEmpty;
-				}
 				else {
+
+					if (methodInfo.isType(ExtDirectMethodType.SIMPLE_NAMED)) {
+						if (Map.class.isAssignableFrom(methodParameter.getType())) {
+							parameters[paramIndex] = remainingParameters;
+							continue;
+						}
+						else if (methodParameter.isJavaUtilOptional()) {
+							parameters[paramIndex] = javaUtilOptionalEmpty;
+							continue;
+						}
+					}
 
 					log.info("WebResolvers size:" + this.webArgumentResolvers.size());
 					log.info("ParamIndex:" + paramIndex);

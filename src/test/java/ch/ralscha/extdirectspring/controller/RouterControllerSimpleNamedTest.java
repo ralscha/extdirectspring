@@ -90,6 +90,39 @@ public class RouterControllerSimpleNamedTest {
 	}
 
 	@Test
+	public void testNonStrictMethod1() {
+		Map<String, Object> params = new LinkedHashMap<String, Object>();
+		params.put("d", 2.2);
+		params.put("s", "anotherString");
+		params.put("i", 23);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"nonStrictMethod1", "nonStrictMethod1() called-23-2.200-anotherString",
+				params);
+	}
+
+	@Test
+	public void testNonStrictMethod2() {
+		Map<String, Object> params = new LinkedHashMap<String, Object>();
+		params.put("d", 2.2);
+		params.put("i", 23);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderSimpleNamed",
+				"nonStrictMethod2", "nonStrictMethod2() called-23-2.200-null", params);
+	}
+
+	@Test
+	public void testNonStrictMethod3() {
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("aSimpleCookie", "cookie"));
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("aSimpleHeader", "header");
+		Map<String, Object> params = new LinkedHashMap<String, Object>();
+		params.put("i", 17);
+		ControllerUtil.sendAndReceiveNamed(mockMvc, headers, cookies,
+				"remoteProviderSimpleNamed", "nonStrictMethod3",
+				"nonStrictMethod3() called-17-cookie-header", params);
+	}
+
+	@Test
 	public void testWithParameters() {
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		params.put("d", 2.1);

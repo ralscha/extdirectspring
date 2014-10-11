@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -947,6 +948,13 @@ public class ApiControllerTest {
 				"withRequestHeader", Arrays.asList("bd")));
 		remotingApi.addAction("remoteProviderSimpleNamed", new Action(
 				"withRequiredRequestHeader", Arrays.asList("bd")));
+
+		remotingApi.addAction("remoteProviderSimpleNamed", new Action("nonStrictMethod1",
+				Collections.emptyList(), Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleNamed", new Action("nonStrictMethod2",
+				Collections.emptyList(), Boolean.FALSE));
+		remotingApi.addAction("remoteProviderSimpleNamed", new Action("nonStrictMethod3",
+				Collections.emptyList(), Boolean.FALSE));
 
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
 				"handleMessage1", "message1"));

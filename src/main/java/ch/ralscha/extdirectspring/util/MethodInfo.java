@@ -18,7 +18,9 @@ package ch.ralscha.extdirectspring.util;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
@@ -157,13 +159,26 @@ public final class MethodInfo {
 			this.action = new Action(method.getName(), paramLength, null);
 			break;
 		case SIMPLE_NAMED:
+			int noOfClientParameters = 0;
+			Class<?> parameterType = null;
+
 			List<String> parameterNames = new ArrayList<String>();
 			for (ParameterInfo parameter : this.parameters) {
 				if (parameter.isClientParameter()) {
+					noOfClientParameters++;
+					parameterType = parameter.getType();
 					parameterNames.add(parameter.getName());
 				}
 			}
-			this.action = new Action(method.getName(), parameterNames);
+
+			if (noOfClientParameters == 1 && Map.class.isAssignableFrom(parameterType)) {
+				this.action = new Action(method.getName(), Collections.emptyList(),
+						Boolean.FALSE);
+			}
+			else {
+				this.action = new Action(method.getName(),
+						Collections.unmodifiableList(parameterNames));
+			}
 			break;
 		case FORM_LOAD:
 		case STORE_READ:

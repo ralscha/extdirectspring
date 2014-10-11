@@ -33,18 +33,30 @@ public class Action {
 
 	private final Boolean formHandler;
 
+	private final Boolean strict;
+
 	public Action(String name, Integer len, Boolean formHandler) {
 		this.name = name;
 		this.len = len;
 		this.formHandler = formHandler;
 		this.params = null;
+		this.strict = null;
 	}
 
 	public Action(String name, List<String> params) {
 		this.name = name;
 		this.len = null;
 		this.formHandler = null;
-		this.params = new ArrayList<String>(params);
+		this.params = params;
+		this.strict = null;
+	}
+
+	public Action(String name, List<String> params, Boolean strict) {
+		this.name = name;
+		this.len = null;
+		this.formHandler = null;
+		this.params = params;
+		this.strict = strict;
 	}
 
 	public Action(Action toCopy) {
@@ -52,6 +64,7 @@ public class Action {
 		this.len = toCopy.len;
 		this.formHandler = toCopy.formHandler;
 		this.params = toCopy.params;
+		this.strict = toCopy.strict;
 	}
 
 	public Boolean isFormHandler() {
@@ -67,10 +80,11 @@ public class Action {
 	}
 
 	public List<String> getParams() {
-		if (params != null) {
-			return Collections.unmodifiableList(params);
-		}
-		return null;
+		return params;
+	}
+
+	public Boolean isStrict() {
+		return strict;
 	}
 
 }

@@ -52,6 +52,33 @@ public class RemoteProviderSimpleNamed {
 		WAITING, PENDING, STARTED, FINISHED
 	}
 
+	@NamedEdsMethod
+	public String nonStrictMethod1(Map<String, Object> parameters) {
+		return String.format("nonStrictMethod1() called-%d-%.3f-%s", parameters.get("i"),
+				parameters.get("d"), parameters.get("s"));
+	}
+
+	@NamedEdsMethod
+	public String nonStrictMethod2(HttpServletResponse response,
+			HttpServletRequest request, HttpSession session,
+			Map<String, Object> parameters, Locale locale) {
+
+		assertThat(response).isNotNull();
+		assertThat(request).isNotNull();
+		assertThat(session).isNotNull();
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
+
+		return String.format("nonStrictMethod2() called-%d-%.3f-%s", parameters.get("i"),
+				parameters.get("d"), parameters.get("s"));
+	}
+
+	@NamedEdsMethod
+	public String nonStrictMethod3(@CookieValue("aSimpleCookie") String cookie,
+			Map<String, Object> parameters, @RequestHeader("aSimpleHeader") String header) {
+		return String.format("nonStrictMethod3() called-%d-%s-%s", parameters.get("i"),
+				cookie, header);
+	}
+
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public String method1() {
 		return "method1() called";
