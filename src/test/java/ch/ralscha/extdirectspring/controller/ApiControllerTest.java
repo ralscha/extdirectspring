@@ -1063,6 +1063,10 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderOptional",
 				new Action("namedMethod4", Arrays.asList("bd")));
 
+		remotingApi.addSseProvider("remoteProviderOptional", "sse1");
+		remotingApi.addSseProvider("remoteProviderOptional", "sse2");
+		remotingApi.addSseProvider("remoteProviderOptional", "sse3");
+
 		return remotingApi;
 	}
 

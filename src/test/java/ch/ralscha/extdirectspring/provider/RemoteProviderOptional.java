@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.bean.SSEvent;
 import ch.ralscha.extdirectspring.provider.RemoteProviderSimpleNamed.ResultObject;
 
 @Service
@@ -239,4 +240,30 @@ public class RemoteProviderOptional {
 		return Optional.of(bd.orElse(new BigDecimal("3.141")) + ":"
 				+ header.orElse("defaultHeaderValue"));
 	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "optional")
+	public Optional<String> sse1(@RequestParam(value = "id") Optional<Integer> id,
+			Optional<String> dummy) {
+		return Optional.of(id.orElse(-1) + ":" + dummy.orElse("default_value"));
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "optional")
+	public SSEvent sse2(@RequestParam(value = "id") Optional<Integer> id,
+			@CookieValue Optional<String> cookie) {
+		SSEvent event = new SSEvent();
+		event.setId("2");
+		event.setData(id.orElse(-1) + ";" + cookie.orElse("defaultCookieValue"));
+		return event;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "optional")
+	public SSEvent sse3(@RequestParam(value = "id") Optional<Integer> id,
+			@RequestHeader Optional<String> requestHeader) {
+		SSEvent event = new SSEvent();
+		event.setId("3");
+		event.setData(id.orElse(-1) + ";"
+				+ requestHeader.orElse("defaultRequestHeaderValue"));
+		return event;
+	}
+
 }

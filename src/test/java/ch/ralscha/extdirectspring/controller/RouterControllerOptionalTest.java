@@ -42,6 +42,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
+import ch.ralscha.extdirectspring.bean.SSEvent;
 import ch.ralscha.extdirectspring.provider.RemoteProviderSimpleNamed.ResultObject;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -497,5 +498,108 @@ public class RouterControllerOptionalTest {
 		params = new HashMap<String, Object>();
 		ControllerUtil.sendAndReceiveNamed(mockMvc, null, null, "remoteProviderOptional",
 				"namedMethod4", "3.141:defaultHeaderValue", params);
+	}
+
+	@Test
+	public void testSse1() throws Exception {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("id", "1");
+		params.put("dummy", "sr");
+
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc,
+				"remoteProviderOptional", "sse1", params, null, null);
+		assertThat(events).hasSize(1);
+		SSEvent event = events.get(0);
+
+		assertThat(event.getEvent()).isNull();
+		assertThat(event.getComment()).isNull();
+		assertThat(event.getData()).startsWith("1:sr");
+		assertThat(event.getId()).isNull();
+		assertThat(event.getRetry()).isNull();
+
+		params = new HashMap<String, String>();
+		params.put("id", "2");
+
+		events = ControllerUtil.performSseRequest(mockMvc, "remoteProviderOptional",
+				"sse1", params, null, null);
+		assertThat(events).hasSize(1);
+		event = events.get(0);
+
+		assertThat(event.getEvent()).isNull();
+		assertThat(event.getComment()).isNull();
+		assertThat(event.getData()).startsWith("2:default_value");
+		assertThat(event.getId()).isNull();
+		assertThat(event.getRetry()).isNull();
+
+		events = ControllerUtil.performSseRequest(mockMvc, "remoteProviderOptional",
+				"sse1", null, null, null);
+		assertThat(events).hasSize(1);
+		event = events.get(0);
+
+		assertThat(event.getEvent()).isNull();
+		assertThat(event.getComment()).isNull();
+		assertThat(event.getData()).startsWith("-1:default_value");
+		assertThat(event.getId()).isNull();
+		assertThat(event.getRetry()).isNull();
+	}
+
+	@Test
+	public void testSse2() throws Exception {
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("cookie", "cookieValue"));
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("id", "11");
+
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc,
+				"remoteProviderOptional", "sse2", params, null, cookies);
+		assertThat(events).hasSize(1);
+		SSEvent event = events.get(0);
+
+		assertThat(event.getEvent()).isNull();
+		assertThat(event.getComment()).isNull();
+		assertThat(event.getData()).isEqualTo("11;cookieValue");
+		assertThat(event.getId()).isEqualTo("2");
+		assertThat(event.getRetry()).isNull();
+
+		events = ControllerUtil.performSseRequest(mockMvc, "remoteProviderOptional",
+				"sse2", params, null, null);
+		assertThat(events).hasSize(1);
+		event = events.get(0);
+
+		assertThat(event.getEvent()).isNull();
+		assertThat(event.getComment()).isNull();
+		assertThat(event.getData()).isEqualTo("11;defaultCookieValue");
+		assertThat(event.getId()).isEqualTo("2");
+		assertThat(event.getRetry()).isNull();
+	}
+
+	@Test
+	public void testSse3() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("requestHeader", "requestHeader");
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("id", "12");
+
+		List<SSEvent> events = ControllerUtil.performSseRequest(mockMvc,
+				"remoteProviderOptional", "sse3", params, headers, null);
+		assertThat(events).hasSize(1);
+		SSEvent event = events.get(0);
+
+		assertThat(event.getEvent()).isNull();
+		assertThat(event.getComment()).isNull();
+		assertThat(event.getData()).isEqualTo("12;requestHeader");
+		assertThat(event.getId()).isEqualTo("3");
+		assertThat(event.getRetry()).isNull();
+
+		events = ControllerUtil.performSseRequest(mockMvc, "remoteProviderOptional",
+				"sse3", params, null, null);
+		assertThat(events).hasSize(1);
+		event = events.get(0);
+
+		assertThat(event.getEvent()).isNull();
+		assertThat(event.getComment()).isNull();
+		assertThat(event.getData()).isEqualTo("12;defaultRequestHeaderValue");
+		assertThat(event.getId()).isEqualTo("3");
+		assertThat(event.getRetry()).isNull();
 	}
 }
