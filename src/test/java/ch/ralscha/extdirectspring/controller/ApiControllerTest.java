@@ -1030,6 +1030,18 @@ public class ApiControllerTest {
 				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderOptional", new Action("method19", 0,
 				Boolean.FALSE));
+
+		remotingApi.addPollingProvider(new PollingProvider("remoteProviderOptional",
+				"opoll1", "opoll1"));
+		remotingApi.addPollingProvider(new PollingProvider("remoteProviderOptional",
+				"opoll2", "opoll2"));
+		remotingApi.addPollingProvider(new PollingProvider("remoteProviderOptional",
+				"opoll3", "opoll3"));
+		remotingApi.addPollingProvider(new PollingProvider("remoteProviderOptional",
+				"opoll4", "opoll4"));
+		remotingApi.addPollingProvider(new PollingProvider("remoteProviderOptional",
+				"opoll5", "opoll5"));
+
 		return remotingApi;
 	}
 

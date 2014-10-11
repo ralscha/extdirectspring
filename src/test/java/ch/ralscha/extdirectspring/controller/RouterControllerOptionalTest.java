@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -42,6 +43,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.provider.RemoteProviderSimple.BusinessObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -275,6 +277,125 @@ public class RouterControllerOptionalTest {
 				"remoteProviderOptional", "method19", "aString", (Object[]) null);
 		ControllerUtil.sendAndReceive(mockMvc, null, null, "remoteProviderOptional",
 				"method19", Void.TYPE, (Object[]) null);
+	}
+
+	@Test
+	public void testPoll1a() throws Exception {
+		Map<String, String> params = new LinkedHashMap<String, String>();
+		params.put("id", "2");
+
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"remoteProviderOptional", "opoll1", "opoll1", params, null);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("opoll1");
+		assertThat(resp.getData()).isEqualTo("Result: 2");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void testPoll1b() throws Exception {
+
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"remoteProviderOptional", "opoll1", "opoll1", null, null);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("exception");
+		assertThat(resp.getName()).isEqualTo("opoll1");
+		assertThat(resp.getData()).isNull();
+		assertThat(resp.getMessage()).isEqualTo("Server Error");
+		assertThat(resp.getWhere()).isNull();
+	}
+
+	@Test
+	public void testPoll2a() throws Exception {
+		Map<String, String> params = new LinkedHashMap<String, String>();
+		params.put("id", "7");
+
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"remoteProviderOptional", "opoll2", "opoll2", params, null);
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("opoll2");
+		assertThat(resp.getData()).isEqualTo(Integer.valueOf(14));
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void testPoll2b() throws Exception {
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"remoteProviderOptional", "opoll2", "opoll2", null, null, null, true);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("opoll2");
+		assertThat(resp.getData()).isEqualTo(Integer.valueOf(4));
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void testPoll3a() throws Exception {
+		Map<String, String> params = new LinkedHashMap<String, String>();
+		params.put("id", "3");
+
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"remoteProviderOptional", "opoll3", "opoll3", params, null);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("opoll3");
+		assertThat(resp.getData()).isEqualTo(Integer.valueOf(6));
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void testPoll3b() throws Exception {
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"remoteProviderOptional", "opoll3", "opoll3", null, null);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("opoll3");
+		assertThat(resp.getData()).isNull();
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void testPoll4() throws Exception {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("header", "headerValue");
+
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"remoteProviderOptional", "opoll4", "opoll4", null, headers);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("opoll4");
+		assertThat(resp.getData()).isEqualTo("100;dummy;headerValue");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
+	}
+
+	@Test
+	public void testPoll5() throws Exception {
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("cookie", "cookieValue"));
+
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+				"remoteProviderOptional", "opoll5", "opoll5", null, null, cookies);
+
+		assertThat(resp).isNotNull();
+		assertThat(resp.getType()).isEqualTo("event");
+		assertThat(resp.getName()).isEqualTo("opoll5");
+		assertThat(resp.getData()).isEqualTo("23;dummy;cookieValue");
+		assertThat(resp.getWhere()).isNull();
+		assertThat(resp.getMessage()).isNull();
 	}
 
 }

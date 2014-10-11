@@ -15,18 +15,25 @@
  */
 package ch.ralscha.extdirectspring.provider;
 
+import static org.fest.assertions.api.Assertions.assertThat;
+
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
 @Service
 public class RemoteProviderOptional {
@@ -156,6 +163,48 @@ public class RemoteProviderOptional {
 	@ExtDirectMethod(group = "optional")
 	public String method19(@CookieValue Optional<String> stringCookie) {
 		return stringCookie.orElse(null);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "opoll1",
+			group = "optional")
+	public Optional<String> opoll1(Locale locale,
+			@RequestParam(value = "id") Optional<Integer> id) {
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
+		return Optional.of("Result: " + id.get());
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "opoll2",
+			synchronizeOnSession = true, group = "optional")
+	public int opoll2(@RequestParam(value = "id") Optional<Integer> id,
+			HttpServletRequest request) {
+		assertThat(request).isNotNull();
+		return id.orElse(2) * 2;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "opoll3",
+			group = "optional")
+	public Optional<Integer> opoll3(@RequestParam(value = "id") Optional<Integer> id,
+			Optional<String> dummy) {
+		assertThat(dummy.isPresent()).isFalse();
+		if (id.isPresent()) {
+			return Optional.of(id.get() * 2);
+		}
+		return Optional.empty();
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "optional")
+	public Optional<String> opoll4(@RequestParam(value = "id") Optional<Integer> id,
+			Optional<String> dummy, @RequestHeader Optional<String> header) {
+		return Optional.of(id.orElse(100) + ";" + dummy.orElse("dummy") + ";"
+				+ header.orElse("header"));
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "optional")
+	public Optional<String> opoll5(
+			@RequestParam(value = "id", required = false) Optional<Integer> id,
+			Optional<String> dummy, @CookieValue Optional<String> cookie) {
+		return Optional.of(id.orElse(23) + ";" + dummy.orElse("dummy") + ";"
+				+ cookie.orElse("cookie"));
 	}
 
 }
