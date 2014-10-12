@@ -172,8 +172,8 @@ public final class MethodInfo {
 			}
 
 			if (noOfClientParameters == 1 && Map.class.isAssignableFrom(parameterType)) {
-				this.action = new Action(method.getName(), Collections.<String>emptyList(),
-						Boolean.FALSE);
+				this.action = new Action(method.getName(),
+						Collections.<String> emptyList(), Boolean.FALSE);
 			}
 			else {
 				this.action = new Action(method.getName(),
