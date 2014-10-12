@@ -42,8 +42,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.bean.SSEvent;
 import ch.ralscha.extdirectspring.provider.RemoteProviderSimpleNamed.ResultObject;
+import ch.ralscha.extdirectspring.provider.Row;
+
+import com.fasterxml.jackson.core.type.TypeReference;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -602,4 +606,88 @@ public class RouterControllerOptionalTest {
 		assertThat(event.getId()).isEqualTo("3");
 		assertThat(event.getRetry()).isNull();
 	}
+
+	@Test
+	public void testStoreRead1() {
+		Map<String, Object> readRequest = new HashMap<String, Object>();
+		readRequest.put("id", 10);
+		readRequest.put("query", "name");
+
+		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
+				.sendAndReceive(mockMvc, "remoteProviderOptional", "storeRead1",
+						new TypeReference<ExtDirectStoreResult<Row>>() {
+							// nothing here
+						}, readRequest);
+
+		assertThat(storeResponse.getTotal()).isEqualTo(50L);
+		assertThat(storeResponse.getRecords()).hasSize(50);
+		int ix = 0;
+		for (Row row : storeResponse.getRecords()) {
+			assertThat(row.getName()).startsWith("name: " + ix + ":10;en");
+			ix += 2;
+		}
+
+		readRequest = new HashMap<String, Object>();
+		readRequest.put("query", "name");
+
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
+				mockMvc, "remoteProviderOptional", "storeRead1",
+				new TypeReference<ExtDirectStoreResult<Row>>() {
+					// nothing here
+				}, readRequest);
+
+		assertThat(storeResponse.getTotal()).isEqualTo(50L);
+		assertThat(storeResponse.getRecords()).hasSize(50);
+		ix = 0;
+		for (Row row : storeResponse.getRecords()) {
+			assertThat(row.getName()).startsWith("name: " + ix + ":20;en");
+			ix += 2;
+		}
+	}
+
+	@Test
+	public void testStoreRead2() {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("requestHeader", "rValue");
+
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("cookie", "cValue"));
+
+		Map<String, Object> readRequest = new HashMap<String, Object>();
+		readRequest.put("query", "name");
+
+		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
+				.sendAndReceive(mockMvc, headers, cookies, "remoteProviderOptional",
+						"storeRead2", new TypeReference<ExtDirectStoreResult<Row>>() {
+							// nothing here
+						}, readRequest);
+
+		assertThat(storeResponse.getTotal()).isEqualTo(50L);
+		assertThat(storeResponse.getRecords()).hasSize(50);
+		int ix = 0;
+		for (Row row : storeResponse.getRecords()) {
+			assertThat(row.getName()).startsWith("name: " + ix + ":cValue:rValue");
+			ix += 2;
+		}
+
+		readRequest = new HashMap<String, Object>();
+		readRequest.put("query", "name");
+
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
+				mockMvc, "remoteProviderOptional", "storeRead2",
+				new TypeReference<ExtDirectStoreResult<Row>>() {
+					// nothing here
+				}, readRequest);
+
+		assertThat(storeResponse.getTotal()).isEqualTo(50L);
+		assertThat(storeResponse.getRecords()).hasSize(50);
+		ix = 0;
+		for (Row row : storeResponse.getRecords()) {
+			assertThat(row.getName()).startsWith(
+					"name: " + ix + ":defaultCookie:defaultHeader");
+			ix += 2;
+		}
+	}
+
 }

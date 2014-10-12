@@ -131,7 +131,7 @@ public class RouterControllerStoreTest {
 		assertThat(storeResponse.getTotal()).isEqualTo(50L);
 		assertThat(storeResponse.getRecords()).hasSize(50);
 		for (Row row : storeResponse.getRecords()) {
-			assertThat(row.getName().startsWith("name")).isTrue();
+			assertThat(row.getName()).startsWith("name");
 		}
 
 		storeRead = new LinkedHashMap<String, Object>();
@@ -464,7 +464,7 @@ public class RouterControllerStoreTest {
 		assertThat(storeResponse.getTotal()).isEqualTo(50L);
 		assertThat(storeResponse.getRecords()).hasSize(50);
 		for (Row row : storeResponse.getRecords()) {
-			assertThat(row.getName().startsWith("name")).isTrue();
+			assertThat(row.getName()).startsWith("name");
 		}
 
 		readRequest = new HashMap<String, Object>();

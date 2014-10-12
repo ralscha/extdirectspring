@@ -1075,6 +1075,11 @@ public class ApiControllerTest {
 		remotingApi.addSseProvider("remoteProviderOptional", "sse2");
 		remotingApi.addSseProvider("remoteProviderOptional", "sse3");
 
+		remotingApi.addAction("remoteProviderOptional", new Action("storeRead1", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("storeRead2", 1,
+				Boolean.FALSE));
+
 		return remotingApi;
 	}
 

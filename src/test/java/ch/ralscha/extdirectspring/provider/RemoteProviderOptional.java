@@ -16,6 +16,7 @@
 package ch.ralscha.extdirectspring.provider;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.entry;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -35,6 +36,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
+import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.bean.SSEvent;
 import ch.ralscha.extdirectspring.provider.RemoteProviderSimpleNamed.ResultObject;
 
@@ -266,4 +269,32 @@ public class RemoteProviderOptional {
 		return event;
 	}
 
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "optional")
+	public ExtDirectStoreResult<Row> storeRead1(ExtDirectStoreReadRequest request,
+			Locale locale, @RequestParam(value = "id") Optional<Integer> id) {
+
+		if (id.isPresent()) {
+			assertThat(id.get()).isEqualTo(10);
+			assertThat(request.getParams().size()).isEqualTo(1);
+			assertThat(request.getParams()).contains(entry("id", 10));
+		}
+		else {
+			assertThat(id.orElse(20)).isEqualTo(20);
+			assertThat(request.getParams().isEmpty()).isTrue();
+		}
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
+
+		return RemoteProviderStoreRead.createExtDirectStoreResult(request,
+				":" + id.orElse(20) + ";" + locale);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "optional")
+	public ExtDirectStoreResult<Row> storeRead2(ExtDirectStoreReadRequest request,
+			@CookieValue Optional<String> cookie,
+			@RequestHeader Optional<String> requestHeader) {
+		return RemoteProviderStoreRead.createExtDirectStoreResult(
+				request,
+				":" + cookie.orElse("defaultCookie") + ":"
+						+ requestHeader.orElse("defaultHeader"));
+	}
 }

@@ -130,7 +130,7 @@ public class RemoteProviderStoreRead {
 		return result;
 	}
 
-	private static ExtDirectStoreResult<Row> createExtDirectStoreResult(
+	public static ExtDirectStoreResult<Row> createExtDirectStoreResult(
 			ExtDirectStoreReadRequest request, final String appendix) {
 		List<Row> rows = createRows(appendix);
 
