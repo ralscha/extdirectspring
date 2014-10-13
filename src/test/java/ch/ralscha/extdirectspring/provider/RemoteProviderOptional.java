@@ -19,6 +19,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.fest.assertions.api.Assertions.entry;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -27,6 +28,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
@@ -40,6 +42,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.bean.SSEvent;
 import ch.ralscha.extdirectspring.provider.RemoteProviderSimpleNamed.ResultObject;
+import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad.Node;
 
 @Service
 public class RemoteProviderOptional {
@@ -297,4 +300,29 @@ public class RemoteProviderOptional {
 				":" + cookie.orElse("defaultCookie") + ":"
 						+ requestHeader.orElse("defaultHeader"));
 	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "optional")
+	public List<Node> treeLoad1(@RequestParam("node") Optional<String> node,
+			HttpServletResponse response, final HttpServletRequest request,
+			@RequestParam Optional<String> foo, @CookieValue Optional<String> theCookie,
+			final HttpSession session, Locale locale, Principal principal) {
+
+		return RemoteProviderTreeLoad.createTreeList(
+				node.get(),
+				":" + foo.orElse("defaultValue2") + ";"
+						+ theCookie.orElse("defaultCookieValue") + ";"
+						+ (response != null) + ";" + (request != null) + ";"
+						+ (session != null) + ";" + locale);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "optional")
+	public List<Node> treeLoad2(@RequestParam("node") Optional<String> node,
+			HttpServletResponse response, @RequestHeader Optional<Boolean> aHeader,
+			HttpServletRequest request) {
+
+		return RemoteProviderTreeLoad.createTreeList(node.get(),
+				":" + aHeader.orElse(true) + ";" + (response != null) + ";"
+						+ (request != null));
+	}
+
 }

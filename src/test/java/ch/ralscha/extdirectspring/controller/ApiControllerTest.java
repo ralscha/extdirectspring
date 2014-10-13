@@ -737,6 +737,10 @@ public class ApiControllerTest {
 				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method9", 1,
 				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method10", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method11", 1,
+				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("methodFilter", 1,
 				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("methodMetadata", 1,
@@ -1080,6 +1084,11 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderOptional", new Action("storeRead2", 1,
 				Boolean.FALSE));
 
+		remotingApi.addAction("remoteProviderOptional", new Action("treeLoad1", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderOptional", new Action("treeLoad2", 1,
+				Boolean.FALSE));
+
 		return remotingApi;
 	}
 
@@ -1154,6 +1163,10 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method8", 1,
 				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("method9", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method10", 1,
+				Boolean.FALSE));
+		remotingApi.addAction("remoteProviderStoreRead", new Action("method11", 1,
 				Boolean.FALSE));
 		remotingApi.addAction("remoteProviderStoreRead", new Action("methodFilter", 1,
 				Boolean.FALSE));

@@ -45,6 +45,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.bean.SSEvent;
 import ch.ralscha.extdirectspring.provider.RemoteProviderSimpleNamed.ResultObject;
+import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad.Node;
 import ch.ralscha.extdirectspring.provider.Row;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -688,6 +689,81 @@ public class RouterControllerOptionalTest {
 					"name: " + ix + ":defaultCookie:defaultHeader");
 			ix += 2;
 		}
+	}
+
+	@Test
+	public void testTreeLoad1() {
+		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
+		requestParameters.put("node", "root");
+
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("theCookie", "value"));
+
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, false,
+				null, cookies, "remoteProviderOptional", "treeLoad1", false,
+				new TypeReference<List<Node>>() {/* nothinghere */
+				}, requestParameters);
+
+		String appendix = ":defaultValue2;value;true;true;true;en";
+
+		assertThat(nodes).hasSize(5).containsSequence(
+				new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false),
+				new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false),
+				new Node("n5", "Node 5" + appendix, false));
+
+		requestParameters = new LinkedHashMap<String, Object>();
+		requestParameters.put("node", "n2");
+		requestParameters.put("foo", "f");
+
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, false, null, cookies,
+				"remoteProviderOptional", "treeLoad1", false,
+				new TypeReference<List<Node>>() {/* nothinghere */
+				}, requestParameters);
+
+		appendix = ":f;value;true;true;true;en";
+
+		assertThat(nodes).hasSize(5).containsSequence(
+				new Node("id1", "Node 2.1" + appendix, true),
+				new Node("id2", "Node 2.2" + appendix, true),
+				new Node("id3", "Node 2.3" + appendix, true),
+				new Node("id4", "Node 2.4" + appendix, true),
+				new Node("id5", "Node 2.5" + appendix, true));
+	}
+
+	@Test
+	public void testTreeLoad2() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("aHeader", "false");
+
+		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
+		requestParameters.put("node", "root");
+
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, headers,
+				"remoteProviderOptional", "treeLoad2", new TypeReference<List<Node>>() {/* nothinghere */
+				}, requestParameters);
+
+		String appendix = ":false;true;true";
+
+		assertThat(nodes).hasSize(5).containsSequence(
+				new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false),
+				new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false),
+				new Node("n5", "Node 5" + appendix, false));
+
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, (HttpHeaders) null,
+				"remoteProviderOptional", "treeLoad2", new TypeReference<List<Node>>() {/* nothinghere */
+				}, requestParameters);
+
+		appendix = ":true;true;true";
+		assertThat(nodes).hasSize(5).containsSequence(
+				new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false),
+				new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false),
+				new Node("n5", "Node 5" + appendix, false));
 	}
 
 }

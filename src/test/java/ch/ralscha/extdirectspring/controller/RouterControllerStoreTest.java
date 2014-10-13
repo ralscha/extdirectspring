@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Before;
@@ -33,6 +35,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -545,6 +548,89 @@ public class RouterControllerStoreTest {
 		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(50);
 
+	}
+
+	@Test
+	public void testRequestParam() {
+		Map<String, Object> readRequest = new HashMap<String, Object>();
+		readRequest.put("id", 10);
+		readRequest.put("query", "name");
+
+		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
+				.sendAndReceive(mockMvc, "remoteProviderStoreRead", "method10",
+						new TypeReference<ExtDirectStoreResult<Row>>() {
+							// nothing here
+						}, readRequest);
+
+		assertThat(storeResponse.getTotal()).isEqualTo(50L);
+		assertThat(storeResponse.getRecords()).hasSize(50);
+		int ix = 0;
+		for (Row row : storeResponse.getRecords()) {
+			assertThat(row.getName()).startsWith("name: " + ix + ":10;en");
+			ix += 2;
+		}
+
+		readRequest = new HashMap<String, Object>();
+		readRequest.put("query", "name");
+
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
+				mockMvc, "remoteProviderStoreRead", "method10",
+				new TypeReference<ExtDirectStoreResult<Row>>() {
+					// nothing here
+				}, readRequest);
+
+		assertThat(storeResponse.getTotal()).isEqualTo(50L);
+		assertThat(storeResponse.getRecords()).hasSize(50);
+		ix = 0;
+		for (Row row : storeResponse.getRecords()) {
+			assertThat(row.getName()).startsWith("name: " + ix + ":20;en");
+			ix += 2;
+		}
+	}
+
+	@Test
+	public void testCookieAndRequestHeader() {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("requestHeader", "rValue");
+
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		cookies.add(new Cookie("cookie", "cValue"));
+
+		Map<String, Object> readRequest = new HashMap<String, Object>();
+		readRequest.put("query", "name");
+
+		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
+				.sendAndReceive(mockMvc, headers, cookies, "remoteProviderStoreRead",
+						"method11", new TypeReference<ExtDirectStoreResult<Row>>() {
+							// nothing here
+						}, readRequest);
+
+		assertThat(storeResponse.getTotal()).isEqualTo(50L);
+		assertThat(storeResponse.getRecords()).hasSize(50);
+		int ix = 0;
+		for (Row row : storeResponse.getRecords()) {
+			assertThat(row.getName()).startsWith("name: " + ix + ":cValue:rValue");
+			ix += 2;
+		}
+
+		readRequest = new HashMap<String, Object>();
+		readRequest.put("query", "name");
+
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
+				mockMvc, "remoteProviderStoreRead", "method11",
+				new TypeReference<ExtDirectStoreResult<Row>>() {
+					// nothing here
+				}, readRequest);
+
+		assertThat(storeResponse.getTotal()).isEqualTo(50L);
+		assertThat(storeResponse.getRecords()).hasSize(50);
+		ix = 0;
+		for (Row row : storeResponse.getRecords()) {
+			assertThat(row.getName()).startsWith(
+					"name: " + ix + ":defaultCookie:defaultHeader");
+			ix += 2;
+		}
 	}
 
 	@Test

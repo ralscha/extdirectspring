@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,6 +36,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
@@ -128,6 +131,34 @@ public class RemoteProviderStoreRead {
 		ExtDirectStoreResult<Row> result = createExtDirectStoreResult(request, "");
 		result.setMessage("everything is okay");
 		return result;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
+	public ExtDirectStoreResult<Row> method10(ExtDirectStoreReadRequest request,
+			Locale locale, @RequestParam(value = "id", required = false,
+					defaultValue = "20") Integer id) {
+
+		if (!id.equals(20)) {
+			assertThat(id).isEqualTo(10);
+			assertThat(request.getParams().size()).isEqualTo(1);
+			assertThat(request.getParams()).contains(entry("id", 10));
+		}
+		else {
+			assertThat(id).isEqualTo(20);
+			assertThat(request.getParams().isEmpty()).isTrue();
+		}
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
+
+		return RemoteProviderStoreRead.createExtDirectStoreResult(request, ":" + id + ";"
+				+ locale);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
+	public ExtDirectStoreResult<Row> method11(ExtDirectStoreReadRequest request,
+			@CookieValue(defaultValue = "defaultCookie") String cookie, @RequestHeader(
+					defaultValue = "defaultHeader") String requestHeader) {
+		return RemoteProviderStoreRead.createExtDirectStoreResult(request, ":" + cookie
+				+ ":" + requestHeader);
 	}
 
 	public static ExtDirectStoreResult<Row> createExtDirectStoreResult(
