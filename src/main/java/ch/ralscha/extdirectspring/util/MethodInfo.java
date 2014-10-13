@@ -156,7 +156,7 @@ public final class MethodInfo {
 					paramLength++;
 				}
 			}
-			this.action = new Action(method.getName(), paramLength, null);
+			this.action = new Action(method.getName(), paramLength);
 			break;
 		case SIMPLE_NAMED:
 			int noOfClientParameters = 0;
@@ -181,16 +181,24 @@ public final class MethodInfo {
 			}
 			break;
 		case FORM_LOAD:
+			this.action = new Action(method.getName(), 1);
+			break;
 		case STORE_READ:
 		case STORE_MODIFY:
 		case TREE_LOAD:
-			this.action = new Action(method.getName(), 1, null);
+			List<String> metadataParams = new ArrayList<String>();
+			for (ParameterInfo parameter : this.parameters) {
+				if (parameter.hasMetadataParamAnnotation()) {
+					metadataParams.add(parameter.getName());
+				}
+			}
+			this.action = new Action(method.getName(), 1, metadataParams);
 			break;
 		case FORM_POST:
 			this.action = new Action(method.getName(), 0, Boolean.TRUE);
 			break;
 		case FORM_POST_JSON:
-			this.action = new Action(method.getName(), 1, null);
+			this.action = new Action(method.getName(), 1);
 			break;
 		case POLL:
 			this.pollingProvider = new PollingProvider(beanName, method.getName(),

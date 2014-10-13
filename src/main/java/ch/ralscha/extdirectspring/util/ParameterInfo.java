@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ValueConstants;
 
+import ch.ralscha.extdirectspring.annotation.MetadataParam;
+
 /**
  * Object holds information about a parameter. i.e. the name, type and the attributes of a
  * RequestParam annotation.
@@ -48,6 +50,8 @@ public final class ParameterInfo {
 	private boolean hasRequestHeaderAnnotation;
 
 	private boolean hasCookieValueAnnotation;
+
+	private boolean hasMetadataParamAnnotation;
 
 	private Boolean hasAuthenticationPrincipalAnnotation;
 
@@ -77,6 +81,7 @@ public final class ParameterInfo {
 		for (Annotation paramAnn : paramAnnotations) {
 
 			this.hasRequestParamAnnotation = false;
+			this.hasMetadataParamAnnotation = false;
 			this.hasRequestHeaderAnnotation = false;
 			this.hasCookieValueAnnotation = false;
 			this.hasAuthenticationPrincipalAnnotation = null;
@@ -90,6 +95,17 @@ public final class ParameterInfo {
 				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestParam
 						.defaultValue()) ? null : requestParam.defaultValue();
 				this.hasRequestParamAnnotation = true;
+				break;
+			}
+			else if (MetadataParam.class.isInstance(paramAnn)) {
+				MetadataParam metadataParam = (MetadataParam) paramAnn;
+				if (StringUtils.hasText(metadataParam.value())) {
+					this.name = metadataParam.value();
+				}
+				this.required = metadataParam.required();
+				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(metadataParam
+						.defaultValue()) ? null : metadataParam.defaultValue();
+				this.hasMetadataParamAnnotation = true;
 				break;
 			}
 			else if (RequestHeader.class.isInstance(paramAnn)) {
@@ -142,6 +158,10 @@ public final class ParameterInfo {
 
 	public boolean hasRequestParamAnnotation() {
 		return hasRequestParamAnnotation;
+	}
+
+	public boolean hasMetadataParamAnnotation() {
+		return hasMetadataParamAnnotation;
 	}
 
 	public boolean hasRequestHeaderAnnotation() {

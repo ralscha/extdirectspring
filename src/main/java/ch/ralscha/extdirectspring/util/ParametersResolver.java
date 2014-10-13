@@ -265,6 +265,10 @@ public final class ParametersResolver {
 					parameters[paramIndex] = resolveRequestParam(null,
 							remainingParameters, methodParameter);
 				}
+				else if (methodParameter.hasMetadataParamAnnotation()) {
+					parameters[paramIndex] = resolveRequestParam(null,
+							directRequest.getMetadata(), methodParameter);
+				}
 				else if (methodParameter.hasRequestHeaderAnnotation()) {
 					parameters[paramIndex] = resolveRequestHeader(request,
 							methodParameter);

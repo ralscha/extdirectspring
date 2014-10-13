@@ -15,8 +15,10 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
+import java.util.Map;
+
 /**
- * Represents the request of a Ext Direct call. Internal class.
+ * Represents the request of an Ext Direct call. Internal class.
  */
 public class ExtDirectRequest {
 
@@ -29,6 +31,8 @@ public class ExtDirectRequest {
 	private int tid;
 
 	private Object data;
+
+	private Map<String, Object> metadata;
 
 	/**
 	 * @return name of the spring managed bean
@@ -86,10 +90,22 @@ public class ExtDirectRequest {
 		this.type = type;
 	}
 
+	/**
+	 * @return metadata parameters
+	 */
+	public Map<String, Object> getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(Map<String, Object> metadata) {
+		this.metadata = metadata;
+	}
+
 	@Override
 	public String toString() {
 		return "ExtDirectRequest [action=" + action + ", method=" + method + ", type="
-				+ type + ", tid=" + tid + ", data=" + data + "]";
+				+ type + ", tid=" + tid + ", data=" + data + ", metadata=" + metadata
+				+ "]";
 	}
 
 }
