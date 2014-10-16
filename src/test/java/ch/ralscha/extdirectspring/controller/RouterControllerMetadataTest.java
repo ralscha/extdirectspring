@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.joda.time.LocalDate;
+import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -41,6 +43,7 @@ import org.springframework.web.context.WebApplicationContext;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.provider.Row;
+import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad.Node;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -331,4 +334,104 @@ public class RouterControllerMetadataTest {
 		}
 	}
 
+	@Test
+	public void testTreeLoadMetadataParam() {
+
+		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
+		requestParameters.put("node", "root");
+		requestParameters.put("foo", "foo");
+
+		Map<String, Object> metadata = new HashMap<String, Object>();
+		metadata.put("id", 2);
+
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderMetadata", "treeLoad1", metadata,
+				new TypeReference<List<Node>>() {/* nothinghere */
+				}, requestParameters);
+
+		String appendix = ":foo;2";
+		assertThat(nodes).hasSize(5).containsSequence(
+				new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false),
+				new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false),
+				new Node("n5", "Node 5" + appendix, false));
+
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderMetadata", "treeLoad1",
+				null, null, requestParameters);
+	}
+
+	@Test
+	public void testTreeLoadMetadataParamOptional() {
+
+		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
+		requestParameters.put("node", "root");
+		requestParameters.put("foo", "foo");
+
+		Map<String, Object> metadata = new HashMap<String, Object>();
+		metadata.put("id", 22);
+
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderMetadata", "treeLoad2", metadata,
+				new TypeReference<List<Node>>() {/* nothinghere */
+				}, requestParameters);
+
+		String appendix = ":foo;22";
+		assertThat(nodes).hasSize(5).containsSequence(
+				new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false),
+				new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false),
+				new Node("n5", "Node 5" + appendix, false));
+
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderMetadata", "treeLoad2", null,
+				new TypeReference<List<Node>>() {/* nothinghere */
+				}, requestParameters);
+
+		appendix = ":foo;22";
+		assertThat(nodes).hasSize(5).containsSequence(
+				new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false),
+				new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false),
+				new Node("n5", "Node 5" + appendix, false));
+	}
+
+	@Test
+	public void testTreeLoadMetadataParamJava8Optional() {
+
+		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
+		requestParameters.put("node", "root");
+		requestParameters.put("foo", "foo");
+
+		Map<String, Object> metadata = new HashMap<String, Object>();
+		metadata.put("id", 23);
+
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderMetadata", "treeLoad3", metadata,
+				new TypeReference<List<Node>>() {/* nothinghere */
+				}, requestParameters);
+
+		String appendix = ":foo;23";
+		assertThat(nodes).hasSize(5).containsSequence(
+				new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false),
+				new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false),
+				new Node("n5", "Node 5" + appendix, false));
+
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderMetadata", "treeLoad3", null,
+				new TypeReference<List<Node>>() {/* nothinghere */
+				}, requestParameters);
+
+		appendix = ":foo;23";
+		assertThat(nodes).hasSize(5).containsSequence(
+				new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false),
+				new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false),
+				new Node("n5", "Node 5" + appendix, false));
+	}
 }

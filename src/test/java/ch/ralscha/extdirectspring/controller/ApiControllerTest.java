@@ -1107,6 +1107,12 @@ public class ApiControllerTest {
 				Collections.singletonList("id")));
 		remotingApi.addAction("remoteProviderMetadata", new Action("update3", 1,
 				Collections.singletonList("id")));
+		remotingApi.addAction("remoteProviderMetadata", new Action("treeLoad1", 1,
+				Collections.singletonList("id")));
+		remotingApi.addAction("remoteProviderMetadata", new Action("treeLoad2", 1,
+				Collections.singletonList("id")));
+		remotingApi.addAction("remoteProviderMetadata", new Action("treeLoad3", 1,
+				Collections.singletonList("id")));
 
 		return remotingApi;
 	}

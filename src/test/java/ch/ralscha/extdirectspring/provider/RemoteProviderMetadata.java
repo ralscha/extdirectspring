@@ -18,13 +18,20 @@ package ch.ralscha.extdirectspring.provider;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.fest.assertions.api.Assertions.entry;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.joda.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
@@ -32,6 +39,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.annotation.MetadataParam;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
+import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad.Node;
 
 @Service
 public class RemoteProviderMetadata {
@@ -141,4 +149,27 @@ public class RemoteProviderMetadata {
 		assertThat(servletRequest).isNotNull();
 		return rows;
 	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "metadata")
+	public List<Node> treeLoad1(@RequestParam("node") String node, @RequestParam(
+			defaultValue = "defaultValue") String foo,
+			@MetadataParam(value = "id") Integer id) {
+		return RemoteProviderTreeLoad.createTreeList(node, ":" + foo + ";" + id);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "metadata")
+	public List<Node> treeLoad2(@RequestParam("node") String node, @RequestParam(
+			defaultValue = "defaultValue") String foo, @MetadataParam(value = "id",
+			defaultValue = "22") Integer id) {
+		return RemoteProviderTreeLoad.createTreeList(node, ":" + foo + ";" + id);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "metadata")
+	public List<Node> treeLoad3(@RequestParam("node") String node, @RequestParam(
+			defaultValue = "defaultValue") String foo,
+			@MetadataParam(value = "id") Optional<Integer> id) {
+		return RemoteProviderTreeLoad.createTreeList(node,
+				":" + foo + ";" + id.orElse(23));
+	}
+
 }
