@@ -279,7 +279,7 @@ public class RemoteProviderStoreRead {
 
 	}
 
-	private static List<Row> createRows(String appendix) {
+	public static List<Row> createRows(String appendix) {
 		List<Row> rows = new ArrayList<Row>();
 		for (int i = 0; i < 100; i += 2) {
 			rows.add(new Row(i, "name: " + i + appendix, true, "" + (1000 + i)));

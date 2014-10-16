@@ -133,7 +133,7 @@ public class RouterControllerTreeLoadTest {
 		cookies.add(new Cookie("theCookie", "value"));
 
 		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, false,
-				null, cookies, "remoteProviderTreeLoad", "method3", false,
+				null, cookies, null, "remoteProviderTreeLoad", "method3", false,
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
@@ -151,7 +151,7 @@ public class RouterControllerTreeLoadTest {
 		requestParameters.put("foo", "f");
 
 		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, false, null, cookies,
-				"remoteProviderTreeLoad", "method3", false,
+				null, "remoteProviderTreeLoad", "method3", false,
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 

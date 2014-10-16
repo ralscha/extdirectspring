@@ -190,16 +190,23 @@ public class ControllerUtil {
 
 	public static String createEdsRequest(String action, String method, int tid,
 			Object data) {
-		return createEdsRequest(action, method, false, tid, data);
+		return createEdsRequest(action, method, false, tid, data, null);
 	}
 
 	public static String createEdsRequest(String action, String method,
-			boolean namedParameter, int tid, Object data) {
+			boolean namedParameter, int tid, Object data, Map<String, Object> metadata) {
 		ExtDirectRequest dr = new ExtDirectRequest();
 		dr.setAction(action);
 		dr.setMethod(method);
 		dr.setTid(tid);
 		dr.setType("rpc");
+
+		if (metadata != null) {
+			dr.setMetadata(metadata);
+		}
+		else {
+			dr.setMetadata(null);
+		}
 
 		if (namedParameter && data != null) {
 			if (Arrays.isArray(data)) {
@@ -227,61 +234,70 @@ public class ControllerUtil {
 	public static Object sendAndReceive(MockMvc mockMvc, HttpHeaders headers,
 			String bean, String method, Object expectedResultOrType,
 			Object... requestData) {
-		return sendAndReceive(mockMvc, false, headers, null, bean, method, false,
+		return sendAndReceive(mockMvc, false, headers, null, null, bean, method, false,
 				expectedResultOrType, requestData);
 	}
 
 	public static Object sendAndReceive(MockMvc mockMvc, HttpHeaders headers,
 			List<Cookie> cookies, String bean, String method,
 			Object expectedResultOrType, Object... requestData) {
-		return sendAndReceive(mockMvc, false, headers, cookies, bean, method, false,
+		return sendAndReceive(mockMvc, false, headers, cookies, null, bean, method,
+				false, expectedResultOrType, requestData);
+	}
+
+	public static Object sendAndReceive(MockMvc mockMvc, String bean, String method,
+			Map<String, Object> metadata, Object expectedResultOrType,
+			Object... requestData) {
+		return sendAndReceive(mockMvc, false, null, null, metadata, bean, method, false,
 				expectedResultOrType, requestData);
 	}
 
 	public static Object sendAndReceive(MockMvc mockMvc, String bean, String method,
 			Object expectedResultOrType, Object... requestData) {
-		return sendAndReceive(mockMvc, false, null, null, bean, method, false,
+		return sendAndReceive(mockMvc, false, null, null, null, bean, method, false,
 				expectedResultOrType, requestData);
 	}
 
 	public static Object sendAndReceiveNamed(MockMvc mockMvc, HttpHeaders headers,
 			List<Cookie> cookies, String bean, String method,
 			Object expectedResultOrType, Map<String, Object> requestData) {
-		return sendAndReceive(mockMvc, false, headers, cookies, bean, method, true,
+		return sendAndReceive(mockMvc, false, headers, cookies, null, bean, method, true,
 				expectedResultOrType, new Object[] { requestData });
 	}
 
 	public static Object sendAndReceiveNamed(MockMvc mockMvc, String bean, String method,
 			Object expectedResultOrType, Map<String, Object> requestData) {
-		return sendAndReceive(mockMvc, false, null, null, bean, method, true,
+		return sendAndReceive(mockMvc, false, null, null, null, bean, method, true,
 				expectedResultOrType, new Object[] { requestData });
 	}
 
 	public static Object sendAndReceiveWithSession(MockMvc mockMvc, HttpHeaders headers,
 			String bean, String method, Object expectedResultOrType,
 			Object... requestData) {
-		return sendAndReceive(mockMvc, true, headers, null, bean, method, true,
+		return sendAndReceive(mockMvc, true, headers, null, null, bean, method, true,
 				expectedResultOrType, new Object[] { requestData });
 	}
 
 	public static Object sendAndReceiveWithSession(MockMvc mockMvc, HttpHeaders headers,
 			List<Cookie> cookies, String bean, String method,
 			Object expectedResultOrType, Object... requestData) {
-		return sendAndReceive(mockMvc, true, headers, cookies, bean, method, true,
+		return sendAndReceive(mockMvc, true, headers, cookies, null, bean, method, true,
 				expectedResultOrType, new Object[] { requestData });
 	}
 
 	public static Object sendAndReceive(MockMvc mockMvc, boolean withSession,
-			HttpHeaders headers, List<Cookie> cookies, String bean, String method,
-			boolean namedParameters, Object expectedResultOrType, Object... requestData) {
+			HttpHeaders headers, List<Cookie> cookies, Map<String, Object> metadata,
+			String bean, String method, boolean namedParameters,
+			Object expectedResultOrType, Object... requestData) {
 
 		int tid = (int) (Math.random() * 1000);
 
 		MvcResult result = null;
 		try {
-			result = performRouterRequest(mockMvc,
-					createEdsRequest(bean, method, namedParameters, tid, requestData),
-					null, headers, cookies, withSession);
+			result = performRouterRequest(
+					mockMvc,
+					createEdsRequest(bean, method, namedParameters, tid, requestData,
+							metadata), null, headers, cookies, withSession);
 		}
 		catch (JsonProcessingException e) {
 			fail("perform post to /router" + e.getMessage());
@@ -337,8 +353,8 @@ public class ControllerUtil {
 		MvcResult result = null;
 		try {
 			result = performRouterRequest(mockMvc,
-					createEdsRequest(bean, method, false, tid, null), null, null, null,
-					false);
+					createEdsRequest(bean, method, false, tid, null, null), null, null,
+					null, false);
 		}
 		catch (JsonProcessingException e) {
 			fail("perform post to /router" + e.getMessage());

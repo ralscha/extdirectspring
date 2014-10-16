@@ -488,7 +488,7 @@ public class RouterControllerSimpleNamedTest {
 		params.put("theAge", "33");
 		params.put("active", Boolean.FALSE);
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
-				"methodRP2", true, 2, params);
+				"methodRP2", true, 2, params, null);
 		multiRequests.add(edRequest);
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result
@@ -500,7 +500,7 @@ public class RouterControllerSimpleNamedTest {
 		params.put("theAge", "33");
 		params.put("active", Boolean.FALSE);
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
-				"methodRP2", true, 3, params);
+				"methodRP2", true, 3, params, null);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
@@ -513,7 +513,7 @@ public class RouterControllerSimpleNamedTest {
 		params.put("lastName", "Olstead");
 		params.put("active", Boolean.FALSE);
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
-				"methodRP2", true, 4, params);
+				"methodRP2", true, 4, params, null);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
@@ -526,7 +526,7 @@ public class RouterControllerSimpleNamedTest {
 		params.put("lastName", "Olstead");
 		params.put("theAge", 36);
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
-				"methodRP2", true, 5, params);
+				"methodRP2", true, 5, params, null);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
@@ -538,7 +538,7 @@ public class RouterControllerSimpleNamedTest {
 		params = new LinkedHashMap<String, Object>();
 		params.put("active", Boolean.FALSE);
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
-				"methodRP2", true, 6, params);
+				"methodRP2", true, 6, params, null);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
@@ -550,7 +550,7 @@ public class RouterControllerSimpleNamedTest {
 		params = new LinkedHashMap<String, Object>();
 		params.put("lastName", "Miller");
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
-				"methodRP2", true, 7, params);
+				"methodRP2", true, 7, params, null);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
@@ -562,7 +562,7 @@ public class RouterControllerSimpleNamedTest {
 		params = new LinkedHashMap<String, Object>();
 		params.put("theAge", 55);
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
-				"methodRP2", true, 8, params);
+				"methodRP2", true, 8, params, null);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
@@ -573,7 +573,7 @@ public class RouterControllerSimpleNamedTest {
 
 		params = new LinkedHashMap<String, Object>();
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
-				"methodRP2", true, 9, params);
+				"methodRP2", true, 9, params, null);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
@@ -621,7 +621,7 @@ public class RouterControllerSimpleNamedTest {
 		params.put("theAge", "33");
 		params.put("active", Boolean.FALSE);
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
-				"methodRP3", true, 2, params);
+				"methodRP3", true, 2, params, null);
 		multiRequests.add(edRequest);
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
@@ -634,7 +634,7 @@ public class RouterControllerSimpleNamedTest {
 		params.put("theAge", "33");
 		params.put("active", Boolean.FALSE);
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
-				"methodRP3", true, 3, params);
+				"methodRP3", true, 3, params, null);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
@@ -647,7 +647,7 @@ public class RouterControllerSimpleNamedTest {
 		params.put("lastName", "Olstead");
 		params.put("active", Boolean.FALSE);
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
-				"methodRP3", true, 4, params);
+				"methodRP3", true, 4, params, null);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
@@ -660,7 +660,7 @@ public class RouterControllerSimpleNamedTest {
 		params.put("lastName", "Olstead");
 		params.put("theAge", 36);
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
-				"methodRP3", true, 5, params);
+				"methodRP3", true, 5, params, null);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
@@ -672,7 +672,7 @@ public class RouterControllerSimpleNamedTest {
 		params = new LinkedHashMap<String, Object>();
 		params.put("active", Boolean.FALSE);
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
-				"methodRP3", true, 6, params);
+				"methodRP3", true, 6, params, null);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
@@ -684,7 +684,7 @@ public class RouterControllerSimpleNamedTest {
 		params = new LinkedHashMap<String, Object>();
 		params.put("lastName", "Miller");
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
-				"methodRP3", true, 7, params);
+				"methodRP3", true, 7, params, null);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
@@ -696,7 +696,7 @@ public class RouterControllerSimpleNamedTest {
 		params = new LinkedHashMap<String, Object>();
 		params.put("theAge", 55);
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
-				"methodRP3", true, 8, params);
+				"methodRP3", true, 8, params, null);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
@@ -707,7 +707,7 @@ public class RouterControllerSimpleNamedTest {
 
 		params = new LinkedHashMap<String, Object>();
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed",
-				"methodRP3", true, 9, params);
+				"methodRP3", true, 9, params, null);
 		multiRequests.add(edRequest);
 
 		result = ControllerUtil.performRouterRequest(mockMvc, edRequest);

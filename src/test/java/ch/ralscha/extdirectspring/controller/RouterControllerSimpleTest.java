@@ -72,14 +72,14 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testBeanNotFound() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProvider", "method1", null, 3, 2.5,
-				"string.param");
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProvider", "method1", null, null,
+				3, 2.5, "string.param");
 	}
 
 	@Test
 	public void testMethodNotFound() {
 		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderSimple", "method4", null,
-				3, 2.5, "string.param");
+				null, 3, 2.5, "string.param");
 	}
 
 	@Test

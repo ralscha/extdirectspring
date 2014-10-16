@@ -1089,6 +1089,25 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderOptional", new Action("treeLoad2", 1,
 				Boolean.FALSE));
 
+		remotingApi.addAction("remoteProviderMetadata", new Action("method1", 1,
+				Collections.singletonList("mp")));
+		remotingApi.addAction("remoteProviderMetadata", new Action("method2", 1,
+				Collections.singletonList("id")));
+		remotingApi.addAction("remoteProviderMetadata", new Action("method3", 1,
+				Collections.singletonList("id")));
+		remotingApi.addAction("remoteProviderMetadata", new Action("method4", 1,
+				Collections.singletonList("id")));
+		remotingApi.addAction("remoteProviderMetadata", new Action("method5", 1,
+				Collections.singletonList("id")));
+		remotingApi.addAction("remoteProviderMetadata", new Action("method6", 1,
+				Collections.singletonList("id")));
+		remotingApi.addAction("remoteProviderMetadata", new Action("update1", 1,
+				Collections.singletonList("id")));
+		remotingApi.addAction("remoteProviderMetadata", new Action("update2", 1,
+				Collections.singletonList("id")));
+		remotingApi.addAction("remoteProviderMetadata", new Action("update3", 1,
+				Collections.singletonList("id")));
+
 		return remotingApi;
 	}
 

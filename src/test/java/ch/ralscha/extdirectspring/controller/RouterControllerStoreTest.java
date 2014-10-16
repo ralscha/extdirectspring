@@ -474,7 +474,7 @@ public class RouterControllerStoreTest {
 		readRequest.put("query", "name");
 
 		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
-				mockMvc, "remoteProviderStoreRead", "method5", null, readRequest);
+				mockMvc, "remoteProviderStoreRead", "method5", null, null, readRequest);
 	}
 
 	@Test
