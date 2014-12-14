@@ -133,7 +133,11 @@ public final class ParameterInfo {
 			else if (paramAnn
 					.annotationType()
 					.getName()
-					.equals("org.springframework.security.web.bind.annotation.AuthenticationPrincipal")) {
+					.equals("org.springframework.security.web.bind.annotation.AuthenticationPrincipal") ||
+					paramAnn
+					.annotationType()
+					.getName()
+					.equals("org.springframework.security.core.annotation.AuthenticationPrincipal")) {
 				hasAuthenticationPrincipalAnnotation = (Boolean) AnnotationUtils
 						.getValue(paramAnn, "errorOnInvalidType");
 			}
