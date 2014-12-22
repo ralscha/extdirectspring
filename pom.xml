@@ -152,7 +152,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<version>1.7.7</version>
+			<version>1.7.9</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -266,7 +266,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.4.183</version>
+			<version>1.4.184</version>
 			<scope>test</scope>
 		</dependency>
 
