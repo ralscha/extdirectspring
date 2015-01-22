@@ -954,11 +954,11 @@ public class ApiControllerTest {
 				"withRequiredRequestHeader", Arrays.asList("bd")));
 
 		remotingApi.addAction("remoteProviderSimpleNamed", new Action("nonStrictMethod1",
-				Collections.emptyList(), Boolean.FALSE));
+				Collections.<String> emptyList(), Boolean.FALSE));
 		remotingApi.addAction("remoteProviderSimpleNamed", new Action("nonStrictMethod2",
-				Collections.emptyList(), Boolean.FALSE));
+				Collections.<String> emptyList(), Boolean.FALSE));
 		remotingApi.addAction("remoteProviderSimpleNamed", new Action("nonStrictMethod3",
-				Collections.emptyList(), Boolean.FALSE));
+				Collections.<String> emptyList(), Boolean.FALSE));
 
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
 				"handleMessage1", "message1"));
