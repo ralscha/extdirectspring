@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -87,15 +88,18 @@ public class RouterController {
 	private final ConfigurationService configurationService;
 
 	private final MethodInfoCache methodInfoCache;
+	
+	private final Set<ExtRequestListener> extRequestListeners;
 
 	@Autowired
 	public RouterController(RequestMappingHandlerAdapter handlerAdapter,
 			SSEHandler sseHandler, ConfigurationService configurationService,
-			MethodInfoCache methodInfoCache) {
+			MethodInfoCache methodInfoCache, Set<ExtRequestListener> extRequestListeners) {
 		this.handlerAdapter = handlerAdapter;
 		this.sseHandler = sseHandler;
 		this.configurationService = configurationService;
 		this.methodInfoCache = methodInfoCache;
+		this.extRequestListeners = extRequestListeners;
 	}
 
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
@@ -367,91 +371,109 @@ public class RouterController {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	ExtDirectResponse handleMethodCall(ExtDirectRequest directRequest,
 			HttpServletRequest request, HttpServletResponse response, Locale locale) {
+		
 		ExtDirectResponse directResponse = new ExtDirectResponse(directRequest);
+		notifyExtRequestListenersBeforeRequest(directRequest, directResponse, request, response, locale);
 
-		MethodInfo methodInfo = methodInfoCache.get(directRequest.getAction(),
-				directRequest.getMethod());
-
-		if (methodInfo != null) {
-
-			try {
-				directResponse.setStreamResponse(methodInfo.isStreamResponse());
-				Object result = processRemotingRequest(request, response, locale,
-						directRequest, methodInfo);
-
-				if (result != null) {
-
-					ModelAndJsonView modelAndJsonView = null;
-					if (result instanceof ModelAndJsonView) {
-						modelAndJsonView = (ModelAndJsonView) result;
-						result = modelAndJsonView.getModel();
-					}
-
-					if (methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
-							&& !ExtDirectFormLoadResult.class.isAssignableFrom(result
-									.getClass())) {
-						ExtDirectFormLoadResult formLoadResult = new ExtDirectFormLoadResult(
-								result);
-						if (result instanceof JsonViewHint) {
-							formLoadResult.setJsonView(((JsonViewHint) result)
-									.getJsonView());
+		try {
+			MethodInfo methodInfo = methodInfoCache.get(directRequest.getAction(),
+					directRequest.getMethod());
+	
+			if (methodInfo != null) {
+	
+				try {
+					directResponse.setStreamResponse(methodInfo.isStreamResponse());
+					Object result = processRemotingRequest(request, response, locale,
+							directRequest, methodInfo);
+	
+					if (result != null) {
+	
+						ModelAndJsonView modelAndJsonView = null;
+						if (result instanceof ModelAndJsonView) {
+							modelAndJsonView = (ModelAndJsonView) result;
+							result = modelAndJsonView.getModel();
 						}
-						result = formLoadResult;
-					}
-					else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo
-							.isType(ExtDirectMethodType.STORE_READ))
-							&& !ExtDirectStoreResult.class.isAssignableFrom(result
-									.getClass())
-							&& configurationService.getConfiguration()
-									.isAlwaysWrapStoreResponse()) {
-						if (result instanceof Collection) {
-							result = new ExtDirectStoreResult((Collection) result);
+	
+						if (methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
+								&& !ExtDirectFormLoadResult.class.isAssignableFrom(result
+										.getClass())) {
+							ExtDirectFormLoadResult formLoadResult = new ExtDirectFormLoadResult(
+									result);
+							if (result instanceof JsonViewHint) {
+								formLoadResult.setJsonView(((JsonViewHint) result)
+										.getJsonView());
+							}
+							result = formLoadResult;
+						}
+						else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY) || methodInfo
+								.isType(ExtDirectMethodType.STORE_READ))
+								&& !ExtDirectStoreResult.class.isAssignableFrom(result
+										.getClass())
+								&& configurationService.getConfiguration()
+										.isAlwaysWrapStoreResponse()) {
+							if (result instanceof Collection) {
+								result = new ExtDirectStoreResult((Collection) result);
+							}
+							else {
+								result = new ExtDirectStoreResult(result);
+							}
+						}
+						else if (methodInfo.isType(ExtDirectMethodType.FORM_POST_JSON)) {
+							if (result instanceof ExtDirectFormPostResult) {
+								ExtDirectFormPostResult formPostResult = (ExtDirectFormPostResult) result;
+								result = formPostResult.getResult();
+							}
+						}
+	
+						directResponse.setResult(result);
+						if (modelAndJsonView != null) {
+							directResponse.setJsonView(getJsonView(modelAndJsonView,
+									methodInfo.getJsonView()));
 						}
 						else {
-							result = new ExtDirectStoreResult(result);
+							directResponse.setJsonView(getJsonView(result,
+									methodInfo.getJsonView()));
 						}
-					}
-					else if (methodInfo.isType(ExtDirectMethodType.FORM_POST_JSON)) {
-						if (result instanceof ExtDirectFormPostResult) {
-							ExtDirectFormPostResult formPostResult = (ExtDirectFormPostResult) result;
-							result = formPostResult.getResult();
-						}
-					}
-
-					directResponse.setResult(result);
-					if (modelAndJsonView != null) {
-						directResponse.setJsonView(getJsonView(modelAndJsonView,
-								methodInfo.getJsonView()));
+	
 					}
 					else {
-						directResponse.setJsonView(getJsonView(result,
-								methodInfo.getJsonView()));
+						if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)
+								|| methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
+							directResponse.setResult(Collections.emptyList());
+						}
 					}
-
+	
 				}
-				else {
-					if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)
-							|| methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
-						directResponse.setResult(Collections.emptyList());
-					}
+				catch (Exception e) {
+					log.error("Error calling method: " + directRequest.getMethod(),
+							e.getCause() != null ? e.getCause() : e);
+					directResponse.setResult(handleException(methodInfo, directResponse, e,
+							request));
 				}
-
 			}
-			catch (Exception e) {
-				log.error("Error calling method: " + directRequest.getMethod(),
-						e.getCause() != null ? e.getCause() : e);
-				directResponse.setResult(handleException(methodInfo, directResponse, e,
-						request));
+			else {
+				log.error("Error invoking method '" + directRequest.getAction() + "."
+						+ directRequest.getMethod() + "'. Method or Bean not found");
+				handleMethodNotFoundError(directResponse, directRequest.getAction(),
+						directRequest.getMethod());
 			}
+	
+			return directResponse;
+		} finally {
+			notifyExtRequestListenersAfterRequest(directRequest, directResponse, request, response, locale);
 		}
-		else {
-			log.error("Error invoking method '" + directRequest.getAction() + "."
-					+ directRequest.getMethod() + "'. Method or Bean not found");
-			handleMethodNotFoundError(directResponse, directRequest.getAction(),
-					directRequest.getMethod());
+	}
+	
+	private void notifyExtRequestListenersBeforeRequest(ExtDirectRequest directRequest, ExtDirectResponse directResponse, HttpServletRequest request, HttpServletResponse response, Locale locale){
+		for ( ExtRequestListener extrl : extRequestListeners ) {
+			extrl.beforeRequest(directRequest, directResponse, request, response, locale);
 		}
-
-		return directResponse;
+	}
+	
+	private void notifyExtRequestListenersAfterRequest(ExtDirectRequest directRequest, ExtDirectResponse directResponse, HttpServletRequest request, HttpServletResponse response, Locale locale){
+		for ( ExtRequestListener extrl : extRequestListeners ) {
+			extrl.afterRequest(directRequest, directResponse, request, response, locale);
+		}
 	}
 
 	public void writeJsonResponse(HttpServletRequest request,
