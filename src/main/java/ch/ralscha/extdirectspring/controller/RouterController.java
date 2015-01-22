@@ -36,6 +36,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
@@ -89,17 +90,18 @@ public class RouterController {
 
 	private final MethodInfoCache methodInfoCache;
 	
-	private final Set<ExtRequestListener> extRequestListeners;
+	@Autowired(required=false)
+	private Set<ExtRequestListener> extRequestListeners;
 
 	@Autowired
 	public RouterController(RequestMappingHandlerAdapter handlerAdapter,
 			SSEHandler sseHandler, ConfigurationService configurationService,
-			MethodInfoCache methodInfoCache, Set<ExtRequestListener> extRequestListeners) {
+			MethodInfoCache methodInfoCache/*, Set<ExtRequestListener> extRequestListeners*/) {
 		this.handlerAdapter = handlerAdapter;
 		this.sseHandler = sseHandler;
 		this.configurationService = configurationService;
 		this.methodInfoCache = methodInfoCache;
-		this.extRequestListeners = extRequestListeners;
+//		this.extRequestListeners = extRequestListeners;
 	}
 
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
@@ -465,14 +467,18 @@ public class RouterController {
 	}
 	
 	private void notifyExtRequestListenersBeforeRequest(ExtDirectRequest directRequest, ExtDirectResponse directResponse, HttpServletRequest request, HttpServletResponse response, Locale locale){
-		for ( ExtRequestListener extrl : extRequestListeners ) {
-			extrl.beforeRequest(directRequest, directResponse, request, response, locale);
+		if ( extRequestListeners != null ) {
+			for ( ExtRequestListener extrl : extRequestListeners ) {
+				extrl.beforeRequest(directRequest, directResponse, request, response, locale);
+			}
 		}
 	}
 	
 	private void notifyExtRequestListenersAfterRequest(ExtDirectRequest directRequest, ExtDirectResponse directResponse, HttpServletRequest request, HttpServletResponse response, Locale locale){
-		for ( ExtRequestListener extrl : extRequestListeners ) {
-			extrl.afterRequest(directRequest, directResponse, request, response, locale);
+		if ( extRequestListeners != null ) {
+			for ( ExtRequestListener extrl : extRequestListeners ) {
+				extrl.afterRequest(directRequest, directResponse, request, response, locale);
+			}
 		}
 	}
 
