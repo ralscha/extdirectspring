@@ -500,6 +500,7 @@
 						<exclude>**/*.py</exclude>
 						<exclude>**/*.yml</exclude>
 						<exclude>**/.gitignore</exclude>
+						<exclude>**/ExtRequestListener.java</exclude>
 					</excludes>
 					<strictCheck>true</strictCheck>
 				</configuration>
@@ -513,7 +514,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
 
