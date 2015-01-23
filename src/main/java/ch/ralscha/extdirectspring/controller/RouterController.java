@@ -36,7 +36,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
@@ -89,19 +88,18 @@ public class RouterController {
 	private final ConfigurationService configurationService;
 
 	private final MethodInfoCache methodInfoCache;
-	
-	@Autowired(required=false)
+
+	@Autowired(required = false)
 	private Set<ExtRequestListener> extRequestListeners;
 
 	@Autowired
 	public RouterController(RequestMappingHandlerAdapter handlerAdapter,
 			SSEHandler sseHandler, ConfigurationService configurationService,
-			MethodInfoCache methodInfoCache/*, Set<ExtRequestListener> extRequestListeners*/) {
+			MethodInfoCache methodInfoCache) {
 		this.handlerAdapter = handlerAdapter;
 		this.sseHandler = sseHandler;
 		this.configurationService = configurationService;
 		this.methodInfoCache = methodInfoCache;
-//		this.extRequestListeners = extRequestListeners;
 	}
 
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
@@ -373,29 +371,30 @@ public class RouterController {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	ExtDirectResponse handleMethodCall(ExtDirectRequest directRequest,
 			HttpServletRequest request, HttpServletResponse response, Locale locale) {
-		
+
 		ExtDirectResponse directResponse = new ExtDirectResponse(directRequest);
-		notifyExtRequestListenersBeforeRequest(directRequest, directResponse, request, response, locale);
+		notifyExtRequestListenersBeforeRequest(directRequest, directResponse, request,
+				response, locale);
 
 		try {
 			MethodInfo methodInfo = methodInfoCache.get(directRequest.getAction(),
 					directRequest.getMethod());
-	
+
 			if (methodInfo != null) {
-	
+
 				try {
 					directResponse.setStreamResponse(methodInfo.isStreamResponse());
 					Object result = processRemotingRequest(request, response, locale,
 							directRequest, methodInfo);
-	
+
 					if (result != null) {
-	
+
 						ModelAndJsonView modelAndJsonView = null;
 						if (result instanceof ModelAndJsonView) {
 							modelAndJsonView = (ModelAndJsonView) result;
 							result = modelAndJsonView.getModel();
 						}
-	
+
 						if (methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
 								&& !ExtDirectFormLoadResult.class.isAssignableFrom(result
 										.getClass())) {
@@ -426,7 +425,7 @@ public class RouterController {
 								result = formPostResult.getResult();
 							}
 						}
-	
+
 						directResponse.setResult(result);
 						if (modelAndJsonView != null) {
 							directResponse.setJsonView(getJsonView(modelAndJsonView,
@@ -436,7 +435,7 @@ public class RouterController {
 							directResponse.setJsonView(getJsonView(result,
 									methodInfo.getJsonView()));
 						}
-	
+
 					}
 					else {
 						if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)
@@ -444,13 +443,13 @@ public class RouterController {
 							directResponse.setResult(Collections.emptyList());
 						}
 					}
-	
+
 				}
 				catch (Exception e) {
 					log.error("Error calling method: " + directRequest.getMethod(),
 							e.getCause() != null ? e.getCause() : e);
-					directResponse.setResult(handleException(methodInfo, directResponse, e,
-							request));
+					directResponse.setResult(handleException(methodInfo, directResponse,
+							e, request));
 				}
 			}
 			else {
@@ -459,25 +458,33 @@ public class RouterController {
 				handleMethodNotFoundError(directResponse, directRequest.getAction(),
 						directRequest.getMethod());
 			}
-	
+
 			return directResponse;
-		} finally {
-			notifyExtRequestListenersAfterRequest(directRequest, directResponse, request, response, locale);
+		}
+		finally {
+			notifyExtRequestListenersAfterRequest(directRequest, directResponse, request,
+					response, locale);
 		}
 	}
-	
-	private void notifyExtRequestListenersBeforeRequest(ExtDirectRequest directRequest, ExtDirectResponse directResponse, HttpServletRequest request, HttpServletResponse response, Locale locale){
-		if ( extRequestListeners != null ) {
-			for ( ExtRequestListener extrl : extRequestListeners ) {
-				extrl.beforeRequest(directRequest, directResponse, request, response, locale);
+
+	private void notifyExtRequestListenersBeforeRequest(ExtDirectRequest directRequest,
+			ExtDirectResponse directResponse, HttpServletRequest request,
+			HttpServletResponse response, Locale locale) {
+		if (extRequestListeners != null) {
+			for (ExtRequestListener extrl : extRequestListeners) {
+				extrl.beforeRequest(directRequest, directResponse, request, response,
+						locale);
 			}
 		}
 	}
-	
-	private void notifyExtRequestListenersAfterRequest(ExtDirectRequest directRequest, ExtDirectResponse directResponse, HttpServletRequest request, HttpServletResponse response, Locale locale){
-		if ( extRequestListeners != null ) {
-			for ( ExtRequestListener extrl : extRequestListeners ) {
-				extrl.afterRequest(directRequest, directResponse, request, response, locale);
+
+	private void notifyExtRequestListenersAfterRequest(ExtDirectRequest directRequest,
+			ExtDirectResponse directResponse, HttpServletRequest request,
+			HttpServletResponse response, Locale locale) {
+		if (extRequestListeners != null) {
+			for (ExtRequestListener extrl : extRequestListeners) {
+				extrl.afterRequest(directRequest, directResponse, request, response,
+						locale);
 			}
 		}
 	}
