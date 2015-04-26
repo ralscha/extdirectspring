@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -48,7 +49,7 @@
 	</scm>
 
 	<properties>
-		<jackson.version>2.5.1</jackson.version>
+		<jackson.version>2.5.3</jackson.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -152,7 +153,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<version>1.7.10</version>
+			<version>1.7.12</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -180,7 +181,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.4</version>
+			<version>4.4.1</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -193,7 +194,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
-			<version>4.4</version>
+			<version>4.4.1</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -209,13 +210,13 @@
 			<version>5.2.0.Beta1</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
-			<artifactId>el-impl</artifactId>
-			<version>2.2</version>
+			<artifactId>javax.el</artifactId>
+			<version>2.2.6</version>
 			<scope>test</scope>
-		</dependency>		
+		</dependency>
 
 		<dependency>
 			<groupId>org.databene</groupId>
@@ -227,21 +228,21 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>4.0.0.RELEASE</version>
+			<version>4.0.1.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>4.0.0.RELEASE</version>
+			<version>4.0.1.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>4.0.0.RELEASE</version>
+			<version>4.0.1.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -266,14 +267,14 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.4.186</version>
+			<version>1.4.187</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>4.3.8.Final</version>
+			<version>4.3.9.Final</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -293,7 +294,7 @@
 		<dependency>
 			<groupId>nl.jqno.equalsverifier</groupId>
 			<artifactId>equalsverifier</artifactId>
-			<version>1.7.1</version>
+			<version>1.7.2</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -402,7 +403,7 @@
 				<artifactId>cobertura-maven-plugin</artifactId>
 				<version>2.7</version>
 				<configuration>
-					<instrumentation>				    
+					<instrumentation>
 						<excludes>
 							<exclude>ch/ralscha/extdirectspring/bean/ExtDirectStoreResponse*.class</exclude>
 							<exclude>ch/ralscha/extdirectspring/bean/ExtDirectRawJsonStoreResponse*.class</exclude>
