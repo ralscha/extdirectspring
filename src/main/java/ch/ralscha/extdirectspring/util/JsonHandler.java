@@ -32,8 +32,12 @@ public class JsonHandler {
 	private ObjectMapper mapper;
 
 	public JsonHandler() {
-		mapper = new ObjectMapper();
+		this.mapper = new ObjectMapper();
 	}
+	
+	public JsonHandler(ObjectMapper mapper) {
+		this.mapper = mapper;
+	}	
 
 	/**
 	 * Sets a new instance of {@link ObjectMapper}.
