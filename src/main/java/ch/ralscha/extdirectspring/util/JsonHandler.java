@@ -34,10 +34,10 @@ public class JsonHandler {
 	public JsonHandler() {
 		this.mapper = new ObjectMapper();
 	}
-	
+
 	public JsonHandler(ObjectMapper mapper) {
 		this.mapper = mapper;
-	}	
+	}
 
 	/**
 	 * Sets a new instance of {@link ObjectMapper}.
