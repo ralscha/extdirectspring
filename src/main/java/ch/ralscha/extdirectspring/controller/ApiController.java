@@ -40,6 +40,7 @@ import ch.ralscha.extdirectspring.bean.api.RemotingApiMixin;
 import ch.ralscha.extdirectspring.util.ApiCache;
 import ch.ralscha.extdirectspring.util.ApiCacheKey;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
+import ch.ralscha.extdirectspring.util.JsonHandler;
 import ch.ralscha.extdirectspring.util.MethodInfo;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
 
@@ -59,12 +60,15 @@ public class ApiController {
 
 	private final ApiCache apiCache;
 
+	private final ObjectMapper objectMapper;
+
 	@Autowired
 	public ApiController(ConfigurationService configurationService,
 			MethodInfoCache methodInfoCache, ApiCache apiCache) {
 		this.configurationService = configurationService;
 		this.methodInfoCache = methodInfoCache;
 		this.apiCache = apiCache;
+		this.objectMapper = new ObjectMapper();
 	}
 
 	/**
@@ -295,8 +299,7 @@ public class ApiController {
 
 		String jsonConfig;
 		if (!doc) {
-			jsonConfig = configurationService.getJsonHandler().writeValueAsString(
-					remotingApi, debug);
+			jsonConfig = writeValueAsString(remotingApi, debug);
 		}
 		else {
 			ObjectMapper mapper = new ObjectMapper();
@@ -381,8 +384,7 @@ public class ApiController {
 				}
 			}
 
-			String sseConfig = configurationService.getJsonHandler().writeValueAsString(
-					sseconfig, debug);
+			String sseConfig = writeValueAsString(sseconfig, debug);
 
 			if (StringUtils.hasText(apiNs)) {
 				sb.append(apiNs).append(".");
@@ -419,8 +421,7 @@ public class ApiController {
 
 		buildRemotingApi(remotingApi, group);
 
-		return configurationService.getJsonHandler().writeValueAsString(remotingApi,
-				debug);
+		return writeValueAsString(remotingApi, debug);
 
 	}
 
@@ -464,6 +465,20 @@ public class ApiController {
 		}
 
 		return true;
+	}
+
+	private String writeValueAsString(Object obj, boolean indent) {
+		try {
+			if (indent) {
+				return objectMapper.writer().withDefaultPrettyPrinter()
+						.writeValueAsString(obj);
+			}
+			return objectMapper.writeValueAsString(obj);
+		}
+		catch (Exception e) {
+			LogFactory.getLog(JsonHandler.class).info("serialize object to json", e);
+			return null;
+		}
 	}
 
 }
