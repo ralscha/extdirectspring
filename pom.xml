@@ -49,7 +49,7 @@
 	</scm>
 
 	<properties>
-		<jackson.version>2.5.3</jackson.version>
+		<jackson.version>2.5.4</jackson.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -194,7 +194,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
-			<version>4.4.1</version>
+			<version>4.5</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -287,7 +287,7 @@
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.19.0-GA</version>
+			<version>3.20.0-GA</version>
 			<scope>test</scope>
 		</dependency>
 
