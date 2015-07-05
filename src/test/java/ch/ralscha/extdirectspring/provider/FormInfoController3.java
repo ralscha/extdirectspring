@@ -48,9 +48,10 @@ public class FormInfoController3 {
 
 	@SuppressWarnings("unused")
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST_JSON)
-	public ExtDirectFormPostResult updateInfoJsonDirect(Locale locale, @RequestParam(
-			value = "p1", required = true) Long param1, @RequestParam(value = "p2",
-			required = true) String param2, @Valid FormInfo formInfo) {
+	public ExtDirectFormPostResult updateInfoJsonDirect(Locale locale,
+			@RequestParam(value = "p1", required = true) Long param1,
+			@RequestParam(value = "p2", required = true) String param2,
+			@Valid FormInfo formInfo) {
 
 		ExtDirectFormPostResult e = new ExtDirectFormPostResult();
 		e.addResultProperty("name", formInfo.getName().toUpperCase());

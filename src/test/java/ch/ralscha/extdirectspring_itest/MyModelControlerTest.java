@@ -37,14 +37,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ch.ralscha.extdirectspring.bean.api.Action;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.controller.ApiControllerTest;
 import ch.ralscha.extdirectspring.controller.ApiRequestParams;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class MyModelControlerTest extends JettyTest {
 
@@ -65,10 +65,10 @@ public class MyModelControlerTest extends JettyTest {
 
 	private static RemotingApi api() {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/controller/router", null);
-		remotingApi
-				.addAction("myModelController", new Action("method1", 0, Boolean.TRUE));
-		remotingApi
-				.addAction("myModelController", new Action("method2", 0, Boolean.TRUE));
+		remotingApi.addAction("myModelController",
+				new Action("method1", 0, Boolean.TRUE));
+		remotingApi.addAction("myModelController",
+				new Action("method2", 0, Boolean.TRUE));
 		remotingApi.addAction("myModelController", new Action("update", 0, Boolean.TRUE));
 		return remotingApi;
 	}
@@ -131,8 +131,8 @@ public class MyModelControlerTest extends JettyTest {
 		callMethod("method2");
 	}
 
-	private void callMethod(String method) throws IOException, JsonParseException,
-			JsonMappingException {
+	private void callMethod(String method)
+			throws IOException, JsonParseException, JsonMappingException {
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
 		formparams.add(new BasicNameValuePair("extAction", "myModelController"));

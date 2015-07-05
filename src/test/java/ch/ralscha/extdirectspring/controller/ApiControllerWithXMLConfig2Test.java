@@ -57,8 +57,8 @@ public class ApiControllerWithXMLConfig2Test {
 		config.setStreamResponse(false);
 
 		ApiRequestParams params = ApiRequestParams.builder()
-				.remotingApiVar("TEST_REMOTING_API").group("group2")
-				.configuration(config).build();
+				.remotingApiVar("TEST_REMOTING_API").group("group2").configuration(config)
+				.build();
 		ApiControllerTest.runTest(mockMvc, params, ApiControllerTest.group2Apis(null));
 
 		ApiControllerTest.runTest(mockMvc, params, ApiControllerTest.group2Apis(null));

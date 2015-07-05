@@ -66,8 +66,9 @@ public class RemoteProviderStoreModify {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public List<Row> update3(List<Row> rows, @RequestParam(value = "id",
-			defaultValue = "1") int id, final HttpServletRequest servletRequest) {
+	public List<Row> update3(List<Row> rows,
+			@RequestParam(value = "id", defaultValue = "1") int id,
+			final HttpServletRequest servletRequest) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
 		return rows;
@@ -75,8 +76,8 @@ public class RemoteProviderStoreModify {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group2")
 	public List<Row> update4(
-			@RequestParam(value = "id", required = false) Integer id,
-			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate yesterday,
+			@RequestParam(value = "id", required = false) Integer id, @RequestParam(
+					required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate yesterday,
 			final List<Row> rows) {
 
 		if (id == null) {

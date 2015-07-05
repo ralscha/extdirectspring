@@ -31,8 +31,10 @@ public class RawJsonController {
 	public ExtDirectRawJsonStoreResult listUsers1() {
 		List<String> records = new ArrayList<String>();
 
-		records.add("{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
-		records.add("{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e2334a0b99454\"} , \"username\" : \"francol\" , \"firstName\" : \"Franco\" , \"name\" : \"Lawrence\" , \"email\" : \"franco.lawrence@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1979-12-01T23:00:00Z\"} , \"noOfLogins\" : 3 , \"password\" : \"5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8\" , \"groups\" : [ \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-4321\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-7654\"}]}");
+		records.add(
+				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
+		records.add(
+				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e2334a0b99454\"} , \"username\" : \"francol\" , \"firstName\" : \"Franco\" , \"name\" : \"Lawrence\" , \"email\" : \"franco.lawrence@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1979-12-01T23:00:00Z\"} , \"noOfLogins\" : 3 , \"password\" : \"5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8\" , \"groups\" : [ \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-4321\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-7654\"}]}");
 
 		return new ExtDirectRawJsonStoreResult(records);
 	}
@@ -41,8 +43,10 @@ public class RawJsonController {
 	public ExtDirectRawJsonStoreResult listUsers2() {
 		List<String> records = new ArrayList<String>();
 
-		records.add("{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
-		records.add("{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e2334a0b99454\"} , \"username\" : \"francol\" , \"firstName\" : \"Franco\" , \"name\" : \"Lawrence\" , \"email\" : \"franco.lawrence@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1979-12-01T23:00:00Z\"} , \"noOfLogins\" : 3 , \"password\" : \"5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8\" , \"groups\" : [ \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-4321\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-7654\"}]}");
+		records.add(
+				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
+		records.add(
+				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e2334a0b99454\"} , \"username\" : \"francol\" , \"firstName\" : \"Franco\" , \"name\" : \"Lawrence\" , \"email\" : \"franco.lawrence@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1979-12-01T23:00:00Z\"} , \"noOfLogins\" : 3 , \"password\" : \"5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8\" , \"groups\" : [ \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-4321\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-7654\"}]}");
 
 		return new ExtDirectRawJsonStoreResult(2, records);
 	}
@@ -51,8 +55,10 @@ public class RawJsonController {
 	public ExtDirectRawJsonStoreResult listUsers3() {
 		List<String> records = new ArrayList<String>();
 
-		records.add("{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
-		records.add("{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e2334a0b99454\"} , \"username\" : \"francol\" , \"firstName\" : \"Franco\" , \"name\" : \"Lawrence\" , \"email\" : \"franco.lawrence@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1979-12-01T23:00:00Z\"} , \"noOfLogins\" : 3 , \"password\" : \"5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8\" , \"groups\" : [ \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-4321\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-7654\"}]}");
+		records.add(
+				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
+		records.add(
+				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e2334a0b99454\"} , \"username\" : \"francol\" , \"firstName\" : \"Franco\" , \"name\" : \"Lawrence\" , \"email\" : \"franco.lawrence@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1979-12-01T23:00:00Z\"} , \"noOfLogins\" : 3 , \"password\" : \"5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8\" , \"groups\" : [ \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-4321\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-7654\"}]}");
 
 		return new ExtDirectRawJsonStoreResult(2, records, Boolean.FALSE);
 	}
@@ -61,8 +67,10 @@ public class RawJsonController {
 	public ExtDirectRawJsonStoreResult listUsers4() {
 		List<String> records = new ArrayList<String>();
 
-		records.add("{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
-		records.add("{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e2334a0b99454\"} , \"username\" : \"francol\" , \"firstName\" : \"Franco\" , \"name\" : \"Lawrence\" , \"email\" : \"franco.lawrence@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1979-12-01T23:00:00Z\"} , \"noOfLogins\" : 3 , \"password\" : \"5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8\" , \"groups\" : [ \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-4321\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-7654\"}]}");
+		records.add(
+				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
+		records.add(
+				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e2334a0b99454\"} , \"username\" : \"francol\" , \"firstName\" : \"Franco\" , \"name\" : \"Lawrence\" , \"email\" : \"franco.lawrence@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1979-12-01T23:00:00Z\"} , \"noOfLogins\" : 3 , \"password\" : \"5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8\" , \"groups\" : [ \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-4321\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-7654\"}]}");
 
 		return new ExtDirectRawJsonStoreResult(2l, records);
 	}
@@ -71,8 +79,10 @@ public class RawJsonController {
 	public ExtDirectRawJsonStoreResult listUsers5() {
 		List<String> records = new ArrayList<String>();
 
-		records.add("{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
-		records.add("{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e2334a0b99454\"} , \"username\" : \"francol\" , \"firstName\" : \"Franco\" , \"name\" : \"Lawrence\" , \"email\" : \"franco.lawrence@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1979-12-01T23:00:00Z\"} , \"noOfLogins\" : 3 , \"password\" : \"5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8\" , \"groups\" : [ \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-4321\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-7654\"}]}");
+		records.add(
+				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
+		records.add(
+				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e2334a0b99454\"} , \"username\" : \"francol\" , \"firstName\" : \"Franco\" , \"name\" : \"Lawrence\" , \"email\" : \"franco.lawrence@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1979-12-01T23:00:00Z\"} , \"noOfLogins\" : 3 , \"password\" : \"5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8\" , \"groups\" : [ \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-4321\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-7654\"}]}");
 
 		return new ExtDirectRawJsonStoreResult(2l, records, Boolean.TRUE);
 	}

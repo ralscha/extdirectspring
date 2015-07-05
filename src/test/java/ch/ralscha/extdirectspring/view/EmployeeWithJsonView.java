@@ -15,9 +15,9 @@
  */
 package ch.ralscha.extdirectspring.view;
 
-import ch.ralscha.extdirectspring.bean.JsonViewHint;
-
 import com.fasterxml.jackson.annotation.JsonView;
+
+import ch.ralscha.extdirectspring.bean.JsonViewHint;
 
 public class EmployeeWithJsonView extends JsonViewHint {
 	private Long id;

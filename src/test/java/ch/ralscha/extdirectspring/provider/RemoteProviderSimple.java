@@ -190,11 +190,10 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod
-	public Map<String, Object> method14(
-			@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
-			final String normalParameter, HttpServletRequest request, @DateTimeFormat(
-					iso = ISO.DATE) LocalDate aDate, @NumberFormat(
-					style = NumberFormat.Style.PERCENT) BigDecimal percent) {
+	public Map<String, Object> method14(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
+			final String normalParameter, HttpServletRequest request,
+			@DateTimeFormat(iso = ISO.DATE) LocalDate aDate,
+			@NumberFormat(style = NumberFormat.Style.PERCENT) BigDecimal percent) {
 
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("endDate", endDate);
@@ -216,8 +215,8 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod
-	public String method17(
-			@RequestHeader(value = "anotherName", defaultValue = "default") String header) {
+	public String method17(@RequestHeader(value = "anotherName",
+			defaultValue = "default") String header) {
 		return header;
 	}
 

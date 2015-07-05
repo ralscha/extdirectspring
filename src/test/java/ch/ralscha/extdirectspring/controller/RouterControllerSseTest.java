@@ -88,8 +88,8 @@ public class RouterControllerSseTest {
 		SSEvent event = events.get(0);
 
 		assertThat(event.getEvent()).isEqualTo("error");
-		assertThat(event.getComment()).isEqualTo(
-				"Bean or Method 'sseProviderXY.message1' not found");
+		assertThat(event.getComment())
+				.isEqualTo("Bean or Method 'sseProviderXY.message1' not found");
 		assertThat(event.getData()).isEqualTo("Server Error");
 		assertThat(event.getId()).isNull();
 		assertThat(event.getRetry()).isNull();
@@ -675,8 +675,8 @@ public class RouterControllerSseTest {
 
 		assertThat(event.getEvent()).isEqualTo("messageCookieValue5");
 		assertThat(event.getComment()).isEqualTo("comment of message null");
-		assertThat(event.getData()).isEqualTo(
-				"aRequestHeader;null;default1;default2;lastCookie");
+		assertThat(event.getData())
+				.isEqualTo("aRequestHeader;null;default1;default2;lastCookie");
 		assertThat(event.getId()).isEqualTo("122");
 		assertThat(event.getRetry()).isNull();
 	}
@@ -700,8 +700,8 @@ public class RouterControllerSseTest {
 
 		assertThat(event.getEvent()).isEqualTo("messageCookieValue5");
 		assertThat(event.getComment()).isEqualTo("comment of message 33");
-		assertThat(event.getData()).isEqualTo(
-				"aRequestHeader;33;default1;2ndCookie;lastCookie");
+		assertThat(event.getData())
+				.isEqualTo("aRequestHeader;33;default1;2ndCookie;lastCookie");
 		assertThat(event.getId()).isEqualTo("122");
 		assertThat(event.getRetry()).isNull();
 	}

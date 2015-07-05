@@ -40,10 +40,10 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.FormInfo;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -89,9 +89,9 @@ public class RouterControllerFormPostJsonTest {
 
 		MvcResult resultMvc = null;
 		try {
-			resultMvc = ControllerUtil.performRouterRequest(mockMvc, ControllerUtil
-					.createEdsRequest("formInfoController3", "updateInfoJsonDirect", 14,
-							formInfo));
+			resultMvc = ControllerUtil.performRouterRequest(mockMvc,
+					ControllerUtil.createEdsRequest("formInfoController3",
+							"updateInfoJsonDirect", 14, formInfo));
 		}
 		catch (JsonProcessingException e) {
 			fail("perform post to /router" + e.getMessage());
@@ -100,8 +100,8 @@ public class RouterControllerFormPostJsonTest {
 			fail("perform post to /router" + e.getMessage());
 		}
 
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(resultMvc
-				.getResponse().getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(resultMvc.getResponse().getContentAsByteArray());
 		assertThat(responses).hasSize(1);
 
 		ExtDirectResponse edsResponse = responses.get(0);
@@ -129,9 +129,9 @@ public class RouterControllerFormPostJsonTest {
 
 		MvcResult resultMvc = null;
 		try {
-			resultMvc = ControllerUtil.performRouterRequest(mockMvc, ControllerUtil
-					.createEdsRequest("formInfoController3", "updateInfoJsonDirectError",
-							14, formInfo));
+			resultMvc = ControllerUtil.performRouterRequest(mockMvc,
+					ControllerUtil.createEdsRequest("formInfoController3",
+							"updateInfoJsonDirectError", 14, formInfo));
 		}
 		catch (JsonProcessingException e) {
 			fail("perform post to /router" + e.getMessage());
@@ -140,8 +140,8 @@ public class RouterControllerFormPostJsonTest {
 			fail("perform post to /router" + e.getMessage());
 		}
 
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(resultMvc
-				.getResponse().getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(resultMvc.getResponse().getContentAsByteArray());
 		assertThat(responses).hasSize(1);
 
 		ExtDirectResponse edsResponse = responses.get(0);

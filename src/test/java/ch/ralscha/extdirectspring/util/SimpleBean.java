@@ -15,10 +15,10 @@
  */
 package ch.ralscha.extdirectspring.util;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 class SimpleBean {
 

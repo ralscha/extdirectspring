@@ -58,7 +58,8 @@ public class RemoteProviderStoreModifyArray {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public Row[] update2(Locale locale, @RequestParam(value = "id") int id, List<Row> rows) {
+	public Row[] update2(Locale locale, @RequestParam(value = "id") int id,
+			List<Row> rows) {
 		assertThat(id).isEqualTo(10);
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 		return rows.toArray(new Row[rows.size()]);
@@ -75,8 +76,8 @@ public class RemoteProviderStoreModifyArray {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group2")
 	public Row[] update4(
-			@RequestParam(value = "id", required = false) Integer id,
-			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate yesterday,
+			@RequestParam(value = "id", required = false) Integer id, @RequestParam(
+					required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate yesterday,
 			final List<Row> rows) {
 
 		if (id == null) {

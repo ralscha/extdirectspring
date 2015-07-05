@@ -96,8 +96,8 @@ public class RouterControllerFormLoadTest {
 		assertThat(info.getAge()).isEqualTo(31);
 		assertThat(info.getName()).isEqualTo("Bob");
 		assertThat(info.getSalary()).isEqualTo(new BigDecimal("10000.55"));
-		assertThat(info.getBirthday()).isEqualTo(
-				new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime());
+		assertThat(info.getBirthday())
+				.isEqualTo(new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime());
 	}
 
 	@Test
@@ -113,8 +113,8 @@ public class RouterControllerFormLoadTest {
 						ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
-		FormInfo formInfo = ControllerUtil
-				.convertValue(wrapper.getData(), FormInfo.class);
+		FormInfo formInfo = ControllerUtil.convertValue(wrapper.getData(),
+				FormInfo.class);
 		assertThat(formInfo.getResult()).isEqualTo("true;true;true;en");
 	}
 
@@ -128,8 +128,8 @@ public class RouterControllerFormLoadTest {
 
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
-		FormInfo formInfo = ControllerUtil
-				.convertValue(wrapper.getData(), FormInfo.class);
+		FormInfo formInfo = ControllerUtil.convertValue(wrapper.getData(),
+				FormInfo.class);
 		assertThat(formInfo.getResult()).isEqualTo("id=12;en");
 	}
 
@@ -140,8 +140,8 @@ public class RouterControllerFormLoadTest {
 						ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
-		FormInfo formInfo = ControllerUtil
-				.convertValue(wrapper.getData(), FormInfo.class);
+		FormInfo formInfo = ControllerUtil.convertValue(wrapper.getData(),
+				FormInfo.class);
 		assertThat(formInfo.getResult()).isEqualTo("1;true");
 	}
 
@@ -215,8 +215,8 @@ public class RouterControllerFormLoadTest {
 		sb.replace(sb.length() - 1, sb.length(), "]");
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, sb.toString());
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result
-				.getResponse().getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(6);
 		ExtDirectResponse resp = responses.get(0);
@@ -257,7 +257,8 @@ public class RouterControllerFormLoadTest {
 		assertThat(resp.getWhere()).isNull();
 	}
 
-	private static void checkFormLoadResult(ExtDirectResponse resp, double back, int tid) {
+	private static void checkFormLoadResult(ExtDirectResponse resp, double back,
+			int tid) {
 		assertThat(resp.getAction()).isEqualTo("remoteProviderFormLoad");
 		assertThat(resp.getMethod()).isEqualTo("method1");
 		assertThat(resp.getTid()).isEqualTo(tid);
@@ -278,8 +279,8 @@ public class RouterControllerFormLoadTest {
 		assertThat(info.getAge()).isEqualTo(31);
 		assertThat(info.getName()).isEqualTo("Bob");
 		assertThat(info.getSalary()).isEqualTo(new BigDecimal("10000.55"));
-		assertThat(info.getBirthday()).isEqualTo(
-				new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime());
+		assertThat(info.getBirthday())
+				.isEqualTo(new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime());
 	}
 
 	private static void checkNoParametersResponse(ExtDirectResponse resp, int tid) {

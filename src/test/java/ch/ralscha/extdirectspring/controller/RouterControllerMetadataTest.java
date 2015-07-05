@@ -38,12 +38,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad.Node;
 import ch.ralscha.extdirectspring.provider.Row;
-
-import com.fasterxml.jackson.core.type.TypeReference;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -93,8 +93,8 @@ public class RouterControllerMetadataTest {
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
-				mockMvc, "remoteProviderMetadata", "method1", null, null, readRequest);
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderMetadata", "method1", null, null, readRequest);
 	}
 
 	@Test
@@ -190,8 +190,8 @@ public class RouterControllerMetadataTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
-				mockMvc, "remoteProviderMetadata", "method5", null,
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderMetadata", "method5", null,
 				new TypeReference<ExtDirectStoreResult<Row>>() {
 					// nothing here
 				}, readRequest);
@@ -230,8 +230,8 @@ public class RouterControllerMetadataTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
-				mockMvc, "remoteProviderMetadata", "method6", null,
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderMetadata", "method6", null,
 				new TypeReference<ExtDirectStoreResult<Row>>() {
 					// nothing here
 				}, readRequest);
@@ -293,13 +293,13 @@ public class RouterControllerMetadataTest {
 
 	private static void executeUpdate(MockMvc mockMvc, String action, String method,
 			Map<String, Object> storeRequest, Map<String, Object> metadata)
-			throws Exception {
+					throws Exception {
 		String edRequest = ControllerUtil.createEdsRequest(action, method, false, 1,
 				storeRequest, metadata);
 
 		MvcResult mvcResult = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(mvcResult
-				.getResponse().getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(mvcResult.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -320,8 +320,8 @@ public class RouterControllerMetadataTest {
 			assertThat(storeResponse.get(0).getId()).isEqualTo(10);
 			assertThat(storeResponse.get(0).getName()).isEqualTo("Ralph");
 			assertThat(storeResponse.get(0).isAdmin()).isTrue();
-			assertThat(storeResponse.get(0).getSalary()).isEqualTo(
-					new BigDecimal("109.55"));
+			assertThat(storeResponse.get(0).getSalary())
+					.isEqualTo(new BigDecimal("109.55"));
 		}
 		else {
 			Row storeResponse = ControllerUtil.convertValue(result, Row.class);

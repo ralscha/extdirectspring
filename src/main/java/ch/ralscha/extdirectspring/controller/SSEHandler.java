@@ -123,12 +123,12 @@ public class SSEHandler {
 
 			result = new SSEvent();
 			result.setEvent("error");
-			result.setData(configurationService.getConfiguration()
-					.getDefaultExceptionMessage());
+			result.setData(
+					configurationService.getConfiguration().getDefaultExceptionMessage());
 
 			if (configurationService.getConfiguration().isSendStacktrace()) {
-				result.setComment("Bean or Method '" + beanName + "." + method
-						+ "' not found");
+				result.setComment(
+						"Bean or Method '" + beanName + "." + method + "' not found");
 			}
 		}
 

@@ -31,9 +31,10 @@ import ch.ralscha.extdirectspring.controller.SSEWriter;
  */
 enum SupportedParameters {
 
-	SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class), SESSION(
-			HttpSession.class), LOCALE(Locale.class), PRINCIPAL(Principal.class), SSE_WRITER(
-			SSEWriter.class);
+	SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(
+			ServletResponse.class), SESSION(HttpSession.class), LOCALE(
+					Locale.class), PRINCIPAL(Principal.class), SSE_WRITER(
+							SSEWriter.class);
 
 	private final Class<?> clazz;
 

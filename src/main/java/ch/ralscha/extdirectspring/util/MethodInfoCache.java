@@ -29,8 +29,8 @@ import org.springframework.stereotype.Service;
  * A simple cache for methods with key beanName/methodName
  */
 @Service
-public class MethodInfoCache implements
-		Iterable<Map.Entry<MethodInfoCache.Key, MethodInfo>> {
+public class MethodInfoCache
+		implements Iterable<Map.Entry<MethodInfoCache.Key, MethodInfo>> {
 
 	private final Map<Key, MethodInfo> cache;
 

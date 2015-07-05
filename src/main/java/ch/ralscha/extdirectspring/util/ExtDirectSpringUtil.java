@@ -99,9 +99,8 @@ public final class ExtDirectSpringUtil {
 	 * @throws InvocationTargetException
 	 */
 	public static Object invoke(ApplicationContext context, String beanName,
-			MethodInfo methodInfo, final Object[] params)
-			throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
+			MethodInfo methodInfo, final Object[] params) throws IllegalArgumentException,
+					IllegalAccessException, InvocationTargetException {
 		Object bean = context.getBean(beanName);
 
 		Method handlerMethod = methodInfo.getMethod();
@@ -128,7 +127,7 @@ public final class ExtDirectSpringUtil {
 	public static Object invoke(HttpServletRequest request, HttpServletResponse response,
 			Locale locale, ApplicationContext context, ExtDirectRequest directRequest,
 			ParametersResolver parametersResolver, MethodInfoCache cache)
-			throws Exception {
+					throws Exception {
 
 		MethodInfo methodInfo = cache.get(directRequest.getAction(),
 				directRequest.getMethod());
@@ -194,7 +193,7 @@ public final class ExtDirectSpringUtil {
 	 */
 	public static void handleCacheableResponse(HttpServletRequest request,
 			HttpServletResponse response, byte[] data, String contentType)
-			throws IOException {
+					throws IOException {
 		String ifNoneMatch = request.getHeader("If-None-Match");
 		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + "\"";
 

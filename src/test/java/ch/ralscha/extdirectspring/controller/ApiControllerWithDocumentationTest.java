@@ -89,8 +89,8 @@ public class ApiControllerWithDocumentationTest {
 		ActionDoc doc = callApi("method1");
 
 		assertThat(doc.isDeprecated()).isTrue();
-		assertThat(doc.getMethodComment()).isEqualTo(
-				"this method is used to test the documentation generation");
+		assertThat(doc.getMethodComment())
+				.isEqualTo("this method is used to test the documentation generation");
 		assertThat(doc.getAuthor()).isEqualTo("dbs");
 		assertThat(doc.getVersion()).isEqualTo("0.1");
 		assertThat(doc.getParameters()).hasSize(5);
@@ -275,8 +275,8 @@ public class ApiControllerWithDocumentationTest {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns")
 				.actionNs("actionns").group("doc")
 				.configuration(configurationService.getConfiguration()).build();
-		MockHttpServletRequestBuilder request = get("/api-debug-doc.js").accept(
-				MediaType.ALL).characterEncoding("UTF-8");
+		MockHttpServletRequestBuilder request = get("/api-debug-doc.js")
+				.accept(MediaType.ALL).characterEncoding("UTF-8");
 		request.param("apiNs", params.getApiNs());
 		request.param("actionNs", params.getActionNs());
 		request.param("group", params.getGroup());
@@ -313,8 +313,8 @@ public class ApiControllerWithDocumentationTest {
 
 			p = block.indexOf(method);
 			if (p != -1) {
-				doc.setMethodComment(block.substring(p + method.length() + 2,
-						block.indexOf('\n', p)));
+				doc.setMethodComment(
+						block.substring(p + method.length() + 2, block.indexOf('\n', p)));
 			}
 
 			Map<String, String> params = new HashMap<String, String>();

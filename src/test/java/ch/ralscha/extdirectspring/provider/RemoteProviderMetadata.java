@@ -39,26 +39,26 @@ public class RemoteProviderMetadata {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "metadata")
 	public ExtDirectStoreResult<Row> method1(ExtDirectStoreReadRequest request,
-			Locale locale, @RequestParam(value = "id") int id, @MetadataParam(
-					value = "mp") String mp) {
+			Locale locale, @RequestParam(value = "id") int id,
+			@MetadataParam(value = "mp") String mp) {
 		assertThat(id).isEqualTo(10);
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
 		assertThat(request.getParams().size()).isEqualTo(1);
 		assertThat(request.getParams()).contains(entry("id", 10));
 
-		return RemoteProviderStoreRead.createExtDirectStoreResult(request, ":" + id + ";"
-				+ mp + ";" + locale);
+		return RemoteProviderStoreRead.createExtDirectStoreResult(request,
+				":" + id + ";" + mp + ";" + locale);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "metadata")
-	public ExtDirectStoreResult<Row> method2(@MetadataParam(value = "id",
-			defaultValue = "1") int id, final HttpServletRequest servletRequest,
-			ExtDirectStoreReadRequest request) {
+	public ExtDirectStoreResult<Row> method2(
+			@MetadataParam(value = "id", defaultValue = "1") int id,
+			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
-		return RemoteProviderStoreRead.createExtDirectStoreResult(request, ":" + id + ";"
-				+ (servletRequest != null));
+		return RemoteProviderStoreRead.createExtDirectStoreResult(request,
+				":" + id + ";" + (servletRequest != null));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "metadata")
@@ -96,8 +96,8 @@ public class RemoteProviderMetadata {
 		}
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
-		return RemoteProviderStoreRead.createExtDirectStoreResult(request, ":" + id + ";"
-				+ locale);
+		return RemoteProviderStoreRead.createExtDirectStoreResult(request,
+				":" + id + ";" + locale);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "metadata")
@@ -114,8 +114,8 @@ public class RemoteProviderMetadata {
 		}
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
-		return RemoteProviderStoreRead.createExtDirectStoreResult(request, ":" + i + ";"
-				+ locale);
+		return RemoteProviderStoreRead.createExtDirectStoreResult(request,
+				":" + i + ";" + locale);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "metadata")
@@ -127,8 +127,9 @@ public class RemoteProviderMetadata {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "metadata")
-	public List<Row> update2(List<Row> rows, @MetadataParam(value = "id",
-			defaultValue = "1") int id, final HttpServletRequest servletRequest) {
+	public List<Row> update2(List<Row> rows,
+			@MetadataParam(value = "id", defaultValue = "1") int id,
+			final HttpServletRequest servletRequest) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
 		return rows;
@@ -144,22 +145,22 @@ public class RemoteProviderMetadata {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "metadata")
-	public List<Node> treeLoad1(@RequestParam("node") String node, @RequestParam(
-			defaultValue = "defaultValue") String foo,
+	public List<Node> treeLoad1(@RequestParam("node") String node,
+			@RequestParam(defaultValue = "defaultValue") String foo,
 			@MetadataParam(value = "id") Integer id) {
 		return RemoteProviderTreeLoad.createTreeList(node, ":" + foo + ";" + id);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "metadata")
-	public List<Node> treeLoad2(@RequestParam("node") String node, @RequestParam(
-			defaultValue = "defaultValue") String foo, @MetadataParam(value = "id",
-			defaultValue = "22") Integer id) {
+	public List<Node> treeLoad2(@RequestParam("node") String node,
+			@RequestParam(defaultValue = "defaultValue") String foo,
+			@MetadataParam(value = "id", defaultValue = "22") Integer id) {
 		return RemoteProviderTreeLoad.createTreeList(node, ":" + foo + ";" + id);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, group = "metadata")
-	public List<Node> treeLoad3(@RequestParam("node") String node, @RequestParam(
-			defaultValue = "defaultValue") String foo,
+	public List<Node> treeLoad3(@RequestParam("node") String node,
+			@RequestParam(defaultValue = "defaultValue") String foo,
 			@MetadataParam(value = "id") Optional<Integer> id) {
 		return RemoteProviderTreeLoad.createTreeList(node,
 				":" + foo + ";" + id.orElse(23));

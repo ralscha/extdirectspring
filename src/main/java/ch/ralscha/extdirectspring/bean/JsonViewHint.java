@@ -15,9 +15,9 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 
 /**
  * Specifies a Json View (filter) that Jackson uses to serialize the response. A model

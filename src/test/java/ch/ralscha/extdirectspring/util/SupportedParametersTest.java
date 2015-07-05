@@ -53,27 +53,22 @@ public class SupportedParametersTest {
 
 		assertThat(
 				SupportedParameters.resolveParameter(String.class, request, response, en))
-				.isNull();
-		assertThat(
-				SupportedParameters.resolveParameter(MockHttpServletRequest.class,
-						request, response, en)).isSameAs(request);
-		assertThat(
-				SupportedParameters.resolveParameter(MockHttpSession.class, request,
-						response, en)).isSameAs(request.getSession());
-		assertThat(
-				SupportedParameters.resolveParameter(Principal.class, request, response,
-						en)).isSameAs(request.getUserPrincipal());
-		assertThat(
-				SupportedParameters.resolveParameter(MockHttpServletResponse.class,
-						request, response, en)).isSameAs(response);
+						.isNull();
+		assertThat(SupportedParameters.resolveParameter(MockHttpServletRequest.class,
+				request, response, en)).isSameAs(request);
+		assertThat(SupportedParameters.resolveParameter(MockHttpSession.class, request,
+				response, en)).isSameAs(request.getSession());
+		assertThat(SupportedParameters.resolveParameter(Principal.class, request,
+				response, en)).isSameAs(request.getUserPrincipal());
+		assertThat(SupportedParameters.resolveParameter(MockHttpServletResponse.class,
+				request, response, en)).isSameAs(response);
 		assertThat(
 				SupportedParameters.resolveParameter(Locale.class, request, response, en))
-				.isSameAs(en);
+						.isSameAs(en);
 
 		SSEWriter sseWriter = new SSEWriter(response);
-		assertThat(
-				SupportedParameters.resolveParameter(SSEWriter.class, request, response,
-						en, sseWriter)).isSameAs(sseWriter);
+		assertThat(SupportedParameters.resolveParameter(SSEWriter.class, request,
+				response, en, sseWriter)).isSameAs(sseWriter);
 	}
 
 }

@@ -65,8 +65,7 @@ public class ExtDirectSpringUtilTest {
 		request.addHeader("Content-Length", "8277");
 		request.addHeader("Cache-Control", "max-age=0");
 		request.addHeader("Origin", "http://eds.rasc.ch");
-		request.addHeader(
-				"User-Agent",
+		request.addHeader("User-Agent",
 				"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.75 Safari/537.1");
 		request.addHeader("Content-Type",
 				"multipart/form-data; boundary=----WebKitFormBoundaryux6D0mMa2PlsY016");
@@ -82,8 +81,7 @@ public class ExtDirectSpringUtilTest {
 		request.addHeader("Content-Length", "165");
 		request.addHeader("Origin", "http://eds.rasc.ch");
 		request.addHeader("X-Requested-With", "XMLHttpRequest");
-		request.addHeader(
-				"User-Agent",
+		request.addHeader("User-Agent",
 				"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.75 Safari/537.1");
 		request.addHeader("Content-Type",
 				"application/x-www-form-urlencoded; charset=UTF-8");
@@ -95,8 +93,7 @@ public class ExtDirectSpringUtilTest {
 		request.setRequestURI("/demo/controller/router");
 		request.addHeader("Host", "eds.rasc.ch");
 		request.addHeader("Connection", "keep-alive");
-		request.addHeader(
-				"User-Agent",
+		request.addHeader("User-Agent",
 				"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.75 Safari/537.1");
 
 		assertThat(ExtDirectSpringUtil.isMultipart(request)).isFalse();
@@ -122,13 +119,13 @@ public class ExtDirectSpringUtilTest {
 			String etag, int month) {
 		assertThat(response.getHeaderNames()).hasSize(noOfHeaders);
 		assertThat(response.getHeader("ETag")).isEqualTo(etag);
-		assertThat(response.getHeader("Cache-Control")).isEqualTo(
-				"public, max-age=" + month * 30 * 24 * 60 * 60);
+		assertThat(response.getHeader("Cache-Control"))
+				.isEqualTo("public, max-age=" + month * 30 * 24 * 60 * 60);
 
 		Long expiresMillis = (Long) response.getHeaderValue("Expires");
 		DateTime expires = new DateTime(expiresMillis, DateTimeZone.UTC);
-		DateTime inSixMonths = DateTime.now(DateTimeZone.UTC).plusSeconds(
-				month * 30 * 24 * 60 * 60);
+		DateTime inSixMonths = DateTime.now(DateTimeZone.UTC)
+				.plusSeconds(month * 30 * 24 * 60 * 60);
 		assertThat(expires.getYear()).isEqualTo(inSixMonths.getYear());
 		assertThat(expires.getMonthOfYear()).isEqualTo(inSixMonths.getMonthOfYear());
 		assertThat(expires.getDayOfMonth()).isEqualTo(inSixMonths.getDayOfMonth());

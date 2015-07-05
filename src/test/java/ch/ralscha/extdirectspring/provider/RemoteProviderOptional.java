@@ -74,23 +74,25 @@ public class RemoteProviderOptional {
 	}
 
 	@ExtDirectMethod(group = "optional")
-	public String method6(
-			@RequestHeader(value = "anotherName", defaultValue = "default") Optional<String> header) {
+	public String method6(@RequestHeader(value = "anotherName",
+			defaultValue = "default") Optional<String> header) {
 		return header.orElse("another default");
 	}
 
 	@ExtDirectMethod(group = "optional", synchronizeOnSession = true)
-	public String method7(
-			@RequestHeader(defaultValue = "default", required = false) Optional<String> header) {
+	public String method7(@RequestHeader(defaultValue = "default",
+			required = false) Optional<String> header) {
 		return header.orElse("this is the default");
 	}
 
 	@ExtDirectMethod(group = "optional", synchronizeOnSession = true)
 	public String method8(
-			@RequestHeader(defaultValue = "default1", required = false) Optional<String> header1,
-			final Optional<Integer> id, @RequestHeader(defaultValue = "default2",
-					required = false) Optional<String> header2, @RequestHeader(
-					value = "last") Optional<String> header3) {
+			@RequestHeader(defaultValue = "default1",
+					required = false) Optional<String> header1,
+			final Optional<Integer> id,
+			@RequestHeader(defaultValue = "default2",
+					required = false) Optional<String> header2,
+			@RequestHeader(value = "last") Optional<String> header3) {
 		return id.get() + ";" + header1.get() + ";" + header2.get() + ";" + header3.get();
 	}
 
@@ -165,7 +167,8 @@ public class RemoteProviderOptional {
 	}
 
 	@ExtDirectMethod(group = "optional")
-	public String method18(@CookieValue(value = "nameOfTheCookie") Optional<String> aStr) {
+	public String method18(
+			@CookieValue(value = "nameOfTheCookie") Optional<String> aStr) {
 		return aStr.orElse("default");
 	}
 
@@ -224,13 +227,13 @@ public class RemoteProviderOptional {
 	}
 
 	@OptionalNamedMethod
-	public Optional<ResultObject> namedMethod2(HttpSession session, @RequestParam(
-			value = "lastName") Optional<String> name,
+	public Optional<ResultObject> namedMethod2(HttpSession session,
+			@RequestParam(value = "lastName") Optional<String> name,
 			@RequestParam(value = "theAge") Optional<Integer> age,
 			Optional<Boolean> active) {
 		assertThat(session).isNotNull();
-		return Optional.of(new ResultObject(name.get(), age.orElse(21), active
-				.orElse(true)));
+		return Optional
+				.of(new ResultObject(name.get(), age.orElse(21), active.orElse(true)));
 	}
 
 	@OptionalNamedMethod
@@ -267,8 +270,8 @@ public class RemoteProviderOptional {
 			@RequestHeader Optional<String> requestHeader) {
 		SSEvent event = new SSEvent();
 		event.setId("3");
-		event.setData(id.orElse(-1) + ";"
-				+ requestHeader.orElse("defaultRequestHeaderValue"));
+		event.setData(
+				id.orElse(-1) + ";" + requestHeader.orElse("defaultRequestHeaderValue"));
 		return event;
 	}
 
@@ -295,8 +298,7 @@ public class RemoteProviderOptional {
 	public ExtDirectStoreResult<Row> storeRead2(ExtDirectStoreReadRequest request,
 			@CookieValue Optional<String> cookie,
 			@RequestHeader Optional<String> requestHeader) {
-		return RemoteProviderStoreRead.createExtDirectStoreResult(
-				request,
+		return RemoteProviderStoreRead.createExtDirectStoreResult(request,
 				":" + cookie.orElse("defaultCookie") + ":"
 						+ requestHeader.orElse("defaultHeader"));
 	}
@@ -307,8 +309,7 @@ public class RemoteProviderOptional {
 			@RequestParam Optional<String> foo, @CookieValue Optional<String> theCookie,
 			final HttpSession session, Locale locale, Principal principal) {
 
-		return RemoteProviderTreeLoad.createTreeList(
-				node.get(),
+		return RemoteProviderTreeLoad.createTreeList(node.get(),
 				":" + foo.orElse("defaultValue2") + ";"
 						+ theCookie.orElse("defaultCookieValue") + ";"
 						+ (response != null) + ";" + (request != null) + ";"

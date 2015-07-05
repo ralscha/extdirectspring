@@ -44,12 +44,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.provider.Row;
-
-import com.fasterxml.jackson.core.type.TypeReference;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -78,19 +78,18 @@ public class RouterControllerStoreTest {
 		for (int i = 0; i < rows.size(); i += 2) {
 			assertThat(rows.get(i)).isEqualTo(
 					new Row(i, "name: " + i + appendix, true, "" + (1000 + i)));
-			assertThat(rows.get(i + 1)).isEqualTo(
-					new Row(i + 1, "firstname: " + (i + 1) + appendix, false, ""
-							+ (10 + i + 1)));
+			assertThat(rows.get(i + 1)).isEqualTo(new Row(i + 1,
+					"firstname: " + (i + 1) + appendix, false, "" + (10 + i + 1)));
 		}
 	}
 
 	@Test
 	public void testNoArgumentsNoRequestParameters() {
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderStoreRead", "method1", new TypeReference<List<Row>>() {/*
-																					 * nothing
-																					 * here
-																					 */
+				"remoteProviderStoreRead", "method1",
+				new TypeReference<List<Row>>() {/*
+												 * nothing here
+												 */
 				});
 		assert100Rows(rows, "");
 	}
@@ -101,10 +100,10 @@ public class RouterControllerStoreTest {
 		storeRead.setQuery("ralph");
 
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderStoreRead", "method1", new TypeReference<List<Row>>() {/*
-																					 * nothing
-																					 * here
-																					 */
+				"remoteProviderStoreRead", "method1",
+				new TypeReference<List<Row>>() {/*
+												 * nothing here
+												 */
 				}, storeRead);
 		assert100Rows(rows, "");
 	}
@@ -118,10 +117,10 @@ public class RouterControllerStoreTest {
 	@Test
 	public void testSupportedArguments() {
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderStoreRead", "method3", new TypeReference<List<Row>>() {/*
-																					 * nothing
-																					 * here
-																					 */
+				"remoteProviderStoreRead", "method3",
+				new TypeReference<List<Row>>() {/*
+												 * nothing here
+												 */
 				});
 		assert100Rows(rows, ":true;true:true;en");
 	}
@@ -130,7 +129,8 @@ public class RouterControllerStoreTest {
 	public void testWithExtDirectStoreReadRequest() throws Exception {
 		Map<String, Object> storeRead = new LinkedHashMap<String, Object>();
 		storeRead.put("query", "name");
-		ExtDirectStoreResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
+		ExtDirectStoreResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(
+				storeRead);
 		assertThat(storeResponse.getTotal()).isEqualTo(50L);
 		assertThat(storeResponse.getRecords()).hasSize(50);
 		for (Row row : storeResponse.getRecords()) {
@@ -264,7 +264,8 @@ public class RouterControllerStoreTest {
 		storeRead.put("group", groups);
 		storeRead.put("limit", "10");
 		storeRead.put("start", "10");
-		ExtDirectStoreResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
+		ExtDirectStoreResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(
+				storeRead);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(10);
@@ -310,7 +311,8 @@ public class RouterControllerStoreTest {
 		storeRead.put("limit", "10");
 		storeRead.put("start", "10");
 		storeRead.put("page", "2");
-		ExtDirectStoreResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
+		ExtDirectStoreResult<Row> storeResponse = executeWithExtDirectStoreReadRequest(
+				storeRead);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(100L);
 		assertThat(storeResponse.getRecords()).hasSize(10);
@@ -433,8 +435,8 @@ public class RouterControllerStoreTest {
 				"method4", 1, storeRead);
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result
-				.getResponse().getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -473,8 +475,8 @@ public class RouterControllerStoreTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
-				mockMvc, "remoteProviderStoreRead", "method5", null, null, readRequest);
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderStoreRead", "method5", null, null, readRequest);
 	}
 
 	@Test
@@ -573,8 +575,8 @@ public class RouterControllerStoreTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
-				mockMvc, "remoteProviderStoreRead", "method10",
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderStoreRead", "method10",
 				new TypeReference<ExtDirectStoreResult<Row>>() {
 					// nothing here
 				}, readRequest);
@@ -617,8 +619,8 @@ public class RouterControllerStoreTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
-				mockMvc, "remoteProviderStoreRead", "method11",
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderStoreRead", "method11",
 				new TypeReference<ExtDirectStoreResult<Row>>() {
 					// nothing here
 				}, readRequest);
@@ -627,8 +629,8 @@ public class RouterControllerStoreTest {
 		assertThat(storeResponse.getRecords()).hasSize(50);
 		ix = 0;
 		for (Row row : storeResponse.getRecords()) {
-			assertThat(row.getName()).startsWith(
-					"name: " + ix + ":defaultCookie:defaultHeader");
+			assertThat(row.getName())
+					.startsWith("name: " + ix + ":defaultCookie:defaultHeader");
 			ix += 2;
 		}
 	}
@@ -640,8 +642,8 @@ public class RouterControllerStoreTest {
 				"methodMetadata", 1, new HashMap<String, Object>());
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result
-				.getResponse().getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);

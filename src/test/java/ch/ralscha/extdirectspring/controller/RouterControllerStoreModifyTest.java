@@ -39,10 +39,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.Row;
-
-import com.fasterxml.jackson.core.type.TypeReference;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -106,8 +106,8 @@ public class RouterControllerStoreModifyTest {
 	@Test
 	public void testCreateWithDataSingle() {
 		Row row = (Row) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderStoreModifySingle", "create1", Row.class, new Row(10,
-						"Ralph", true, "109.55"));
+				"remoteProviderStoreModifySingle", "create1", Row.class,
+				new Row(10, "Ralph", true, "109.55"));
 		assertThat(row.getId()).isEqualTo(10);
 	}
 
@@ -136,8 +136,8 @@ public class RouterControllerStoreModifyTest {
 	@Test
 	public void testCreateWithDataAndSupportedArgumentsSingle() {
 		Row row = (Row) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderStoreModifySingle", "create2", Row.class, new Row(10,
-						"Ralph", false, "109.55"));
+				"remoteProviderStoreModifySingle", "create2", Row.class,
+				new Row(10, "Ralph", false, "109.55"));
 		assertThat(row.getId()).isEqualTo(10);
 	}
 
@@ -257,8 +257,8 @@ public class RouterControllerStoreModifyTest {
 				storeRequest);
 
 		MvcResult mvcResult = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(mvcResult
-				.getResponse().getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(mvcResult.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -279,8 +279,8 @@ public class RouterControllerStoreModifyTest {
 			assertThat(storeResponse.get(0).getId()).isEqualTo(10);
 			assertThat(storeResponse.get(0).getName()).isEqualTo("Ralph");
 			assertThat(storeResponse.get(0).isAdmin()).isTrue();
-			assertThat(storeResponse.get(0).getSalary()).isEqualTo(
-					new BigDecimal("109.55"));
+			assertThat(storeResponse.get(0).getSalary())
+					.isEqualTo(new BigDecimal("109.55"));
 		}
 		else {
 			Row storeResponse = ControllerUtil.convertValue(result, Row.class);

@@ -216,9 +216,9 @@ public class Configuration {
 	/**
 	 * Sets the timeout in milliseconds for remote calls. This parameter is part of the
 	 * configuration object api.js sends to the client and configures the timeout property
-	 * of the <a href=
-	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.direct.RemotingProvider"
-	 * >RemotingProvider</a>.
+	 * of the
+	 * <a href= "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.direct.RemotingProvider" >
+	 * RemotingProvider</a>.
 	 *
 	 * @param timeout new timeout value
 	 */
@@ -233,9 +233,9 @@ public class Configuration {
 	/**
 	 * Sets the number of times the client will try to send a message to the server before
 	 * throwing a failure. Default value is 1. This parameter is part of the configuration
-	 * object api.js sends to the client and configures the maxRetries property of the <a
-	 * href= "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.direct.RemotingProvider"
-	 * >RemotingProvider</a>.
+	 * object api.js sends to the client and configures the maxRetries property of the
+	 * <a href= "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.direct.RemotingProvider" >
+	 * RemotingProvider</a>.
 	 *
 	 * @param maxRetries new number of max retries
 	 */
@@ -255,9 +255,9 @@ public class Configuration {
 	 * reducing the amount of round trips that have to be made to the server.
 	 * <p>
 	 * This parameter is part of the configuration object api.js sends to the client and
-	 * configures the enableBuffer property of the <a href=
-	 * "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.direct.RemotingProvider"
-	 * >RemotingProvider</a>.
+	 * configures the enableBuffer property of the
+	 * <a href= "http://docs.sencha.com/ext-js/4-2/#!/api/Ext.direct.RemotingProvider" >
+	 * RemotingProvider</a>.
 	 * <p>
 	 * Defaults to: 10
 	 *

@@ -95,8 +95,8 @@ public class UserControllerTest extends JettyTest {
 
 			Map<String, Object> errors = (Map<String, Object>) result.get("errors");
 			assertThat(errors).hasSize(1);
-			assertThat((List<String>) errors.get("email")).containsOnly(
-					"may not be empty");
+			assertThat((List<String>) errors.get("email"))
+					.containsOnly("may not be empty");
 		}
 		finally {
 			IOUtils.closeQuietly(response);

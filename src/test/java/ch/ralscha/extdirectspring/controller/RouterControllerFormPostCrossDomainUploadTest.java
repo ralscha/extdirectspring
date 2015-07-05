@@ -80,8 +80,8 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 		assertThat(response).startsWith(prefix).endsWith(suffix);
 		String json = response.substring(prefix.length(), response.indexOf(suffix));
 
-		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(json
-				.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
+		ExtDirectResponse edsResponse = ControllerUtil
+				.readDirectResponse(json.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
 
 		assertThat(edsResponse.getType()).isEqualTo("rpc");
 		assertThat(edsResponse.getMessage()).isNull();

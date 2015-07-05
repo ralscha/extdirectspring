@@ -33,11 +33,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.provider.Row;
-
-import com.fasterxml.jackson.core.type.TypeReference;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -61,8 +61,8 @@ public class RouterControllerStoreAlwaysWrapResponseTest {
 				.sendAndReceive(mockMvc, "remoteProviderStoreRead", "method1",
 						new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
 						});
-		RouterControllerStoreTest
-				.assert100Rows(new ArrayList<Row>(rows.getRecords()), "");
+		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()),
+				"");
 	}
 
 	@Test
@@ -75,8 +75,8 @@ public class RouterControllerStoreAlwaysWrapResponseTest {
 				.sendAndReceive(mockMvc, "remoteProviderStoreRead", "method1",
 						new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
 						}, storeRead);
-		RouterControllerStoreTest
-				.assert100Rows(new ArrayList<Row>(rows.getRecords()), "");
+		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()),
+				"");
 	}
 
 	@Test

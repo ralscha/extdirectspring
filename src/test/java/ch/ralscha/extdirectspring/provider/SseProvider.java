@@ -164,8 +164,8 @@ public class SseProvider {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "group5",
 			synchronizeOnSession = true)
-	public SSEvent messageRequestHeader2(@RequestParam Integer id, @RequestHeader(
-			value = "anotherName", required = true) String header) {
+	public SSEvent messageRequestHeader2(@RequestParam Integer id,
+			@RequestHeader(value = "anotherName", required = true) String header) {
 		SSEvent event = new SSEvent();
 		event.setData(id + ";" + header);
 		return event;
@@ -181,8 +181,8 @@ public class SseProvider {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "group5")
-	public SSEvent messageRequestHeader4(@RequestHeader(defaultValue = "default",
-			required = false) String header) {
+	public SSEvent messageRequestHeader4(
+			@RequestHeader(defaultValue = "default", required = false) String header) {
 		SSEvent event = new SSEvent();
 		event.setEvent("messageRequestHeader4");
 		event.setComment("comment of message " + header);
@@ -191,10 +191,10 @@ public class SseProvider {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "group5")
-	public SSEvent messageRequestHeader5(@RequestHeader(defaultValue = "default1",
-			required = false) String header1, @RequestParam(value = "id",
-			required = false) Integer id, @RequestHeader(defaultValue = "default2",
-			required = false) String header2,
+	public SSEvent messageRequestHeader5(
+			@RequestHeader(defaultValue = "default1", required = false) String header1,
+			@RequestParam(value = "id", required = false) Integer id,
+			@RequestHeader(defaultValue = "default2", required = false) String header2,
 			@RequestHeader(value = "last") String header3) {
 
 		SSEvent event = new SSEvent();
@@ -230,16 +230,16 @@ public class SseProvider {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "group5",
 			synchronizeOnSession = true)
-	public SSEvent messageCookieValue2(@RequestParam Integer id, @CookieValue(
-			value = "anotherName", required = true) String cookie) {
+	public SSEvent messageCookieValue2(@RequestParam Integer id,
+			@CookieValue(value = "anotherName", required = true) String cookie) {
 		SSEvent event = new SSEvent();
 		event.setData(id + ";" + cookie);
 		return event;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "group5")
-	public SSEvent messageCookieValue3(@CookieValue(value = "anotherName",
-			defaultValue = "default") String cookie) {
+	public SSEvent messageCookieValue3(
+			@CookieValue(value = "anotherName", defaultValue = "default") String cookie) {
 		SSEvent event = new SSEvent();
 		event.setEvent("messageCookieValue3");
 		event.setData(cookie);
@@ -247,8 +247,8 @@ public class SseProvider {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "group5")
-	public SSEvent messageCookieValue4(@CookieValue(defaultValue = "default",
-			required = false) String cookie) {
+	public SSEvent messageCookieValue4(
+			@CookieValue(defaultValue = "default", required = false) String cookie) {
 		SSEvent event = new SSEvent();
 		event.setEvent("messageCookieValue4");
 		event.setComment("comment of message " + cookie);
@@ -257,24 +257,25 @@ public class SseProvider {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "group5")
-	public SSEvent messageCookieValue5(@RequestHeader String requestHeader, @CookieValue(
-			defaultValue = "default1", required = false) String cookie1, @RequestParam(
-			value = "id", required = false) Integer id, @CookieValue(
-			defaultValue = "default2", required = false) String cookie2, @CookieValue(
-			value = "last") String cookie3) {
+	public SSEvent messageCookieValue5(@RequestHeader String requestHeader,
+			@CookieValue(defaultValue = "default1", required = false) String cookie1,
+			@RequestParam(value = "id", required = false) Integer id,
+			@CookieValue(defaultValue = "default2", required = false) String cookie2,
+			@CookieValue(value = "last") String cookie3) {
 
 		SSEvent event = new SSEvent();
 		event.setEvent("messageCookieValue5");
 		event.setComment("comment of message " + id);
 		event.setId("122");
-		event.setData(requestHeader + ";" + id + ";" + cookie1 + ";" + cookie2 + ";"
-				+ cookie3);
+		event.setData(
+				requestHeader + ";" + id + ";" + cookie1 + ";" + cookie2 + ";" + cookie3);
 		return event;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "group5")
-	public SSEvent messageCookieValue6(@RequestHeader(required = false,
-			defaultValue = "theHeader") String requestHeader,
+	public SSEvent messageCookieValue6(
+			@RequestHeader(required = false,
+					defaultValue = "theHeader") String requestHeader,
 			@CookieValue Integer intCookie, @CookieValue Boolean booleanCookie) {
 		SSEvent event = new SSEvent();
 		event.setComment("comment");

@@ -115,7 +115,8 @@ public class FormInfo {
 	public FormInfo() {
 	}
 
-	public FormInfo(String name, int age, boolean admin, BigDecimal salary, String result) {
+	public FormInfo(String name, int age, boolean admin, BigDecimal salary,
+			String result) {
 		super();
 		this.name = name;
 		this.age = age;

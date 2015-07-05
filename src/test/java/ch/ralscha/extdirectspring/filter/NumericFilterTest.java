@@ -38,8 +38,8 @@ public class NumericFilterTest {
 
 	@Parameters
 	public static Collection<Object[]> types() {
-		return Arrays.asList(new Object[][] { { "numeric" }, { "int" }, { "float" },
-				{ "number" } });
+		return Arrays.asList(
+				new Object[][] { { "numeric" }, { "int" }, { "float" }, { "number" } });
 	}
 
 	@Parameter

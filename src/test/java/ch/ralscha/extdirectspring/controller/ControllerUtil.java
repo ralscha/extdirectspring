@@ -38,13 +38,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
-import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
-import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
-import ch.ralscha.extdirectspring.bean.SSEvent;
-import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
-import ch.ralscha.extdirectspring.util.JsonHandler;
-
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -53,6 +46,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
+import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
+import ch.ralscha.extdirectspring.bean.SSEvent;
+import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
+import ch.ralscha.extdirectspring.util.JsonHandler;
 
 public class ControllerUtil {
 
@@ -64,7 +64,7 @@ public class ControllerUtil {
 
 	public static ExtDirectPollResponse performPollRequest(MockMvc mockMvc, String bean,
 			String method, String event, Map<String, String> params, HttpHeaders headers)
-			throws Exception {
+					throws Exception {
 		return performPollRequest(mockMvc, bean, method, event, params, headers, null,
 				false);
 	}
@@ -81,7 +81,8 @@ public class ControllerUtil {
 			List<Cookie> cookies, boolean withSession) throws Exception {
 		MockHttpServletRequestBuilder request = post(
 				"/poll/" + bean + "/" + method + "/" + event).accept(MediaType.ALL)
-				.contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
+						.contentType(MediaType.APPLICATION_JSON)
+						.characterEncoding("UTF-8");
 
 		if (cookies != null) {
 			request.cookie(cookies.toArray(new Cookie[cookies.size()]));
@@ -231,18 +232,17 @@ public class ControllerUtil {
 		return null;
 	}
 
-	public static Object sendAndReceive(MockMvc mockMvc, HttpHeaders headers,
-			String bean, String method, Object expectedResultOrType,
-			Object... requestData) {
+	public static Object sendAndReceive(MockMvc mockMvc, HttpHeaders headers, String bean,
+			String method, Object expectedResultOrType, Object... requestData) {
 		return sendAndReceive(mockMvc, false, headers, null, null, bean, method, false,
 				expectedResultOrType, requestData);
 	}
 
 	public static Object sendAndReceive(MockMvc mockMvc, HttpHeaders headers,
-			List<Cookie> cookies, String bean, String method,
-			Object expectedResultOrType, Object... requestData) {
-		return sendAndReceive(mockMvc, false, headers, cookies, null, bean, method,
-				false, expectedResultOrType, requestData);
+			List<Cookie> cookies, String bean, String method, Object expectedResultOrType,
+			Object... requestData) {
+		return sendAndReceive(mockMvc, false, headers, cookies, null, bean, method, false,
+				expectedResultOrType, requestData);
 	}
 
 	public static Object sendAndReceive(MockMvc mockMvc, String bean, String method,
@@ -259,8 +259,8 @@ public class ControllerUtil {
 	}
 
 	public static Object sendAndReceiveNamed(MockMvc mockMvc, HttpHeaders headers,
-			List<Cookie> cookies, String bean, String method,
-			Object expectedResultOrType, Map<String, Object> requestData) {
+			List<Cookie> cookies, String bean, String method, Object expectedResultOrType,
+			Map<String, Object> requestData) {
 		return sendAndReceive(mockMvc, false, headers, cookies, null, bean, method, true,
 				expectedResultOrType, new Object[] { requestData });
 	}
@@ -279,8 +279,8 @@ public class ControllerUtil {
 	}
 
 	public static Object sendAndReceiveWithSession(MockMvc mockMvc, HttpHeaders headers,
-			List<Cookie> cookies, String bean, String method,
-			Object expectedResultOrType, Object... requestData) {
+			List<Cookie> cookies, String bean, String method, Object expectedResultOrType,
+			Object... requestData) {
 		return sendAndReceive(mockMvc, true, headers, cookies, null, bean, method, true,
 				expectedResultOrType, new Object[] { requestData });
 	}
@@ -294,10 +294,9 @@ public class ControllerUtil {
 
 		MvcResult result = null;
 		try {
-			result = performRouterRequest(
-					mockMvc,
-					createEdsRequest(bean, method, namedParameters, tid, requestData,
-							metadata), null, headers, cookies, withSession);
+			result = performRouterRequest(mockMvc, createEdsRequest(bean, method,
+					namedParameters, tid, requestData, metadata), null, headers, cookies,
+					withSession);
 		}
 		catch (JsonProcessingException e) {
 			fail("perform post to /router" + e.getMessage());
@@ -308,8 +307,8 @@ public class ControllerUtil {
 			return null;
 		}
 
-		List<ExtDirectResponse> responses = readDirectResponses(result.getResponse()
-				.getContentAsByteArray());
+		List<ExtDirectResponse> responses = readDirectResponses(
+				result.getResponse().getContentAsByteArray());
 		assertThat(responses).hasSize(1);
 
 		ExtDirectResponse edResponse = responses.get(0);
@@ -347,7 +346,8 @@ public class ControllerUtil {
 
 	}
 
-	public static Object sendAndReceiveObject(MockMvc mockMvc, String bean, String method) {
+	public static Object sendAndReceiveObject(MockMvc mockMvc, String bean,
+			String method) {
 		int tid = (int) (Math.random() * 1000);
 
 		MvcResult result = null;
@@ -365,8 +365,8 @@ public class ControllerUtil {
 			return null;
 		}
 
-		List<ExtDirectResponse> responses = readDirectResponses(result.getResponse()
-				.getContentAsByteArray());
+		List<ExtDirectResponse> responses = readDirectResponses(
+				result.getResponse().getContentAsByteArray());
 		assertThat(responses).hasSize(1);
 
 		ExtDirectResponse edResponse = responses.get(0);
@@ -408,8 +408,8 @@ public class ControllerUtil {
 		try {
 			return mapper.readValue(response,
 					new TypeReference<List<ExtDirectResponse>>() {/*
-																 * nothing here
-																 */
+																	 * nothing here
+																	 */
 					});
 		}
 		catch (JsonParseException e) {

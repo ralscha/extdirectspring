@@ -73,8 +73,8 @@ public final class MethodInfo {
 	public MethodInfo(Class<?> clazz, ApplicationContext context, String beanName,
 			Method method) {
 
-		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(
-				method, ExtDirectMethod.class);
+		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method,
+				ExtDirectMethod.class);
 
 		this.type = extDirectMethodAnnotation.value();
 
@@ -99,8 +99,8 @@ public final class MethodInfo {
 			this.method = method;
 			this.parameters = buildParameterList(clazz, method);
 
-			this.collectionType = extDirectMethodAnnotation.entryClass() == Object.class ? null
-					: extDirectMethodAnnotation.entryClass();
+			this.collectionType = extDirectMethodAnnotation.entryClass() == Object.class
+					? null : extDirectMethodAnnotation.entryClass();
 
 			if (this.collectionType == null) {
 				for (ParameterInfo parameter : parameters) {
@@ -208,12 +208,12 @@ public final class MethodInfo {
 			this.sseMethod = method.getName();
 			break;
 		default:
-			throw new IllegalStateException("ExtDirectMethodType: " + type
-					+ " does not exists");
+			throw new IllegalStateException(
+					"ExtDirectMethodType: " + type + " does not exists");
 		}
 
-		this.action = extractDocumentationAnnotations(extDirectMethodAnnotation
-				.documentation());
+		this.action = extractDocumentationAnnotations(
+				extDirectMethodAnnotation.documentation());
 
 	}
 
@@ -233,39 +233,34 @@ public final class MethodInfo {
 			ExtDirectDocParameters docParameters = documentation.parameters();
 			if (null != docParameters) {
 				String[] params = docParameters.params();
-				String[] descriptions = docParameters.descriptions() == null ? new String[params.length]
-						: docParameters.descriptions();
+				String[] descriptions = docParameters.descriptions() == null
+						? new String[params.length] : docParameters.descriptions();
 				if (params.length == descriptions.length) {
 					for (int i = 0; i < params.length; i++) {
-						actionDoc.getParameters().put(
-								params[i],
-								descriptions[i] == null ? "No description"
-										: descriptions[i]);
+						actionDoc.getParameters().put(params[i], descriptions[i] == null
+								? "No description" : descriptions[i]);
 					}
 				}
 				else {
-					LogFactory
-							.getLog(MethodInfo.class)
-							.info("Documentation: skip generation of parameters, params size is different from descriptions size");
+					LogFactory.getLog(MethodInfo.class).info(
+							"Documentation: skip generation of parameters, params size is different from descriptions size");
 				}
 			}
 			ExtDirectDocReturn docReturn = documentation.returnMethod();
 			if (null != docReturn) {
 				String[] properties = docReturn.properties();
-				String[] descriptions = docReturn.descriptions() == null ? new String[properties.length]
-						: docReturn.descriptions();
+				String[] descriptions = docReturn.descriptions() == null
+						? new String[properties.length] : docReturn.descriptions();
 				if (properties.length == descriptions.length) {
 					for (int i = 0; i < properties.length; i++) {
-						actionDoc.getReturnMethod().put(
-								properties[i],
+						actionDoc.getReturnMethod().put(properties[i],
 								descriptions[i] == null ? "No description"
 										: descriptions[i]);
 					}
 				}
 				else {
-					LogFactory
-							.getLog(MethodInfo.class)
-							.info("Documentation: skip generation of return method properties, properties size is different from descriptions size");
+					LogFactory.getLog(MethodInfo.class).info(
+							"Documentation: skip generation of return method properties, properties size is different from descriptions size");
 				}
 			}
 			return actionDoc;

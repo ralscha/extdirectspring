@@ -37,8 +37,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TransactionalServiceTest extends JettyTest {
 
 	@Test
-	public void callClassbasedProxy() throws IOException, JsonParseException,
-			JsonMappingException {
+	public void callClassbasedProxy()
+			throws IOException, JsonParseException, JsonMappingException {
 
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
@@ -78,8 +78,8 @@ public class TransactionalServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void callInterfacebasedProxy() throws IOException, JsonParseException,
-			JsonMappingException {
+	public void callInterfacebasedProxy()
+			throws IOException, JsonParseException, JsonMappingException {
 
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;

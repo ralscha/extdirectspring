@@ -41,14 +41,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.bean.SSEvent;
 import ch.ralscha.extdirectspring.provider.RemoteProviderSimpleNamed.ResultObject;
 import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad.Node;
 import ch.ralscha.extdirectspring.provider.Row;
-
-import com.fasterxml.jackson.core.type.TypeReference;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -92,8 +92,8 @@ public class RouterControllerOptionalTest {
 
 	@Test
 	public void testMethod2() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method2",
-				"one", "one");
+		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method2", "one",
+				"one");
 
 		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method2",
 				"default", new Object[] { null });
@@ -631,8 +631,8 @@ public class RouterControllerOptionalTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
-				mockMvc, "remoteProviderOptional", "storeRead1",
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderOptional", "storeRead1",
 				new TypeReference<ExtDirectStoreResult<Row>>() {
 					// nothing here
 				}, readRequest);
@@ -675,8 +675,8 @@ public class RouterControllerOptionalTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
-				mockMvc, "remoteProviderOptional", "storeRead2",
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+				"remoteProviderOptional", "storeRead2",
 				new TypeReference<ExtDirectStoreResult<Row>>() {
 					// nothing here
 				}, readRequest);
@@ -685,8 +685,8 @@ public class RouterControllerOptionalTest {
 		assertThat(storeResponse.getRecords()).hasSize(50);
 		ix = 0;
 		for (Row row : storeResponse.getRecords()) {
-			assertThat(row.getName()).startsWith(
-					"name: " + ix + ":defaultCookie:defaultHeader");
+			assertThat(row.getName())
+					.startsWith("name: " + ix + ":defaultCookie:defaultHeader");
 			ix += 2;
 		}
 	}
@@ -741,7 +741,8 @@ public class RouterControllerOptionalTest {
 		requestParameters.put("node", "root");
 
 		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, headers,
-				"remoteProviderOptional", "treeLoad2", new TypeReference<List<Node>>() {/* nothinghere */
+				"remoteProviderOptional", "treeLoad2",
+				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		String appendix = ":false;true;true";
@@ -754,7 +755,8 @@ public class RouterControllerOptionalTest {
 				new Node("n5", "Node 5" + appendix, false));
 
 		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, (HttpHeaders) null,
-				"remoteProviderOptional", "treeLoad2", new TypeReference<List<Node>>() {/* nothinghere */
+				"remoteProviderOptional", "treeLoad2",
+				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		appendix = ":true;true;true";

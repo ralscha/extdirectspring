@@ -73,8 +73,8 @@ public final class ParameterInfo {
 		Class<?> paramType = methodParam.getParameterType();
 		javaUtilOptional = paramType.getName().equals("java.util.Optional");
 
-		this.supportedParameter = SupportedParameters.isSupported(typeDescriptor
-				.getObjectType());
+		this.supportedParameter = SupportedParameters
+				.isSupported(typeDescriptor.getObjectType());
 
 		Annotation[] paramAnnotations = methodParam.getParameterAnnotations();
 
@@ -92,8 +92,8 @@ public final class ParameterInfo {
 					this.name = requestParam.value();
 				}
 				this.required = requestParam.required();
-				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestParam
-						.defaultValue()) ? null : requestParam.defaultValue();
+				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(
+						requestParam.defaultValue()) ? null : requestParam.defaultValue();
 				this.hasRequestParamAnnotation = true;
 				break;
 			}
@@ -103,8 +103,9 @@ public final class ParameterInfo {
 					this.name = metadataParam.value();
 				}
 				this.required = metadataParam.required();
-				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(metadataParam
-						.defaultValue()) ? null : metadataParam.defaultValue();
+				this.defaultValue = ValueConstants.DEFAULT_NONE
+						.equals(metadataParam.defaultValue()) ? null
+								: metadataParam.defaultValue();
 				this.hasMetadataParamAnnotation = true;
 				break;
 			}
@@ -114,8 +115,9 @@ public final class ParameterInfo {
 					this.name = requestHeader.value();
 				}
 				this.required = requestHeader.required();
-				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(requestHeader
-						.defaultValue()) ? null : requestHeader.defaultValue();
+				this.defaultValue = ValueConstants.DEFAULT_NONE
+						.equals(requestHeader.defaultValue()) ? null
+								: requestHeader.defaultValue();
 				this.hasRequestHeaderAnnotation = true;
 				break;
 			}
@@ -125,19 +127,15 @@ public final class ParameterInfo {
 					this.name = cookieValue.value();
 				}
 				this.required = cookieValue.required();
-				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(cookieValue
-						.defaultValue()) ? null : cookieValue.defaultValue();
+				this.defaultValue = ValueConstants.DEFAULT_NONE.equals(
+						cookieValue.defaultValue()) ? null : cookieValue.defaultValue();
 				this.hasCookieValueAnnotation = true;
 				break;
 			}
-			else if (paramAnn
-					.annotationType()
-					.getName()
+			else if (paramAnn.annotationType().getName()
 					.equals("org.springframework.security.web.bind.annotation.AuthenticationPrincipal")
-					|| paramAnn
-							.annotationType()
-							.getName()
-							.equals("org.springframework.security.core.annotation.AuthenticationPrincipal")) {
+					|| paramAnn.annotationType().getName().equals(
+							"org.springframework.security.core.annotation.AuthenticationPrincipal")) {
 				hasAuthenticationPrincipalAnnotation = (Boolean) AnnotationUtils
 						.getValue(paramAnn, "errorOnInvalidType");
 			}
@@ -181,8 +179,8 @@ public final class ParameterInfo {
 	}
 
 	public boolean authenticationPrincipalAnnotationErrorOnInvalidType() {
-		return hasAuthenticationPrincipalAnnotation != null ? hasAuthenticationPrincipalAnnotation
-				: false;
+		return hasAuthenticationPrincipalAnnotation != null
+				? hasAuthenticationPrincipalAnnotation : false;
 	}
 
 	public boolean isRequired() {

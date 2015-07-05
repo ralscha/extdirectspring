@@ -37,10 +37,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.Row;
-
-import com.fasterxml.jackson.core.type.TypeReference;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -79,8 +79,8 @@ public class RouterControllerFilterTest {
 		int index = 1;
 		for (String json : jsonList) {
 			MvcResult result = ControllerUtil.performRouterRequest(mockMvc, json);
-			List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result
-					.getResponse().getContentAsByteArray());
+			List<ExtDirectResponse> responses = ControllerUtil
+					.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 			assertThat(responses).hasSize(1);
 			ExtDirectResponse resp = responses.get(0);

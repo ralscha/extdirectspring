@@ -448,9 +448,9 @@ public class RouterControllerPollTest {
 		params.put("id", "3");
 		cookies = new ArrayList<Cookie>();
 		cookies.add(new Cookie("cookie", "cookieValue"));
-		resp = ControllerUtil
-				.performPollRequest(mockMvc, "pollProvider", "messageCookieValue2",
-						"messageCookieValue2", params, null, cookies, true);
+		resp = ControllerUtil.performPollRequest(mockMvc, "pollProvider",
+				"messageCookieValue2", "messageCookieValue2", params, null, cookies,
+				true);
 
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("exception");
@@ -537,8 +537,8 @@ public class RouterControllerPollTest {
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
 		assertThat(resp.getName()).isEqualTo("messageCookieValue5");
-		assertThat(resp.getData()).isEqualTo(
-				"aRequestHeader;null;default1;default2;lastCookie");
+		assertThat(resp.getData())
+				.isEqualTo("aRequestHeader;null;default1;default2;lastCookie");
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
 	}
@@ -562,8 +562,8 @@ public class RouterControllerPollTest {
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
 		assertThat(resp.getName()).isEqualTo("messageCookieValue5");
-		assertThat(resp.getData()).isEqualTo(
-				"aRequestHeader;33;default1;2ndCookie;lastCookie");
+		assertThat(resp.getData())
+				.isEqualTo("aRequestHeader;33;default1;2ndCookie;lastCookie");
 		assertThat(resp.getWhere()).isNull();
 		assertThat(resp.getMessage()).isNull();
 	}

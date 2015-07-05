@@ -283,13 +283,13 @@ public class ApiControllerWithConfigurationTest {
 
 			assertThat(response.getHeaderNames()).hasSize(5);
 			assertThat(response.getHeader("ETag")).isNotNull();
-			assertThat(response.getHeader("Cache-Control")).isEqualTo(
-					"public, max-age=" + 6 * 30 * 24 * 60 * 60);
+			assertThat(response.getHeader("Cache-Control"))
+					.isEqualTo("public, max-age=" + 6 * 30 * 24 * 60 * 60);
 
 			Long expiresMillis = (Long) response.getHeaderValue("Expires");
 			DateTime expires = new DateTime(expiresMillis, DateTimeZone.UTC);
-			DateTime inSixMonths = DateTime.now(DateTimeZone.UTC).plusSeconds(
-					6 * 30 * 24 * 60 * 60);
+			DateTime inSixMonths = DateTime.now(DateTimeZone.UTC)
+					.plusSeconds(6 * 30 * 24 * 60 * 60);
 			assertThat(expires.getYear()).isEqualTo(inSixMonths.getYear());
 			assertThat(expires.getMonthOfYear()).isEqualTo(inSixMonths.getMonthOfYear());
 			assertThat(expires.getDayOfMonth()).isEqualTo(inSixMonths.getDayOfMonth());
@@ -310,9 +310,9 @@ public class ApiControllerWithConfigurationTest {
 
 	@Test
 	public void testGroup3() throws Exception {
-		ApiRequestParams params = ApiRequestParams.builder().apiNs("Extns")
-				.actionNs("ns").remotingApiVar("RAPI").pollingUrlsVar("PURLS")
-				.sseVar("ES").group("group3").build();
+		ApiRequestParams params = ApiRequestParams.builder().apiNs("Extns").actionNs("ns")
+				.remotingApiVar("RAPI").pollingUrlsVar("PURLS").sseVar("ES")
+				.group("group3").build();
 		updateConfiguration(params, null);
 		runTest(mockMvc, params, ApiControllerTest.group3Apis("ns"));
 		runTest(mockMvc, params, ApiControllerTest.group3Apis("ns"));
@@ -660,16 +660,16 @@ public class ApiControllerWithConfigurationTest {
 			}
 
 			if (configuration.getEnableBuffer() != null) {
-				assertThat(rootAsMap.get("enableBuffer")).isEqualTo(
-						configuration.getEnableBuffer());
+				assertThat(rootAsMap.get("enableBuffer"))
+						.isEqualTo(configuration.getEnableBuffer());
 			}
 			else {
 				assertThat(rootAsMap.get("enableBuffer")).isNull();
 			}
 
 			if (configuration.getMaxRetries() != null) {
-				assertThat(rootAsMap.get("maxRetries")).isEqualTo(
-						configuration.getMaxRetries());
+				assertThat(rootAsMap.get("maxRetries"))
+						.isEqualTo(configuration.getMaxRetries());
 			}
 			else {
 				assertThat(rootAsMap.get("maxRetries")).isNull();
@@ -698,10 +698,9 @@ public class ApiControllerWithConfigurationTest {
 			for (PollingProvider pp : remotingApi.getPollingProviders()) {
 				String url = (String) pollingMap.get(pp.getEvent());
 				assertThat(url).isNotNull();
-				assertEquals(
-						String.format("%s/%s/%s/%s",
-								remotingApi.getUrl().replace("router", "poll"),
-								pp.getBeanName(), pp.getMethod(), pp.getEvent()), url);
+				assertEquals(String.format("%s/%s/%s/%s",
+						remotingApi.getUrl().replace("router", "poll"), pp.getBeanName(),
+						pp.getMethod(), pp.getEvent()), url);
 			}
 		}
 

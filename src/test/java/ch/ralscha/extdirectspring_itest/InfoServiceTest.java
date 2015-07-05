@@ -38,31 +38,31 @@ import org.apache.http.util.EntityUtils;
 import org.fest.assertions.data.MapEntry;
 import org.junit.Test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ch.ralscha.extdirectspring.bean.api.Action;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.controller.ApiControllerTest;
 import ch.ralscha.extdirectspring.controller.ApiRequestParams;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class InfoServiceTest extends JettyTest {
 
 	private static RemotingApi api() {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/controller/router", null);
 		remotingApi.addAction("infoService", new Action("updateInfo", 0, Boolean.TRUE));
-		remotingApi
-				.addAction("infoService", new Action("updateInfo2nd", 0, Boolean.TRUE));
+		remotingApi.addAction("infoService",
+				new Action("updateInfo2nd", 0, Boolean.TRUE));
 
-		remotingApi.addAction("infoService", new Action("updateInfoUser1", 0,
-				Boolean.TRUE));
-		remotingApi.addAction("infoService", new Action("updateInfoUser2", 0,
-				Boolean.TRUE));
-		remotingApi.addAction("infoService", new Action("updateInfoUser3", 0,
-				Boolean.TRUE));
-		remotingApi.addAction("infoService", new Action("updateInfoUser4", 0,
-				Boolean.TRUE));
-		remotingApi.addAction("infoService", new Action("updateInfoUser5", 0,
-				Boolean.TRUE));
+		remotingApi.addAction("infoService",
+				new Action("updateInfoUser1", 0, Boolean.TRUE));
+		remotingApi.addAction("infoService",
+				new Action("updateInfoUser2", 0, Boolean.TRUE));
+		remotingApi.addAction("infoService",
+				new Action("updateInfoUser3", 0, Boolean.TRUE));
+		remotingApi.addAction("infoService",
+				new Action("updateInfoUser4", 0, Boolean.TRUE));
+		remotingApi.addAction("infoService",
+				new Action("updateInfoUser5", 0, Boolean.TRUE));
 
 		return remotingApi;
 	}
@@ -224,8 +224,8 @@ public class InfoServiceTest extends JettyTest {
 			Map<String, Object> errors = (Map<String, Object>) result.get("errors");
 			if (errorMsg != null) {
 				assertThat(errors).isNotNull();
-				assertThat(((List<String>) errors.get("email")).get(0)).isEqualTo(
-						errorMsg);
+				assertThat(((List<String>) errors.get("email")).get(0))
+						.isEqualTo(errorMsg);
 			}
 			else {
 				assertThat(errors).isNull();

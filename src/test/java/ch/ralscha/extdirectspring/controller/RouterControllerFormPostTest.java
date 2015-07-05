@@ -75,8 +75,8 @@ public class RouterControllerFormPostTest {
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, null, parameters,
 				null, null, false);
-		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(result
-				.getResponse().getContentAsByteArray());
+		ExtDirectResponse edsResponse = ControllerUtil
+				.readDirectResponse(result.getResponse().getContentAsByteArray());
 
 		assertThat(edsResponse.getType()).isEqualTo("exception");
 		assertThat(edsResponse.getMessage()).isEqualTo("Server Error");
@@ -101,13 +101,13 @@ public class RouterControllerFormPostTest {
 		parameters.put("extType", "rpc");
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, null, parameters,
 				null, null, false);
-		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(result
-				.getResponse().getContentAsByteArray());
+		ExtDirectResponse edsResponse = ControllerUtil
+				.readDirectResponse(result.getResponse().getContentAsByteArray());
 
 		assertThat(edsResponse.getType()).isEqualTo("exception");
 		assertThat(edsResponse.getMessage()).isEqualTo("something wrong");
-		assertThat(edsResponse.getWhere()).isEqualTo(
-				"Bean or Method 'remoteProviderSimple.method1' not found");
+		assertThat(edsResponse.getWhere())
+				.isEqualTo("Bean or Method 'remoteProviderSimple.method1' not found");
 
 		assertThat(edsResponse.getTid()).isEqualTo(12);
 		assertThat(edsResponse.getAction()).isEqualTo("remoteProviderSimple");
@@ -152,8 +152,8 @@ public class RouterControllerFormPostTest {
 
 		MvcResult resultMvc = ControllerUtil.performRouterRequest(mockMvc, null,
 				parameters, null, null, false);
-		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(resultMvc
-				.getResponse().getContentAsByteArray());
+		ExtDirectResponse edsResponse = ControllerUtil
+				.readDirectResponse(resultMvc.getResponse().getContentAsByteArray());
 
 		assertThat(edsResponse.getType()).isEqualTo("rpc");
 		assertThat(edsResponse.getMessage()).isNull();
@@ -198,8 +198,8 @@ public class RouterControllerFormPostTest {
 		assertThat(response).startsWith(prefix).endsWith(suffix);
 		String json = response.substring(prefix.length(), response.indexOf(suffix));
 
-		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(json
-				.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
+		ExtDirectResponse edsResponse = ControllerUtil
+				.readDirectResponse(json.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
 
 		assertThat(edsResponse.getType()).isEqualTo("rpc");
 		assertThat(edsResponse.getMessage()).isNull();

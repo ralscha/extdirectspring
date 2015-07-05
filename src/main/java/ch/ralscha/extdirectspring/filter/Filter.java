@@ -88,8 +88,9 @@ public class Filter {
 					return new ListFilter(property, (List<?>) source, rawComparison,
 							comparisonFromJson);
 				}
-				return new StringFilter(property, source != null ? source.toString()
-						: null, rawComparison, comparisonFromJson);
+				return new StringFilter(property,
+						source != null ? source.toString() : null, rawComparison,
+						comparisonFromJson);
 			}
 
 			return null;

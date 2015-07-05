@@ -34,6 +34,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.bean.api.RemotingApiMixin;
@@ -43,9 +46,6 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.JsonHandler;
 import ch.ralscha.extdirectspring.util.MethodInfo;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Spring managed controller that handles /api.jsp, /api-debug.js, /api-debug-doc.js and
@@ -96,21 +96,23 @@ public class ApiController {
 	@SuppressWarnings({ "resource" })
 	@RequestMapping(value = { "/api.js", "/api-debug.js", "/api-debug-doc.js" },
 			method = RequestMethod.GET)
-	public void api(
-			@RequestParam(value = "apiNs", required = false) String apiNs,
+	public void api(@RequestParam(value = "apiNs", required = false) String apiNs,
 			@RequestParam(value = "actionNs", required = false) String actionNs,
-			@RequestParam(value = "remotingApiVar", required = false) String remotingApiVar,
-			@RequestParam(value = "pollingUrlsVar", required = false) String pollingUrlsVar,
+			@RequestParam(value = "remotingApiVar",
+					required = false) String remotingApiVar,
+			@RequestParam(value = "pollingUrlsVar",
+					required = false) String pollingUrlsVar,
 			@RequestParam(value = "sseVar", required = false) String sseVar,
 			@RequestParam(value = "group", required = false) String group,
-			@RequestParam(value = "fullRouterUrl", required = false) Boolean fullRouterUrl,
+			@RequestParam(value = "fullRouterUrl",
+					required = false) Boolean fullRouterUrl,
 			@RequestParam(value = "format", required = false) String format,
 			@RequestParam(value = "baseRouterUrl", required = false) String baseRouterUrl,
 			HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		if (format == null) {
-			response.setContentType(configurationService.getConfiguration()
-					.getJsContentType());
+			response.setContentType(
+					configurationService.getConfiguration().getJsContentType());
 			response.setCharacterEncoding(ExtDirectSpringUtil.UTF8_CHARSET.name());
 
 			String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar,
@@ -127,8 +129,8 @@ public class ApiController {
 			// This code create JSON description for Sencha Architect. We can
 			// therefore ignore SSE urls.
 			response.setContentType(RouterController.APPLICATION_JSON.toString());
-			response.setCharacterEncoding(RouterController.APPLICATION_JSON.getCharSet()
-					.name());
+			response.setCharacterEncoding(
+					RouterController.APPLICATION_JSON.getCharSet().name());
 
 			String requestUrlString = request.getRequestURL().toString();
 
@@ -169,14 +171,16 @@ public class ApiController {
 	 */
 
 	@RequestMapping(value = "/api-{fingerprint}.js", method = RequestMethod.GET)
-	public void api(
-			@RequestParam(value = "apiNs", required = false) String apiNs,
+	public void api(@RequestParam(value = "apiNs", required = false) String apiNs,
 			@RequestParam(value = "actionNs", required = false) String actionNs,
-			@RequestParam(value = "remotingApiVar", required = false) String remotingApiVar,
-			@RequestParam(value = "pollingUrlsVar", required = false) String pollingUrlsVar,
+			@RequestParam(value = "remotingApiVar",
+					required = false) String remotingApiVar,
+			@RequestParam(value = "pollingUrlsVar",
+					required = false) String pollingUrlsVar,
 			@RequestParam(value = "sseVar", required = false) String sseVar,
 			@RequestParam(value = "group", required = false) String group,
-			@RequestParam(value = "fullRouterUrl", required = false) Boolean fullRouterUrl,
+			@RequestParam(value = "fullRouterUrl",
+					required = false) Boolean fullRouterUrl,
 			@RequestParam(value = "baseRouterUrl", required = false) String baseRouterUrl,
 			HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -202,8 +206,8 @@ public class ApiController {
 		String sseVar = requestSseVar != null ? requestSseVar : configuration.getSseVar();
 		boolean fullRouterUrl = requestFullRouterUrl != null ? requestFullRouterUrl
 				: configuration.isFullRouterUrl();
-		String actionNs = requestActionNs != null ? requestActionNs : configuration
-				.getActionNs();
+		String actionNs = requestActionNs != null ? requestActionNs
+				: configuration.getActionNs();
 		String baseRouterUrl = requestBaseRouterUrl != null ? requestBaseRouterUrl
 				: configuration.getBaseRouterUrl();
 
@@ -231,8 +235,8 @@ public class ApiController {
 			String apiString = apiCache.get(apiKey);
 			if (apiString == null) {
 				apiString = buildApiString(apiNs, actionNs, remotingApiVar,
-						pollingUrlsVar, sseVar, routerUrl, basePollUrl, baseSseUrl,
-						group, debug, false);
+						pollingUrlsVar, sseVar, routerUrl, basePollUrl, baseSseUrl, group,
+						debug, false);
 				apiCache.put(apiKey, apiString);
 			}
 			return apiString;
@@ -247,15 +251,17 @@ public class ApiController {
 			String pollingUrlsVar, String sseVar, String routerUrl, String basePollUrl,
 			String baseSseUrl, String group, boolean debug, boolean doc) {
 
-		RemotingApi remotingApi = new RemotingApi(configurationService.getConfiguration()
-				.getProviderType(), routerUrl, actionNs);
+		RemotingApi remotingApi = new RemotingApi(
+				configurationService.getConfiguration().getProviderType(), routerUrl,
+				actionNs);
 
 		remotingApi.setTimeout(configurationService.getConfiguration().getTimeout());
 		remotingApi
 				.setMaxRetries(configurationService.getConfiguration().getMaxRetries());
 
 		Object enableBuffer = configurationService.getConfiguration().getEnableBuffer();
-		if (enableBuffer instanceof String && StringUtils.hasText((String) enableBuffer)) {
+		if (enableBuffer instanceof String
+				&& StringUtils.hasText((String) enableBuffer)) {
 			String enableBufferString = (String) enableBuffer;
 			if (enableBufferString.equalsIgnoreCase("true")) {
 				remotingApi.setEnableBuffer(Boolean.TRUE);
@@ -310,8 +316,8 @@ public class ApiController {
 			}
 			catch (JsonProcessingException e) {
 				jsonConfig = null;
-				LogFactory.getLog(ApiController.class)
-						.info("serialize object to json", e);
+				LogFactory.getLog(ApiController.class).info("serialize object to json",
+						e);
 			}
 		}
 
@@ -406,11 +412,12 @@ public class ApiController {
 		String remotingApiVar = requestRemotingApiVar != null ? requestRemotingApiVar
 				: configuration.getRemotingApiVar();
 
-		String actionNs = requestActionNs != null ? requestActionNs : configuration
-				.getActionNs();
+		String actionNs = requestActionNs != null ? requestActionNs
+				: configuration.getActionNs();
 
-		RemotingApi remotingApi = new RemotingApi(configurationService.getConfiguration()
-				.getProviderType(), routerUrl, actionNs);
+		RemotingApi remotingApi = new RemotingApi(
+				configurationService.getConfiguration().getProviderType(), routerUrl,
+				actionNs);
 
 		if (StringUtils.hasText(apiNs)) {
 			remotingApi.setDescriptor(apiNs + "." + remotingApiVar);

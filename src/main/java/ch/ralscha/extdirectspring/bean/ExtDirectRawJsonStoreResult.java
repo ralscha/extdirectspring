@@ -60,8 +60,8 @@ public class ExtDirectRawJsonStoreResult extends ExtDirectStoreResult<String> {
 				+ ", getMetaData()=" + getMetaData() + "]";
 	}
 
-	private final static class CollectionStringSerializer extends
-			JsonSerializer<Collection<String>> {
+	private final static class CollectionStringSerializer
+			extends JsonSerializer<Collection<String>> {
 
 		@Override
 		public void serialize(Collection<String> values, JsonGenerator jgen,

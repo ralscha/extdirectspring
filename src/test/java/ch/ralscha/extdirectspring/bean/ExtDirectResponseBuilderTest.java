@@ -32,9 +32,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import ch.ralscha.extdirectspring.controller.ControllerUtil;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ch.ralscha.extdirectspring.controller.ControllerUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -54,8 +54,8 @@ public class ExtDirectResponseBuilderTest {
 		ExtDirectResponseBuilder.create(request, servletResponse)
 				.addResultProperty("additionalProperty", 11).buildAndWrite();
 
-		ExtDirectResponse response = ControllerUtil.readDirectResponse(servletResponse
-				.getContentAsByteArray());
+		ExtDirectResponse response = ControllerUtil
+				.readDirectResponse(servletResponse.getContentAsByteArray());
 		assertThat(response.getAction()).isEqualTo("action");
 		assertThat(response.getMethod()).isEqualTo("method");
 		assertThat(response.getType()).isEqualTo("type");
@@ -73,8 +73,8 @@ public class ExtDirectResponseBuilderTest {
 		servletResponse = new MockHttpServletResponse();
 		ExtDirectResponseBuilder.create(request, servletResponse).unsuccessful()
 				.addResultProperty("additionalProperty", 9).buildAndWrite();
-		response = ControllerUtil.readDirectResponse(servletResponse
-				.getContentAsByteArray());
+		response = ControllerUtil
+				.readDirectResponse(servletResponse.getContentAsByteArray());
 		data = (Map<String, Object>) response.getResult();
 		assertThat(data).hasSize(2);
 		assertThat(data.get("additionalProperty")).isEqualTo(9);
@@ -99,8 +99,8 @@ public class ExtDirectResponseBuilderTest {
 
 		assertThat(servletResponse.getContentType()).isEqualTo("text/html;charset=UTF-8");
 		String content = servletResponse.getContentAsString();
-		assertThat(servletResponse.getContentLength()).isEqualTo(
-				content.getBytes("UTF-8").length);
+		assertThat(servletResponse.getContentLength())
+				.isEqualTo(content.getBytes("UTF-8").length);
 
 		assertThat(content).startsWith("<html><body><textarea>");
 		assertThat(content).endsWith("</textarea></body></html>");
@@ -183,8 +183,8 @@ public class ExtDirectResponseBuilderTest {
 
 	private static void checkResponse(MockHttpServletResponse servletResponse,
 			boolean flag) {
-		ExtDirectResponse response = ControllerUtil.readDirectResponse(servletResponse
-				.getContentAsByteArray());
+		ExtDirectResponse response = ControllerUtil
+				.readDirectResponse(servletResponse.getContentAsByteArray());
 		assertThat(response.getAction()).isEqualTo("action");
 		assertThat(response.getMethod()).isEqualTo("method");
 		assertThat(response.getType()).isEqualTo("type");

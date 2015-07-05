@@ -38,9 +38,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad.Node;
-
 import com.fasterxml.jackson.core.type.TypeReference;
+
+import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad.Node;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -65,7 +65,8 @@ public class RouterControllerTreeLoadTest {
 		requestParameters.put("node", "root");
 
 		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderTreeLoad", "method1", new TypeReference<List<Node>>() {/* nothinghere */
+				"remoteProviderTreeLoad", "method1",
+				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1", false),
@@ -76,7 +77,8 @@ public class RouterControllerTreeLoadTest {
 		requestParameters.put("node", "n1");
 
 		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderTreeLoad", "method1", new TypeReference<List<Node>>() {/* nothinghere */
+				"remoteProviderTreeLoad", "method1",
+				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		assertThat(nodes).hasSize(5).containsSequence(new Node("id1", "Node 1.1", true),
@@ -94,7 +96,8 @@ public class RouterControllerTreeLoadTest {
 		requestParameters.put("today", ISODateTimeFormat.date().print(new LocalDate()));
 
 		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderTreeLoad", "method2", new TypeReference<List<Node>>() {/* nothinghere */
+				"remoteProviderTreeLoad", "method2",
+				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		String appendix = ":foo;" + new LocalDate().toString();
@@ -111,7 +114,8 @@ public class RouterControllerTreeLoadTest {
 				ISODateTimeFormat.date().print(new LocalDate().plusDays(10)));
 
 		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc,
-				"remoteProviderTreeLoad", "method2", new TypeReference<List<Node>>() {/* nothinghere */
+				"remoteProviderTreeLoad", "method2",
+				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		appendix = ":defaultValue;" + new LocalDate().plusDays(10).toString();
@@ -184,7 +188,8 @@ public class RouterControllerTreeLoadTest {
 		requestParameters.put("node", "root");
 
 		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, headers,
-				"remoteProviderTreeLoad", method, new TypeReference<List<Node>>() {/* nothinghere */
+				"remoteProviderTreeLoad", method,
+				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		String appendix = ":true;true;true";
@@ -200,7 +205,8 @@ public class RouterControllerTreeLoadTest {
 		headers.add("aHeader", "false");
 
 		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, headers,
-				"remoteProviderTreeLoad", method, new TypeReference<List<Node>>() {/* nothinghere */
+				"remoteProviderTreeLoad", method,
+				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		appendix = ":false;true;true";

@@ -46,8 +46,8 @@ public class PollProvider {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message2",
 			group = "group2", entryClass = String.class)
-	public String handleMessage2(HttpServletResponse response,
-			HttpServletRequest request, HttpSession session, Locale locale) {
+	public String handleMessage2(HttpServletResponse response, HttpServletRequest request,
+			HttpSession session, Locale locale) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
@@ -102,8 +102,8 @@ public class PollProvider {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5",
 			synchronizeOnSession = true)
-	public String messageRequestHeader2(@RequestParam Integer id, @RequestHeader(
-			value = "anotherName", required = true) String header) {
+	public String messageRequestHeader2(@RequestParam Integer id,
+			@RequestHeader(value = "anotherName", required = true) String header) {
 		return id + ";" + header;
 	}
 
@@ -114,16 +114,16 @@ public class PollProvider {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
-	public String messageRequestHeader4(@RequestHeader(defaultValue = "default",
-			required = false) String header) {
+	public String messageRequestHeader4(
+			@RequestHeader(defaultValue = "default", required = false) String header) {
 		return header;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
-	public String messageRequestHeader5(@RequestHeader(defaultValue = "default1",
-			required = false) String header1, @RequestParam(value = "id",
-			required = false) Integer id, @RequestHeader(defaultValue = "default2",
-			required = false) String header2,
+	public String messageRequestHeader5(
+			@RequestHeader(defaultValue = "default1", required = false) String header1,
+			@RequestParam(value = "id", required = false) Integer id,
+			@RequestHeader(defaultValue = "default2", required = false) String header2,
 			@RequestHeader(value = "last") String header3) {
 		return id + ";" + header1 + ";" + header2 + ";" + header3;
 	}
@@ -145,35 +145,36 @@ public class PollProvider {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5",
 			synchronizeOnSession = true)
-	public String messageCookieValue2(@RequestParam Integer id, @CookieValue(
-			value = "anotherName", required = true) String cookie) {
+	public String messageCookieValue2(@RequestParam Integer id,
+			@CookieValue(value = "anotherName", required = true) String cookie) {
 		return id + ";" + cookie;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
-	public String messageCookieValue3(@CookieValue(value = "anotherName",
-			defaultValue = "default") String cookie) {
+	public String messageCookieValue3(
+			@CookieValue(value = "anotherName", defaultValue = "default") String cookie) {
 		return cookie;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
-	public String messageCookieValue4(@CookieValue(defaultValue = "default",
-			required = false) String cookie) {
+	public String messageCookieValue4(
+			@CookieValue(defaultValue = "default", required = false) String cookie) {
 		return cookie;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
-	public String messageCookieValue5(@RequestHeader String requestHeader, @CookieValue(
-			defaultValue = "default1", required = false) String cookie1, @RequestParam(
-			value = "id", required = false) Integer id, @CookieValue(
-			defaultValue = "default2", required = false) String cookie2, @CookieValue(
-			value = "last") String cookie3) {
+	public String messageCookieValue5(@RequestHeader String requestHeader,
+			@CookieValue(defaultValue = "default1", required = false) String cookie1,
+			@RequestParam(value = "id", required = false) Integer id,
+			@CookieValue(defaultValue = "default2", required = false) String cookie2,
+			@CookieValue(value = "last") String cookie3) {
 		return requestHeader + ";" + id + ";" + cookie1 + ";" + cookie2 + ";" + cookie3;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group5")
-	public String messageCookieValue6(@RequestHeader(required = false,
-			defaultValue = "theHeader") String requestHeader,
+	public String messageCookieValue6(
+			@RequestHeader(required = false,
+					defaultValue = "theHeader") String requestHeader,
 			@CookieValue Integer intCookie, @CookieValue Boolean booleanCookie) {
 		return requestHeader + ";" + intCookie + ";" + booleanCookie;
 	}

@@ -38,8 +38,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class SecuredServiceTest extends JettyTest {
 
 	@Test
-	public void callSetDate() throws IOException, JsonParseException,
-			JsonMappingException {
+	public void callSetDate()
+			throws IOException, JsonParseException, JsonMappingException {
 
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
@@ -79,8 +79,8 @@ public class SecuredServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void callSecretNotLoggedIn() throws IOException, JsonParseException,
-			JsonMappingException {
+	public void callSecretNotLoggedIn()
+			throws IOException, JsonParseException, JsonMappingException {
 
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
@@ -120,8 +120,8 @@ public class SecuredServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void callSecretLoggedIn() throws IOException, JsonParseException,
-			JsonMappingException {
+	public void callSecretLoggedIn()
+			throws IOException, JsonParseException, JsonMappingException {
 
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;

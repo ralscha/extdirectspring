@@ -42,8 +42,8 @@ import ch.ralscha.extdirectspring.util.MethodInfoCache;
  * . The class also reports warnings and errors of misconfigured methods.
  */
 @Service
-public class MethodRegistrar implements ApplicationListener<ContextRefreshedEvent>,
-		Ordered {
+public class MethodRegistrar
+		implements ApplicationListener<ContextRefreshedEvent>, Ordered {
 
 	private static final Log log = LogFactory.getLog(RouterController.class);
 
@@ -76,8 +76,8 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 					});
 
 			for (Method method : methods) {
-				ExtDirectMethod directMethodAnnotation = AnnotationUtils.findAnnotation(
-						method, ExtDirectMethod.class);
+				ExtDirectMethod directMethodAnnotation = AnnotationUtils
+						.findAnnotation(method, ExtDirectMethod.class);
 				final String beanAndMethodName = beanName + "." + method.getName();
 				if (directMethodAnnotation.value().isValid(beanAndMethodName, userType,
 						method)) {

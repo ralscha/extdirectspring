@@ -36,7 +36,8 @@ public class UserController {
 	@RequestMapping(method = RequestMethod.POST)
 	public void updateUser(HttpServletRequest request, HttpServletResponse response,
 			@Valid User user, BindingResult result) {
-		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request, response);
+		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request,
+				response);
 
 		if (request.getParameter("addemailerror") != null) {
 			result.rejectValue("email", "", "another email error");

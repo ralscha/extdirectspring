@@ -16,9 +16,10 @@
 package ch.ralscha.extdirectspring.util;
 
 import static org.fest.assertions.api.Assertions.assertThat;
-import nl.jqno.equalsverifier.EqualsVerifier;
 
 import org.junit.Test;
+
+import nl.jqno.equalsverifier.EqualsVerifier;
 
 public class ApiCacheTest {
 
@@ -33,7 +34,8 @@ public class ApiCacheTest {
 
 		ApiCacheKey key1 = new ApiCacheKey(null, null, null, null, null, null, null,
 				false);
-		ApiCacheKey key2 = new ApiCacheKey(null, null, null, null, null, null, null, true);
+		ApiCacheKey key2 = new ApiCacheKey(null, null, null, null, null, null, null,
+				true);
 		ApiCacheKey key3 = new ApiCacheKey(null, null, null, null, null, null, "/router",
 				true);
 		ApiCacheKey key4 = new ApiCacheKey(null, null, null, null, null, "group",

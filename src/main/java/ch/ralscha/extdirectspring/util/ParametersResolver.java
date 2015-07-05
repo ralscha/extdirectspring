@@ -46,6 +46,11 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.util.UrlPathHelper;
 import org.springframework.web.util.WebUtils;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
@@ -54,11 +59,6 @@ import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.bean.SortInfo;
 import ch.ralscha.extdirectspring.controller.SSEWriter;
 import ch.ralscha.extdirectspring.filter.Filter;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 
 /**
  * Resolver of ExtDirectRequest parameters.
@@ -76,7 +76,8 @@ public final class ParametersResolver {
 	private final Collection<WebArgumentResolver> webArgumentResolvers;
 
 	private final Expression getPrincipalExpression = new SpelExpressionParser()
-			.parseExpression("T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication()?.getPrincipal()");
+			.parseExpression(
+					"T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication()?.getPrincipal()");
 
 	/** Java 8's java.util.Optional.empty() */
 	private static Object javaUtilOptionalEmpty = null;
@@ -93,7 +94,8 @@ public final class ParametersResolver {
 	}
 
 	public ParametersResolver(ConversionService conversionService,
-			JsonHandler jsonHandler, Collection<WebArgumentResolver> webArgumentResolvers) {
+			JsonHandler jsonHandler,
+			Collection<WebArgumentResolver> webArgumentResolvers) {
 		this.conversionService = conversionService;
 		this.jsonHandler = jsonHandler;
 		this.webArgumentResolvers = webArgumentResolvers;
@@ -128,7 +130,8 @@ public final class ParametersResolver {
 					parameters[paramIndex] = resolveCookieValue(request, methodParameter);
 				}
 				else if (methodParameter.hasAuthenticationPrincipalAnnotation()) {
-					parameters[paramIndex] = resolveAuthenticationPrincipal(methodParameter);
+					parameters[paramIndex] = resolveAuthenticationPrincipal(
+							methodParameter);
 				}
 				else {
 					parameters[paramIndex] = resolveRequestParam(request, null,
@@ -190,8 +193,8 @@ public final class ParametersResolver {
 						}
 						else {
 							directStoreModifyRecords = new ArrayList<Object>();
-							directStoreModifyRecords.add(jsonHandler.convertValue(
-									records, directStoreEntryClass));
+							directStoreModifyRecords.add(jsonHandler.convertValue(records,
+									directStoreEntryClass));
 						}
 						remainingParameters = new HashMap<String, Object>(jsonData);
 						remainingParameters.remove("records");
@@ -253,8 +256,8 @@ public final class ParametersResolver {
 					parameters[paramIndex] = SupportedParameters.resolveParameter(
 							methodParameter.getType(), request, response, locale);
 				}
-				else if (ExtDirectStoreReadRequest.class.isAssignableFrom(methodParameter
-						.getType())) {
+				else if (ExtDirectStoreReadRequest.class
+						.isAssignableFrom(methodParameter.getType())) {
 					parameters[paramIndex] = extDirectStoreReadRequest;
 				}
 				else if (directStoreModifyRecords != null
@@ -277,7 +280,8 @@ public final class ParametersResolver {
 					parameters[paramIndex] = resolveCookieValue(request, methodParameter);
 				}
 				else if (methodParameter.hasAuthenticationPrincipalAnnotation()) {
-					parameters[paramIndex] = resolveAuthenticationPrincipal(methodParameter);
+					parameters[paramIndex] = resolveAuthenticationPrincipal(
+							methodParameter);
 				}
 				else if (remainingParameters != null
 						&& remainingParameters.containsKey(methodParameter.getName())) {
@@ -286,7 +290,8 @@ public final class ParametersResolver {
 				}
 				else if (directRequest.getData() != null
 						&& directRequest.getData() instanceof List
-						&& ((List<Object>) directRequest.getData()).size() > jsonParamIndex) {
+						&& ((List<Object>) directRequest.getData())
+								.size() > jsonParamIndex) {
 					Object jsonValue = ((List<Object>) directRequest.getData())
 							.get(jsonParamIndex);
 					parameters[paramIndex] = convertValue(jsonValue, methodParameter);
@@ -308,8 +313,10 @@ public final class ParametersResolver {
 					log.info("WebResolvers size:" + this.webArgumentResolvers.size());
 					log.info("ParamIndex:" + paramIndex);
 
-					log.info("Request params size:" + request.getParameterMap().isEmpty());
-					log.info("Request params names:" + request.getParameterMap().keySet());
+					log.info(
+							"Request params size:" + request.getParameterMap().isEmpty());
+					log.info(
+							"Request params names:" + request.getParameterMap().keySet());
 					log.info("Direct Request:" + directRequest.toString());
 
 					MethodParameter p = new MethodParameter(methodInfo.getMethod(),
@@ -373,9 +380,9 @@ public final class ParametersResolver {
 			}
 
 			if (parameterInfo.isRequired()) {
-				throw new IllegalStateException("Missing parameter '"
-						+ parameterInfo.getName() + "' of type ["
-						+ parameterInfo.getTypeDescriptor().getType() + "]");
+				throw new IllegalStateException(
+						"Missing parameter '" + parameterInfo.getName() + "' of type ["
+								+ parameterInfo.getTypeDescriptor().getType() + "]");
 			}
 		}
 
@@ -445,8 +452,8 @@ public final class ParametersResolver {
 		if (principal != null
 				&& !parameterInfo.getType().isAssignableFrom(principal.getClass())) {
 			if (parameterInfo.authenticationPrincipalAnnotationErrorOnInvalidType()) {
-				throw new ClassCastException(principal + " is not assignable to "
-						+ parameterInfo.getType());
+				throw new ClassCastException(
+						principal + " is not assignable to " + parameterInfo.getType());
 			}
 			return null;
 		}
@@ -471,11 +478,11 @@ public final class ParametersResolver {
 					// try to convert the value with jackson
 					TypeFactory typeFactory = jsonHandler.getMapper().getTypeFactory();
 					if (methodParameter.getTypeDescriptor().isCollection()) {
-						JavaType type = CollectionType.construct(
-								methodParameter.getType(),
-								typeFactory.constructType(methodParameter
-										.getTypeDescriptor().getElementTypeDescriptor()
-										.getType()));
+						JavaType type = CollectionType
+								.construct(methodParameter.getType(),
+										typeFactory.constructType(methodParameter
+												.getTypeDescriptor()
+												.getElementTypeDescriptor().getType()));
 						return jsonHandler.convertValue(value, type);
 					}
 					else if (methodParameter.getTypeDescriptor().isArray()) {
@@ -564,15 +571,13 @@ public final class ParametersResolver {
 			}
 			else {
 
-				PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(
-						to.getClass(), key);
+				PropertyDescriptor descriptor = BeanUtils
+						.getPropertyDescriptor(to.getClass(), key);
 				if (descriptor != null && descriptor.getWriteMethod() != null) {
 					try {
 
-						descriptor.getWriteMethod().invoke(
-								to,
-								conversionService.convert(value,
-										descriptor.getPropertyType()));
+						descriptor.getWriteMethod().invoke(to, conversionService
+								.convert(value, descriptor.getPropertyType()));
 
 						foundParameters.add(key);
 					}
@@ -603,14 +608,15 @@ public final class ParametersResolver {
 
 		if (to.getSort() != null && to.getDir() != null) {
 			List<SortInfo> sorters = new ArrayList<SortInfo>();
-			sorters.add(new SortInfo(to.getSort(), SortDirection.fromString(to.getDir())));
+			sorters.add(
+					new SortInfo(to.getSort(), SortDirection.fromString(to.getDir())));
 			to.setSorters(sorters);
 		}
 
 		if (to.getGroupBy() != null && to.getGroupDir() != null) {
 			List<GroupInfo> groups = new ArrayList<GroupInfo>();
-			groups.add(new GroupInfo(to.getGroupBy(), SortDirection.fromString(to
-					.getGroupDir())));
+			groups.add(new GroupInfo(to.getGroupBy(),
+					SortDirection.fromString(to.getGroupDir())));
 			to.setGroups(groups);
 		}
 
@@ -630,8 +636,8 @@ public final class ParametersResolver {
 		if (records != null) {
 			List<Object> convertedList = new ArrayList<Object>();
 			for (Object record : records) {
-				Object convertedObject = jsonHandler
-						.convertValue(record, directStoreType);
+				Object convertedObject = jsonHandler.convertValue(record,
+						directStoreType);
 				convertedList.add(convertedObject);
 			}
 			return convertedList;

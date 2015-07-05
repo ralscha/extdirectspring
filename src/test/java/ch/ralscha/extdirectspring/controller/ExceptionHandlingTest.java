@@ -149,15 +149,15 @@ public class ExceptionHandlingTest {
 	}
 
 	private ExtDirectResponse runTest(Configuration configuration) throws Exception {
-		ReflectionTestUtils
-				.setField(configurationService, "configuration", configuration);
+		ReflectionTestUtils.setField(configurationService, "configuration",
+				configuration);
 		configurationService.afterPropertiesSet();
 
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple",
 				"method4b", 2, new Object[] { 3, "xxx", "string.param" });
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result
-				.getResponse().getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -175,15 +175,15 @@ public class ExceptionHandlingTest {
 	}
 
 	private ExtDirectResponse runTest11(Configuration configuration) throws Exception {
-		ReflectionTestUtils
-				.setField(configurationService, "configuration", configuration);
+		ReflectionTestUtils.setField(configurationService, "configuration",
+				configuration);
 		configurationService.afterPropertiesSet();
 
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple",
 				"method11", 3, null);
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
-		List<ExtDirectResponse> responses = ControllerUtil.readDirectResponses(result
-				.getResponse().getContentAsByteArray());
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);

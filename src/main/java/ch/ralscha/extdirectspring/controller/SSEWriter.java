@@ -109,8 +109,8 @@ public class SSEWriter {
 		}
 
 		sb.append("\n");
-		response.getOutputStream().write(
-				sb.toString().getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
+		response.getOutputStream()
+				.write(sb.toString().getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
 		response.getOutputStream().flush();
 
 	}
