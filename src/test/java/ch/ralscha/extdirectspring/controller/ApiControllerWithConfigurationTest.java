@@ -26,6 +26,8 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -286,8 +288,10 @@ public class ApiControllerWithConfigurationTest {
 			assertThat(response.getHeader("Cache-Control"))
 					.isEqualTo("public, max-age=" + 6 * 30 * 24 * 60 * 60);
 
-			Long expiresMillis = (Long) response.getHeaderValue("Expires");
-			DateTime expires = new DateTime(expiresMillis, DateTimeZone.UTC);
+			String expiresHeader = (String) response.getHeaderValue("Expires");
+			DateTimeFormatter fmt = DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss z");
+			DateTime expires = DateTime.parse(expiresHeader, fmt);
+			
 			DateTime inSixMonths = DateTime.now(DateTimeZone.UTC)
 					.plusSeconds(6 * 30 * 24 * 60 * 60);
 			assertThat(expires.getYear()).isEqualTo(inSixMonths.getYear());
