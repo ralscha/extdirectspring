@@ -95,7 +95,7 @@ public class ApiControllerTest {
 	public void testNoActionNamespaceDebugDefaultConfig() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("remotingApiVar").pollingUrlsVar("pollingUrlsVar")
-				.sseVar("sseVar").build();
+				.build();
 		runTest(mockMvc, params, allApis(null));
 	}
 
@@ -110,7 +110,7 @@ public class ApiControllerTest {
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("testC")
 				.remotingApiVar("remotingApiV").pollingUrlsVar("pollingUrlsV")
-				.sseVar("sseV").configuration(config).build();
+				.configuration(config).build();
 		runTest(mockMvc, params, allApis(null));
 	}
 
@@ -118,7 +118,7 @@ public class ApiControllerTest {
 	public void testWithActionNamespaceDefaultConfig() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns")
 				.actionNs("actionns").remotingApiVar("TEST_REMOTING_API")
-				.pollingUrlsVar("TEST_POLLING_URLS").sseVar("TEST_SSE").build();
+				.pollingUrlsVar("TEST_POLLING_URLS").build();
 		runTest(mockMvc, params, allApis("actionns"));
 	}
 
@@ -133,8 +133,7 @@ public class ApiControllerTest {
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns")
 				.actionNs("actionns").remotingApiVar("TEST_REMOTING_API")
-				.pollingUrlsVar("TEST_POLLING_URLS").sseVar("TEST_SSE")
-				.configuration(config).build();
+				.pollingUrlsVar("TEST_POLLING_URLS").configuration(config).build();
 		runTest(mockMvc, params, allApis("actionns"));
 	}
 
@@ -142,7 +141,7 @@ public class ApiControllerTest {
 	public void testEmptyGroupDefaultConfig() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
-				.group("").sseVar("TEST_SSE").build();
+				.group("").build();
 		runTest(mockMvc, params, emptyGroupApis(null));
 	}
 
@@ -150,7 +149,7 @@ public class ApiControllerTest {
 	public void testBlankStringGroupDefaultConfig() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
-				.group("     ").sseVar("TEST_SSE").build();
+				.group("     ").build();
 		runTest(mockMvc, params, emptyGroupApis(null));
 	}
 
@@ -164,7 +163,7 @@ public class ApiControllerTest {
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
-				.group("").sseVar("TEST_SSE").configuration(config).build();
+				.group("").configuration(config).build();
 		runTest(mockMvc, params, emptyGroupApis(null));
 	}
 
@@ -178,7 +177,7 @@ public class ApiControllerTest {
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
-				.group("        ").sseVar("TEST_SSE").configuration(config).build();
+				.group("        ").configuration(config).build();
 		runTest(mockMvc, params, emptyGroupApis(null));
 	}
 
@@ -187,7 +186,7 @@ public class ApiControllerTest {
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
-				.group("xy").sseVar("TEST_SSE").build();
+				.group("xy").build();
 		runTest(mockMvc, params, noApis(null));
 	}
 
@@ -200,7 +199,7 @@ public class ApiControllerTest {
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
-				.group("xy").sseVar("TEST_SSE").configuration(config).build();
+				.group("xy").configuration(config).build();
 		runTest(mockMvc, params, noApis(null));
 	}
 
@@ -248,9 +247,10 @@ public class ApiControllerTest {
 					.isEqualTo("public, max-age=" + 6 * 30 * 24 * 60 * 60);
 
 			String expiresHeader = (String) response.getHeaderValue("Expires");
-			DateTimeFormatter fmt = DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss z");
+			DateTimeFormatter fmt = DateTimeFormat
+					.forPattern("EEE, dd MMM yyyy HH:mm:ss z");
 			DateTime expires = DateTime.parse(expiresHeader, fmt);
-			
+
 			DateTime inSixMonths = DateTime.now(DateTimeZone.UTC)
 					.plusSeconds(6 * 30 * 24 * 60 * 60);
 			assertThat(expires.getYear()).isEqualTo(inSixMonths.getYear());
@@ -265,7 +265,7 @@ public class ApiControllerTest {
 	public void testGroup2() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
-				.group("group2").sseVar("TEST_SSE").build();
+				.group("group2").build();
 		runTest(mockMvc, params, group2Apis(null));
 		runTest(mockMvc, params, group2Apis(null));
 	}
@@ -273,8 +273,7 @@ public class ApiControllerTest {
 	@Test
 	public void testGroup3() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Extns").actionNs("ns")
-				.remotingApiVar("RAPI").pollingUrlsVar("PURLS").sseVar("ES")
-				.group("group3").build();
+				.remotingApiVar("RAPI").pollingUrlsVar("PURLS").group("group3").build();
 		runTest(mockMvc, params, group3Apis("ns"));
 		runTest(mockMvc, params, group3Apis("ns"));
 	}
@@ -283,12 +282,12 @@ public class ApiControllerTest {
 	public void testGroup4() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test").actionNs("")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
-				.sseVar("TEST_SSE").group("group4").build();
+				.group("group4").build();
 		runTest(mockMvc, params, group4Apis(null));
 
 		params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
-				.sseVar("TEST_SSE").group("group4").build();
+				.group("group4").build();
 		runTest(mockMvc, params, group4Apis(null));
 	}
 
@@ -310,12 +309,12 @@ public class ApiControllerTest {
 	public void testInterfaceGroup() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test").actionNs("")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
-				.sseVar("TEST_SSE").group("interface").build();
+				.group("interface").build();
 		runTest(mockMvc, params, interfaceApis(null));
 
 		params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
-				.sseVar("TEST_SSE").group("interface").build();
+				.group("interface").build();
 		runTest(mockMvc, params, interfaceApis(null));
 	}
 
@@ -323,12 +322,11 @@ public class ApiControllerTest {
 	public void testNoApiNs() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("").actionNs("")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
-				.sseVar("TEST_SSE").group("group4").build();
+				.group("group4").build();
 		runTest(mockMvc, params, group4Apis(null));
 
 		params = ApiRequestParams.builder().apiNs("").remotingApiVar("TEST_REMOTING_API")
-				.pollingUrlsVar("TEST_POLLING_URLS").sseVar("TEST_SSE").group("group4")
-				.build();
+				.pollingUrlsVar("TEST_POLLING_URLS").group("group4").build();
 		runTest(mockMvc, params, group4Apis(null));
 	}
 
@@ -336,22 +334,22 @@ public class ApiControllerTest {
 	public void testFullRouterUrl() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("apiNs").actionNs("")
 				.remotingApiVar("TEST_RMT_API").pollingUrlsVar("TEST_POLL_URLS")
-				.sseVar("TEST_SSE").fullRouterUrl(Boolean.TRUE).group("group2").build();
+				.fullRouterUrl(Boolean.TRUE).group("group2").build();
 		runTest(mockMvc, params, group2Apis(null, "http://localhost/router"));
 
 		params = ApiRequestParams.builder().apiNs("apiNs").remotingApiVar("TEST_RMT_API")
-				.pollingUrlsVar("TEST_POLL_URLS").sseVar("TEST_SSE")
-				.fullRouterUrl(Boolean.TRUE).group("group2").build();
+				.pollingUrlsVar("TEST_POLL_URLS").fullRouterUrl(Boolean.TRUE)
+				.group("group2").build();
 		runTest(mockMvc, params, group2Apis(null, "http://localhost/router"));
 
 		params = ApiRequestParams.builder().apiNs("apiNs").actionNs("")
 				.remotingApiVar("TEST_RMT_API").pollingUrlsVar("TEST_POLL_URLS")
-				.sseVar("TEST_SSE").fullRouterUrl(Boolean.FALSE).group("group2").build();
+				.fullRouterUrl(Boolean.FALSE).group("group2").build();
 		runTest(mockMvc, params, group2Apis(null, "/router"));
 
 		params = ApiRequestParams.builder().apiNs("apiNs").remotingApiVar("TEST_RMT_API")
-				.pollingUrlsVar("TEST_POLL_URLS").sseVar("TEST_SSE")
-				.fullRouterUrl(Boolean.FALSE).group("group2").build();
+				.pollingUrlsVar("TEST_POLL_URLS").fullRouterUrl(Boolean.FALSE)
+				.group("group2").build();
 		runTest(mockMvc, params, group2Apis(null, "/router"));
 	}
 
@@ -359,38 +357,36 @@ public class ApiControllerTest {
 	public void testFormat() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().actionNs("").apiNs("apiNs")
 				.remotingApiVar("TEST_RMT_API").pollingUrlsVar("TEST_POLL_URLS")
-				.sseVar("TEST_SSE").group("group2").format("json").build();
+				.group("group2").format("json").build();
 		runTest(mockMvc, params, group2Apis(null, "http://localhost/router"));
 
 		params = ApiRequestParams.builder().actionNs("ns").apiNs("")
 				.remotingApiVar("TEST_RMT_API").pollingUrlsVar("TEST_POLL_URLS")
-				.sseVar("TEST_SSE").group("group2").format("json")
-				.fullRouterUrl(Boolean.TRUE).build();
+				.group("group2").format("json").fullRouterUrl(Boolean.TRUE).build();
 		runTest(mockMvc, params, group2Apis("ns", "http://localhost/router"));
 	}
 
 	@Test
 	public void testBaseRouterUrl() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().actionNs("").apiNs("an")
-				.remotingApiVar("rapi").pollingUrlsVar("papi").sseVar("sseapi")
-				.group("group2").baseRouterUrl("test").build();
+				.remotingApiVar("rapi").pollingUrlsVar("papi").group("group2")
+				.baseRouterUrl("test").build();
 		runTest(mockMvc, params, group2Apis(null, "test/router"));
 	}
 
 	@Test
 	public void testBaseRouterUrlWithEndingSlash() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().actionNs("").apiNs("an")
-				.remotingApiVar("rapi").pollingUrlsVar("papi").sseVar("sseapi")
-				.group("group2").fullRouterUrl(Boolean.TRUE)
-				.baseRouterUrl("service/test/").build();
+				.remotingApiVar("rapi").pollingUrlsVar("papi").group("group2")
+				.fullRouterUrl(Boolean.TRUE).baseRouterUrl("service/test/").build();
 		runTest(mockMvc, params, group2Apis(null, "service/test/router"));
 	}
 
 	@Test
 	public void testBaseRouterUrlEmptyString() throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().actionNs("").apiNs("an")
-				.remotingApiVar("rapi").pollingUrlsVar("papi").sseVar("sseapi")
-				.group("group2").baseRouterUrl("").build();
+				.remotingApiVar("rapi").pollingUrlsVar("papi").group("group2")
+				.baseRouterUrl("").build();
 		runTest(mockMvc, params, group2Apis(null, "/router"));
 	}
 
@@ -428,9 +424,6 @@ public class ApiControllerTest {
 		}
 		if (params.getRemotingApiVar() != null) {
 			request.param("remotingApiVar", params.getRemotingApiVar());
-		}
-		if (params.getSseVar() != null) {
-			request.param("sseVar", params.getSseVar());
 		}
 		if (params.isFullRouterUrl() != null && params.isFullRouterUrl()) {
 			request.param("fullRouterUrl", "true");
@@ -529,9 +522,6 @@ public class ApiControllerTest {
 				new PollingProvider("pollProvider", "handleMessage2", "message2"));
 		remotingApi.addPollingProvider(
 				new PollingProvider("pollProvider", "message6", "message6"));
-		remotingApi.addSseProvider("sseProvider", "message1");
-		remotingApi.addSseProvider("sseProvider", "message2");
-		remotingApi.addSseProvider("sseProvider", "message6");
 		return remotingApi;
 	}
 
@@ -567,9 +557,6 @@ public class ApiControllerTest {
 				new PollingProvider("pollProvider", "handleMessage2", "message2"));
 		remotingApi.addPollingProvider(
 				new PollingProvider("pollProvider", "message6", "message6"));
-		remotingApi.addSseProvider("sseProvider", "message1");
-		remotingApi.addSseProvider("sseProvider", "message2");
-		remotingApi.addSseProvider("sseProvider", "message6");
 		return remotingApi;
 	}
 
@@ -607,7 +594,6 @@ public class ApiControllerTest {
 				new Action("method3", 1, Boolean.FALSE));
 		remotingApi.addPollingProvider(
 				new PollingProvider("pollProvider", "handleMessage5", "message5"));
-		remotingApi.addSseProvider("sseProvider", "message5");
 		return remotingApi;
 	}
 
@@ -615,7 +601,6 @@ public class ApiControllerTest {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/router", namespace);
 		remotingApi.addPollingProvider(
 				new PollingProvider("pollProvider", "handleMessage3", "message3"));
-		remotingApi.addSseProvider("sseProvider", "message3");
 		return remotingApi;
 	}
 
@@ -1003,28 +988,6 @@ public class ApiControllerTest {
 		remotingApi.addPollingProvider(new PollingProvider("pollProvider",
 				"messageCookieValue6", "messageCookieValue6"));
 
-		remotingApi.addSseProvider("sseProvider", "message1");
-		remotingApi.addSseProvider("sseProvider", "message2");
-		remotingApi.addSseProvider("sseProvider", "message3");
-		remotingApi.addSseProvider("sseProvider", "message4");
-		remotingApi.addSseProvider("sseProvider", "message5");
-		remotingApi.addSseProvider("sseProvider", "message6");
-		remotingApi.addSseProvider("sseProvider", "messageRequestHeader1");
-		remotingApi.addSseProvider("sseProvider", "messageRequestHeader2");
-		remotingApi.addSseProvider("sseProvider", "messageRequestHeader3");
-		remotingApi.addSseProvider("sseProvider", "messageRequestHeader4");
-		remotingApi.addSseProvider("sseProvider", "messageRequestHeader5");
-		remotingApi.addSseProvider("sseProvider", "messageRequestHeader6");
-		remotingApi.addSseProvider("sseProvider", "messageCookieValue1");
-		remotingApi.addSseProvider("sseProvider", "messageCookieValue2");
-		remotingApi.addSseProvider("sseProvider", "messageCookieValue3");
-		remotingApi.addSseProvider("sseProvider", "messageCookieValue4");
-		remotingApi.addSseProvider("sseProvider", "messageCookieValue5");
-		remotingApi.addSseProvider("sseProvider", "messageCookieValue6");
-		remotingApi.addSseProvider("sseProvider", "message13");
-		remotingApi.addSseProvider("sseProvider", "message14");
-		remotingApi.addSseProvider("sseProvider", "message15");
-
 		remotingApi.addAction("remoteProviderOptional",
 				new Action("method1", 3, Boolean.FALSE));
 		remotingApi.addAction("remoteProviderOptional",
@@ -1077,10 +1040,6 @@ public class ApiControllerTest {
 				new Action("namedMethod3", Arrays.asList("i")));
 		remotingApi.addAction("remoteProviderOptional",
 				new Action("namedMethod4", Arrays.asList("bd")));
-
-		remotingApi.addSseProvider("remoteProviderOptional", "sse1");
-		remotingApi.addSseProvider("remoteProviderOptional", "sse2");
-		remotingApi.addSseProvider("remoteProviderOptional", "sse3");
 
 		remotingApi.addAction("remoteProviderOptional",
 				new Action("storeRead1", 1, Boolean.FALSE));
@@ -1275,7 +1234,6 @@ public class ApiControllerTest {
 		remotingApi.addPollingProvider(
 				new PollingProvider("pollProvider", "handleMessage4", "message4"));
 
-		remotingApi.addSseProvider("sseProvider", "message4");
 		return remotingApi;
 	}
 
@@ -1364,7 +1322,6 @@ public class ApiControllerTest {
 
 		String remotingApiLine;
 		String pollingApiLine;
-		String sseApiLine;
 
 		String apiNs = params.getApiNs();
 		if (apiNs == null) {
@@ -1380,10 +1337,6 @@ public class ApiControllerTest {
 		if (pollingUrlsVar == null) {
 			pollingUrlsVar = "POLLING_URLS";
 		}
-		String sseVar = params.getSseVar();
-		if (sseVar == null) {
-			sseVar = "SSE";
-		}
 
 		if (StringUtils.hasText(apiNs)) {
 			String extNsLine = "Ext.ns('" + apiNs + "');";
@@ -1391,13 +1344,11 @@ public class ApiControllerTest {
 
 			remotingApiLine = apiNs + "." + remotingApiVar + " = {";
 			pollingApiLine = apiNs + "." + pollingUrlsVar + " = {";
-			sseApiLine = apiNs + "." + sseVar + " = {";
 		}
 		else {
 			assertDoesNotContains("Ext.ns(", lines);
 			remotingApiLine = remotingApiVar + " = {";
 			pollingApiLine = pollingUrlsVar + " = {";
-			sseApiLine = sseVar + " = {";
 		}
 
 		int startRemotingApi = assertContains(remotingApiLine, lines);
@@ -1408,14 +1359,6 @@ public class ApiControllerTest {
 		}
 		else {
 			assertDoesNotContains(pollingApiLine, lines);
-		}
-
-		int startSseApi = lines.length;
-		if (!remotingApi.getSseProviders().isEmpty()) {
-			startSseApi = assertContains(sseApiLine, lines);
-		}
-		else {
-			assertDoesNotContains(sseApiLine, lines);
 		}
 
 		if (remotingApi.getNamespace() != null) {
@@ -1430,15 +1373,8 @@ public class ApiControllerTest {
 
 		String pollingJson = "{";
 		if (!remotingApi.getPollingProviders().isEmpty()) {
-			for (int i = startPollingApi + 1; i < startSseApi; i++) {
+			for (int i = startPollingApi + 1; i < lines.length; i++) {
 				pollingJson += lines[i];
-			}
-		}
-
-		String sseJson = "{";
-		if (!remotingApi.getSseProviders().isEmpty()) {
-			for (int i = startSseApi + 1; i < lines.length; i++) {
-				sseJson += lines[i];
 			}
 		}
 
@@ -1541,17 +1477,6 @@ public class ApiControllerTest {
 			}
 		}
 
-		if (!remotingApi.getSseProviders().isEmpty()) {
-			String sseUrl = remotingApi.getUrl().replace("router", "sse");
-			Map<String, Object> sseMap = ControllerUtil.readValue(sseJson, Map.class);
-			assertThat(sseMap).hasSize(remotingApi.getSseProviders().size());
-			for (String beanName : remotingApi.getSseProviders().keySet()) {
-				Map<String, String> actions = (Map<String, String>) sseMap.get(beanName);
-				List<String> expectedActions = remotingApi.getSseProviders()
-						.get(beanName);
-				compareSse(expectedActions, actions, beanName, sseUrl);
-			}
-		}
 	}
 
 	public static void compareSse(List<String> expectedActions,

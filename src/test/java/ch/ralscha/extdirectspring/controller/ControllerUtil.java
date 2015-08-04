@@ -23,7 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -50,8 +49,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
-import ch.ralscha.extdirectspring.bean.SSEvent;
-import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.JsonHandler;
 
 public class ControllerUtil {
@@ -107,45 +104,6 @@ public class ControllerUtil {
 				.andExpect(content().encoding("UTF-8")).andReturn();
 
 		return readDirectPollResponse(result.getResponse().getContentAsByteArray());
-	}
-
-	public static List<SSEvent> performSseRequest(MockMvc mockMvc, String bean,
-			String method, Map<String, String> params, HttpHeaders headers,
-			List<Cookie> cookies) throws Exception {
-		return performSseRequest(mockMvc, bean, method, params, headers, cookies, false);
-	}
-
-	public static List<SSEvent> performSseRequest(MockMvc mockMvc, String bean,
-			String method, Map<String, String> params, HttpHeaders headers,
-			List<Cookie> cookies, boolean withSession) throws Exception {
-		MockHttpServletRequestBuilder request = post("/sse/" + bean + "/" + method)
-				.accept(MediaType.ALL)
-				.contentType(MediaType.parseMediaType("text/event-stream"))
-				.characterEncoding("UTF-8");
-
-		if (cookies != null) {
-			request.cookie(cookies.toArray(new Cookie[cookies.size()]));
-		}
-
-		if (withSession) {
-			request.session(new MockHttpSession());
-		}
-
-		if (params != null) {
-			for (String paramName : params.keySet()) {
-				request.param(paramName, params.get(paramName));
-			}
-		}
-
-		if (headers != null) {
-			request.headers(headers);
-		}
-
-		MvcResult result = mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentType("text/event-stream;charset=UTF-8"))
-				.andExpect(content().encoding("UTF-8")).andReturn();
-
-		return readDirectSseResponse(result.getResponse().getContentAsByteArray());
 	}
 
 	public static MvcResult performRouterRequest(MockMvc mockMvc, String content)
@@ -468,70 +426,6 @@ public class ControllerUtil {
 		catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public static List<SSEvent> readDirectSseResponse(byte[] contentAsByteArray) {
-
-		List<SSEvent> events = new ArrayList<SSEvent>();
-
-		StringBuilder commentLines = new StringBuilder(32);
-		StringBuilder dataLines = new StringBuilder(32);
-
-		SSEvent event = null;
-		String content = new String(contentAsByteArray, ExtDirectSpringUtil.UTF8_CHARSET);
-		for (String line : content.split("\\n")) {
-
-			if (line.isEmpty() && event != null) {
-				if (dataLines.length() > 0) {
-					event.setData(dataLines.toString());
-				}
-				if (commentLines.length() > 0) {
-					event.setComment(commentLines.toString());
-				}
-				events.add(event);
-				event = null;
-				commentLines = new StringBuilder(32);
-				dataLines = new StringBuilder(32);
-				continue;
-			}
-			else if (event == null) {
-				event = new SSEvent();
-			}
-
-			if (line.startsWith(":")) {
-				if (commentLines.length() > 0) {
-					commentLines.append("\n");
-				}
-				commentLines.append(line.substring(1).trim());
-			}
-			else if (line.startsWith("data:")) {
-				if (dataLines.length() > 0) {
-					dataLines.append("\n");
-				}
-				dataLines.append(line.substring(5).trim());
-			}
-			else if (line.startsWith("retry:")) {
-				event.setRetry(Integer.valueOf(line.substring(6).trim()));
-			}
-			else if (line.startsWith("event:")) {
-				event.setEvent(line.substring(6).trim());
-			}
-			else if (line.startsWith("id:")) {
-				event.setId(line.substring(3).trim());
-			}
-		}
-
-		if (event != null) {
-			if (dataLines.length() > 0) {
-				event.setData(dataLines.toString());
-			}
-			if (commentLines.length() > 0) {
-				event.setComment(commentLines.toString());
-			}
-			events.add(event);
-		}
-
-		return events;
 	}
 
 }

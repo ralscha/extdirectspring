@@ -29,8 +29,6 @@ public class ApiRequestParams {
 
 	private String pollingUrlsVar;
 
-	private String sseVar;
-
 	private String group;
 
 	private Boolean fullRouterUrl;
@@ -68,11 +66,6 @@ public class ApiRequestParams {
 
 		Builder pollingUrlsVar(String value) {
 			params.pollingUrlsVar = value;
-			return this;
-		}
-
-		Builder sseVar(String value) {
-			params.sseVar = value;
 			return this;
 		}
 
@@ -125,10 +118,6 @@ public class ApiRequestParams {
 
 	public String getPollingUrlsVar() {
 		return pollingUrlsVar;
-	}
-
-	public String getSseVar() {
-		return sseVar;
 	}
 
 	public String getGroup() {

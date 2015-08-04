@@ -55,8 +55,6 @@ public class Configuration {
 
 	private String pollingUrlsVar = "POLLING_URLS";
 
-	private String sseVar = "SSE";
-
 	private boolean fullRouterUrl = false;
 
 	private String baseRouterUrl = null;
@@ -492,21 +490,6 @@ public class Configuration {
 		this.pollingUrlsVar = pollingUrlsVar;
 	}
 
-	public String getSseVar() {
-		return sseVar;
-	}
-
-	/**
-	 * Changes the name of the SSE urls object variable
-	 * <p>
-	 * Defaults to SSE
-	 *
-	 * @param sseVar new SSE urls object variable name
-	 */
-	public void setSseVar(String sseVar) {
-		this.sseVar = sseVar;
-	}
-
 	public boolean isFullRouterUrl() {
 		return fullRouterUrl;
 	}
@@ -530,7 +513,7 @@ public class Configuration {
 	/**
 	 * If not null the {@link ApiController} does not use the url of the request to
 	 * determine the router url instead he uses the value of this variable as the base and
-	 * adds /router, /poll and /sse.<br>
+	 * adds /router and /poll.<br>
 	 * The fullRouterUrl setting is ignored when this variable is not null
 	 * <p>
 	 * Defaults to null.

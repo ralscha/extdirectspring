@@ -16,10 +16,8 @@
 package ch.ralscha.extdirectspring.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -80,14 +78,13 @@ public class ApiController {
 	 * @param actionNs name of the namespace the action will live in.
 	 * @param remotingApiVar name of the remoting api variable. Defaults to REMOTING_API
 	 * @param pollingUrlsVar name of the polling urls object. Defaults to POLLING_URLS
-	 * @param sseVar name of the SSE urls object. Defaults to SSE
 	 * @param group name of the api group. Multiple groups delimited with comma
 	 * @param fullRouterUrl if true the router property contains the full request URL with
 	 * method, server and port. Defaults to false returns only the URL without method,
 	 * server and port
 	 * @param format only valid value is "json2. Ext Designer sends this parameter and the
 	 * response is a JSON. Defaults to null and response is Javascript.
-	 * @param baseRouterUrl Sets the path to the router, poll and sse controllers. If set
+	 * @param baseRouterUrl Sets the path to the router and poll controllers. If set
 	 * overrides default behavior that uses request.getRequestURI
 	 * @param request the HTTP servlet request
 	 * @param response the HTTP servlet response
@@ -102,7 +99,6 @@ public class ApiController {
 					required = false) String remotingApiVar,
 			@RequestParam(value = "pollingUrlsVar",
 					required = false) String pollingUrlsVar,
-			@RequestParam(value = "sseVar", required = false) String sseVar,
 			@RequestParam(value = "group", required = false) String group,
 			@RequestParam(value = "fullRouterUrl",
 					required = false) Boolean fullRouterUrl,
@@ -116,7 +112,7 @@ public class ApiController {
 			response.setCharacterEncoding(ExtDirectSpringUtil.UTF8_CHARSET.name());
 
 			String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar,
-					pollingUrlsVar, sseVar, group, fullRouterUrl, baseRouterUrl, request);
+					pollingUrlsVar, group, fullRouterUrl, baseRouterUrl, request);
 
 			byte[] outputBytes = apiString.getBytes(ExtDirectSpringUtil.UTF8_CHARSET);
 			response.setContentLength(outputBytes.length);
@@ -126,8 +122,6 @@ public class ApiController {
 			outputStream.flush();
 		}
 		else {
-			// This code create JSON description for Sencha Architect. We can
-			// therefore ignore SSE urls.
 			response.setContentType(RouterController.APPLICATION_JSON.toString());
 			response.setCharacterEncoding(
 					RouterController.APPLICATION_JSON.getCharSet().name());
@@ -158,12 +152,11 @@ public class ApiController {
 	 * @param actionNs name of the namespace the action will live in.
 	 * @param remotingApiVar name of the remoting api variable. Defaults to REMOTING_API
 	 * @param pollingUrlsVar name of the polling urls object. Defaults to POLLING_URLS
-	 * @param sseVar name of the SSE urls object. Defaults to SSE
 	 * @param group name of the api group. Multiple groups delimited with comma
 	 * @param fullRouterUrl if true the router property contains the full URL with
 	 * protocol, server name, port number, and server path. Defaults to false returns only
 	 * the URL with server path
-	 * @param baseRouterUrl Sets the path to the router, poll and sse controllers. If set
+	 * @param baseRouterUrl Sets the path to the router and poll controllers. If set
 	 * overrides default behavior that uses request.getRequestURI
 	 * @param request the HTTP servlet request
 	 * @param response the HTTP servlet response
@@ -177,7 +170,6 @@ public class ApiController {
 					required = false) String remotingApiVar,
 			@RequestParam(value = "pollingUrlsVar",
 					required = false) String pollingUrlsVar,
-			@RequestParam(value = "sseVar", required = false) String sseVar,
 			@RequestParam(value = "group", required = false) String group,
 			@RequestParam(value = "fullRouterUrl",
 					required = false) Boolean fullRouterUrl,
@@ -185,7 +177,7 @@ public class ApiController {
 			HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar,
-				pollingUrlsVar, sseVar, group, fullRouterUrl, baseRouterUrl, request);
+				pollingUrlsVar, group, fullRouterUrl, baseRouterUrl, request);
 
 		byte[] outputBytes = apiString.getBytes(ExtDirectSpringUtil.UTF8_CHARSET);
 		ExtDirectSpringUtil.handleCacheableResponse(request, response, outputBytes,
@@ -193,9 +185,9 @@ public class ApiController {
 	}
 
 	private String buildAndCacheApiString(String requestApiNs, String requestActionNs,
-			String requestRemotingApiVar, String requestPollingUrlsVar,
-			String requestSseVar, String group, Boolean requestFullRouterUrl,
-			String requestBaseRouterUrl, HttpServletRequest request) {
+			String requestRemotingApiVar, String requestPollingUrlsVar, String group,
+			Boolean requestFullRouterUrl, String requestBaseRouterUrl,
+			HttpServletRequest request) {
 
 		Configuration configuration = configurationService.getConfiguration();
 		String apiNs = requestApiNs != null ? requestApiNs : configuration.getApiNs();
@@ -203,7 +195,6 @@ public class ApiController {
 				: configuration.getRemotingApiVar();
 		String pollingUrlsVar = requestPollingUrlsVar != null ? requestPollingUrlsVar
 				: configuration.getPollingUrlsVar();
-		String sseVar = requestSseVar != null ? requestSseVar : configuration.getSseVar();
 		boolean fullRouterUrl = requestFullRouterUrl != null ? requestFullRouterUrl
 				: configuration.isFullRouterUrl();
 		String actionNs = requestActionNs != null ? requestActionNs
@@ -225,31 +216,29 @@ public class ApiController {
 		String stripApiRegex = "api[^/]*?\\.js";
 		String routerUrl = requestUrlString.replaceFirst(stripApiRegex, "") + "router";
 		String basePollUrl = requestUrlString.replaceFirst(stripApiRegex, "") + "poll";
-		String baseSseUrl = requestUrlString.replaceFirst(stripApiRegex, "") + "sse";
 
 		if (!requestUrlString.contains("/api-debug-doc.js")) {
 			boolean debug = requestUrlString.contains("api-debug.js");
 
 			ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar,
-					pollingUrlsVar, sseVar, routerUrl, group, debug);
+					pollingUrlsVar, routerUrl, group, debug);
 			String apiString = apiCache.get(apiKey);
 			if (apiString == null) {
 				apiString = buildApiString(apiNs, actionNs, remotingApiVar,
-						pollingUrlsVar, sseVar, routerUrl, basePollUrl, baseSseUrl, group,
-						debug, false);
+						pollingUrlsVar, routerUrl, basePollUrl, group, debug, false);
 				apiCache.put(apiKey, apiString);
 			}
 			return apiString;
 		}
 
-		return buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, sseVar,
-				routerUrl, basePollUrl, baseSseUrl, group, true, true);
+		return buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl,
+				basePollUrl, group, true, true);
 
 	}
 
 	private String buildApiString(String apiNs, String actionNs, String remotingApiVar,
-			String pollingUrlsVar, String sseVar, String routerUrl, String basePollUrl,
-			String baseSseUrl, String group, boolean debug, boolean doc) {
+			String pollingUrlsVar, String routerUrl, String basePollUrl, String group,
+			boolean debug, boolean doc) {
 
 		RemotingApi remotingApi = new RemotingApi(
 				configurationService.getConfiguration().getProviderType(), routerUrl,
@@ -309,7 +298,7 @@ public class ApiController {
 		}
 		else {
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixInAnnotations(RemotingApi.class, RemotingApiMixin.class);
+			mapper.addMixIn(RemotingApi.class, RemotingApiMixin.class);
 			try {
 				jsonConfig = mapper.writer().withDefaultPrettyPrinter()
 						.writeValueAsString(remotingApi);
@@ -371,35 +360,6 @@ public class ApiController {
 			sb.append("};");
 		}
 
-		Map<String, List<String>> sseProviders = remotingApi.getSseProviders();
-		if (!sseProviders.isEmpty()) {
-
-			if (debug) {
-				sb.append("\n\n");
-			}
-
-			Map<String, Map<String, String>> sseconfig = new HashMap<String, Map<String, String>>();
-			for (Entry<String, List<String>> entry : sseProviders.entrySet()) {
-				String bean = entry.getKey();
-
-				Map<String, String> methods = new HashMap<String, String>();
-				sseconfig.put(bean, methods);
-
-				for (String method : entry.getValue()) {
-					methods.put(method, baseSseUrl + "/" + bean + "/" + method);
-				}
-			}
-
-			String sseConfig = writeValueAsString(sseconfig, debug);
-
-			if (StringUtils.hasText(apiNs)) {
-				sb.append(apiNs).append(".");
-			}
-			sb.append(sseVar).append(" = ");
-			sb.append(sseConfig);
-			sb.append(";");
-		}
-
 		return sb.toString();
 	}
 
@@ -443,10 +403,6 @@ public class ApiController {
 				}
 				else if (methodInfo.getPollingProvider() != null) {
 					remotingApi.addPollingProvider(methodInfo.getPollingProvider());
-				}
-				else {
-					remotingApi.addSseProvider(entry.getKey().getBeanName(),
-							methodInfo.getSseMethod());
 				}
 			}
 		}

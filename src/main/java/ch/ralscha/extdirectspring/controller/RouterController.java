@@ -83,8 +83,6 @@ public class RouterController {
 
 	private final RequestMappingHandlerAdapter handlerAdapter;
 
-	private final SSEHandler sseHandler;
-
 	private final ConfigurationService configurationService;
 
 	private final MethodInfoCache methodInfoCache;
@@ -94,10 +92,8 @@ public class RouterController {
 
 	@Autowired
 	public RouterController(RequestMappingHandlerAdapter handlerAdapter,
-			SSEHandler sseHandler, ConfigurationService configurationService,
-			MethodInfoCache methodInfoCache) {
+			ConfigurationService configurationService, MethodInfoCache methodInfoCache) {
 		this.handlerAdapter = handlerAdapter;
-		this.sseHandler = sseHandler;
 		this.configurationService = configurationService;
 		this.methodInfoCache = methodInfoCache;
 	}
@@ -195,13 +191,6 @@ public class RouterController {
 		}
 
 		writeJsonResponse(response, directPollResponse, jsonView, streamResponse);
-	}
-
-	@RequestMapping(value = "/sse/{beanName}/{method}")
-	public void sse(@PathVariable("beanName") String beanName,
-			@PathVariable("method") String method, HttpServletRequest request,
-			HttpServletResponse response, Locale locale) throws Exception {
-		sseHandler.handle(beanName, method, request, response, locale);
 	}
 
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "extAction")

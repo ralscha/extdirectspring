@@ -57,7 +57,6 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.GroupInfo;
 import ch.ralscha.extdirectspring.bean.SortDirection;
 import ch.ralscha.extdirectspring.bean.SortInfo;
-import ch.ralscha.extdirectspring.controller.SSEWriter;
 import ch.ralscha.extdirectspring.filter.Filter;
 
 /**
@@ -103,12 +102,6 @@ public final class ParametersResolver {
 
 	public Object[] prepareParameters(HttpServletRequest request,
 			HttpServletResponse response, Locale locale, MethodInfo methodInfo) {
-		return prepareParameters(request, response, locale, methodInfo, null);
-	}
-
-	public Object[] prepareParameters(HttpServletRequest request,
-			HttpServletResponse response, Locale locale, MethodInfo methodInfo,
-			SSEWriter sseWriter) {
 		List<ParameterInfo> methodParameters = methodInfo.getParameters();
 		Object[] parameters = null;
 		if (!methodParameters.isEmpty()) {
@@ -119,8 +112,7 @@ public final class ParametersResolver {
 
 				if (methodParameter.isSupportedParameter()) {
 					parameters[paramIndex] = SupportedParameters.resolveParameter(
-							methodParameter.getType(), request, response, locale,
-							sseWriter);
+							methodParameter.getType(), request, response, locale);
 				}
 				else if (methodParameter.hasRequestHeaderAnnotation()) {
 					parameters[paramIndex] = resolveRequestHeader(request,

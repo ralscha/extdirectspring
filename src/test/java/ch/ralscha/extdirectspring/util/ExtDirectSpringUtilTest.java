@@ -123,11 +123,11 @@ public class ExtDirectSpringUtilTest {
 		assertThat(response.getHeader("ETag")).isEqualTo(etag);
 		assertThat(response.getHeader("Cache-Control"))
 				.isEqualTo("public, max-age=" + month * 30 * 24 * 60 * 60);
-		
+
 		String expiresHeader = (String) response.getHeaderValue("Expires");
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss z");
 		DateTime expires = DateTime.parse(expiresHeader, fmt);
-		
+
 		DateTime inSixMonths = DateTime.now(DateTimeZone.UTC)
 				.plusSeconds(month * 30 * 24 * 60 * 60);
 		assertThat(expires.getYear()).isEqualTo(inSixMonths.getYear());

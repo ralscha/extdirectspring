@@ -323,34 +323,6 @@ public enum ExtDirectMethodType {
 		}
 	},
 	/**
-	 * Method that handles Server-Sent Events requests (EventSource)
-	 */
-	SSE {
-		@Override
-		public boolean isValid(String beanAndMethodName, Class<?> clazz, Method method) {
-
-			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils
-					.findAnnotation(method, ExtDirectMethod.class);
-
-			if (extDirectMethodAnnotation.entryClass() != Object.class) {
-				log.warn("SSE method '" + beanAndMethodName
-						+ "' does not support entryClass attribute of @ExtDirectMethod");
-			}
-
-			if (extDirectMethodAnnotation.streamResponse()) {
-				log.warn("SSE method '" + beanAndMethodName
-						+ "' does not support streamResponse attribute of @ExtDirectMethod");
-			}
-
-			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
-				log.warn("SSE method '" + beanAndMethodName
-						+ "' does not support event attribute of @ExtDirectMethod");
-			}
-
-			return true;
-		}
-	},
-	/**
 	 * Specifies a method that handles a form post with a Json payload
 	 */
 	FORM_POST_JSON {

@@ -31,7 +31,6 @@ import ch.ralscha.extdirectspring.provider.RemoteProviderSimpleNamed;
 import ch.ralscha.extdirectspring.provider.RemoteProviderStoreModify;
 import ch.ralscha.extdirectspring.provider.RemoteProviderStoreRead;
 import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad;
-import ch.ralscha.extdirectspring.provider.SseProvider;
 import ch.ralscha.extdirectspring.provider.UploadService;
 import ch.ralscha.extdirectspring.provider.WrongFormPostController;
 
@@ -164,17 +163,6 @@ public class ExtDirectMethodTypeTest {
 					|| method.getName().startsWith("handleMessage")) {
 				assertThat(ExtDirectMethodType.POLL.isValid(
 						"pollProvider." + method.getName(), PollProvider.class, method))
-								.isTrue();
-			}
-		}
-	}
-
-	@Test
-	public void testSseIsValid() throws SecurityException {
-		for (Method method : SseProvider.class.getMethods()) {
-			if (method.getName().startsWith("message")) {
-				assertThat(ExtDirectMethodType.SSE.isValid(
-						"sseProvider." + method.getName(), SseProvider.class, method))
 								.isTrue();
 			}
 		}

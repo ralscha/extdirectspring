@@ -25,13 +25,11 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 
-import ch.ralscha.extdirectspring.controller.SSEWriter;
-
 public class SupportedParametersTest {
 
 	@Test
 	public void testIsSupported() {
-		assertThat(SupportedParameters.values().length).isEqualTo(6);
+		assertThat(SupportedParameters.values().length).isEqualTo(5);
 		assertThat(SupportedParameters.isSupported(String.class)).isFalse();
 		assertThat(SupportedParameters.isSupported(null)).isFalse();
 		assertThat(SupportedParameters.isSupported(MockHttpServletResponse.class))
@@ -41,7 +39,6 @@ public class SupportedParametersTest {
 		assertThat(SupportedParameters.isSupported(MockHttpSession.class)).isTrue();
 		assertThat(SupportedParameters.isSupported(Locale.class)).isTrue();
 		assertThat(SupportedParameters.isSupported(Principal.class)).isTrue();
-		assertThat(SupportedParameters.isSupported(SSEWriter.class)).isTrue();
 	}
 
 	@Test
@@ -66,9 +63,6 @@ public class SupportedParametersTest {
 				SupportedParameters.resolveParameter(Locale.class, request, response, en))
 						.isSameAs(en);
 
-		SSEWriter sseWriter = new SSEWriter(response);
-		assertThat(SupportedParameters.resolveParameter(SSEWriter.class, request,
-				response, en, sseWriter)).isSameAs(sseWriter);
 	}
 
 }

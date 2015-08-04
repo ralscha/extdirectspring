@@ -71,7 +71,7 @@ public @interface ExtDirectMethod {
 	 * cannot figure out the type of the implementation class. For this scenario specify
 	 * the class with this parameter.
 	 */
-	Class<?> entryClass() default Object.class;
+	Class<?>entryClass() default Object.class;
 
 	/**
 	 * (Optional) Documentation that are to be placed on the api method. These are only
@@ -79,13 +79,14 @@ public @interface ExtDirectMethod {
 	 * <p/>
 	 * Defaults to no documentation.
 	 */
-	ExtDirectMethodDocumentation documentation() default @ExtDirectMethodDocumentation;
+	ExtDirectMethodDocumentation documentation() default @ExtDirectMethodDocumentation
+	;
 
 	/**
 	 * (Optional) Specifies a JSON View (filter) that Jackson uses to serialize the
-	 * response. Not supported for SSE and FORM_POST methods.
+	 * response. Not supported for FORM_POST methods.
 	 */
-	Class<?> jsonView() default NoJsonView.class;
+	Class<?>jsonView() default NoJsonView.class;
 
 	/**
 	 * Marker class to override a JsonView at runtime that is specified on the

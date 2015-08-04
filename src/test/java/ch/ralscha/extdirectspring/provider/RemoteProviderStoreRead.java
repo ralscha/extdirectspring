@@ -95,13 +95,13 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
-	public ExtDirectStoreResult<Row> method6(@RequestParam(value = "id",
-			defaultValue = "1") int id, final HttpServletRequest servletRequest,
-			ExtDirectStoreReadRequest request) {
+	public ExtDirectStoreResult<Row> method6(
+			@RequestParam(value = "id", defaultValue = "1") int id,
+			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
-		return createExtDirectStoreResult(request, ":" + id + ";"
-				+ (servletRequest != null));
+		return createExtDirectStoreResult(request,
+				":" + id + ";" + (servletRequest != null));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
@@ -121,8 +121,8 @@ public class RemoteProviderStoreRead {
 			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(endDate).isNotNull();
 		assertThat(servletRequest).isNotNull();
-		return createExtDirectStoreResult(request, ":" + endDate.toString() + ";"
-				+ (servletRequest != null));
+		return createExtDirectStoreResult(request,
+				":" + endDate.toString() + ";" + (servletRequest != null));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
@@ -148,16 +148,16 @@ public class RemoteProviderStoreRead {
 		}
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
-		return RemoteProviderStoreRead.createExtDirectStoreResult(request, ":" + id + ";"
-				+ locale);
+		return RemoteProviderStoreRead.createExtDirectStoreResult(request,
+				":" + id + ";" + locale);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
 	public ExtDirectStoreResult<Row> method11(ExtDirectStoreReadRequest request,
-			@CookieValue(defaultValue = "defaultCookie") String cookie, @RequestHeader(
-					defaultValue = "defaultHeader") String requestHeader) {
-		return RemoteProviderStoreRead.createExtDirectStoreResult(request, ":" + cookie
-				+ ":" + requestHeader);
+			@CookieValue(defaultValue = "defaultCookie") String cookie,
+			@RequestHeader(defaultValue = "defaultHeader") String requestHeader) {
+		return RemoteProviderStoreRead.createExtDirectStoreResult(request,
+				":" + cookie + ":" + requestHeader);
 	}
 
 	public static ExtDirectStoreResult<Row> createExtDirectStoreResult(
@@ -282,8 +282,8 @@ public class RemoteProviderStoreRead {
 		List<Row> rows = new ArrayList<Row>();
 		for (int i = 0; i < 100; i += 2) {
 			rows.add(new Row(i, "name: " + i + appendix, true, "" + (1000 + i)));
-			rows.add(new Row(i + 1, "firstname: " + (i + 1) + appendix, false, ""
-					+ (10 + i + 1)));
+			rows.add(new Row(i + 1, "firstname: " + (i + 1) + appendix, false,
+					"" + (10 + i + 1)));
 		}
 		return rows;
 	}
@@ -409,8 +409,8 @@ public class RemoteProviderStoreRead {
 			assertThat(nf2).isSameAs((NumericFilter) filters.get(0));
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("id");
-			assertThat(allFiltersForField)
-					.containsExactly(filters.get(0), filters.get(1));
+			assertThat(allFiltersForField).containsExactly(filters.get(0),
+					filters.get(1));
 
 			assertThat((Filter) request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
@@ -536,8 +536,8 @@ public class RemoteProviderStoreRead {
 			assertThat(df2).isSameAs((DateFilter) filters.get(0));
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("date");
-			assertThat(allFiltersForField)
-					.containsExactly(filters.get(0), filters.get(1));
+			assertThat(allFiltersForField).containsExactly(filters.get(0),
+					filters.get(1));
 
 			return createResult(type);
 		}
@@ -748,8 +748,8 @@ public class RemoteProviderStoreRead {
 			assertThat(nf2).isSameAs((NumericFilter) filters.get(0));
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("id");
-			assertThat(allFiltersForField)
-					.containsExactly(filters.get(0), filters.get(1));
+			assertThat(allFiltersForField).containsExactly(filters.get(0),
+					filters.get(1));
 
 			assertThat((Filter) request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
@@ -932,8 +932,8 @@ public class RemoteProviderStoreRead {
 			assertThat(nf2).isSameAs((NumericFilter) filters.get(0));
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("date");
-			assertThat(allFiltersForField)
-					.containsExactly(filters.get(0), filters.get(1));
+			assertThat(allFiltersForField).containsExactly(filters.get(0),
+					filters.get(1));
 
 			assertThat((Filter) request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();

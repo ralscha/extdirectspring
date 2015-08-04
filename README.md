@@ -33,8 +33,8 @@ The official Sencha [Ext.Direct forum](http://www.sencha.com/forum/forumdisplay.
 
 
 ##Minimal Requirements
-  * 1.6.0: Spring 4.2.0, Servlet 3.0, Java 1.6
-  * 1.5.2: Spring 4.1.2, Servlet 3.0, Java 1.6
+  * 1.6.0: Spring 4.2.0, Servlet 3.0, Jackson 2.6, Java 1.6
+  * 1.5.2: Spring 4.1.2, Servlet 3.0, Jackson 2.5, Java 1.6
   * 1.4.3: Spring 4.0.0, Servlet 3.0, Java 1.6
   * 1.3.9: Spring 3.2.1, Servlet 2.4, Java 1.6
   * 1.2.3: Spring 3.1.2, Servlet 2.4, Java 1.6

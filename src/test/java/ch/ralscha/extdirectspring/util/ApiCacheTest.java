@@ -32,28 +32,22 @@ public class ApiCacheTest {
 	public void testPutAndGet() {
 		ApiCache cache = new ApiCache();
 
-		ApiCacheKey key1 = new ApiCacheKey(null, null, null, null, null, null, null,
-				false);
-		ApiCacheKey key2 = new ApiCacheKey(null, null, null, null, null, null, null,
+		ApiCacheKey key1 = new ApiCacheKey(null, null, null, null, null, null, false);
+		ApiCacheKey key2 = new ApiCacheKey(null, null, null, null, null, null, true);
+		ApiCacheKey key3 = new ApiCacheKey(null, null, null, null, null, "/router", true);
+		ApiCacheKey key5 = new ApiCacheKey(null, null, null, null, "group", "/router",
 				true);
-		ApiCacheKey key3 = new ApiCacheKey(null, null, null, null, null, null, "/router",
-				true);
-		ApiCacheKey key4 = new ApiCacheKey(null, null, null, null, null, "group",
+		ApiCacheKey key6 = new ApiCacheKey(null, null, null, "polling", "group",
 				"/router", true);
-		ApiCacheKey key5 = new ApiCacheKey(null, null, null, null, "sse", "group",
+		ApiCacheKey key7 = new ApiCacheKey(null, null, "remoting", "polling", "group",
 				"/router", true);
-		ApiCacheKey key6 = new ApiCacheKey(null, null, null, "polling", "sse", "group",
+		ApiCacheKey key8 = new ApiCacheKey(null, "action", "remoting", "polling", "group",
 				"/router", true);
-		ApiCacheKey key7 = new ApiCacheKey(null, null, "remoting", "polling", "sse",
-				"group", "/router", true);
-		ApiCacheKey key8 = new ApiCacheKey(null, "action", "remoting", "polling", "sse",
-				"group", "/router", true);
-		ApiCacheKey key9 = new ApiCacheKey("api", "action", "remoting", "polling", "sse",
+		ApiCacheKey key9 = new ApiCacheKey("api", "action", "remoting", "polling",
 				"group", "/router", true);
 
 		cache.put(key1, "one");
 		cache.put(key3, "three");
-		cache.put(key4, "four");
 		cache.put(key5, "five");
 		cache.put(key6, "six");
 		cache.put(key7, "seven");
@@ -65,7 +59,6 @@ public class ApiCacheTest {
 		assertThat(cache.get(key1)).isNotNull();
 		assertThat(cache.get(key1)).isEqualTo("one");
 		assertThat(cache.get(key3)).isEqualTo("three");
-		assertThat(cache.get(key4)).isEqualTo("four");
 		assertThat(cache.get(key5)).isEqualTo("five");
 		assertThat(cache.get(key6)).isEqualTo("six");
 		assertThat(cache.get(key7)).isEqualTo("seven");
@@ -78,7 +71,6 @@ public class ApiCacheTest {
 		assertThat(key1.equals(key1)).isTrue();
 		assertThat(key2.equals(key2)).isTrue();
 		assertThat(key3.equals(key3)).isTrue();
-		assertThat(key4.equals(key4)).isTrue();
 		assertThat(key5.equals(key5)).isTrue();
 		assertThat(key6.equals(key6)).isTrue();
 		assertThat(key7.equals(key7)).isTrue();
@@ -87,7 +79,6 @@ public class ApiCacheTest {
 
 		assertThat(key2.equals(key1)).isFalse();
 		assertThat(key3.equals(key1)).isFalse();
-		assertThat(key4.equals(key1)).isFalse();
 		assertThat(key5.equals(key1)).isFalse();
 		assertThat(key6.equals(key1)).isFalse();
 		assertThat(key7.equals(key1)).isFalse();
@@ -96,7 +87,6 @@ public class ApiCacheTest {
 
 		assertThat(key1.equals(key2)).isFalse();
 		assertThat(key3.equals(key2)).isFalse();
-		assertThat(key4.equals(key2)).isFalse();
 		assertThat(key5.equals(key2)).isFalse();
 		assertThat(key6.equals(key2)).isFalse();
 		assertThat(key7.equals(key2)).isFalse();
@@ -105,21 +95,11 @@ public class ApiCacheTest {
 
 		assertThat(key1.equals(key3)).isFalse();
 		assertThat(key2.equals(key3)).isFalse();
-		assertThat(key4.equals(key3)).isFalse();
 		assertThat(key5.equals(key3)).isFalse();
 		assertThat(key6.equals(key3)).isFalse();
 		assertThat(key7.equals(key3)).isFalse();
 		assertThat(key8.equals(key3)).isFalse();
 		assertThat(key9.equals(key3)).isFalse();
-
-		assertThat(key1.equals(key4)).isFalse();
-		assertThat(key2.equals(key4)).isFalse();
-		assertThat(key3.equals(key4)).isFalse();
-		assertThat(key5.equals(key4)).isFalse();
-		assertThat(key6.equals(key4)).isFalse();
-		assertThat(key7.equals(key4)).isFalse();
-		assertThat(key8.equals(key4)).isFalse();
-		assertThat(key9.equals(key4)).isFalse();
 	}
 
 	@Test
@@ -127,9 +107,9 @@ public class ApiCacheTest {
 		ApiCache cache = new ApiCache();
 
 		ApiCacheKey keyOne = new ApiCacheKey("api", "action", "remoting", "polling",
-				"sse", "group", "/router", true);
+				"group", "/router", true);
 		ApiCacheKey keyTwo = new ApiCacheKey("api", "action", "remoting", "polling",
-				"sse", "group", "/router", true);
+				"group", "/router", true);
 
 		cache.put(keyOne, "1");
 

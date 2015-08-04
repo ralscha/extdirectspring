@@ -97,14 +97,16 @@ public @interface ExtDirectMethodDocumentation {
 	 * <p/>
 	 * Defaults to no parameters.
 	 */
-	ExtDirectDocParameters parameters() default @ExtDirectDocParameters;
+	ExtDirectDocParameters parameters() default @ExtDirectDocParameters
+	;
 
 	/**
 	 * (Optional) objects to be returned when this method is called
 	 * <p/>
 	 * Defaults to no return.
 	 */
-	ExtDirectDocReturn returnMethod() default @ExtDirectDocReturn;
+	ExtDirectDocReturn returnMethod() default @ExtDirectDocReturn
+	;
 
 	/**
 	 * (Optional) Whether this method is deprecated

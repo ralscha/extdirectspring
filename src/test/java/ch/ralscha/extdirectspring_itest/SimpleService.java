@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
-import ch.ralscha.extdirectspring.bean.SSEvent;
 
 @Service
 public class SimpleService {
@@ -53,12 +52,4 @@ public class SimpleService {
 		return id;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.SSE, group = "itest_simple",
-			streamResponse = true)
-	public SSEvent sse(@RequestParam String id) {
-		SSEvent event = new SSEvent();
-		event.setId(id);
-		event.setData("d" + id);
-		return event;
-	}
 }

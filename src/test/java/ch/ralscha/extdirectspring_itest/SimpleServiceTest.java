@@ -75,7 +75,6 @@ public class SimpleServiceTest extends JettyTest2 {
 				"poll");
 		remotingApi.addPollingProvider(pollingProvider);
 
-		remotingApi.addSseProvider("simpleService", "sse");
 		return remotingApi;
 	}
 
@@ -205,32 +204,6 @@ public class SimpleServiceTest extends JettyTest2 {
 			assertThat(rootAsMap.get("type")).isEqualTo("event");
 			assertThat(rootAsMap.get("name")).isEqualTo("poll");
 			assertThat(rootAsMap.get("data")).isEqualTo(_id);
-		}
-		finally {
-			IOUtils.closeQuietly(response);
-			IOUtils.closeQuietly(client);
-		}
-	}
-
-	@Test
-	@PerfTest(invocations = 150, threads = 5)
-	public void testSse() throws IOException {
-		String _id = String.valueOf(id.incrementAndGet());
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		CloseableHttpResponse response = null;
-		try {
-
-			HttpGet get = new HttpGet(
-					"http://localhost:9998/controller/sse/simpleService/sse?id=" + _id);
-			response = client.execute(get);
-
-			assertThat(response.getFirstHeader("Content-Type").getValue())
-					.isEqualTo("text/event-stream;charset=UTF-8");
-
-			String responseString = EntityUtils.toString(response.getEntity());
-			String[] parts = responseString.split("\\n");
-			assertThat(parts[0]).isEqualTo("id:" + _id);
-			assertThat(parts[1]).isEqualTo("data:d" + _id);
 		}
 		finally {
 			IOUtils.closeQuietly(response);

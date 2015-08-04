@@ -47,14 +47,11 @@ public final class RemotingApi {
 
 	private final List<PollingProvider> pollingProviders;
 
-	private final Map<String, List<String>> sseProviders;
-
 	public RemotingApi(String type, String url, String namespace) {
 		this.type = type;
 		this.descriptor = null;
 		this.actions = new HashMap<String, List<Action>>();
 		this.pollingProviders = new ArrayList<PollingProvider>();
-		this.sseProviders = new HashMap<String, List<String>>();
 
 		this.url = url;
 
@@ -119,11 +116,6 @@ public final class RemotingApi {
 		return pollingProviders;
 	}
 
-	@JsonIgnore
-	public Map<String, List<String>> getSseProviders() {
-		return sseProviders;
-	}
-
 	public void addAction(String beanName, Action action) {
 		List<Action> beanActions = actions.get(beanName);
 		if (beanActions == null) {
@@ -137,12 +129,4 @@ public final class RemotingApi {
 		pollingProviders.add(pollingProvider);
 	}
 
-	public void addSseProvider(String beanName, String method) {
-		List<String> methods = sseProviders.get(beanName);
-		if (methods == null) {
-			methods = new ArrayList<String>();
-			sseProviders.put(beanName, methods);
-		}
-		methods.add(method);
-	}
 }
