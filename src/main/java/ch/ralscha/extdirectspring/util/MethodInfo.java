@@ -154,7 +154,7 @@ public final class MethodInfo {
 					paramLength++;
 				}
 			}
-			this.action = new Action(method.getName(), paramLength);
+			this.action = Action.create(method.getName(), paramLength);
 			break;
 		case SIMPLE_NAMED:
 			int noOfClientParameters = 0;
@@ -170,16 +170,16 @@ public final class MethodInfo {
 			}
 
 			if (noOfClientParameters == 1 && Map.class.isAssignableFrom(parameterType)) {
-				this.action = new Action(method.getName(),
+				this.action = Action.createNamed(method.getName(),
 						Collections.<String> emptyList(), Boolean.FALSE);
 			}
 			else {
-				this.action = new Action(method.getName(),
+				this.action = Action.createNamed(method.getName(),
 						Collections.unmodifiableList(parameterNames));
 			}
 			break;
 		case FORM_LOAD:
-			this.action = new Action(method.getName(), 1);
+			this.action = Action.create(method.getName(), 1);
 			break;
 		case STORE_READ:
 		case STORE_MODIFY:
@@ -190,13 +190,13 @@ public final class MethodInfo {
 					metadataParams.add(parameter.getName());
 				}
 			}
-			this.action = new Action(method.getName(), 1, metadataParams);
+			this.action = Action.createTreeLoad(method.getName(), 1, metadataParams);
 			break;
 		case FORM_POST:
-			this.action = new Action(method.getName(), 0, Boolean.TRUE);
+			this.action = Action.createFormHandler(method.getName(), 0);
 			break;
 		case FORM_POST_JSON:
-			this.action = new Action(method.getName(), 1);
+			this.action = Action.create(method.getName(), 1);
 			break;
 		case POLL:
 			this.pollingProvider = new PollingProvider(beanName, method.getName(),

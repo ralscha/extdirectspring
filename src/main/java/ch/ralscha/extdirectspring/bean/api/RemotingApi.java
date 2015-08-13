@@ -45,6 +45,8 @@ public final class RemotingApi {
 
 	private Object enableBuffer;
 
+	private Integer bufferLimit;
+
 	private final List<PollingProvider> pollingProviders;
 
 	public RemotingApi(String type, String url, String namespace) {
@@ -109,6 +111,14 @@ public final class RemotingApi {
 
 	public void setEnableBuffer(Object enableBuffer) {
 		this.enableBuffer = enableBuffer;
+	}
+
+	public Integer getBufferLimit() {
+		return bufferLimit;
+	}
+
+	public void setBufferLimit(Integer bufferLimit) {
+		this.bufferLimit = bufferLimit;
 	}
 
 	@JsonIgnore

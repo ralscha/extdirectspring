@@ -54,7 +54,7 @@ public class ActionDoc extends Action {
 	protected boolean deprecated;
 
 	public ActionDoc(String name, List<String> params) {
-		super(name, params, null);
+		super(name, null, null, null, params, null, null);
 	}
 
 	public ActionDoc(Action toCopy, String methodComment, String author, String version,

@@ -44,6 +44,15 @@ public @interface ExtDirectMethod {
 	String group() default "";
 
 	/**
+	 * (Optional) <br>
+	 * false: always send requests immediately for this method<br>
+	 * true (default): allow requests to this method to be part of a batched request
+	 * <p>
+	 * Not feasible for POLL and FORM_POST methods.
+	 */
+	boolean batched() default true;
+
+	/**
 	 * (Optional) Only feasible for POLL methods. The name of the event this method is
 	 * sending messages to. If this parameter is empty the name of the method will be used
 	 * as event name.

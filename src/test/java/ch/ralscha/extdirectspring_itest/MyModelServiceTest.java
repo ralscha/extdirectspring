@@ -65,9 +65,9 @@ public class MyModelServiceTest extends JettyTest {
 
 	private static RemotingApi api() {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/controller/router", null);
-		remotingApi.addAction("myModelService", new Action("method1", 0, Boolean.TRUE));
-		remotingApi.addAction("myModelService", new Action("method2", 0, Boolean.TRUE));
-		remotingApi.addAction("myModelService", new Action("update", 0, Boolean.TRUE));
+		remotingApi.addAction("myModelService", Action.createFormHandler("method1", 0));
+		remotingApi.addAction("myModelService", Action.createFormHandler("method2", 0));
+		remotingApi.addAction("myModelService", Action.createFormHandler("update", 0));
 		return remotingApi;
 	}
 

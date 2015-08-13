@@ -26,6 +26,8 @@ public class Action {
 	private final String name;
 
 	private final Integer len;
+	
+	private final Boolean batched;
 
 	private final List<String> params;
 
@@ -35,31 +37,39 @@ public class Action {
 
 	private final Metadata metadata;
 
-	public Action(String name, Integer len) {
-		this(name, len, null, null, null, null);
+	
+	public static Action create(String name, Integer len) {
+		return new Action(name, len, null, null, null, null, null);
 	}
 
-	public Action(String name, Integer len, Boolean formHandler) {
-		this(name, len, formHandler, null, null, null);
+	public static Action createFormHandler(String name, Integer len) {
+		return new Action(name, len, null, Boolean.TRUE, null, null, null);
 	}
 
-	public Action(String name, Integer len, List<String> metadataParams) {
-		this(name, len, null, null, null, metadataParams);
+	public static Action createTreeLoad(String name, Integer len, List<String> metadataParams) {
+		return new Action(name, len, null, null, null, null, metadataParams);
 	}
 
-	public Action(String name, List<String> params) {
-		this(name, null, null, params, null, null);
+	public static Action createNamed(String name, List<String> params) {
+		return new Action(name, null, null, null, params, null, null);
 	}
 
-	public Action(String name, List<String> params, Boolean strict) {
-		this(name, null, null, params, strict, null);
+	public static Action createNamed(String name, List<String> params, Boolean strict) {
+		return new Action(name, null, null, null, params, strict, null);
 	}
 
-	Action(String name, Integer len, Boolean formHandler, List<String> params,
+	Action(String name, Integer len, Boolean batched, Boolean formHandler, List<String> params,
 			Boolean strict, List<String> metadataParams) {
 		this.name = name;
 		this.len = len;
 
+		if (batched != null && !batched.booleanValue()) {
+			this.batched = batched;
+		}
+		else {
+			this.batched = null;
+		}
+		
 		if (formHandler != null && formHandler.booleanValue()) {
 			this.formHandler = formHandler;
 		}
@@ -96,6 +106,7 @@ public class Action {
 		this.params = toCopy.params;
 		this.strict = toCopy.strict;
 		this.metadata = toCopy.metadata;
+		this.batched = toCopy.batched;
 	}
 
 	public Boolean isFormHandler() {

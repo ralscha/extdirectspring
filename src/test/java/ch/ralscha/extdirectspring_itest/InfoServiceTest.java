@@ -49,20 +49,20 @@ public class InfoServiceTest extends JettyTest {
 
 	private static RemotingApi api() {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/controller/router", null);
-		remotingApi.addAction("infoService", new Action("updateInfo", 0, Boolean.TRUE));
+		remotingApi.addAction("infoService", Action.createFormHandler("updateInfo", 0));
 		remotingApi.addAction("infoService",
-				new Action("updateInfo2nd", 0, Boolean.TRUE));
+				Action.createFormHandler("updateInfo2nd", 0));
 
 		remotingApi.addAction("infoService",
-				new Action("updateInfoUser1", 0, Boolean.TRUE));
+				Action.createFormHandler("updateInfoUser1", 0));
 		remotingApi.addAction("infoService",
-				new Action("updateInfoUser2", 0, Boolean.TRUE));
+				Action.createFormHandler("updateInfoUser2", 0));
 		remotingApi.addAction("infoService",
-				new Action("updateInfoUser3", 0, Boolean.TRUE));
+				Action.createFormHandler("updateInfoUser3", 0));
 		remotingApi.addAction("infoService",
-				new Action("updateInfoUser4", 0, Boolean.TRUE));
+				Action.createFormHandler("updateInfoUser4", 0));
 		remotingApi.addAction("infoService",
-				new Action("updateInfoUser5", 0, Boolean.TRUE));
+				Action.createFormHandler("updateInfoUser5", 0));
 
 		return remotingApi;
 	}

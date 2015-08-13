@@ -187,6 +187,11 @@ public enum ExtDirectMethodType {
 							+ "' does not support entryClass attribute of @ExtDirectMethod");
 				}
 
+				if (extDirectMethodAnnotation.batched() == false) {
+					log.warn("FORM_POST method '" + beanAndMethodName
+							+ "' does not support batched attribute of @ExtDirectMethod");
+				}
+
 				isValid = true;
 			}
 			else if (method.getReturnType().equals(Void.TYPE)) {
@@ -250,6 +255,12 @@ public enum ExtDirectMethodType {
 
 				ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils
 						.findAnnotation(method, ExtDirectMethod.class);
+
+				if (extDirectMethodAnnotation.batched() == false) {
+					log.warn("FORM_POST method '" + beanAndMethodName
+							+ "' does not support batched attribute of @ExtDirectMethod");
+				}
+
 				if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
 					log.warn("FORM_POST method '" + beanAndMethodName
 							+ "' does not support event attribute of @ExtDirectMethod");
@@ -319,6 +330,11 @@ public enum ExtDirectMethodType {
 						+ "' does not support entryClass attribute of @ExtDirectMethod");
 			}
 
+			if (extDirectMethodAnnotation.batched() == false) {
+				log.warn("POLL method '" + beanAndMethodName
+						+ "' does not support batched attribute of @ExtDirectMethod");
+			}
+
 			return true;
 		}
 	},
@@ -335,6 +351,11 @@ public enum ExtDirectMethodType {
 			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
 				log.warn("FORM_POST_JSON method '" + beanAndMethodName
 						+ "' does not support event attribute of @ExtDirectMethod");
+			}
+
+			if (extDirectMethodAnnotation.batched() == false) {
+				log.warn("FORM_POST_JSON method '" + beanAndMethodName
+						+ "' does not support batched attribute of @ExtDirectMethod");
 			}
 
 			for (Class<?> clazzz : method.getParameterTypes()) {

@@ -268,6 +268,11 @@ public class ApiController {
 			remotingApi.setEnableBuffer(enableBuffer);
 		}
 
+		if (configurationService.getConfiguration().getBufferLimit() != null) {
+			remotingApi.setBufferLimit(
+					configurationService.getConfiguration().getBufferLimit());
+		}
+
 		buildRemotingApi(remotingApi, group);
 
 		StringBuilder sb = new StringBuilder();

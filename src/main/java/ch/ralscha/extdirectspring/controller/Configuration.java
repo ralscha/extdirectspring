@@ -65,6 +65,8 @@ public class Configuration {
 
 	private Object enableBuffer = null;
 
+	private Integer bufferLimit = null;
+
 	private boolean streamResponse = false;
 
 	private String jsContentType = "application/javascript";
@@ -263,6 +265,27 @@ public class Configuration {
 	 */
 	public void setEnableBuffer(Object enableBuffer) {
 		this.enableBuffer = enableBuffer;
+	}
+
+	public Integer getBufferLimit() {
+		return bufferLimit;
+	}
+
+	/**
+	 * The maximum number of requests to batch together. By default, an unlimited number
+	 * of requests will be batched. This option will allow to wait only for a certain
+	 * number of Direct method calls before dispatching a request to the server, even if
+	 * {@link #enableBuffer} timeout has not yet expired.
+	 * <p>
+	 * Note that this option does nothing if {@link #enableBuffer} is set to `false`.
+	 * <p>
+	 * Defaults to: Number.MAX_VALUE
+	 * 
+	 * @param bufferLimit new value for buffer limit
+	 */
+	@SuppressWarnings("javadoc")
+	public void setBufferLimit(Integer bufferLimit) {
+		this.bufferLimit = bufferLimit;
 	}
 
 	/**
