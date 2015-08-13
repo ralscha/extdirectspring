@@ -205,6 +205,21 @@ public class ApiControllerWithConfigurationTest {
 		Configuration config = new Configuration();
 		config.setEnableBuffer(Boolean.TRUE);
 		config.setTimeout(33333);
+		config.setBufferLimit(null);
+
+		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
+				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
+				.group("        ").configuration(config).build();
+		updateConfiguration(params, config);
+		runTest(mockMvc, params, ApiControllerTest.emptyGroupApis(null));
+	}
+
+	@Test
+	public void testBlankStringGroupCustomConfigBufferLimit() throws Exception {
+		Configuration config = new Configuration();
+		config.setEnableBuffer(Boolean.TRUE);
+		config.setTimeout(222);
+		config.setBufferLimit(5);
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
@@ -648,11 +663,20 @@ public class ApiControllerWithConfigurationTest {
 			else {
 				assertThat(rootAsMap.get("maxRetries")).isNull();
 			}
+
+			if (params.getConfiguration().getBufferLimit() != null) {
+				assertThat(rootAsMap.get("bufferLimit"))
+						.isEqualTo(params.getConfiguration().getBufferLimit());
+			}
+			else {
+				assertThat(rootAsMap.containsKey("bufferLimit")).isFalse();
+			}
 		}
 		else {
 			assertThat(rootAsMap.get("timeout")).isNull();
 			assertThat(rootAsMap.get("enableBuffer")).isNull();
 			assertThat(rootAsMap.get("maxRetries")).isNull();
+			assertThat(rootAsMap.get("bufferLimit")).isNull();
 		}
 
 		Map<String, Object> beans = (Map<String, Object>) rootAsMap.get("actions");

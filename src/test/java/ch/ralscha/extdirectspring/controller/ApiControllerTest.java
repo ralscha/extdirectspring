@@ -182,6 +182,21 @@ public class ApiControllerTest {
 	}
 
 	@Test
+	public void testBlankStringGroupCustomConfigBufferLimit() throws Exception {
+		Configuration config = new Configuration();
+		config.setEnableBuffer(Boolean.TRUE);
+		config.setTimeout(333);
+		config.setBufferLimit(4);
+		ReflectionTestUtils.setField(configurationService, "configuration", config);
+		configurationService.afterPropertiesSet();
+
+		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
+				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
+				.group("        ").configuration(config).build();
+		runTest(mockMvc, params, emptyGroupApis(null));
+	}
+
+	@Test
 	public void testUnknownGroupDefaultConfig() throws Exception {
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test")
@@ -1220,6 +1235,9 @@ public class ApiControllerTest {
 			if (params.getConfiguration().getMaxRetries() != null) {
 				noOfconfigOptions++;
 			}
+			if (params.getConfiguration().getBufferLimit() != null) {
+				noOfconfigOptions++;
+			}
 		}
 
 		Map<String, Object> rootAsMap = ControllerUtil.readValue(remotingJson, Map.class);
@@ -1260,7 +1278,7 @@ public class ApiControllerTest {
 						.isEqualTo(params.getConfiguration().getTimeout());
 			}
 			else {
-				assertThat(rootAsMap.get("timeout")).isNull();
+				assertThat(rootAsMap.containsKey("timeout")).isFalse();
 			}
 
 			if (params.getConfiguration().getEnableBuffer() != null) {
@@ -1268,7 +1286,15 @@ public class ApiControllerTest {
 						.isEqualTo(params.getConfiguration().getEnableBuffer());
 			}
 			else {
-				assertThat(rootAsMap.get("enableBuffer")).isNull();
+				assertThat(rootAsMap.containsKey("enableBuffer")).isFalse();
+			}
+
+			if (params.getConfiguration().getBufferLimit() != null) {
+				assertThat(rootAsMap.get("bufferLimit"))
+						.isEqualTo(params.getConfiguration().getBufferLimit());
+			}
+			else {
+				assertThat(rootAsMap.containsKey("bufferLimit")).isFalse();
 			}
 
 			if (params.getConfiguration().getMaxRetries() != null) {
@@ -1276,13 +1302,22 @@ public class ApiControllerTest {
 						.isEqualTo(params.getConfiguration().getMaxRetries());
 			}
 			else {
-				assertThat(rootAsMap.get("maxRetries")).isNull();
+				assertThat(rootAsMap.containsKey("maxRetries")).isFalse();
+			}
+
+			if (params.getConfiguration().getBufferLimit() != null) {
+				assertThat(rootAsMap.get("bufferLimit"))
+						.isEqualTo(params.getConfiguration().getBufferLimit());
+			}
+			else {
+				assertThat(rootAsMap.containsKey("bufferLimit")).isFalse();
 			}
 		}
 		else {
 			assertThat(rootAsMap.get("timeout")).isNull();
 			assertThat(rootAsMap.get("enableBuffer")).isNull();
 			assertThat(rootAsMap.get("maxRetries")).isNull();
+			assertThat(rootAsMap.get("bufferLimit")).isNull();
 		}
 
 		Map<String, Object> beans = (Map<String, Object>) rootAsMap.get("actions");
