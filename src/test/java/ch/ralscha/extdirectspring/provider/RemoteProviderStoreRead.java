@@ -152,12 +152,17 @@ public class RemoteProviderStoreRead {
 				":" + id + ";" + locale);
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, batched = true)
 	public ExtDirectStoreResult<Row> method11(ExtDirectStoreReadRequest request,
 			@CookieValue(defaultValue = "defaultCookie") String cookie,
 			@RequestHeader(defaultValue = "defaultHeader") String requestHeader) {
 		return RemoteProviderStoreRead.createExtDirectStoreResult(request,
 				":" + cookie + ":" + requestHeader);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, batched = false)
+	public ExtDirectStoreResult<Row> method12(ExtDirectStoreReadRequest request) {
+		return RemoteProviderStoreRead.createExtDirectStoreResult(request, null);
 	}
 
 	public static ExtDirectStoreResult<Row> createExtDirectStoreResult(

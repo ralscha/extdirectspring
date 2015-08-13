@@ -307,10 +307,17 @@ public class RemoteProviderSimpleNamed {
 		return bd + ":" + header;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named",
+			batched = true)
 	public String withRequiredRequestHeader(
 			@RequestHeader(value = "aSimpleHeader") String header, BigDecimal bd) {
 		return bd + ":" + header;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named",
+			batched = false)
+	public String notBatched() {
+		return "ralph";
 	}
 
 	public static class TestObject {

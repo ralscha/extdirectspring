@@ -97,4 +97,10 @@ public class RemoteProviderStoreModify {
 		return rows;
 	}
 
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group3",
+			batched = false)
+	public List<Integer> destroyNotBatched(List<Integer> rows) {
+		return rows;
+	}
+
 }

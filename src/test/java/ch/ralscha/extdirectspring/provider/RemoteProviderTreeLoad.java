@@ -145,8 +145,17 @@ public class RemoteProviderTreeLoad {
 		return result.toArray(new Node[result.size()]);
 	}
 
-	@ExtDirectMethod(ExtDirectMethodType.TREE_LOAD)
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, batched = true)
 	public Node method6(@RequestParam("node") String node, HttpServletResponse response,
+			final HttpServletRequest request) {
+
+		List<Node> result = createTreeList(node,
+				";" + (response != null) + ";" + (request != null));
+		return result.get(0);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, batched = false)
+	public Node method7(@RequestParam("node") String node, HttpServletResponse response,
 			final HttpServletRequest request) {
 
 		List<Node> result = createTreeList(node,

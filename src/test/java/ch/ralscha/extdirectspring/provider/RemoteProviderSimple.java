@@ -331,9 +331,14 @@ public class RemoteProviderSimple {
 		return aStr;
 	}
 
-	@ExtDirectMethod
+	@ExtDirectMethod(batched = true)
 	public String method30(@CookieValue(required = false) String stringCookie) {
 		return stringCookie;
+	}
+
+	@ExtDirectMethod(batched = false)
+	public String method31(String input) {
+		return input;
 	}
 
 	@ExtDirectMethod
