@@ -39,8 +39,8 @@ import ch.ralscha.extdirectspring.controller.ControllerUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration("classpath:/testApplicationContextView.xml")
-public class SimpleMethodTest extends BaseViewTest {
+@ContextConfiguration("classpath:/testApplicationContextViewConcurrent.xml")
+public class SimpleMethodConcurrentTest extends BaseViewTest {
 
 	@Autowired
 	private WebApplicationContext wac;
@@ -50,61 +50,6 @@ public class SimpleMethodTest extends BaseViewTest {
 	@Before
 	public void setupMockMvc() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-	}
-
-	@Test
-	public void testNoView() {
-		callMethod("simpleMethodService", "noView", noView());
-	}
-
-	@Test
-	public void testAnnotationSummaryView() {
-		callMethod("simpleMethodService", "annotationSummaryView", summaryView());
-	}
-
-	@Test
-	public void testAnnotationDetailView() {
-		callMethod("simpleMethodService", "annotationDetailView", detailView());
-	}
-
-	@Test
-	public void testMajSummaryView() {
-		callMethod("simpleMethodService", "majSummaryView", summaryView());
-	}
-
-	@Test
-	public void testMajDetailView() {
-		callMethod("simpleMethodService", "majDetailView", detailView());
-	}
-
-	@Test
-	public void testOverrideMajDetailView() {
-		callMethod("simpleMethodService", "overrideMajDetailView", detailView());
-	}
-
-	@Test
-	public void testOverrideMajNoView() {
-		callMethod("simpleMethodService", "overrideMajNoView", noView());
-	}
-
-	@Test
-	public void testSubclassSummaryView() {
-		callMethod("simpleMethodService", "subclassSummaryView", summaryView());
-	}
-
-	@Test
-	public void testSubclassDetailView() {
-		callMethod("simpleMethodService", "subclassDetailView", detailView());
-	}
-
-	@Test
-	public void testOverrideSubclassDetailView() {
-		callMethod("simpleMethodService", "overrideSubclassDetailView", detailView());
-	}
-
-	@Test
-	public void testOverrideSubclassNoView() {
-		callMethod("simpleMethodService", "overrideSubclassNoView", noView());
 	}
 
 	@Test
@@ -158,10 +103,4 @@ public class SimpleMethodTest extends BaseViewTest {
 		}
 	}
 
-	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
-		Map<String, Object> result = ControllerUtil.sendAndReceiveMap(mockMvc, bean,
-				method);
-		assertThat(result).hasSize(expectedEntries.length);
-		assertThat(result).contains(expectedEntries);
-	}
 }

@@ -60,6 +60,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
+import ch.ralscha.extdirectspring.bean.ExtDirectResponseRaw;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.bean.JsonViewHint;
 import ch.ralscha.extdirectspring.bean.ModelAndJsonView;
@@ -267,25 +268,31 @@ public class RouterController {
 		Object requestData = configurationService.getJsonHandler()
 				.readValue(request.getInputStream(), Object.class);
 
-		List<ExtDirectRequest> directRequests = new ArrayList<ExtDirectRequest>();
+		List<ExtDirectRequest> directRequests = null;
 		if (requestData instanceof Map) {
-			directRequests.add(configurationService.getJsonHandler()
-					.convertValue(requestData, ExtDirectRequest.class));
+			directRequests = Collections.singletonList(configurationService
+					.getJsonHandler().convertValue(requestData, ExtDirectRequest.class));
 		}
 		else if (requestData instanceof List) {
+			directRequests = new ArrayList<ExtDirectRequest>();
 			for (Object oneRequest : (List<?>) requestData) {
 				directRequests.add(configurationService.getJsonHandler()
 						.convertValue(oneRequest, ExtDirectRequest.class));
 			}
 		}
 
-		if (directRequests.size() == 1 || configurationService.getConfiguration()
-				.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.SEQUENTIAL) {
-			handleMethodCallsSequential(directRequests, request, response, locale);
-		}
-		else if (configurationService.getConfiguration()
-				.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.CONCURRENT) {
-			handleMethodCallsConcurrent(directRequests, request, response, locale);
+		if (directRequests != null) {
+			if (directRequests.size() == 1) {
+				handleMethodCallOne(directRequests.get(0), request, response, locale);
+			}
+			else if (configurationService.getConfiguration()
+					.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.SEQUENTIAL) {
+				handleMethodCallsSequential(directRequests, request, response, locale);
+			}
+			else if (configurationService.getConfiguration()
+					.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.CONCURRENT) {
+				handleMethodCallsConcurrent(directRequests, request, response, locale);
+			}
 		}
 
 	}
@@ -293,8 +300,6 @@ public class RouterController {
 	private void handleMethodCallsConcurrent(List<ExtDirectRequest> directRequests,
 			HttpServletRequest request, HttpServletResponse response, Locale locale)
 					throws IOException {
-
-		Class<?> jsonView = null;
 
 		List<Future<ExtDirectResponse>> futures = new ArrayList<Future<ExtDirectResponse>>(
 				directRequests.size());
@@ -305,16 +310,24 @@ public class RouterController {
 					.getBatchedMethodsExecutorService().submit(callable));
 		}
 
-		List<ExtDirectResponse> directResponses = new ArrayList<ExtDirectResponse>(
-				directRequests.size());
+		ObjectMapper objectMapper = configurationService.getJsonHandler().getMapper();
+		List<Object> directResponses = new ArrayList<Object>(directRequests.size());
 		boolean streamResponse = configurationService.getConfiguration()
 				.isStreamResponse();
 		for (Future<ExtDirectResponse> future : futures) {
 			try {
 				ExtDirectResponse directResponse = future.get();
 				streamResponse = streamResponse || directResponse.isStreamResponse();
-				jsonView = directResponse.getJsonView();
-				directResponses.add(directResponse);
+				Class<?> jsonView = directResponse.getJsonView();
+				if (jsonView == null) {
+					directResponses.add(directResponse);
+				}
+				else {
+					String jsonResult = objectMapper.writerWithView(jsonView)
+							.writeValueAsString(directResponse.getResult());
+					directResponses
+							.add(new ExtDirectResponseRaw(directResponse, jsonResult));
+				}
 			}
 			catch (InterruptedException e) {
 				log.error("Error invoking method", e);
@@ -323,7 +336,7 @@ public class RouterController {
 				log.error("Error invoking method", e);
 			}
 		}
-		writeJsonResponse(response, directResponses, jsonView, streamResponse);
+		writeJsonResponse(response, directResponses, null, streamResponse);
 	}
 
 	private Callable<ExtDirectResponse> createMethodCallCallable(
@@ -337,24 +350,45 @@ public class RouterController {
 		};
 	}
 
+	private void handleMethodCallOne(ExtDirectRequest directRequest,
+			HttpServletRequest request, HttpServletResponse response, Locale locale)
+					throws IOException {
+
+		ExtDirectResponse directResponse = handleMethodCall(directRequest, request,
+				response, locale);
+		boolean streamResponse = configurationService.getConfiguration()
+				.isStreamResponse() || directResponse.isStreamResponse();
+		Class<?> jsonView = directResponse.getJsonView();
+
+		writeJsonResponse(response, Collections.singleton(directResponse), jsonView,
+				streamResponse);
+	}
+
 	private void handleMethodCallsSequential(List<ExtDirectRequest> directRequests,
 			HttpServletRequest request, HttpServletResponse response, Locale locale)
 					throws IOException {
-		List<ExtDirectResponse> directResponses = new ArrayList<ExtDirectResponse>(
-				directRequests.size());
+		List<Object> directResponses = new ArrayList<Object>(directRequests.size());
 		boolean streamResponse = configurationService.getConfiguration()
 				.isStreamResponse();
-		Class<?> jsonView = null;
+
+		ObjectMapper objectMapper = configurationService.getJsonHandler().getMapper();
 
 		for (ExtDirectRequest directRequest : directRequests) {
 			ExtDirectResponse directResponse = handleMethodCall(directRequest, request,
 					response, locale);
 			streamResponse = streamResponse || directResponse.isStreamResponse();
-			jsonView = directResponse.getJsonView();
-			directResponses.add(directResponse);
+			Class<?> jsonView = directResponse.getJsonView();
+			if (jsonView == null) {
+				directResponses.add(directResponse);
+			}
+			else {
+				String jsonResult = objectMapper.writerWithView(jsonView)
+						.writeValueAsString(directResponse.getResult());
+				directResponses.add(new ExtDirectResponseRaw(directResponse, jsonResult));
+			}
 		}
 
-		writeJsonResponse(response, directResponses, jsonView, streamResponse);
+		writeJsonResponse(response, directResponses, null, streamResponse);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

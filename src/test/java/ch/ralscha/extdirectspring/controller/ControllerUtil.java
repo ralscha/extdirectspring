@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ch.ralscha.extdirectspring.bean.BeanMethod;
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
@@ -183,6 +185,28 @@ public class ControllerUtil {
 		}
 		try {
 			return mapper.writeValueAsString(dr);
+		}
+		catch (JsonProcessingException e) {
+			fail("createEdsRequest: " + e.getMessage());
+		}
+		return null;
+	}
+
+	public static String createEdsRequest(List<BeanMethod> methods) {
+
+		List<ExtDirectRequest> edrs = new ArrayList<ExtDirectRequest>();
+		for (BeanMethod method : methods) {
+			ExtDirectRequest dr = new ExtDirectRequest();
+			dr.setAction(method.getBean());
+			dr.setMethod(method.getMethod());
+			dr.setTid(method.getTid());
+			dr.setType("rpc");
+			dr.setData(method.getData());
+			edrs.add(dr);
+		}
+
+		try {
+			return mapper.writeValueAsString(edrs);
 		}
 		catch (JsonProcessingException e) {
 			fail("createEdsRequest: " + e.getMessage());
@@ -341,6 +365,45 @@ public class ControllerUtil {
 	public static Map<String, Object> sendAndReceiveMap(MockMvc mockMvc, String bean,
 			String method) {
 		return (Map<String, Object>) sendAndReceiveObject(mockMvc, bean, method);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<Map<String, Object>> sendAndReceiveMultiple(MockMvc mockMvc,
+			List<BeanMethod> beanMethods) {
+		for (BeanMethod beanMethod : beanMethods) {
+			beanMethod.setTid((int) (Math.random() * 1000));
+		}
+
+		MvcResult result = null;
+		try {
+			result = performRouterRequest(mockMvc, createEdsRequest(beanMethods));
+		}
+		catch (JsonProcessingException e) {
+			fail("perform post to /router" + e.getMessage());
+			return null;
+		}
+		catch (Exception e) {
+			fail("perform post to /router" + e.getMessage());
+			return null;
+		}
+
+		List<ExtDirectResponse> responses = readDirectResponses(
+				result.getResponse().getContentAsByteArray());
+		assertThat(responses).hasSize(beanMethods.size());
+
+		List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
+		for (int i = 0; i < beanMethods.size(); i++) {
+			ExtDirectResponse edResponse = responses.get(i);
+			BeanMethod beanMethod = beanMethods.get(i);
+			assertThat(edResponse.getAction()).isEqualTo(beanMethod.getBean());
+			assertThat(edResponse.getMethod()).isEqualTo(beanMethod.getMethod());
+			assertThat(edResponse.getTid()).isEqualTo(beanMethod.getTid());
+			assertThat(edResponse.getWhere()).isNull();
+
+			results.add((Map<String, Object>) edResponse.getResult());
+		}
+
+		return results;
 	}
 
 	@SuppressWarnings("unchecked")
