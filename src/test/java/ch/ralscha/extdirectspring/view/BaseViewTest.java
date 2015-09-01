@@ -15,7 +15,7 @@
  */
 package ch.ralscha.extdirectspring.view;
 
-import org.fest.assertions.data.MapEntry;
+import org.assertj.core.data.MapEntry;
 
 public class BaseViewTest {
 

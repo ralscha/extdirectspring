@@ -15,7 +15,7 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.BufferedReader;
 import java.io.IOException;

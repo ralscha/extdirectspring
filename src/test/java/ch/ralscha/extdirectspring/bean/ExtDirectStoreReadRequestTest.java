@@ -15,14 +15,14 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.fest.assertions.data.MapEntry;
+import org.assertj.core.data.MapEntry;
 import org.junit.Test;
 
 import ch.ralscha.extdirectspring.filter.Filter;

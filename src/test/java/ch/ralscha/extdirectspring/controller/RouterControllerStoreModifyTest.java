@@ -15,8 +15,8 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.fest.assertions.api.Assertions.extractProperty;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.extractProperty;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

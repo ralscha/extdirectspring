@@ -15,12 +15,12 @@
  */
 package ch.ralscha.extdirectspring.view;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import java.util.Map;
 
-import org.fest.assertions.data.MapEntry;
+import org.assertj.core.data.MapEntry;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -126,13 +126,13 @@ public class StoreModifyMethodTest extends BaseViewTest {
 			Map<String, Object> model = records.get(i - 1);
 			assertThat(model).hasSize(expectedEntries.length);
 
-			for (MapEntry entry : expectedEntries) {
+			for (MapEntry<String, Object> entry : expectedEntries) {
 				if (entry.key.equals("id")) {
 					assertThat(model).contains(MapEntry.entry("id", i));
 				}
 				else {
 					assertThat(model)
-							.contains(MapEntry.entry(entry.key, "" + entry.value + i));
+							.containsEntry(entry.key, "" + entry.value + i);
 				}
 			}
 		}

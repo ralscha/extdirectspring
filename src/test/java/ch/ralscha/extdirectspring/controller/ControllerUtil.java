@@ -15,7 +15,8 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.StrictAssertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -30,7 +31,7 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 
 import org.apache.commons.logging.LogFactory;
-import org.fest.util.Arrays;
+import org.assertj.core.util.Arrays;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;

@@ -15,8 +15,8 @@
  */
 package ch.ralscha.extdirectspring_itest;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.fest.assertions.data.MapEntry.entry;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.data.MapEntry.entry;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.fest.assertions.data.MapEntry;
+import org.assertj.core.data.MapEntry;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
