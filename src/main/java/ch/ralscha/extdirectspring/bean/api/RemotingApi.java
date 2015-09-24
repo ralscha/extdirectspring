@@ -16,9 +16,12 @@
 package ch.ralscha.extdirectspring.bean.api;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.util.StringUtils;
 
@@ -37,7 +40,7 @@ public final class RemotingApi {
 
 	private final String type;
 
-	private final Map<String, List<Action>> actions;
+	private Map<String, List<Action>> actions;
 
 	private Integer timeout;
 
@@ -63,6 +66,30 @@ public final class RemotingApi {
 		else {
 			this.namespace = null;
 		}
+	}
+
+	public void sort() {
+		this.actions = new TreeMap<String, List<Action>>(this.actions);
+
+		for (List<Action> action : actions.values()) {
+			Collections.sort(action, new Comparator<Action>() {
+				@Override
+				public int compare(Action o1, Action o2) {
+					return o1.getName().compareTo(o2.getName());
+				}
+			});
+		}
+
+		Collections.sort(pollingProviders, new Comparator<PollingProvider>() {
+			@Override
+			public int compare(PollingProvider o1, PollingProvider o2) {
+				int c = o1.getBeanName().compareTo(o2.getBeanName());
+				if (c == 0) {
+					return o1.getMethod().compareTo(o2.getMethod());
+				}
+				return c;
+			}
+		});
 	}
 
 	public Map<String, List<Action>> getActions() {

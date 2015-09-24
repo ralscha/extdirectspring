@@ -64,6 +64,8 @@ public class InfoServiceTest extends JettyTest {
 		remotingApi.addAction("infoService",
 				Action.createFormHandler("updateInfoUser5", 0));
 
+		remotingApi.sort();
+		
 		return remotingApi;
 	}
 
