@@ -36,7 +36,7 @@ public @interface ExtDirectDocReturn {
 	 * <p/>
 	 * Defaults to empty.
 	 */
-	String[]properties() default {};
+	String[] properties() default {};
 
 	/**
 	 * (Optional) description of return properties
@@ -45,5 +45,5 @@ public @interface ExtDirectDocReturn {
 	 * <p/>
 	 * Defaults to empty.
 	 */
-	String[]descriptions() default {};
+	String[] descriptions() default {};
 }
