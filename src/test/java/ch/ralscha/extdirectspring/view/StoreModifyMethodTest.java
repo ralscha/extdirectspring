@@ -131,8 +131,7 @@ public class StoreModifyMethodTest extends BaseViewTest {
 					assertThat(model).contains(MapEntry.entry("id", i));
 				}
 				else {
-					assertThat(model)
-							.containsEntry(entry.key, "" + entry.value + i);
+					assertThat(model).containsEntry(entry.key, "" + entry.value + i);
 				}
 			}
 		}

@@ -65,7 +65,7 @@ public class InfoServiceTest extends JettyTest {
 				Action.createFormHandler("updateInfoUser5", 0));
 
 		remotingApi.sort();
-		
+
 		return remotingApi;
 	}
 

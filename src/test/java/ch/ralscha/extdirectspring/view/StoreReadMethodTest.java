@@ -126,7 +126,7 @@ public class StoreReadMethodTest extends BaseViewTest {
 			Map<String, Object> model = records.get(i - 1);
 			assertThat(model).hasSize(expectedEntries.length);
 
-			for (MapEntry<String,Object> entry : expectedEntries) {
+			for (MapEntry<String, Object> entry : expectedEntries) {
 				if (entry.key.equals("id")) {
 					assertThat(model).contains(MapEntry.entry("id", i));
 				}

@@ -94,7 +94,7 @@ public class TreeLoadMethodTest extends BaseViewTest {
 			Map<String, Object> model = result.get(i - 1);
 			assertThat(model).hasSize(expectedEntries.length);
 
-			for (MapEntry<String,Object> entry : expectedEntries) {
+			for (MapEntry<String, Object> entry : expectedEntries) {
 				if (entry.key.equals("id")) {
 					assertThat(model).contains(MapEntry.entry("id", i));
 				}
