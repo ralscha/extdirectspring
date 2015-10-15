@@ -21,7 +21,9 @@ import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.ServletOutputStream;
@@ -35,7 +37,13 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.ReflectionUtils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
+import ch.ralscha.extdirectspring.bean.api.PollingProvider;
+import ch.ralscha.extdirectspring.bean.api.RemotingApi;
+import ch.ralscha.extdirectspring.controller.ConfigurationService;
 import ch.ralscha.extdirectspring.controller.RouterController;
 
 /**
@@ -211,6 +219,78 @@ public final class ExtDirectSpringUtil {
 		ServletOutputStream out = response.getOutputStream();
 		out.write(data);
 		out.flush();
+	}
+
+	/**
+	 * Returns the api configuration as a String. Uses "REMOTING_API" and "POLLING_URLS"
+	 * for the variable names
+	 * @param ctx The spring applicationcontext
+	 * @return the api configuration
+	 * @throws JsonProcessingException
+	 */
+	public static String generateApiString(ApplicationContext ctx)
+			throws JsonProcessingException {
+		return generateApiString(ctx, "REMOTING_API", "POLLING_URLS");
+	}
+
+	/**
+	 * Returns the api configuration as a String
+	 * @param ctx The spring applicationcontext
+	 * @param remotingVarName name of the variable for the remoting configuration (e.g.
+	 * REMOTING_API)
+	 * @param pollingApiVarName name of the variable for the polling configuration (e.g.
+	 * POLLING_URLS)
+	 * @return the api configuration
+	 * @throws JsonProcessingException
+	 */
+	public static String generateApiString(ApplicationContext ctx, String remotingVarName,
+			String pollingApiVarName) throws JsonProcessingException {
+		RemotingApi remotingApi = new RemotingApi(ctx.getBean(ConfigurationService.class)
+				.getConfiguration().getProviderType(), "router", null);
+
+		for (Map.Entry<MethodInfoCache.Key, MethodInfo> entry : ctx
+				.getBean(MethodInfoCache.class)) {
+			MethodInfo methodInfo = entry.getValue();
+			if (methodInfo.getAction() != null) {
+				remotingApi.addAction(entry.getKey().getBeanName(),
+						methodInfo.getAction());
+			}
+			else if (methodInfo.getPollingProvider() != null) {
+				remotingApi.addPollingProvider(methodInfo.getPollingProvider());
+			}
+		}
+
+		remotingApi.sort();
+
+		StringBuilder extDirectConfig = new StringBuilder(100);
+
+		extDirectConfig.append("var ").append(remotingVarName).append(" = ");
+		extDirectConfig.append(new ObjectMapper().writer().withDefaultPrettyPrinter()
+				.writeValueAsString(remotingApi));
+		extDirectConfig.append(";");
+
+		List<PollingProvider> pollingProviders = remotingApi.getPollingProviders();
+		if (!pollingProviders.isEmpty()) {
+			extDirectConfig.append("\n\nvar ").append(pollingApiVarName).append(" = {\n");
+
+			for (int i = 0; i < pollingProviders.size(); i++) {
+				extDirectConfig.append("  \"");
+				extDirectConfig.append(pollingProviders.get(i).getEvent());
+				extDirectConfig.append("\" : \"poll/");
+				extDirectConfig.append(pollingProviders.get(i).getBeanName());
+				extDirectConfig.append("/");
+				extDirectConfig.append(pollingProviders.get(i).getMethod());
+				extDirectConfig.append("/");
+				extDirectConfig.append(pollingProviders.get(i).getEvent());
+				extDirectConfig.append("\"");
+				if (i < pollingProviders.size() - 1) {
+					extDirectConfig.append(",\n");
+				}
+			}
+			extDirectConfig.append("\n};");
+		}
+
+		return extDirectConfig.toString();
 	}
 
 }
