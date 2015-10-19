@@ -43,5 +43,7 @@ The library supports Ext JS 3, 4, 5 and 6 and Sencha Touch 2
 ##Demo applications using extdirectspring
   * [eds-starter6-simple-jpa](https://github.com/ralscha/eds-starter6-simple-jpa)
   * [eds-starter6-simple-mongodb](https://github.com/ralscha/eds-starter6-simple-mongodb)
+  * [eds-starter6-jpa](https://github.com/ralscha/eds-starter6-jpa)
+  * [eds-starter6-mongodb](https://github.com/ralscha/eds-starter6-mongodb)
   * [musicsearch](https://github.com/ralscha/musicsearch)
   * [mycustomer](https://github.com/ralscha/mycustomer)
