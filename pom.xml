@@ -513,6 +513,8 @@
 						<exclude>**/*.yml</exclude>
 						<exclude>**/.gitignore</exclude>
 						<exclude>**/ExtRequestListener.java</exclude>
+						<exclude>.mvn/**/*</exclude>
+						<exclude>mvnw.cmd</exclude>						
 					</excludes>
 					<strictCheck>true</strictCheck>
 				</configuration>
