@@ -514,7 +514,9 @@
 						<exclude>**/.gitignore</exclude>
 						<exclude>**/ExtRequestListener.java</exclude>
 						<exclude>.mvn/**/*</exclude>
-						<exclude>mvnw.cmd</exclude>						
+						<exclude>mvnw.cmd</exclude>
+						<exclude>mvnw</exclude>							
+						<exclude>LICENSE</exclude>
 					</excludes>
 					<strictCheck>true</strictCheck>
 				</configuration>
