@@ -419,8 +419,7 @@ public class RouterController {
 						}
 
 						if (methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
-								&& !ExtDirectFormLoadResult.class
-										.isAssignableFrom(result.getClass())) {
+								&& !(result instanceof ExtDirectFormLoadResult)) {
 							ExtDirectFormLoadResult formLoadResult = new ExtDirectFormLoadResult(
 									result);
 							if (result instanceof JsonViewHint) {
@@ -431,8 +430,7 @@ public class RouterController {
 						}
 						else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)
 								|| methodInfo.isType(ExtDirectMethodType.STORE_READ))
-								&& !ExtDirectStoreResult.class
-										.isAssignableFrom(result.getClass())
+								&& !(result instanceof ExtDirectStoreResult)
 								&& configurationService.getConfiguration()
 										.isAlwaysWrapStoreResponse()) {
 							if (result instanceof Collection) {
