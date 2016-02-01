@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.bean.EdStoreResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 
@@ -41,6 +42,11 @@ public class BookService {
 		long total = request.getPage() + request.getLimit() + request.getStart();
 		return new ExtDirectStoreResult<Book>().setTotal(total).setRecords(read())
 				.setSuccess(Boolean.TRUE);
+	}
+	
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")
+	public EdStoreResult readWithPagingEd(ExtDirectStoreReadRequest request) {
+		return EdStoreResult.success(read(), (long)request.getPage() + request.getLimit() + request.getStart());
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")

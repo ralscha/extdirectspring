@@ -767,6 +767,7 @@ public class ApiControllerTest {
 
 		remotingApi.addAction("bookService", Action.create("read", 1));
 		remotingApi.addAction("bookService", Action.create("readWithPaging", 1));
+		remotingApi.addAction("bookService", Action.create("readWithPagingEd", 1));
 		remotingApi.addAction("bookService", Action.create("update3", 1));
 		remotingApi.addAction("bookService", Action.create("update4", 1));
 		remotingApi.addAction("bookService", Action.create("delete3", 1));

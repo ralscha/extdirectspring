@@ -48,7 +48,7 @@
 	</scm>
 
 	<properties>
-		<jackson.version>2.6.4</jackson.version>
+		<jackson.version>2.6.5</jackson.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -107,6 +107,14 @@
 			<version>${jackson.version}</version>
 		</dependency>
 
+		<!-- APT dependencies -->
+		<dependency>
+			<groupId>org.immutables</groupId>
+			<artifactId>value</artifactId>
+			<version>2.1.9</version>
+			<scope>provided</scope>
+		</dependency>  
+
 		<!-- TEST dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -118,7 +126,7 @@
 		<dependency>
 		  <groupId>org.assertj</groupId>
 		  <artifactId>assertj-core</artifactId>
-		  <version>3.2.0</version>
+		  <version>3.3.0</version>
 		  <scope>test</scope>
 		</dependency>
 
@@ -152,7 +160,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<version>1.7.13</version>
+			<version>1.7.14</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -266,7 +274,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.4.190</version>
+			<version>1.4.191</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -293,7 +301,7 @@
 		<dependency>
 			<groupId>nl.jqno.equalsverifier</groupId>
 			<artifactId>equalsverifier</artifactId>
-			<version>1.7.6</version>
+			<version>1.7.7</version>
 			<scope>test</scope>
 		</dependency>
 

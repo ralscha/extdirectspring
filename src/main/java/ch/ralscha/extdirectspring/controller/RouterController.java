@@ -55,6 +55,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.BaseResponse;
+import ch.ralscha.extdirectspring.bean.EdStoreResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
@@ -431,6 +432,7 @@ public class RouterController {
 						else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)
 								|| methodInfo.isType(ExtDirectMethodType.STORE_READ))
 								&& !(result instanceof ExtDirectStoreResult)
+								&& !(result instanceof EdStoreResult)
 								&& configurationService.getConfiguration()
 										.isAlwaysWrapStoreResponse()) {
 							if (result instanceof Collection) {
