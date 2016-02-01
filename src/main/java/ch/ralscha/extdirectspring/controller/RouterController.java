@@ -55,6 +55,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.BaseResponse;
+import ch.ralscha.extdirectspring.bean.EdFormLoadResult;
 import ch.ralscha.extdirectspring.bean.EdStoreResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
@@ -420,7 +421,8 @@ public class RouterController {
 						}
 
 						if (methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
-								&& !(result instanceof ExtDirectFormLoadResult)) {
+								&& !(result instanceof ExtDirectFormLoadResult)
+								&& !(result instanceof EdFormLoadResult)) {
 							ExtDirectFormLoadResult formLoadResult = new ExtDirectFormLoadResult(
 									result);
 							if (result instanceof JsonViewHint) {
