@@ -345,6 +345,7 @@
 					<testSource>1.8</testSource>
 					<testTarget>1.8</testTarget>
 					<encoding>UTF-8</encoding>
+					<useIncrementalCompilation>false</useIncrementalCompilation>
 				</configuration>
 			</plugin>
 
