@@ -45,12 +45,12 @@ public class RawJsonControllerTest extends JettyTest {
 		testAndCheck("rawJsonController", "listUsers3", 2, false);
 		testAndCheck("rawJsonController", "listUsers4", 2, true);
 		testAndCheck("rawJsonController", "listUsers5", 2, true);
-		
+
 		testAndCheck("rawJsonController", "listUsers1Ed", null, true);
 		testAndCheck("rawJsonController", "listUsers2Ed", 2, true);
 		testAndCheck("rawJsonController", "listUsers3Ed", 2, false);
 		testAndCheck("rawJsonController", "listUsers4Ed", 2, true);
-		testAndCheck("rawJsonController", "listUsers5Ed", 2, true);		
+		testAndCheck("rawJsonController", "listUsers5Ed", 2, true);
 	}
 
 	@SuppressWarnings("unchecked")

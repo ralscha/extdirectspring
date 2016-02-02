@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.bean.EdFormPostResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 import ch.ralscha.extdirectspring_itest.User;
 
@@ -53,4 +54,34 @@ public class UploadService {
 		return resp;
 	}
 
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2",
+			synchronizeOnSession = true)
+	public EdFormPostResult uploadEd(@RequestParam("fileUpload") MultipartFile file,
+			@Valid User user, BindingResult result) throws IOException {
+
+		EdFormPostResult.Builder e = EdFormPostResult.builder();
+		e.addError(result);
+
+		if (file != null && !file.isEmpty()) {
+			e.putResult("fileContents", new String(file.getBytes()));
+			e.putResult("fileName", file.getOriginalFilename());
+		}
+
+		if (user.getName() != null) {
+			e.putResult("name", user.getName());
+		}
+
+		if (user.getFirstName() != null) {
+			e.putResult("firstName", user.getFirstName());
+		}
+
+		e.putResult("age", user.getAge());
+
+		if (user.getEmail() != null) {
+			e.putResult("e-mail", user.getEmail());
+		}
+
+		e.success();
+		return e.build();
+	}
 }

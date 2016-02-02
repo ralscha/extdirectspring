@@ -90,4 +90,39 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 		assertThat(edsResponse.getAction()).isEqualTo("uploadService");
 		assertThat(edsResponse.getMethod()).isEqualTo("upload");
 	}
+
+	@Test
+	public void testUploadEd() throws Exception {
+		MockMultipartHttpServletRequestBuilder request = fileUpload("/router");
+		request.accept(MediaType.ALL).characterEncoding("UTF-8")
+				.session(new MockHttpSession());
+
+		request.param("extTID", "1");
+		request.param("extAction", "uploadService");
+		request.param("extMethod", "uploadEd");
+		request.param("extType", "rpc");
+		request.param("result", "theResult");
+
+		request.file("fileUpload", "the content of the file".getBytes());
+
+		MvcResult resultMvc = this.mockMvc.perform(request).andExpect(status().isOk())
+				.andExpect(content().contentType("text/html;charset=UTF-8"))
+				.andExpect(content().encoding("UTF-8")).andReturn();
+
+		String response = resultMvc.getResponse().getContentAsString();
+		String prefix = "<html><body><textarea>";
+		String suffix = "</textarea><script type=\"text/javascript\">document.domain = 'rootdomain.com';</script></body></html>";
+		assertThat(response).startsWith(prefix).endsWith(suffix);
+		String json = response.substring(prefix.length(), response.indexOf(suffix));
+
+		ExtDirectResponse edsResponse = ControllerUtil
+				.readDirectResponse(json.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
+
+		assertThat(edsResponse.getType()).isEqualTo("rpc");
+		assertThat(edsResponse.getMessage()).isNull();
+		assertThat(edsResponse.getWhere()).isNull();
+		assertThat(edsResponse.getTid()).isEqualTo(1);
+		assertThat(edsResponse.getAction()).isEqualTo("uploadService");
+		assertThat(edsResponse.getMethod()).isEqualTo("uploadEd");
+	}
 }

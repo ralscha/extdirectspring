@@ -240,11 +240,22 @@ public class RouterController {
 							handlerMethod);
 				}
 
-				ExtDirectFormPostResult formPostResult = (ExtDirectFormPostResult) modelAndView
-						.getModel().get("extDirectFormPostResult");
-				directResponse.setResult(formPostResult.getResult());
-				directResponse.setJsonView(
-						getJsonView(formPostResult, methodInfo.getJsonView()));
+				Map<String, Object> model = modelAndView.getModel();
+				if (model.containsKey("extDirectFormPostResult")) {
+					ExtDirectFormPostResult formPostResult = (ExtDirectFormPostResult) model
+							.get("extDirectFormPostResult");
+					directResponse.setResult(formPostResult.getResult());
+					directResponse.setJsonView(
+							getJsonView(formPostResult, methodInfo.getJsonView()));
+				}
+				else if (model.containsKey("edFormPostResult")) {
+					EdFormPostResult formPostResult = (EdFormPostResult) model
+							.get("edFormPostResult");
+					directResponse.setResult(formPostResult.result());
+					directResponse.setJsonView(
+							getJsonView(formPostResult, methodInfo.getJsonView()));
+				}
+
 			}
 			catch (Exception e) {
 				log.error("Error calling method: " + extMethod,

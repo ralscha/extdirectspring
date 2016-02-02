@@ -162,6 +162,104 @@ public class RouterControllerFormPostJsonTest {
 	}
 
 	@Test
+	public void testCallExistsFormPostMethodEd() throws Exception {
+		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
+				.contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
+
+		request.param("extTID", "14");
+		request.param("extAction", "formInfoController3");
+		request.param("extMethod", "updateInfoJsonEd");
+		request.param("extType", "rpc");
+
+		this.mockMvc.perform(request).andExpect(status().isOk());
+	}
+
+	@SuppressWarnings({ "null" })
+	@Test
+	public void testCallFormPostMethodEd() throws Exception {
+
+		FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal(12.3),
+				"theResult");
+
+		// Request Params are sent as part of the json content payload
+		formInfo.set("p1", 1000);
+		formInfo.set("p2", "2nd mandatory param");
+
+		MvcResult resultMvc = null;
+		try {
+			resultMvc = ControllerUtil.performRouterRequest(this.mockMvc,
+					ControllerUtil.createEdsRequest("formInfoController3",
+							"updateInfoJsonDirectEd", 14, formInfo));
+		}
+		catch (JsonProcessingException e) {
+			fail("perform post to /router" + e.getMessage());
+		}
+		catch (Exception e) {
+			fail("perform post to /router" + e.getMessage());
+		}
+
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(resultMvc.getResponse().getContentAsByteArray());
+		assertThat(responses).hasSize(1);
+
+		ExtDirectResponse edsResponse = responses.get(0);
+
+		assertThat(edsResponse.getAction()).isEqualTo("formInfoController3");
+		assertThat(edsResponse.getMethod()).isEqualTo("updateInfoJsonDirectEd");
+		assertThat(edsResponse.getTid()).isEqualTo(14);
+		assertThat(edsResponse.getWhere()).isNull();
+		assertThat(edsResponse.getType()).isEqualTo("rpc");
+		assertThat(edsResponse.getMessage()).isNull();
+
+		@SuppressWarnings("unchecked")
+		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
+		assertThat(result).hasSize(6).contains(entry("name", "RALPH"), entry("age", 30),
+				entry("admin", Boolean.FALSE), entry("salary", 1012.3),
+				entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
+	}
+
+	@SuppressWarnings({ "unchecked", "null", "rawtypes" })
+	@Test
+	public void testCallFormPostMethodErrorEd() throws Exception {
+
+		FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal(12.3),
+				"theResult");
+
+		MvcResult resultMvc = null;
+		try {
+			resultMvc = ControllerUtil.performRouterRequest(this.mockMvc,
+					ControllerUtil.createEdsRequest("formInfoController3",
+							"updateInfoJsonDirectErrorEd", 14, formInfo));
+		}
+		catch (JsonProcessingException e) {
+			fail("perform post to /router" + e.getMessage());
+		}
+		catch (Exception e) {
+			fail("perform post to /router" + e.getMessage());
+		}
+
+		List<ExtDirectResponse> responses = ControllerUtil
+				.readDirectResponses(resultMvc.getResponse().getContentAsByteArray());
+		assertThat(responses).hasSize(1);
+
+		ExtDirectResponse edsResponse = responses.get(0);
+
+		assertThat(edsResponse.getAction()).isEqualTo("formInfoController3");
+		assertThat(edsResponse.getMethod()).isEqualTo("updateInfoJsonDirectErrorEd");
+		assertThat(edsResponse.getTid()).isEqualTo(14);
+		assertThat(edsResponse.getWhere()).isNull();
+		assertThat(edsResponse.getType()).isEqualTo("rpc");
+
+		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
+		assertThat(result).hasSize(2).contains(entry("success", Boolean.FALSE));
+		assertThat(result).hasSize(2).containsKey("errors");
+		Map age = (Map) result.get("errors");
+		assertThat(age).hasSize(1).containsKey("age");
+		ArrayList value = (ArrayList) age.get("age");
+		assertThat(value).contains("age is wrong");
+	}
+
+	@Test
 	public void testCallFormPostMethodNotRegisteredWithBindingResultAsParameter()
 			throws Exception {
 		ControllerUtil.sendAndReceive(this.mockMvc, "formInfoController3",

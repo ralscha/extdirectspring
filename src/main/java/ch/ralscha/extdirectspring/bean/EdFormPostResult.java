@@ -47,6 +47,11 @@ public abstract class EdFormPostResult {
 	@Value.Parameter
 	public abstract Map<String, Object> result();
 
+	public static EdFormPostResult success() {
+		return ImmutableEdFormPostResult.builder()
+				.putResult(SUCCESS_PROPERTY, Boolean.TRUE).build();
+	}
+
 	public static EdFormPostResult success(Map<String, Object> result) {
 		return ImmutableEdFormPostResult.builder().result(result)
 				.putResult(SUCCESS_PROPERTY, Boolean.TRUE).build();
@@ -191,6 +196,21 @@ public abstract class EdFormPostResult {
 			else {
 				putResult(SUCCESS_PROPERTY, Boolean.TRUE);
 			}
+			return this;
+		}
+
+		public Builder addError(BindingResult bindingResult) {
+			addErrors(null, null, bindingResult);
+			return this;
+		}
+
+		public Builder fail() {
+			putResult(SUCCESS_PROPERTY, Boolean.FALSE);
+			return this;
+		}
+
+		public Builder success() {
+			putResult(SUCCESS_PROPERTY, Boolean.TRUE);
 			return this;
 		}
 

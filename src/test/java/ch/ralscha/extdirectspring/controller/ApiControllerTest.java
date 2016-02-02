@@ -512,6 +512,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("formInfoController",
 				Action.createFormHandler("upload", 0));
 		remotingApi.addAction("uploadService", Action.createFormHandler("upload", 0));
+		remotingApi.addAction("uploadService", Action.createFormHandler("uploadEd", 0));
 		remotingApi.addPollingProvider(
 				new PollingProvider("pollProvider", "handleMessage1", "message1"));
 		remotingApi.addPollingProvider(
@@ -540,6 +541,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("formInfoController",
 				Action.createFormHandler("upload", 0));
 		remotingApi.addAction("uploadService", Action.createFormHandler("upload", 0));
+		remotingApi.addAction("uploadService", Action.createFormHandler("uploadEd", 0));
 		remotingApi.addPollingProvider(
 				new PollingProvider("pollProvider", "handleMessage1", "message1"));
 		remotingApi.addPollingProvider(
@@ -572,6 +574,8 @@ public class ApiControllerTest {
 				Action.createFormHandler("updateInfo", 0));
 		remotingApi.addAction("formInfoController",
 				Action.createFormHandler("updateInfoDirect", 0));
+		remotingApi.addAction("formInfoController",
+				Action.createFormHandler("updateInfoDirectEd", 0));
 		remotingApi.addAction("formInfoController2",
 				Action.createFormHandler("updateInfo1", 0));
 		remotingApi.addAction("formInfoController2",
@@ -739,14 +743,24 @@ public class ApiControllerTest {
 		remotingApi.addAction("formInfoController",
 				Action.createFormHandler("updateInfoDirect", 0));
 		remotingApi.addAction("formInfoController",
+				Action.createFormHandler("updateInfoDirectEd", 0));
+		remotingApi.addAction("formInfoController",
 				Action.createFormHandler("upload", 0));
 		remotingApi.addAction("uploadService", Action.createFormHandler("upload", 0));
+		remotingApi.addAction("uploadService", Action.createFormHandler("uploadEd", 0));
 
 		remotingApi.addAction("formInfoController3", Action.create("updateInfoJson", 1));
 		remotingApi.addAction("formInfoController3",
 				Action.create("updateInfoJsonDirect", 1));
 		remotingApi.addAction("formInfoController3",
 				Action.create("updateInfoJsonDirectError", 1));
+
+		remotingApi.addAction("formInfoController3",
+				Action.create("updateInfoJsonEd", 1));
+		remotingApi.addAction("formInfoController3",
+				Action.create("updateInfoJsonDirectEd", 1));
+		remotingApi.addAction("formInfoController3",
+				Action.create("updateInfoJsonDirectErrorEd", 1));
 
 		remotingApi.addAction("formInfoController2",
 				Action.createFormHandler("updateInfo1", 0));
@@ -1083,6 +1097,13 @@ public class ApiControllerTest {
 				Action.create("updateInfoJsonDirect", 1));
 		remotingApi.addAction("formInfoController3",
 				Action.create("updateInfoJsonDirectError", 1));
+
+		remotingApi.addAction("formInfoController3",
+				Action.create("updateInfoJsonEd", 1));
+		remotingApi.addAction("formInfoController3",
+				Action.create("updateInfoJsonDirectEd", 1));
+		remotingApi.addAction("formInfoController3",
+				Action.create("updateInfoJsonDirectErrorEd", 1));
 
 		remotingApi.addPollingProvider(
 				new PollingProvider("pollProvider", "handleMessage4", "message4"));

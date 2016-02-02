@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.bean.EdFormPostResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
 
@@ -82,5 +83,18 @@ public class FormInfoController {
 		e.addResultProperty("salary", bd);
 		e.addResultProperty("result", formInfo.getResult() + "RESULT");
 		return e;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
+	public EdFormPostResult updateInfoDirectEd(FormInfo formInfo, BindingResult result) {
+		EdFormPostResult.Builder e = EdFormPostResult.builder().addError(result);
+		e.putResult("name", formInfo.getName().toUpperCase());
+		e.putResult("age", formInfo.getAge() + 10);
+		e.putResult("admin", !formInfo.isAdmin());
+		BigDecimal bd = new BigDecimal("1000");
+		bd = bd.add(formInfo.getSalary());
+		e.putResult("salary", bd);
+		e.putResult("result", formInfo.getResult() + "RESULT");
+		return e.build();
 	}
 }
