@@ -31,7 +31,7 @@ public class Book extends BaseModel {
 	}
 
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	public void setTitle(String title) {
@@ -39,7 +39,7 @@ public class Book extends BaseModel {
 	}
 
 	public String getIsbn() {
-		return isbn;
+		return this.isbn;
 	}
 
 	public void setIsbn(String isbn) {

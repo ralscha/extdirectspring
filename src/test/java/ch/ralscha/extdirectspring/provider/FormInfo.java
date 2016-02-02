@@ -48,7 +48,7 @@ public class FormInfo {
 
 	@JsonAnyGetter
 	public Map<String, Object> any() {
-		return any;
+		return this.any;
 	}
 
 	@JsonAnySetter
@@ -57,7 +57,7 @@ public class FormInfo {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -65,7 +65,7 @@ public class FormInfo {
 	}
 
 	public int getAge() {
-		return age;
+		return this.age;
 	}
 
 	public void setAge(int age) {
@@ -73,7 +73,7 @@ public class FormInfo {
 	}
 
 	public boolean isAdmin() {
-		return admin;
+		return this.admin;
 	}
 
 	public void setAdmin(boolean admin) {
@@ -81,7 +81,7 @@ public class FormInfo {
 	}
 
 	public Date getBirthday() {
-		return birthday;
+		return this.birthday;
 	}
 
 	public void setBirthday(Date birthday) {
@@ -89,7 +89,7 @@ public class FormInfo {
 	}
 
 	public BigDecimal getSalary() {
-		return salary;
+		return this.salary;
 	}
 
 	public void setSalary(BigDecimal salary) {
@@ -97,7 +97,7 @@ public class FormInfo {
 	}
 
 	public double getBack() {
-		return back;
+		return this.back;
 	}
 
 	public void setBack(double back) {
@@ -105,7 +105,7 @@ public class FormInfo {
 	}
 
 	public String getResult() {
-		return result;
+		return this.result;
 	}
 
 	public void setResult(String result) {

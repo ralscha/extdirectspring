@@ -50,13 +50,13 @@ public class UserServiceTest extends JettyTest {
 
 	@Before
 	public void beforeTest() {
-		client = HttpClientBuilder.create().build();
-		post = new HttpPost("http://localhost:9998/controller/router");
+		this.client = HttpClientBuilder.create().build();
+		this.post = new HttpPost("http://localhost:9998/controller/router");
 	}
 
 	@After
 	public void afterTest() {
-		IOUtils.closeQuietly(client);
+		IOUtils.closeQuietly(this.client);
 	}
 
 	@Test
@@ -72,15 +72,15 @@ public class UserServiceTest extends JettyTest {
 		formparams.add(new BasicNameValuePair("age", "30"));
 		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
 
-		post.setEntity(postEntity);
+		this.post.setEntity(postEntity);
 
-		CloseableHttpResponse response = client.execute(post);
+		CloseableHttpResponse response = this.client.execute(this.post);
 		try {
 			HttpEntity entity = response.getEntity();
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
 
-			Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+			Map<String, Object> rootAsMap = this.mapper.readValue(responseString, Map.class);
 			assertThat(rootAsMap).hasSize(5);
 			assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
 			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
@@ -117,15 +117,15 @@ public class UserServiceTest extends JettyTest {
 		formparams.add(new BasicNameValuePair("addemailerror", "1"));
 		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
 
-		post.setEntity(postEntity);
+		this.post.setEntity(postEntity);
 
-		CloseableHttpResponse response = client.execute(post);
+		CloseableHttpResponse response = this.client.execute(this.post);
 		try {
 			HttpEntity entity = response.getEntity();
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
 
-			Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+			Map<String, Object> rootAsMap = this.mapper.readValue(responseString, Map.class);
 			assertThat(rootAsMap).hasSize(5);
 			assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
 			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
@@ -163,15 +163,15 @@ public class UserServiceTest extends JettyTest {
 		formparams.add(new BasicNameValuePair("email", "test@test.ch"));
 		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
 
-		post.setEntity(postEntity);
+		this.post.setEntity(postEntity);
 
-		CloseableHttpResponse response = client.execute(post);
+		CloseableHttpResponse response = this.client.execute(this.post);
 		try {
 			HttpEntity entity = response.getEntity();
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
 
-			Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+			Map<String, Object> rootAsMap = this.mapper.readValue(responseString, Map.class);
 			assertThat(rootAsMap).hasSize(5);
 			assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
 			assertThat(rootAsMap.get("type")).isEqualTo("rpc");

@@ -57,7 +57,7 @@ public class RouterControllerStoreModifyTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class RouterControllerStoreModifyTest {
 		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
 		storeRequest.put("records", new ArrayList<Row>());
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc, action,
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc, action,
 				"create1", new TypeReference<List<Row>>() {/* nothing here */
 				}, storeRequest);
 
@@ -92,7 +92,7 @@ public class RouterControllerStoreModifyTest {
 		rowsToUpdate.add(new Row(23, "John", false, "23.12"));
 		storeRequest.put("records", rowsToUpdate);
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc, action,
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc, action,
 				"create1", new TypeReference<List<Row>>() {/* nothing here */
 				}, storeRequest);
 
@@ -105,7 +105,7 @@ public class RouterControllerStoreModifyTest {
 
 	@Test
 	public void testCreateWithDataSingle() {
-		Row row = (Row) ControllerUtil.sendAndReceive(mockMvc,
+		Row row = (Row) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderStoreModifySingle", "create1", Row.class,
 				new Row(10, "Ralph", true, "109.55"));
 		assertThat(row.getId()).isEqualTo(10);
@@ -125,7 +125,7 @@ public class RouterControllerStoreModifyTest {
 
 		storeRequest.put("records", rowsToUpdate);
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc, action,
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc, action,
 				"create2", new TypeReference<List<Row>>() {/* nothing here */
 				}, storeRequest);
 
@@ -135,7 +135,7 @@ public class RouterControllerStoreModifyTest {
 
 	@Test
 	public void testCreateWithDataAndSupportedArgumentsSingle() {
-		Row row = (Row) ControllerUtil.sendAndReceive(mockMvc,
+		Row row = (Row) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderStoreModifySingle", "create2", Row.class,
 				new Row(10, "Ralph", false, "109.55"));
 		assertThat(row.getId()).isEqualTo(10);
@@ -256,7 +256,7 @@ public class RouterControllerStoreModifyTest {
 		String edRequest = ControllerUtil.createEdsRequest(action, method, 1,
 				storeRequest);
 
-		MvcResult mvcResult = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		MvcResult mvcResult = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
 				.readDirectResponses(mvcResult.getResponse().getContentAsByteArray());
 
@@ -298,7 +298,7 @@ public class RouterControllerStoreModifyTest {
 		rowsToUpdate.add(10);
 		storeRequest.put("records", rowsToUpdate);
 
-		List<Integer> rows = (List<Integer>) ControllerUtil.sendAndReceive(mockMvc,
+		List<Integer> rows = (List<Integer>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderStoreModify", "destroy",
 				new TypeReference<List<Integer>>() {/* nothing_here */
 				}, storeRequest);
@@ -314,7 +314,7 @@ public class RouterControllerStoreModifyTest {
 		rowsToUpdate.add(10);
 		storeRequest.put("records", rowsToUpdate);
 
-		List<Integer> rows = (List<Integer>) ControllerUtil.sendAndReceive(mockMvc,
+		List<Integer> rows = (List<Integer>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderStoreModifyArray", "destroy",
 				new TypeReference<List<Integer>>() {/* nothing_here */
 				}, storeRequest);
@@ -325,7 +325,7 @@ public class RouterControllerStoreModifyTest {
 
 	@Test
 	public void testDestroySingle() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderStoreModifySingle",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderStoreModifySingle",
 				"destroy", 1, new Object[] { 1 });
 	}
 

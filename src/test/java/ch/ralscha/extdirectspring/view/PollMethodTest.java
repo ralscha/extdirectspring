@@ -47,7 +47,7 @@ public class PollMethodTest extends BaseViewTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
@@ -110,7 +110,7 @@ public class PollMethodTest extends BaseViewTest {
 	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
 		ExtDirectPollResponse response;
 		try {
-			response = ControllerUtil.performPollRequest(mockMvc, bean, method,
+			response = ControllerUtil.performPollRequest(this.mockMvc, bean, method,
 					"theEvent", null, null);
 			Map<String, Object> data = (Map<String, Object>) response.getData();
 			assertThat(data).hasSize(expectedEntries.length);

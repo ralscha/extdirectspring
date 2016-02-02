@@ -35,11 +35,11 @@ public class SortInfo {
 	 * @return the property/field on which to sort
 	 */
 	public String getProperty() {
-		return property;
+		return this.property;
 	}
 
 	public SortDirection getDirection() {
-		return direction;
+		return this.direction;
 	}
 
 	public static SortInfo create(Map<String, Object> jsonData) {
@@ -51,7 +51,7 @@ public class SortInfo {
 
 	@Override
 	public String toString() {
-		return "SortInfo [property=" + property + ", direction=" + direction + "]";
+		return "SortInfo [property=" + this.property + ", direction=" + this.direction + "]";
 	}
 
 }

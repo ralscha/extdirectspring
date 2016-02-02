@@ -56,7 +56,7 @@ public class RouterControllerFilterTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@BeforeClass
@@ -78,7 +78,7 @@ public class RouterControllerFilterTest {
 
 		int index = 1;
 		for (String json : jsonList) {
-			MvcResult result = ControllerUtil.performRouterRequest(mockMvc, json);
+			MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, json);
 			List<ExtDirectResponse> responses = ControllerUtil
 					.readDirectResponses(result.getResponse().getContentAsByteArray());
 

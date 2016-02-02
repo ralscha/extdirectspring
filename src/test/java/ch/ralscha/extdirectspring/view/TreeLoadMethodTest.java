@@ -46,7 +46,7 @@ public class TreeLoadMethodTest extends BaseViewTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class TreeLoadMethodTest extends BaseViewTest {
 	@SuppressWarnings("unchecked")
 	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
 		List<Map<String, Object>> result = (List<Map<String, Object>>) ControllerUtil
-				.sendAndReceiveObject(mockMvc, bean, method);
+				.sendAndReceiveObject(this.mockMvc, bean, method);
 		assertThat(result).hasSize(2);
 		for (int i = 1; i <= result.size(); i++) {
 			Map<String, Object> model = result.get(i - 1);

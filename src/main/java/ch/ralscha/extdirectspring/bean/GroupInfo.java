@@ -33,11 +33,11 @@ public class GroupInfo {
 	}
 
 	public String getProperty() {
-		return property;
+		return this.property;
 	}
 
 	public SortDirection getDirection() {
-		return direction;
+		return this.direction;
 	}
 
 	public static GroupInfo create(Map<String, Object> jsonData) {
@@ -49,7 +49,7 @@ public class GroupInfo {
 
 	@Override
 	public String toString() {
-		return "GroupInfo [property=" + property + ", direction=" + direction + "]";
+		return "GroupInfo [property=" + this.property + ", direction=" + this.direction + "]";
 	}
 
 }

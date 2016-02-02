@@ -54,13 +54,13 @@ public class MyModelServiceTest extends JettyTest {
 
 	@Before
 	public void beforeTest() {
-		client = HttpClientBuilder.create().build();
-		post = new HttpPost("http://localhost:9998/controller/router");
+		this.client = HttpClientBuilder.create().build();
+		this.post = new HttpPost("http://localhost:9998/controller/router");
 	}
 
 	@After
 	public void afterTest() {
-		IOUtils.closeQuietly(client);
+		IOUtils.closeQuietly(this.client);
 	}
 
 	private static RemotingApi api() {
@@ -75,7 +75,7 @@ public class MyModelServiceTest extends JettyTest {
 	public void testApi() throws IOException {
 		HttpGet g = new HttpGet(
 				"http://localhost:9998/controller/api.js?group=itest_base_service");
-		CloseableHttpResponse response = client.execute(g);
+		CloseableHttpResponse response = this.client.execute(g);
 		try {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
@@ -92,7 +92,7 @@ public class MyModelServiceTest extends JettyTest {
 	public void testApiDebug() throws IOException {
 		HttpGet g = new HttpGet(
 				"http://localhost:9998/controller/api-debug.js?group=itest_base_service");
-		CloseableHttpResponse response = client.execute(g);
+		CloseableHttpResponse response = this.client.execute(g);
 		try {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
@@ -109,7 +109,7 @@ public class MyModelServiceTest extends JettyTest {
 	public void testApiFingerprinted() throws IOException {
 		HttpGet g = new HttpGet(
 				"http://localhost:9998/controller/api-1.1.1.js?group=itest_base_service");
-		CloseableHttpResponse response = client.execute(g);
+		CloseableHttpResponse response = this.client.execute(g);
 		try {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
@@ -140,9 +140,9 @@ public class MyModelServiceTest extends JettyTest {
 		formparams.add(new BasicNameValuePair("name", "Jim"));
 		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
 
-		post.setEntity(postEntity);
+		this.post.setEntity(postEntity);
 
-		CloseableHttpResponse response = client.execute(post);
+		CloseableHttpResponse response = this.client.execute(this.post);
 		try {
 			HttpEntity entity = response.getEntity();
 			assertThat(entity).isNotNull();

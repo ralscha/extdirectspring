@@ -26,12 +26,12 @@ public class BooleanFilter extends Filter {
 	}
 
 	public Boolean getValue() {
-		return value;
+		return this.value;
 	}
 
 	@Override
 	public String toString() {
-		return "BooleanFilter [value=" + value + ", getField()=" + getField()
+		return "BooleanFilter [value=" + this.value + ", getField()=" + getField()
 				+ ", getRawComparison()=" + getRawComparison() + ", getComparison()="
 				+ getComparison() + "]";
 	}

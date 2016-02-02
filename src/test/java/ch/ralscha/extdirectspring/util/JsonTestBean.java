@@ -40,7 +40,7 @@ public class JsonTestBean {
 	}
 
 	public Integer getA() {
-		return a;
+		return this.a;
 	}
 
 	public void setA(Integer a) {
@@ -48,7 +48,7 @@ public class JsonTestBean {
 	}
 
 	public String getB() {
-		return b;
+		return this.b;
 	}
 
 	public void setB(String b) {
@@ -56,7 +56,7 @@ public class JsonTestBean {
 	}
 
 	public String getC() {
-		return c;
+		return this.c;
 	}
 
 	public void setC(String c) {
@@ -64,7 +64,7 @@ public class JsonTestBean {
 	}
 
 	public Boolean getD() {
-		return d;
+		return this.d;
 	}
 
 	public void setD(Boolean d) {
@@ -72,7 +72,7 @@ public class JsonTestBean {
 	}
 
 	public Integer[] getE() {
-		return e;
+		return this.e;
 	}
 
 	public void setE(Integer[] e) {

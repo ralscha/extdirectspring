@@ -185,7 +185,7 @@ public final class ParametersResolver {
 						}
 						else {
 							directStoreModifyRecords = new ArrayList<Object>();
-							directStoreModifyRecords.add(jsonHandler.convertValue(records,
+							directStoreModifyRecords.add(this.jsonHandler.convertValue(records,
 									directStoreEntryClass));
 						}
 						remainingParameters = new HashMap<String, Object>(jsonData);
@@ -193,7 +193,7 @@ public final class ParametersResolver {
 					}
 					else {
 						directStoreModifyRecords = new ArrayList<Object>();
-						directStoreModifyRecords.add(jsonHandler.convertValue(jsonData,
+						directStoreModifyRecords.add(this.jsonHandler.convertValue(jsonData,
 								directStoreEntryClass));
 					}
 				}
@@ -414,7 +414,7 @@ public final class ParametersResolver {
 		String value = null;
 
 		if (cookieValue != null) {
-			value = urlPathHelper.decodeRequestString(request, cookieValue.getValue());
+			value = this.urlPathHelper.decodeRequestString(request, cookieValue.getValue());
 		}
 		else {
 			value = parameterInfo.getDefaultValue();
@@ -439,7 +439,7 @@ public final class ParametersResolver {
 	}
 
 	private Object resolveAuthenticationPrincipal(ParameterInfo parameterInfo) {
-		Object principal = getPrincipalExpression.getValue();
+		Object principal = this.getPrincipalExpression.getValue();
 
 		if (principal != null
 				&& !parameterInfo.getType().isAssignableFrom(principal.getClass())) {
@@ -457,38 +457,38 @@ public final class ParametersResolver {
 			if (methodParameter.getType().equals(value.getClass())) {
 				return value;
 			}
-			else if (conversionService.canConvert(TypeDescriptor.forObject(value),
+			else if (this.conversionService.canConvert(TypeDescriptor.forObject(value),
 					methodParameter.getTypeDescriptor())) {
 
 				try {
-					return conversionService.convert(value,
+					return this.conversionService.convert(value,
 							TypeDescriptor.forObject(value),
 							methodParameter.getTypeDescriptor());
 				}
 				catch (ConversionFailedException e) {
 					// ignore this exception for collections and arrays.
 					// try to convert the value with jackson
-					TypeFactory typeFactory = jsonHandler.getMapper().getTypeFactory();
+					TypeFactory typeFactory = this.jsonHandler.getMapper().getTypeFactory();
 					if (methodParameter.getTypeDescriptor().isCollection()) {
 						JavaType type = CollectionType
 								.construct(methodParameter.getType(),
 										typeFactory.constructType(methodParameter
 												.getTypeDescriptor()
 												.getElementTypeDescriptor().getType()));
-						return jsonHandler.convertValue(value, type);
+						return this.jsonHandler.convertValue(value, type);
 					}
 					else if (methodParameter.getTypeDescriptor().isArray()) {
 						JavaType type = typeFactory
 								.constructArrayType(methodParameter.getTypeDescriptor()
 										.getElementTypeDescriptor().getType());
-						return jsonHandler.convertValue(value, type);
+						return this.jsonHandler.convertValue(value, type);
 					}
 
 					throw e;
 				}
 			}
 			else {
-				return jsonHandler.convertValue(value, methodParameter.getType());
+				return this.jsonHandler.convertValue(value, methodParameter.getType());
 			}
 
 		}
@@ -511,13 +511,13 @@ public final class ParametersResolver {
 				List<Filter> filters = new ArrayList<Filter>();
 
 				if (value instanceof String) {
-					List<Map<String, Object>> rawFilters = jsonHandler.readValue(
+					List<Map<String, Object>> rawFilters = this.jsonHandler.readValue(
 							(String) value,
 							new TypeReference<List<Map<String, Object>>>() {/* empty */
 							});
 
 					for (Map<String, Object> rawFilter : rawFilters) {
-						Filter filter = Filter.createFilter(rawFilter, conversionService);
+						Filter filter = Filter.createFilter(rawFilter, this.conversionService);
 						if (filter != null) {
 							filters.add(filter);
 						}
@@ -527,7 +527,7 @@ public final class ParametersResolver {
 					@SuppressWarnings("unchecked")
 					List<Map<String, Object>> filterList = (List<Map<String, Object>>) value;
 					for (Map<String, Object> rawFilter : filterList) {
-						Filter filter = Filter.createFilter(rawFilter, conversionService);
+						Filter filter = Filter.createFilter(rawFilter, this.conversionService);
 						if (filter != null) {
 							filters.add(filter);
 						}
@@ -568,7 +568,7 @@ public final class ParametersResolver {
 				if (descriptor != null && descriptor.getWriteMethod() != null) {
 					try {
 
-						descriptor.getWriteMethod().invoke(to, conversionService
+						descriptor.getWriteMethod().invoke(to, this.conversionService
 								.convert(value, descriptor.getPropertyType()));
 
 						foundParameters.add(key);
@@ -628,7 +628,7 @@ public final class ParametersResolver {
 		if (records != null) {
 			List<Object> convertedList = new ArrayList<Object>();
 			for (Object record : records) {
-				Object convertedObject = jsonHandler.convertValue(record,
+				Object convertedObject = this.jsonHandler.convertValue(record,
 						directStoreType);
 				convertedList.add(convertedObject);
 			}

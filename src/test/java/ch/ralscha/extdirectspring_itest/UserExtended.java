@@ -24,7 +24,7 @@ public class UserExtended extends User {
 	private boolean flag;
 
 	public Date getDateOfBirth() {
-		return dateOfBirth;
+		return this.dateOfBirth;
 	}
 
 	public void setDateOfBirth(Date dateOfBirth) {
@@ -32,7 +32,7 @@ public class UserExtended extends User {
 	}
 
 	public boolean isFlag() {
-		return flag;
+		return this.flag;
 	}
 
 	public void setFlag(boolean flag) {

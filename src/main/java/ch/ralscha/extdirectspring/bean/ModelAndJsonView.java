@@ -43,7 +43,7 @@ public class ModelAndJsonView extends JsonViewHint {
 	}
 
 	public Object getModel() {
-		return model;
+		return this.model;
 	}
 
 	public void setModel(Object model) {

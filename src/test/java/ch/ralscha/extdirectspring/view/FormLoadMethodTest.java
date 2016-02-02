@@ -45,7 +45,7 @@ public class FormLoadMethodTest extends BaseViewTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
@@ -126,7 +126,7 @@ public class FormLoadMethodTest extends BaseViewTest {
 
 	@SuppressWarnings("unchecked")
 	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
-		Map<String, Object> result = ControllerUtil.sendAndReceiveMap(mockMvc, bean,
+		Map<String, Object> result = ControllerUtil.sendAndReceiveMap(this.mockMvc, bean,
 				method);
 		assertThat(result).hasSize(2).contains(MapEntry.entry("success", Boolean.TRUE));
 		Map<String, Object> data = (Map<String, Object>) result.get("data");

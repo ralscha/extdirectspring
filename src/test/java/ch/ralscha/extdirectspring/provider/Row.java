@@ -46,7 +46,7 @@ public class Row implements Comparable<Row>, RowInterface {
 
 	@Override
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(int id) {
@@ -55,7 +55,7 @@ public class Row implements Comparable<Row>, RowInterface {
 
 	@Override
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -64,7 +64,7 @@ public class Row implements Comparable<Row>, RowInterface {
 
 	@Override
 	public boolean isAdmin() {
-		return admin;
+		return this.admin;
 	}
 
 	public void setAdmin(boolean admin) {
@@ -73,7 +73,7 @@ public class Row implements Comparable<Row>, RowInterface {
 
 	@Override
 	public BigDecimal getSalary() {
-		return salary;
+		return this.salary;
 	}
 
 	public void setSalary(BigDecimal salary) {
@@ -84,7 +84,7 @@ public class Row implements Comparable<Row>, RowInterface {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + this.id;
 		return result;
 	}
 
@@ -100,7 +100,7 @@ public class Row implements Comparable<Row>, RowInterface {
 			return false;
 		}
 		Row other = (Row) obj;
-		if (id != other.id) {
+		if (this.id != other.id) {
 			return false;
 		}
 		return true;
@@ -109,13 +109,13 @@ public class Row implements Comparable<Row>, RowInterface {
 	// @Override
 	@Override
 	public int compareTo(Row o) {
-		return id - o.id;
+		return this.id - o.id;
 	}
 
 	@Override
 	public String toString() {
-		return "Row [id=" + id + ", name=" + name + ", admin=" + admin + ", salary="
-				+ salary + "]";
+		return "Row [id=" + this.id + ", name=" + this.name + ", admin=" + this.admin + ", salary="
+				+ this.salary + "]";
 	}
 
 }

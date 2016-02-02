@@ -27,12 +27,12 @@ public enum Comparison {
 	private final Set<String> externalValues;
 
 	private Comparison(String... values) {
-		externalValues = new HashSet<String>();
-		Collections.addAll(externalValues, values);
+		this.externalValues = new HashSet<String>();
+		Collections.addAll(this.externalValues, values);
 	}
 
 	public boolean is(String externalValue) {
-		return externalValues.contains(externalValue);
+		return this.externalValues.contains(externalValue);
 	}
 
 	public static Comparison fromString(String externalValue) {

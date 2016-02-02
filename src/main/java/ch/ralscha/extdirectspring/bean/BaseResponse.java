@@ -33,7 +33,7 @@ public class BaseResponse {
 	private String where;
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class BaseResponse {
 	}
 
 	public String getMessage() {
-		return message;
+		return this.message;
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class BaseResponse {
 	}
 
 	public String getWhere() {
-		return where;
+		return this.where;
 	}
 
 	/**

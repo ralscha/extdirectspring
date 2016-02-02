@@ -37,7 +37,7 @@ public class LoginController {
 	@RequestMapping("/login")
 	@ResponseBody
 	public void login() {
-		UserDetails ud = userManager.loadUserByUsername("jimi");
+		UserDetails ud = this.userManager.loadUserByUsername("jimi");
 		if (ud != null) {
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
 					ud, null, ud.getAuthorities());

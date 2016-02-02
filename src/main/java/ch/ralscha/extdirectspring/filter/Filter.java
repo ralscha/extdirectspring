@@ -44,19 +44,19 @@ public class Filter {
 	}
 
 	public String getField() {
-		return field;
+		return this.field;
 	}
 
 	public String getRawComparison() {
-		return rawComparison;
+		return this.rawComparison;
 	}
 
 	public Comparison getComparison() {
-		return comparison;
+		return this.comparison;
 	}
 
 	public String getOperator() {
-		return rawComparison;
+		return this.rawComparison;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

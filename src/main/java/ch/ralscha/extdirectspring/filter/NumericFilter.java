@@ -26,12 +26,12 @@ public class NumericFilter extends Filter {
 	}
 
 	public Number getValue() {
-		return value;
+		return this.value;
 	}
 
 	@Override
 	public String toString() {
-		return "NumericFilter [value=" + value + ", getField()=" + getField()
+		return "NumericFilter [value=" + this.value + ", getField()=" + getField()
 				+ ", getRawComparison()=" + getRawComparison() + ", getComparison()="
 				+ getComparison() + "]";
 	}

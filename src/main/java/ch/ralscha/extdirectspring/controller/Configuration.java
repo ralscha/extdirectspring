@@ -86,7 +86,7 @@ public class Configuration {
 	private ConversionService conversionService;
 
 	public String getDefaultExceptionMessage() {
-		return defaultExceptionMessage;
+		return this.defaultExceptionMessage;
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class Configuration {
 	}
 
 	public boolean isSendExceptionMessage() {
-		return sendExceptionMessage;
+		return this.sendExceptionMessage;
 	}
 
 	/**
@@ -132,7 +132,7 @@ public class Configuration {
 	}
 
 	public boolean isSendStacktrace() {
-		return sendStacktrace;
+		return this.sendStacktrace;
 	}
 
 	/**
@@ -150,7 +150,7 @@ public class Configuration {
 	}
 
 	public Map<Class<?>, String> getExceptionToMessage() {
-		return exceptionToMessage;
+		return this.exceptionToMessage;
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class Configuration {
 	}
 
 	public boolean isAlwaysWrapStoreResponse() {
-		return alwaysWrapStoreResponse;
+		return this.alwaysWrapStoreResponse;
 	}
 
 	/**
@@ -192,7 +192,7 @@ public class Configuration {
 	}
 
 	public boolean isSynchronizeOnSession() {
-		return synchronizeOnSession;
+		return this.synchronizeOnSession;
 	}
 
 	/**
@@ -210,7 +210,7 @@ public class Configuration {
 	}
 
 	public Integer getTimeout() {
-		return timeout;
+		return this.timeout;
 	}
 
 	/**
@@ -227,7 +227,7 @@ public class Configuration {
 	}
 
 	public Integer getMaxRetries() {
-		return maxRetries;
+		return this.maxRetries;
 	}
 
 	/**
@@ -245,7 +245,7 @@ public class Configuration {
 	}
 
 	public Object getEnableBuffer() {
-		return enableBuffer;
+		return this.enableBuffer;
 	}
 
 	/**
@@ -269,7 +269,7 @@ public class Configuration {
 	}
 
 	public Integer getBufferLimit() {
-		return bufferLimit;
+		return this.bufferLimit;
 	}
 
 	/**
@@ -281,7 +281,7 @@ public class Configuration {
 	 * Note that this option does nothing if {@link #enableBuffer} is set to `false`.
 	 * <p>
 	 * Defaults to: Number.MAX_VALUE
-	 * 
+	 *
 	 * @param bufferLimit new value for buffer limit
 	 */
 	@SuppressWarnings("javadoc")
@@ -322,7 +322,7 @@ public class Configuration {
 	}
 
 	public boolean isStreamResponse() {
-		return streamResponse;
+		return this.streamResponse;
 	}
 
 	/**
@@ -361,11 +361,11 @@ public class Configuration {
 	}
 
 	public String getJsContentType() {
-		return jsContentType;
+		return this.jsContentType;
 	}
 
 	public BatchedMethodsExecutionPolicy getBatchedMethodsExecutionPolicy() {
-		return batchedMethodsExecutionPolicy;
+		return this.batchedMethodsExecutionPolicy;
 	}
 
 	/**
@@ -388,7 +388,7 @@ public class Configuration {
 	}
 
 	public ExecutorService getBatchedMethodsExecutorService() {
-		return batchedMethodsExecutorService;
+		return this.batchedMethodsExecutorService;
 	}
 
 	/**
@@ -408,7 +408,7 @@ public class Configuration {
 	}
 
 	public String getProviderType() {
-		return providerType;
+		return this.providerType;
 	}
 
 	/**
@@ -425,7 +425,7 @@ public class Configuration {
 	}
 
 	public String getFrameDomain() {
-		return frameDomain;
+		return this.frameDomain;
 	}
 
 	/**
@@ -440,7 +440,7 @@ public class Configuration {
 	}
 
 	public String getFrameDomainScript() {
-		return frameDomainScript;
+		return this.frameDomainScript;
 	}
 
 	/**
@@ -455,7 +455,7 @@ public class Configuration {
 	}
 
 	public String getApiNs() {
-		return apiNs;
+		return this.apiNs;
 	}
 
 	/**
@@ -470,7 +470,7 @@ public class Configuration {
 	}
 
 	public String getActionNs() {
-		return actionNs;
+		return this.actionNs;
 	}
 
 	/**
@@ -485,7 +485,7 @@ public class Configuration {
 	}
 
 	public String getRemotingApiVar() {
-		return remotingApiVar;
+		return this.remotingApiVar;
 	}
 
 	/**
@@ -500,7 +500,7 @@ public class Configuration {
 	}
 
 	public String getPollingUrlsVar() {
-		return pollingUrlsVar;
+		return this.pollingUrlsVar;
 	}
 
 	/**
@@ -515,7 +515,7 @@ public class Configuration {
 	}
 
 	public boolean isFullRouterUrl() {
-		return fullRouterUrl;
+		return this.fullRouterUrl;
 	}
 
 	/**
@@ -531,7 +531,7 @@ public class Configuration {
 	}
 
 	public String getBaseRouterUrl() {
-		return baseRouterUrl;
+		return this.baseRouterUrl;
 	}
 
 	/**
@@ -549,7 +549,7 @@ public class Configuration {
 	}
 
 	public ConversionService getConversionService() {
-		return conversionService;
+		return this.conversionService;
 	}
 
 	public void setConversionService(ConversionService conversionService) {
@@ -557,7 +557,7 @@ public class Configuration {
 	}
 
 	public JsonHandler getJsonHandler() {
-		return jsonHandler;
+		return this.jsonHandler;
 	}
 
 	public void setJsonHandler(JsonHandler jsonHandler) {

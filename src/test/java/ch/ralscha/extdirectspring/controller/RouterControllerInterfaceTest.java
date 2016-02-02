@@ -56,18 +56,18 @@ public class RouterControllerInterfaceTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
 	public void testNoParameters() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderImplementation", "method2",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderImplementation", "method2",
 				"method2() called");
 	}
 
 	@Test
 	public void testNoParameterAnnotation() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderImplementation", "method3",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderImplementation", "method3",
 				"method3() called-21-3.1-aString2", 21, 3.1, "aString2");
 	}
 
@@ -79,7 +79,7 @@ public class RouterControllerInterfaceTest {
 		readRequest.put("lastName", "Smith");
 		readRequest.put("active", Boolean.TRUE);
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc,
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderImplementation", "storeRead",
 				new TypeReference<List<Row>>() {/* nothing_here */
 				}, readRequest);

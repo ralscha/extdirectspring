@@ -73,15 +73,15 @@ public class ApiControllerWithConfigurationTest {
 
 	@Before
 	public void setupApiController() throws Exception {
-		methodInfoCache.clear();
-		apiCache.clear();
-		wac.publishEvent(new ContextRefreshedEvent(wac));
+		this.methodInfoCache.clear();
+		this.apiCache.clear();
+		this.wac.publishEvent(new ContextRefreshedEvent(this.wac));
 
 		Configuration config = new Configuration();
-		ReflectionTestUtils.setField(configurationService, "configuration", config);
-		configurationService.afterPropertiesSet();
+		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
+		this.configurationService.afterPropertiesSet();
 
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	private void updateConfiguration(ApiRequestParams params,
@@ -118,8 +118,8 @@ public class ApiControllerWithConfigurationTest {
 			config.setFullRouterUrl(params.isFullRouterUrl());
 		}
 
-		ReflectionTestUtils.setField(configurationService, "configuration", config);
-		configurationService.afterPropertiesSet();
+		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
+		this.configurationService.afterPropertiesSet();
 	}
 
 	@Test
@@ -129,7 +129,7 @@ public class ApiControllerWithConfigurationTest {
 				.build();
 		updateConfiguration(params, null);
 
-		runTest(mockMvc, params, ApiControllerTest.allApis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.allApis(null));
 	}
 
 	@Test
@@ -144,7 +144,7 @@ public class ApiControllerWithConfigurationTest {
 				.configuration(config).build();
 		updateConfiguration(params, config);
 
-		runTest(mockMvc, params, ApiControllerTest.allApis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.allApis(null));
 	}
 
 	@Test
@@ -153,7 +153,7 @@ public class ApiControllerWithConfigurationTest {
 				.actionNs("actionns").remotingApiVar("TEST_REMOTING_API")
 				.pollingUrlsVar("TEST_POLLING_URLS").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.allApis("actionns"));
+		runTest(this.mockMvc, params, ApiControllerTest.allApis("actionns"));
 	}
 
 	@Test
@@ -166,7 +166,7 @@ public class ApiControllerWithConfigurationTest {
 				.actionNs("actionns").remotingApiVar("TEST_REMOTING_API")
 				.pollingUrlsVar("TEST_POLLING_URLS").configuration(config).build();
 		updateConfiguration(params, config);
-		runTest(mockMvc, params, ApiControllerTest.allApis("actionns"));
+		runTest(this.mockMvc, params, ApiControllerTest.allApis("actionns"));
 	}
 
 	@Test
@@ -175,7 +175,7 @@ public class ApiControllerWithConfigurationTest {
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.emptyGroupApis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.emptyGroupApis(null));
 	}
 
 	@Test
@@ -184,7 +184,7 @@ public class ApiControllerWithConfigurationTest {
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("     ").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.emptyGroupApis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.emptyGroupApis(null));
 	}
 
 	@Test
@@ -197,7 +197,7 @@ public class ApiControllerWithConfigurationTest {
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("").configuration(config).build();
 		updateConfiguration(params, config);
-		runTest(mockMvc, params, ApiControllerTest.emptyGroupApis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.emptyGroupApis(null));
 	}
 
 	@Test
@@ -211,7 +211,7 @@ public class ApiControllerWithConfigurationTest {
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("        ").configuration(config).build();
 		updateConfiguration(params, config);
-		runTest(mockMvc, params, ApiControllerTest.emptyGroupApis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.emptyGroupApis(null));
 	}
 
 	@Test
@@ -225,7 +225,7 @@ public class ApiControllerWithConfigurationTest {
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("        ").configuration(config).build();
 		updateConfiguration(params, config);
-		runTest(mockMvc, params, ApiControllerTest.emptyGroupApis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.emptyGroupApis(null));
 	}
 
 	@Test
@@ -234,7 +234,7 @@ public class ApiControllerWithConfigurationTest {
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("xy").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.noApis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.noApis(null));
 	}
 
 	@Test
@@ -246,7 +246,7 @@ public class ApiControllerWithConfigurationTest {
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("xy").configuration(config).build();
 		updateConfiguration(params, config);
-		runTest(mockMvc, params, ApiControllerTest.noApis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.noApis(null));
 	}
 
 	@Test
@@ -257,9 +257,9 @@ public class ApiControllerWithConfigurationTest {
 
 		testGroup1(null, null);
 		testGroup1(null, null);
-		apiCache.clear();
+		this.apiCache.clear();
 		testGroup1(null, "-1.0.0");
-		apiCache.clear();
+		this.apiCache.clear();
 		testGroup1(null, "-fingerprinted");
 	}
 
@@ -273,7 +273,7 @@ public class ApiControllerWithConfigurationTest {
 
 		testGroup1(config, null);
 		testGroup1(config, null);
-		apiCache.clear();
+		this.apiCache.clear();
 		testGroup1(config, "-1.0.0");
 	}
 
@@ -319,8 +319,8 @@ public class ApiControllerWithConfigurationTest {
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("group2").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.group2Apis(null));
-		runTest(mockMvc, params, ApiControllerTest.group2Apis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.group2Apis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.group2Apis(null));
 	}
 
 	@Test
@@ -328,8 +328,8 @@ public class ApiControllerWithConfigurationTest {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Extns").actionNs("ns")
 				.remotingApiVar("RAPI").pollingUrlsVar("PURLS").group("group3").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.group3Apis("ns"));
-		runTest(mockMvc, params, ApiControllerTest.group3Apis("ns"));
+		runTest(this.mockMvc, params, ApiControllerTest.group3Apis("ns"));
+		runTest(this.mockMvc, params, ApiControllerTest.group3Apis("ns"));
 	}
 
 	@Test
@@ -338,12 +338,12 @@ public class ApiControllerWithConfigurationTest {
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("group4").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.group4Apis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.group4Apis(null));
 
 		params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("group4").build();
-		runTest(mockMvc, params, ApiControllerTest.group4Apis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.group4Apis(null));
 	}
 
 	@Test
@@ -351,7 +351,7 @@ public class ApiControllerWithConfigurationTest {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns")
 				.actionNs("actionns").group("group1,group2").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.group1and2Apis("actionns"));
+		runTest(this.mockMvc, params, ApiControllerTest.group1and2Apis("actionns"));
 	}
 
 	@Test
@@ -359,7 +359,7 @@ public class ApiControllerWithConfigurationTest {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns")
 				.actionNs("actionns").group("group1,unknown").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.group1Apis("actionns"));
+		runTest(this.mockMvc, params, ApiControllerTest.group1Apis("actionns"));
 	}
 
 	@Test
@@ -368,13 +368,13 @@ public class ApiControllerWithConfigurationTest {
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("interface").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.interfaceApis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.interfaceApis(null));
 
 		params = ApiRequestParams.builder().apiNs("test")
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("interface").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.interfaceApis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.interfaceApis(null));
 	}
 
 	@Test
@@ -383,12 +383,12 @@ public class ApiControllerWithConfigurationTest {
 				.remotingApiVar("TEST_REMOTING_API").pollingUrlsVar("TEST_POLLING_URLS")
 				.group("group4").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.group4Apis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.group4Apis(null));
 
 		params = ApiRequestParams.builder().apiNs("").remotingApiVar("TEST_REMOTING_API")
 				.pollingUrlsVar("TEST_POLLING_URLS").group("group4").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.group4Apis(null));
+		runTest(this.mockMvc, params, ApiControllerTest.group4Apis(null));
 	}
 
 	@Test
@@ -397,27 +397,27 @@ public class ApiControllerWithConfigurationTest {
 				.remotingApiVar("TEST_RMT_API").pollingUrlsVar("TEST_POLL_URLS")
 				.fullRouterUrl(Boolean.TRUE).group("group2").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params,
+		runTest(this.mockMvc, params,
 				ApiControllerTest.group2Apis(null, "http://localhost/router"));
 
 		params = ApiRequestParams.builder().apiNs("apiNs").remotingApiVar("TEST_RMT_API")
 				.pollingUrlsVar("TEST_POLL_URLS").fullRouterUrl(Boolean.TRUE)
 				.group("group2").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params,
+		runTest(this.mockMvc, params,
 				ApiControllerTest.group2Apis(null, "http://localhost/router"));
 
 		params = ApiRequestParams.builder().apiNs("apiNs").actionNs("")
 				.remotingApiVar("TEST_RMT_API").pollingUrlsVar("TEST_POLL_URLS")
 				.fullRouterUrl(Boolean.FALSE).group("group2").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.group2Apis(null, "/router"));
+		runTest(this.mockMvc, params, ApiControllerTest.group2Apis(null, "/router"));
 
 		params = ApiRequestParams.builder().apiNs("apiNs").remotingApiVar("TEST_RMT_API")
 				.pollingUrlsVar("TEST_POLL_URLS").fullRouterUrl(Boolean.FALSE)
 				.group("group2").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.group2Apis(null, "/router"));
+		runTest(this.mockMvc, params, ApiControllerTest.group2Apis(null, "/router"));
 	}
 
 	@Test
@@ -426,14 +426,14 @@ public class ApiControllerWithConfigurationTest {
 				.remotingApiVar("TEST_RMT_API").pollingUrlsVar("TEST_POLL_URLS")
 				.group("group2").format("json").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params,
+		runTest(this.mockMvc, params,
 				ApiControllerTest.group2Apis(null, "http://localhost/router"));
 
 		params = ApiRequestParams.builder().actionNs("ns").apiNs("")
 				.remotingApiVar("TEST_RMT_API").pollingUrlsVar("TEST_POLL_URLS")
 				.group("group2").format("json").fullRouterUrl(Boolean.TRUE).build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params,
+		runTest(this.mockMvc, params,
 				ApiControllerTest.group2Apis("ns", "http://localhost/router"));
 	}
 
@@ -443,7 +443,7 @@ public class ApiControllerWithConfigurationTest {
 				.remotingApiVar("rapi").pollingUrlsVar("papi").group("group2")
 				.baseRouterUrl("test").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.group2Apis(null, "test/router"));
+		runTest(this.mockMvc, params, ApiControllerTest.group2Apis(null, "test/router"));
 	}
 
 	@Test
@@ -452,7 +452,7 @@ public class ApiControllerWithConfigurationTest {
 				.remotingApiVar("rapi").pollingUrlsVar("papi").group("group2")
 				.fullRouterUrl(Boolean.TRUE).baseRouterUrl("service/test/").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params,
+		runTest(this.mockMvc, params,
 				ApiControllerTest.group2Apis(null, "service/test/router"));
 	}
 
@@ -462,7 +462,7 @@ public class ApiControllerWithConfigurationTest {
 				.remotingApiVar("rapi").pollingUrlsVar("papi").group("group2")
 				.baseRouterUrl("").build();
 		updateConfiguration(params, null);
-		runTest(mockMvc, params, ApiControllerTest.group2Apis(null, "/router"));
+		runTest(this.mockMvc, params, ApiControllerTest.group2Apis(null, "/router"));
 	}
 
 	static void runTest(MockMvc mockMvc, ApiRequestParams params, RemotingApi api)
@@ -474,7 +474,7 @@ public class ApiControllerWithConfigurationTest {
 
 	private MvcResult doTest(String url, ApiRequestParams params, RemotingApi expectedApi)
 			throws Exception {
-		return doTest(mockMvc, url, params, expectedApi);
+		return doTest(this.mockMvc, url, params, expectedApi);
 	}
 
 	private static MvcResult doTest(MockMvc mockMvc, String url, ApiRequestParams params,

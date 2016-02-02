@@ -63,17 +63,17 @@ public class ApiControllerWithDocumentationTest {
 
 	@Before
 	public void setupApiController() throws Exception {
-		apiCache.clear();
+		this.apiCache.clear();
 
 		Configuration config = new Configuration();
 		config.setTimeout(15000);
 		config.setEnableBuffer(Boolean.FALSE);
 		config.setMaxRetries(5);
 		config.setStreamResponse(true);
-		ReflectionTestUtils.setField(configurationService, "configuration", config);
-		configurationService.afterPropertiesSet();
+		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
+		this.configurationService.afterPropertiesSet();
 
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	/**
@@ -255,14 +255,14 @@ public class ApiControllerWithDocumentationTest {
 	private void doRequestWithoutDocs(String url) throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns")
 				.actionNs("actionns").group("doc")
-				.configuration(configurationService.getConfiguration()).build();
+				.configuration(this.configurationService.getConfiguration()).build();
 		MockHttpServletRequestBuilder request = get(url).accept(MediaType.ALL)
 				.characterEncoding("UTF-8");
 		request.param("apiNs", params.getApiNs());
 		request.param("actionNs", params.getActionNs());
 		request.param("group", params.getGroup());
 
-		MvcResult result = mockMvc.perform(request).andExpect(status().isOk())
+		MvcResult result = this.mockMvc.perform(request).andExpect(status().isOk())
 				.andExpect(content().contentType("application/javascript")).andReturn();
 
 		ApiControllerTest.compare(result, ApiControllerTest.groupApisWithDoc("actionns"),
@@ -274,14 +274,14 @@ public class ApiControllerWithDocumentationTest {
 	private ActionDoc callApi(String method) throws Exception {
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns")
 				.actionNs("actionns").group("doc")
-				.configuration(configurationService.getConfiguration()).build();
+				.configuration(this.configurationService.getConfiguration()).build();
 		MockHttpServletRequestBuilder request = get("/api-debug-doc.js")
 				.accept(MediaType.ALL).characterEncoding("UTF-8");
 		request.param("apiNs", params.getApiNs());
 		request.param("actionNs", params.getActionNs());
 		request.param("group", params.getGroup());
 
-		MvcResult result = mockMvc.perform(request).andExpect(status().isOk())
+		MvcResult result = this.mockMvc.perform(request).andExpect(status().isOk())
 				.andExpect(content().contentType("application/javascript")).andReturn();
 
 		ApiControllerTest.compare(result, ApiControllerTest.groupApisWithDoc("actionns"),

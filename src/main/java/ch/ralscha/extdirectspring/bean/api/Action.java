@@ -111,31 +111,31 @@ public class Action {
 	}
 
 	public Boolean getFormHandler() {
-		return formHandler;
+		return this.formHandler;
 	}
 
 	public Integer getLen() {
-		return len;
+		return this.len;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public List<String> getParams() {
-		return params;
+		return this.params;
 	}
 
 	public Boolean getStrict() {
-		return strict;
+		return this.strict;
 	}
 
 	public Metadata getMetadata() {
-		return metadata;
+		return this.metadata;
 	}
 
 	public Boolean getBatched() {
-		return batched;
+		return this.batched;
 	}
 
 	class Metadata {
@@ -147,7 +147,7 @@ public class Action {
 		}
 
 		public List<String> getParams() {
-			return params;
+			return this.params;
 		}
 	}
 }

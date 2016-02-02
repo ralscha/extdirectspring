@@ -19,7 +19,7 @@ public class BaseModel {
 	private Integer id;
 
 	public Integer getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Integer id) {

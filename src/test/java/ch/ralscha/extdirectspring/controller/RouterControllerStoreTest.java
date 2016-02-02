@@ -69,7 +69,7 @@ public class RouterControllerStoreTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	public static void assert100Rows(List<Row> rows, String appendix) {
@@ -85,7 +85,7 @@ public class RouterControllerStoreTest {
 
 	@Test
 	public void testNoArgumentsNoRequestParameters() {
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc,
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderStoreRead", "method1",
 				new TypeReference<List<Row>>() {/*
 												 * nothing here
@@ -99,7 +99,7 @@ public class RouterControllerStoreTest {
 		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
 		storeRead.setQuery("ralph");
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc,
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderStoreRead", "method1",
 				new TypeReference<List<Row>>() {/*
 												 * nothing here
@@ -110,13 +110,13 @@ public class RouterControllerStoreTest {
 
 	@Test
 	public void testReturnsNull() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderStoreRead", "method2",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method2",
 				Collections.emptyList());
 	}
 
 	@Test
 	public void testSupportedArguments() {
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc,
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderStoreRead", "method3",
 				new TypeReference<List<Row>>() {/*
 												 * nothing here
@@ -434,7 +434,7 @@ public class RouterControllerStoreTest {
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderStoreRead",
 				"method4", 1, storeRead);
 
-		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
 				.readDirectResponses(result.getResponse().getContentAsByteArray());
 
@@ -461,7 +461,7 @@ public class RouterControllerStoreTest {
 		readRequest.put("query", "name");
 
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(mockMvc, "remoteProviderStoreRead", "method5",
+				.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method5",
 						new TypeReference<ExtDirectStoreResult<Row>>() {
 							// nothing here
 						}, readRequest);
@@ -475,7 +475,7 @@ public class RouterControllerStoreTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderStoreRead", "method5", null, null, readRequest);
 	}
 
@@ -485,7 +485,7 @@ public class RouterControllerStoreTest {
 		readRequest.put("query", "firstname");
 
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(mockMvc, "remoteProviderStoreRead", "method6",
+				.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method6",
 						new TypeReference<ExtDirectStoreResult<Row>>() {
 							// nothing here
 						}, readRequest);
@@ -502,7 +502,7 @@ public class RouterControllerStoreTest {
 	@Test
 	public void testWithAdditionalParametersOptional() {
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc,
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderStoreRead", "method7", new TypeReference<List<Row>>() {
 					// nothing here
 				});
@@ -512,7 +512,7 @@ public class RouterControllerStoreTest {
 		readRequest.put("id", 11);
 		readRequest.put("query", "");
 
-		rows = (List<Row>) ControllerUtil.sendAndReceive(mockMvc,
+		rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderStoreRead", "method7", new TypeReference<List<Row>>() {
 					// nothing here
 				}, readRequest);
@@ -527,7 +527,7 @@ public class RouterControllerStoreTest {
 		readRequest.put("endDate", ISODateTimeFormat.dateTime().print(today));
 
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(mockMvc, "remoteProviderStoreRead", "method8",
+				.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method8",
 						new TypeReference<ExtDirectStoreResult<Row>>() {
 							// nothing here
 						}, readRequest);
@@ -540,7 +540,7 @@ public class RouterControllerStoreTest {
 	public void testMessageProperty() {
 		Map<String, Object> readRequest = new HashMap<String, Object>();
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(mockMvc, "remoteProviderStoreRead", "method9",
+				.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method9",
 						new TypeReference<ExtDirectStoreResult<Row>>() {
 							// nothing here
 						}, readRequest);
@@ -559,7 +559,7 @@ public class RouterControllerStoreTest {
 		readRequest.put("query", "name");
 
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(mockMvc, "remoteProviderStoreRead", "method10",
+				.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method10",
 						new TypeReference<ExtDirectStoreResult<Row>>() {
 							// nothing here
 						}, readRequest);
@@ -575,7 +575,7 @@ public class RouterControllerStoreTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderStoreRead", "method10",
 				new TypeReference<ExtDirectStoreResult<Row>>() {
 					// nothing here
@@ -603,7 +603,7 @@ public class RouterControllerStoreTest {
 		readRequest.put("query", "name");
 
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(mockMvc, headers, cookies, "remoteProviderStoreRead",
+				.sendAndReceive(this.mockMvc, headers, cookies, "remoteProviderStoreRead",
 						"method11", new TypeReference<ExtDirectStoreResult<Row>>() {
 							// nothing here
 						}, readRequest);
@@ -619,7 +619,7 @@ public class RouterControllerStoreTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderStoreRead", "method11",
 				new TypeReference<ExtDirectStoreResult<Row>>() {
 					// nothing here
@@ -641,7 +641,7 @@ public class RouterControllerStoreTest {
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderStoreRead",
 				"methodMetadata", 1, new HashMap<String, Object>());
 
-		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
 				.readDirectResponses(result.getResponse().getContentAsByteArray());
 

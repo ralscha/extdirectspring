@@ -70,7 +70,7 @@ public class InfoService {
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_info_service")
 	public ExtDirectFormPostResult updateInfoUser3(Locale locale, @Valid User user,
 			BindingResult bindingResult) {
-		ExtDirectFormPostResult resp = new ExtDirectFormPostResult(locale, messageSource,
+		ExtDirectFormPostResult resp = new ExtDirectFormPostResult(locale, this.messageSource,
 				bindingResult);
 		resp.addResultProperty("lc", user.getName().toLowerCase());
 		return resp;
@@ -79,7 +79,7 @@ public class InfoService {
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_info_service")
 	public ExtDirectFormPostResult updateInfoUser4(Locale locale, @Valid User user,
 			BindingResult bindingResult) {
-		ExtDirectFormPostResult resp = new ExtDirectFormPostResult(locale, messageSource,
+		ExtDirectFormPostResult resp = new ExtDirectFormPostResult(locale, this.messageSource,
 				bindingResult, true);
 		resp.addResultProperty("lc", user.getName().toLowerCase());
 		return resp;
@@ -88,7 +88,7 @@ public class InfoService {
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_info_service")
 	public ExtDirectFormPostResult updateInfoUser5(@Valid User user,
 			BindingResult bindingResult) {
-		ExtDirectFormPostResult resp = new ExtDirectFormPostResult(null, messageSource,
+		ExtDirectFormPostResult resp = new ExtDirectFormPostResult(null, this.messageSource,
 				bindingResult);
 		resp.addResultProperty("lc", user.getName().toLowerCase());
 		return resp;

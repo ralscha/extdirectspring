@@ -71,19 +71,19 @@ public abstract class EdStoreResult extends JsonViewHint {
 	public static EdStoreResult success(Collection<?> records) {
 		return ImmutableEdStoreResult.of(records, null, Boolean.TRUE, null, null);
 	}
-	
+
 	public static EdStoreResult success(Collection<?> records, Long total) {
 		return ImmutableEdStoreResult.of(records, total, Boolean.TRUE, null, null);
 	}
 
-	public static EdStoreResult success(Collection<?> records, 
+	public static EdStoreResult success(Collection<?> records,
 			Class<?> jsonView) {
 		ImmutableEdStoreResult result = ImmutableEdStoreResult.of(records, null,
 				Boolean.TRUE, null, null);
 		result.setJsonView(jsonView);
 		return result;
 	}
-	
+
 	public static EdStoreResult success(Collection<?> records, Long total,
 			Class<?> jsonView) {
 		ImmutableEdStoreResult result = ImmutableEdStoreResult.of(records, total,

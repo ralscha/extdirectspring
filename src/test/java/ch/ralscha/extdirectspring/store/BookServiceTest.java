@@ -38,26 +38,26 @@ public class BookServiceTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
 	public void testCreate() throws Exception {
-		new CrudTestMethods("bookService").testCreate(mockMvc);
+		new CrudTestMethods("bookService").testCreate(this.mockMvc);
 	}
 
 	@Test
 	public void testRead() throws Exception {
-		new CrudTestMethods("bookService").testRead(mockMvc);
+		new CrudTestMethods("bookService").testRead(this.mockMvc);
 	}
 
 	@Test
 	public void testUpdate() throws Exception {
-		new CrudTestMethods("bookService").testUpdate(mockMvc);
+		new CrudTestMethods("bookService").testUpdate(this.mockMvc);
 	}
 
 	@Test
 	public void testDelete() throws Exception {
-		new CrudTestMethods("bookService").testDelete(mockMvc);
+		new CrudTestMethods("bookService").testDelete(this.mockMvc);
 	}
 }

@@ -81,7 +81,7 @@ public class MethodRegistrar
 				final String beanAndMethodName = beanName + "." + method.getName();
 				if (directMethodAnnotation.value().isValid(beanAndMethodName, userType,
 						method)) {
-					methodInfoCache.put(beanName, handlerType, method,
+					this.methodInfoCache.put(beanName, handlerType, method,
 							event.getApplicationContext());
 
 					// /CLOVER:OFF

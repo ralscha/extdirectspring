@@ -364,7 +364,7 @@ public class RemoteProviderSimple {
 		}
 
 		public int getId() {
-			return id;
+			return this.id;
 		}
 
 		public void setId(int id) {
@@ -372,7 +372,7 @@ public class RemoteProviderSimple {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -380,7 +380,7 @@ public class RemoteProviderSimple {
 		}
 
 		public BigDecimal getBd() {
-			return bd;
+			return this.bd;
 		}
 
 		public void setBd(BigDecimal bd) {
@@ -389,7 +389,7 @@ public class RemoteProviderSimple {
 
 		@Override
 		public String toString() {
-			return "BusinessObject [id=" + id + ", name=" + name + ", bd=" + bd + "]";
+			return "BusinessObject [id=" + this.id + ", name=" + this.name + ", bd=" + this.bd + "]";
 		}
 
 	}

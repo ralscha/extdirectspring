@@ -45,7 +45,7 @@ public class ExceptionHandlingConfigInXmlTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
@@ -53,7 +53,7 @@ public class ExceptionHandlingConfigInXmlTest {
 
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple",
 				"method4b", 2, new Object[] { 3, "xxx", "string.param" });
-		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
 				.readDirectResponses(result.getResponse().getContentAsByteArray());
 
@@ -75,7 +75,7 @@ public class ExceptionHandlingConfigInXmlTest {
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple2",
 				"method4", 2, new Object[] { 3, 2.5, "string.param" });
 
-		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
 				.readDirectResponses(result.getResponse().getContentAsByteArray());
 
@@ -97,7 +97,7 @@ public class ExceptionHandlingConfigInXmlTest {
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple",
 				"method11b", 3, null);
 
-		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
 				.readDirectResponses(result.getResponse().getContentAsByteArray());
 
@@ -117,7 +117,7 @@ public class ExceptionHandlingConfigInXmlTest {
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple",
 				"method11", 3, null);
 
-		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
+		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
 				.readDirectResponses(result.getResponse().getContentAsByteArray());
 

@@ -43,7 +43,7 @@ public class JsonViewHint {
 	}
 
 	public Class<?> getJsonView() {
-		return jsonView;
+		return this.jsonView;
 	}
 
 	public void setJsonView(Class<?> jsonView) {

@@ -108,7 +108,7 @@ public class ApiController {
 
 		if (format == null) {
 			response.setContentType(
-					configurationService.getConfiguration().getJsContentType());
+					this.configurationService.getConfiguration().getJsContentType());
 			response.setCharacterEncoding(ExtDirectSpringUtil.UTF8_CHARSET.name());
 
 			String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar,
@@ -181,7 +181,7 @@ public class ApiController {
 
 		byte[] outputBytes = apiString.getBytes(ExtDirectSpringUtil.UTF8_CHARSET);
 		ExtDirectSpringUtil.handleCacheableResponse(request, response, outputBytes,
-				configurationService.getConfiguration().getJsContentType());
+				this.configurationService.getConfiguration().getJsContentType());
 	}
 
 	private String buildAndCacheApiString(String requestApiNs, String requestActionNs,
@@ -189,7 +189,7 @@ public class ApiController {
 			Boolean requestFullRouterUrl, String requestBaseRouterUrl,
 			HttpServletRequest request) {
 
-		Configuration configuration = configurationService.getConfiguration();
+		Configuration configuration = this.configurationService.getConfiguration();
 		String apiNs = requestApiNs != null ? requestApiNs : configuration.getApiNs();
 		String remotingApiVar = requestRemotingApiVar != null ? requestRemotingApiVar
 				: configuration.getRemotingApiVar();
@@ -222,11 +222,11 @@ public class ApiController {
 
 			ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar,
 					pollingUrlsVar, routerUrl, group, debug);
-			String apiString = apiCache.get(apiKey);
+			String apiString = this.apiCache.get(apiKey);
 			if (apiString == null) {
 				apiString = buildApiString(apiNs, actionNs, remotingApiVar,
 						pollingUrlsVar, routerUrl, basePollUrl, group, debug, false);
-				apiCache.put(apiKey, apiString);
+				this.apiCache.put(apiKey, apiString);
 			}
 			return apiString;
 		}
@@ -241,14 +241,14 @@ public class ApiController {
 			boolean debug, boolean doc) {
 
 		RemotingApi remotingApi = new RemotingApi(
-				configurationService.getConfiguration().getProviderType(), routerUrl,
+				this.configurationService.getConfiguration().getProviderType(), routerUrl,
 				actionNs);
 
-		remotingApi.setTimeout(configurationService.getConfiguration().getTimeout());
+		remotingApi.setTimeout(this.configurationService.getConfiguration().getTimeout());
 		remotingApi
-				.setMaxRetries(configurationService.getConfiguration().getMaxRetries());
+				.setMaxRetries(this.configurationService.getConfiguration().getMaxRetries());
 
-		Object enableBuffer = configurationService.getConfiguration().getEnableBuffer();
+		Object enableBuffer = this.configurationService.getConfiguration().getEnableBuffer();
 		if (enableBuffer instanceof String
 				&& StringUtils.hasText((String) enableBuffer)) {
 			String enableBufferString = (String) enableBuffer;
@@ -268,9 +268,9 @@ public class ApiController {
 			remotingApi.setEnableBuffer(enableBuffer);
 		}
 
-		if (configurationService.getConfiguration().getBufferLimit() != null) {
+		if (this.configurationService.getConfiguration().getBufferLimit() != null) {
 			remotingApi.setBufferLimit(
-					configurationService.getConfiguration().getBufferLimit());
+					this.configurationService.getConfiguration().getBufferLimit());
 		}
 
 		buildRemotingApi(remotingApi, group);
@@ -371,7 +371,7 @@ public class ApiController {
 	private String buildApiJson(String requestApiNs, String requestActionNs,
 			String requestRemotingApiVar, String routerUrl, String group, boolean debug) {
 
-		Configuration configuration = configurationService.getConfiguration();
+		Configuration configuration = this.configurationService.getConfiguration();
 		String apiNs = requestApiNs != null ? requestApiNs : configuration.getApiNs();
 
 		String remotingApiVar = requestRemotingApiVar != null ? requestRemotingApiVar
@@ -381,7 +381,7 @@ public class ApiController {
 				: configuration.getActionNs();
 
 		RemotingApi remotingApi = new RemotingApi(
-				configurationService.getConfiguration().getProviderType(), routerUrl,
+				this.configurationService.getConfiguration().getProviderType(), routerUrl,
 				actionNs);
 
 		if (StringUtils.hasText(apiNs)) {
@@ -399,7 +399,7 @@ public class ApiController {
 
 	private void buildRemotingApi(RemotingApi remotingApi, String requestedGroup) {
 		String group = requestedGroup != null ? requestedGroup.trim() : requestedGroup;
-		for (Map.Entry<MethodInfoCache.Key, MethodInfo> entry : methodInfoCache) {
+		for (Map.Entry<MethodInfoCache.Key, MethodInfo> entry : this.methodInfoCache) {
 			MethodInfo methodInfo = entry.getValue();
 			if (isSameGroup(group, methodInfo.getGroup())) {
 				if (methodInfo.getAction() != null) {
@@ -438,10 +438,10 @@ public class ApiController {
 	private String writeValueAsString(Object obj, boolean indent) {
 		try {
 			if (indent) {
-				return objectMapper.writer().withDefaultPrettyPrinter()
+				return this.objectMapper.writer().withDefaultPrettyPrinter()
 						.writeValueAsString(obj);
 			}
-			return objectMapper.writeValueAsString(obj);
+			return this.objectMapper.writeValueAsString(obj);
 		}
 		catch (Exception e) {
 			LogFactory.getLog(JsonHandler.class).info("serialize object to json", e);

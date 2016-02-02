@@ -49,14 +49,14 @@ public class SimpleMethodConcurrentTest extends BaseViewTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
 	public void testMultiple1() {
 		List<BeanMethod> bms = new ArrayList<BeanMethod>();
 		bms.add(new BeanMethod("simpleMethodService", "noView"));
-		List<Map<String, Object>> results = ControllerUtil.sendAndReceiveMultiple(mockMvc,
+		List<Map<String, Object>> results = ControllerUtil.sendAndReceiveMultiple(this.mockMvc,
 				bms);
 		assertThat(results).hasSize(1);
 		Map<String, Object> result = results.get(0);
@@ -70,7 +70,7 @@ public class SimpleMethodConcurrentTest extends BaseViewTest {
 		bms.add(new BeanMethod("simpleMethodService", "noView"));
 		bms.add(new BeanMethod("simpleMethodService", "annotationSummaryView"));
 		bms.add(new BeanMethod("simpleMethodService", "annotationDetailView"));
-		List<Map<String, Object>> results = ControllerUtil.sendAndReceiveMultiple(mockMvc,
+		List<Map<String, Object>> results = ControllerUtil.sendAndReceiveMultiple(this.mockMvc,
 				bms);
 		assertThat(results).hasSize(3);
 
@@ -90,7 +90,7 @@ public class SimpleMethodConcurrentTest extends BaseViewTest {
 		bms.add(new BeanMethod("simpleMethodService", "noView"));
 		bms.add(new BeanMethod("simpleMethodService", "overrideSubclassDetailView"));
 		bms.add(new BeanMethod("simpleMethodService", "overrideSubclassNoView"));
-		List<Map<String, Object>> results = ControllerUtil.sendAndReceiveMultiple(mockMvc,
+		List<Map<String, Object>> results = ControllerUtil.sendAndReceiveMultiple(this.mockMvc,
 				bms);
 		assertThat(results).hasSize(5);
 

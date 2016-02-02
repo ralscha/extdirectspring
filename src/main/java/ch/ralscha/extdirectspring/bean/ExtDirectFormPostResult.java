@@ -200,7 +200,7 @@ public class ExtDirectFormPostResult {
 		Assert.notNull(errors, "field must not be null");
 
 		// do not overwrite existing errors
-		Map<String, List<String>> errorMap = (Map<String, List<String>>) result
+		Map<String, List<String>> errorMap = (Map<String, List<String>>) this.result
 				.get(ERRORS_PROPERTY);
 		if (errorMap == null) {
 			errorMap = new HashMap<String, List<String>>();
@@ -218,15 +218,15 @@ public class ExtDirectFormPostResult {
 	}
 
 	public void addResultProperty(String key, Object value) {
-		result.put(key, value);
+		this.result.put(key, value);
 	}
 
 	public Map<String, Object> getResult() {
-		return result;
+		return this.result;
 	}
 
 	public void setSuccess(boolean flag) {
-		result.put(SUCCESS_PROPERTY, flag);
+		this.result.put(SUCCESS_PROPERTY, flag);
 	}
 
 }

@@ -23,27 +23,27 @@ public class Field {
 	private final Map<String, Object> fieldData;
 
 	public Field(String name) {
-		fieldData = new LinkedHashMap<String, Object>();
-		fieldData.put("name", name);
+		this.fieldData = new LinkedHashMap<String, Object>();
+		this.fieldData.put("name", name);
 	}
 
 	public void setType(DataType type) {
-		fieldData.put("type", type.getName());
+		this.fieldData.put("type", type.getName());
 	}
 
 	public void setAllowBlank(boolean allowBlank) {
-		fieldData.put("allowBlank", allowBlank);
+		this.fieldData.put("allowBlank", allowBlank);
 	}
 
 	public void setDateFormat(String dateFormat) {
-		fieldData.put("dateFormat", dateFormat);
+		this.fieldData.put("dateFormat", dateFormat);
 	}
 
 	public void addCustomProperty(String key, Object value) {
-		fieldData.put(key, value);
+		this.fieldData.put(key, value);
 	}
 
 	public Map<String, Object> getFieldData() {
-		return Collections.unmodifiableMap(fieldData);
+		return Collections.unmodifiableMap(this.fieldData);
 	}
 }

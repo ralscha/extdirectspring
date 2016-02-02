@@ -26,12 +26,12 @@ public class DateFilter extends Filter {
 	}
 
 	public String getValue() {
-		return value;
+		return this.value;
 	}
 
 	@Override
 	public String toString() {
-		return "DateFilter [value=" + value + ", getField()=" + getField()
+		return "DateFilter [value=" + this.value + ", getField()=" + getField()
 				+ ", getRawComparison()=" + getRawComparison() + ", getComparison()="
 				+ getComparison() + "]";
 	}

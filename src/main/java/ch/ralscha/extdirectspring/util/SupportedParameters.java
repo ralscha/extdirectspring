@@ -43,7 +43,7 @@ enum SupportedParameters {
 	 * @return the enclosing class
 	 */
 	public Class<?> getSupportedClass() {
-		return clazz;
+		return this.clazz;
 	}
 
 	/**

@@ -71,7 +71,7 @@ public final class RemotingApi {
 	public void sort() {
 		this.actions = new TreeMap<String, List<Action>>(this.actions);
 
-		for (List<Action> action : actions.values()) {
+		for (List<Action> action : this.actions.values()) {
 			Collections.sort(action, new Comparator<Action>() {
 				@Override
 				public int compare(Action o1, Action o2) {
@@ -80,7 +80,7 @@ public final class RemotingApi {
 			});
 		}
 
-		Collections.sort(pollingProviders, new Comparator<PollingProvider>() {
+		Collections.sort(this.pollingProviders, new Comparator<PollingProvider>() {
 			@Override
 			public int compare(PollingProvider o1, PollingProvider o2) {
 				int c = o1.getBeanName().compareTo(o2.getBeanName());
@@ -93,23 +93,23 @@ public final class RemotingApi {
 	}
 
 	public Map<String, List<Action>> getActions() {
-		return actions;
+		return this.actions;
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public String getUrl() {
-		return url;
+		return this.url;
 	}
 
 	public String getNamespace() {
-		return namespace;
+		return this.namespace;
 	}
 
 	public String getDescriptor() {
-		return descriptor;
+		return this.descriptor;
 	}
 
 	public void setDescriptor(String descriptor) {
@@ -117,7 +117,7 @@ public final class RemotingApi {
 	}
 
 	public Integer getTimeout() {
-		return timeout;
+		return this.timeout;
 	}
 
 	public void setTimeout(Integer timeout) {
@@ -125,7 +125,7 @@ public final class RemotingApi {
 	}
 
 	public Integer getMaxRetries() {
-		return maxRetries;
+		return this.maxRetries;
 	}
 
 	public void setMaxRetries(Integer maxRetries) {
@@ -133,7 +133,7 @@ public final class RemotingApi {
 	}
 
 	public Object getEnableBuffer() {
-		return enableBuffer;
+		return this.enableBuffer;
 	}
 
 	public void setEnableBuffer(Object enableBuffer) {
@@ -141,7 +141,7 @@ public final class RemotingApi {
 	}
 
 	public Integer getBufferLimit() {
-		return bufferLimit;
+		return this.bufferLimit;
 	}
 
 	public void setBufferLimit(Integer bufferLimit) {
@@ -150,20 +150,20 @@ public final class RemotingApi {
 
 	@JsonIgnore
 	public List<PollingProvider> getPollingProviders() {
-		return pollingProviders;
+		return this.pollingProviders;
 	}
 
 	public void addAction(String beanName, Action action) {
-		List<Action> beanActions = actions.get(beanName);
+		List<Action> beanActions = this.actions.get(beanName);
 		if (beanActions == null) {
 			beanActions = new ArrayList<Action>();
-			actions.put(beanName, beanActions);
+			this.actions.put(beanName, beanActions);
 		}
 		beanActions.add(action);
 	}
 
 	public void addPollingProvider(PollingProvider pollingProvider) {
-		pollingProviders.add(pollingProvider);
+		this.pollingProviders.add(pollingProvider);
 	}
 
 }

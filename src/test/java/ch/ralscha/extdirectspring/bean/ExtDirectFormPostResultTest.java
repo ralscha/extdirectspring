@@ -181,7 +181,7 @@ public class ExtDirectFormPostResultTest {
 
 		@Override
 		public List<FieldError> getFieldErrors() {
-			return errors;
+			return this.errors;
 		}
 
 	}

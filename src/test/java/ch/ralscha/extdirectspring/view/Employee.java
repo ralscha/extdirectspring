@@ -36,7 +36,7 @@ public class Employee {
 	private String secretKey;
 
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Long id) {
@@ -44,7 +44,7 @@ public class Employee {
 	}
 
 	public String getLastName() {
-		return lastName;
+		return this.lastName;
 	}
 
 	public void setLastName(String lastName) {
@@ -52,7 +52,7 @@ public class Employee {
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return this.firstName;
 	}
 
 	public void setFirstName(String firstName) {
@@ -60,7 +60,7 @@ public class Employee {
 	}
 
 	public String getAddress() {
-		return address;
+		return this.address;
 	}
 
 	public void setAddress(String address) {
@@ -68,7 +68,7 @@ public class Employee {
 	}
 
 	public String getPhone() {
-		return phone;
+		return this.phone;
 	}
 
 	public void setPhone(String phone) {
@@ -76,7 +76,7 @@ public class Employee {
 	}
 
 	public String getSecretKey() {
-		return secretKey;
+		return this.secretKey;
 	}
 
 	public void setSecretKey(String secretKey) {

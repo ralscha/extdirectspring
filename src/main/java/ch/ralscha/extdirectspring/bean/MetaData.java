@@ -30,26 +30,26 @@ public class MetaData {
 	private final Map<String, Object> metaData;
 
 	public MetaData() {
-		metaData = new LinkedHashMap<String, Object>();
-		metaData.put("root", "records");
-		metaData.put("totalProperty", "total");
-		metaData.put("successProperty", "success");
+		this.metaData = new LinkedHashMap<String, Object>();
+		this.metaData.put("root", "records");
+		this.metaData.put("totalProperty", "total");
+		this.metaData.put("successProperty", "success");
 	}
 
 	public void setPagingParameter(int start, int limit) {
-		metaData.put("start", start);
-		metaData.put("limit", limit);
+		this.metaData.put("start", start);
+		this.metaData.put("limit", limit);
 	}
 
 	public void setIdProperty(String idProperty) {
-		metaData.put("idProperty", idProperty);
+		this.metaData.put("idProperty", idProperty);
 	}
 
 	public void setSortInfo(String field, SortDirection direction) {
 		Map<String, String> sortInfo = new LinkedHashMap<String, String>();
 		sortInfo.put("field", field);
 		sortInfo.put("direction", direction.getName());
-		metaData.put("sortInfo", sortInfo);
+		this.metaData.put("sortInfo", sortInfo);
 	}
 
 	public void addFields(List<Field> fields) {
@@ -63,23 +63,23 @@ public class MetaData {
 	@SuppressWarnings("unchecked")
 	public void addField(Field field) {
 
-		List<Map<String, Object>> fields = (List<Map<String, Object>>) metaData
+		List<Map<String, Object>> fields = (List<Map<String, Object>>) this.metaData
 				.get("fields");
 
 		if (fields == null) {
 			fields = new ArrayList<Map<String, Object>>();
-			metaData.put("fields", fields);
+			this.metaData.put("fields", fields);
 		}
 
 		fields.add(field.getFieldData());
 	}
 
 	public void addCustomProperty(String key, Object value) {
-		metaData.put(key, value);
+		this.metaData.put(key, value);
 	}
 
 	public Map<String, Object> getMetaData() {
-		return Collections.unmodifiableMap(metaData);
+		return Collections.unmodifiableMap(this.metaData);
 	}
 
 }

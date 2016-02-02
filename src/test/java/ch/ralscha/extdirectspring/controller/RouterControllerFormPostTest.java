@@ -62,7 +62,7 @@ public class RouterControllerFormPostTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class RouterControllerFormPostTest {
 		parameters.put("extMethod", "method1");
 		parameters.put("extType", "rpc");
 
-		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, null, parameters,
+		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, null, parameters,
 				null, null, false);
 		ExtDirectResponse edsResponse = ControllerUtil
 				.readDirectResponse(result.getResponse().getContentAsByteArray());
@@ -91,15 +91,15 @@ public class RouterControllerFormPostTest {
 		Configuration conf = new Configuration();
 		conf.setDefaultExceptionMessage("something wrong");
 		conf.setSendStacktrace(true);
-		ReflectionTestUtils.setField(configurationService, "configuration", conf);
-		configurationService.afterPropertiesSet();
+		ReflectionTestUtils.setField(this.configurationService, "configuration", conf);
+		this.configurationService.afterPropertiesSet();
 
 		Map<String, String> parameters = new LinkedHashMap<String, String>();
 		parameters.put("extTID", "12");
 		parameters.put("extAction", "remoteProviderSimple");
 		parameters.put("extMethod", "method1");
 		parameters.put("extType", "rpc");
-		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, null, parameters,
+		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, null, parameters,
 				null, null, false);
 		ExtDirectResponse edsResponse = ControllerUtil
 				.readDirectResponse(result.getResponse().getContentAsByteArray());
@@ -113,9 +113,9 @@ public class RouterControllerFormPostTest {
 		assertThat(edsResponse.getAction()).isEqualTo("remoteProviderSimple");
 		assertThat(edsResponse.getMethod()).isEqualTo("method1");
 
-		ReflectionTestUtils.setField(configurationService, "configuration",
+		ReflectionTestUtils.setField(this.configurationService, "configuration",
 				new Configuration());
-		configurationService.afterPropertiesSet();
+		this.configurationService.afterPropertiesSet();
 	}
 
 	@Test
@@ -133,7 +133,7 @@ public class RouterControllerFormPostTest {
 		request.param("salary", "12.3");
 		request.param("result", "theResult");
 
-		mockMvc.perform(request).andExpect(status().isOk())
+		this.mockMvc.perform(request).andExpect(status().isOk())
 				.andExpect(forwardedUrl("updateInfo"));
 	}
 
@@ -150,7 +150,7 @@ public class RouterControllerFormPostTest {
 		parameters.put("salary", "12.3");
 		parameters.put("result", "theResult");
 
-		MvcResult resultMvc = ControllerUtil.performRouterRequest(mockMvc, null,
+		MvcResult resultMvc = ControllerUtil.performRouterRequest(this.mockMvc, null,
 				parameters, null, null, false);
 		ExtDirectResponse edsResponse = ControllerUtil
 				.readDirectResponse(resultMvc.getResponse().getContentAsByteArray());
@@ -188,7 +188,7 @@ public class RouterControllerFormPostTest {
 
 		request.file("fileUpload", "the content of the file".getBytes());
 
-		MvcResult resultMvc = mockMvc.perform(request).andExpect(status().isOk())
+		MvcResult resultMvc = this.mockMvc.perform(request).andExpect(status().isOk())
 				.andExpect(content().contentType("text/html;charset=UTF-8"))
 				.andExpect(content().encoding("UTF-8")).andReturn();
 

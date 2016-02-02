@@ -53,7 +53,7 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
@@ -70,7 +70,7 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 
 		request.file("fileUpload", "the content of the file".getBytes());
 
-		MvcResult resultMvc = mockMvc.perform(request).andExpect(status().isOk())
+		MvcResult resultMvc = this.mockMvc.perform(request).andExpect(status().isOk())
 				.andExpect(content().contentType("text/html;charset=UTF-8"))
 				.andExpect(content().encoding("UTF-8")).andReturn();
 

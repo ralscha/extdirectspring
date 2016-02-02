@@ -30,7 +30,7 @@ public enum SortDirection {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public static SortDirection fromString(String name) {

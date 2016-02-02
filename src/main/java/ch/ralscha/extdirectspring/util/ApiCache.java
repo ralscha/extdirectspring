@@ -27,16 +27,16 @@ public class ApiCache {
 	private final Map<ApiCacheKey, SoftReference<String>> cache;
 
 	public ApiCache() {
-		cache = new ConcurrentHashMap<ApiCacheKey, SoftReference<String>>();
+		this.cache = new ConcurrentHashMap<ApiCacheKey, SoftReference<String>>();
 	}
 
 	public void put(ApiCacheKey key, String apiString) {
-		cache.put(key, new SoftReference<String>(apiString));
+		this.cache.put(key, new SoftReference<String>(apiString));
 	}
 
 	public String get(ApiCacheKey key) {
 		if (key != null) {
-			SoftReference<String> apiStringReference = cache.get(key);
+			SoftReference<String> apiStringReference = this.cache.get(key);
 			if (apiStringReference != null && apiStringReference.get() != null) {
 				return apiStringReference.get();
 			}
@@ -48,6 +48,6 @@ public class ApiCache {
 	 * for unit tests
 	 */
 	public void clear() {
-		cache.clear();
+		this.cache.clear();
 	}
 }

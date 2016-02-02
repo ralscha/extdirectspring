@@ -46,7 +46,7 @@ public class StoreModifyMethodTest extends BaseViewTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class StoreModifyMethodTest extends BaseViewTest {
 
 	@SuppressWarnings("unchecked")
 	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
-		Object obj = ControllerUtil.sendAndReceiveObject(mockMvc, bean, method);
+		Object obj = ControllerUtil.sendAndReceiveObject(this.mockMvc, bean, method);
 		List<Map<String, Object>> records;
 
 		if (obj instanceof List) {

@@ -28,12 +28,12 @@ public class ListFilter<T> extends Filter {
 	}
 
 	public List<T> getValue() {
-		return value;
+		return this.value;
 	}
 
 	@Override
 	public String toString() {
-		return "ListFilter [value=" + value + ", getField()=" + getField()
+		return "ListFilter [value=" + this.value + ", getField()=" + getField()
 				+ ", getRawComparison()=" + getRawComparison() + ", getComparison()="
 				+ getComparison() + "]";
 	}

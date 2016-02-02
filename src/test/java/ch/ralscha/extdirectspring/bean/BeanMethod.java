@@ -33,19 +33,19 @@ public class BeanMethod {
 	}
 
 	public String getBean() {
-		return bean;
+		return this.bean;
 	}
 
 	public String getMethod() {
-		return method;
+		return this.method;
 	}
 
 	public Object getData() {
-		return data;
+		return this.data;
 	}
 
 	public int getTid() {
-		return tid;
+		return this.tid;
 	}
 
 	public void setTid(int tid) {

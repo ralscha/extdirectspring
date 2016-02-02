@@ -43,8 +43,8 @@ public class ApiControllerWithXMLConfig2Test {
 
 	@Before
 	public void setupApiController() throws Exception {
-		apiCache.clear();
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.apiCache.clear();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
@@ -59,9 +59,9 @@ public class ApiControllerWithXMLConfig2Test {
 		ApiRequestParams params = ApiRequestParams.builder()
 				.remotingApiVar("TEST_REMOTING_API").group("group2").configuration(config)
 				.build();
-		ApiControllerTest.runTest(mockMvc, params, ApiControllerTest.group2Apis(null));
+		ApiControllerTest.runTest(this.mockMvc, params, ApiControllerTest.group2Apis(null));
 
-		ApiControllerTest.runTest(mockMvc, params, ApiControllerTest.group2Apis(null));
+		ApiControllerTest.runTest(this.mockMvc, params, ApiControllerTest.group2Apis(null));
 	}
 
 }

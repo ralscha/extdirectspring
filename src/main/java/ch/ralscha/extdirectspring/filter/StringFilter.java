@@ -26,12 +26,12 @@ public class StringFilter extends Filter {
 	}
 
 	public String getValue() {
-		return value;
+		return this.value;
 	}
 
 	@Override
 	public String toString() {
-		return "StringFilter [value=" + value + ", getField()=" + getField()
+		return "StringFilter [value=" + this.value + ", getField()=" + getField()
 				+ ", getRawComparison()=" + getRawComparison() + ", getComparison()="
 				+ getComparison() + "]";
 	}

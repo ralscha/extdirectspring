@@ -60,7 +60,7 @@ public class RouterControllerFormPostJsonTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
@@ -73,7 +73,7 @@ public class RouterControllerFormPostJsonTest {
 		request.param("extMethod", "updateInfoJson");
 		request.param("extType", "rpc");
 
-		mockMvc.perform(request).andExpect(status().isOk());
+		this.mockMvc.perform(request).andExpect(status().isOk());
 	}
 
 	@SuppressWarnings({ "null" })
@@ -89,7 +89,7 @@ public class RouterControllerFormPostJsonTest {
 
 		MvcResult resultMvc = null;
 		try {
-			resultMvc = ControllerUtil.performRouterRequest(mockMvc,
+			resultMvc = ControllerUtil.performRouterRequest(this.mockMvc,
 					ControllerUtil.createEdsRequest("formInfoController3",
 							"updateInfoJsonDirect", 14, formInfo));
 		}
@@ -129,7 +129,7 @@ public class RouterControllerFormPostJsonTest {
 
 		MvcResult resultMvc = null;
 		try {
-			resultMvc = ControllerUtil.performRouterRequest(mockMvc,
+			resultMvc = ControllerUtil.performRouterRequest(this.mockMvc,
 					ControllerUtil.createEdsRequest("formInfoController3",
 							"updateInfoJsonDirectError", 14, formInfo));
 		}
@@ -164,14 +164,14 @@ public class RouterControllerFormPostJsonTest {
 	@Test
 	public void testCallFormPostMethodNotRegisteredWithBindingResultAsParameter()
 			throws Exception {
-		ControllerUtil.sendAndReceive(mockMvc, "formInfoController3",
+		ControllerUtil.sendAndReceive(this.mockMvc, "formInfoController3",
 				"updateInfoJsonDirectNotRegisteredWithBindingResultAsParameter", null);
 	}
 
 	@Test
 	public void testCallFormPostMethodNotRegisteredWithMultipartFileAsParameter()
 			throws Exception {
-		ControllerUtil.sendAndReceive(mockMvc, "formInfoController3",
+		ControllerUtil.sendAndReceive(this.mockMvc, "formInfoController3",
 				"updateInfoJsonDirectNotRegisteredWithMultipartFileAsParameter", null);
 	}
 }

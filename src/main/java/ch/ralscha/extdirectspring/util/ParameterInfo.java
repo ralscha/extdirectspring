@@ -71,10 +71,10 @@ public final class ParameterInfo {
 		this.typeDescriptor = new TypeDescriptor(methodParam);
 
 		Class<?> paramType = methodParam.getParameterType();
-		javaUtilOptional = paramType.getName().equals("java.util.Optional");
+		this.javaUtilOptional = paramType.getName().equals("java.util.Optional");
 
 		this.supportedParameter = SupportedParameters
-				.isSupported(typeDescriptor.getObjectType());
+				.isSupported(this.typeDescriptor.getObjectType());
 
 		Annotation[] paramAnnotations = methodParam.getParameterAnnotations();
 
@@ -136,67 +136,67 @@ public final class ParameterInfo {
 					.equals("org.springframework.security.web.bind.annotation.AuthenticationPrincipal")
 					|| paramAnn.annotationType().getName().equals(
 							"org.springframework.security.core.annotation.AuthenticationPrincipal")) {
-				hasAuthenticationPrincipalAnnotation = (Boolean) AnnotationUtils
+				this.hasAuthenticationPrincipalAnnotation = (Boolean) AnnotationUtils
 						.getValue(paramAnn, "errorOnInvalidType");
 			}
 		}
 	}
 
 	public Class<?> getType() {
-		return typeDescriptor.getType();
+		return this.typeDescriptor.getType();
 	}
 
 	public Class<?> getCollectionType() {
-		if (typeDescriptor.isCollection()
-				&& typeDescriptor.getElementTypeDescriptor() != null) {
-			return typeDescriptor.getElementTypeDescriptor().getType();
+		if (this.typeDescriptor.isCollection()
+				&& this.typeDescriptor.getElementTypeDescriptor() != null) {
+			return this.typeDescriptor.getElementTypeDescriptor().getType();
 		}
 		return null;
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public boolean hasRequestParamAnnotation() {
-		return hasRequestParamAnnotation;
+		return this.hasRequestParamAnnotation;
 	}
 
 	public boolean hasMetadataParamAnnotation() {
-		return hasMetadataParamAnnotation;
+		return this.hasMetadataParamAnnotation;
 	}
 
 	public boolean hasRequestHeaderAnnotation() {
-		return hasRequestHeaderAnnotation;
+		return this.hasRequestHeaderAnnotation;
 	}
 
 	public boolean hasCookieValueAnnotation() {
-		return hasCookieValueAnnotation;
+		return this.hasCookieValueAnnotation;
 	}
 
 	public boolean hasAuthenticationPrincipalAnnotation() {
-		return hasAuthenticationPrincipalAnnotation != null;
+		return this.hasAuthenticationPrincipalAnnotation != null;
 	}
 
 	public boolean authenticationPrincipalAnnotationErrorOnInvalidType() {
-		return hasAuthenticationPrincipalAnnotation != null
-				? hasAuthenticationPrincipalAnnotation : false;
+		return this.hasAuthenticationPrincipalAnnotation != null
+				? this.hasAuthenticationPrincipalAnnotation : false;
 	}
 
 	public boolean isRequired() {
-		return required;
+		return this.required;
 	}
 
 	public String getDefaultValue() {
-		return defaultValue;
+		return this.defaultValue;
 	}
 
 	public boolean isSupportedParameter() {
-		return supportedParameter;
+		return this.supportedParameter;
 	}
 
 	public TypeDescriptor getTypeDescriptor() {
-		return typeDescriptor;
+		return this.typeDescriptor;
 	}
 
 	public boolean isClientParameter() {
@@ -205,6 +205,6 @@ public final class ParameterInfo {
 	}
 
 	public boolean isJavaUtilOptional() {
-		return javaUtilOptional;
+		return this.javaUtilOptional;
 	}
 }

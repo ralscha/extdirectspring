@@ -342,7 +342,7 @@ public class RemoteProviderSimpleNamed {
 		}
 
 		public int getId() {
-			return id;
+			return this.id;
 		}
 
 		public void setId(int id) {
@@ -350,7 +350,7 @@ public class RemoteProviderSimpleNamed {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public void setName(String name) {
@@ -358,7 +358,7 @@ public class RemoteProviderSimpleNamed {
 		}
 
 		public Boolean getActive() {
-			return active;
+			return this.active;
 		}
 
 		public void setActive(Boolean active) {
@@ -366,7 +366,7 @@ public class RemoteProviderSimpleNamed {
 		}
 
 		public BigDecimal getAmount() {
-			return amount;
+			return this.amount;
 		}
 
 		public void setAmount(BigDecimal amount) {
@@ -375,8 +375,8 @@ public class RemoteProviderSimpleNamed {
 
 		@Override
 		public String toString() {
-			return "TestObject [id=" + id + ", name=" + name + ", active=" + active
-					+ ", amount=" + amount + "]";
+			return "TestObject [id=" + this.id + ", name=" + this.name + ", active=" + this.active
+					+ ", amount=" + this.amount + "]";
 		}
 
 	}
@@ -399,24 +399,24 @@ public class RemoteProviderSimpleNamed {
 		}
 
 		public String getName() {
-			return name;
+			return this.name;
 		}
 
 		public Integer getAge() {
-			return age;
+			return this.age;
 		}
 
 		public Boolean getActive() {
-			return active;
+			return this.active;
 		}
 
 		@Override
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + (active == null ? 0 : active.hashCode());
-			result = prime * result + (age == null ? 0 : age.hashCode());
-			result = prime * result + (name == null ? 0 : name.hashCode());
+			result = prime * result + (this.active == null ? 0 : this.active.hashCode());
+			result = prime * result + (this.age == null ? 0 : this.age.hashCode());
+			result = prime * result + (this.name == null ? 0 : this.name.hashCode());
 			return result;
 		}
 
@@ -432,28 +432,28 @@ public class RemoteProviderSimpleNamed {
 				return false;
 			}
 			ResultObject other = (ResultObject) obj;
-			if (active == null) {
+			if (this.active == null) {
 				if (other.active != null) {
 					return false;
 				}
 			}
-			else if (!active.equals(other.active)) {
+			else if (!this.active.equals(other.active)) {
 				return false;
 			}
-			if (age == null) {
+			if (this.age == null) {
 				if (other.age != null) {
 					return false;
 				}
 			}
-			else if (!age.equals(other.age)) {
+			else if (!this.age.equals(other.age)) {
 				return false;
 			}
-			if (name == null) {
+			if (this.name == null) {
 				if (other.name != null) {
 					return false;
 				}
 			}
-			else if (!name.equals(other.name)) {
+			else if (!this.name.equals(other.name)) {
 				return false;
 			}
 			return true;
@@ -461,7 +461,7 @@ public class RemoteProviderSimpleNamed {
 
 		@Override
 		public String toString() {
-			return "ResultObject [name=" + name + ", age=" + age + ", active=" + active
+			return "ResultObject [name=" + this.name + ", age=" + this.age + ", active=" + this.active
 					+ "]";
 		}
 

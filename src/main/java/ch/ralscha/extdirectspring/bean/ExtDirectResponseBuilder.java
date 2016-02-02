@@ -68,10 +68,10 @@ public class ExtDirectResponseBuilder {
 		this.request = request;
 		this.response = response;
 
-		extDirectResponse = new ExtDirectResponse(request);
-		result = new HashMap<String, Object>();
+		this.extDirectResponse = new ExtDirectResponse(request);
+		this.result = new HashMap<String, Object>();
 		successful();
-		extDirectResponse.setResult(result);
+		this.extDirectResponse.setResult(this.result);
 	}
 
 	/**
@@ -103,7 +103,7 @@ public class ExtDirectResponseBuilder {
 	public ExtDirectResponseBuilder setException(Exception exception) {
 		unsuccessful();
 
-		WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(request);
+		WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(this.request);
 		Configuration configuration;
 		try {
 			configuration = ctx.getBean(Configuration.class);
@@ -112,14 +112,14 @@ public class ExtDirectResponseBuilder {
 			configuration = new Configuration();
 		}
 
-		extDirectResponse.setType("exception");
-		extDirectResponse.setMessage(configuration.getMessage(exception));
+		this.extDirectResponse.setType("exception");
+		this.extDirectResponse.setMessage(configuration.getMessage(exception));
 
 		if (configuration.isSendStacktrace()) {
-			extDirectResponse.setWhere(ExtDirectSpringUtil.getStackTrace(exception));
+			this.extDirectResponse.setWhere(ExtDirectSpringUtil.getStackTrace(exception));
 		}
 		else {
-			extDirectResponse.setWhere(null);
+			this.extDirectResponse.setWhere(null);
 		}
 
 		return this;
@@ -185,7 +185,7 @@ public class ExtDirectResponseBuilder {
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder addResultProperty(String key, Object value) {
-		result.put(key, value);
+		this.result.put(key, value);
 		return this;
 	}
 
@@ -195,7 +195,7 @@ public class ExtDirectResponseBuilder {
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder successful() {
-		result.put("success", Boolean.TRUE);
+		this.result.put("success", Boolean.TRUE);
 		return this;
 	}
 
@@ -205,7 +205,7 @@ public class ExtDirectResponseBuilder {
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder unsuccessful() {
-		result.put("success", Boolean.FALSE);
+		this.result.put("success", Boolean.FALSE);
 		return this;
 	}
 
@@ -216,7 +216,7 @@ public class ExtDirectResponseBuilder {
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder setSuccess(boolean flag) {
-		result.put("success", flag);
+		this.result.put("success", flag);
 		return this;
 	}
 
@@ -237,10 +237,10 @@ public class ExtDirectResponseBuilder {
 
 		try {
 			RouterController routerController = RequestContextUtils
-					.getWebApplicationContext(request).getBean(RouterController.class);
+					.getWebApplicationContext(this.request).getBean(RouterController.class);
 
-			routerController.writeJsonResponse(request, response, extDirectResponse,
-					jsonView);
+			routerController.writeJsonResponse(this.request, this.response, this.extDirectResponse,
+					this.jsonView);
 
 		}
 		catch (IOException e) {

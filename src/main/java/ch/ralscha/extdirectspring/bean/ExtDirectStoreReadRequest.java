@@ -69,7 +69,7 @@ public class ExtDirectStoreReadRequest {
 	 * @return the text a user entered into a combobox with queryMode 'remote'
 	 */
 	public String getQuery() {
-		return query;
+		return this.query;
 	}
 
 	public void setQuery(String query) {
@@ -80,7 +80,7 @@ public class ExtDirectStoreReadRequest {
 	 * @return the number of rows the DirectStore requests for paging
 	 */
 	public Integer getLimit() {
-		return limit;
+		return this.limit;
 	}
 
 	public void setLimit(Integer limit) {
@@ -92,7 +92,7 @@ public class ExtDirectStoreReadRequest {
 	 * {@link #getLimit()} * ( {@link #getPage()}-1)
 	 */
 	public Integer getStart() {
-		return start;
+		return this.start;
 	}
 
 	public void setStart(Integer start) {
@@ -107,7 +107,7 @@ public class ExtDirectStoreReadRequest {
 	 * @see #isDescendingSort()
 	 */
 	public String getDir() {
-		return dir;
+		return this.dir;
 	}
 
 	public void setDir(String dir) {
@@ -140,7 +140,7 @@ public class ExtDirectStoreReadRequest {
 	 * instead.
 	 */
 	public String getSort() {
-		return sort;
+		return this.sort;
 	}
 
 	public void setSort(String sort) {
@@ -153,7 +153,7 @@ public class ExtDirectStoreReadRequest {
 	 * instead.
 	 */
 	public String getGroupBy() {
-		return groupBy;
+		return this.groupBy;
 	}
 
 	public void setGroupBy(String groupBy) {
@@ -166,7 +166,7 @@ public class ExtDirectStoreReadRequest {
 	 * instead.
 	 */
 	public String getGroupDir() {
-		return groupDir;
+		return this.groupDir;
 	}
 
 	public void setGroupDir(String groupDir) {
@@ -202,7 +202,7 @@ public class ExtDirectStoreReadRequest {
 	 * @see StringFilter
 	 */
 	public List<Filter> getFilters() {
-		return Collections.unmodifiableList(filters);
+		return Collections.unmodifiableList(this.filters);
 	}
 
 	/**
@@ -213,7 +213,7 @@ public class ExtDirectStoreReadRequest {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Filter> T getFirstFilterForField(String field) {
-		for (Filter filter : filters) {
+		for (Filter filter : this.filters) {
 			if (filter.getField().equals(field)) {
 				return (T) filter;
 			}
@@ -230,7 +230,7 @@ public class ExtDirectStoreReadRequest {
 	public List<Filter> getAllFiltersForField(String field) {
 		List<Filter> foundFilters = new ArrayList<Filter>();
 
-		for (Filter filter : filters) {
+		for (Filter filter : this.filters) {
 			if (filter.getField().equals(field)) {
 				foundFilters.add(filter);
 			}
@@ -253,7 +253,7 @@ public class ExtDirectStoreReadRequest {
 	 * {@link #getLimit()}) + 1
 	 */
 	public Integer getPage() {
-		return page;
+		return this.page;
 	}
 
 	public void setPage(Integer page) {
@@ -261,7 +261,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	public List<SortInfo> getSorters() {
-		return Collections.unmodifiableList(sorters);
+		return Collections.unmodifiableList(this.sorters);
 	}
 
 	public void setSorters(List<SortInfo> sorters) {
@@ -274,7 +274,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	public List<GroupInfo> getGroups() {
-		return Collections.unmodifiableList(groups);
+		return Collections.unmodifiableList(this.groups);
 	}
 
 	public void setGroups(List<GroupInfo> groups) {
@@ -290,7 +290,7 @@ public class ExtDirectStoreReadRequest {
 	 * @return a map with all the keys and values from <code>extraParams</code>
 	 */
 	public Map<String, Object> getParams() {
-		return Collections.unmodifiableMap(params);
+		return Collections.unmodifiableMap(this.params);
 	}
 
 	public void setParams(Map<String, Object> params) {
@@ -304,11 +304,11 @@ public class ExtDirectStoreReadRequest {
 
 	@Override
 	public String toString() {
-		return "ExtDirectStoreReadRequest [query=" + query + ", limit=" + limit
-				+ ", start=" + start + ", page=" + page + ", dir=" + dir + ", sort="
-				+ sort + ", groupBy=" + groupBy + ", groupDir=" + groupDir + ", sorters="
-				+ sorters + ", groups=" + groups + ", filters=" + filters + ", params="
-				+ params + "]";
+		return "ExtDirectStoreReadRequest [query=" + this.query + ", limit=" + this.limit
+				+ ", start=" + this.start + ", page=" + this.page + ", dir=" + this.dir + ", sort="
+				+ this.sort + ", groupBy=" + this.groupBy + ", groupDir=" + this.groupDir + ", sorters="
+				+ this.sorters + ", groups=" + this.groups + ", filters=" + this.filters + ", params="
+				+ this.params + "]";
 	}
 
 }

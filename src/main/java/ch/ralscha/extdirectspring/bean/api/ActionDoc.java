@@ -70,7 +70,7 @@ public class ActionDoc extends Action {
 	 * @return the methodComment
 	 */
 	public String getMethodComment() {
-		return methodComment;
+		return this.methodComment;
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class ActionDoc extends Action {
 	 * @return the author
 	 */
 	public String getAuthor() {
-		return author;
+		return this.author;
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class ActionDoc extends Action {
 	 * @return the version
 	 */
 	public String getVersion() {
-		return version;
+		return this.version;
 	}
 
 	/**
@@ -112,10 +112,10 @@ public class ActionDoc extends Action {
 	 * @return the parameters
 	 */
 	public Map<String, String> getParameters() {
-		if (null == parameters) {
-			parameters = new HashMap<String, String>();
+		if (null == this.parameters) {
+			this.parameters = new HashMap<String, String>();
 		}
-		return parameters;
+		return this.parameters;
 	}
 
 	/**
@@ -129,10 +129,10 @@ public class ActionDoc extends Action {
 	 * @return the returnMethod
 	 */
 	public Map<String, String> getReturnMethod() {
-		if (null == returnMethod) {
-			returnMethod = new HashMap<String, String>();
+		if (null == this.returnMethod) {
+			this.returnMethod = new HashMap<String, String>();
 		}
-		return returnMethod;
+		return this.returnMethod;
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class ActionDoc extends Action {
 	 * @return the deprecated
 	 */
 	public boolean isDeprecated() {
-		return deprecated;
+		return this.deprecated;
 	}
 
 	/**

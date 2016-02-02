@@ -66,35 +66,35 @@ public class RouterControllerOptionalTest {
 
 	@Before
 	public void setupMockMvc() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
 	public void testMethod1() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method1",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method1",
 				"method1() called-1-3.100-requestParameter", 1, 3.1, "requestParameter");
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method1",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method1",
 				"method1() called--1-3.100-requestParameter2", null, 3.1,
 				"requestParameter2");
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method1",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method1",
 				"method1() called-2-3.141-str", 2, null, "str");
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method1",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method1",
 				"method1() called--1-3.141-str22", null, null, "str22");
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method1",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method1",
 				"method1() called--1-3.141-null", null, null, null);
 
 	}
 
 	@Test
 	public void testMethod2() {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method2", "one",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method2", "one",
 				"one");
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method2",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method2",
 				"default", new Object[] { null });
 	}
 
@@ -102,7 +102,7 @@ public class RouterControllerOptionalTest {
 	public void testMethod4() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("header", "headerValue");
-		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderOptional",
+		ControllerUtil.sendAndReceive(this.mockMvc, headers, "remoteProviderOptional",
 				"method4", "1;v;headerValue", 1, "v");
 	}
 
@@ -113,7 +113,7 @@ public class RouterControllerOptionalTest {
 		headers.add("anotherName", "headerValue1");
 		headers.add("anotherName", "headerValue2");
 
-		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderOptional",
+		ControllerUtil.sendAndReceive(this.mockMvc, headers, "remoteProviderOptional",
 				"method5", "11;headerValue1", 11);
 	}
 
@@ -123,13 +123,13 @@ public class RouterControllerOptionalTest {
 		headers.add("header", "headerValue");
 		headers.add("anotherName", "headerValue1");
 
-		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderOptional",
+		ControllerUtil.sendAndReceive(this.mockMvc, headers, "remoteProviderOptional",
 				"method6", "headerValue1");
 	}
 
 	@Test
 	public void testMethod6b() throws Exception {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method6",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method6",
 				"default");
 	}
 
@@ -137,13 +137,13 @@ public class RouterControllerOptionalTest {
 	public void testMethod7a() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("header", "headerValue");
-		ControllerUtil.sendAndReceiveWithSession(mockMvc, headers,
+		ControllerUtil.sendAndReceiveWithSession(this.mockMvc, headers,
 				"remoteProviderOptional", "method7", "headerValue");
 	}
 
 	@Test
 	public void testMethod7b() throws Exception {
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method7",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method7",
 				"default");
 	}
 
@@ -152,7 +152,7 @@ public class RouterControllerOptionalTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("last", "lastHeader");
 
-		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderOptional",
+		ControllerUtil.sendAndReceive(this.mockMvc, headers, "remoteProviderOptional",
 				"method8", "100;default1;default2;lastHeader", 100);
 	}
 
@@ -162,7 +162,7 @@ public class RouterControllerOptionalTest {
 		headers.add("last", "lastHeader");
 		headers.add("header2", "2ndHeader");
 
-		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderOptional",
+		ControllerUtil.sendAndReceive(this.mockMvc, headers, "remoteProviderOptional",
 				"method8", "100;default1;2ndHeader;lastHeader", 100);
 	}
 
@@ -173,7 +173,7 @@ public class RouterControllerOptionalTest {
 		headers.add("header1", "1st");
 		headers.add("header2", "2nd");
 
-		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderOptional",
+		ControllerUtil.sendAndReceive(this.mockMvc, headers, "remoteProviderOptional",
 				"method8", "100;1st;2nd;last", 100);
 	}
 
@@ -183,9 +183,9 @@ public class RouterControllerOptionalTest {
 		headers.add("intHeader", "2");
 		headers.add("booleanHeader", "true");
 
-		ControllerUtil.sendAndReceive(mockMvc, headers, "remoteProviderOptional",
+		ControllerUtil.sendAndReceive(this.mockMvc, headers, "remoteProviderOptional",
 				"method9", "2;true");
-		ControllerUtil.sendAndReceiveWithSession(mockMvc, headers,
+		ControllerUtil.sendAndReceiveWithSession(this.mockMvc, headers,
 				"remoteProviderOptional", "method9", "2;true");
 	}
 
@@ -193,22 +193,22 @@ public class RouterControllerOptionalTest {
 	public void testMethod10And11() throws Exception {
 		// ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method10",
 		// "Ralph;one-two-;10", "Ralph", new String[] { "one", "two" }, 10);
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method10",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method10",
 				"Ralph;one-;11", "Ralph", new String[] { "one" }, 11);
 		// ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method10",
 		// "Ralph;;12", "Ralph", new String[] {}, 12);
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method10",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method10",
 				"Ralph;;13", "Ralph", null, 13);
 
 		// ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method11",
 		// "aStr;1+2+;20", "aStr", new int[] { 1, 2 }, 20);
 		// ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method11",
 		// "aStr;1+2+3+;21", "aStr", new int[] { 3, 1, 2 }, 21);
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method11",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method11",
 				"aStr;3+;22", "aStr", new int[] { 3 }, 22);
 		// ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method11",
 		// "aStr;;23", "aStr", new int[] {}, 23);
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method11",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method11",
 				"aStr;;24", "aStr", null, 24);
 	}
 
@@ -217,28 +217,28 @@ public class RouterControllerOptionalTest {
 		// ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method12",
 		// "Ralph;one-two-;10", "Ralph", new String[] { "one", "two" }, 10);
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method12",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method12",
 				"Ralph;one-;11", "Ralph", new String[] { "one" }, 11);
 
 		// ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method12",
 		// "Ralph;;12", "Ralph", new String[] {}, 12);
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method12",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method12",
 				"Ralph;;13", "Ralph", null, 13);
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method13",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method13",
 				"aStr;1+2+;20", "aStr", 20, new int[] { 1, 2 });
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method13",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method13",
 				"aStr;3+1+2+;21", "aStr", 21, new int[] { 3, 1, 2 });
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method13",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method13",
 				"aStr;3+;22", "aStr", 22, new int[] { 3 });
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method13",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method13",
 				"aStr;;23", "aStr", 23, new int[] {});
 
-		ControllerUtil.sendAndReceive(mockMvc, "remoteProviderOptional", "method13",
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderOptional", "method13",
 				"aStr;;24", "aStr", 24, null);
 	}
 
@@ -247,36 +247,36 @@ public class RouterControllerOptionalTest {
 		List<Cookie> cookies = new ArrayList<Cookie>();
 		cookies.add(new Cookie("intCookie", "1"));
 		cookies.add(new Cookie("booleanCookie", "true"));
-		ControllerUtil.sendAndReceive(mockMvc, null, cookies, "remoteProviderOptional",
+		ControllerUtil.sendAndReceive(this.mockMvc, null, cookies, "remoteProviderOptional",
 				"method16", "1;true", (Object[]) null);
-		ControllerUtil.sendAndReceive(mockMvc, null, null, "remoteProviderOptional",
+		ControllerUtil.sendAndReceive(this.mockMvc, null, null, "remoteProviderOptional",
 				"method16", "-1;false", (Object[]) null);
 	}
 
 	@Test
 	public void testMethod17() {
-		ControllerUtil.sendAndReceive(mockMvc, null, null, "remoteProviderOptional",
+		ControllerUtil.sendAndReceive(this.mockMvc, null, null, "remoteProviderOptional",
 				"method17", "theDefaultValue", (Object[]) null);
-		ControllerUtil.sendAndReceive(mockMvc, null,
+		ControllerUtil.sendAndReceive(this.mockMvc, null,
 				Collections.singletonList(new Cookie("stringCookie", "str")),
 				"remoteProviderOptional", "method17", "str", (Object[]) null);
 	}
 
 	@Test
 	public void testMethod18() {
-		ControllerUtil.sendAndReceive(mockMvc, null,
+		ControllerUtil.sendAndReceive(this.mockMvc, null,
 				Collections.singletonList(new Cookie("nameOfTheCookie", "cookieValue")),
 				"remoteProviderOptional", "method18", "cookieValue", (Object[]) null);
-		ControllerUtil.sendAndReceive(mockMvc, null, null, "remoteProviderOptional",
+		ControllerUtil.sendAndReceive(this.mockMvc, null, null, "remoteProviderOptional",
 				"method18", "default", (Object[]) null);
 	}
 
 	@Test
 	public void testMethod19() {
-		ControllerUtil.sendAndReceive(mockMvc, null,
+		ControllerUtil.sendAndReceive(this.mockMvc, null,
 				Collections.singletonList(new Cookie("stringCookie", "aString")),
 				"remoteProviderOptional", "method19", "aString", (Object[]) null);
-		ControllerUtil.sendAndReceive(mockMvc, null, null, "remoteProviderOptional",
+		ControllerUtil.sendAndReceive(this.mockMvc, null, null, "remoteProviderOptional",
 				"method19", Void.TYPE, (Object[]) null);
 	}
 
@@ -285,7 +285,7 @@ public class RouterControllerOptionalTest {
 		Map<String, String> params = new LinkedHashMap<String, String>();
 		params.put("id", "2");
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
 				"remoteProviderOptional", "opoll1", "opoll1", params, null);
 
 		assertThat(resp).isNotNull();
@@ -299,7 +299,7 @@ public class RouterControllerOptionalTest {
 	@Test
 	public void testPoll1b() throws Exception {
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
 				"remoteProviderOptional", "opoll1", "opoll1", null, null);
 
 		assertThat(resp).isNotNull();
@@ -315,7 +315,7 @@ public class RouterControllerOptionalTest {
 		Map<String, String> params = new LinkedHashMap<String, String>();
 		params.put("id", "7");
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
 				"remoteProviderOptional", "opoll2", "opoll2", params, null);
 		assertThat(resp).isNotNull();
 		assertThat(resp.getType()).isEqualTo("event");
@@ -327,7 +327,7 @@ public class RouterControllerOptionalTest {
 
 	@Test
 	public void testPoll2b() throws Exception {
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
 				"remoteProviderOptional", "opoll2", "opoll2", null, null, null, true);
 
 		assertThat(resp).isNotNull();
@@ -343,7 +343,7 @@ public class RouterControllerOptionalTest {
 		Map<String, String> params = new LinkedHashMap<String, String>();
 		params.put("id", "3");
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
 				"remoteProviderOptional", "opoll3", "opoll3", params, null);
 
 		assertThat(resp).isNotNull();
@@ -356,7 +356,7 @@ public class RouterControllerOptionalTest {
 
 	@Test
 	public void testPoll3b() throws Exception {
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
 				"remoteProviderOptional", "opoll3", "opoll3", null, null);
 
 		assertThat(resp).isNotNull();
@@ -372,7 +372,7 @@ public class RouterControllerOptionalTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("header", "headerValue");
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
 				"remoteProviderOptional", "opoll4", "opoll4", null, headers);
 
 		assertThat(resp).isNotNull();
@@ -388,7 +388,7 @@ public class RouterControllerOptionalTest {
 		List<Cookie> cookies = new ArrayList<Cookie>();
 		cookies.add(new Cookie("cookie", "cookieValue"));
 
-		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(mockMvc,
+		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
 				"remoteProviderOptional", "opoll5", "opoll5", null, null, cookies);
 
 		assertThat(resp).isNotNull();
@@ -405,36 +405,36 @@ public class RouterControllerOptionalTest {
 		params.put("d", 2.1);
 		params.put("s", "aString");
 		params.put("i", 30);
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderOptional",
+		ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderOptional",
 				"namedMethod1", "namedMethod1() called-30-2.100-aString", params);
 
 		params = new HashMap<String, Object>();
 		params.put("i", 20);
 		params.put("de", 2.1);
 		params.put("s", "aString");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderOptional",
+		ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderOptional",
 				"namedMethod1", "namedMethod1() called-20-3.141-aString", params);
 
 		params = new HashMap<String, Object>();
 		params.put("i", 20);
 		params.put("s", "aString");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderOptional",
+		ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderOptional",
 				"namedMethod1", "namedMethod1() called-20-3.141-aString", params);
 
 		params = new HashMap<String, Object>();
 		params.put("i", "30");
 		params.put("s", 100.45);
 		params.put("d", "3.141");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderOptional",
+		ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderOptional",
 				"namedMethod1", "namedMethod1() called-30-3.141-100.45", params);
 
 		params = new HashMap<String, Object>();
 		params.put("s", "aString");
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderOptional",
+		ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderOptional",
 				"namedMethod1", "namedMethod1() called--1-3.141-aString", params);
 
 		params = new HashMap<String, Object>();
-		ControllerUtil.sendAndReceiveNamed(mockMvc, "remoteProviderOptional",
+		ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderOptional",
 				"namedMethod1", "namedMethod1() called--1-3.141-default", params);
 	}
 
@@ -445,7 +445,7 @@ public class RouterControllerOptionalTest {
 		params.put("lastName", expectedResult.getName());
 		params.put("theAge", expectedResult.getAge());
 		params.put("active", expectedResult.getActive());
-		ResultObject result = (ResultObject) ControllerUtil.sendAndReceiveNamed(mockMvc,
+		ResultObject result = (ResultObject) ControllerUtil.sendAndReceiveNamed(this.mockMvc,
 				"remoteProviderOptional", "namedMethod2", ResultObject.class, params);
 		assertThat(result).isEqualTo(expectedResult);
 
@@ -453,14 +453,14 @@ public class RouterControllerOptionalTest {
 		params = new LinkedHashMap<String, Object>();
 		params.put("lastName", expectedResult.getName());
 		params.put("active", expectedResult.getActive());
-		result = (ResultObject) ControllerUtil.sendAndReceiveNamed(mockMvc,
+		result = (ResultObject) ControllerUtil.sendAndReceiveNamed(this.mockMvc,
 				"remoteProviderOptional", "namedMethod2", ResultObject.class, params);
 		assertThat(result).isEqualTo(expectedResult);
 
 		expectedResult = new ResultObject("Joe", 21, Boolean.TRUE);
 		params = new LinkedHashMap<String, Object>();
 		params.put("lastName", expectedResult.getName());
-		result = (ResultObject) ControllerUtil.sendAndReceiveNamed(mockMvc,
+		result = (ResultObject) ControllerUtil.sendAndReceiveNamed(this.mockMvc,
 				"remoteProviderOptional", "namedMethod2", ResultObject.class, params);
 		assertThat(result).isEqualTo(expectedResult);
 	}
@@ -471,16 +471,16 @@ public class RouterControllerOptionalTest {
 		cookies.add(new Cookie("aSimpleCookie", "ralph"));
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("i", 99L);
-		ControllerUtil.sendAndReceiveNamed(mockMvc, null, cookies,
+		ControllerUtil.sendAndReceiveNamed(this.mockMvc, null, cookies,
 				"remoteProviderOptional", "namedMethod3", "99:ralph", params);
 
 		params = new HashMap<String, Object>();
 		params.put("i", 101L);
-		ControllerUtil.sendAndReceiveNamed(mockMvc, null, null, "remoteProviderOptional",
+		ControllerUtil.sendAndReceiveNamed(this.mockMvc, null, null, "remoteProviderOptional",
 				"namedMethod3", "101:defaultCookieValue", params);
 
 		params = new HashMap<String, Object>();
-		ControllerUtil.sendAndReceiveNamed(mockMvc, null, null, "remoteProviderOptional",
+		ControllerUtil.sendAndReceiveNamed(this.mockMvc, null, null, "remoteProviderOptional",
 				"namedMethod3", "100:defaultCookieValue", params);
 	}
 
@@ -491,16 +491,16 @@ public class RouterControllerOptionalTest {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("bd", new BigDecimal("1.1"));
-		ControllerUtil.sendAndReceiveNamed(mockMvc, headers, null,
+		ControllerUtil.sendAndReceiveNamed(this.mockMvc, headers, null,
 				"remoteProviderOptional", "namedMethod4", "1.1:theHeaderValue", params);
 
 		params = new HashMap<String, Object>();
 		params.put("bd", new BigDecimal("1.2"));
-		ControllerUtil.sendAndReceiveNamed(mockMvc, null, null, "remoteProviderOptional",
+		ControllerUtil.sendAndReceiveNamed(this.mockMvc, null, null, "remoteProviderOptional",
 				"namedMethod4", "1.2:defaultHeaderValue", params);
 
 		params = new HashMap<String, Object>();
-		ControllerUtil.sendAndReceiveNamed(mockMvc, null, null, "remoteProviderOptional",
+		ControllerUtil.sendAndReceiveNamed(this.mockMvc, null, null, "remoteProviderOptional",
 				"namedMethod4", "3.141:defaultHeaderValue", params);
 	}
 
@@ -511,7 +511,7 @@ public class RouterControllerOptionalTest {
 		readRequest.put("query", "name");
 
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(mockMvc, "remoteProviderOptional", "storeRead1",
+				.sendAndReceive(this.mockMvc, "remoteProviderOptional", "storeRead1",
 						new TypeReference<ExtDirectStoreResult<Row>>() {
 							// nothing here
 						}, readRequest);
@@ -527,7 +527,7 @@ public class RouterControllerOptionalTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderOptional", "storeRead1",
 				new TypeReference<ExtDirectStoreResult<Row>>() {
 					// nothing here
@@ -555,7 +555,7 @@ public class RouterControllerOptionalTest {
 		readRequest.put("query", "name");
 
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(mockMvc, headers, cookies, "remoteProviderOptional",
+				.sendAndReceive(this.mockMvc, headers, cookies, "remoteProviderOptional",
 						"storeRead2", new TypeReference<ExtDirectStoreResult<Row>>() {
 							// nothing here
 						}, readRequest);
@@ -571,7 +571,7 @@ public class RouterControllerOptionalTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(mockMvc,
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderOptional", "storeRead2",
 				new TypeReference<ExtDirectStoreResult<Row>>() {
 					// nothing here
@@ -595,7 +595,7 @@ public class RouterControllerOptionalTest {
 		List<Cookie> cookies = new ArrayList<Cookie>();
 		cookies.add(new Cookie("theCookie", "value"));
 
-		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, false,
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, false,
 				null, cookies, null, "remoteProviderOptional", "treeLoad1", false,
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
@@ -613,7 +613,7 @@ public class RouterControllerOptionalTest {
 		requestParameters.put("node", "n2");
 		requestParameters.put("foo", "f");
 
-		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, false, null, cookies,
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, false, null, cookies,
 				null, "remoteProviderOptional", "treeLoad1", false,
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
@@ -636,7 +636,7 @@ public class RouterControllerOptionalTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 
-		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, headers,
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, headers,
 				"remoteProviderOptional", "treeLoad2",
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
@@ -650,7 +650,7 @@ public class RouterControllerOptionalTest {
 				new Node("n4", "Node 4" + appendix, false),
 				new Node("n5", "Node 5" + appendix, false));
 
-		nodes = (List<Node>) ControllerUtil.sendAndReceive(mockMvc, (HttpHeaders) null,
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, (HttpHeaders) null,
 				"remoteProviderOptional", "treeLoad2",
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);

@@ -38,15 +38,15 @@ public final class PollingProvider {
 	}
 
 	public String getBeanName() {
-		return beanName;
+		return this.beanName;
 	}
 
 	public String getMethod() {
-		return method;
+		return this.method;
 	}
 
 	public String getEvent() {
-		return event;
+		return this.event;
 	}
 
 }
