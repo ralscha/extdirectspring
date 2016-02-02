@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.bean.EdFormLoadResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 import ch.ralscha.extdirectspring.bean.ModelAndJsonView;
 
@@ -111,6 +112,36 @@ public class FormLoadMethodService extends BaseViewService {
 			jsonView = Views.Summary.class)
 	public ExtDirectFormLoadResult overrideResultNoView() {
 		ExtDirectFormLoadResult result = new ExtDirectFormLoadResult(createEmployee());
+		result.setJsonView(ExtDirectMethod.NoJsonView.class);
+		return result;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD)
+	public EdFormLoadResult resultSummaryViewEd() {
+		EdFormLoadResult result = EdFormLoadResult.success(createEmployee());
+		result.setJsonView(Views.Summary.class);
+		return result;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD)
+	public EdFormLoadResult resultDetailViewEd() {
+		EdFormLoadResult result = EdFormLoadResult.success(createEmployee());
+		result.setJsonView(Views.Detail.class);
+		return result;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD,
+			jsonView = Views.Summary.class)
+	public EdFormLoadResult overrideResultDetailViewEd() {
+		EdFormLoadResult result = EdFormLoadResult.success(createEmployee());
+		result.setJsonView(Views.Detail.class);
+		return result;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD,
+			jsonView = Views.Summary.class)
+	public EdFormLoadResult overrideResultNoViewEd() {
+		EdFormLoadResult result = EdFormLoadResult.success(createEmployee());
 		result.setJsonView(ExtDirectMethod.NoJsonView.class);
 		return result;
 	}

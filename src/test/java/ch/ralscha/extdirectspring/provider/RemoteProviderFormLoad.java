@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import ch.ralscha.extdirectspring.bean.EdFormLoadResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 
 @Service
@@ -90,6 +91,30 @@ public class RemoteProviderFormLoad {
 		edflr.setData(data);
 		edflr.setSuccess(success);
 		return edflr;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3",
+			entryClass = String.class)
+	public EdFormLoadResult method5Ed(
+			@RequestParam(value = "id", defaultValue = "1") int id,
+			final HttpServletRequest servletRequest) {
+		FormInfo fi = new FormInfo();
+		fi.setResult(id + ";" + (servletRequest != null));
+		return EdFormLoadResult.success(fi);
+	}
+
+	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
+	public EdFormLoadResult method6Ed(
+			@RequestParam(value = "id", required = false) Integer id) {
+		return EdFormLoadResult.success("TEST:" + id);
+	}
+
+	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
+	public EdFormLoadResult method7Ed(String data, boolean success) {
+		if (success) {
+			return EdFormLoadResult.success(data);
+		}
+		return EdFormLoadResult.fail(data);
 	}
 
 }

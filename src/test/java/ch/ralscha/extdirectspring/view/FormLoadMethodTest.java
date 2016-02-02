@@ -124,6 +124,26 @@ public class FormLoadMethodTest extends BaseViewTest {
 		callMethod("formLoadMethodService", "overrideResultNoView", noView());
 	}
 
+	@Test
+	public void testResultSummaryViewEd() {
+		callMethod("formLoadMethodService", "resultSummaryViewEd", summaryView());
+	}
+
+	@Test
+	public void testResultDetailViewEd() {
+		callMethod("formLoadMethodService", "resultDetailViewEd", detailView());
+	}
+
+	@Test
+	public void testOverrideResultDetailViewEd() {
+		callMethod("formLoadMethodService", "overrideResultDetailViewEd", detailView());
+	}
+
+	@Test
+	public void testOverrideResultNoViewEd() {
+		callMethod("formLoadMethodService", "overrideResultNoViewEd", noView());
+	}
+
 	@SuppressWarnings("unchecked")
 	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
 		Map<String, Object> result = ControllerUtil.sendAndReceiveMap(this.mockMvc, bean,

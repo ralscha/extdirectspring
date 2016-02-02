@@ -55,6 +55,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import ch.ralscha.extdirectspring.bean.EdFormLoadResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.FormInfo;
@@ -180,6 +181,54 @@ public class RouterControllerFormLoadTest {
 				"remoteProviderFormLoad", "method7", ExtDirectFormLoadResult.class, data);
 		assertThat(wrapper.isSuccess()).isFalse();
 		assertThat(wrapper.getData()).isEqualTo("two");
+	}
+
+	@Test
+	public void testWithRequestParamDefaultValueEd() {
+		EdFormLoadResult wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderFormLoad", "method5Ed",
+				EdFormLoadResult.class);
+		assertThat(wrapper.success()).isTrue();
+		assertThat(wrapper.data()).isNotNull();
+		FormInfo formInfo = ControllerUtil.convertValue(wrapper.data(), FormInfo.class);
+		assertThat(formInfo.getResult()).isEqualTo("1;true");
+	}
+
+	@Test
+	public void testWithRequestParamOptionalEd() {
+
+		EdFormLoadResult wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderFormLoad", "method6Ed",
+				EdFormLoadResult.class);
+		assertThat(wrapper.success()).isTrue();
+		assertThat(wrapper.data()).isEqualTo("TEST:null");
+
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("id", 11);
+		wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderFormLoad", "method6Ed", EdFormLoadResult.class, data);
+		assertThat(wrapper.success()).isTrue();
+		assertThat(wrapper.data()).isEqualTo("TEST:11");
+	}
+
+	@Test
+	public void testResultEd() {
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("data", "one");
+		data.put("success", Boolean.TRUE);
+		EdFormLoadResult wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderFormLoad", "method7Ed",
+				EdFormLoadResult.class, data);
+		assertThat(wrapper.success()).isTrue();
+		assertThat(wrapper.data()).isEqualTo("one");
+
+		data = new HashMap<String, Object>();
+		data.put("data", "two");
+		data.put("success", Boolean.FALSE);
+		wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderFormLoad", "method7Ed", EdFormLoadResult.class, data);
+		assertThat(wrapper.success()).isFalse();
+		assertThat(wrapper.data()).isEqualTo("two");
 	}
 
 	@Test

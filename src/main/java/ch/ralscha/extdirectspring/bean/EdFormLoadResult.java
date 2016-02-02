@@ -18,12 +18,14 @@ package ch.ralscha.extdirectspring.bean;
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * Represents the result of a FORM_LOAD method call.
  */
 @JsonSerialize(as = ImmutableEdFormLoadResult.class)
+@JsonDeserialize(as = ImmutableEdFormLoadResult.class)
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
 @Value.Immutable
 public abstract class EdFormLoadResult extends JsonViewHint {

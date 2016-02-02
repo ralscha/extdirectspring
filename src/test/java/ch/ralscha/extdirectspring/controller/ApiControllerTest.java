@@ -567,6 +567,7 @@ public class ApiControllerTest {
 				Action.create("destroy", 1));
 		remotingApi.addAction("remoteProviderFormLoad", Action.create("method1", 1));
 		remotingApi.addAction("remoteProviderFormLoad", Action.create("method5", 1));
+		remotingApi.addAction("remoteProviderFormLoad", Action.create("method5Ed", 1));
 		remotingApi.addAction("formInfoController",
 				Action.createFormHandler("updateInfo", 0));
 		remotingApi.addAction("formInfoController",
@@ -729,6 +730,9 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderFormLoad", Action.create("method5", 1));
 		remotingApi.addAction("remoteProviderFormLoad", Action.create("method6", 1));
 		remotingApi.addAction("remoteProviderFormLoad", Action.create("method7", 1));
+		remotingApi.addAction("remoteProviderFormLoad", Action.create("method5Ed", 1));
+		remotingApi.addAction("remoteProviderFormLoad", Action.create("method6Ed", 1));
+		remotingApi.addAction("remoteProviderFormLoad", Action.create("method7Ed", 1));
 
 		remotingApi.addAction("formInfoController",
 				Action.createFormHandler("updateInfo", 0));
@@ -1064,6 +1068,8 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderFormLoad", Action.create("method4", 1));
 		remotingApi.addAction("remoteProviderFormLoad", Action.create("method6", 1));
 		remotingApi.addAction("remoteProviderFormLoad", Action.create("method7", 1));
+		remotingApi.addAction("remoteProviderFormLoad", Action.create("method6Ed", 1));
+		remotingApi.addAction("remoteProviderFormLoad", Action.create("method7Ed", 1));
 
 		remotingApi.addAction("remoteProviderTreeLoad", Action.create("method2", 1));
 		remotingApi.addAction("remoteProviderTreeLoad", Action.create("method4", 1));
