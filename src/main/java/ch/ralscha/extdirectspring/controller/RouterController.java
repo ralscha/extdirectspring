@@ -56,6 +56,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.BaseResponse;
 import ch.ralscha.extdirectspring.bean.EdFormLoadResult;
+import ch.ralscha.extdirectspring.bean.EdFormPostResult;
 import ch.ralscha.extdirectspring.bean.EdStoreResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
@@ -116,8 +117,8 @@ public class RouterController {
 
 		if (methodInfo != null) {
 
-			streamResponse = this.configurationService.getConfiguration().isStreamResponse()
-					|| methodInfo.isStreamResponse();
+			streamResponse = this.configurationService.getConfiguration()
+					.isStreamResponse() || methodInfo.isStreamResponse();
 
 			try {
 
@@ -148,8 +149,8 @@ public class RouterController {
 					}
 					else {
 						Object result = ExtDirectSpringUtil.invoke(
-								this.configurationService.getApplicationContext(), beanName,
-								methodInfo, parameters);
+								this.configurationService.getApplicationContext(),
+								beanName, methodInfo, parameters);
 						if (result instanceof ModelAndJsonView) {
 							ModelAndJsonView modelAndJsonView = (ModelAndJsonView) result;
 							directPollResponse.setData(modelAndJsonView.getModel());
@@ -190,7 +191,8 @@ public class RouterController {
 			log.error("Error invoking method '" + beanName + "." + method
 					+ "'. Method or Bean not found");
 			handleMethodNotFoundError(directPollResponse, beanName, method);
-			streamResponse = this.configurationService.getConfiguration().isStreamResponse();
+			streamResponse = this.configurationService.getConfiguration()
+					.isStreamResponse();
 		}
 
 		writeJsonResponse(response, directPollResponse, jsonView, streamResponse);
@@ -210,8 +212,8 @@ public class RouterController {
 			return methodInfo.getForwardPath();
 		}
 		else if (methodInfo != null && methodInfo.getHandlerMethod() != null) {
-			streamResponse = this.configurationService.getConfiguration().isStreamResponse()
-					|| methodInfo.isStreamResponse();
+			streamResponse = this.configurationService.getConfiguration()
+					.isStreamResponse() || methodInfo.isStreamResponse();
 
 			HandlerMethod handlerMethod = methodInfo.getHandlerMethod();
 			try {
@@ -252,7 +254,8 @@ public class RouterController {
 			}
 		}
 		else {
-			streamResponse = this.configurationService.getConfiguration().isStreamResponse();
+			streamResponse = this.configurationService.getConfiguration()
+					.isStreamResponse();
 			log.error("Error invoking method '" + extAction + "." + extMethod
 					+ "'. Method  or Bean not found");
 			handleMethodNotFoundError(directResponse, extAction, extMethod);
@@ -312,7 +315,8 @@ public class RouterController {
 					.getBatchedMethodsExecutorService().submit(callable));
 		}
 
-		ObjectMapper objectMapper = this.configurationService.getJsonHandler().getMapper();
+		ObjectMapper objectMapper = this.configurationService.getJsonHandler()
+				.getMapper();
 		List<Object> directResponses = new ArrayList<Object>(directRequests.size());
 		boolean streamResponse = this.configurationService.getConfiguration()
 				.isStreamResponse();
@@ -373,7 +377,8 @@ public class RouterController {
 		boolean streamResponse = this.configurationService.getConfiguration()
 				.isStreamResponse();
 
-		ObjectMapper objectMapper = this.configurationService.getJsonHandler().getMapper();
+		ObjectMapper objectMapper = this.configurationService.getJsonHandler()
+				.getMapper();
 
 		for (ExtDirectRequest directRequest : directRequests) {
 			ExtDirectResponse directResponse = handleMethodCall(directRequest, request,
@@ -448,6 +453,10 @@ public class RouterController {
 							if (result instanceof ExtDirectFormPostResult) {
 								ExtDirectFormPostResult formPostResult = (ExtDirectFormPostResult) result;
 								result = formPostResult.getResult();
+							}
+							else if (result instanceof EdFormPostResult) {
+								EdFormPostResult formPostResult = (EdFormPostResult) result;
+								result = formPostResult.result();
 							}
 						}
 
@@ -532,7 +541,8 @@ public class RouterController {
 			Class<?> jsonView, boolean streamResponse, boolean isMultipart)
 					throws IOException {
 
-		ObjectMapper objectMapper = this.configurationService.getJsonHandler().getMapper();
+		ObjectMapper objectMapper = this.configurationService.getJsonHandler()
+				.getMapper();
 
 		if (isMultipart) {
 			response.setContentType(RouterController.TEXT_HTML.toString());
@@ -554,12 +564,12 @@ public class RouterController {
 			responseJson = responseJson.replace("&quot;", "\\&quot;");
 			bos.write(responseJson.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
 
-			String frameDomain = this.configurationService.getConfiguration().getFrameDomain();
+			String frameDomain = this.configurationService.getConfiguration()
+					.getFrameDomain();
 			String frameDomainScript = "";
 			if (frameDomain != null) {
-				frameDomainScript = String.format(
-						this.configurationService.getConfiguration().getFrameDomainScript(),
-						frameDomain);
+				frameDomainScript = String.format(this.configurationService
+						.getConfiguration().getFrameDomainScript(), frameDomain);
 			}
 			bos.write(("</textarea>" + frameDomainScript + "</body></html>")
 					.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
@@ -628,7 +638,8 @@ public class RouterController {
 			}
 		}
 
-		return ExtDirectSpringUtil.invoke(this.configurationService.getApplicationContext(),
+		return ExtDirectSpringUtil.invoke(
+				this.configurationService.getApplicationContext(),
 				directRequest.getAction(), methodInfo, parameters);
 	}
 
@@ -641,8 +652,8 @@ public class RouterController {
 	private void handleMethodNotFoundError(BaseResponse response, String beanName,
 			String methodName) {
 		response.setType("exception");
-		response.setMessage(
-				this.configurationService.getConfiguration().getDefaultExceptionMessage());
+		response.setMessage(this.configurationService.getConfiguration()
+				.getDefaultExceptionMessage());
 
 		if (this.configurationService.getConfiguration().isSendStacktrace()) {
 			response.setWhere(
