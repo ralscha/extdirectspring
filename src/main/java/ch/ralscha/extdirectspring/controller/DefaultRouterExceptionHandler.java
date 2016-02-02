@@ -44,7 +44,8 @@ public class DefaultRouterExceptionHandler implements RouterExceptionHandler {
 		}
 
 		response.setType("exception");
-		response.setMessage(this.configurationService.getConfiguration().getMessage(cause));
+		response.setMessage(
+				this.configurationService.getConfiguration().getMessage(cause));
 
 		if (this.configurationService.getConfiguration().isSendStacktrace()) {
 			response.setWhere(ExtDirectSpringUtil.getStackTrace(cause));

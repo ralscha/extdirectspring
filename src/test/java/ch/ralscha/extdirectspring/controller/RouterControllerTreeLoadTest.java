@@ -154,8 +154,8 @@ public class RouterControllerTreeLoadTest {
 		requestParameters.put("node", "n2");
 		requestParameters.put("foo", "f");
 
-		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, false, null, cookies,
-				null, "remoteProviderTreeLoad", "method3", false,
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, false, null,
+				cookies, null, "remoteProviderTreeLoad", "method3", false,
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
@@ -187,8 +187,8 @@ public class RouterControllerTreeLoadTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
 		requestParameters.put("node", "root");
 
-		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, headers,
-				"remoteProviderTreeLoad", method,
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
+				headers, "remoteProviderTreeLoad", method,
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 

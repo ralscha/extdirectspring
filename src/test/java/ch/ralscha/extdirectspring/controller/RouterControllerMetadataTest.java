@@ -76,8 +76,8 @@ public class RouterControllerMetadataTest {
 		metadata.put("mp", "aMetadataValue");
 
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method1", metadata,
-						new TypeReference<ExtDirectStoreResult<Row>>() {
+				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method1",
+						metadata, new TypeReference<ExtDirectStoreResult<Row>>() {
 							// nothing here
 						}, readRequest);
 
@@ -93,8 +93,9 @@ public class RouterControllerMetadataTest {
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "method1", null, null, readRequest);
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderMetadata", "method1", null, null,
+				readRequest);
 	}
 
 	@Test
@@ -174,8 +175,8 @@ public class RouterControllerMetadataTest {
 		metadata.put("id", "10");
 
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method5", metadata,
-						new TypeReference<ExtDirectStoreResult<Row>>() {
+				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method5",
+						metadata, new TypeReference<ExtDirectStoreResult<Row>>() {
 							// nothing here
 						}, readRequest);
 
@@ -190,8 +191,8 @@ public class RouterControllerMetadataTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "method5", null,
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderMetadata", "method5", null,
 				new TypeReference<ExtDirectStoreResult<Row>>() {
 					// nothing here
 				}, readRequest);
@@ -214,8 +215,8 @@ public class RouterControllerMetadataTest {
 		metadata.put("id", "10");
 
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method6", metadata,
-						new TypeReference<ExtDirectStoreResult<Row>>() {
+				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method6",
+						metadata, new TypeReference<ExtDirectStoreResult<Row>>() {
 							// nothing here
 						}, readRequest);
 
@@ -230,8 +231,8 @@ public class RouterControllerMetadataTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "method6", null,
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderMetadata", "method6", null,
 				new TypeReference<ExtDirectStoreResult<Row>>() {
 					// nothing here
 				}, readRequest);
@@ -272,7 +273,8 @@ public class RouterControllerMetadataTest {
 		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update2", storeRequest,
 				metadata);
 
-		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update2", storeRequest, null);
+		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update2", storeRequest,
+				null);
 	}
 
 	@Test
@@ -288,7 +290,8 @@ public class RouterControllerMetadataTest {
 		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update3", storeRequest,
 				metadata);
 
-		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update3", storeRequest, null);
+		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update3", storeRequest,
+				null);
 	}
 
 	private static void executeUpdate(MockMvc mockMvc, String action, String method,

@@ -375,8 +375,8 @@ public class RemoteProviderSimpleNamed {
 
 		@Override
 		public String toString() {
-			return "TestObject [id=" + this.id + ", name=" + this.name + ", active=" + this.active
-					+ ", amount=" + this.amount + "]";
+			return "TestObject [id=" + this.id + ", name=" + this.name + ", active="
+					+ this.active + ", amount=" + this.amount + "]";
 		}
 
 	}
@@ -461,8 +461,8 @@ public class RemoteProviderSimpleNamed {
 
 		@Override
 		public String toString() {
-			return "ResultObject [name=" + this.name + ", age=" + this.age + ", active=" + this.active
-					+ "]";
+			return "ResultObject [name=" + this.name + ", age=" + this.age + ", active="
+					+ this.active + "]";
 		}
 
 	}

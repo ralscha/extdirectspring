@@ -185,16 +185,16 @@ public final class ParametersResolver {
 						}
 						else {
 							directStoreModifyRecords = new ArrayList<Object>();
-							directStoreModifyRecords.add(this.jsonHandler.convertValue(records,
-									directStoreEntryClass));
+							directStoreModifyRecords.add(this.jsonHandler
+									.convertValue(records, directStoreEntryClass));
 						}
 						remainingParameters = new HashMap<String, Object>(jsonData);
 						remainingParameters.remove("records");
 					}
 					else {
 						directStoreModifyRecords = new ArrayList<Object>();
-						directStoreModifyRecords.add(this.jsonHandler.convertValue(jsonData,
-								directStoreEntryClass));
+						directStoreModifyRecords.add(this.jsonHandler
+								.convertValue(jsonData, directStoreEntryClass));
 					}
 				}
 				jsonParamIndex = 1;
@@ -414,7 +414,8 @@ public final class ParametersResolver {
 		String value = null;
 
 		if (cookieValue != null) {
-			value = this.urlPathHelper.decodeRequestString(request, cookieValue.getValue());
+			value = this.urlPathHelper.decodeRequestString(request,
+					cookieValue.getValue());
 		}
 		else {
 			value = parameterInfo.getDefaultValue();
@@ -468,7 +469,8 @@ public final class ParametersResolver {
 				catch (ConversionFailedException e) {
 					// ignore this exception for collections and arrays.
 					// try to convert the value with jackson
-					TypeFactory typeFactory = this.jsonHandler.getMapper().getTypeFactory();
+					TypeFactory typeFactory = this.jsonHandler.getMapper()
+							.getTypeFactory();
 					if (methodParameter.getTypeDescriptor().isCollection()) {
 						JavaType type = CollectionType
 								.construct(methodParameter.getType(),
@@ -517,7 +519,8 @@ public final class ParametersResolver {
 							});
 
 					for (Map<String, Object> rawFilter : rawFilters) {
-						Filter filter = Filter.createFilter(rawFilter, this.conversionService);
+						Filter filter = Filter.createFilter(rawFilter,
+								this.conversionService);
 						if (filter != null) {
 							filters.add(filter);
 						}
@@ -527,7 +530,8 @@ public final class ParametersResolver {
 					@SuppressWarnings("unchecked")
 					List<Map<String, Object>> filterList = (List<Map<String, Object>>) value;
 					for (Map<String, Object> rawFilter : filterList) {
-						Filter filter = Filter.createFilter(rawFilter, this.conversionService);
+						Filter filter = Filter.createFilter(rawFilter,
+								this.conversionService);
 						if (filter != null) {
 							filters.add(filter);
 						}

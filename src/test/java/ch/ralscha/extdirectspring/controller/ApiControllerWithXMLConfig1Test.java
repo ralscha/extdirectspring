@@ -58,7 +58,8 @@ public class ApiControllerWithXMLConfig1Test {
 
 		ApiRequestParams params = ApiRequestParams.builder().group("group1")
 				.configuration(config).providerType("websocket").build();
-		ApiControllerTest.runTest(this.mockMvc, params, ApiControllerTest.group1Apis(null));
+		ApiControllerTest.runTest(this.mockMvc, params,
+				ApiControllerTest.group1Apis(null));
 	}
 
 }

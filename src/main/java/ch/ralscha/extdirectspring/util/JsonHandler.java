@@ -80,7 +80,8 @@ public class JsonHandler {
 	public String writeValueAsString(Object obj, boolean indent) {
 		try {
 			if (indent) {
-				return this.mapper.writer().withDefaultPrettyPrinter().writeValueAsString(obj);
+				return this.mapper.writer().withDefaultPrettyPrinter()
+						.writeValueAsString(obj);
 			}
 			return this.mapper.writeValueAsString(obj);
 		}

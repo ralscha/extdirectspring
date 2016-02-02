@@ -109,8 +109,9 @@ public class ConfigurationService implements InitializingBean, DisposableBean {
 
 		Collection<WebArgumentResolver> webResolvers = this.context
 				.getBeansOfType(WebArgumentResolver.class).values();
-		this.parametersResolver = new ParametersResolver(this.configuration.getConversionService(),
-				this.jsonHandler, webResolvers);
+		this.parametersResolver = new ParametersResolver(
+				this.configuration.getConversionService(), this.jsonHandler,
+				webResolvers);
 	}
 
 	@Override

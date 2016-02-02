@@ -245,10 +245,11 @@ public class ApiController {
 				actionNs);
 
 		remotingApi.setTimeout(this.configurationService.getConfiguration().getTimeout());
-		remotingApi
-				.setMaxRetries(this.configurationService.getConfiguration().getMaxRetries());
+		remotingApi.setMaxRetries(
+				this.configurationService.getConfiguration().getMaxRetries());
 
-		Object enableBuffer = this.configurationService.getConfiguration().getEnableBuffer();
+		Object enableBuffer = this.configurationService.getConfiguration()
+				.getEnableBuffer();
 		if (enableBuffer instanceof String
 				&& StringUtils.hasText((String) enableBuffer)) {
 			String enableBufferString = (String) enableBuffer;

@@ -49,7 +49,8 @@ public class GroupInfo {
 
 	@Override
 	public String toString() {
-		return "GroupInfo [property=" + this.property + ", direction=" + this.direction + "]";
+		return "GroupInfo [property=" + this.property + ", direction=" + this.direction
+				+ "]";
 	}
 
 }

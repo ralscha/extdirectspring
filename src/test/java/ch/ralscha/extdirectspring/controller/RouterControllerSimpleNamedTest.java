@@ -281,8 +281,8 @@ public class RouterControllerSimpleNamedTest {
 		params.put("percent", "99.9%");
 
 		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil
-				.sendAndReceiveNamed(this.mockMvc, "remoteProviderSimpleNamed", "method11",
-						Map.class, params);
+				.sendAndReceiveNamed(this.mockMvc, "remoteProviderSimpleNamed",
+						"method11", Map.class, params);
 
 		assertThat(resultMap.get("endDate")).isEqualTo(today.getMillis());
 		ObjectMapper mapper = new ObjectMapper();
@@ -305,8 +305,9 @@ public class RouterControllerSimpleNamedTest {
 		params.put("lastName", expectedResult.getName());
 		params.put("theAge", expectedResult.getAge());
 		params.put("active", expectedResult.getActive());
-		ResultObject result = (ResultObject) ControllerUtil.sendAndReceiveNamed(this.mockMvc,
-				"remoteProviderSimpleNamed", "methodRP1", ResultObject.class, params);
+		ResultObject result = (ResultObject) ControllerUtil.sendAndReceiveNamed(
+				this.mockMvc, "remoteProviderSimpleNamed", "methodRP1",
+				ResultObject.class, params);
 		assertThat(result).isEqualTo(expectedResult);
 	}
 

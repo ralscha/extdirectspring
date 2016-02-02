@@ -102,8 +102,8 @@ public class RouterControllerFormLoadTest {
 
 	@Test
 	public void testFormLoadReturnsNull() {
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderFormLoad", "method2", null,
-				Void.TYPE);
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderFormLoad", "method2",
+				null, Void.TYPE);
 	}
 
 	@Test
@@ -214,7 +214,8 @@ public class RouterControllerFormLoadTest {
 		}
 		sb.replace(sb.length() - 1, sb.length(), "]");
 
-		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, sb.toString());
+		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc,
+				sb.toString());
 		List<ExtDirectResponse> responses = ControllerUtil
 				.readDirectResponses(result.getResponse().getContentAsByteArray());
 

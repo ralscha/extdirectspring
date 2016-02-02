@@ -475,8 +475,9 @@ public class RouterControllerStoreTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderStoreRead", "method5", null, null, readRequest);
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderStoreRead", "method5", null, null,
+				readRequest);
 	}
 
 	@Test
@@ -575,8 +576,8 @@ public class RouterControllerStoreTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderStoreRead", "method10",
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderStoreRead", "method10",
 				new TypeReference<ExtDirectStoreResult<Row>>() {
 					// nothing here
 				}, readRequest);
@@ -619,8 +620,8 @@ public class RouterControllerStoreTest {
 		readRequest = new HashMap<String, Object>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderStoreRead", "method11",
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderStoreRead", "method11",
 				new TypeReference<ExtDirectStoreResult<Row>>() {
 					// nothing here
 				}, readRequest);

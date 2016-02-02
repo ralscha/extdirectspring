@@ -85,7 +85,8 @@ public class ExtDirectResponseBuilderTest {
 	public void testBuilderUploadResponse() throws IOException {
 
 		MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
-		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.wac);
+		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE,
+				this.wac);
 
 		request.setParameter("extAction", "action");
 		request.setParameter("extMethod", "method");
@@ -172,7 +173,8 @@ public class ExtDirectResponseBuilderTest {
 
 	private MockHttpServletRequest createRequest() {
 		MockHttpServletRequest request = new MockHttpServletRequest();
-		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.wac);
+		request.setAttribute(DispatcherServlet.WEB_APPLICATION_CONTEXT_ATTRIBUTE,
+				this.wac);
 
 		request.setParameter("extAction", "action");
 		request.setParameter("extMethod", "method");

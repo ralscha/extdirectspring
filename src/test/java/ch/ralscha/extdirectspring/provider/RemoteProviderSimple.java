@@ -389,7 +389,8 @@ public class RemoteProviderSimple {
 
 		@Override
 		public String toString() {
-			return "BusinessObject [id=" + this.id + ", name=" + this.name + ", bd=" + this.bd + "]";
+			return "BusinessObject [id=" + this.id + ", name=" + this.name + ", bd="
+					+ this.bd + "]";
 		}
 
 	}

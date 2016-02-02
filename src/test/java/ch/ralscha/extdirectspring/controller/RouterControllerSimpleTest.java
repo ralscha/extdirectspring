@@ -72,14 +72,14 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testBeanNotFound() {
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProvider", "method1", null, null, 3,
-				2.5, "string.param");
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProvider", "method1", null,
+				null, 3, 2.5, "string.param");
 	}
 
 	@Test
 	public void testMethodNotFound() {
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method4", null,
-				null, 3, 2.5, "string.param");
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method4",
+				null, null, 3, 2.5, "string.param");
 	}
 
 	@Test
@@ -114,7 +114,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testWithParametersNoRequestParameter() {
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method3", null);
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method3",
+				null);
 	}
 
 	@Test
@@ -138,8 +139,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testIntParameterAndResult() {
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method6", 30, 10,
-				20);
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method6", 30,
+				10, 20);
 	}
 
 	@Test
@@ -170,7 +171,8 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testSupportedArguments() {
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method9", 42);
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method9",
+				42);
 	}
 
 	@Test
@@ -194,9 +196,10 @@ public class RouterControllerSimpleTest {
 		DateTime today = new DateTime();
 
 		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method14", Map.class,
-						ISODateTimeFormat.dateTime().print(today), "normalParameter",
-						ISODateTimeFormat.date().print(today), "99.9%");
+				.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method14",
+						Map.class, ISODateTimeFormat.dateTime().print(today),
+						"normalParameter", ISODateTimeFormat.date().print(today),
+						"99.9%");
 
 		assertThat(resultMap.get("endDate")).isEqualTo(today.getMillis());
 		ObjectMapper mapper = new ObjectMapper();
@@ -257,8 +260,8 @@ public class RouterControllerSimpleTest {
 	public void methodOptionalHeaderWithoutValueAndDefault1() throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("header", "headerValue");
-		ControllerUtil.sendAndReceiveWithSession(this.mockMvc, headers, "remoteProviderSimple",
-				"method18", "headerValue");
+		ControllerUtil.sendAndReceiveWithSession(this.mockMvc, headers,
+				"remoteProviderSimple", "method18", "headerValue");
 	}
 
 	@Test
@@ -305,8 +308,8 @@ public class RouterControllerSimpleTest {
 
 		ControllerUtil.sendAndReceive(this.mockMvc, headers, "remoteProviderSimple",
 				"method20", "2;true");
-		ControllerUtil.sendAndReceiveWithSession(this.mockMvc, headers, "remoteProviderSimple",
-				"method20", "2;true");
+		ControllerUtil.sendAndReceiveWithSession(this.mockMvc, headers,
+				"remoteProviderSimple", "method20", "2;true");
 	}
 
 	@Test
@@ -375,11 +378,11 @@ public class RouterControllerSimpleTest {
 				"b;" + bo1 + "-" + bo2 + "-" + bo3 + "-;2", "b",
 				new BusinessObject[] { bo1, bo2, bo3 }, 2);
 
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method25", "c;;3",
-				"c", new BusinessObject[] {}, 3);
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method25",
+				"c;;3", "c", new BusinessObject[] {}, 3);
 
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method25", "d;;3",
-				"d", null, 3);
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method25",
+				"d;;3", "d", null, 3);
 	}
 
 	@Test
@@ -395,11 +398,11 @@ public class RouterControllerSimpleTest {
 				"f;" + bo1 + "-" + bo2 + "-" + bo3 + "-;5", "f",
 				new BusinessObject[] { bo1, bo2, bo3 }, 5);
 
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method26", "g;;6",
-				"g", new BusinessObject[] {}, 6);
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method26",
+				"g;;6", "g", new BusinessObject[] {}, 6);
 
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method26", "h;;7",
-				"h", null, 7);
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method26",
+				"h;;7", "h", null, 7);
 	}
 
 	@Test

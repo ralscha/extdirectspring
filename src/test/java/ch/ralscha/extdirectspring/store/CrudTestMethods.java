@@ -69,8 +69,8 @@ public class CrudTestMethods {
 		pagingParameters.put("start", 0);
 		pagingParameters.put("limit", 50);
 
-		String edRequest = ControllerUtil.createEdsRequest(this.serviceName, "readWithPaging",
-				1, pagingParameters);
+		String edRequest = ControllerUtil.createEdsRequest(this.serviceName,
+				"readWithPaging", 1, pagingParameters);
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
 				.readDirectResponses(result.getResponse().getContentAsByteArray());

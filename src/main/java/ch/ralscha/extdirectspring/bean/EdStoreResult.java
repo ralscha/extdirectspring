@@ -76,8 +76,7 @@ public abstract class EdStoreResult extends JsonViewHint {
 		return ImmutableEdStoreResult.of(records, total, Boolean.TRUE, null, null);
 	}
 
-	public static EdStoreResult success(Collection<?> records,
-			Class<?> jsonView) {
+	public static EdStoreResult success(Collection<?> records, Class<?> jsonView) {
 		ImmutableEdStoreResult result = ImmutableEdStoreResult.of(records, null,
 				Boolean.TRUE, null, null);
 		result.setJsonView(jsonView);

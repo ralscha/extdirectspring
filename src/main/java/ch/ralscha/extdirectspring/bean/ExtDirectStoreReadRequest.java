@@ -305,10 +305,10 @@ public class ExtDirectStoreReadRequest {
 	@Override
 	public String toString() {
 		return "ExtDirectStoreReadRequest [query=" + this.query + ", limit=" + this.limit
-				+ ", start=" + this.start + ", page=" + this.page + ", dir=" + this.dir + ", sort="
-				+ this.sort + ", groupBy=" + this.groupBy + ", groupDir=" + this.groupDir + ", sorters="
-				+ this.sorters + ", groups=" + this.groups + ", filters=" + this.filters + ", params="
-				+ this.params + "]";
+				+ ", start=" + this.start + ", page=" + this.page + ", dir=" + this.dir
+				+ ", sort=" + this.sort + ", groupBy=" + this.groupBy + ", groupDir="
+				+ this.groupDir + ", sorters=" + this.sorters + ", groups=" + this.groups
+				+ ", filters=" + this.filters + ", params=" + this.params + "]";
 	}
 
 }

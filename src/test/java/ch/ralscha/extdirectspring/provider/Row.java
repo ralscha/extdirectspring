@@ -114,8 +114,8 @@ public class Row implements Comparable<Row>, RowInterface {
 
 	@Override
 	public String toString() {
-		return "Row [id=" + this.id + ", name=" + this.name + ", admin=" + this.admin + ", salary="
-				+ this.salary + "]";
+		return "Row [id=" + this.id + ", name=" + this.name + ", admin=" + this.admin
+				+ ", salary=" + this.salary + "]";
 	}
 
 }

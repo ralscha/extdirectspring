@@ -62,8 +62,9 @@ public final class ApiCacheKey {
 
 	@Override
 	public int hashCode() {
-		return Arrays.hashCode(new Object[] { this.apiNs, this.actionNs, this.remotingApiVar,
-				this.pollingUrlsVar, this.routerUrl, this.group, this.debug });
+		return Arrays
+				.hashCode(new Object[] { this.apiNs, this.actionNs, this.remotingApiVar,
+						this.pollingUrlsVar, this.routerUrl, this.group, this.debug });
 	}
 
 }

@@ -144,8 +144,8 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 	@Override
 	public String toString() {
 		return "ExtDirectStoreResult [total=" + this.total + ", records=" + this.records
-				+ ", success=" + this.success + ", metaData=" + this.metaData + ", message="
-				+ this.message + "]";
+				+ ", success=" + this.success + ", metaData=" + this.metaData
+				+ ", message=" + this.message + "]";
 	}
 
 }

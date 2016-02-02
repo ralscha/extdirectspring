@@ -256,7 +256,8 @@ public class RouterControllerStoreModifyTest {
 		String edRequest = ControllerUtil.createEdsRequest(action, method, 1,
 				storeRequest);
 
-		MvcResult mvcResult = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
+		MvcResult mvcResult = ControllerUtil.performRouterRequest(this.mockMvc,
+				edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
 				.readDirectResponses(mvcResult.getResponse().getContentAsByteArray());
 

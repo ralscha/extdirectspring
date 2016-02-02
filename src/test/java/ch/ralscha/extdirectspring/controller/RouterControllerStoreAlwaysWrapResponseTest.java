@@ -117,8 +117,8 @@ public class RouterControllerStoreAlwaysWrapResponseTest {
 	@Test
 	public void testCreateWithDataSingle() {
 		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderStoreModifySingle", "create1",
-						new TypeReference<ExtDirectStoreResult<Row>>() {
+				.sendAndReceive(this.mockMvc, "remoteProviderStoreModifySingle",
+						"create1", new TypeReference<ExtDirectStoreResult<Row>>() {
 							/* nothing here */
 						}, new Row(10, "Ralph", true, "109.55"));
 		assertThat(rows.getRecords()).hasSize(1);

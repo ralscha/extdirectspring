@@ -16,5 +16,5 @@
 package ch.ralscha.extdirectspring.bean;
 
 public @interface Nullable {
-//nothing here
+	// nothing here
 }

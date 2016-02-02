@@ -51,7 +51,8 @@ public class SortInfo {
 
 	@Override
 	public String toString() {
-		return "SortInfo [property=" + this.property + ", direction=" + this.direction + "]";
+		return "SortInfo [property=" + this.property + ", direction=" + this.direction
+				+ "]";
 	}
 
 }

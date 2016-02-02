@@ -61,14 +61,14 @@ public class RouterControllerInterfaceTest {
 
 	@Test
 	public void testNoParameters() {
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderImplementation", "method2",
-				"method2() called");
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderImplementation",
+				"method2", "method2() called");
 	}
 
 	@Test
 	public void testNoParameterAnnotation() {
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderImplementation", "method3",
-				"method3() called-21-3.1-aString2", 21, 3.1, "aString2");
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderImplementation",
+				"method3", "method3() called-21-3.1-aString2", 21, 3.1, "aString2");
 	}
 
 	@SuppressWarnings("unchecked")

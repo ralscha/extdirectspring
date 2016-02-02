@@ -103,7 +103,8 @@ public class ExtDirectResponseBuilder {
 	public ExtDirectResponseBuilder setException(Exception exception) {
 		unsuccessful();
 
-		WebApplicationContext ctx = RequestContextUtils.getWebApplicationContext(this.request);
+		WebApplicationContext ctx = RequestContextUtils
+				.getWebApplicationContext(this.request);
 		Configuration configuration;
 		try {
 			configuration = ctx.getBean(Configuration.class);
@@ -237,10 +238,11 @@ public class ExtDirectResponseBuilder {
 
 		try {
 			RouterController routerController = RequestContextUtils
-					.getWebApplicationContext(this.request).getBean(RouterController.class);
+					.getWebApplicationContext(this.request)
+					.getBean(RouterController.class);
 
-			routerController.writeJsonResponse(this.request, this.response, this.extDirectResponse,
-					this.jsonView);
+			routerController.writeJsonResponse(this.request, this.response,
+					this.extDirectResponse, this.jsonView);
 
 		}
 		catch (IOException e) {

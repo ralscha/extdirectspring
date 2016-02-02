@@ -59,9 +59,11 @@ public class ApiControllerWithXMLConfig4Test {
 
 		ApiRequestParams params = ApiRequestParams.builder().apiNs("test").group("group2")
 				.configuration(config).build();
-		ApiControllerTest.runTest(this.mockMvc, params, ApiControllerTest.group2Apis(null));
+		ApiControllerTest.runTest(this.mockMvc, params,
+				ApiControllerTest.group2Apis(null));
 
-		ApiControllerTest.runTest(this.mockMvc, params, ApiControllerTest.group2Apis(null));
+		ApiControllerTest.runTest(this.mockMvc, params,
+				ApiControllerTest.group2Apis(null));
 	}
 
 }

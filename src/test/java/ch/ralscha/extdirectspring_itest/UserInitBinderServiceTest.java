@@ -85,7 +85,8 @@ public class UserInitBinderServiceTest extends JettyTest {
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
 
-			Map<String, Object> rootAsMap = this.mapper.readValue(responseString, Map.class);
+			Map<String, Object> rootAsMap = this.mapper.readValue(responseString,
+					Map.class);
 			assertThat(rootAsMap).hasSize(5);
 			assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
 			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
@@ -133,7 +134,8 @@ public class UserInitBinderServiceTest extends JettyTest {
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
 
-			Map<String, Object> rootAsMap = this.mapper.readValue(responseString, Map.class);
+			Map<String, Object> rootAsMap = this.mapper.readValue(responseString,
+					Map.class);
 			assertThat(rootAsMap).hasSize(5);
 			assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
 			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
