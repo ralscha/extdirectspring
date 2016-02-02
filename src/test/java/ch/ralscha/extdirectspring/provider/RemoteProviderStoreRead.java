@@ -377,7 +377,7 @@ public class RemoteProviderStoreRead {
 			assertThat(nf3).isInstanceOf(NumericFilter.class);
 			assertThat(nf3).isSameAs(nf);
 
-			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat((Filter) request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
 			return createResult(type);
@@ -411,13 +411,13 @@ public class RemoteProviderStoreRead {
 			}
 
 			NumericFilter nf2 = request.getFirstFilterForField("id");
-			assertThat(nf2).isSameAs(filters.get(0));
+			assertThat(nf2).isSameAs((NumericFilter) filters.get(0));
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("id");
 			assertThat(allFiltersForField).containsExactly(filters.get(0),
 					filters.get(1));
 
-			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat((Filter) request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
 			return createResult(type);
@@ -436,7 +436,7 @@ public class RemoteProviderStoreRead {
 			List<Filter> allFiltersForField = request.getAllFiltersForField("visible");
 			assertThat(allFiltersForField).containsExactly(bf1);
 
-			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat((Filter) request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
 			return createResult(type);
@@ -538,7 +538,7 @@ public class RemoteProviderStoreRead {
 			}
 
 			DateFilter df2 = request.getFirstFilterForField("date");
-			assertThat(df2).isSameAs(filters.get(0));
+			assertThat(df2).isSameAs((DateFilter) filters.get(0));
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("date");
 			assertThat(allFiltersForField).containsExactly(filters.get(0),
@@ -722,7 +722,7 @@ public class RemoteProviderStoreRead {
 			assertThat(nf3).isInstanceOf(NumericFilter.class);
 			assertThat(nf3).isSameAs(nf);
 
-			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat((Filter) request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
 			assertThat(request.getSorters()).hasSize(1);
@@ -750,13 +750,13 @@ public class RemoteProviderStoreRead {
 			assertThat(nf.getRawComparison()).isEqualTo("gt");
 
 			NumericFilter nf2 = request.getFirstFilterForField("id");
-			assertThat(nf2).isSameAs(filters.get(0));
+			assertThat(nf2).isSameAs((NumericFilter) filters.get(0));
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("id");
 			assertThat(allFiltersForField).containsExactly(filters.get(0),
 					filters.get(1));
 
-			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat((Filter) request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
 			assertThat(request.getSorters()).hasSize(1);
@@ -782,7 +782,7 @@ public class RemoteProviderStoreRead {
 			List<Filter> allFiltersForField = request.getAllFiltersForField("visible");
 			assertThat(allFiltersForField).containsExactly(bf1);
 
-			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat((Filter) request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
 			assertThat(request.getSorters()).hasSize(1);
@@ -906,7 +906,7 @@ public class RemoteProviderStoreRead {
 			assertThat(nf3).isInstanceOf(NumericFilter.class);
 			assertThat(nf3).isSameAs(nf);
 
-			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat((Filter) request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
 			assertThat(request.getSorters()).hasSize(1);
@@ -934,13 +934,13 @@ public class RemoteProviderStoreRead {
 			assertThat(nf.getRawComparison()).isEqualTo("gt");
 
 			NumericFilter nf2 = request.getFirstFilterForField("date");
-			assertThat(nf2).isSameAs(filters.get(0));
+			assertThat(nf2).isSameAs((NumericFilter) filters.get(0));
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("date");
 			assertThat(allFiltersForField).containsExactly(filters.get(0),
 					filters.get(1));
 
-			assertThat(request.getFirstFilterForField("xy")).isNull();
+			assertThat((Filter) request.getFirstFilterForField("xy")).isNull();
 			assertThat(request.getAllFiltersForField("xy")).isEmpty();
 
 			assertThat(request.getSorters()).hasSize(1);
