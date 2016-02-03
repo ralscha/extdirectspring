@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.bean;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
@@ -25,6 +26,7 @@ import org.immutables.value.Value.Style.ImplementationVisibility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
@@ -34,6 +36,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  */
 @JsonInclude(Include.NON_NULL)
 @JsonSerialize(as = ImmutableEdStoreResult.class)
+@JsonDeserialize(as = ImmutableEdStoreResult.class)
 @JsonPropertyOrder(value = { "metaData", "success", "total", "records", "message" })
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
 @Value.Immutable
@@ -52,7 +55,7 @@ public abstract class EdStoreResult extends JsonViewHint {
 
 	@Nullable
 	@Value.Parameter
-	public abstract MetaData metaData();
+	public abstract Map<String, Object> metaData();
 
 	@Nullable
 	@Value.Parameter
@@ -102,7 +105,7 @@ public abstract class EdStoreResult extends JsonViewHint {
 
 		Builder success(Boolean success);
 
-		Builder metaData(MetaData metaData);
+		Builder metaData(Map<String, Object> metaData);
 
 		Builder message(String message);
 

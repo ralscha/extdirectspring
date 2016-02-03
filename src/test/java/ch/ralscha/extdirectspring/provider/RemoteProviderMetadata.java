@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.annotation.MetadataParam;
+import ch.ralscha.extdirectspring.bean.EdStoreResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad.Node;
@@ -59,6 +60,29 @@ public class RemoteProviderMetadata {
 		assertThat(servletRequest).isNotNull();
 		return RemoteProviderStoreRead.createExtDirectStoreResult(request,
 				":" + id + ";" + (servletRequest != null));
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "metadata")
+	public EdStoreResult method1Ed(ExtDirectStoreReadRequest request, Locale locale,
+			@RequestParam(value = "id") int id, @MetadataParam(value = "mp") String mp) {
+		assertThat(id).isEqualTo(10);
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
+
+		assertThat(request.getParams().size()).isEqualTo(1);
+		assertThat(request.getParams()).contains(entry("id", 10));
+
+		return RemoteProviderStoreRead.createEdStoreResult(request,
+				":" + id + ";" + mp + ";" + locale, null);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "metadata")
+	public EdStoreResult method2Ed(
+			@MetadataParam(value = "id", defaultValue = "1") int id,
+			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
+		assertThat(id).isEqualTo(1);
+		assertThat(servletRequest).isNotNull();
+		return RemoteProviderStoreRead.createEdStoreResult(request,
+				":" + id + ";" + (servletRequest != null), null);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "metadata")
@@ -116,6 +140,41 @@ public class RemoteProviderMetadata {
 
 		return RemoteProviderStoreRead.createExtDirectStoreResult(request,
 				":" + i + ";" + locale);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "metadata")
+	public EdStoreResult method5Ed(ExtDirectStoreReadRequest request, Locale locale,
+			@MetadataParam(value = "id", required = false,
+					defaultValue = "20") Integer id) {
+		assertThat(request.getParams().isEmpty()).isTrue();
+		if (!id.equals(20)) {
+			assertThat(id).isEqualTo(10);
+		}
+		else {
+			assertThat(id).isEqualTo(20);
+		}
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
+
+		return RemoteProviderStoreRead.createEdStoreResult(request,
+				":" + id + ";" + locale, null);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "metadata")
+	public EdStoreResult method6Ed(ExtDirectStoreReadRequest request, Locale locale,
+			@MetadataParam Optional<Integer> id) {
+
+		Integer i = id.orElse(20);
+		assertThat(request.getParams().isEmpty()).isTrue();
+		if (!i.equals(20)) {
+			assertThat(i).isEqualTo(10);
+		}
+		else {
+			assertThat(i).isEqualTo(20);
+		}
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
+
+		return RemoteProviderStoreRead.createEdStoreResult(request,
+				":" + i + ";" + locale, null);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "metadata")

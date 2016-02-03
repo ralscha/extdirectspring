@@ -42,6 +42,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.DataType;
+import ch.ralscha.extdirectspring.bean.EdStoreResult;
+import ch.ralscha.extdirectspring.bean.EdStoreResult.Builder;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.bean.Field;
@@ -82,6 +84,11 @@ public class RemoteProviderStoreRead {
 		return createExtDirectStoreResult(request, "");
 	}
 
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, entryClass = String.class)
+	public EdStoreResult method4Ed(ExtDirectStoreReadRequest request) {
+		return createEdStoreResult(request, "", null);
+	}
+
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group3")
 	public ExtDirectStoreResult<Row> method5(ExtDirectStoreReadRequest request,
 			Locale locale, @RequestParam(value = "id") int id) {
@@ -94,6 +101,18 @@ public class RemoteProviderStoreRead {
 		return createExtDirectStoreResult(request, ":" + id + ";" + locale);
 	}
 
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group3")
+	public EdStoreResult method5Ed(ExtDirectStoreReadRequest request, Locale locale,
+			@RequestParam(value = "id") int id) {
+		assertThat(id).isEqualTo(10);
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
+
+		assertThat(request.getParams().size()).isEqualTo(1);
+		assertThat(request.getParams()).contains(entry("id", 10));
+
+		return createEdStoreResult(request, ":" + id + ";" + locale, null);
+	}
+
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
 	public ExtDirectStoreResult<Row> method6(
 			@RequestParam(value = "id", defaultValue = "1") int id,
@@ -102,6 +121,15 @@ public class RemoteProviderStoreRead {
 		assertThat(servletRequest).isNotNull();
 		return createExtDirectStoreResult(request,
 				":" + id + ";" + (servletRequest != null));
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
+	public EdStoreResult method6Ed(@RequestParam(value = "id", defaultValue = "1") int id,
+			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
+		assertThat(id).isEqualTo(1);
+		assertThat(servletRequest).isNotNull();
+		return createEdStoreResult(request, ":" + id + ";" + (servletRequest != null),
+				null);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
@@ -163,6 +191,53 @@ public class RemoteProviderStoreRead {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, batched = false)
 	public ExtDirectStoreResult<Row> method12(ExtDirectStoreReadRequest request) {
 		return RemoteProviderStoreRead.createExtDirectStoreResult(request, null);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
+	public EdStoreResult method8Ed(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
+			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
+		assertThat(endDate).isNotNull();
+		assertThat(servletRequest).isNotNull();
+		return createEdStoreResult(request,
+				":" + endDate.toString() + ";" + (servletRequest != null), null);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
+	public EdStoreResult method9Ed(ExtDirectStoreReadRequest request) {
+		return createEdStoreResult(request, "", "everything is okay");
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
+	public EdStoreResult method10Ed(ExtDirectStoreReadRequest request, Locale locale,
+			@RequestParam(value = "id", required = false,
+					defaultValue = "20") Integer id) {
+
+		if (!id.equals(20)) {
+			assertThat(id).isEqualTo(10);
+			assertThat(request.getParams().size()).isEqualTo(1);
+			assertThat(request.getParams()).contains(entry("id", 10));
+		}
+		else {
+			assertThat(id).isEqualTo(20);
+			assertThat(request.getParams().isEmpty()).isTrue();
+		}
+		assertThat(locale).isEqualTo(Locale.ENGLISH);
+
+		return RemoteProviderStoreRead.createEdStoreResult(request,
+				":" + id + ";" + locale, null);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, batched = true)
+	public EdStoreResult method11Ed(ExtDirectStoreReadRequest request,
+			@CookieValue(defaultValue = "defaultCookie") String cookie,
+			@RequestHeader(defaultValue = "defaultHeader") String requestHeader) {
+		return RemoteProviderStoreRead.createEdStoreResult(request,
+				":" + cookie + ":" + requestHeader, null);
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, batched = false)
+	public EdStoreResult method12Ed(ExtDirectStoreReadRequest request) {
+		return createEdStoreResult(request, null, null);
 	}
 
 	public static ExtDirectStoreResult<Row> createExtDirectStoreResult(
@@ -283,6 +358,132 @@ public class RemoteProviderStoreRead {
 
 	}
 
+	public static EdStoreResult createEdStoreResult(ExtDirectStoreReadRequest request,
+			final String appendix, final String message) {
+		return createEdStoreResult(request, appendix, message, null);
+	}
+
+	public static EdStoreResult createEdStoreResult(ExtDirectStoreReadRequest request,
+			final String appendix, final String message, final MetaData metaData) {
+		List<Row> rows = createRows(appendix);
+
+		int totalSize = rows.size();
+
+		if (request != null) {
+
+			if ("name".equals(request.getQuery())) {
+				for (Iterator<Row> iterator = rows.listIterator(); iterator.hasNext();) {
+					Row row = iterator.next();
+					if (!row.getName().startsWith("name")) {
+						iterator.remove();
+					}
+				}
+			}
+			else if ("firstname".equals(request.getQuery())) {
+				for (Iterator<Row> iterator = rows.listIterator(); iterator.hasNext();) {
+					Row row = iterator.next();
+					if (!row.getName().startsWith("firstname")) {
+						iterator.remove();
+					}
+				}
+			}
+
+			totalSize = rows.size();
+
+			Collection<SortInfo> sorters = request.getSorters();
+
+			if (!sorters.isEmpty()) {
+				SortInfo sortInfo = sorters.iterator().next();
+				assertThat(sortInfo.getProperty()).isEqualTo("id");
+
+				if (sortInfo.getDirection() == SortDirection.ASCENDING) {
+					Collections.sort(rows);
+				}
+				else {
+					Collections.sort(rows, new Comparator<Row>() {
+
+						// @Override
+						@Override
+						public int compare(Row o1, Row o2) {
+							return o2.getId() - o1.getId();
+						}
+					});
+				}
+			}
+			else if (StringUtils.hasText(request.getSort())) {
+				assertThat(request.getSort()).isEqualTo("id");
+
+				if (request.isAscendingSort()) {
+					Collections.sort(rows);
+				}
+				else if (request.isDescendingSort()) {
+					Collections.sort(rows, new Comparator<Row>() {
+
+						// @Override
+						@Override
+						public int compare(Row o1, Row o2) {
+							return o2.getId() - o1.getId();
+						}
+					});
+				}
+			}
+
+			Collection<GroupInfo> groups = request.getGroups();
+			if (!groups.isEmpty()) {
+				GroupInfo groupInfo = groups.iterator().next();
+
+				assertThat(groupInfo.getProperty()).isEqualTo("id");
+				if (groupInfo.getDirection() == SortDirection.ASCENDING) {
+					Collections.sort(rows);
+				}
+				else {
+					Collections.sort(rows, new Comparator<Row>() {
+
+						// @Override
+						@Override
+						public int compare(Row o1, Row o2) {
+							return o2.getId() - o1.getId();
+						}
+					});
+				}
+
+			}
+			else if (StringUtils.hasText(request.getGroupBy())) {
+				assertThat(request.getGroupBy()).isEqualTo("id");
+
+				if (request.isAscendingGroupSort()) {
+					Collections.sort(rows);
+				}
+				else if (request.isDescendingGroupSort()) {
+					Collections.sort(rows, new Comparator<Row>() {
+
+						// @Override
+						@Override
+						public int compare(Row o1, Row o2) {
+							return o2.getId() - o1.getId();
+						}
+					});
+				}
+			}
+
+			if (request.getStart() != null && request.getLimit() != null) {
+				rows = rows.subList(request.getStart(),
+						Math.min(totalSize, request.getStart() + request.getLimit()));
+			}
+			else {
+				rows = rows.subList(0, 50);
+			}
+
+		}
+
+		Builder builder = EdStoreResult.builder().records(rows)
+				.total(Long.valueOf(totalSize)).message(message);
+		if (metaData != null) {
+			return builder.metaData(metaData.getMetaData()).build();
+		}
+		return builder.build();
+	}
+
 	public static List<Row> createRows(String appendix) {
 		List<Row> rows = new ArrayList<Row>();
 		for (int i = 0; i < 100; i += 2) {
@@ -343,6 +544,56 @@ public class RemoteProviderStoreRead {
 		}
 
 		return response;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
+	public EdStoreResult methodMetadataEd(ExtDirectStoreReadRequest request) {
+		if (request.getStart() == null && request.getSort() == null) {
+			MetaData metaData = new MetaData();
+
+			metaData.setPagingParameter(0, 50);
+			metaData.setSortInfo("name", SortDirection.ASCENDING);
+
+			Field field = new Field("id");
+			field.setType(DataType.INTEGER);
+			field.addCustomProperty("header", "ID");
+			field.addCustomProperty("width", 20);
+			field.addCustomProperty("sortable", Boolean.TRUE);
+			field.addCustomProperty("resizable", Boolean.TRUE);
+			field.addCustomProperty("hideable", Boolean.FALSE);
+			metaData.addField(field);
+
+			field = new Field("name");
+			field.setType(DataType.STRING);
+			field.addCustomProperty("header", "Name");
+			field.addCustomProperty("width", 70);
+			field.addCustomProperty("sortable", Boolean.TRUE);
+			field.addCustomProperty("resizable", Boolean.TRUE);
+			field.addCustomProperty("hideable", Boolean.FALSE);
+			metaData.addField(field);
+
+			field = new Field("admin");
+			field.setType(DataType.BOOLEAN);
+			field.addCustomProperty("header", "Administrator");
+			field.addCustomProperty("width", 30);
+			field.addCustomProperty("sortable", Boolean.TRUE);
+			field.addCustomProperty("resizable", Boolean.TRUE);
+			field.addCustomProperty("hideable", Boolean.TRUE);
+			metaData.addField(field);
+
+			field = new Field("salary");
+			field.setType(DataType.FLOAT);
+			field.addCustomProperty("header", "Salary");
+			field.addCustomProperty("width", 50);
+			field.addCustomProperty("sortable", Boolean.FALSE);
+			field.addCustomProperty("resizable", Boolean.TRUE);
+			field.addCustomProperty("hideable", Boolean.TRUE);
+			metaData.addField(field);
+
+			return createEdStoreResult(request, "", null, metaData);
+		}
+
+		return createEdStoreResult(request, "", null, null);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

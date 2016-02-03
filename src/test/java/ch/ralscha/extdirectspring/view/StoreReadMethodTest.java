@@ -105,6 +105,26 @@ public class StoreReadMethodTest extends BaseViewTest {
 		callMethod("storeReadMethodService", "overrideResultNoView", noView());
 	}
 
+	@Test
+	public void testResultSummaryViewEd() {
+		callMethod("storeReadMethodService", "resultSummaryViewEd", summaryView());
+	}
+
+	@Test
+	public void testResultDetailViewEd() {
+		callMethod("storeReadMethodService", "resultDetailViewEd", detailView());
+	}
+
+	@Test
+	public void testOverrideResultDetailViewEd() {
+		callMethod("storeReadMethodService", "overrideResultDetailViewEd", detailView());
+	}
+
+	@Test
+	public void testOverrideResultNoViewEd() {
+		callMethod("storeReadMethodService", "overrideResultNoViewEd", noView());
+	}
+
 	@SuppressWarnings("unchecked")
 	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
 		Object obj = ControllerUtil.sendAndReceiveObject(this.mockMvc, bean, method);

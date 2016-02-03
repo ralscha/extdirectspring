@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -39,7 +40,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ch.ralscha.extdirectspring.bean.EdStoreResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad.Node;
@@ -113,6 +116,59 @@ public class RouterControllerMetadataTest {
 		assertThat(storeResponse.getRecords()).hasSize(50);
 		int i = 1;
 		for (Row row : storeResponse.getRecords()) {
+			assertThat(row.getName()).isEqualTo("firstname: " + i + ":1;true");
+			i += 2;
+		}
+	}
+
+	@Test
+	public void testWithMetadataParameterEd() {
+		Map<String, Object> readRequest = new HashMap<String, Object>();
+		readRequest.put("id", 10);
+		readRequest.put("query", "name");
+
+		Map<String, Object> metadata = new HashMap<String, Object>();
+		metadata.put("mp", "aMetadataValue");
+
+		EdStoreResult storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderMetadata", "method1Ed", metadata,
+				EdStoreResult.class, readRequest);
+
+		assertThat(storeResponse.total()).isEqualTo(50L);
+		assertThat(storeResponse.records()).hasSize(50);
+		int ix = 0;
+		ObjectMapper om = new ObjectMapper();
+		for (Map<String, Object> m : (Collection<Map<String, Object>>) storeResponse
+				.records()) {
+			Row row = om.convertValue(m, Row.class);
+			assertThat(row.getName()).startsWith("name: " + ix + ":10;aMetadataValue;en");
+			ix += 2;
+		}
+
+		readRequest = new HashMap<String, Object>();
+		readRequest.put("id", 10);
+		readRequest.put("query", "name");
+
+		storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderMetadata", "method1Ed", null, null, readRequest);
+	}
+
+	@Test
+	public void testWithMetadataParameterDefaultValueEd() {
+		Map<String, Object> readRequest = new HashMap<String, Object>();
+		readRequest.put("query", "firstname");
+
+		EdStoreResult storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderMetadata", "method2Ed", null,
+				EdStoreResult.class, readRequest);
+
+		assertThat(storeResponse.total()).isEqualTo(50L);
+		assertThat(storeResponse.records()).hasSize(50);
+		int i = 1;
+		ObjectMapper om = new ObjectMapper();
+		for (Map<String, Object> m : (Collection<Map<String, Object>>) storeResponse
+				.records()) {
+			Row row = om.convertValue(m, Row.class);
 			assertThat(row.getName()).isEqualTo("firstname: " + i + ":1;true");
 			i += 2;
 		}
@@ -241,6 +297,88 @@ public class RouterControllerMetadataTest {
 		assertThat(storeResponse.getRecords()).hasSize(50);
 		ix = 0;
 		for (Row row : storeResponse.getRecords()) {
+			assertThat(row.getName()).startsWith("name: " + ix + ":20;en");
+			ix += 2;
+		}
+	}
+
+	@Test
+	public void testWithMetadataParameterOptionalDefaultValueEd() {
+		Map<String, Object> readRequest = new HashMap<String, Object>();
+		readRequest.put("query", "name");
+
+		Map<String, Object> metadata = new HashMap<String, Object>();
+		metadata.put("id", "10");
+
+		EdStoreResult storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderMetadata", "method5Ed", metadata,
+				EdStoreResult.class, readRequest);
+
+		assertThat(storeResponse.total()).isEqualTo(50L);
+		assertThat(storeResponse.records()).hasSize(50);
+		int ix = 0;
+		ObjectMapper om = new ObjectMapper();
+		for (Map<String, Object> m : (Collection<Map<String, Object>>) storeResponse
+				.records()) {
+			Row row = om.convertValue(m, Row.class);
+			assertThat(row.getName()).startsWith("name: " + ix + ":10;en");
+			ix += 2;
+		}
+
+		readRequest = new HashMap<String, Object>();
+		readRequest.put("query", "name");
+
+		storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderMetadata", "method5Ed", null, EdStoreResult.class,
+				readRequest);
+
+		assertThat(storeResponse.total()).isEqualTo(50L);
+		assertThat(storeResponse.records()).hasSize(50);
+		ix = 0;
+		for (Map<String, Object> m : (Collection<Map<String, Object>>) storeResponse
+				.records()) {
+			Row row = om.convertValue(m, Row.class);
+			assertThat(row.getName()).startsWith("name: " + ix + ":20;en");
+			ix += 2;
+		}
+	}
+
+	@Test
+	public void testWithMetadataParameterJava8OptionalDefaultValueEd() {
+		Map<String, Object> readRequest = new HashMap<String, Object>();
+		readRequest.put("query", "name");
+
+		Map<String, Object> metadata = new HashMap<String, Object>();
+		metadata.put("id", "10");
+
+		EdStoreResult storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderMetadata", "method6Ed", metadata,
+				EdStoreResult.class, readRequest);
+
+		assertThat(storeResponse.total()).isEqualTo(50L);
+		assertThat(storeResponse.records()).hasSize(50);
+		int ix = 0;
+		ObjectMapper om = new ObjectMapper();
+		for (Map<String, Object> m : (Collection<Map<String, Object>>) storeResponse
+				.records()) {
+			Row row = om.convertValue(m, Row.class);
+			assertThat(row.getName()).startsWith("name: " + ix + ":10;en");
+			ix += 2;
+		}
+
+		readRequest = new HashMap<String, Object>();
+		readRequest.put("query", "name");
+
+		storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderMetadata", "method6Ed", null, EdStoreResult.class,
+				readRequest);
+
+		assertThat(storeResponse.total()).isEqualTo(50L);
+		assertThat(storeResponse.records()).hasSize(50);
+		ix = 0;
+		for (Map<String, Object> m : (Collection<Map<String, Object>>) storeResponse
+				.records()) {
+			Row row = om.convertValue(m, Row.class);
 			assertThat(row.getName()).startsWith("name: " + ix + ":20;en");
 			ix += 2;
 		}

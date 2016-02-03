@@ -501,6 +501,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", Action.create("method3", 3));
 		remotingApi.addAction("remoteProviderSimple", Action.create("method5", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method6", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method6Ed", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method7", 1));
 		remotingApi.addAction("remoteProviderStoreModify", Action.create("update4", 1));
 		remotingApi.addAction("remoteProviderStoreModifyArray",
@@ -530,6 +531,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", Action.create("method3", 3));
 		remotingApi.addAction("remoteProviderSimple", Action.create("method5", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method6", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method6Ed", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method7", 1));
 		remotingApi.addAction("remoteProviderStoreModify", Action.create("update4", 1));
 		remotingApi.addAction("remoteProviderStoreModifyArray",
@@ -560,6 +562,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimple", Action.create("method5", 1));
 		remotingApi.addAction("remoteProviderSimple", Action.create("method9", 0));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method5", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method5Ed", 1));
 		remotingApi.addAction("remoteProviderStoreModify", Action.create("destroy", 1));
 		remotingApi.addAction("remoteProviderStoreModify",
 				Action.create("destroyNotBatched", 1, false));
@@ -660,8 +663,11 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method2", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method3", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method4", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method4Ed", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method5", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method6", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method5Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method6Ed", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method7", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method8", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method9", 1));
@@ -669,10 +675,19 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method11", 1));
 		remotingApi.addAction("remoteProviderStoreRead",
 				Action.create("method12", 1, false));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method8Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method9Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method10Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method11Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead",
+				Action.create("method12Ed", 1, false));
+
 		remotingApi.addAction("remoteProviderStoreRead",
 				Action.create("methodFilter", 1));
 		remotingApi.addAction("remoteProviderStoreRead",
 				Action.create("methodMetadata", 1));
+		remotingApi.addAction("remoteProviderStoreRead",
+				Action.create("methodMetadataEd", 1));
 
 		remotingApi.addAction("remoteProviderStoreModify", Action.create("create1", 1));
 		remotingApi.addAction("remoteProviderStoreModify", Action.create("create2", 1));
@@ -964,6 +979,10 @@ public class ApiControllerTest {
 				1, Collections.singletonList("mp"), null));
 		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method2",
 				1, Collections.singletonList("id"), null));
+		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method1Ed",
+				1, Collections.singletonList("mp"), null));
+		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method2Ed",
+				1, Collections.singletonList("id"), null));
 		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method3",
 				1, Collections.singletonList("id"), null));
 		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method4",
@@ -971,6 +990,10 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method5",
 				1, Collections.singletonList("id"), null));
 		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method6",
+				1, Collections.singletonList("id"), null));
+		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method5Ed",
+				1, Collections.singletonList("id"), null));
+		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("method6Ed",
 				1, Collections.singletonList("id"), null));
 		remotingApi.addAction("remoteProviderMetadata", Action.createTreeLoad("update1",
 				1, Collections.singletonList("id"), null));
@@ -1027,16 +1050,25 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method2", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method3", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method4", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method4Ed", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method8", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method9", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method10", 1));
 		remotingApi.addAction("remoteProviderStoreRead", Action.create("method11", 1));
 		remotingApi.addAction("remoteProviderStoreRead",
 				Action.create("method12", 1, false));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method8Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method9Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method10Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead", Action.create("method11Ed", 1));
+		remotingApi.addAction("remoteProviderStoreRead",
+				Action.create("method12Ed", 1, false));
 		remotingApi.addAction("remoteProviderStoreRead",
 				Action.create("methodFilter", 1));
 		remotingApi.addAction("remoteProviderStoreRead",
 				Action.create("methodMetadata", 1));
+		remotingApi.addAction("remoteProviderStoreRead",
+				Action.create("methodMetadataEd", 1));
 
 		remotingApi.addAction("remoteProviderStoreModify", Action.create("create1", 1));
 		remotingApi.addAction("remoteProviderStoreModify", Action.create("create2", 1));
