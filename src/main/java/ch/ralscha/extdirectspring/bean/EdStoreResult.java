@@ -105,7 +105,7 @@ public abstract class EdStoreResult extends JsonViewHint {
 
 		Builder success(Boolean success);
 
-		Builder metaData(Map<String, Object> metaData);
+		Builder metaData(Map<String, ? extends Object> metaData);
 
 		Builder message(String message);
 
