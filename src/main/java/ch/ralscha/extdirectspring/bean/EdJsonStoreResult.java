@@ -40,7 +40,7 @@ public abstract class EdJsonStoreResult extends JsonViewHint {
 
 	@Value.Parameter
 	@JsonSerialize(using = CollectionStringSerializer.class)
-	public abstract Collection<?> records();
+	public abstract Collection<String> records();
 
 	@Nullable
 	@Value.Parameter
@@ -58,32 +58,33 @@ public abstract class EdJsonStoreResult extends JsonViewHint {
 	@Value.Parameter
 	public abstract String message();
 
-	public static EdJsonStoreResult success(Object record) {
+	public static EdJsonStoreResult success(String record) {
 		return ImmutableEdJsonStoreResult.of(Collections.singletonList(record), null,
 				Boolean.TRUE, null, null);
 	}
 
-	public static EdJsonStoreResult success(Object[] records) {
+	public static EdJsonStoreResult success(String[] records) {
 		return ImmutableEdJsonStoreResult.of(Arrays.asList(records), null, Boolean.TRUE,
 				null, null);
 	}
 
-	public static EdJsonStoreResult success(Collection<?> records) {
+	public static EdJsonStoreResult success(Collection<String> records) {
 		return ImmutableEdJsonStoreResult.of(records, null, Boolean.TRUE, null, null);
 	}
 
-	public static EdJsonStoreResult success(Collection<?> records, Long total) {
+	public static EdJsonStoreResult success(Collection<String> records, Long total) {
 		return ImmutableEdJsonStoreResult.of(records, total, Boolean.TRUE, null, null);
 	}
 
-	public static EdJsonStoreResult success(Collection<?> records, Class<?> jsonView) {
+	public static EdJsonStoreResult success(Collection<String> records,
+			Class<?> jsonView) {
 		ImmutableEdJsonStoreResult result = ImmutableEdJsonStoreResult.of(records, null,
 				Boolean.TRUE, null, null);
 		result.setJsonView(jsonView);
 		return result;
 	}
 
-	public static EdJsonStoreResult success(Collection<?> records, Long total,
+	public static EdJsonStoreResult success(Collection<String> records, Long total,
 			Class<?> jsonView) {
 		ImmutableEdJsonStoreResult result = ImmutableEdJsonStoreResult.of(records, total,
 				Boolean.TRUE, null, null);
@@ -98,7 +99,7 @@ public abstract class EdJsonStoreResult extends JsonViewHint {
 	public interface Builder {
 		Builder total(Long total);
 
-		Builder records(Collection<?> records);
+		Builder records(Collection<String> records);
 
 		Builder success(Boolean success);
 
