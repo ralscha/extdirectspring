@@ -42,7 +42,7 @@ public class FileUploadController {
 	public void uploadTest(HttpServletRequest request,
 			@RequestParam("fileUpload") MultipartFile file,
 			final HttpServletResponse response, @Valid User user, BindingResult result)
-					throws IOException {
+			throws IOException {
 
 		ExtDirectResponseBuilder builder = new ExtDirectResponseBuilder(request,
 				response);

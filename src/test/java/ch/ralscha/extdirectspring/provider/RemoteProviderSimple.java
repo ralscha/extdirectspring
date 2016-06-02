@@ -68,7 +68,8 @@ public class RemoteProviderSimple {
 
 	@ExtDirectMethod(group = "group2,groupX")
 	public String method3(long i, Double d, String s, ExtDirectRequest directRequest) {
-		return String.format("method3() called-%d-%.1f-%s-%s", i, d, s, directRequest != null);
+		return String.format("method3() called-%d-%.1f-%s-%s", i, d, s,
+				directRequest != null);
 	}
 
 	@ExtDirectMethod(group = "group2,groupX")

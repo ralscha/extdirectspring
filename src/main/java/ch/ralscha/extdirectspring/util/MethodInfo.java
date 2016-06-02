@@ -172,7 +172,7 @@ public final class MethodInfo {
 
 			if (noOfClientParameters == 1 && Map.class.isAssignableFrom(parameterType)) {
 				this.action = Action.createNamed(method.getName(),
-						Collections.<String> emptyList(), Boolean.FALSE,
+						Collections.<String>emptyList(), Boolean.FALSE,
 						extDirectMethodAnnotation.batched());
 			}
 			else {

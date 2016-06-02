@@ -847,7 +847,7 @@ public class ApiControllerTest {
 				Action.createNamed(
 						"method10", Arrays.asList("flag", "aCharacter", "workflow",
 								"aInt", "aLong", "aDouble", "aFloat", "aShort", "aByte"),
-				null, null));
+						null, null));
 
 		remotingApi.addAction("remoteProviderSimpleNamed",
 				Action.createNamed("method11",
@@ -885,15 +885,15 @@ public class ApiControllerTest {
 				Action.createNamed("withRequestHeader", Arrays.asList("bd"), null, null));
 		remotingApi.addAction("remoteProviderSimpleNamed", Action.createNamed(
 				"withRequiredRequestHeader", Arrays.asList("bd"), null, null));
-		remotingApi.addAction("remoteProviderSimpleNamed", Action.createNamed(
-				"notBatched", Collections.<String> emptyList(), null, false));
+		remotingApi.addAction("remoteProviderSimpleNamed", Action
+				.createNamed("notBatched", Collections.<String>emptyList(), null, false));
 
 		remotingApi.addAction("remoteProviderSimpleNamed", Action.createNamed(
-				"nonStrictMethod1", Collections.<String> emptyList(), null, null));
+				"nonStrictMethod1", Collections.<String>emptyList(), null, null));
 		remotingApi.addAction("remoteProviderSimpleNamed", Action.createNamed(
-				"nonStrictMethod2", Collections.<String> emptyList(), null, null));
+				"nonStrictMethod2", Collections.<String>emptyList(), null, null));
 		remotingApi.addAction("remoteProviderSimpleNamed", Action.createNamed(
-				"nonStrictMethod3", Collections.<String> emptyList(), null, null));
+				"nonStrictMethod3", Collections.<String>emptyList(), null, null));
 
 		remotingApi.addPollingProvider(
 				new PollingProvider("pollProvider", "handleMessage1", "message1"));

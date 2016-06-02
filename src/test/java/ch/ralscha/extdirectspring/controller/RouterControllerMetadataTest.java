@@ -434,7 +434,7 @@ public class RouterControllerMetadataTest {
 
 	private static void executeUpdate(MockMvc mockMvc, String action, String method,
 			Map<String, Object> storeRequest, Map<String, Object> metadata)
-					throws Exception {
+			throws Exception {
 		String edRequest = ControllerUtil.createEdsRequest(action, method, false, 1,
 				storeRequest, metadata);
 

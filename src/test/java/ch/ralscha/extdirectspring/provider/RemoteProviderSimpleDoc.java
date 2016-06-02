@@ -30,45 +30,45 @@ public class RemoteProviderSimpleDoc {
 			author = "dbs", version = "0.1", deprecated = true,
 			returnMethod = @ExtDirectDocReturn(properties = { "success", "errors" },
 					descriptions = { "true for success, false otherwise",
-							"list of failed fields" }) ,
+							"list of failed fields" }),
 			parameters = @ExtDirectDocParameters(params = { "a", "b", "c", "d", "e" },
 					descriptions = { "property a integer", "property b string",
 							"property c string", "property d boolean",
-							"array of integers" }) ) )
+							"array of integers" })))
 	public String method1() {
 		return "nothing here";
 	}
 
 	@ExtDirectMethod(group = "doc",
-			documentation = @ExtDirectMethodDocumentation("method two doc") )
+			documentation = @ExtDirectMethodDocumentation("method two doc"))
 	public String method2() {
 		return "nothing here";
 	}
 
 	@ExtDirectMethod(group = "doc",
 			documentation = @ExtDirectMethodDocumentation(value = "method three doc",
-					author = "dbs") )
+					author = "dbs"))
 	public String method3() {
 		return "nothing here";
 	}
 
 	@ExtDirectMethod(group = "doc",
 			documentation = @ExtDirectMethodDocumentation(value = "method four doc",
-					author = "sr", version = "0.4") )
+					author = "sr", version = "0.4"))
 	public String method4() {
 		return "nothing here";
 	}
 
 	@ExtDirectMethod(group = "doc",
 			documentation = @ExtDirectMethodDocumentation(value = "method five doc",
-					author = "dbs", version = "0.5", deprecated = true) )
+					author = "dbs", version = "0.5", deprecated = true))
 	public String method5() {
 		return "nothing here";
 	}
 
 	@ExtDirectMethod(group = "doc",
 			documentation = @ExtDirectMethodDocumentation(value = "method six doc",
-					author = "sr", version = "0.6", deprecated = false) )
+					author = "sr", version = "0.6", deprecated = false))
 	public String method6() {
 		return "nothing here";
 	}
@@ -77,7 +77,7 @@ public class RemoteProviderSimpleDoc {
 			documentation = @ExtDirectMethodDocumentation(value = "method seven doc",
 					author = "sr", version = "0.7", deprecated = true,
 					returnMethod = @ExtDirectDocReturn(properties = "p1",
-							descriptions = "p1 desc") ) )
+							descriptions = "p1 desc")))
 	public String method7() {
 		return "nothing here";
 	}
@@ -86,7 +86,7 @@ public class RemoteProviderSimpleDoc {
 			documentation = @ExtDirectMethodDocumentation(value = "method eight doc",
 					author = "sr", version = "0.8", deprecated = false,
 					returnMethod = @ExtDirectDocReturn(properties = { "p1", "p2" },
-							descriptions = { "p1 desc", "p2 desc" }) ) )
+							descriptions = { "p1 desc", "p2 desc" })))
 	public String method8() {
 		return "nothing here";
 	}
@@ -95,18 +95,16 @@ public class RemoteProviderSimpleDoc {
 			documentation = @ExtDirectMethodDocumentation(value = "method nine doc",
 					author = "dbs", version = "0.9",
 					returnMethod = @ExtDirectDocReturn(properties = { "p1" },
-							descriptions = { "p1 desc", "p2 desc" }) ) )
+							descriptions = { "p1 desc", "p2 desc" })))
 	public String method9() {
 		return "nothing here";
 	}
 
-	@ExtDirectMethod(group = "doc",
-			documentation = @ExtDirectMethodDocumentation(value = "method ten doc",
-					author = "sr",
-					returnMethod = @ExtDirectDocReturn(properties = { "p1", "p2" },
-							descriptions = { "p1 desc", "p2 desc" }) ,
-					parameters = @ExtDirectDocParameters(params = "a",
-							descriptions = "a desc") ) )
+	@ExtDirectMethod(group = "doc", documentation = @ExtDirectMethodDocumentation(
+			value = "method ten doc", author = "sr",
+			returnMethod = @ExtDirectDocReturn(properties = { "p1", "p2" },
+					descriptions = { "p1 desc", "p2 desc" }),
+			parameters = @ExtDirectDocParameters(params = "a", descriptions = "a desc")))
 	public String method10() {
 		return "nothing here";
 	}
@@ -114,14 +112,14 @@ public class RemoteProviderSimpleDoc {
 	@ExtDirectMethod(group = "doc",
 			documentation = @ExtDirectMethodDocumentation(value = "method eleven doc",
 					parameters = @ExtDirectDocParameters(params = { "a", "b" },
-							descriptions = { "a desc", "b desc" }) ) )
+							descriptions = { "a desc", "b desc" })))
 	public String method11() {
 		return "nothing here";
 	}
 
 	@ExtDirectMethod(group = "doc", documentation = @ExtDirectMethodDocumentation(
 			value = "method twelve doc", author = "sr",
-			parameters = @ExtDirectDocParameters(params = { "a" }, descriptions = {}) ) )
+			parameters = @ExtDirectDocParameters(params = { "a" }, descriptions = {})))
 	public String method12() {
 		return "nothing here";
 	}

@@ -56,7 +56,7 @@ public class RawJsonControllerTest extends JettyTest {
 	@SuppressWarnings("unchecked")
 	private static void testAndCheck(String action, String method, Integer total,
 			boolean success)
-					throws IOException, JsonParseException, JsonMappingException {
+			throws IOException, JsonParseException, JsonMappingException {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		CloseableHttpResponse response = null;
 		try {

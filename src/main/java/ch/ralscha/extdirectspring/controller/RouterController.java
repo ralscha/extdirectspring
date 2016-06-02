@@ -106,7 +106,7 @@ public class RouterController {
 	public void poll(@PathVariable("beanName") String beanName,
 			@PathVariable("method") String method, @PathVariable("event") String event,
 			HttpServletRequest request, HttpServletResponse response, Locale locale)
-					throws Exception {
+			throws Exception {
 
 		ExtDirectPollResponse directPollResponse = new ExtDirectPollResponse();
 		directPollResponse.setName(event);
@@ -315,7 +315,7 @@ public class RouterController {
 
 	private void handleMethodCallsConcurrent(List<ExtDirectRequest> directRequests,
 			HttpServletRequest request, HttpServletResponse response, Locale locale)
-					throws IOException {
+			throws IOException {
 
 		List<Future<ExtDirectResponse>> futures = new ArrayList<Future<ExtDirectResponse>>(
 				directRequests.size());
@@ -369,7 +369,7 @@ public class RouterController {
 
 	private void handleMethodCallOne(ExtDirectRequest directRequest,
 			HttpServletRequest request, HttpServletResponse response, Locale locale)
-					throws IOException {
+			throws IOException {
 
 		ExtDirectResponse directResponse = handleMethodCall(directRequest, request,
 				response, locale);
@@ -383,7 +383,7 @@ public class RouterController {
 
 	private void handleMethodCallsSequential(List<ExtDirectRequest> directRequests,
 			HttpServletRequest request, HttpServletResponse response, Locale locale)
-					throws IOException {
+			throws IOException {
 		List<Object> directResponses = new ArrayList<Object>(directRequests.size());
 		boolean streamResponse = this.configurationService.getConfiguration()
 				.isStreamResponse();
@@ -536,7 +536,7 @@ public class RouterController {
 
 	public void writeJsonResponse(HttpServletRequest request,
 			HttpServletResponse response, Object responseObject, Class<?> jsonView)
-					throws IOException {
+			throws IOException {
 		writeJsonResponse(response, responseObject, jsonView,
 				this.configurationService.getConfiguration().isStreamResponse(),
 				ExtDirectSpringUtil.isMultipart(request));
@@ -550,7 +550,7 @@ public class RouterController {
 	@SuppressWarnings("resource")
 	public void writeJsonResponse(HttpServletResponse response, Object responseObject,
 			Class<?> jsonView, boolean streamResponse, boolean isMultipart)
-					throws IOException {
+			throws IOException {
 
 		ObjectMapper objectMapper = this.configurationService.getJsonHandler()
 				.getMapper();

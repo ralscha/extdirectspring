@@ -51,7 +51,7 @@ public class FormInfoController {
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public void upload(Locale locale, HttpServletRequest request,
 			HttpServletResponse response, FormInfo formInfo, BindingResult result)
-					throws IOException {
+			throws IOException {
 		ExtDirectResponseBuilder.create(request, response).addErrors(result)
 				.buildAndWrite();
 	}

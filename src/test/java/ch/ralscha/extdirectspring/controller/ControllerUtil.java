@@ -63,7 +63,7 @@ public class ControllerUtil {
 
 	public static ExtDirectPollResponse performPollRequest(MockMvc mockMvc, String bean,
 			String method, String event, Map<String, String> params, HttpHeaders headers)
-					throws Exception {
+			throws Exception {
 		return performPollRequest(mockMvc, bean, method, event, params, headers, null,
 				false);
 	}

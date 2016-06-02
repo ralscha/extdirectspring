@@ -283,7 +283,7 @@ public class SimpleServiceTest extends JettyTest2 {
 
 	private static void postToEcho(List<String> datas, List<String> expectedResult,
 			HttpClient client)
-					throws IOException, JsonParseException, JsonMappingException {
+			throws IOException, JsonParseException, JsonMappingException {
 
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 

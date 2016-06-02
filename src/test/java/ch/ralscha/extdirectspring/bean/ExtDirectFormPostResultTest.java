@@ -51,7 +51,7 @@ public class ExtDirectFormPostResultTest {
 
 	@Test
 	public void testExtDirectFormPostResultBindingResult() {
-		BindingResult br = new TestBindingResult(Collections.<FieldError> emptyList());
+		BindingResult br = new TestBindingResult(Collections.<FieldError>emptyList());
 		ExtDirectFormPostResult result = new ExtDirectFormPostResult(br);
 		assertThat(result.getResult()).hasSize(1)
 				.contains(MapEntry.entry("success", Boolean.TRUE));
@@ -69,7 +69,7 @@ public class ExtDirectFormPostResultTest {
 
 	@Test
 	public void testExtDirectFormPostResultBindingResultBoolean() {
-		BindingResult br = new TestBindingResult(Collections.<FieldError> emptyList());
+		BindingResult br = new TestBindingResult(Collections.<FieldError>emptyList());
 		ExtDirectFormPostResult result = new ExtDirectFormPostResult(br, false);
 		assertThat(result.getResult()).hasSize(1)
 				.contains(MapEntry.entry("success", Boolean.FALSE));

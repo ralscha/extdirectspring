@@ -295,7 +295,7 @@ public class ApiControllerWithDocumentationTest {
 			Pattern.MULTILINE);
 
 	private static ActionDoc getCommentForMethod(String apiString, String method) {
-		ActionDoc doc = new ActionDoc(method, Collections.<String> emptyList());
+		ActionDoc doc = new ActionDoc(method, Collections.<String>emptyList());
 
 		String block = findCommentBlock(apiString, method);
 		if (block != null) {

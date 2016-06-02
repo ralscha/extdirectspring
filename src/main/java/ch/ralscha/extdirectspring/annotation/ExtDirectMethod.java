@@ -88,8 +88,7 @@ public @interface ExtDirectMethod {
 	 * <p/>
 	 * Defaults to no documentation.
 	 */
-	ExtDirectMethodDocumentation documentation() default @ExtDirectMethodDocumentation
-	;
+	ExtDirectMethodDocumentation documentation() default @ExtDirectMethodDocumentation;
 
 	/**
 	 * (Optional) Specifies a JSON View (filter) that Jackson uses to serialize the
