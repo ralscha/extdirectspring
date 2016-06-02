@@ -103,13 +103,13 @@ public class RouterControllerSimpleTest {
 	@Test
 	public void testWithParameters() {
 		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method3",
-				"method3() called-1-3.1-requestParameter", 1, 3.1, "requestParameter");
+				"method3() called-1-3.1-requestParameter-true", 1, 3.1, "requestParameter");
 	}
 
 	@Test
 	public void testWithParametersWithTypeConversion() {
 		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method3",
-				"method3() called-10-4.2-20", "10", "4.2", 20);
+				"method3() called-10-4.2-20-true", "10", "4.2", 20);
 	}
 
 	@Test

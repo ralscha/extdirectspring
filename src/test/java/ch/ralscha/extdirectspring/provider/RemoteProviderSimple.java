@@ -46,6 +46,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 
 @Service
 @SuppressWarnings("unused")
@@ -66,8 +67,8 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod(group = "group2,groupX")
-	public String method3(long i, Double d, String s) {
-		return String.format("method3() called-%d-%.1f-%s", i, d, s);
+	public String method3(long i, Double d, String s, ExtDirectRequest directRequest) {
+		return String.format("method3() called-%d-%.1f-%s-%s", i, d, s, directRequest != null);
 	}
 
 	@ExtDirectMethod(group = "group2,groupX")

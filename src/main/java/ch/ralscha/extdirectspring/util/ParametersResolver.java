@@ -112,7 +112,7 @@ public final class ParametersResolver {
 
 				if (methodParameter.isSupportedParameter()) {
 					parameters[paramIndex] = SupportedParameters.resolveParameter(
-							methodParameter.getType(), request, response, locale);
+							methodParameter.getType(), request, response, locale, null);
 				}
 				else if (methodParameter.hasRequestHeaderAnnotation()) {
 					parameters[paramIndex] = resolveRequestHeader(request,
@@ -246,7 +246,7 @@ public final class ParametersResolver {
 
 				if (methodParameter.isSupportedParameter()) {
 					parameters[paramIndex] = SupportedParameters.resolveParameter(
-							methodParameter.getType(), request, response, locale);
+							methodParameter.getType(), request, response, locale, directRequest);
 				}
 				else if (ExtDirectStoreReadRequest.class
 						.isAssignableFrom(methodParameter.getType())) {
