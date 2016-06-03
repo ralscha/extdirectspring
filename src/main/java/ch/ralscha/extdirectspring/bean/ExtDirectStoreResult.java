@@ -46,7 +46,6 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 		// default constructor
 	}
 
-	@SuppressWarnings("unchecked")
 	public ExtDirectStoreResult(T record) {
 		this((Long) null, Arrays.asList(record), Boolean.TRUE, null);
 	}

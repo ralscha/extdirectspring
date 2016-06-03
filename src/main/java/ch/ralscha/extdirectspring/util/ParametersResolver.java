@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.util;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -49,6 +50,7 @@ import org.springframework.web.util.WebUtils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
@@ -456,7 +458,8 @@ public final class ParametersResolver {
 
 	private Object convertValue(Object value, ParameterInfo methodParameter) {
 		if (value != null) {
-			if (methodParameter.getType().equals(value.getClass())) {
+			Class<?> rawType = methodParameter.getType();
+			if (rawType.equals(value.getClass())) {
 				return value;
 			}
 			else if (this.conversionService.canConvert(TypeDescriptor.forObject(value),
@@ -473,11 +476,26 @@ public final class ParametersResolver {
 					TypeFactory typeFactory = this.jsonHandler.getMapper()
 							.getTypeFactory();
 					if (methodParameter.getTypeDescriptor().isCollection()) {
-						JavaType type = CollectionType
-								.construct(methodParameter.getType(),
-										typeFactory.constructType(methodParameter
-												.getTypeDescriptor()
-												.getElementTypeDescriptor().getType()));
+
+						JavaType elemType = typeFactory
+								.constructType(methodParameter.getTypeDescriptor()
+										.getElementTypeDescriptor().getType());
+						TypeVariable<?>[] vars = rawType.getTypeParameters();
+						TypeBindings bindings;
+						if ((vars == null) || (vars.length != 1)) {
+							bindings = TypeBindings.emptyBindings();
+						}
+						else {
+							bindings = TypeBindings.create(rawType, elemType);
+						}
+						JavaType superClass = null;
+						Class<?> parent = rawType.getSuperclass();
+						if (parent != null) {
+							superClass = TypeFactory.unknownType();
+						}
+
+						JavaType type = CollectionType.construct(rawType, bindings,
+								superClass, null, elemType);
 						return this.jsonHandler.convertValue(value, type);
 					}
 					else if (methodParameter.getTypeDescriptor().isArray()) {
@@ -491,7 +509,7 @@ public final class ParametersResolver {
 				}
 			}
 			else {
-				return this.jsonHandler.convertValue(value, methodParameter.getType());
+				return this.jsonHandler.convertValue(value, rawType);
 			}
 
 		}

@@ -24,13 +24,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.MethodIntrospector;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils.MethodFilter;
 import org.springframework.util.StringUtils;
-import org.springframework.web.method.HandlerMethodSelector;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
@@ -66,7 +66,7 @@ public class MethodRegistrar
 			Class<?> handlerType = context.getType(beanName);
 			final Class<?> userType = ClassUtils.getUserClass(handlerType);
 
-			Set<Method> methods = HandlerMethodSelector.selectMethods(userType,
+			Set<Method> methods = MethodIntrospector.selectMethods(userType,
 					new MethodFilter() {
 						@Override
 						public boolean matches(Method method) {

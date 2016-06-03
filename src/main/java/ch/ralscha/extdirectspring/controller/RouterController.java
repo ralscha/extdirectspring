@@ -557,7 +557,7 @@ public class RouterController {
 
 		if (isMultipart) {
 			response.setContentType(RouterController.TEXT_HTML.toString());
-			response.setCharacterEncoding(RouterController.TEXT_HTML.getCharSet().name());
+			response.setCharacterEncoding(RouterController.TEXT_HTML.getCharset().name());
 
 			ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
 			bos.write(
@@ -591,7 +591,7 @@ public class RouterController {
 		else {
 
 			response.setContentType(APPLICATION_JSON.toString());
-			response.setCharacterEncoding(APPLICATION_JSON.getCharSet().name());
+			response.setCharacterEncoding(APPLICATION_JSON.getCharset().name());
 
 			ServletOutputStream outputStream = response.getOutputStream();
 

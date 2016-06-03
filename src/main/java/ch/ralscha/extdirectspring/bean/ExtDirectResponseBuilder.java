@@ -104,7 +104,7 @@ public class ExtDirectResponseBuilder {
 		unsuccessful();
 
 		WebApplicationContext ctx = RequestContextUtils
-				.getWebApplicationContext(this.request);
+				.findWebApplicationContext(this.request);
 		Configuration configuration;
 		try {
 			configuration = ctx.getBean(Configuration.class);
@@ -238,7 +238,7 @@ public class ExtDirectResponseBuilder {
 
 		try {
 			RouterController routerController = RequestContextUtils
-					.getWebApplicationContext(this.request)
+					.findWebApplicationContext(this.request)
 					.getBean(RouterController.class);
 
 			routerController.writeJsonResponse(this.request, this.response,

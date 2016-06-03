@@ -124,7 +124,7 @@ public class ApiController {
 		else {
 			response.setContentType(RouterController.APPLICATION_JSON.toString());
 			response.setCharacterEncoding(
-					RouterController.APPLICATION_JSON.getCharSet().name());
+					RouterController.APPLICATION_JSON.getCharset().name());
 
 			String requestUrlString = request.getRequestURL().toString();
 
