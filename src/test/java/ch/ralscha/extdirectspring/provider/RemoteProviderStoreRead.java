@@ -476,7 +476,7 @@ public class RemoteProviderStoreRead {
 
 		}
 
-		Builder builder = EdStoreResult.builder().records(rows)
+		Builder<Row> builder = EdStoreResult.<Row>builder().records(rows)
 				.total(Long.valueOf(totalSize)).message(message);
 		if (metaData != null) {
 			return builder.metaData(metaData.getMetaData()).build();

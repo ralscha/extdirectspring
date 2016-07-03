@@ -40,10 +40,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonPropertyOrder(value = { "metaData", "success", "total", "records", "message" })
 @Value.Style(visibility = ImplementationVisibility.PACKAGE)
 @Value.Immutable
-public abstract class EdStoreResult extends JsonViewHint {
+public abstract class EdStoreResult<T> extends JsonViewHint {
 
 	@Value.Parameter
-	public abstract Collection<?> records();
+	public abstract Collection<T> records();
 
 	@Nullable
 	@Value.Parameter
@@ -61,55 +61,45 @@ public abstract class EdStoreResult extends JsonViewHint {
 	@Value.Parameter
 	public abstract String message();
 
-	public static EdStoreResult success(Object record) {
+	public static <T> EdStoreResult<T> success(T record) {
 		return ImmutableEdStoreResult.of(Collections.singletonList(record), null,
 				Boolean.TRUE, null, null);
 	}
 
-	public static EdStoreResult success(Object[] records) {
+	public static <T> EdStoreResult<T> success(T[] records) {
 		return ImmutableEdStoreResult.of(Arrays.asList(records), null, Boolean.TRUE, null,
 				null);
 	}
 
-	public static EdStoreResult success(Collection<?> records) {
+	public static <T> EdStoreResult<T> success(Collection<T> records) {
 		return ImmutableEdStoreResult.of(records, null, Boolean.TRUE, null, null);
 	}
 
-	public static EdStoreResult success(Collection<?> records, Long total) {
+	public static <T> EdStoreResult<T> success(Collection<T> records, Long total) {
 		return ImmutableEdStoreResult.of(records, total, Boolean.TRUE, null, null);
 	}
 
-	public static EdStoreResult success(Collection<?> records, Class<?> jsonView) {
-		ImmutableEdStoreResult result = ImmutableEdStoreResult.of(records, null,
+	public static <T> EdStoreResult<T> success(Collection<T> records, Class<?> jsonView) {
+		ImmutableEdStoreResult<T> result = ImmutableEdStoreResult.of(records, null,
 				Boolean.TRUE, null, null);
 		result.setJsonView(jsonView);
 		return result;
 	}
 
-	public static EdStoreResult success(Collection<?> records, Long total,
+	public static <T> EdStoreResult<T> success(Collection<T> records, Long total,
 			Class<?> jsonView) {
-		ImmutableEdStoreResult result = ImmutableEdStoreResult.of(records, total,
+		ImmutableEdStoreResult<T> result = ImmutableEdStoreResult.of(records, total,
 				Boolean.TRUE, null, null);
 		result.setJsonView(jsonView);
 		return result;
 	}
 
-	public static Builder builder() {
-		return ImmutableEdStoreResult.builder();
+	public static <T> Builder<T> builder() {
+		return new Builder<T>();
 	}
 
-	public interface Builder {
-		Builder total(Long total);
-
-		Builder records(Collection<?> records);
-
-		Builder success(Boolean success);
-
-		Builder metaData(Map<String, ? extends Object> metaData);
-
-		Builder message(String message);
-
-		EdStoreResult build();
+	public static final class Builder<T> extends ImmutableEdStoreResult.Builder<T> {
+		// nothing here
 	}
 
 }

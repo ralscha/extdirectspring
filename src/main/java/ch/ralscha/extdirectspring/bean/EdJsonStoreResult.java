@@ -93,21 +93,11 @@ public abstract class EdJsonStoreResult extends JsonViewHint {
 	}
 
 	public static Builder builder() {
-		return ImmutableEdJsonStoreResult.builder();
+		return new Builder();
 	}
 
-	public interface Builder {
-		Builder total(Long total);
-
-		Builder records(Collection<String> records);
-
-		Builder success(Boolean success);
-
-		Builder metaData(MetaData metaData);
-
-		Builder message(String message);
-
-		EdJsonStoreResult build();
+	public static final class Builder extends ImmutableEdJsonStoreResult.Builder {
+		// nothing here
 	}
 
 	public final static class CollectionStringSerializer
