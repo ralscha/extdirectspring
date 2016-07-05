@@ -19,7 +19,7 @@ ExtDirectSpring is available from the Central Maven Repository.
     <dependency>
       <groupId>ch.ralscha</groupId>
       <artifactId>extdirectspring</artifactId>
-      <version>1.6.1</version>
+      <version>1.7.0</version>
     </dependency>
 ```
 
@@ -30,6 +30,7 @@ The official Sencha [Ext.Direct forum](http://www.sencha.com/forum/forumdisplay.
 
 
 ##Minimal Requirements
+  * 1.7.0: Spring 4.3.1, Servlet 3.0, Jackson 2.8, Java 1.6
   * 1.6.1: Spring 4.2.0, Servlet 3.0, Jackson 2.6, Java 1.6
   * 1.5.2: Spring 4.1.2, Servlet 3.0, Jackson 2.5, Java 1.6
   * 1.4.3: Spring 4.0.0, Servlet 3.0, Java 1.6
