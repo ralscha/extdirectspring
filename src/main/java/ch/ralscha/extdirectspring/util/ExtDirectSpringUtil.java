@@ -205,6 +205,8 @@ public final class ExtDirectSpringUtil {
 		String ifNoneMatch = request.getHeader("If-None-Match");
 		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + "\"";
 
+		addCacheHeaders(response, etag, 6);
+		
 		if (etag.equals(ifNoneMatch)) {
 			response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
 			return;
@@ -212,8 +214,6 @@ public final class ExtDirectSpringUtil {
 
 		response.setContentType(contentType);
 		response.setContentLength(data.length);
-
-		addCacheHeaders(response, etag, 6);
 
 		@SuppressWarnings("resource")
 		ServletOutputStream out = response.getOutputStream();
