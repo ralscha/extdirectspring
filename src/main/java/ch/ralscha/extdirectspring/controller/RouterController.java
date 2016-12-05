@@ -377,8 +377,20 @@ public class RouterController {
 				.isStreamResponse() || directResponse.isStreamResponse();
 		Class<?> jsonView = directResponse.getJsonView();
 
-		writeJsonResponse(response, Collections.singleton(directResponse), jsonView,
-				streamResponse);
+		Object responseObject;
+		if (jsonView == null) {
+			responseObject = Collections.singleton(directResponse);
+		}
+		else {
+			ObjectMapper objectMapper = this.configurationService.getJsonHandler()
+					.getMapper();
+			String jsonResult = objectMapper.writerWithView(jsonView)
+					.writeValueAsString(directResponse.getResult());
+			responseObject = Collections
+					.singleton(new ExtDirectResponseRaw(directResponse, jsonResult));
+		}
+
+		writeJsonResponse(response, responseObject, null, streamResponse);
 	}
 
 	private void handleMethodCallsSequential(List<ExtDirectRequest> directRequests,
