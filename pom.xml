@@ -57,7 +57,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
-				<version>4.3.4.RELEASE</version>
+				<version>4.3.5.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -281,7 +281,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>5.2.5.Final</version>
+			<version>5.2.6.Final</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -510,7 +510,7 @@
 					<properties>
 						<owner>Ralph Schaer</owner>
 						<year>${project.inceptionYear}</year>
-						<currentYear>2016</currentYear>
+						<currentYear>2017</currentYear>
 						<email>ralphschaer@gmail.com</email>
 					</properties>
 					<excludes>
