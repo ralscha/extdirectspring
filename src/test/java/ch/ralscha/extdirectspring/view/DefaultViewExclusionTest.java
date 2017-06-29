@@ -70,7 +70,7 @@ public class DefaultViewExclusionTest {
 		assertThat(result).contains(expectedEntries);
 	}
 
-	private MapEntry[] noView() {
+	private static MapEntry[] noView() {
 		return new MapEntry[] { MapEntry.entry("id", 1),
 				MapEntry.entry("firstName", "firstName"),
 				MapEntry.entry("lastName", "lastName"), MapEntry.entry("phone", "phone"),
@@ -78,7 +78,7 @@ public class DefaultViewExclusionTest {
 				MapEntry.entry("secretKey", "mySecret") };
 	}
 
-	private MapEntry[] summaryView() {
+	private static MapEntry[] summaryView() {
 		return new MapEntry[] { MapEntry.entry("firstName", "firstName"),
 				MapEntry.entry("lastName", "lastName") };
 	}

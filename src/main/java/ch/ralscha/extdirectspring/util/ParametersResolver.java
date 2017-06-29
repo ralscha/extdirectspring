@@ -482,7 +482,7 @@ public final class ParametersResolver {
 										.getElementTypeDescriptor().getType());
 						TypeVariable<?>[] vars = rawType.getTypeParameters();
 						TypeBindings bindings;
-						if ((vars == null) || (vars.length != 1)) {
+						if (vars == null || vars.length != 1) {
 							bindings = TypeBindings.emptyBindings();
 						}
 						else {

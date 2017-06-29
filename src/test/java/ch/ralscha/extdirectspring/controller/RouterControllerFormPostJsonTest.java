@@ -76,7 +76,6 @@ public class RouterControllerFormPostJsonTest {
 		this.mockMvc.perform(request).andExpect(status().isOk());
 	}
 
-	@SuppressWarnings({ "null" })
 	@Test
 	public void testCallFormPostMethod() throws Exception {
 
@@ -95,9 +94,11 @@ public class RouterControllerFormPostJsonTest {
 		}
 		catch (JsonProcessingException e) {
 			fail("perform post to /router" + e.getMessage());
+			return;
 		}
 		catch (Exception e) {
 			fail("perform post to /router" + e.getMessage());
+			return;
 		}
 
 		List<ExtDirectResponse> responses = ControllerUtil
@@ -135,9 +136,11 @@ public class RouterControllerFormPostJsonTest {
 		}
 		catch (JsonProcessingException e) {
 			fail("perform post to /router" + e.getMessage());
+			return;
 		}
 		catch (Exception e) {
 			fail("perform post to /router" + e.getMessage());
+			return;
 		}
 
 		List<ExtDirectResponse> responses = ControllerUtil
@@ -174,7 +177,6 @@ public class RouterControllerFormPostJsonTest {
 		this.mockMvc.perform(request).andExpect(status().isOk());
 	}
 
-	@SuppressWarnings({ "null" })
 	@Test
 	public void testCallFormPostMethodEd() throws Exception {
 
@@ -193,9 +195,11 @@ public class RouterControllerFormPostJsonTest {
 		}
 		catch (JsonProcessingException e) {
 			fail("perform post to /router" + e.getMessage());
+			return;
 		}
 		catch (Exception e) {
 			fail("perform post to /router" + e.getMessage());
+			return;
 		}
 
 		List<ExtDirectResponse> responses = ControllerUtil
@@ -218,7 +222,7 @@ public class RouterControllerFormPostJsonTest {
 				entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
 	}
 
-	@SuppressWarnings({ "unchecked", "null", "rawtypes" })
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testCallFormPostMethodErrorEd() throws Exception {
 
@@ -233,9 +237,11 @@ public class RouterControllerFormPostJsonTest {
 		}
 		catch (JsonProcessingException e) {
 			fail("perform post to /router" + e.getMessage());
+			return;
 		}
 		catch (Exception e) {
 			fail("perform post to /router" + e.getMessage());
+			return;
 		}
 
 		List<ExtDirectResponse> responses = ControllerUtil

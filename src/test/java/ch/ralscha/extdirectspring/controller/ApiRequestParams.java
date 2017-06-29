@@ -17,29 +17,29 @@ package ch.ralscha.extdirectspring.controller;
 
 public class ApiRequestParams {
 
-	private ApiRequestParams() {
+	ApiRequestParams() {
 		// this is private
 	}
 
-	private String apiNs;
+	String apiNs;
 
-	private String actionNs;
+	String actionNs;
 
-	private String remotingApiVar;
+	String remotingApiVar;
 
-	private String pollingUrlsVar;
+	String pollingUrlsVar;
 
-	private String group;
+	String group;
 
-	private Boolean fullRouterUrl;
+	Boolean fullRouterUrl;
 
-	private String baseRouterUrl;
+	String baseRouterUrl;
 
-	private String format;
+	String format;
 
-	private String providerType;
+	String providerType;
 
-	private Configuration configuration;
+	Configuration configuration;
 
 	public static Builder builder() {
 		return new Builder();

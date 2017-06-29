@@ -1416,7 +1416,7 @@ public class ApiControllerTest {
 		}
 	}
 
-	@SuppressWarnings({ "null", "unchecked" })
+	@SuppressWarnings("unchecked")
 	public static void compare(List<Action> expectedActions,
 			List<Map<String, Object>> actions) {
 		assertThat(actions).hasSize(expectedActions.size());
@@ -1429,6 +1429,12 @@ public class ApiControllerTest {
 				}
 			}
 			assertThat(action).isNotNull();
+
+			// make eclipse happy
+			if (action == null) {
+				return;
+			}
+
 			assertThat(action.get("name")).isEqualTo(expectedAction.getName());
 			assertThat(action.get("len")).isEqualTo(expectedAction.getLen());
 
@@ -1454,6 +1460,10 @@ public class ApiControllerTest {
 					|| params == null && expectedAction.getParams() == null);
 
 			if (expectedAction.getParams() != null) {
+				if (params == null) {
+					fail("params is null");
+					return;
+				}
 				assertThat(params).hasSize(expectedAction.getParams().size());
 				for (String param : expectedAction.getParams()) {
 					assertThat(params.contains(param)).isTrue();
@@ -1462,10 +1472,10 @@ public class ApiControllerTest {
 		}
 	}
 
-	@SuppressWarnings("null")
 	public static int assertContains(String extNsLine, String[] lines) {
 		if (lines == null) {
 			fail("no lines");
+			return -1;
 		}
 
 		int lineCount = 0;
@@ -1479,10 +1489,10 @@ public class ApiControllerTest {
 		return -1;
 	}
 
-	@SuppressWarnings("null")
 	public static void assertDoesNotContains(String extNsLine, String[] lines) {
 		if (lines == null) {
 			fail("no lines");
+			return;
 		}
 
 		for (String line : lines) {

@@ -15,6 +15,8 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
+import javax.annotation.Nullable;
+
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 

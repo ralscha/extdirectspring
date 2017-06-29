@@ -20,6 +20,9 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DefaultViewExclusionObjectMapper extends ObjectMapper {
+
+	private static final long serialVersionUID = 1L;
+
 	public DefaultViewExclusionObjectMapper() {
 		super();
 

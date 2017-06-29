@@ -206,7 +206,7 @@ public final class ExtDirectSpringUtil {
 		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + "\"";
 
 		addCacheHeaders(response, etag, 6);
-		
+
 		if (etag.equals(ifNoneMatch)) {
 			response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
 			return;

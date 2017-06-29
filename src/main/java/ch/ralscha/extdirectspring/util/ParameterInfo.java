@@ -132,8 +132,8 @@ public final class ParameterInfo {
 				this.hasCookieValueAnnotation = true;
 				break;
 			}
-			else if (paramAnn.annotationType().getName()
-					.equals("org.springframework.security.web.bind.annotation.AuthenticationPrincipal")
+			else if (paramAnn.annotationType().getName().equals(
+					"org.springframework.security.web.bind.annotation.AuthenticationPrincipal")
 					|| paramAnn.annotationType().getName().equals(
 							"org.springframework.security.core.annotation.AuthenticationPrincipal")) {
 				this.hasAuthenticationPrincipalAnnotation = (Boolean) AnnotationUtils
@@ -180,7 +180,8 @@ public final class ParameterInfo {
 
 	public boolean authenticationPrincipalAnnotationErrorOnInvalidType() {
 		return this.hasAuthenticationPrincipalAnnotation != null
-				? this.hasAuthenticationPrincipalAnnotation : false;
+				? this.hasAuthenticationPrincipalAnnotation
+				: false;
 	}
 
 	public boolean isRequired() {

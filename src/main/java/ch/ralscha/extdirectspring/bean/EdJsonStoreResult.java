@@ -20,6 +20,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+import javax.annotation.Nullable;
+
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
