@@ -572,13 +572,22 @@ public final class ParametersResolver {
 				to.setSorters(sorters);
 				foundParameters.add(key);
 			}
-			else if (key.equals("group") && value != null && value instanceof List) {
+			else if (key.equals("group") && value != null
+					&& (value instanceof List || value instanceof Map)) {
 				List<GroupInfo> groups = new ArrayList<GroupInfo>();
-				@SuppressWarnings("unchecked")
-				List<Map<String, Object>> rawGroups = (List<Map<String, Object>>) value;
 
-				for (Map<String, Object> aRawGroupInfo : rawGroups) {
-					groups.add(GroupInfo.create(aRawGroupInfo));
+				if (value instanceof Map) {
+					@SuppressWarnings("unchecked")
+					Map<String, Object> rawGroup = (Map<String, Object>) value;
+					groups.add(GroupInfo.create(rawGroup));
+				}
+				else {
+					@SuppressWarnings("unchecked")
+					List<Map<String, Object>> rawGroups = (List<Map<String, Object>>) value;
+
+					for (Map<String, Object> aRawGroupInfo : rawGroups) {
+						groups.add(GroupInfo.create(aRawGroupInfo));
+					}
 				}
 
 				to.setGroups(groups);

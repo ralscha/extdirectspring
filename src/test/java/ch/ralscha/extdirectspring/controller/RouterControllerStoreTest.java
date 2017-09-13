@@ -277,6 +277,24 @@ public class RouterControllerStoreTest {
 
 		storeRead = new LinkedHashMap<String, Object>();
 		storeRead.put("query", "");
+		groupInfo = new LinkedHashMap<String, Object>();
+		groupInfo.put("property", "id");
+		groupInfo.put("direction", "ASC");
+		storeRead.put("group", groupInfo);
+		storeRead.put("limit", "10");
+		storeRead.put("start", "10");
+		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
+
+		assertThat(storeResponse.getTotal()).isEqualTo(100L);
+		assertThat(storeResponse.getRecords()).hasSize(10);
+		id = 10;
+		for (Row row : storeResponse.getRecords()) {
+			assertThat(row.getId()).isEqualTo(id);
+			id++;
+		}
+
+		storeRead = new LinkedHashMap<String, Object>();
+		storeRead.put("query", "");
 		groups = new ArrayList<Map<String, Object>>();
 		groupInfo = new LinkedHashMap<String, Object>();
 		groupInfo.put("property", "id");
