@@ -46,7 +46,7 @@
 	</scm>
 
 	<properties>
-		<jackson.version>2.9.0</jackson.version>
+		<jackson.version>2.9.1</jackson.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -55,7 +55,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
-				<version>4.3.10.RELEASE</version>
+				<version>4.3.11.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
