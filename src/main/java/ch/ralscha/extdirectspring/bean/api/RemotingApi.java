@@ -17,7 +17,6 @@ package ch.ralscha.extdirectspring.bean.api;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +54,8 @@ public final class RemotingApi {
 	public RemotingApi(String type, String url, String namespace) {
 		this.type = type;
 		this.descriptor = null;
-		this.actions = new HashMap<String, List<Action>>();
-		this.pollingProviders = new ArrayList<PollingProvider>();
+		this.actions = new HashMap<>();
+		this.pollingProviders = new ArrayList<>();
 
 		this.url = url;
 
@@ -69,26 +68,18 @@ public final class RemotingApi {
 	}
 
 	public void sort() {
-		this.actions = new TreeMap<String, List<Action>>(this.actions);
+		this.actions = new TreeMap<>(this.actions);
 
 		for (List<Action> action : this.actions.values()) {
-			Collections.sort(action, new Comparator<Action>() {
-				@Override
-				public int compare(Action o1, Action o2) {
-					return o1.getName().compareTo(o2.getName());
-				}
-			});
+			Collections.sort(action, (o1, o2) -> o1.getName().compareTo(o2.getName()));
 		}
 
-		Collections.sort(this.pollingProviders, new Comparator<PollingProvider>() {
-			@Override
-			public int compare(PollingProvider o1, PollingProvider o2) {
-				int c = o1.getBeanName().compareTo(o2.getBeanName());
-				if (c == 0) {
-					return o1.getMethod().compareTo(o2.getMethod());
-				}
-				return c;
+		Collections.sort(this.pollingProviders, (o1, o2) -> {
+			int c = o1.getBeanName().compareTo(o2.getBeanName());
+			if (c == 0) {
+				return o1.getMethod().compareTo(o2.getMethod());
 			}
+			return c;
 		});
 	}
 
@@ -156,7 +147,7 @@ public final class RemotingApi {
 	public void addAction(String beanName, Action action) {
 		List<Action> beanActions = this.actions.get(beanName);
 		if (beanActions == null) {
-			beanActions = new ArrayList<Action>();
+			beanActions = new ArrayList<>();
 			this.actions.put(beanName, beanActions);
 		}
 		beanActions.add(action);

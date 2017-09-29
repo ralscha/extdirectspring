@@ -95,7 +95,7 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollRequiredArgument() throws Exception {
-		Map<String, String> params = new LinkedHashMap<String, String>();
+		Map<String, String> params = new LinkedHashMap<>();
 		params.put("id", "2");
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
@@ -125,7 +125,7 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollDefaultValueArgumentWithRequestParameter() throws Exception {
-		Map<String, String> params = new LinkedHashMap<String, String>();
+		Map<String, String> params = new LinkedHashMap<>();
 		params.put("id", "7");
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
@@ -153,7 +153,7 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollNotRequiredArgumentWithRequestParameter() throws Exception {
-		Map<String, String> params = new LinkedHashMap<String, String>();
+		Map<String, String> params = new LinkedHashMap<>();
 		params.put("id", "3");
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
@@ -199,7 +199,7 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollRequiredHeaderWithValue() throws Exception {
-		Map<String, String> params = new LinkedHashMap<String, String>();
+		Map<String, String> params = new LinkedHashMap<>();
 		params.put("id", "1");
 
 		HttpHeaders headers = new HttpHeaders();
@@ -331,7 +331,7 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollMultipleHeaders2() throws Exception {
-		Map<String, String> params = new LinkedHashMap<String, String>();
+		Map<String, String> params = new LinkedHashMap<>();
 		params.put("id", "33");
 
 		HttpHeaders headers = new HttpHeaders();
@@ -352,7 +352,7 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollMultipleHeaders3() throws Exception {
-		Map<String, String> params = new LinkedHashMap<String, String>();
+		Map<String, String> params = new LinkedHashMap<>();
 		params.put("id", "44");
 
 		HttpHeaders headers = new HttpHeaders();
@@ -395,7 +395,7 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollRequiredCookieWithoutValue() throws Exception {
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("cookie", "cookieValue"));
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
@@ -412,10 +412,10 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollRequiredCookieWithValue() throws Exception {
-		Map<String, String> params = new LinkedHashMap<String, String>();
+		Map<String, String> params = new LinkedHashMap<>();
 		params.put("id", "1");
 
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("cookie", "cookieValue"));
 		cookies.add(new Cookie("anotherName", "cookieValue1"));
 		cookies.add(new Cookie("anotherName", "cookieValue2"));
@@ -446,7 +446,7 @@ public class RouterControllerPollTest {
 
 		params.clear();
 		params.put("id", "3");
-		cookies = new ArrayList<Cookie>();
+		cookies = new ArrayList<>();
 		cookies.add(new Cookie("cookie", "cookieValue"));
 		resp = ControllerUtil.performPollRequest(this.mockMvc, "pollProvider",
 				"messageCookieValue2", "messageCookieValue2", params, null, cookies,
@@ -462,7 +462,7 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollRequiredCookieWithValueAndDefault1() throws Exception {
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("cookie", "cookieValue"));
 		cookies.add(new Cookie("anotherName", "cookieValue1"));
 
@@ -494,7 +494,7 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollOptionalCookieWithoutValueAndDefault1() throws Exception {
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("cookie", "cookieValue"));
 		cookies.add(new Cookie("anotherName", "cookieValue1"));
 
@@ -528,7 +528,7 @@ public class RouterControllerPollTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("requestHeader", "aRequestHeader");
 
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("last", "lastCookie"));
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
@@ -548,10 +548,10 @@ public class RouterControllerPollTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("requestHeader", "aRequestHeader");
 
-		Map<String, String> params = new LinkedHashMap<String, String>();
+		Map<String, String> params = new LinkedHashMap<>();
 		params.put("id", "33");
 
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("last", "lastCookie"));
 		cookies.add(new Cookie("cookie2", "2ndCookie"));
 
@@ -573,10 +573,10 @@ public class RouterControllerPollTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("requestHeader", "aRequestHeader");
 
-		Map<String, String> params = new LinkedHashMap<String, String>();
+		Map<String, String> params = new LinkedHashMap<>();
 		params.put("id", "44");
 
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("last", "last"));
 		cookies.add(new Cookie("cookie1", "1st"));
 		cookies.add(new Cookie("cookie2", "2nd"));
@@ -595,7 +595,7 @@ public class RouterControllerPollTest {
 
 	@Test
 	public void pollCookieWithConversion() throws Exception {
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("intCookie", "2"));
 		cookies.add(new Cookie("booleanCookie", "true"));
 

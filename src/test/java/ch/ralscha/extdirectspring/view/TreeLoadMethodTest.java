@@ -86,7 +86,8 @@ public class TreeLoadMethodTest extends BaseViewTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
+	private void callMethod(String bean, String method,
+			MapEntry<String, Object>... expectedEntries) {
 		List<Map<String, Object>> result = (List<Map<String, Object>>) ControllerUtil
 				.sendAndReceiveObject(this.mockMvc, bean, method);
 		assertThat(result).hasSize(2);

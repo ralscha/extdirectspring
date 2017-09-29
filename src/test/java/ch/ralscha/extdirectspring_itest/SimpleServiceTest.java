@@ -25,7 +25,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -80,42 +79,30 @@ public class SimpleServiceTest extends JettyTest2 {
 	@Test
 	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleApiDebug() throws IllegalStateException, IOException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		try {
+		try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
 			HttpGet get = new HttpGet(
 					"http://localhost:9998/controller/api-debug.js?group=itest_simple");
 			handleApi(client, get, false);
-		}
-		finally {
-			IOUtils.closeQuietly(client);
 		}
 	}
 
 	@Test
 	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleApi() throws IllegalStateException, IOException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		try {
+		try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
 			HttpGet get = new HttpGet(
 					"http://localhost:9998/controller/api.js?group=itest_simple");
 			handleApi(client, get, false);
-		}
-		finally {
-			IOUtils.closeQuietly(client);
 		}
 	}
 
 	@Test
 	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleApiFingerprinted() throws IllegalStateException, IOException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		try {
+		try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
 			HttpGet get = new HttpGet(
 					"http://localhost:9998/controller/api-1.0.0.js?group=itest_simple");
 			handleApi(client, get, true);
-		}
-		finally {
-			IOUtils.closeQuietly(client);
 		}
 	}
 
@@ -136,7 +123,7 @@ public class SimpleServiceTest extends JettyTest2 {
 	public static void assertCacheHeaders(HttpResponse response, boolean fingerprinted) {
 		if (fingerprinted) {
 			assertThat(response.getFirstHeader("Content-Type").getValue())
-					.isEqualTo("application/javascript;charset=UTF-8");
+					.isEqualTo("application/javascript;charset=utf-8");
 			assertThat(response.getFirstHeader("Content-Length")).isNotNull();
 
 			String expiresString = response.getFirstHeader("Expires").getValue();
@@ -159,7 +146,7 @@ public class SimpleServiceTest extends JettyTest2 {
 		}
 		else {
 			assertThat(response.getFirstHeader("Content-Type").getValue())
-					.isEqualTo("application/javascript;charset=UTF-8");
+					.isEqualTo("application/javascript;charset=utf-8");
 			assertThat(response.getFirstHeader("Content-Length")).isNotNull();
 			assertThat(response.getFirstHeader("Expires")).isNull();
 			assertThat(response.getFirstHeader("ETag")).isNull();
@@ -170,14 +157,10 @@ public class SimpleServiceTest extends JettyTest2 {
 	@Test
 	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleCall() throws IllegalStateException, IOException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		try {
+		try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
 			postToUpperCase("ralph", client);
 			postToUpperCase("renee", client);
 			postToUpperCase("andrea", client);
-		}
-		finally {
-			IOUtils.closeQuietly(client);
 		}
 	}
 
@@ -185,17 +168,13 @@ public class SimpleServiceTest extends JettyTest2 {
 	@PerfTest(invocations = 150, threads = 5)
 	public void testPoll() throws IOException {
 		String _id = String.valueOf(id.incrementAndGet());
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		CloseableHttpResponse response = null;
-		try {
-
-			HttpGet get = new HttpGet(
-					"http://localhost:9998/controller/poll/simpleService/poll/poll?id="
-							+ _id);
-			response = client.execute(get);
-
+		HttpGet get = new HttpGet(
+				"http://localhost:9998/controller/poll/simpleService/poll/poll?id="
+						+ _id);
+		try (CloseableHttpClient client = HttpClientBuilder.create().build();
+				CloseableHttpResponse response = client.execute(get)) {
 			assertThat(response.getFirstHeader("Content-Type").getValue())
-					.isEqualTo("application/json;charset=UTF-8");
+					.isEqualTo("application/json;charset=utf-8");
 
 			String responseString = EntityUtils.toString(response.getEntity());
 			Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
@@ -203,10 +182,6 @@ public class SimpleServiceTest extends JettyTest2 {
 			assertThat(rootAsMap.get("type")).isEqualTo("event");
 			assertThat(rootAsMap.get("name")).isEqualTo("poll");
 			assertThat(rootAsMap.get("data")).isEqualTo(_id);
-		}
-		finally {
-			IOUtils.closeQuietly(response);
-			IOUtils.closeQuietly(client);
 		}
 	}
 
@@ -245,8 +220,7 @@ public class SimpleServiceTest extends JettyTest2 {
 	@Test
 	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleNamedCall() throws IllegalStateException, IOException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		try {
+		try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
 			postToEcho(
 					Collections.singletonList("\"userId\":\"ralph\", \"logLevel\": 100"),
 					Collections.singletonList("UserId: ralph LogLevel: 100"), client);
@@ -257,16 +231,12 @@ public class SimpleServiceTest extends JettyTest2 {
 			postToEcho(Collections.singletonList("\"userId\":\"andrea\""),
 					Collections.singletonList("UserId: andrea LogLevel: 10"), client);
 		}
-		finally {
-			IOUtils.closeQuietly(client);
-		}
 	}
 
 	@Test
 	@PerfTest(invocations = 150, threads = 5)
 	public void testSimpleNamedCallBatched() throws IllegalStateException, IOException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		try {
+		try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
 			postToEcho(
 					Arrays.asList("\"userId\":\"Ralph\", \"logLevel\": 100",
 							"\"userId\":\"Tom\"", "\"userId\":\"Renee\", \"logLevel\": 1",
@@ -275,9 +245,6 @@ public class SimpleServiceTest extends JettyTest2 {
 							"UserId: Tom LogLevel: 10", "UserId: Renee LogLevel: 1",
 							"UserId: Andrea LogLevel: 10"),
 					client);
-		}
-		finally {
-			IOUtils.closeQuietly(client);
 		}
 	}
 

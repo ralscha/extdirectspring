@@ -109,7 +109,7 @@ public class SimpleMethodTest extends BaseViewTest {
 
 	@Test
 	public void testMultiple1() {
-		List<BeanMethod> bms = new ArrayList<BeanMethod>();
+		List<BeanMethod> bms = new ArrayList<>();
 		bms.add(new BeanMethod("simpleMethodService", "noView"));
 		List<Map<String, Object>> results = ControllerUtil
 				.sendAndReceiveMultiple(this.mockMvc, bms);
@@ -121,7 +121,7 @@ public class SimpleMethodTest extends BaseViewTest {
 
 	@Test
 	public void testMultiple2() {
-		List<BeanMethod> bms = new ArrayList<BeanMethod>();
+		List<BeanMethod> bms = new ArrayList<>();
 		bms.add(new BeanMethod("simpleMethodService", "noView"));
 		bms.add(new BeanMethod("simpleMethodService", "annotationSummaryView"));
 		bms.add(new BeanMethod("simpleMethodService", "annotationDetailView"));
@@ -130,7 +130,8 @@ public class SimpleMethodTest extends BaseViewTest {
 		assertThat(results).hasSize(3);
 
 		int ix = 0;
-		for (MapEntry[] entries : Arrays.asList(noView(), summaryView(), detailView())) {
+		for (MapEntry<String, Object>[] entries : Arrays.asList(noView(), summaryView(),
+				detailView())) {
 			Map<String, Object> result = results.get(ix++);
 			assertThat(result).hasSize(entries.length);
 			assertThat(result).contains(entries);
@@ -139,7 +140,7 @@ public class SimpleMethodTest extends BaseViewTest {
 
 	@Test
 	public void testMultiple3() {
-		List<BeanMethod> bms = new ArrayList<BeanMethod>();
+		List<BeanMethod> bms = new ArrayList<>();
 		bms.add(new BeanMethod("simpleMethodService", "subclassSummaryView"));
 		bms.add(new BeanMethod("simpleMethodService", "subclassDetailView"));
 		bms.add(new BeanMethod("simpleMethodService", "noView"));
@@ -150,15 +151,17 @@ public class SimpleMethodTest extends BaseViewTest {
 		assertThat(results).hasSize(5);
 
 		int ix = 0;
-		for (MapEntry[] entries : Arrays.asList(summaryView(), detailView(), noView(),
-				detailView(), noView())) {
+		for (MapEntry<String, Object>[] entries : Arrays.asList(summaryView(),
+				detailView(), noView(), detailView(), noView())) {
 			Map<String, Object> result = results.get(ix++);
 			assertThat(result).hasSize(entries.length);
 			assertThat(result).contains(entries);
 		}
 	}
 
-	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
+	@SafeVarargs
+	private final void callMethod(String bean, String method,
+			MapEntry<String, Object>... expectedEntries) {
 		Map<String, Object> result = ControllerUtil.sendAndReceiveMap(this.mockMvc, bean,
 				method);
 		assertThat(result).hasSize(expectedEntries.length);

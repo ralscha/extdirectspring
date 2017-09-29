@@ -82,7 +82,7 @@ public class RouterControllerFormLoadTest {
 
 	@Test
 	public void testFormLoad() {
-		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> data = new HashMap<>();
 		data.put("d", 3.141);
 		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil
 				.sendAndReceive(this.mockMvc, "remoteProviderFormLoad", "method1",
@@ -121,7 +121,7 @@ public class RouterControllerFormLoadTest {
 
 	@Test
 	public void testWithRequestParam() {
-		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> data = new HashMap<>();
 		data.put("id", 12);
 		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil
 				.sendAndReceive(this.mockMvc, "remoteProviderFormLoad", "method4",
@@ -155,7 +155,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isEqualTo("TEST:null");
 
-		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> data = new HashMap<>();
 		data.put("id", 11);
 		wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderFormLoad", "method6", ExtDirectFormLoadResult.class, data);
@@ -165,7 +165,7 @@ public class RouterControllerFormLoadTest {
 
 	@Test
 	public void testResult() {
-		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> data = new HashMap<>();
 		data.put("data", "one");
 		data.put("success", Boolean.TRUE);
 		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil
@@ -174,7 +174,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isEqualTo("one");
 
-		data = new HashMap<String, Object>();
+		data = new HashMap<>();
 		data.put("data", "two");
 		data.put("success", Boolean.FALSE);
 		wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
@@ -203,7 +203,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(wrapper.success()).isTrue();
 		assertThat(wrapper.data()).isEqualTo("TEST:null");
 
-		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> data = new HashMap<>();
 		data.put("id", 11);
 		wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderFormLoad", "method6Ed", EdFormLoadResult.class, data);
@@ -213,7 +213,7 @@ public class RouterControllerFormLoadTest {
 
 	@Test
 	public void testResultEd() {
-		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> data = new HashMap<>();
 		data.put("data", "one");
 		data.put("success", Boolean.TRUE);
 		EdFormLoadResult wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(
@@ -222,7 +222,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(wrapper.success()).isTrue();
 		assertThat(wrapper.data()).isEqualTo("one");
 
-		data = new HashMap<String, Object>();
+		data = new HashMap<>();
 		data.put("data", "two");
 		data.put("success", Boolean.FALSE);
 		wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
@@ -233,7 +233,7 @@ public class RouterControllerFormLoadTest {
 
 	@Test
 	public void testMultipleRequests() throws Exception {
-		List<String> edRequests = new ArrayList<String>();
+		List<String> edRequests = new ArrayList<>();
 
 		edRequests.add(ControllerUtil.createEdsRequest("remoteProvider", "method1", 1,
 				new Object[] { 3, 2.5, "string.param" }));
@@ -242,12 +242,12 @@ public class RouterControllerFormLoadTest {
 		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderSimple", "method1",
 				3, null));
 
-		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> data = new HashMap<>();
 		data.put("d", 1.1);
 		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderFormLoad",
 				"method1", 4, data));
 
-		data = new HashMap<String, Object>();
+		data = new HashMap<>();
 		data.put("d", 2.2);
 		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderFormLoad",
 				"method1", 5, data));

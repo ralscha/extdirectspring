@@ -197,7 +197,7 @@ public class RemoteProviderSimple {
 			@DateTimeFormat(iso = ISO.DATE) LocalDate aDate,
 			@NumberFormat(style = NumberFormat.Style.PERCENT) BigDecimal percent) {
 
-		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, Object> result = new HashMap<>();
 		result.put("endDate", endDate);
 		result.put("jodaLocalDate", aDate);
 		result.put("percent", percent);
@@ -259,7 +259,7 @@ public class RemoteProviderSimple {
 	public String method22(String name, Set<Integer> ids, int id) {
 		StringBuilder sb = new StringBuilder();
 		if (ids != null) {
-			SortedSet<Integer> sorted = new TreeSet<Integer>(ids);
+			SortedSet<Integer> sorted = new TreeSet<>(ids);
 			for (int i : sorted) {
 				sb.append(i);
 				sb.append("+");

@@ -73,9 +73,9 @@ public class RouterControllerStoreEdTest {
 
 	@Test
 	public void testWithExtDirectStoreReadRequest() throws Exception {
-		Map<String, Object> storeRead = new LinkedHashMap<String, Object>();
+		Map<String, Object> storeRead = new LinkedHashMap<>();
 		storeRead.put("query", "name");
-		EdStoreResult storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
+		EdStoreResult<?> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
 		ObjectMapper om = new ObjectMapper();
@@ -85,7 +85,7 @@ public class RouterControllerStoreEdTest {
 			assertThat(row.getName()).startsWith("name");
 		}
 
-		storeRead = new LinkedHashMap<String, Object>();
+		storeRead = new LinkedHashMap<>();
 		storeRead.put("query", "firstname");
 		storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 		assertThat(storeResponse.total()).isEqualTo(50L);
@@ -96,7 +96,7 @@ public class RouterControllerStoreEdTest {
 			assertThat(row.getName()).startsWith("firstname");
 		}
 
-		storeRead = new LinkedHashMap<String, Object>();
+		storeRead = new LinkedHashMap<>();
 		storeRead.put("query", "");
 		storeRead.put("sort", "id");
 		storeRead.put("dir", "ASC");
@@ -115,7 +115,7 @@ public class RouterControllerStoreEdTest {
 			id++;
 		}
 
-		storeRead = new LinkedHashMap<String, Object>();
+		storeRead = new LinkedHashMap<>();
 		storeRead.put("query", "");
 		storeRead.put("sort", "id");
 		storeRead.put("dir", "DESC");
@@ -134,7 +134,7 @@ public class RouterControllerStoreEdTest {
 			id--;
 		}
 
-		storeRead = new LinkedHashMap<String, Object>();
+		storeRead = new LinkedHashMap<>();
 		storeRead.put("query", "");
 		storeRead.put("groupBy", "id");
 		storeRead.put("groupDir", "ASC");
@@ -153,7 +153,7 @@ public class RouterControllerStoreEdTest {
 			id++;
 		}
 
-		storeRead = new LinkedHashMap<String, Object>();
+		storeRead = new LinkedHashMap<>();
 		storeRead.put("query", "");
 		storeRead.put("groupBy", "id");
 		storeRead.put("groupDir", "DESC");
@@ -172,7 +172,7 @@ public class RouterControllerStoreEdTest {
 			id--;
 		}
 
-		storeRead = new LinkedHashMap<String, Object>();
+		storeRead = new LinkedHashMap<>();
 		storeRead.put("query", "");
 		storeRead.put("sort", "id");
 		storeRead.put("dir", "ASC");
@@ -192,7 +192,7 @@ public class RouterControllerStoreEdTest {
 			id++;
 		}
 
-		storeRead = new LinkedHashMap<String, Object>();
+		storeRead = new LinkedHashMap<>();
 		storeRead.put("query", "");
 		storeRead.put("sort", "id");
 		storeRead.put("dir", "ASC");
@@ -215,18 +215,18 @@ public class RouterControllerStoreEdTest {
 
 	@Test
 	public void testWithExtDirectStoreReadRequestMultipeGroups() throws Exception {
-		Map<String, Object> storeRead = new LinkedHashMap<String, Object>();
+		Map<String, Object> storeRead = new LinkedHashMap<>();
 		storeRead.put("query", "");
 
-		List<Map<String, Object>> groups = new ArrayList<Map<String, Object>>();
-		Map<String, Object> groupInfo = new LinkedHashMap<String, Object>();
+		List<Map<String, Object>> groups = new ArrayList<>();
+		Map<String, Object> groupInfo = new LinkedHashMap<>();
 		groupInfo.put("property", "id");
 		groupInfo.put("direction", "ASC");
 		groups.add(groupInfo);
 		storeRead.put("group", groups);
 		storeRead.put("limit", "10");
 		storeRead.put("start", "10");
-		EdStoreResult storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
+		EdStoreResult<?> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
 		assertThat(storeResponse.total()).isEqualTo(100L);
 		assertThat(storeResponse.records()).hasSize(10);
@@ -239,10 +239,10 @@ public class RouterControllerStoreEdTest {
 			id++;
 		}
 
-		storeRead = new LinkedHashMap<String, Object>();
+		storeRead = new LinkedHashMap<>();
 		storeRead.put("query", "");
-		groups = new ArrayList<Map<String, Object>>();
-		groupInfo = new LinkedHashMap<String, Object>();
+		groups = new ArrayList<>();
+		groupInfo = new LinkedHashMap<>();
 		groupInfo.put("property", "id");
 		groupInfo.put("direction", "DESC");
 		groups.add(groupInfo);
@@ -264,11 +264,11 @@ public class RouterControllerStoreEdTest {
 
 	@Test
 	public void testWithExtDirectStoreReadRequestMultipleSorters() throws Exception {
-		Map<String, Object> storeRead = new LinkedHashMap<String, Object>();
+		Map<String, Object> storeRead = new LinkedHashMap<>();
 		storeRead.put("query", "");
 
-		List<Map<String, Object>> sorters = new ArrayList<Map<String, Object>>();
-		Map<String, Object> sortInfo = new LinkedHashMap<String, Object>();
+		List<Map<String, Object>> sorters = new ArrayList<>();
+		Map<String, Object> sortInfo = new LinkedHashMap<>();
 		sortInfo.put("property", "id");
 		sortInfo.put("direction", "ASC");
 		sorters.add(sortInfo);
@@ -277,7 +277,7 @@ public class RouterControllerStoreEdTest {
 		storeRead.put("limit", "10");
 		storeRead.put("start", "10");
 		storeRead.put("page", "2");
-		EdStoreResult storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
+		EdStoreResult<?> storeResponse = executeWithExtDirectStoreReadRequest(storeRead);
 
 		assertThat(storeResponse.total()).isEqualTo(100L);
 		assertThat(storeResponse.records()).hasSize(10);
@@ -290,10 +290,10 @@ public class RouterControllerStoreEdTest {
 			id++;
 		}
 
-		storeRead = new LinkedHashMap<String, Object>();
+		storeRead = new LinkedHashMap<>();
 		storeRead.put("query", "");
-		sorters = new ArrayList<Map<String, Object>>();
-		sortInfo = new LinkedHashMap<String, Object>();
+		sorters = new ArrayList<>();
+		sortInfo = new LinkedHashMap<>();
 		sortInfo.put("property", "id");
 		sortInfo.put("direction", "DESC");
 		sorters.add(sortInfo);
@@ -313,10 +313,10 @@ public class RouterControllerStoreEdTest {
 			id--;
 		}
 
-		storeRead = new LinkedHashMap<String, Object>();
+		storeRead = new LinkedHashMap<>();
 		storeRead.put("query", "");
-		sorters = new ArrayList<Map<String, Object>>();
-		sortInfo = new LinkedHashMap<String, Object>();
+		sorters = new ArrayList<>();
+		sortInfo = new LinkedHashMap<>();
 		sortInfo.put("property", "id");
 		sortInfo.put("direction", "ASC");
 		sorters.add(sortInfo);
@@ -336,10 +336,10 @@ public class RouterControllerStoreEdTest {
 			id++;
 		}
 
-		storeRead = new LinkedHashMap<String, Object>();
+		storeRead = new LinkedHashMap<>();
 		storeRead.put("query", "");
-		sorters = new ArrayList<Map<String, Object>>();
-		sortInfo = new LinkedHashMap<String, Object>();
+		sorters = new ArrayList<>();
+		sortInfo = new LinkedHashMap<>();
 		sortInfo.put("property", "id");
 		sortInfo.put("direction", "DESC");
 		sorters.add(sortInfo);
@@ -359,10 +359,10 @@ public class RouterControllerStoreEdTest {
 			id--;
 		}
 
-		storeRead = new LinkedHashMap<String, Object>();
+		storeRead = new LinkedHashMap<>();
 		storeRead.put("query", "");
-		sorters = new ArrayList<Map<String, Object>>();
-		sortInfo = new LinkedHashMap<String, Object>();
+		sorters = new ArrayList<>();
+		sortInfo = new LinkedHashMap<>();
 		sortInfo.put("property", "id");
 		sortInfo.put("direction", "ASC");
 		sorters.add(sortInfo);
@@ -382,10 +382,10 @@ public class RouterControllerStoreEdTest {
 			id++;
 		}
 
-		storeRead = new LinkedHashMap<String, Object>();
+		storeRead = new LinkedHashMap<>();
 		storeRead.put("query", "");
-		sorters = new ArrayList<Map<String, Object>>();
-		sortInfo = new LinkedHashMap<String, Object>();
+		sorters = new ArrayList<>();
+		sortInfo = new LinkedHashMap<>();
 		sortInfo.put("property", "id");
 		sortInfo.put("direction", "ASC");
 		sorters.add(sortInfo);
@@ -406,7 +406,7 @@ public class RouterControllerStoreEdTest {
 		}
 	}
 
-	private EdStoreResult executeWithExtDirectStoreReadRequest(
+	private EdStoreResult<?> executeWithExtDirectStoreReadRequest(
 			Map<String, Object> storeRead) throws Exception {
 
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderStoreRead",
@@ -432,11 +432,11 @@ public class RouterControllerStoreEdTest {
 
 	@Test
 	public void testWithAdditionalParameters() {
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
-		EdStoreResult storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(
+		EdStoreResult<?> storeResponse = (EdStoreResult<?>) ControllerUtil.sendAndReceive(
 				this.mockMvc, "remoteProviderStoreRead", "method5Ed", EdStoreResult.class,
 				readRequest);
 
@@ -449,19 +449,19 @@ public class RouterControllerStoreEdTest {
 			assertThat(row.getName()).startsWith("name");
 		}
 
-		readRequest = new HashMap<String, Object>();
+		readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
-		storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(this.mockMvc,
+		storeResponse = (EdStoreResult<?>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderStoreRead", "method5", null, null, readRequest);
 	}
 
 	@Test
 	public void testWithAdditionalParametersDefaultValue() {
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("query", "firstname");
 
-		EdStoreResult storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(
+		EdStoreResult<?> storeResponse = (EdStoreResult<?>) ControllerUtil.sendAndReceive(
 				this.mockMvc, "remoteProviderStoreRead", "method6Ed", EdStoreResult.class,
 				readRequest);
 
@@ -480,10 +480,10 @@ public class RouterControllerStoreEdTest {
 	@Test
 	public void testWithAdditionalParametersAndConversion() {
 		DateTime today = new DateTime();
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("endDate", ISODateTimeFormat.dateTime().print(today));
 
-		EdStoreResult storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(
+		EdStoreResult<?> storeResponse = (EdStoreResult<?>) ControllerUtil.sendAndReceive(
 				this.mockMvc, "remoteProviderStoreRead", "method8Ed", EdStoreResult.class,
 				readRequest);
 
@@ -493,8 +493,8 @@ public class RouterControllerStoreEdTest {
 
 	@Test
 	public void testMessageProperty() {
-		Map<String, Object> readRequest = new HashMap<String, Object>();
-		EdStoreResult storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(
+		Map<String, Object> readRequest = new HashMap<>();
+		EdStoreResult<?> storeResponse = (EdStoreResult<?>) ControllerUtil.sendAndReceive(
 				this.mockMvc, "remoteProviderStoreRead", "method9Ed", EdStoreResult.class,
 				readRequest);
 
@@ -507,11 +507,11 @@ public class RouterControllerStoreEdTest {
 
 	@Test
 	public void testRequestParam() {
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
-		EdStoreResult storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(
+		EdStoreResult<?> storeResponse = (EdStoreResult<?>) ControllerUtil.sendAndReceive(
 				this.mockMvc, "remoteProviderStoreRead", "method10Ed",
 				EdStoreResult.class, readRequest);
 
@@ -526,10 +526,10 @@ public class RouterControllerStoreEdTest {
 			ix += 2;
 		}
 
-		readRequest = new HashMap<String, Object>();
+		readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
-		storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(this.mockMvc,
+		storeResponse = (EdStoreResult<?>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderStoreRead", "method10Ed", EdStoreResult.class,
 				readRequest);
 
@@ -551,13 +551,13 @@ public class RouterControllerStoreEdTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("requestHeader", "rValue");
 
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("cookie", "cValue"));
 
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
-		EdStoreResult storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(
+		EdStoreResult<?> storeResponse = (EdStoreResult<?>) ControllerUtil.sendAndReceive(
 				this.mockMvc, headers, cookies, "remoteProviderStoreRead", "method11Ed",
 				EdStoreResult.class, readRequest);
 
@@ -572,10 +572,10 @@ public class RouterControllerStoreEdTest {
 			ix += 2;
 		}
 
-		readRequest = new HashMap<String, Object>();
+		readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
-		storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(this.mockMvc,
+		storeResponse = (EdStoreResult<?>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderStoreRead", "method11", EdStoreResult.class, readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);

@@ -16,7 +16,7 @@
 package ch.ralscha.extdirectspring.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -48,9 +48,6 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 
 	private MockMvc mockMvc;
 
-	@Autowired
-	private ConfigurationService configurationService;
-
 	@Before
 	public void setupMockMvc() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
@@ -58,7 +55,7 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 
 	@Test
 	public void testUpload() throws Exception {
-		MockMultipartHttpServletRequestBuilder request = fileUpload("/router");
+		MockMultipartHttpServletRequestBuilder request = multipart("/router");
 		request.accept(MediaType.ALL).characterEncoding("UTF-8")
 				.session(new MockHttpSession());
 
@@ -71,7 +68,7 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 		request.file("fileUpload", "the content of the file".getBytes());
 
 		MvcResult resultMvc = this.mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentType("text/html;charset=UTF-8"))
+				.andExpect(content().contentType("text/html;charset=utf-8"))
 				.andExpect(content().encoding("UTF-8")).andReturn();
 
 		String response = resultMvc.getResponse().getContentAsString();
@@ -93,7 +90,7 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 
 	@Test
 	public void testUploadEd() throws Exception {
-		MockMultipartHttpServletRequestBuilder request = fileUpload("/router");
+		MockMultipartHttpServletRequestBuilder request = multipart("/router");
 		request.accept(MediaType.ALL).characterEncoding("UTF-8")
 				.session(new MockHttpSession());
 
@@ -106,7 +103,7 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 		request.file("fileUpload", "the content of the file".getBytes());
 
 		MvcResult resultMvc = this.mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentType("text/html;charset=UTF-8"))
+				.andExpect(content().contentType("text/html;charset=utf-8"))
 				.andExpect(content().encoding("UTF-8")).andReturn();
 
 		String response = resultMvc.getResponse().getContentAsString();

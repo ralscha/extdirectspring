@@ -58,7 +58,7 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 	@Test
 	public void testPost() throws IOException {
 
-		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		List<NameValuePair> formparams = new ArrayList<>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
 		formparams
 				.add(new BasicNameValuePair("extAction", "exceptionFormPostController"));
@@ -70,25 +70,25 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 
 		this.post.setEntity(postEntity);
 
-		CloseableHttpResponse response = this.client.execute(this.post);
-		HttpEntity entity = response.getEntity();
-		assertThat(entity).isNotNull();
-		String responseString = EntityUtils.toString(entity);
-		ObjectMapper mapper = new ObjectMapper();
+		try (CloseableHttpResponse response = this.client.execute(this.post)) {
+			HttpEntity entity = response.getEntity();
+			assertThat(entity).isNotNull();
+			String responseString = EntityUtils.toString(entity);
+			ObjectMapper mapper = new ObjectMapper();
 
-		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-		assertThat(rootAsMap).hasSize(6);
-		assertThat(rootAsMap.get("method")).isEqualTo("throwAException");
-		assertThat(rootAsMap.get("type")).isEqualTo("exception");
-		assertThat(rootAsMap.get("action")).isEqualTo("exceptionFormPostController");
-		assertThat(rootAsMap.get("tid")).isEqualTo(3);
-		assertThat(rootAsMap.get("message")).isEqualTo("a null pointer");
-		assertThat(rootAsMap.get("where")).isNull();
+			Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+			assertThat(rootAsMap).hasSize(6);
+			assertThat(rootAsMap.get("method")).isEqualTo("throwAException");
+			assertThat(rootAsMap.get("type")).isEqualTo("exception");
+			assertThat(rootAsMap.get("action")).isEqualTo("exceptionFormPostController");
+			assertThat(rootAsMap.get("tid")).isEqualTo(3);
+			assertThat(rootAsMap.get("message")).isEqualTo("a null pointer");
+			assertThat(rootAsMap.get("where")).isNull();
 
-		@SuppressWarnings("unchecked")
-		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertThat(result).hasSize(1);
-		assertThat((Boolean) result.get("success")).isFalse();
-		IOUtils.closeQuietly(response);
+			@SuppressWarnings("unchecked")
+			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
+			assertThat(result).hasSize(1);
+			assertThat((Boolean) result.get("success")).isFalse();
+		}
 	}
 }

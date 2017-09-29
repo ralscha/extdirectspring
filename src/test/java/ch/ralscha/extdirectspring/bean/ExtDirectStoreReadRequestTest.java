@@ -39,7 +39,7 @@ public class ExtDirectStoreReadRequestTest {
 		assertThat(request.getFilters()).isEmpty();
 
 		StringFilter sf = new StringFilter("field", "10", null, null);
-		List<Filter> filters = new ArrayList<Filter>();
+		List<Filter> filters = new ArrayList<>();
 		filters.add(sf);
 		request.setFilters(filters);
 		assertThat(request.getFilters()).hasSize(1).contains(sf);
@@ -54,7 +54,7 @@ public class ExtDirectStoreReadRequestTest {
 		assertThat(request.getSorters()).isEmpty();
 
 		SortInfo si = new SortInfo("property", SortDirection.ASCENDING);
-		List<SortInfo> sortInfos = new ArrayList<SortInfo>();
+		List<SortInfo> sortInfos = new ArrayList<>();
 		sortInfos.add(si);
 		request.setSorters(sortInfos);
 		assertThat(request.getSorters()).hasSize(1).contains(si);
@@ -69,7 +69,7 @@ public class ExtDirectStoreReadRequestTest {
 		assertThat(request.getGroups()).isEmpty();
 
 		GroupInfo gi = new GroupInfo("property", SortDirection.ASCENDING);
-		List<GroupInfo> groupInfos = new ArrayList<GroupInfo>();
+		List<GroupInfo> groupInfos = new ArrayList<>();
 		groupInfos.add(gi);
 		request.setGroups(groupInfos);
 		assertThat(request.getGroups()).hasSize(1).contains(gi);
@@ -83,7 +83,7 @@ public class ExtDirectStoreReadRequestTest {
 		request.setParams(null);
 		assertThat(request.getParams()).isEmpty();
 
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("id", 10);
 		request.setParams(params);
 		assertThat(request.getParams()).hasSize(1).contains(MapEntry.entry("id", 10));

@@ -31,7 +31,7 @@ public class BookService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")
 	public List<Book> read() {
-		List<Book> books = new ArrayList<Book>();
+		List<Book> books = new ArrayList<>();
 		books.add(new Book(1, "Ext JS in Action", "1935182110"));
 		books.add(new Book(2, "Learning Ext JS 3.2", "1849511209"));
 		return books;
@@ -45,14 +45,14 @@ public class BookService {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")
-	public EdStoreResult readWithPagingEd(ExtDirectStoreReadRequest request) {
+	public EdStoreResult<?> readWithPagingEd(ExtDirectStoreReadRequest request) {
 		return EdStoreResult.success(read(),
 				(long) request.getPage() + request.getLimit() + request.getStart());
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
 	public ExtDirectStoreResult<Book> update3(List<Book> updates) {
-		return new ExtDirectStoreResult<Book>(update4(updates));
+		return new ExtDirectStoreResult<>(update4(updates));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
@@ -65,7 +65,7 @@ public class BookService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
 	public ExtDirectStoreResult<Integer> delete3(List<Integer> deletes) {
-		return new ExtDirectStoreResult<Integer>(deletes);
+		return new ExtDirectStoreResult<>(deletes);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
@@ -79,7 +79,7 @@ public class BookService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
 	public ExtDirectStoreResult<Book> create3(List<Book> inserts) {
-		return new ExtDirectStoreResult<Book>(create4(inserts));
+		return new ExtDirectStoreResult<>(create4(inserts));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")

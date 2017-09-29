@@ -55,9 +55,6 @@ public class RouterControllerFormPostJsonTest {
 
 	private MockMvc mockMvc;
 
-	@Autowired
-	private ConfigurationService configurationService;
-
 	@Before
 	public void setupMockMvc() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
@@ -121,7 +118,7 @@ public class RouterControllerFormPostJsonTest {
 				entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
 	}
 
-	@SuppressWarnings({ "unchecked", "null", "rawtypes" })
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testCallFormPostMethodError() throws Exception {
 

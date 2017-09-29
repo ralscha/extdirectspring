@@ -168,7 +168,7 @@ public class RemoteProviderTreeLoad {
 	}
 
 	public static List<Node> createTreeList(String id, String appendix) {
-		List<Node> result = new ArrayList<Node>();
+		List<Node> result = new ArrayList<>();
 		if (id.equals("root")) {
 			for (int i = 1; i <= 5; ++i) {
 				result.add(new Node("n" + i, "Node " + i + appendix, false));

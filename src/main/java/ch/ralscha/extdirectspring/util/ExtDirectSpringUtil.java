@@ -31,9 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.lang.UsesJava8;
 import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.ReflectionUtils;
 
@@ -44,7 +42,6 @@ import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.controller.ConfigurationService;
-import ch.ralscha.extdirectspring.controller.RouterController;
 
 /**
  * Utility class
@@ -52,18 +49,6 @@ import ch.ralscha.extdirectspring.controller.RouterController;
 public final class ExtDirectSpringUtil {
 
 	public static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
-
-	private static Class<?> javaUtilOptionalClass = null;
-
-	static {
-		try {
-			javaUtilOptionalClass = ClassUtils.forName("java.util.Optional",
-					RouterController.class.getClassLoader());
-		}
-		catch (ClassNotFoundException ex) {
-			// Java 8 not available - Optional references simply not supported then.
-		}
-	}
 
 	private ExtDirectSpringUtil() {
 		// singleton
@@ -115,21 +100,11 @@ public final class ExtDirectSpringUtil {
 		ReflectionUtils.makeAccessible(handlerMethod);
 		Object result = handlerMethod.invoke(bean, params);
 
-		if (result != null && result.getClass().equals(javaUtilOptionalClass)) {
-			return OptionalUnwrapper.unwrap(result);
+		if (result != null && result instanceof Optional) {
+			return ((Optional<?>) result).orElse(null);
 		}
 
 		return result;
-	}
-
-	/**
-	 * Inner class to avoid a hard dependency on Java 8.
-	 */
-	@UsesJava8
-	private static class OptionalUnwrapper {
-		public static Object unwrap(Object optionalObject) {
-			return ((Optional<?>) optionalObject).orElse(null);
-		}
 	}
 
 	public static Object invoke(HttpServletRequest request, HttpServletResponse response,
@@ -196,7 +171,7 @@ public final class ExtDirectSpringUtil {
 	 * @param response the HTTP servlet response
 	 * @param data the response data
 	 * @param contentType the content type of the data (i.e.
-	 * "application/javascript;charset=UTF-8")
+	 * "application/javascript;charset=utf-8")
 	 * @throws IOException
 	 */
 	public static void handleCacheableResponse(HttpServletRequest request,

@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -57,19 +56,18 @@ public class RawJsonControllerTest extends JettyTest {
 	private static void testAndCheck(String action, String method, Integer total,
 			boolean success)
 			throws IOException, JsonParseException, JsonMappingException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		CloseableHttpResponse response = null;
-		try {
-			HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
-			StringEntity postEntity = new StringEntity(
-					"{\"action\":\"" + action + "\",\"method\":\"" + method
-							+ "\",\"data\":[],\"type\":\"rpc\",\"tid\":1}",
-					"UTF-8");
-			post.setEntity(postEntity);
-			post.setHeader("Content-Type", "application/json; charset=UTF-8");
+		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
-			response = client.execute(post);
+		StringEntity postEntity = new StringEntity(
+				"{\"action\":\"" + action + "\",\"method\":\"" + method
+						+ "\",\"data\":[],\"type\":\"rpc\",\"tid\":1}",
+				"UTF-8");
+		post.setEntity(postEntity);
+		post.setHeader("Content-Type", "application/json; charset=UTF-8");
+
+		try (CloseableHttpClient client = HttpClientBuilder.create().build();
+				CloseableHttpResponse response = client.execute(post)) {
 			HttpEntity entity = response.getEntity();
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
@@ -105,10 +103,6 @@ public class RawJsonControllerTest extends JettyTest {
 					((Map<String, Object>) records.get(0).get("_id")).get("$oid"));
 			assertEquals("4cf8e5b8924e2334a0b99454",
 					((Map<String, Object>) records.get(1).get("_id")).get("$oid"));
-		}
-		finally {
-			IOUtils.closeQuietly(response);
-			IOUtils.closeQuietly(client);
 		}
 	}
 

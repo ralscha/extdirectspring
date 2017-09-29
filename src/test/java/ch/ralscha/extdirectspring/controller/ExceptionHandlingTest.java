@@ -82,7 +82,7 @@ public class ExceptionHandlingTest {
 	@Test
 	public void testExceptionToMessage() throws Exception {
 		Configuration configuration = new Configuration();
-		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
+		Map<Class<?>, String> exceptionMessageMapping = new HashMap<>();
 		exceptionMessageMapping.put(NullPointerException.class, "null pointer");
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest11(configuration);
@@ -94,7 +94,7 @@ public class ExceptionHandlingTest {
 	public void testExceptionToMessageNullValue() throws Exception {
 		Configuration configuration = new Configuration();
 		configuration.setSendExceptionMessage(false);
-		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
+		Map<Class<?>, String> exceptionMessageMapping = new HashMap<>();
 		exceptionMessageMapping.put(NumberFormatException.class, null);
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest(configuration);
@@ -127,7 +127,7 @@ public class ExceptionHandlingTest {
 	public void testExceptionToMessageWithStacktrace() throws Exception {
 		Configuration configuration = new Configuration();
 		configuration.setSendStacktrace(true);
-		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
+		Map<Class<?>, String> exceptionMessageMapping = new HashMap<>();
 		exceptionMessageMapping.put(NullPointerException.class, "null pointer");
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest11(configuration);
@@ -140,7 +140,7 @@ public class ExceptionHandlingTest {
 		Configuration configuration = new Configuration();
 		configuration.setSendExceptionMessage(false);
 		configuration.setSendStacktrace(true);
-		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
+		Map<Class<?>, String> exceptionMessageMapping = new HashMap<>();
 		exceptionMessageMapping.put(NumberFormatException.class, null);
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest(configuration);

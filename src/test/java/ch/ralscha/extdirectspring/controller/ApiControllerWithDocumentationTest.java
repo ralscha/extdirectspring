@@ -317,7 +317,7 @@ public class ApiControllerWithDocumentationTest {
 						block.substring(p + method.length() + 2, block.indexOf('\n', p)));
 			}
 
-			Map<String, String> params = new HashMap<String, String>();
+			Map<String, String> params = new HashMap<>();
 			p = block.indexOf("@param:");
 			while (p != -1) {
 				int p2 = block.indexOf('\n', p);
@@ -329,7 +329,7 @@ public class ApiControllerWithDocumentationTest {
 			}
 			doc.setParameters(params);
 
-			Map<String, String> returns = new HashMap<String, String>();
+			Map<String, String> returns = new HashMap<>();
 			p = block.indexOf("@return");
 			if (p != -1) {
 				p = block.indexOf('[', p);

@@ -67,13 +67,8 @@ public class MethodRegistrar
 			final Class<?> userType = ClassUtils.getUserClass(handlerType);
 
 			Set<Method> methods = MethodIntrospector.selectMethods(userType,
-					new MethodFilter() {
-						@Override
-						public boolean matches(Method method) {
-							return AnnotationUtils.findAnnotation(method,
-									ExtDirectMethod.class) != null;
-						}
-					});
+					(MethodFilter) method -> AnnotationUtils.findAnnotation(method,
+							ExtDirectMethod.class) != null);
 
 			for (Method method : methods) {
 				ExtDirectMethod directMethodAnnotation = AnnotationUtils

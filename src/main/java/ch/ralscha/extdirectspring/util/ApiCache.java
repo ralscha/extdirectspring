@@ -27,11 +27,11 @@ public class ApiCache {
 	private final Map<ApiCacheKey, SoftReference<String>> cache;
 
 	public ApiCache() {
-		this.cache = new ConcurrentHashMap<ApiCacheKey, SoftReference<String>>();
+		this.cache = new ConcurrentHashMap<>();
 	}
 
 	public void put(ApiCacheKey key, String apiString) {
-		this.cache.put(key, new SoftReference<String>(apiString));
+		this.cache.put(key, new SoftReference<>(apiString));
 	}
 
 	public String get(ApiCacheKey key) {

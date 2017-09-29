@@ -62,7 +62,7 @@ public class UserControllerTest extends JettyTest {
 	@Test
 	public void testPostWithErrors() throws IOException {
 		Locale.setDefault(Locale.ENGLISH);
-		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		List<NameValuePair> formparams = new ArrayList<>();
 		formparams.add(new BasicNameValuePair("extTID", "2"));
 		formparams.add(new BasicNameValuePair("extAction", "userController"));
 		formparams.add(new BasicNameValuePair("extMethod", "updateUser"));
@@ -74,8 +74,7 @@ public class UserControllerTest extends JettyTest {
 
 		this.post.setEntity(postEntity);
 
-		CloseableHttpResponse response = this.client.execute(this.post);
-		try {
+		try (CloseableHttpResponse response = this.client.execute(this.post)) {
 			HttpEntity entity = response.getEntity();
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
@@ -97,17 +96,14 @@ public class UserControllerTest extends JettyTest {
 			Map<String, Object> errors = (Map<String, Object>) result.get("errors");
 			assertThat(errors).hasSize(1);
 			assertThat((List<String>) errors.get("email"))
-					.containsOnly("may not be empty");
-		}
-		finally {
-			IOUtils.closeQuietly(response);
+					.containsOnly("must not be empty");
 		}
 	}
 
 	@Test
 	public void testPostWithMoreErrors() throws IOException {
 		Locale.setDefault(Locale.ENGLISH);
-		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		List<NameValuePair> formparams = new ArrayList<>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
 		formparams.add(new BasicNameValuePair("extAction", "userController"));
 		formparams.add(new BasicNameValuePair("extMethod", "updateUser"));
@@ -120,8 +116,7 @@ public class UserControllerTest extends JettyTest {
 
 		this.post.setEntity(postEntity);
 
-		CloseableHttpResponse response = this.client.execute(this.post);
-		try {
+		try (CloseableHttpResponse response = this.client.execute(this.post)) {
 			HttpEntity entity = response.getEntity();
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
@@ -142,19 +137,16 @@ public class UserControllerTest extends JettyTest {
 
 			Map<String, Object> errors = (Map<String, Object>) result.get("errors");
 			assertThat(errors).hasSize(2);
-			assertThat((List<String>) errors.get("email")).contains("may not be empty",
+			assertThat((List<String>) errors.get("email")).contains("must not be empty",
 					"another email error");
 			assertThat((List<String>) errors.get("name")).contains("a name error");
-		}
-		finally {
-			IOUtils.closeQuietly(response);
 		}
 	}
 
 	@Test
 	public void testPostWithoutErrors() throws IOException {
 
-		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		List<NameValuePair> formparams = new ArrayList<>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
 		formparams.add(new BasicNameValuePair("extAction", "userController"));
 		formparams.add(new BasicNameValuePair("extMethod", "updateUser"));
@@ -167,8 +159,7 @@ public class UserControllerTest extends JettyTest {
 
 		this.post.setEntity(postEntity);
 
-		CloseableHttpResponse response = this.client.execute(this.post);
-		try {
+		try (CloseableHttpResponse response = this.client.execute(this.post)) {
 			HttpEntity entity = response.getEntity();
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
@@ -186,9 +177,6 @@ public class UserControllerTest extends JettyTest {
 			assertThat(result.get("name")).isEqualTo("Jim");
 			assertThat(result.get("age")).isEqualTo(25);
 			assertThat(result.get("success")).isEqualTo(Boolean.TRUE);
-		}
-		finally {
-			IOUtils.closeQuietly(response);
 		}
 	}
 }

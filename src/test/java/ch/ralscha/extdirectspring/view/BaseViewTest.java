@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.view;
 
 import org.assertj.core.data.MapEntry;
 
+@SuppressWarnings("rawtypes")
 public class BaseViewTest {
 
 	protected MapEntry[] noView() {

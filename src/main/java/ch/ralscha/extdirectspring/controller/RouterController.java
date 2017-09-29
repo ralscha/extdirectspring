@@ -290,7 +290,7 @@ public class RouterController {
 					.getJsonHandler().convertValue(requestData, ExtDirectRequest.class));
 		}
 		else if (requestData instanceof List) {
-			directRequests = new ArrayList<ExtDirectRequest>();
+			directRequests = new ArrayList<>();
 			for (Object oneRequest : (List<?>) requestData) {
 				directRequests.add(this.configurationService.getJsonHandler()
 						.convertValue(oneRequest, ExtDirectRequest.class));
@@ -317,8 +317,7 @@ public class RouterController {
 			HttpServletRequest request, HttpServletResponse response, Locale locale)
 			throws IOException {
 
-		List<Future<ExtDirectResponse>> futures = new ArrayList<Future<ExtDirectResponse>>(
-				directRequests.size());
+		List<Future<ExtDirectResponse>> futures = new ArrayList<>(directRequests.size());
 		for (ExtDirectRequest directRequest : directRequests) {
 			Callable<ExtDirectResponse> callable = createMethodCallCallable(directRequest,
 					request, response, locale);
@@ -328,7 +327,7 @@ public class RouterController {
 
 		ObjectMapper objectMapper = this.configurationService.getJsonHandler()
 				.getMapper();
-		List<Object> directResponses = new ArrayList<Object>(directRequests.size());
+		List<Object> directResponses = new ArrayList<>(directRequests.size());
 		boolean streamResponse = this.configurationService.getConfiguration()
 				.isStreamResponse();
 		for (Future<ExtDirectResponse> future : futures) {
@@ -359,12 +358,7 @@ public class RouterController {
 	private Callable<ExtDirectResponse> createMethodCallCallable(
 			final ExtDirectRequest directRequest, final HttpServletRequest request,
 			final HttpServletResponse response, final Locale locale) {
-		return new Callable<ExtDirectResponse>() {
-			@Override
-			public ExtDirectResponse call() throws Exception {
-				return handleMethodCall(directRequest, request, response, locale);
-			}
-		};
+		return () -> handleMethodCall(directRequest, request, response, locale);
 	}
 
 	private void handleMethodCallOne(ExtDirectRequest directRequest,
@@ -396,7 +390,7 @@ public class RouterController {
 	private void handleMethodCallsSequential(List<ExtDirectRequest> directRequests,
 			HttpServletRequest request, HttpServletResponse response, Locale locale)
 			throws IOException {
-		List<Object> directResponses = new ArrayList<Object>(directRequests.size());
+		List<Object> directResponses = new ArrayList<>(directRequests.size());
 		boolean streamResponse = this.configurationService.getConfiguration()
 				.isStreamResponse();
 

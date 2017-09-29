@@ -149,7 +149,7 @@ public class ExtDirectSpringUtilTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		byte[] data = "the response data".getBytes();
 		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + '"';
-		String contentType = "application/javascript;charset=UTF-8";
+		String contentType = "application/javascript;charset=utf-8";
 		ExtDirectSpringUtil.handleCacheableResponse(request, response, data, contentType);
 
 		assertThat(response.getStatus()).isEqualTo(200);
@@ -163,7 +163,7 @@ public class ExtDirectSpringUtilTest {
 	public void testHandleCacheableResponseWithIfNoneMatch() throws IOException {
 		byte[] data = "the response data".getBytes();
 		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + '"';
-		String contentType = "application/javascript;charset=UTF-8";
+		String contentType = "application/javascript;charset=utf-8";
 
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("If-None-Match", etag);

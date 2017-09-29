@@ -54,7 +54,7 @@ public class JsonHandlerTest {
 		assertEquals("1", jsonHandler.writeValueAsString(1));
 		assertEquals("true", jsonHandler.writeValueAsString(Boolean.TRUE));
 
-		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		Map<String, Object> map = new LinkedHashMap<>();
 		map.put("one", 1);
 		map.put("two", "2");
 		map.put("three", null);
@@ -79,7 +79,7 @@ public class JsonHandlerTest {
 		assertEquals("1", jsonHandler.writeValueAsString(1, true));
 		assertEquals("true", jsonHandler.writeValueAsString(Boolean.TRUE, true));
 
-		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		Map<String, Object> map = new LinkedHashMap<>();
 		map.put("one", 1);
 		map.put("two", "2");
 		map.put("three", null);
@@ -184,7 +184,7 @@ public class JsonHandlerTest {
 	public void testJsonList() throws IOException {
 		JsonHandler jsonHandler = new JsonHandler();
 		jsonHandler.setMapper(new ObjectMapper());
-		List<ExtDirectRequest> requests = new ArrayList<ExtDirectRequest>();
+		List<ExtDirectRequest> requests = new ArrayList<>();
 
 		ExtDirectRequest req = new ExtDirectRequest();
 		req.setAction("testAction1");

@@ -32,7 +32,7 @@ public class BaseViewService {
 	}
 
 	protected List<Employee> createEmployees(long no) {
-		List<Employee> employees = new ArrayList<Employee>();
+		List<Employee> employees = new ArrayList<>();
 		for (long i = 1L; i <= no; i++) {
 			Employee e = new Employee();
 			e.setId(i);

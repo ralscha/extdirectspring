@@ -106,7 +106,8 @@ public class StoreModifyMethodTest extends BaseViewTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
+	private void callMethod(String bean, String method,
+			MapEntry<String, Object>... expectedEntries) {
 		Object obj = ControllerUtil.sendAndReceiveObject(this.mockMvc, bean, method);
 		List<Map<String, Object>> records;
 

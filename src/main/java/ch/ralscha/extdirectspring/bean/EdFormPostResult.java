@@ -104,7 +104,7 @@ public abstract class EdFormPostResult {
 		public Builder addErrors(Locale locale, MessageSource messageSource,
 				BindingResult bindingResult) {
 			if (bindingResult != null && bindingResult.hasFieldErrors()) {
-				Map<String, List<String>> errorMap = new HashMap<String, List<String>>();
+				Map<String, List<String>> errorMap = new HashMap<>();
 				for (FieldError fieldError : bindingResult.getFieldErrors()) {
 					String message = fieldError.getDefaultMessage();
 					if (messageSource != null) {
@@ -115,7 +115,7 @@ public abstract class EdFormPostResult {
 					List<String> fieldErrors = errorMap.get(fieldError.getField());
 
 					if (fieldErrors == null) {
-						fieldErrors = new ArrayList<String>();
+						fieldErrors = new ArrayList<>();
 						errorMap.put(fieldError.getField(), fieldErrors);
 					}
 
@@ -153,7 +153,7 @@ public abstract class EdFormPostResult {
 		public Builder addErrorsResolveCode(Locale locale, MessageSource messageSource,
 				BindingResult bindingResult) {
 			if (bindingResult != null && bindingResult.hasFieldErrors()) {
-				Map<String, List<String>> errorMap = new HashMap<String, List<String>>();
+				Map<String, List<String>> errorMap = new HashMap<>();
 				for (FieldError fieldError : bindingResult.getFieldErrors()) {
 					String message = fieldError.getDefaultMessage();
 					if (messageSource != null) {
@@ -179,7 +179,7 @@ public abstract class EdFormPostResult {
 					List<String> fieldErrors = errorMap.get(fieldError.getField());
 
 					if (fieldErrors == null) {
-						fieldErrors = new ArrayList<String>();
+						fieldErrors = new ArrayList<>();
 						errorMap.put(fieldError.getField(), fieldErrors);
 					}
 
@@ -234,7 +234,7 @@ public abstract class EdFormPostResult {
 		 * @param field the name of the field
 		 * @param errors a collection of error messages
 		 */
-		private final Map<String, List<String>> helper = new LinkedHashMap<String, List<String>>();
+		private final Map<String, List<String>> helper = new LinkedHashMap<>();
 
 		public Builder addErrors(String field, List<String> errors) {
 			Assert.notNull(field, "field must not be null");
@@ -242,7 +242,7 @@ public abstract class EdFormPostResult {
 
 			List<String> fieldErrors = this.helper.get(field);
 			if (fieldErrors == null) {
-				fieldErrors = new ArrayList<String>();
+				fieldErrors = new ArrayList<>();
 				this.helper.put(field, fieldErrors);
 			}
 			fieldErrors.addAll(errors);

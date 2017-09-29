@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -71,61 +70,46 @@ public class InfoServiceTest extends JettyTest {
 
 	@Test
 	public void testApi() throws IOException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		CloseableHttpResponse response = null;
-		try {
-			HttpGet g = new HttpGet(
-					"http://localhost:9998/controller/api.js?group=itest_info_service");
-			response = client.execute(g);
+		HttpGet g = new HttpGet(
+				"http://localhost:9998/controller/api.js?group=itest_info_service");
+
+		try (CloseableHttpClient client = HttpClientBuilder.create().build();
+				CloseableHttpResponse response = client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
 			ApiControllerTest.compare(responseString, contentType, api(),
 					ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, false);
-		}
-		finally {
-			IOUtils.closeQuietly(response);
-			IOUtils.closeQuietly(client);
 		}
 	}
 
 	@Test
 	public void testApiDebug() throws IOException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		CloseableHttpResponse response = null;
-		try {
-			HttpGet g = new HttpGet(
-					"http://localhost:9998/controller/api-debug.js?group=itest_info_service");
-			response = client.execute(g);
+		HttpGet g = new HttpGet(
+				"http://localhost:9998/controller/api-debug.js?group=itest_info_service");
+
+		try (CloseableHttpClient client = HttpClientBuilder.create().build();
+				CloseableHttpResponse response = client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
 			ApiControllerTest.compare(responseString, contentType, api(),
 					ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, false);
 		}
-		finally {
-			IOUtils.closeQuietly(response);
-			IOUtils.closeQuietly(client);
-		}
 	}
 
 	@Test
 	public void testApiFingerprinted() throws IOException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		CloseableHttpResponse response = null;
-		try {
-			HttpGet g = new HttpGet(
-					"http://localhost:9998/controller/api-1.2.1.js?group=itest_info_service");
-			response = client.execute(g);
+		HttpGet g = new HttpGet(
+				"http://localhost:9998/controller/api-1.2.1.js?group=itest_info_service");
+
+		try (CloseableHttpClient client = HttpClientBuilder.create().build();
+				CloseableHttpResponse response = client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
 			ApiControllerTest.compare(responseString, contentType, api(),
 					ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, true);
-		}
-		finally {
-			IOUtils.closeQuietly(response);
-			IOUtils.closeQuietly(client);
 		}
 	}
 
@@ -144,7 +128,7 @@ public class InfoServiceTest extends JettyTest {
 
 		Locale.setDefault(Locale.US);
 
-		testUserPost("updateInfoUser1", "not a well-formed email address",
+		testUserPost("updateInfoUser1", "must be a well-formed email address",
 				entry("lc", "ralph"), entry("success", Boolean.FALSE));
 	}
 
@@ -177,15 +161,15 @@ public class InfoServiceTest extends JettyTest {
 				entry("success", Boolean.FALSE));
 	}
 
+	@SafeVarargs
 	@SuppressWarnings("unchecked")
-	private static void testUserPost(String method, String errorMsg, MapEntry... entries)
-			throws IOException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		CloseableHttpResponse response = null;
-		try {
+	private static void testUserPost(String method, String errorMsg,
+			MapEntry<String, Object>... entries) throws IOException {
+
+		try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
 			HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
-			List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+			List<NameValuePair> formparams = new ArrayList<>();
 			formparams.add(new BasicNameValuePair("extTID", "1"));
 			formparams.add(new BasicNameValuePair("extAction", "infoService"));
 			formparams.add(new BasicNameValuePair("extMethod", method));
@@ -201,52 +185,49 @@ public class InfoServiceTest extends JettyTest {
 
 			post.setEntity(postEntity);
 
-			response = client.execute(post);
-			HttpEntity entity = response.getEntity();
-			assertThat(entity).isNotNull();
-			String responseString = EntityUtils.toString(entity);
+			try (CloseableHttpResponse response = client.execute(post)) {
+				HttpEntity entity = response.getEntity();
+				assertThat(entity).isNotNull();
+				String responseString = EntityUtils.toString(entity);
 
-			ObjectMapper mapper = new ObjectMapper();
-			Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-			assertThat(rootAsMap).hasSize(5);
-			assertThat(rootAsMap.get("method")).isEqualTo(method);
-			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
-			assertThat(rootAsMap.get("action")).isEqualTo("infoService");
-			assertThat(rootAsMap.get("tid")).isEqualTo(1);
+				ObjectMapper mapper = new ObjectMapper();
+				Map<String, Object> rootAsMap = mapper.readValue(responseString,
+						Map.class);
+				assertThat(rootAsMap).hasSize(5);
+				assertThat(rootAsMap.get("method")).isEqualTo(method);
+				assertThat(rootAsMap.get("type")).isEqualTo("rpc");
+				assertThat(rootAsMap.get("action")).isEqualTo("infoService");
+				assertThat(rootAsMap.get("tid")).isEqualTo(1);
 
-			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
+				Map<String, Object> result = (Map<String, Object>) rootAsMap
+						.get("result");
 
-			int resultSize = entries.length;
-			if (errorMsg != null) {
-				resultSize += 1;
+				int resultSize = entries.length;
+				if (errorMsg != null) {
+					resultSize += 1;
+				}
+				assertThat(result).hasSize(resultSize);
+				assertThat(result).contains(entries);
+
+				Map<String, Object> errors = (Map<String, Object>) result.get("errors");
+				if (errorMsg != null) {
+					assertThat(errors).isNotNull();
+					assertThat(((List<String>) errors.get("email")).get(0))
+							.isEqualTo(errorMsg);
+				}
+				else {
+					assertThat(errors).isNull();
+				}
 			}
-			assertThat(result).hasSize(resultSize);
-			assertThat(result).contains(entries);
-
-			Map<String, Object> errors = (Map<String, Object>) result.get("errors");
-			if (errorMsg != null) {
-				assertThat(errors).isNotNull();
-				assertThat(((List<String>) errors.get("email")).get(0))
-						.isEqualTo(errorMsg);
-			}
-			else {
-				assertThat(errors).isNull();
-			}
-		}
-		finally {
-			IOUtils.closeQuietly(response);
-			IOUtils.closeQuietly(client);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	private static void testInfoPost(String method) throws IOException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		CloseableHttpResponse response = null;
-		try {
+		try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
 			HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
-			List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+			List<NameValuePair> formparams = new ArrayList<>();
 			formparams.add(new BasicNameValuePair("extTID", "1"));
 			formparams.add(new BasicNameValuePair("extAction", "infoService"));
 			formparams.add(new BasicNameValuePair("extMethod", method));
@@ -258,27 +239,26 @@ public class InfoServiceTest extends JettyTest {
 
 			post.setEntity(postEntity);
 
-			response = client.execute(post);
-			HttpEntity entity = response.getEntity();
-			assertThat(entity).isNotNull();
-			String responseString = EntityUtils.toString(entity);
+			try (CloseableHttpResponse response = client.execute(post)) {
+				HttpEntity entity = response.getEntity();
+				assertThat(entity).isNotNull();
+				String responseString = EntityUtils.toString(entity);
 
-			ObjectMapper mapper = new ObjectMapper();
-			Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-			assertThat(rootAsMap).hasSize(5);
-			assertThat(rootAsMap.get("method")).isEqualTo(method);
-			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
-			assertThat(rootAsMap.get("action")).isEqualTo("infoService");
-			assertThat(rootAsMap.get("tid")).isEqualTo(1);
+				ObjectMapper mapper = new ObjectMapper();
+				Map<String, Object> rootAsMap = mapper.readValue(responseString,
+						Map.class);
+				assertThat(rootAsMap).hasSize(5);
+				assertThat(rootAsMap.get("method")).isEqualTo(method);
+				assertThat(rootAsMap.get("type")).isEqualTo("rpc");
+				assertThat(rootAsMap.get("action")).isEqualTo("infoService");
+				assertThat(rootAsMap.get("tid")).isEqualTo(1);
 
-			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-			assertThat(result).hasSize(2);
-			assertThat(result.get("user-name-lower-case")).isEqualTo("ralph");
-			assertThat(result.get("success")).isEqualTo(Boolean.TRUE);
-		}
-		finally {
-			IOUtils.closeQuietly(response);
-			IOUtils.closeQuietly(client);
+				Map<String, Object> result = (Map<String, Object>) rootAsMap
+						.get("result");
+				assertThat(result).hasSize(2);
+				assertThat(result.get("user-name-lower-case")).isEqualTo("ralph");
+				assertThat(result.get("success")).isEqualTo(Boolean.TRUE);
+			}
 		}
 	}
 

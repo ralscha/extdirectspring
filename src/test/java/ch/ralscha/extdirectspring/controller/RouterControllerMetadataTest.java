@@ -19,7 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -71,11 +70,11 @@ public class RouterControllerMetadataTest {
 
 	@Test
 	public void testWithMetadataParameter() {
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
-		Map<String, Object> metadata = new HashMap<String, Object>();
+		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("mp", "aMetadataValue");
 
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
@@ -92,7 +91,7 @@ public class RouterControllerMetadataTest {
 			ix += 2;
 		}
 
-		readRequest = new HashMap<String, Object>();
+		readRequest = new HashMap<>();
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
@@ -103,7 +102,7 @@ public class RouterControllerMetadataTest {
 
 	@Test
 	public void testWithMetadataParameterDefaultValue() {
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("query", "firstname");
 
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
@@ -123,51 +122,50 @@ public class RouterControllerMetadataTest {
 
 	@Test
 	public void testWithMetadataParameterEd() {
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
-		Map<String, Object> metadata = new HashMap<String, Object>();
+		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("mp", "aMetadataValue");
 
-		EdStoreResult storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(
-				this.mockMvc, "remoteProviderMetadata", "method1Ed", metadata,
-				EdStoreResult.class, readRequest);
+		EdStoreResult<Map<String, Object>> storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
+				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method1Ed",
+						metadata, EdStoreResult.class, readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
 		int ix = 0;
 		ObjectMapper om = new ObjectMapper();
-		for (Map<String, Object> m : (Collection<Map<String, Object>>) storeResponse
-				.records()) {
+		for (Map<String, Object> m : storeResponse.records()) {
 			Row row = om.convertValue(m, Row.class);
 			assertThat(row.getName()).startsWith("name: " + ix + ":10;aMetadataValue;en");
 			ix += 2;
 		}
 
-		readRequest = new HashMap<String, Object>();
+		readRequest = new HashMap<>();
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
-		storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "method1Ed", null, null, readRequest);
+		storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
+				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method1Ed", null,
+						null, readRequest);
 	}
 
 	@Test
 	public void testWithMetadataParameterDefaultValueEd() {
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("query", "firstname");
 
-		EdStoreResult storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(
-				this.mockMvc, "remoteProviderMetadata", "method2Ed", null,
-				EdStoreResult.class, readRequest);
+		EdStoreResult<Map<String, Object>> storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
+				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method2Ed", null,
+						EdStoreResult.class, readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
 		int i = 1;
 		ObjectMapper om = new ObjectMapper();
-		for (Map<String, Object> m : (Collection<Map<String, Object>>) storeResponse
-				.records()) {
+		for (Map<String, Object> m : storeResponse.records()) {
 			Row row = om.convertValue(m, Row.class);
 			assertThat(row.getName()).isEqualTo("firstname: " + i + ":1;true");
 			i += 2;
@@ -184,10 +182,10 @@ public class RouterControllerMetadataTest {
 				});
 		RouterControllerStoreTest.assert100Rows(rows, ":null");
 
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("query", "");
 
-		Map<String, Object> metadata = new HashMap<String, Object>();
+		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", "12");
 
 		rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
@@ -208,10 +206,10 @@ public class RouterControllerMetadataTest {
 				});
 		RouterControllerStoreTest.assert100Rows(rows, ":null");
 
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("query", "");
 
-		Map<String, Object> metadata = new HashMap<String, Object>();
+		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", "13");
 
 		rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
@@ -224,10 +222,10 @@ public class RouterControllerMetadataTest {
 
 	@Test
 	public void testWithMetadataParameterOptionalDefaultValue() {
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
-		Map<String, Object> metadata = new HashMap<String, Object>();
+		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", "10");
 
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
@@ -244,7 +242,7 @@ public class RouterControllerMetadataTest {
 			ix += 2;
 		}
 
-		readRequest = new HashMap<String, Object>();
+		readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
 		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
@@ -264,10 +262,10 @@ public class RouterControllerMetadataTest {
 
 	@Test
 	public void testWithMetadataParameterJava8OptionalDefaultValue() {
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
-		Map<String, Object> metadata = new HashMap<String, Object>();
+		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", "10");
 
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
@@ -284,7 +282,7 @@ public class RouterControllerMetadataTest {
 			ix += 2;
 		}
 
-		readRequest = new HashMap<String, Object>();
+		readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
 		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
@@ -304,39 +302,37 @@ public class RouterControllerMetadataTest {
 
 	@Test
 	public void testWithMetadataParameterOptionalDefaultValueEd() {
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
-		Map<String, Object> metadata = new HashMap<String, Object>();
+		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", "10");
 
-		EdStoreResult storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(
-				this.mockMvc, "remoteProviderMetadata", "method5Ed", metadata,
-				EdStoreResult.class, readRequest);
+		EdStoreResult<Map<String, Object>> storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
+				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method5Ed",
+						metadata, EdStoreResult.class, readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
 		int ix = 0;
 		ObjectMapper om = new ObjectMapper();
-		for (Map<String, Object> m : (Collection<Map<String, Object>>) storeResponse
-				.records()) {
+		for (Map<String, Object> m : storeResponse.records()) {
 			Row row = om.convertValue(m, Row.class);
 			assertThat(row.getName()).startsWith("name: " + ix + ":10;en");
 			ix += 2;
 		}
 
-		readRequest = new HashMap<String, Object>();
+		readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
-		storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "method5Ed", null, EdStoreResult.class,
-				readRequest);
+		storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
+				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method5Ed", null,
+						EdStoreResult.class, readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
 		ix = 0;
-		for (Map<String, Object> m : (Collection<Map<String, Object>>) storeResponse
-				.records()) {
+		for (Map<String, Object> m : storeResponse.records()) {
 			Row row = om.convertValue(m, Row.class);
 			assertThat(row.getName()).startsWith("name: " + ix + ":20;en");
 			ix += 2;
@@ -345,39 +341,37 @@ public class RouterControllerMetadataTest {
 
 	@Test
 	public void testWithMetadataParameterJava8OptionalDefaultValueEd() {
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
-		Map<String, Object> metadata = new HashMap<String, Object>();
+		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", "10");
 
-		EdStoreResult storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(
-				this.mockMvc, "remoteProviderMetadata", "method6Ed", metadata,
-				EdStoreResult.class, readRequest);
+		EdStoreResult<Map<String, Object>> storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
+				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method6Ed",
+						metadata, EdStoreResult.class, readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
 		int ix = 0;
 		ObjectMapper om = new ObjectMapper();
-		for (Map<String, Object> m : (Collection<Map<String, Object>>) storeResponse
-				.records()) {
+		for (Map<String, Object> m : storeResponse.records()) {
 			Row row = om.convertValue(m, Row.class);
 			assertThat(row.getName()).startsWith("name: " + ix + ":10;en");
 			ix += 2;
 		}
 
-		readRequest = new HashMap<String, Object>();
+		readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
-		storeResponse = (EdStoreResult) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "method6Ed", null, EdStoreResult.class,
-				readRequest);
+		storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
+				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method6Ed", null,
+						EdStoreResult.class, readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
 		ix = 0;
-		for (Map<String, Object> m : (Collection<Map<String, Object>>) storeResponse
-				.records()) {
+		for (Map<String, Object> m : storeResponse.records()) {
 			Row row = om.convertValue(m, Row.class);
 			assertThat(row.getName()).startsWith("name: " + ix + ":20;en");
 			ix += 2;
@@ -386,12 +380,12 @@ public class RouterControllerMetadataTest {
 
 	@Test
 	public void testUpdateWithMetadataParam() throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
-		List<Row> rowsToUpdate = new ArrayList<Row>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
+		List<Row> rowsToUpdate = new ArrayList<>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
 		storeRequest.put("records", rowsToUpdate);
 
-		Map<String, Object> metadata = new HashMap<String, Object>();
+		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", 10);
 
 		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update1", storeRequest,
@@ -400,12 +394,12 @@ public class RouterControllerMetadataTest {
 
 	@Test
 	public void testUpdateWithMetadataParamDefaultValue() throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
-		List<Row> rowsToUpdate = new ArrayList<Row>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
+		List<Row> rowsToUpdate = new ArrayList<>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
 		storeRequest.put("records", rowsToUpdate);
 
-		Map<String, Object> metadata = new HashMap<String, Object>();
+		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", 1);
 
 		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update2", storeRequest,
@@ -417,12 +411,12 @@ public class RouterControllerMetadataTest {
 
 	@Test
 	public void testUpdateWithMetadataParamJava8Optional() throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
-		List<Row> rowsToUpdate = new ArrayList<Row>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
+		List<Row> rowsToUpdate = new ArrayList<>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
 		storeRequest.put("records", rowsToUpdate);
 
-		Map<String, Object> metadata = new HashMap<String, Object>();
+		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", 2);
 
 		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update3", storeRequest,
@@ -476,11 +470,11 @@ public class RouterControllerMetadataTest {
 	@Test
 	public void testTreeLoadMetadataParam() {
 
-		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
+		Map<String, Object> requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
 		requestParameters.put("foo", "foo");
 
-		Map<String, Object> metadata = new HashMap<String, Object>();
+		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", 2);
 
 		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
@@ -503,11 +497,11 @@ public class RouterControllerMetadataTest {
 	@Test
 	public void testTreeLoadMetadataParamOptional() {
 
-		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
+		Map<String, Object> requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
 		requestParameters.put("foo", "foo");
 
-		Map<String, Object> metadata = new HashMap<String, Object>();
+		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", 22);
 
 		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
@@ -540,11 +534,11 @@ public class RouterControllerMetadataTest {
 	@Test
 	public void testTreeLoadMetadataParamJava8Optional() {
 
-		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
+		Map<String, Object> requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
 		requestParameters.put("foo", "foo");
 
-		Map<String, Object> metadata = new HashMap<String, Object>();
+		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", 23);
 
 		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,

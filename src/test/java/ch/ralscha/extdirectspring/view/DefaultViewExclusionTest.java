@@ -63,14 +63,17 @@ public class DefaultViewExclusionTest {
 		callMethod("simpleMethodService", "noView", noView());
 	}
 
-	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
+	@SafeVarargs
+	private final void callMethod(String bean, String method,
+			MapEntry<String, Object>... expectedEntries) {
 		Map<String, Object> result = ControllerUtil.sendAndReceiveMap(this.mockMvc, bean,
 				method);
 		assertThat(result).hasSize(expectedEntries.length);
 		assertThat(result).contains(expectedEntries);
 	}
 
-	private static MapEntry[] noView() {
+	@SuppressWarnings("unchecked")
+	private static MapEntry<String, Object>[] noView() {
 		return new MapEntry[] { MapEntry.entry("id", 1),
 				MapEntry.entry("firstName", "firstName"),
 				MapEntry.entry("lastName", "lastName"), MapEntry.entry("phone", "phone"),
@@ -78,12 +81,14 @@ public class DefaultViewExclusionTest {
 				MapEntry.entry("secretKey", "mySecret") };
 	}
 
-	private static MapEntry[] summaryView() {
+	@SuppressWarnings("unchecked")
+	private static MapEntry<String, Object>[] summaryView() {
 		return new MapEntry[] { MapEntry.entry("firstName", "firstName"),
 				MapEntry.entry("lastName", "lastName") };
 	}
 
-	private MapEntry[] detailView() {
+	@SuppressWarnings("unchecked")
+	private static MapEntry<String, Object>[] detailView() {
 		return new MapEntry[] { MapEntry.entry("firstName", "firstName"),
 				MapEntry.entry("lastName", "lastName"), MapEntry.entry("phone", "phone"),
 				MapEntry.entry("address", "address") };

@@ -107,7 +107,8 @@ public class PollMethodTest extends BaseViewTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
+	private void callMethod(String bean, String method,
+			MapEntry<String, Object>... expectedEntries) {
 		ExtDirectPollResponse response;
 		try {
 			response = ControllerUtil.performPollRequest(this.mockMvc, bean, method,

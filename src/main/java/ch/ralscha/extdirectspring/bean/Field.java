@@ -23,7 +23,7 @@ public class Field {
 	private final Map<String, Object> fieldData;
 
 	public Field(String name) {
-		this.fieldData = new LinkedHashMap<String, Object>();
+		this.fieldData = new LinkedHashMap<>();
 		this.fieldData.put("name", name);
 	}
 

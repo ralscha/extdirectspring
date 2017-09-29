@@ -47,7 +47,7 @@ public class NumericFilterTest {
 
 	@Test
 	public void testNumericFilterLT() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField");
 		json.put("type", this.type);
 		json.put("comparison", "lt");
@@ -63,7 +63,7 @@ public class NumericFilterTest {
 
 	@Test
 	public void testNumericFilterGT() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField2");
 		json.put("type", this.type);
 		json.put("comparison", "gt");
@@ -79,7 +79,7 @@ public class NumericFilterTest {
 
 	@Test
 	public void testNumericFilterEQ() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField3");
 		json.put("type", this.type);
 		json.put("comparison", "eq");
@@ -96,7 +96,7 @@ public class NumericFilterTest {
 
 	@Test
 	public void testNumericFilterNE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField4");
 		json.put("type", this.type);
 		json.put("comparison", "ne");
@@ -113,7 +113,7 @@ public class NumericFilterTest {
 
 	@Test
 	public void testNumericFilterGTE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField5");
 		json.put("type", this.type);
 		json.put("comparison", "gte");
@@ -130,7 +130,7 @@ public class NumericFilterTest {
 
 	@Test
 	public void testNumericFilterLTE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField6");
 		json.put("type", this.type);
 		json.put("comparison", "lte");
@@ -147,7 +147,7 @@ public class NumericFilterTest {
 
 	@Test
 	public void testNumericPropertyFilterLT() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField");
 		json.put("type", this.type);
 		json.put("comparison", "lt");
@@ -164,7 +164,7 @@ public class NumericFilterTest {
 
 	@Test
 	public void testNumericPropertyFilterGT() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField2");
 		json.put("type", this.type);
 		json.put("comparison", "gt");
@@ -181,7 +181,7 @@ public class NumericFilterTest {
 
 	@Test
 	public void testNumericPropertyFilterEQ() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField3");
 		json.put("type", this.type);
 		json.put("comparison", "eq");
@@ -198,7 +198,7 @@ public class NumericFilterTest {
 
 	@Test
 	public void testNumericPropertyFilterNE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField4");
 		json.put("type", this.type);
 		json.put("comparison", "ne");
@@ -215,7 +215,7 @@ public class NumericFilterTest {
 
 	@Test
 	public void testNumericPropertyFilterGTE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField5");
 		json.put("type", this.type);
 		json.put("comparison", "gte");
@@ -232,7 +232,7 @@ public class NumericFilterTest {
 
 	@Test
 	public void testNumericPropertyFilterLTE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField6");
 		json.put("type", this.type);
 		json.put("operator", "lte");
@@ -249,7 +249,7 @@ public class NumericFilterTest {
 
 	@Test
 	public void testNumericFilterWithoutType() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField");
 		json.put("value", 10);
 

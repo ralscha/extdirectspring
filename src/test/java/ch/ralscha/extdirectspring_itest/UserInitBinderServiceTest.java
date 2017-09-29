@@ -62,7 +62,7 @@ public class UserInitBinderServiceTest extends JettyTest {
 	@Test
 	public void testPostWithoutDate() throws IOException {
 		Locale.setDefault(Locale.ENGLISH);
-		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		List<NameValuePair> formparams = new ArrayList<>();
 		formparams.add(new BasicNameValuePair("extTID", "1"));
 		formparams
 				.add(new BasicNameValuePair("extAction", "userServiceInitBinderService"));
@@ -79,8 +79,7 @@ public class UserInitBinderServiceTest extends JettyTest {
 
 		this.post.setEntity(postEntity);
 
-		CloseableHttpResponse response = this.client.execute(this.post);
-		try {
+		try (CloseableHttpResponse response = this.client.execute(this.post)) {
 			HttpEntity entity = response.getEntity();
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
@@ -103,15 +102,12 @@ public class UserInitBinderServiceTest extends JettyTest {
 			assertThat(result.get("dateOfBirth")).isNull();
 			assertThat(result.get("success")).isEqualTo(Boolean.TRUE);
 		}
-		finally {
-			IOUtils.closeQuietly(response);
-		}
 	}
 
 	@Test
 	public void testPostWithDate() throws IOException {
 		Locale.setDefault(Locale.ENGLISH);
-		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		List<NameValuePair> formparams = new ArrayList<>();
 		formparams.add(new BasicNameValuePair("extTID", "2"));
 		formparams
 				.add(new BasicNameValuePair("extAction", "userServiceInitBinderService"));
@@ -128,8 +124,7 @@ public class UserInitBinderServiceTest extends JettyTest {
 
 		this.post.setEntity(postEntity);
 
-		CloseableHttpResponse response = this.client.execute(this.post);
-		try {
+		try (CloseableHttpResponse response = this.client.execute(this.post)) {
 			HttpEntity entity = response.getEntity();
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
@@ -151,9 +146,6 @@ public class UserInitBinderServiceTest extends JettyTest {
 			assertThat(result.get("flag")).isEqualTo(Boolean.TRUE);
 			assertThat(result.get("dateOfBirth")).isEqualTo("1966-12-21");
 			assertThat(result.get("success")).isEqualTo(Boolean.TRUE);
-		}
-		finally {
-			IOUtils.closeQuietly(response);
 		}
 	}
 

@@ -61,7 +61,7 @@ public class RouterControllerTreeLoadTest {
 	@Test
 	public void testNoAdditionalParameters() {
 
-		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
+		Map<String, Object> requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
 
 		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
@@ -73,7 +73,7 @@ public class RouterControllerTreeLoadTest {
 				new Node("n2", "Node 2", false), new Node("n3", "Node 3", false),
 				new Node("n4", "Node 4", false), new Node("n5", "Node 5", false));
 
-		requestParameters = new LinkedHashMap<String, Object>();
+		requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "n1");
 
 		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
@@ -90,7 +90,7 @@ public class RouterControllerTreeLoadTest {
 	@Test
 	public void testAdditionalParameters() {
 
-		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
+		Map<String, Object> requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
 		requestParameters.put("foo", "foo");
 		requestParameters.put("today", ISODateTimeFormat.date().print(new LocalDate()));
@@ -108,7 +108,7 @@ public class RouterControllerTreeLoadTest {
 				new Node("n4", "Node 4" + appendix, false),
 				new Node("n5", "Node 5" + appendix, false));
 
-		requestParameters = new LinkedHashMap<String, Object>();
+		requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
 		requestParameters.put("today",
 				ISODateTimeFormat.date().print(new LocalDate().plusDays(10)));
@@ -130,10 +130,10 @@ public class RouterControllerTreeLoadTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testSupportedParameters() {
-		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
+		Map<String, Object> requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
 
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("theCookie", "value"));
 
 		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, false,
@@ -150,7 +150,7 @@ public class RouterControllerTreeLoadTest {
 				new Node("n4", "Node 4" + appendix, false),
 				new Node("n5", "Node 5" + appendix, false));
 
-		requestParameters = new LinkedHashMap<String, Object>();
+		requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "n2");
 		requestParameters.put("foo", "f");
 
@@ -184,7 +184,7 @@ public class RouterControllerTreeLoadTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("aHeader", "true");
 
-		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
+		Map<String, Object> requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
 
 		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
@@ -220,7 +220,7 @@ public class RouterControllerTreeLoadTest {
 
 	@Test
 	public void testWithSingleObjectAsReturnType() {
-		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
+		Map<String, Object> requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
 
 		Node node = (Node) ControllerUtil.sendAndReceive(this.mockMvc,

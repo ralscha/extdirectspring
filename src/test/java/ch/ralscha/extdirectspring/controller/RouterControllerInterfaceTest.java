@@ -75,7 +75,7 @@ public class RouterControllerInterfaceTest {
 	@Test
 	public void testWithRequestParamAnnotation() {
 
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("lastName", "Smith");
 		readRequest.put("active", Boolean.TRUE);
 

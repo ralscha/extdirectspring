@@ -40,7 +40,7 @@ public class StringFilterTest {
 
 	@Test
 	public void testStringFilter() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField");
 		json.put("type", "string");
 		json.put("value", "aString");
@@ -56,7 +56,7 @@ public class StringFilterTest {
 
 	@Test
 	public void testStringFilterLIKE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField");
 		json.put("type", "string");
 		json.put("value", "aString");
@@ -73,7 +73,7 @@ public class StringFilterTest {
 
 	@Test
 	public void testStringFilterEQ() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField");
 		json.put("type", "string");
 		json.put("value", "aString");
@@ -90,7 +90,7 @@ public class StringFilterTest {
 
 	@Test
 	public void testStringPropertyFilter() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField");
 		json.put("type", "string");
 		json.put("value", "aString");
@@ -106,7 +106,7 @@ public class StringFilterTest {
 
 	@Test
 	public void testStringPropertyFilterLIKE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField");
 		json.put("type", "string");
 		json.put("value", "aString");
@@ -123,7 +123,7 @@ public class StringFilterTest {
 
 	@Test
 	public void testStringPropertyFilterEQ() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField");
 		json.put("type", "string");
 		json.put("value", "aString");
@@ -140,7 +140,7 @@ public class StringFilterTest {
 
 	@Test
 	public void testStringFilterWithoutType() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField");
 		json.put("value", "aString");
 
@@ -155,7 +155,7 @@ public class StringFilterTest {
 
 	@Test
 	public void testUnknownOperation() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField");
 		json.put("value", "aString");
 		json.put("operator", "fuzzy");

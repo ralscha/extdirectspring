@@ -408,7 +408,7 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void methodWithRequiredCookieValue() {
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("intCookie", "1"));
 		cookies.add(new Cookie("booleanCookie", "true"));
 		ControllerUtil.sendAndReceive(this.mockMvc, null, cookies, "remoteProviderSimple",

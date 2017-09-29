@@ -61,8 +61,7 @@ public class RouterControllerStoreAlwaysWrapResponseTest {
 				.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method1",
 						new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
 						});
-		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()),
-				"");
+		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()), "");
 	}
 
 	@Test
@@ -75,8 +74,7 @@ public class RouterControllerStoreAlwaysWrapResponseTest {
 				.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method1",
 						new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
 						}, storeRead);
-		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()),
-				"");
+		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()), "");
 	}
 
 	@Test
@@ -88,7 +86,7 @@ public class RouterControllerStoreAlwaysWrapResponseTest {
 							// here
 						});
 
-		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()),
+		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()),
 				":true;true:true;en");
 
 	}
@@ -99,10 +97,10 @@ public class RouterControllerStoreAlwaysWrapResponseTest {
 				.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method7",
 						new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
 						});
-		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()),
+		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()),
 				":null");
 
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("id", 11);
 		readRequest.put("query", "");
 
@@ -110,7 +108,7 @@ public class RouterControllerStoreAlwaysWrapResponseTest {
 				"remoteProviderStoreRead", "method7",
 				new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
 				}, readRequest);
-		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()),
+		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()),
 				":11");
 	}
 

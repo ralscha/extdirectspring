@@ -44,7 +44,7 @@ public class FormInfo {
 
 	private String result;
 
-	private final Map<String, Object> any = new HashMap<String, Object>();
+	private final Map<String, Object> any = new HashMap<>();
 
 	@JsonAnyGetter
 	public Map<String, Object> any() {

@@ -61,16 +61,15 @@ public class RouterControllerFilterTest {
 
 	@BeforeClass
 	public static void readJson() throws IOException {
-		jsonList = new ArrayList<String>();
-		InputStream is = RouterControllerFilterTest.class
+		jsonList = new ArrayList<>();
+		try (InputStream is = RouterControllerFilterTest.class
 				.getResourceAsStream("/filterjson.txt");
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		String line = null;
-		while ((line = br.readLine()) != null) {
-			jsonList.add(line);
+				BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				jsonList.add(line);
+			}
 		}
-		br.close();
-		is.close();
 	}
 
 	@Test

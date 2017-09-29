@@ -30,7 +30,7 @@ public class BookSubService extends BaseService<Book> {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")
 	public List<Book> read() {
-		List<Book> books = new ArrayList<Book>();
+		List<Book> books = new ArrayList<>();
 		books.add(new Book(1, "Ext JS in Action", "1935182110"));
 		books.add(new Book(2, "Learning Ext JS 3.2", "1849511209"));
 		return books;
@@ -39,6 +39,6 @@ public class BookSubService extends BaseService<Book> {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "store")
 	public ExtDirectStoreResult<Book> readWithPaging(ExtDirectStoreReadRequest request) {
 		int total = request.getPage() + request.getLimit() + request.getStart();
-		return new ExtDirectStoreResult<Book>(total, read());
+		return new ExtDirectStoreResult<>(total, read());
 	}
 }

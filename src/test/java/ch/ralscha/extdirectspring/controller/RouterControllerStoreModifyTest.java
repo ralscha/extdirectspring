@@ -68,7 +68,7 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	private void testCreateNoData(String action) {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
 		storeRequest.put("records", new ArrayList<Row>());
 
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc, action,
@@ -86,8 +86,8 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	private void testCreateWithData(String action) {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
-		List<Row> rowsToUpdate = new ArrayList<Row>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
+		List<Row> rowsToUpdate = new ArrayList<>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
 		rowsToUpdate.add(new Row(23, "John", false, "23.12"));
 		storeRequest.put("records", rowsToUpdate);
@@ -119,8 +119,8 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	private void testCreateWithDataAndSupportedArguments(String action) {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
-		List<Row> rowsToUpdate = new ArrayList<Row>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
+		List<Row> rowsToUpdate = new ArrayList<>();
 		rowsToUpdate.add(new Row(10, "Ralph", false, "109.55"));
 
 		storeRequest.put("records", rowsToUpdate);
@@ -149,8 +149,8 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	private void testUpdate(String action) throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
-		List<Row> rowsToUpdate = new ArrayList<Row>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
+		List<Row> rowsToUpdate = new ArrayList<>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
 		storeRequest.put("records", rowsToUpdate);
 		executeUpdate(action, storeRequest, "update1");
@@ -164,8 +164,8 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	private void testUpdateWithRequestParam(String action) throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
-		List<Row> rowsToUpdate = new ArrayList<Row>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
+		List<Row> rowsToUpdate = new ArrayList<>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
 		storeRequest.put("id", 10);
 		storeRequest.put("records", rowsToUpdate);
@@ -180,8 +180,8 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	private void testUpdateWithRequestParamDefaultValue(String action) throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
-		List<Row> rowsToUpdate = new ArrayList<Row>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
+		List<Row> rowsToUpdate = new ArrayList<>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
 		storeRequest.put("records", rowsToUpdate);
 		executeUpdate(action, storeRequest, "update3");
@@ -195,14 +195,14 @@ public class RouterControllerStoreModifyTest {
 	}
 
 	private void testUpdateWithRequestParamOptional(String action) throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
-		List<Row> rowsToUpdate = new ArrayList<Row>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
+		List<Row> rowsToUpdate = new ArrayList<>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
 		storeRequest.put("records", rowsToUpdate);
 		executeUpdate(action, storeRequest, "update4");
 
-		storeRequest = new LinkedHashMap<String, Object>();
-		rowsToUpdate = new ArrayList<Row>();
+		storeRequest = new LinkedHashMap<>();
+		rowsToUpdate = new ArrayList<>();
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
 		storeRequest.put("records", rowsToUpdate);
 		storeRequest.put("id", 11);
@@ -213,7 +213,7 @@ public class RouterControllerStoreModifyTest {
 
 	@Test
 	public void testUpdateSingle() throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
 		Row row = new Row(10, "Ralph", true, "109.55");
 		storeRequest.putAll(ControllerUtil.convertValue(row, Map.class));
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update1");
@@ -221,7 +221,7 @@ public class RouterControllerStoreModifyTest {
 
 	@Test
 	public void testUpdateWithRequestParamSingle() throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
 		Row row = new Row(10, "Ralph", true, "109.55");
 		storeRequest.put("aParam", 42);
 		storeRequest.putAll(ControllerUtil.convertValue(row, Map.class));
@@ -230,7 +230,7 @@ public class RouterControllerStoreModifyTest {
 
 	@Test
 	public void testUpdateWithRequestParamDefaultValueSingle() throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
 		Row row = new Row(10, "Ralph", true, "109.55");
 		storeRequest.putAll(ControllerUtil.convertValue(row, Map.class));
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update3");
@@ -238,12 +238,12 @@ public class RouterControllerStoreModifyTest {
 
 	@Test
 	public void testUpdateWithRequestParamOptionalSingle() throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
 		Row row = new Row(10, "Ralph", true, "109.55");
 		storeRequest.putAll(ControllerUtil.convertValue(row, Map.class));
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update4");
 
-		storeRequest = new LinkedHashMap<String, Object>();
+		storeRequest = new LinkedHashMap<>();
 		storeRequest.putAll(ControllerUtil.convertValue(row, Map.class));
 		storeRequest.put("aParam", 11);
 		storeRequest.put("yesterday",
@@ -294,8 +294,8 @@ public class RouterControllerStoreModifyTest {
 
 	@Test
 	public void testDestroy() {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
-		List<Integer> rowsToUpdate = new ArrayList<Integer>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
+		List<Integer> rowsToUpdate = new ArrayList<>();
 		rowsToUpdate.add(10);
 		storeRequest.put("records", rowsToUpdate);
 
@@ -310,8 +310,8 @@ public class RouterControllerStoreModifyTest {
 
 	@Test
 	public void testDestroyArray() {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
-		List<Integer> rowsToUpdate = new ArrayList<Integer>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
+		List<Integer> rowsToUpdate = new ArrayList<>();
 		rowsToUpdate.add(10);
 		storeRequest.put("records", rowsToUpdate);
 

@@ -15,10 +15,9 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import javax.annotation.Nullable;
-
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
+import org.springframework.lang.Nullable;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

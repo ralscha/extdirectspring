@@ -77,16 +77,12 @@ public class MyModelControlerTest extends JettyTest {
 	public void testApi() throws IOException {
 		HttpGet g = new HttpGet(
 				"http://localhost:9998/controller/api.js?group=itest_base");
-		CloseableHttpResponse response = this.client.execute(g);
-		try {
+		try (CloseableHttpResponse response = this.client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
 			ApiControllerTest.compare(responseString, contentType, api(),
 					ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, false);
-		}
-		finally {
-			IOUtils.closeQuietly(response);
 		}
 	}
 
@@ -94,16 +90,12 @@ public class MyModelControlerTest extends JettyTest {
 	public void testApiDebug() throws IOException {
 		HttpGet g = new HttpGet(
 				"http://localhost:9998/controller/api-debug.js?group=itest_base");
-		CloseableHttpResponse response = this.client.execute(g);
-		try {
+		try (CloseableHttpResponse response = this.client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
 			ApiControllerTest.compare(responseString, contentType, api(),
 					ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, false);
-		}
-		finally {
-			IOUtils.closeQuietly(response);
 		}
 	}
 
@@ -111,16 +103,12 @@ public class MyModelControlerTest extends JettyTest {
 	public void testApiFingerprinted() throws IOException {
 		HttpGet g = new HttpGet(
 				"http://localhost:9998/controller/api-1.1.1.js?group=itest_base");
-		CloseableHttpResponse response = this.client.execute(g);
-		try {
+		try (CloseableHttpResponse response = this.client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
 			ApiControllerTest.compare(responseString, contentType, api(),
 					ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, true);
-		}
-		finally {
-			IOUtils.closeQuietly(response);
 		}
 	}
 
@@ -133,7 +121,7 @@ public class MyModelControlerTest extends JettyTest {
 
 	private void callMethod(String method)
 			throws IOException, JsonParseException, JsonMappingException {
-		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		List<NameValuePair> formparams = new ArrayList<>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
 		formparams.add(new BasicNameValuePair("extAction", "myModelController"));
 		formparams.add(new BasicNameValuePair("extMethod", method));
@@ -144,8 +132,7 @@ public class MyModelControlerTest extends JettyTest {
 
 		this.post.setEntity(postEntity);
 
-		CloseableHttpResponse response = this.client.execute(this.post);
-		try {
+		try (CloseableHttpResponse response = this.client.execute(this.post)) {
 			HttpEntity entity = response.getEntity();
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
@@ -161,9 +148,6 @@ public class MyModelControlerTest extends JettyTest {
 			@SuppressWarnings("unchecked")
 			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 			assertThat((Boolean) result.get("success")).isTrue();
-		}
-		finally {
-			IOUtils.closeQuietly(response);
 		}
 	}
 }

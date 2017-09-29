@@ -32,7 +32,7 @@ public class FilterTest {
 
 	@Test
 	public void testDateFilterGT() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField");
 		json.put("type", "date");
 		json.put("value", "12.12.2010");
@@ -49,7 +49,7 @@ public class FilterTest {
 
 	@Test
 	public void testDateFilterGTE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField2");
 		json.put("type", "date");
 		json.put("value", "13.12.2010");
@@ -66,7 +66,7 @@ public class FilterTest {
 
 	@Test
 	public void testDateFilterLTE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField3");
 		json.put("type", "date");
 		json.put("value", "11.12.2010");
@@ -83,7 +83,7 @@ public class FilterTest {
 
 	@Test
 	public void testDateFilterNE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField4");
 		json.put("type", "date");
 		json.put("value", "11.11.2010");
@@ -100,7 +100,7 @@ public class FilterTest {
 
 	@Test
 	public void testDateFilterEQ() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField5");
 		json.put("type", "date");
 		json.put("value", "11.11.2011");
@@ -117,7 +117,7 @@ public class FilterTest {
 
 	@Test
 	public void testDatePropertyFilterGT() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField");
 		json.put("type", "date");
 		json.put("value", "12.12.2010");
@@ -134,7 +134,7 @@ public class FilterTest {
 
 	@Test
 	public void testDatePropertyFilterGTE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField2");
 		json.put("type", "date");
 		json.put("value", "13.12.2010");
@@ -151,7 +151,7 @@ public class FilterTest {
 
 	@Test
 	public void testDatePropertyFilterLTE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField3");
 		json.put("type", "date");
 		json.put("value", "11.12.2010");
@@ -168,7 +168,7 @@ public class FilterTest {
 
 	@Test
 	public void testDatePropertyFilterNE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField4");
 		json.put("type", "date");
 		json.put("value", "11.11.2010");
@@ -185,7 +185,7 @@ public class FilterTest {
 
 	@Test
 	public void testDatePropertyFilterEQ() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField5");
 		json.put("type", "date");
 		json.put("value", "11.11.2011");
@@ -203,7 +203,7 @@ public class FilterTest {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testListFilter() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField");
 		json.put("type", "list");
 		json.put("value", "one,two,three");
@@ -224,7 +224,7 @@ public class FilterTest {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testListPropertyFilter() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField");
 		json.put("type", "list");
 		json.put("value", "one,two,three");
@@ -243,7 +243,7 @@ public class FilterTest {
 
 	@Test
 	public void testNotExistsFilter() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField");
 		json.put("type", "xy");
 		json.put("value", "aValue");
@@ -254,7 +254,7 @@ public class FilterTest {
 
 	@Test
 	public void testNotExistsPropertyFilter() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField");
 		json.put("type", "xy");
 		json.put("value", "aValue");
@@ -265,7 +265,7 @@ public class FilterTest {
 
 	@Test
 	public void testNoValue() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField");
 
 		Filter filter = Filter.createFilter(json, genericConversionService);
