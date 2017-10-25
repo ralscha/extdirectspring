@@ -519,6 +519,7 @@
 						<exclude>LICENSE</exclude>
 						<exclude>.apt_generated/**</exclude>
 						<exclude>.factorypath</exclude>
+						<exclude>.editorconfig</exclude>
 					</excludes>
 					<strictCheck>true</strictCheck>
 				</configuration>
