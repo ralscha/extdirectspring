@@ -78,7 +78,8 @@ public final class ParameterInfo {
 
 		Annotation[] paramAnnotations = methodParam.getParameterAnnotations();
 
-		for (Annotation paramAnn : paramAnnotations) {
+		for (Annotation annotation : paramAnnotations) {
+			Annotation paramAnn = AnnotationUtils.synthesizeAnnotation(annotation, clazz);
 
 			this.hasRequestParamAnnotation = false;
 			this.hasMetadataParamAnnotation = false;
