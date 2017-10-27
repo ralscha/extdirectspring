@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -60,7 +59,13 @@ public class MyModelServiceTest extends JettyTest {
 
 	@After
 	public void afterTest() {
-		IOUtils.closeQuietly(this.client);
+		try {
+            if (this.client != null) {
+            	this.client.close();
+            }
+        } catch (final IOException ioe) {
+            // ignore
+        }
 	}
 
 	private static RemotingApi api() {
