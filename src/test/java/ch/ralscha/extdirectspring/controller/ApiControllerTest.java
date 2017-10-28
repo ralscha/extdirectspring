@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.joda.time.DateTime;
@@ -263,7 +264,7 @@ public class ApiControllerTest {
 
 			String expiresHeader = (String) response.getHeaderValue("Expires");
 			DateTimeFormatter fmt = DateTimeFormat
-					.forPattern("EEE, dd MMM yyyy HH:mm:ss z");
+					.forPattern("EEE, dd MMM yyyy HH:mm:ss z").withLocale(Locale.ENGLISH);
 			DateTime expires = DateTime.parse(expiresHeader, fmt);
 
 			DateTime inSixMonths = DateTime.now(DateTimeZone.UTC)
