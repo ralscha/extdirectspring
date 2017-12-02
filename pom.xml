@@ -499,10 +499,8 @@
 				<configuration>
 					<header>${basedir}/src/main/config/header.txt</header>
 					<properties>
-						
 						<year>${project.inceptionYear}</year>
 						<currentYear>2017</currentYear>
-						
 					</properties>
 					<excludes>
 						<exclude>**/*.xml</exclude>
