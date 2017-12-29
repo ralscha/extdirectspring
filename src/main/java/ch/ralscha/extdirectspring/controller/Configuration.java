@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.convert.ConversionService;
@@ -284,7 +285,6 @@ public class Configuration {
 	 *
 	 * @param bufferLimit new value for buffer limit
 	 */
-	@SuppressWarnings("javadoc")
 	public void setBufferLimit(Integer bufferLimit) {
 		this.bufferLimit = bufferLimit;
 	}
@@ -562,6 +562,12 @@ public class Configuration {
 
 	public void setJsonHandler(JsonHandler jsonHandler) {
 		this.jsonHandler = jsonHandler;
+	}
+
+	public String postProcessRequestUrl(
+			@SuppressWarnings("unused") HttpServletRequest request,
+			String requestUrlString) {
+		return requestUrlString;
 	}
 
 }

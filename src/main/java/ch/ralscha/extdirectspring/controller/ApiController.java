@@ -213,6 +213,9 @@ public class ApiController {
 		else {
 			requestUrlString = request.getRequestURI();
 		}
+
+		requestUrlString = configuration.postProcessRequestUrl(request, requestUrlString);
+
 		String stripApiRegex = "api[^/]*?\\.js";
 		String routerUrl = requestUrlString.replaceFirst(stripApiRegex, "") + "router";
 		String basePollUrl = requestUrlString.replaceFirst(stripApiRegex, "") + "poll";
