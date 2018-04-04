@@ -45,7 +45,7 @@
 	</scm>
 
 	<properties>
-		<jackson.version>2.9.4</jackson.version>
+		<jackson.version>2.9.5</jackson.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -204,7 +204,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
-			<version>4.5.4</version>
+			<version>4.5.5</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -277,7 +277,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.4.196</version>
+			<version>1.4.197</version>
 			<scope>test</scope>
 		</dependency>
 
