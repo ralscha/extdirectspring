@@ -25,14 +25,8 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
-import nl.jqno.equalsverifier.EqualsVerifier;
 
 public class MethodInfoCacheTest {
-
-	@Test
-	public void verifyEquals() {
-		EqualsVerifier.forClass(MethodInfoCache.Key.class).verify();
-	}
 
 	@Test
 	@ExtDirectMethod

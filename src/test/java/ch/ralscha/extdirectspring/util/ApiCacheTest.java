@@ -19,14 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-
 public class ApiCacheTest {
-
-	@Test
-	public void verifyEquals() {
-		EqualsVerifier.forClass(ApiCacheKey.class).verify();
-	}
 
 	@Test
 	public void testPutAndGet() {

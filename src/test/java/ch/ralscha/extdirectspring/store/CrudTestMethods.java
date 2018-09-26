@@ -298,7 +298,7 @@ public class CrudTestMethods {
 
 	private void testDeleteRecordsOne(MockMvc mockMvc) throws Exception {
 		Map<String, Object> storeRequest = new LinkedHashMap<>();
-		storeRequest.put("records", new Integer(1));
+		storeRequest.put("records", Integer.valueOf(1));
 		String edRequest = ControllerUtil.createEdsRequest(this.serviceName, "delete3", 1,
 				storeRequest);
 
