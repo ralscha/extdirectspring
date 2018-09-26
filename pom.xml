@@ -142,14 +142,14 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>1.8.13</version>
+			<version>1.9.1</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>1.8.13</version>
+			<version>1.9.1</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -217,9 +217,16 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>5.4.2.Final</version>
+			<version>6.0.13.Final</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+		    <groupId>javax.el</groupId>
+		    <artifactId>javax.el-api</artifactId>
+		    <version>3.0.0</version>
+		    <scope>test</scope>
+		</dependency>		
 
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
@@ -284,14 +291,8 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>5.2.12.Final</version>
+			<version>5.3.6.Final</version>
 			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<artifactId>xml-apis</artifactId>
-					<groupId>xml-apis</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>
