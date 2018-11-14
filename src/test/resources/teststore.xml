@@ -13,5 +13,5 @@
   
   <context:component-scan base-package="ch.ralscha.extdirectspring" />
   <mvc:annotation-driven />
-  
+  <bean id="inMemoryUserDetailsManager" class="org.springframework.security.provisioning.InMemoryUserDetailsManager" />
 </beans>

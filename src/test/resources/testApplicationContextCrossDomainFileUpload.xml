@@ -17,5 +17,6 @@
 
   <bean id="extDirectSpringConfiguration" class="ch.ralscha.extdirectspring.controller.Configuration" 
     p:frameDomain="rootdomain.com" />
-
+  
+  <bean id="inMemoryUserDetailsManager" class="org.springframework.security.provisioning.InMemoryUserDetailsManager" />
 </beans>

@@ -16,5 +16,5 @@
   
   <bean id="springManagedBean" class="ch.ralscha.extdirectspring.util.SpringManagedBean" />
   <bean id="springManagedSubBean" class="ch.ralscha.extdirectspring.util.SpringManagedSubBean" />
-  
+  <bean id="inMemoryUserDetailsManager" class="org.springframework.security.provisioning.InMemoryUserDetailsManager" />
 </beans>

@@ -18,5 +18,6 @@
   <mvc:annotation-driven />
 
   <bean abstract="true" class="ch.ralscha.extdirectspring.util.TestInterface" />
+  <bean id="inMemoryUserDetailsManager" class="org.springframework.security.provisioning.InMemoryUserDetailsManager" />
 
 </beans>

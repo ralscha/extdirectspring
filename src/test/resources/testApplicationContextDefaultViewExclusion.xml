@@ -15,4 +15,5 @@
   <bean id="jsonHandler" class="ch.ralscha.extdirectspring.util.JsonHandler" p:mapper-ref="myOm" />
   <context:component-scan base-package="ch.ralscha.extdirectspring"/>
   <mvc:annotation-driven />
+  <bean id="inMemoryUserDetailsManager" class="org.springframework.security.provisioning.InMemoryUserDetailsManager" />
 </beans>

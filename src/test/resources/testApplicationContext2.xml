@@ -18,5 +18,6 @@
 		  p:streamResponse="false" 
 		  p:timeout="15111" 
 		  p:jsContentType="application/x-javascript"/>
-
+    
+    <bean id="inMemoryUserDetailsManager" class="org.springframework.security.provisioning.InMemoryUserDetailsManager" />
 </beans>
