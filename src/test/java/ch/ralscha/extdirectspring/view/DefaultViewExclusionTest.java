@@ -20,12 +20,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Map;
 
 import org.assertj.core.data.MapEntry;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -33,7 +33,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import ch.ralscha.extdirectspring.controller.ControllerUtil;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:/testApplicationContextDefaultViewExclusion.xml")
 public class DefaultViewExclusionTest {
@@ -43,7 +43,7 @@ public class DefaultViewExclusionTest {
 
 	private MockMvc mockMvc;
 
-	@Before
+	@BeforeEach
 	public void setupMockMvc() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
@@ -63,14 +63,17 @@ public class DefaultViewExclusionTest {
 		callMethod("simpleMethodService", "noView", noView());
 	}
 
-	private void callMethod(String bean, String method, MapEntry... expectedEntries) {
+	@SafeVarargs
+	private final void callMethod(String bean, String method,
+			MapEntry<String, Object>... expectedEntries) {
 		Map<String, Object> result = ControllerUtil.sendAndReceiveMap(this.mockMvc, bean,
 				method);
 		assertThat(result).hasSize(expectedEntries.length);
 		assertThat(result).contains(expectedEntries);
 	}
 
-	private static MapEntry[] noView() {
+	@SuppressWarnings("unchecked")
+	private static MapEntry<String, Object>[] noView() {
 		return new MapEntry[] { MapEntry.entry("id", 1),
 				MapEntry.entry("firstName", "firstName"),
 				MapEntry.entry("lastName", "lastName"), MapEntry.entry("phone", "phone"),
@@ -78,12 +81,14 @@ public class DefaultViewExclusionTest {
 				MapEntry.entry("secretKey", "mySecret") };
 	}
 
-	private static MapEntry[] summaryView() {
+	@SuppressWarnings("unchecked")
+	private static MapEntry<String, Object>[] summaryView() {
 		return new MapEntry[] { MapEntry.entry("firstName", "firstName"),
 				MapEntry.entry("lastName", "lastName") };
 	}
 
-	private MapEntry[] detailView() {
+	@SuppressWarnings("unchecked")
+	private static MapEntry<String, Object>[] detailView() {
 		return new MapEntry[] { MapEntry.entry("firstName", "firstName"),
 				MapEntry.entry("lastName", "lastName"), MapEntry.entry("phone", "phone"),
 				MapEntry.entry("address", "address") };

@@ -113,7 +113,7 @@ public class ActionDoc extends Action {
 	 */
 	public Map<String, String> getParameters() {
 		if (null == this.parameters) {
-			this.parameters = new HashMap<String, String>();
+			this.parameters = new HashMap<>();
 		}
 		return this.parameters;
 	}
@@ -130,7 +130,7 @@ public class ActionDoc extends Action {
 	 */
 	public Map<String, String> getReturnMethod() {
 		if (null == this.returnMethod) {
-			this.returnMethod = new HashMap<String, String>();
+			this.returnMethod = new HashMap<>();
 		}
 		return this.returnMethod;
 	}

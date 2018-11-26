@@ -15,14 +15,14 @@
  */
 package ch.ralscha.extdirectspring_itest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -30,7 +30,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -57,25 +57,24 @@ public class RawJsonControllerTest extends JettyTest {
 	private static void testAndCheck(String action, String method, Integer total,
 			boolean success)
 			throws IOException, JsonParseException, JsonMappingException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		CloseableHttpResponse response = null;
-		try {
-			HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
-			StringEntity postEntity = new StringEntity(
-					"{\"action\":\"" + action + "\",\"method\":\"" + method
-							+ "\",\"data\":[],\"type\":\"rpc\",\"tid\":1}",
-					"UTF-8");
-			post.setEntity(postEntity);
-			post.setHeader("Content-Type", "application/json; charset=UTF-8");
+		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
-			response = client.execute(post);
+		StringEntity postEntity = new StringEntity(
+				"{\"action\":\"" + action + "\",\"method\":\"" + method
+						+ "\",\"data\":[],\"type\":\"rpc\",\"tid\":1}",
+				"UTF-8");
+		post.setEntity(postEntity);
+		post.setHeader("Content-Type", "application/json; charset=UTF-8");
+
+		try (CloseableHttpClient client = HttpClientBuilder.create().build();
+				CloseableHttpResponse response = client.execute(post)) {
 			HttpEntity entity = response.getEntity();
-			assertThat(entity).isNotNull();
+			assertNotNull(entity);
 			String responseString = EntityUtils.toString(entity);
 
-			assertThat(responseString).isNotNull();
-			assertThat(responseString).startsWith("[").endsWith("]");
+			assertNotNull(responseString);
+			assertTrue(responseString.startsWith("[") && responseString.endsWith("]"));
 
 			ObjectMapper mapper = new ObjectMapper();
 			Map<String, Object> rootAsMap = mapper.readValue(
@@ -90,12 +89,12 @@ public class RawJsonControllerTest extends JettyTest {
 			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 			if (total != null) {
 				assertEquals(3, result.size());
-				assertThat((Integer) result.get("total")).isEqualTo(total);
+				assertEquals(total, result.get("total"));
 			}
 			else {
 				assertEquals(2, result.size());
 			}
-			assertThat((Boolean) result.get("success")).isEqualTo(success);
+			assertEquals(success, result.get("success"));
 
 			List<Map<String, Object>> records = (List<Map<String, Object>>) result
 					.get("records");
@@ -105,10 +104,6 @@ public class RawJsonControllerTest extends JettyTest {
 					((Map<String, Object>) records.get(0).get("_id")).get("$oid"));
 			assertEquals("4cf8e5b8924e2334a0b99454",
 					((Map<String, Object>) records.get(1).get("_id")).get("$oid"));
-		}
-		finally {
-			IOUtils.closeQuietly(response);
-			IOUtils.closeQuietly(client);
 		}
 	}
 

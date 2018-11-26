@@ -28,14 +28,14 @@ import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -49,7 +49,7 @@ import ch.ralscha.extdirectspring.provider.RemoteProviderSimpleNamed.ResultObjec
 import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad.Node;
 import ch.ralscha.extdirectspring.provider.Row;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:/testApplicationContext.xml")
 public class RouterControllerOptionalTest {
@@ -59,12 +59,12 @@ public class RouterControllerOptionalTest {
 
 	private MockMvc mockMvc;
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeTest() {
 		Locale.setDefault(Locale.US);
 	}
 
-	@Before
+	@BeforeEach
 	public void setupMockMvc() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
@@ -244,7 +244,7 @@ public class RouterControllerOptionalTest {
 
 	@Test
 	public void testMethod16() {
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("intCookie", "1"));
 		cookies.add(new Cookie("booleanCookie", "true"));
 		ControllerUtil.sendAndReceive(this.mockMvc, null, cookies,
@@ -282,7 +282,7 @@ public class RouterControllerOptionalTest {
 
 	@Test
 	public void testPoll1a() throws Exception {
-		Map<String, String> params = new LinkedHashMap<String, String>();
+		Map<String, String> params = new LinkedHashMap<>();
 		params.put("id", "2");
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
@@ -312,7 +312,7 @@ public class RouterControllerOptionalTest {
 
 	@Test
 	public void testPoll2a() throws Exception {
-		Map<String, String> params = new LinkedHashMap<String, String>();
+		Map<String, String> params = new LinkedHashMap<>();
 		params.put("id", "7");
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
@@ -340,7 +340,7 @@ public class RouterControllerOptionalTest {
 
 	@Test
 	public void testPoll3a() throws Exception {
-		Map<String, String> params = new LinkedHashMap<String, String>();
+		Map<String, String> params = new LinkedHashMap<>();
 		params.put("id", "3");
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
@@ -385,7 +385,7 @@ public class RouterControllerOptionalTest {
 
 	@Test
 	public void testPoll5() throws Exception {
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("cookie", "cookieValue"));
 
 		ExtDirectPollResponse resp = ControllerUtil.performPollRequest(this.mockMvc,
@@ -401,39 +401,39 @@ public class RouterControllerOptionalTest {
 
 	@Test
 	public void testNamed1() {
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("d", 2.1);
 		params.put("s", "aString");
 		params.put("i", 30);
 		ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderOptional",
 				"namedMethod1", "namedMethod1() called-30-2.100-aString", params);
 
-		params = new HashMap<String, Object>();
+		params = new HashMap<>();
 		params.put("i", 20);
 		params.put("de", 2.1);
 		params.put("s", "aString");
 		ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderOptional",
 				"namedMethod1", "namedMethod1() called-20-3.141-aString", params);
 
-		params = new HashMap<String, Object>();
+		params = new HashMap<>();
 		params.put("i", 20);
 		params.put("s", "aString");
 		ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderOptional",
 				"namedMethod1", "namedMethod1() called-20-3.141-aString", params);
 
-		params = new HashMap<String, Object>();
+		params = new HashMap<>();
 		params.put("i", "30");
 		params.put("s", 100.45);
 		params.put("d", "3.141");
 		ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderOptional",
 				"namedMethod1", "namedMethod1() called-30-3.141-100.45", params);
 
-		params = new HashMap<String, Object>();
+		params = new HashMap<>();
 		params.put("s", "aString");
 		ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderOptional",
 				"namedMethod1", "namedMethod1() called--1-3.141-aString", params);
 
-		params = new HashMap<String, Object>();
+		params = new HashMap<>();
 		ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderOptional",
 				"namedMethod1", "namedMethod1() called--1-3.141-default", params);
 	}
@@ -441,7 +441,7 @@ public class RouterControllerOptionalTest {
 	@Test
 	public void testNamed2() {
 		ResultObject expectedResult = new ResultObject("Miller", 10, Boolean.TRUE);
-		Map<String, Object> params = new LinkedHashMap<String, Object>();
+		Map<String, Object> params = new LinkedHashMap<>();
 		params.put("lastName", expectedResult.getName());
 		params.put("theAge", expectedResult.getAge());
 		params.put("active", expectedResult.getActive());
@@ -451,7 +451,7 @@ public class RouterControllerOptionalTest {
 		assertThat(result).isEqualTo(expectedResult);
 
 		expectedResult = new ResultObject("Ralph", 21, Boolean.FALSE);
-		params = new LinkedHashMap<String, Object>();
+		params = new LinkedHashMap<>();
 		params.put("lastName", expectedResult.getName());
 		params.put("active", expectedResult.getActive());
 		result = (ResultObject) ControllerUtil.sendAndReceiveNamed(this.mockMvc,
@@ -459,7 +459,7 @@ public class RouterControllerOptionalTest {
 		assertThat(result).isEqualTo(expectedResult);
 
 		expectedResult = new ResultObject("Joe", 21, Boolean.TRUE);
-		params = new LinkedHashMap<String, Object>();
+		params = new LinkedHashMap<>();
 		params.put("lastName", expectedResult.getName());
 		result = (ResultObject) ControllerUtil.sendAndReceiveNamed(this.mockMvc,
 				"remoteProviderOptional", "namedMethod2", ResultObject.class, params);
@@ -468,20 +468,20 @@ public class RouterControllerOptionalTest {
 
 	@Test
 	public void testNamed3() {
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("aSimpleCookie", "ralph"));
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("i", 99L);
 		ControllerUtil.sendAndReceiveNamed(this.mockMvc, null, cookies,
 				"remoteProviderOptional", "namedMethod3", "99:ralph", params);
 
-		params = new HashMap<String, Object>();
+		params = new HashMap<>();
 		params.put("i", 101L);
 		ControllerUtil.sendAndReceiveNamed(this.mockMvc, null, null,
 				"remoteProviderOptional", "namedMethod3", "101:defaultCookieValue",
 				params);
 
-		params = new HashMap<String, Object>();
+		params = new HashMap<>();
 		ControllerUtil.sendAndReceiveNamed(this.mockMvc, null, null,
 				"remoteProviderOptional", "namedMethod3", "100:defaultCookieValue",
 				params);
@@ -492,26 +492,27 @@ public class RouterControllerOptionalTest {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("aSimpleHeader", "theHeaderValue");
 
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("bd", new BigDecimal("1.1"));
 		ControllerUtil.sendAndReceiveNamed(this.mockMvc, headers, null,
 				"remoteProviderOptional", "namedMethod4", "1.1:theHeaderValue", params);
 
-		params = new HashMap<String, Object>();
+		params = new HashMap<>();
 		params.put("bd", new BigDecimal("1.2"));
 		ControllerUtil.sendAndReceiveNamed(this.mockMvc, null, null,
 				"remoteProviderOptional", "namedMethod4", "1.2:defaultHeaderValue",
 				params);
 
-		params = new HashMap<String, Object>();
+		params = new HashMap<>();
 		ControllerUtil.sendAndReceiveNamed(this.mockMvc, null, null,
 				"remoteProviderOptional", "namedMethod4", "3.141:defaultHeaderValue",
 				params);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testStoreRead1() {
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
@@ -529,7 +530,7 @@ public class RouterControllerOptionalTest {
 			ix += 2;
 		}
 
-		readRequest = new HashMap<String, Object>();
+		readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
 		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
@@ -547,16 +548,17 @@ public class RouterControllerOptionalTest {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testStoreRead2() {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("requestHeader", "rValue");
 
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("cookie", "cValue"));
 
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
@@ -573,7 +575,7 @@ public class RouterControllerOptionalTest {
 			ix += 2;
 		}
 
-		readRequest = new HashMap<String, Object>();
+		readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
 		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
@@ -592,12 +594,13 @@ public class RouterControllerOptionalTest {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testTreeLoad1() {
-		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
+		Map<String, Object> requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
 
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("theCookie", "value"));
 
 		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, false,
@@ -614,7 +617,7 @@ public class RouterControllerOptionalTest {
 				new Node("n4", "Node 4" + appendix, false),
 				new Node("n5", "Node 5" + appendix, false));
 
-		requestParameters = new LinkedHashMap<String, Object>();
+		requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "n2");
 		requestParameters.put("foo", "f");
 
@@ -634,11 +637,12 @@ public class RouterControllerOptionalTest {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testTreeLoad2() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("aHeader", "false");
 
-		Map<String, Object> requestParameters = new LinkedHashMap<String, Object>();
+		Map<String, Object> requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
 
 		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,

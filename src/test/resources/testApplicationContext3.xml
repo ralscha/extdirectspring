@@ -20,5 +20,6 @@
 		  p:streamResponse="true" 
 		  p:timeout="15111" 
 		  p:synchronizeOnSession="true"/>
-
+    
+    <bean id="inMemoryUserDetailsManager" class="org.springframework.security.provisioning.InMemoryUserDetailsManager" />
 </beans>

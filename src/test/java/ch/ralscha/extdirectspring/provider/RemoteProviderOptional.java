@@ -119,7 +119,7 @@ public class RemoteProviderOptional {
 			Optional<Integer> id) {
 		StringBuilder sb = new StringBuilder();
 		if (ids.isPresent()) {
-			SortedSet<Integer> sorted = new TreeSet<Integer>(ids.get());
+			SortedSet<Integer> sorted = new TreeSet<>(ids.get());
 			for (int i : sorted) {
 				sb.append(i);
 				sb.append("+");
@@ -281,7 +281,8 @@ public class RemoteProviderOptional {
 	public List<Node> treeLoad1(@RequestParam("node") Optional<String> node,
 			HttpServletResponse response, final HttpServletRequest request,
 			@RequestParam Optional<String> foo, @CookieValue Optional<String> theCookie,
-			final HttpSession session, Locale locale, Principal principal) {
+			final HttpSession session, Locale locale,
+			@SuppressWarnings("unused") Principal principal) {
 
 		return RemoteProviderTreeLoad.createTreeList(node.get(),
 				":" + foo.orElse("defaultValue2") + ";"

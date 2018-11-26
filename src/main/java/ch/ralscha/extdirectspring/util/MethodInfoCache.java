@@ -35,7 +35,7 @@ public class MethodInfoCache
 	private final Map<Key, MethodInfo> cache;
 
 	public MethodInfoCache() {
-		this.cache = new HashMap<Key, MethodInfo>();
+		this.cache = new HashMap<>();
 	}
 
 	/**

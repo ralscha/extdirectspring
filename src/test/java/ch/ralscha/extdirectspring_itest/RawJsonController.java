@@ -30,7 +30,7 @@ public class RawJsonController {
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public ExtDirectRawJsonStoreResult listUsers1() {
-		List<String> records = new ArrayList<String>();
+		List<String> records = new ArrayList<>();
 
 		records.add(
 				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
@@ -42,7 +42,7 @@ public class RawJsonController {
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public ExtDirectRawJsonStoreResult listUsers2() {
-		List<String> records = new ArrayList<String>();
+		List<String> records = new ArrayList<>();
 
 		records.add(
 				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
@@ -54,7 +54,7 @@ public class RawJsonController {
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public ExtDirectRawJsonStoreResult listUsers3() {
-		List<String> records = new ArrayList<String>();
+		List<String> records = new ArrayList<>();
 
 		records.add(
 				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
@@ -66,7 +66,7 @@ public class RawJsonController {
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public ExtDirectRawJsonStoreResult listUsers4() {
-		List<String> records = new ArrayList<String>();
+		List<String> records = new ArrayList<>();
 
 		records.add(
 				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
@@ -78,7 +78,7 @@ public class RawJsonController {
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public ExtDirectRawJsonStoreResult listUsers5() {
-		List<String> records = new ArrayList<String>();
+		List<String> records = new ArrayList<>();
 
 		records.add(
 				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
@@ -90,7 +90,7 @@ public class RawJsonController {
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public EdJsonStoreResult listUsers1Ed() {
-		List<String> records = new ArrayList<String>();
+		List<String> records = new ArrayList<>();
 
 		records.add(
 				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
@@ -102,7 +102,7 @@ public class RawJsonController {
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public EdJsonStoreResult listUsers2Ed() {
-		List<String> records = new ArrayList<String>();
+		List<String> records = new ArrayList<>();
 
 		records.add(
 				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
@@ -114,7 +114,7 @@ public class RawJsonController {
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public EdJsonStoreResult listUsers3Ed() {
-		List<String> records = new ArrayList<String>();
+		List<String> records = new ArrayList<>();
 
 		records.add(
 				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
@@ -127,7 +127,7 @@ public class RawJsonController {
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public EdJsonStoreResult listUsers4Ed() {
-		List<String> records = new ArrayList<String>();
+		List<String> records = new ArrayList<>();
 
 		records.add(
 				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");
@@ -139,7 +139,7 @@ public class RawJsonController {
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public EdJsonStoreResult listUsers5Ed() {
-		List<String> records = new ArrayList<String>();
+		List<String> records = new ArrayList<>();
 
 		records.add(
 				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e23349fb99454\"} , \"username\" : \"johnd\" , \"firstName\" : \"John\" , \"name\" : \"Doe\" , \"email\" : \"john.doe@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1985-02-03T23:00:00Z\"} , \"noOfLogins\" : 5 , \"password\" : \"91dfd9ddb4198affc5c194cd8ce6d338fde470e2\" , \"groups\" : [ \"admin\" , \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-1234\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-4567\"}]}");

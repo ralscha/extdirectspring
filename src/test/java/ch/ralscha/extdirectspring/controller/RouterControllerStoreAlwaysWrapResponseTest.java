@@ -22,12 +22,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -39,7 +39,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.provider.Row;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:/testApplicationContextWrapResponse.xml")
 @SuppressWarnings("unchecked")
@@ -50,7 +50,7 @@ public class RouterControllerStoreAlwaysWrapResponseTest {
 
 	private MockMvc mockMvc;
 
-	@Before
+	@BeforeEach
 	public void setupMockMvc() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
@@ -61,8 +61,7 @@ public class RouterControllerStoreAlwaysWrapResponseTest {
 				.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method1",
 						new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
 						});
-		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()),
-				"");
+		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()), "");
 	}
 
 	@Test
@@ -75,8 +74,7 @@ public class RouterControllerStoreAlwaysWrapResponseTest {
 				.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method1",
 						new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
 						}, storeRead);
-		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()),
-				"");
+		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()), "");
 	}
 
 	@Test
@@ -88,7 +86,7 @@ public class RouterControllerStoreAlwaysWrapResponseTest {
 							// here
 						});
 
-		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()),
+		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()),
 				":true;true:true;en");
 
 	}
@@ -99,10 +97,10 @@ public class RouterControllerStoreAlwaysWrapResponseTest {
 				.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method7",
 						new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
 						});
-		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()),
+		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()),
 				":null");
 
-		Map<String, Object> readRequest = new HashMap<String, Object>();
+		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("id", 11);
 		readRequest.put("query", "");
 
@@ -110,7 +108,7 @@ public class RouterControllerStoreAlwaysWrapResponseTest {
 				"remoteProviderStoreRead", "method7",
 				new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
 				}, readRequest);
-		RouterControllerStoreTest.assert100Rows(new ArrayList<Row>(rows.getRecords()),
+		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()),
 				":11");
 	}
 

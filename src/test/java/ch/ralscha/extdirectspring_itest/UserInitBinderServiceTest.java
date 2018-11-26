@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -33,9 +32,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -48,21 +47,28 @@ public class UserInitBinderServiceTest extends JettyTest {
 
 	private final ObjectMapper mapper = new ObjectMapper();
 
-	@Before
+	@BeforeEach
 	public void beforeTest() {
 		this.client = HttpClientBuilder.create().build();
 		this.post = new HttpPost("http://localhost:9998/controller/router");
 	}
 
-	@After
+	@AfterEach
 	public void afterTest() {
-		IOUtils.closeQuietly(this.client);
+		try {
+			if (this.client != null) {
+				this.client.close();
+			}
+		}
+		catch (final IOException ioe) {
+			// ignore
+		}
 	}
 
 	@Test
 	public void testPostWithoutDate() throws IOException {
 		Locale.setDefault(Locale.ENGLISH);
-		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		List<NameValuePair> formparams = new ArrayList<>();
 		formparams.add(new BasicNameValuePair("extTID", "1"));
 		formparams
 				.add(new BasicNameValuePair("extAction", "userServiceInitBinderService"));
@@ -79,8 +85,7 @@ public class UserInitBinderServiceTest extends JettyTest {
 
 		this.post.setEntity(postEntity);
 
-		CloseableHttpResponse response = this.client.execute(this.post);
-		try {
+		try (CloseableHttpResponse response = this.client.execute(this.post)) {
 			HttpEntity entity = response.getEntity();
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
@@ -103,15 +108,12 @@ public class UserInitBinderServiceTest extends JettyTest {
 			assertThat(result.get("dateOfBirth")).isNull();
 			assertThat(result.get("success")).isEqualTo(Boolean.TRUE);
 		}
-		finally {
-			IOUtils.closeQuietly(response);
-		}
 	}
 
 	@Test
 	public void testPostWithDate() throws IOException {
 		Locale.setDefault(Locale.ENGLISH);
-		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		List<NameValuePair> formparams = new ArrayList<>();
 		formparams.add(new BasicNameValuePair("extTID", "2"));
 		formparams
 				.add(new BasicNameValuePair("extAction", "userServiceInitBinderService"));
@@ -128,8 +130,7 @@ public class UserInitBinderServiceTest extends JettyTest {
 
 		this.post.setEntity(postEntity);
 
-		CloseableHttpResponse response = this.client.execute(this.post);
-		try {
+		try (CloseableHttpResponse response = this.client.execute(this.post)) {
 			HttpEntity entity = response.getEntity();
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
@@ -151,9 +152,6 @@ public class UserInitBinderServiceTest extends JettyTest {
 			assertThat(result.get("flag")).isEqualTo(Boolean.TRUE);
 			assertThat(result.get("dateOfBirth")).isEqualTo("1966-12-21");
 			assertThat(result.get("success")).isEqualTo(Boolean.TRUE);
-		}
-		finally {
-			IOUtils.closeQuietly(response);
 		}
 	}
 

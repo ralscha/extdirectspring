@@ -69,7 +69,7 @@ public class ExtDirectResponseBuilder {
 		this.response = response;
 
 		this.extDirectResponse = new ExtDirectResponse(request);
-		this.result = new HashMap<String, Object>();
+		this.result = new HashMap<>();
 		successful();
 		this.extDirectResponse.setResult(this.result);
 	}
@@ -150,7 +150,7 @@ public class ExtDirectResponseBuilder {
 	public ExtDirectResponseBuilder addErrors(Locale locale, MessageSource messageSource,
 			final BindingResult bindingResult) {
 		if (bindingResult != null && bindingResult.hasFieldErrors()) {
-			Map<String, List<String>> errorMap = new HashMap<String, List<String>>();
+			Map<String, List<String>> errorMap = new HashMap<>();
 			for (FieldError fieldError : bindingResult.getFieldErrors()) {
 				String message = fieldError.getDefaultMessage();
 				if (messageSource != null) {
@@ -161,7 +161,7 @@ public class ExtDirectResponseBuilder {
 				List<String> fieldErrors = errorMap.get(fieldError.getField());
 
 				if (fieldErrors == null) {
-					fieldErrors = new ArrayList<String>();
+					fieldErrors = new ArrayList<>();
 					errorMap.put(fieldError.getField(), fieldErrors);
 				}
 

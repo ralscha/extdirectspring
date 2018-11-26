@@ -36,7 +36,7 @@ public class ExtDirectFormPostResult {
 
 	private static final String SUCCESS_PROPERTY = "success";
 
-	private final Map<String, Object> result = new HashMap<String, Object>();
+	private final Map<String, Object> result = new HashMap<>();
 
 	public ExtDirectFormPostResult() {
 		setSuccess(true);
@@ -78,7 +78,7 @@ public class ExtDirectFormPostResult {
 	private void addErrors(Locale locale, MessageSource messageSource,
 			BindingResult bindingResult) {
 		if (bindingResult != null && bindingResult.hasFieldErrors()) {
-			Map<String, List<String>> errorMap = new HashMap<String, List<String>>();
+			Map<String, List<String>> errorMap = new HashMap<>();
 			for (FieldError fieldError : bindingResult.getFieldErrors()) {
 				String message = fieldError.getDefaultMessage();
 				if (messageSource != null) {
@@ -89,7 +89,7 @@ public class ExtDirectFormPostResult {
 				List<String> fieldErrors = errorMap.get(fieldError.getField());
 
 				if (fieldErrors == null) {
-					fieldErrors = new ArrayList<String>();
+					fieldErrors = new ArrayList<>();
 					errorMap.put(fieldError.getField(), fieldErrors);
 				}
 
@@ -125,7 +125,7 @@ public class ExtDirectFormPostResult {
 	public ExtDirectFormPostResult addErrorsResolveCode(Locale locale,
 			MessageSource messageSource, BindingResult bindingResult) {
 		if (bindingResult != null && bindingResult.hasFieldErrors()) {
-			Map<String, List<String>> errorMap = new HashMap<String, List<String>>();
+			Map<String, List<String>> errorMap = new HashMap<>();
 			for (FieldError fieldError : bindingResult.getFieldErrors()) {
 				String message = fieldError.getDefaultMessage();
 				if (messageSource != null) {
@@ -151,7 +151,7 @@ public class ExtDirectFormPostResult {
 				List<String> fieldErrors = errorMap.get(fieldError.getField());
 
 				if (fieldErrors == null) {
-					fieldErrors = new ArrayList<String>();
+					fieldErrors = new ArrayList<>();
 					errorMap.put(fieldError.getField(), fieldErrors);
 				}
 
@@ -203,13 +203,13 @@ public class ExtDirectFormPostResult {
 		Map<String, List<String>> errorMap = (Map<String, List<String>>) this.result
 				.get(ERRORS_PROPERTY);
 		if (errorMap == null) {
-			errorMap = new HashMap<String, List<String>>();
+			errorMap = new HashMap<>();
 			addResultProperty(ERRORS_PROPERTY, errorMap);
 		}
 
 		List<String> fieldErrors = errorMap.get(field);
 		if (fieldErrors == null) {
-			fieldErrors = new ArrayList<String>();
+			fieldErrors = new ArrayList<>();
 			errorMap.put(field, fieldErrors);
 		}
 		fieldErrors.addAll(errors);

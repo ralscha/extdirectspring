@@ -162,7 +162,7 @@ public final class MethodInfo {
 			int noOfClientParameters = 0;
 			Class<?> parameterType = null;
 
-			List<String> parameterNames = new ArrayList<String>();
+			List<String> parameterNames = new ArrayList<>();
 			for (ParameterInfo parameter : this.parameters) {
 				if (parameter.isClientParameter()) {
 					noOfClientParameters++;
@@ -189,7 +189,7 @@ public final class MethodInfo {
 		case STORE_READ:
 		case STORE_MODIFY:
 		case TREE_LOAD:
-			List<String> metadataParams = new ArrayList<String>();
+			List<String> metadataParams = new ArrayList<>();
 			for (ParameterInfo parameter : this.parameters) {
 				if (parameter.hasMetadataParamAnnotation()) {
 					metadataParams.add(parameter.getName());
@@ -280,7 +280,7 @@ public final class MethodInfo {
 	}
 
 	private static List<ParameterInfo> buildParameterList(Class<?> clazz, Method method) {
-		List<ParameterInfo> params = new ArrayList<ParameterInfo>();
+		List<ParameterInfo> params = new ArrayList<>();
 
 		Class<?>[] parameterTypes = method.getParameterTypes();
 

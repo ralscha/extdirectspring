@@ -186,15 +186,15 @@ public final class ParametersResolver {
 									(List<Object>) records, directStoreEntryClass);
 						}
 						else {
-							directStoreModifyRecords = new ArrayList<Object>();
+							directStoreModifyRecords = new ArrayList<>();
 							directStoreModifyRecords.add(this.jsonHandler
 									.convertValue(records, directStoreEntryClass));
 						}
-						remainingParameters = new HashMap<String, Object>(jsonData);
+						remainingParameters = new HashMap<>(jsonData);
 						remainingParameters.remove("records");
 					}
 					else {
-						directStoreModifyRecords = new ArrayList<Object>();
+						directStoreModifyRecords = new ArrayList<>();
 						directStoreModifyRecords.add(this.jsonHandler
 								.convertValue(jsonData, directStoreEntryClass));
 					}
@@ -205,8 +205,7 @@ public final class ParametersResolver {
 			else if (data != null && data.size() > 0) {
 				Object obj = data.get(0);
 				if (obj instanceof Map) {
-					remainingParameters = new HashMap<String, Object>(
-							(Map<String, Object>) obj);
+					remainingParameters = new HashMap<>((Map<String, Object>) obj);
 					remainingParameters.remove("records");
 				}
 			}
@@ -214,7 +213,7 @@ public final class ParametersResolver {
 		else if (methodInfo.isType(ExtDirectMethodType.SIMPLE_NAMED)) {
 			Map<String, Object> data = (Map<String, Object>) directRequest.getData();
 			if (data != null && data.size() > 0) {
-				remainingParameters = new HashMap<String, Object>(data);
+				remainingParameters = new HashMap<>(data);
 			}
 		}
 		else if (methodInfo.isType(ExtDirectMethodType.POLL)) {
@@ -229,8 +228,7 @@ public final class ParametersResolver {
 			if (data != null && data.size() > 0) {
 				Object obj = data.get(0);
 				if (obj instanceof Map) {
-					remainingParameters = new HashMap<String, Object>(
-							(Map<String, Object>) obj);
+					remainingParameters = new HashMap<>((Map<String, Object>) obj);
 					remainingParameters.remove("records");
 				}
 			}
@@ -522,14 +520,14 @@ public final class ParametersResolver {
 
 	private Map<String, Object> fillReadRequestFromMap(ExtDirectStoreReadRequest to,
 			Map<String, Object> from) {
-		Set<String> foundParameters = new HashSet<String>();
+		Set<String> foundParameters = new HashSet<>();
 
 		for (Entry<String, Object> entry : from.entrySet()) {
 			String key = entry.getKey();
 			Object value = entry.getValue();
 
 			if (key.equals("filter")) {
-				List<Filter> filters = new ArrayList<Filter>();
+				List<Filter> filters = new ArrayList<>();
 
 				if (value instanceof String) {
 					List<Map<String, Object>> rawFilters = this.jsonHandler.readValue(
@@ -561,7 +559,7 @@ public final class ParametersResolver {
 			}
 			else if (key.equals("sort") && value != null && value instanceof List) {
 
-				List<SortInfo> sorters = new ArrayList<SortInfo>();
+				List<SortInfo> sorters = new ArrayList<>();
 				@SuppressWarnings("unchecked")
 				List<Map<String, Object>> rawSorters = (List<Map<String, Object>>) value;
 
@@ -574,7 +572,7 @@ public final class ParametersResolver {
 			}
 			else if (key.equals("group") && value != null
 					&& (value instanceof List || value instanceof Map)) {
-				List<GroupInfo> groups = new ArrayList<GroupInfo>();
+				List<GroupInfo> groups = new ArrayList<>();
 
 				if (value instanceof Map) {
 					@SuppressWarnings("unchecked")
@@ -631,20 +629,20 @@ public final class ParametersResolver {
 		}
 
 		if (to.getSort() != null && to.getDir() != null) {
-			List<SortInfo> sorters = new ArrayList<SortInfo>();
+			List<SortInfo> sorters = new ArrayList<>();
 			sorters.add(
 					new SortInfo(to.getSort(), SortDirection.fromString(to.getDir())));
 			to.setSorters(sorters);
 		}
 
 		if (to.getGroupBy() != null && to.getGroupDir() != null) {
-			List<GroupInfo> groups = new ArrayList<GroupInfo>();
+			List<GroupInfo> groups = new ArrayList<>();
 			groups.add(new GroupInfo(to.getGroupBy(),
 					SortDirection.fromString(to.getGroupDir())));
 			to.setGroups(groups);
 		}
 
-		Map<String, Object> remainingParameters = new HashMap<String, Object>();
+		Map<String, Object> remainingParameters = new HashMap<>();
 		for (Entry<String, Object> entry : from.entrySet()) {
 			if (!foundParameters.contains(entry.getKey())) {
 				remainingParameters.put(entry.getKey(), entry.getValue());
@@ -658,7 +656,7 @@ public final class ParametersResolver {
 	private List<Object> convertObjectEntriesToType(List<Object> records,
 			Class<?> directStoreType) {
 		if (records != null) {
-			List<Object> convertedList = new ArrayList<Object>();
+			List<Object> convertedList = new ArrayList<>();
 			for (Object record : records) {
 				Object convertedObject = this.jsonHandler.convertValue(record,
 						directStoreType);

@@ -16,7 +16,7 @@
 package ch.ralscha.extdirectspring.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -194,7 +194,7 @@ public class ControllerUtil {
 
 	public static String createEdsRequest(List<BeanMethod> methods) {
 
-		List<ExtDirectRequest> edrs = new ArrayList<ExtDirectRequest>();
+		List<ExtDirectRequest> edrs = new ArrayList<>();
 		for (BeanMethod method : methods) {
 			ExtDirectRequest dr = new ExtDirectRequest();
 			dr.setAction(method.getBean());
@@ -391,7 +391,7 @@ public class ControllerUtil {
 				result.getResponse().getContentAsByteArray());
 		assertThat(responses).hasSize(beanMethods.size());
 
-		List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> results = new ArrayList<>();
 		for (int i = 0; i < beanMethods.size(); i++) {
 			ExtDirectResponse edResponse = responses.get(i);
 			BeanMethod beanMethod = beanMethods.get(i);

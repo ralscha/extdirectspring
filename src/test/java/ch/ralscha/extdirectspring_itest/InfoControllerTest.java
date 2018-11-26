@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -33,7 +32,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -53,84 +52,64 @@ public class InfoControllerTest extends JettyTest {
 
 	@Test
 	public void testApi() throws IOException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		CloseableHttpResponse response = null;
-		try {
-			HttpGet g = new HttpGet(
-					"http://localhost:9998/controller/api.js?group=itest_info");
-			response = client.execute(g);
+		HttpGet g = new HttpGet(
+				"http://localhost:9998/controller/api.js?group=itest_info");
+
+		try (CloseableHttpClient client = HttpClientBuilder.create().build();
+				CloseableHttpResponse response = client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
 			ApiControllerTest.compare(responseString, contentType, api(),
 					ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, false);
-		}
-		finally {
-			IOUtils.closeQuietly(response);
-			IOUtils.closeQuietly(client);
 		}
 	}
 
 	@Test
 	public void testApiDebug() throws IOException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		CloseableHttpResponse response = null;
-		try {
-			HttpGet g = new HttpGet(
-					"http://localhost:9998/controller/api-debug.js?group=itest_info");
-			response = client.execute(g);
+		HttpGet g = new HttpGet(
+				"http://localhost:9998/controller/api-debug.js?group=itest_info");
+		try (CloseableHttpClient client = HttpClientBuilder.create().build();
+				CloseableHttpResponse response = client.execute(g)) {
+
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
 			ApiControllerTest.compare(responseString, contentType, api(),
 					ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, false);
 		}
-		finally {
-			IOUtils.closeQuietly(response);
-			IOUtils.closeQuietly(client);
-		}
 	}
 
 	@Test
 	public void testApiFingerprinted() throws IOException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		CloseableHttpResponse response = null;
-		try {
-			HttpGet g = new HttpGet(
-					"http://localhost:9998/controller/api-1.2.1.js?group=itest_info");
-			response = client.execute(g);
+		HttpGet g = new HttpGet(
+				"http://localhost:9998/controller/api-1.2.1.js?group=itest_info");
+		try (CloseableHttpClient client = HttpClientBuilder.create().build();
+				CloseableHttpResponse response = client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
 			ApiControllerTest.compare(responseString, contentType, api(),
 					ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, true);
 		}
-		finally {
-			IOUtils.closeQuietly(response);
-			IOUtils.closeQuietly(client);
-		}
 	}
 
 	@Test
 	public void testPost() throws IOException {
-		CloseableHttpClient client = HttpClientBuilder.create().build();
-		CloseableHttpResponse response = null;
-		try {
-			HttpPost post = new HttpPost("http://localhost:9998/controller/router");
+		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
+		List<NameValuePair> formparams = new ArrayList<>();
+		formparams.add(new BasicNameValuePair("extTID", "1"));
+		formparams.add(new BasicNameValuePair("extAction", "infoController"));
+		formparams.add(new BasicNameValuePair("extMethod", "updateInfo"));
+		formparams.add(new BasicNameValuePair("extType", "rpc"));
+		formparams.add(new BasicNameValuePair("extUpload", "false"));
+		formparams.add(new BasicNameValuePair("userName", "RALPH"));
+		UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
 
-			List<NameValuePair> formparams = new ArrayList<NameValuePair>();
-			formparams.add(new BasicNameValuePair("extTID", "1"));
-			formparams.add(new BasicNameValuePair("extAction", "infoController"));
-			formparams.add(new BasicNameValuePair("extMethod", "updateInfo"));
-			formparams.add(new BasicNameValuePair("extType", "rpc"));
-			formparams.add(new BasicNameValuePair("extUpload", "false"));
-			formparams.add(new BasicNameValuePair("userName", "RALPH"));
-			UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams,
-					"UTF-8");
+		post.setEntity(postEntity);
 
-			post.setEntity(postEntity);
-
-			response = client.execute(post);
+		try (CloseableHttpClient client = HttpClientBuilder.create().build();
+				CloseableHttpResponse response = client.execute(post)) {
 			HttpEntity entity = response.getEntity();
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
@@ -149,10 +128,7 @@ public class InfoControllerTest extends JettyTest {
 			assertThat(result.get("userNameLowerCase")).isEqualTo("ralph");
 			assertThat(result.get("success")).isEqualTo(Boolean.TRUE);
 		}
-		finally {
-			IOUtils.closeQuietly(response);
-			IOUtils.closeQuietly(client);
-		}
+
 	}
 
 }

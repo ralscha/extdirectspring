@@ -12,5 +12,5 @@
 	<bean id="routerExceptionHandler" class="ch.ralscha.extdirectspring.controller.AppExceptionHandler"></bean>
 
 	<mvc:annotation-driven />
-
+    <bean id="inMemoryUserDetailsManager" class="org.springframework.security.provisioning.InMemoryUserDetailsManager" />
 </beans>

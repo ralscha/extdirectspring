@@ -21,12 +21,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,7 +36,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:/testApplicationContext.xml")
 public class ExceptionHandlingTest {
@@ -49,7 +49,7 @@ public class ExceptionHandlingTest {
 	@Autowired
 	private ConfigurationService configurationService;
 
-	@Before
+	@BeforeEach
 	public void setupMockMvc() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
@@ -82,7 +82,7 @@ public class ExceptionHandlingTest {
 	@Test
 	public void testExceptionToMessage() throws Exception {
 		Configuration configuration = new Configuration();
-		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
+		Map<Class<?>, String> exceptionMessageMapping = new HashMap<>();
 		exceptionMessageMapping.put(NullPointerException.class, "null pointer");
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest11(configuration);
@@ -94,7 +94,7 @@ public class ExceptionHandlingTest {
 	public void testExceptionToMessageNullValue() throws Exception {
 		Configuration configuration = new Configuration();
 		configuration.setSendExceptionMessage(false);
-		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
+		Map<Class<?>, String> exceptionMessageMapping = new HashMap<>();
 		exceptionMessageMapping.put(NumberFormatException.class, null);
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest(configuration);
@@ -127,7 +127,7 @@ public class ExceptionHandlingTest {
 	public void testExceptionToMessageWithStacktrace() throws Exception {
 		Configuration configuration = new Configuration();
 		configuration.setSendStacktrace(true);
-		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
+		Map<Class<?>, String> exceptionMessageMapping = new HashMap<>();
 		exceptionMessageMapping.put(NullPointerException.class, "null pointer");
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest11(configuration);
@@ -140,7 +140,7 @@ public class ExceptionHandlingTest {
 		Configuration configuration = new Configuration();
 		configuration.setSendExceptionMessage(false);
 		configuration.setSendStacktrace(true);
-		Map<Class<?>, String> exceptionMessageMapping = new HashMap<Class<?>, String>();
+		Map<Class<?>, String> exceptionMessageMapping = new HashMap<>();
 		exceptionMessageMapping.put(NumberFormatException.class, null);
 		configuration.setExceptionToMessage(exceptionMessageMapping);
 		ExtDirectResponse resp = runTest(configuration);

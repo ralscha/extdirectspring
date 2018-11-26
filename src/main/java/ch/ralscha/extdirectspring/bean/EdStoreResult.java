@@ -20,10 +20,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import org.immutables.value.Value;
 import org.immutables.value.Value.Style.ImplementationVisibility;
+import org.springframework.lang.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -97,7 +96,7 @@ public abstract class EdStoreResult<T> extends JsonViewHint {
 	}
 
 	public static <T> Builder<T> builder() {
-		return new Builder<T>();
+		return new Builder<>();
 	}
 
 	public static final class Builder<T> extends ImmutableEdStoreResult.Builder<T> {

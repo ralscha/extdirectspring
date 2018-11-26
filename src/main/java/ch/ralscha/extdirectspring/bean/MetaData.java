@@ -30,7 +30,7 @@ public class MetaData {
 	private final Map<String, Object> metaData;
 
 	public MetaData() {
-		this.metaData = new LinkedHashMap<String, Object>();
+		this.metaData = new LinkedHashMap<>();
 		this.metaData.put("root", "records");
 		this.metaData.put("totalProperty", "total");
 		this.metaData.put("successProperty", "success");
@@ -46,7 +46,7 @@ public class MetaData {
 	}
 
 	public void setSortInfo(String field, SortDirection direction) {
-		Map<String, String> sortInfo = new LinkedHashMap<String, String>();
+		Map<String, String> sortInfo = new LinkedHashMap<>();
 		sortInfo.put("field", field);
 		sortInfo.put("direction", direction.getName());
 		this.metaData.put("sortInfo", sortInfo);
@@ -67,7 +67,7 @@ public class MetaData {
 				.get("fields");
 
 		if (fields == null) {
-			fields = new ArrayList<Map<String, Object>>();
+			fields = new ArrayList<>();
 			this.metaData.put("fields", fields);
 		}
 

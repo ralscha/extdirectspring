@@ -21,7 +21,6 @@ import static org.assertj.core.api.Assertions.entry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -85,7 +84,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, entryClass = String.class)
-	public EdStoreResult method4Ed(ExtDirectStoreReadRequest request) {
+	public EdStoreResult<Row> method4Ed(ExtDirectStoreReadRequest request) {
 		return createEdStoreResult(request, "", null);
 	}
 
@@ -102,7 +101,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group3")
-	public EdStoreResult method5Ed(ExtDirectStoreReadRequest request, Locale locale,
+	public EdStoreResult<Row> method5Ed(ExtDirectStoreReadRequest request, Locale locale,
 			@RequestParam(value = "id") int id) {
 		assertThat(id).isEqualTo(10);
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
@@ -124,7 +123,8 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "group2")
-	public EdStoreResult method6Ed(@RequestParam(value = "id", defaultValue = "1") int id,
+	public EdStoreResult<Row> method6Ed(
+			@RequestParam(value = "id", defaultValue = "1") int id,
 			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
@@ -194,7 +194,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
-	public EdStoreResult method8Ed(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
+	public EdStoreResult<Row> method8Ed(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
 			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(endDate).isNotNull();
 		assertThat(servletRequest).isNotNull();
@@ -203,12 +203,12 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
-	public EdStoreResult method9Ed(ExtDirectStoreReadRequest request) {
+	public EdStoreResult<Row> method9Ed(ExtDirectStoreReadRequest request) {
 		return createEdStoreResult(request, "", "everything is okay");
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
-	public EdStoreResult method10Ed(ExtDirectStoreReadRequest request, Locale locale,
+	public EdStoreResult<Row> method10Ed(ExtDirectStoreReadRequest request, Locale locale,
 			@RequestParam(value = "id", required = false,
 					defaultValue = "20") Integer id) {
 
@@ -228,7 +228,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, batched = true)
-	public EdStoreResult method11Ed(ExtDirectStoreReadRequest request,
+	public EdStoreResult<Row> method11Ed(ExtDirectStoreReadRequest request,
 			@CookieValue(defaultValue = "defaultCookie") String cookie,
 			@RequestHeader(defaultValue = "defaultHeader") String requestHeader) {
 		return RemoteProviderStoreRead.createEdStoreResult(request,
@@ -236,7 +236,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, batched = false)
-	public EdStoreResult method12Ed(ExtDirectStoreReadRequest request) {
+	public EdStoreResult<Row> method12Ed(ExtDirectStoreReadRequest request) {
 		return createEdStoreResult(request, null, null);
 	}
 
@@ -277,14 +277,7 @@ public class RemoteProviderStoreRead {
 					Collections.sort(rows);
 				}
 				else {
-					Collections.sort(rows, new Comparator<Row>() {
-
-						// @Override
-						@Override
-						public int compare(Row o1, Row o2) {
-							return o2.getId() - o1.getId();
-						}
-					});
+					Collections.sort(rows, (o1, o2) -> o2.getId() - o1.getId());
 				}
 			}
 			else if (StringUtils.hasText(request.getSort())) {
@@ -294,14 +287,7 @@ public class RemoteProviderStoreRead {
 					Collections.sort(rows);
 				}
 				else if (request.isDescendingSort()) {
-					Collections.sort(rows, new Comparator<Row>() {
-
-						// @Override
-						@Override
-						public int compare(Row o1, Row o2) {
-							return o2.getId() - o1.getId();
-						}
-					});
+					Collections.sort(rows, (o1, o2) -> o2.getId() - o1.getId());
 				}
 			}
 
@@ -314,14 +300,7 @@ public class RemoteProviderStoreRead {
 					Collections.sort(rows);
 				}
 				else {
-					Collections.sort(rows, new Comparator<Row>() {
-
-						// @Override
-						@Override
-						public int compare(Row o1, Row o2) {
-							return o2.getId() - o1.getId();
-						}
-					});
+					Collections.sort(rows, (o1, o2) -> o2.getId() - o1.getId());
 				}
 
 			}
@@ -332,14 +311,7 @@ public class RemoteProviderStoreRead {
 					Collections.sort(rows);
 				}
 				else if (request.isDescendingGroupSort()) {
-					Collections.sort(rows, new Comparator<Row>() {
-
-						// @Override
-						@Override
-						public int compare(Row o1, Row o2) {
-							return o2.getId() - o1.getId();
-						}
-					});
+					Collections.sort(rows, (o1, o2) -> o2.getId() - o1.getId());
 				}
 			}
 
@@ -358,13 +330,15 @@ public class RemoteProviderStoreRead {
 
 	}
 
-	public static EdStoreResult createEdStoreResult(ExtDirectStoreReadRequest request,
-			final String appendix, final String message) {
+	public static EdStoreResult<Row> createEdStoreResult(
+			ExtDirectStoreReadRequest request, final String appendix,
+			final String message) {
 		return createEdStoreResult(request, appendix, message, null);
 	}
 
-	public static EdStoreResult createEdStoreResult(ExtDirectStoreReadRequest request,
-			final String appendix, final String message, final MetaData metaData) {
+	public static EdStoreResult<Row> createEdStoreResult(
+			ExtDirectStoreReadRequest request, final String appendix,
+			final String message, final MetaData metaData) {
 		List<Row> rows = createRows(appendix);
 
 		int totalSize = rows.size();
@@ -400,14 +374,7 @@ public class RemoteProviderStoreRead {
 					Collections.sort(rows);
 				}
 				else {
-					Collections.sort(rows, new Comparator<Row>() {
-
-						// @Override
-						@Override
-						public int compare(Row o1, Row o2) {
-							return o2.getId() - o1.getId();
-						}
-					});
+					Collections.sort(rows, (o1, o2) -> o2.getId() - o1.getId());
 				}
 			}
 			else if (StringUtils.hasText(request.getSort())) {
@@ -417,14 +384,7 @@ public class RemoteProviderStoreRead {
 					Collections.sort(rows);
 				}
 				else if (request.isDescendingSort()) {
-					Collections.sort(rows, new Comparator<Row>() {
-
-						// @Override
-						@Override
-						public int compare(Row o1, Row o2) {
-							return o2.getId() - o1.getId();
-						}
-					});
+					Collections.sort(rows, (o1, o2) -> o2.getId() - o1.getId());
 				}
 			}
 
@@ -437,14 +397,7 @@ public class RemoteProviderStoreRead {
 					Collections.sort(rows);
 				}
 				else {
-					Collections.sort(rows, new Comparator<Row>() {
-
-						// @Override
-						@Override
-						public int compare(Row o1, Row o2) {
-							return o2.getId() - o1.getId();
-						}
-					});
+					Collections.sort(rows, (o1, o2) -> o2.getId() - o1.getId());
 				}
 
 			}
@@ -455,14 +408,7 @@ public class RemoteProviderStoreRead {
 					Collections.sort(rows);
 				}
 				else if (request.isDescendingGroupSort()) {
-					Collections.sort(rows, new Comparator<Row>() {
-
-						// @Override
-						@Override
-						public int compare(Row o1, Row o2) {
-							return o2.getId() - o1.getId();
-						}
-					});
+					Collections.sort(rows, (o1, o2) -> o2.getId() - o1.getId());
 				}
 			}
 
@@ -485,7 +431,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	public static List<Row> createRows(String appendix) {
-		List<Row> rows = new ArrayList<Row>();
+		List<Row> rows = new ArrayList<>();
 		for (int i = 0; i < 100; i += 2) {
 			rows.add(new Row(i, "name: " + i + appendix, true, "" + (1000 + i)));
 			rows.add(new Row(i + 1, "firstname: " + (i + 1) + appendix, false,
@@ -547,7 +493,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
-	public EdStoreResult methodMetadataEd(ExtDirectStoreReadRequest request) {
+	public EdStoreResult<Row> methodMetadataEd(ExtDirectStoreReadRequest request) {
 		if (request.getStart() == null && request.getSort() == null) {
 			MetaData metaData = new MetaData();
 
@@ -596,12 +542,12 @@ public class RemoteProviderStoreRead {
 		return createEdStoreResult(request, "", null, null);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes", "unchecked", "cast" })
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public List<Row> methodFilter(@RequestParam("type") int type,
 			ExtDirectStoreReadRequest request) {
 
-		List<Filter> filters = new ArrayList<Filter>(request.getFilters());
+		List<Filter> filters = new ArrayList<>(request.getFilters());
 		switch (type) {
 		case 1:
 		case 15: {
@@ -662,7 +608,7 @@ public class RemoteProviderStoreRead {
 			}
 
 			NumericFilter nf2 = request.getFirstFilterForField("id");
-			assertThat(nf2).isSameAs((NumericFilter) filters.get(0));
+			assertThat(nf2).isSameAs(filters.get(0));
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("id");
 			assertThat(allFiltersForField).containsExactly(filters.get(0),
@@ -789,7 +735,7 @@ public class RemoteProviderStoreRead {
 			}
 
 			DateFilter df2 = request.getFirstFilterForField("date");
-			assertThat(df2).isSameAs((DateFilter) filters.get(0));
+			assertThat(df2).isSameAs(filters.get(0));
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("date");
 			assertThat(allFiltersForField).containsExactly(filters.get(0),
@@ -1001,7 +947,7 @@ public class RemoteProviderStoreRead {
 			assertThat(nf.getRawComparison()).isEqualTo("gt");
 
 			NumericFilter nf2 = request.getFirstFilterForField("id");
-			assertThat(nf2).isSameAs((NumericFilter) filters.get(0));
+			assertThat(nf2).isSameAs(filters.get(0));
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("id");
 			assertThat(allFiltersForField).containsExactly(filters.get(0),
@@ -1185,7 +1131,7 @@ public class RemoteProviderStoreRead {
 			assertThat(nf.getRawComparison()).isEqualTo("gt");
 
 			NumericFilter nf2 = request.getFirstFilterForField("date");
-			assertThat(nf2).isSameAs((NumericFilter) filters.get(0));
+			assertThat(nf2).isSameAs(filters.get(0));
 
 			List<Filter> allFiltersForField = request.getAllFiltersForField("date");
 			assertThat(allFiltersForField).containsExactly(filters.get(0),
@@ -1287,7 +1233,7 @@ public class RemoteProviderStoreRead {
 
 	private static List<Row> createResult(int i) {
 		Row r = new Row(i, null, false, null);
-		List<Row> result = new ArrayList<Row>();
+		List<Row> result = new ArrayList<>();
 		result.add(r);
 		return result;
 	}

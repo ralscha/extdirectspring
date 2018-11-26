@@ -228,7 +228,7 @@ public class ExtDirectStoreReadRequest {
 	 * @return a collection of filters for the field. Empty collection if no filter exists
 	 */
 	public List<Filter> getAllFiltersForField(String field) {
-		List<Filter> foundFilters = new ArrayList<Filter>();
+		List<Filter> foundFilters = new ArrayList<>();
 
 		for (Filter filter : this.filters) {
 			if (filter.getField().equals(field)) {

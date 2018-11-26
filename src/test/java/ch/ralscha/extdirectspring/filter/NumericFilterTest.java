@@ -16,40 +16,27 @@
 package ch.ralscha.extdirectspring.filter;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.format.support.DefaultFormattingConversionService;
 
-@RunWith(Parameterized.class)
 public class NumericFilterTest {
 
 	private static final GenericConversionService genericConversionService = new DefaultFormattingConversionService();
 
-	@Parameters
-	public static Collection<Object[]> types() {
-		return Arrays.asList(
-				new Object[][] { { "numeric" }, { "int" }, { "float" }, { "number" } });
-	}
-
-	@Parameter
-	public String type;
-
-	@Test
-	public void testNumericFilterLT() {
-		Map<String, Object> json = new HashMap<String, Object>();
+	@ParameterizedTest
+	@ValueSource(strings = { "numeric", "int", "float", "number" })
+	public void testNumericFilterLT(String type) {
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField");
-		json.put("type", this.type);
+		json.put("type", type);
 		json.put("comparison", "lt");
 		json.put("value", 12);
 
@@ -61,11 +48,12 @@ public class NumericFilterTest {
 		assertSame(Comparison.LESS_THAN, numericFilter.getComparison());
 	}
 
-	@Test
-	public void testNumericFilterGT() {
-		Map<String, Object> json = new HashMap<String, Object>();
+	@ParameterizedTest
+	@ValueSource(strings = { "numeric", "int", "float", "number" })
+	public void testNumericFilterGT(String type) {
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField2");
-		json.put("type", this.type);
+		json.put("type", type);
 		json.put("comparison", "gt");
 		json.put("value", 13);
 
@@ -77,11 +65,12 @@ public class NumericFilterTest {
 		assertSame(Comparison.GREATER_THAN, numericFilter.getComparison());
 	}
 
-	@Test
-	public void testNumericFilterEQ() {
-		Map<String, Object> json = new HashMap<String, Object>();
+	@ParameterizedTest
+	@ValueSource(strings = { "numeric", "int", "float", "number" })
+	public void testNumericFilterEQ(String type) {
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField3");
-		json.put("type", this.type);
+		json.put("type", type);
 		json.put("comparison", "eq");
 		json.put("value", "1");
 
@@ -94,11 +83,12 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getRawComparison()).isEqualTo("eq");
 	}
 
-	@Test
-	public void testNumericFilterNE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+	@ParameterizedTest
+	@ValueSource(strings = { "numeric", "int", "float", "number" })
+	public void testNumericFilterNE(String type) {
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField4");
-		json.put("type", this.type);
+		json.put("type", type);
 		json.put("comparison", "ne");
 		json.put("value", "3");
 
@@ -111,11 +101,12 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getRawComparison()).isEqualTo("ne");
 	}
 
-	@Test
-	public void testNumericFilterGTE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+	@ParameterizedTest
+	@ValueSource(strings = { "numeric", "int", "float", "number" })
+	public void testNumericFilterGTE(String type) {
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField5");
-		json.put("type", this.type);
+		json.put("type", type);
 		json.put("comparison", "gte");
 		json.put("value", "4");
 
@@ -128,11 +119,12 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getRawComparison()).isEqualTo("gte");
 	}
 
-	@Test
-	public void testNumericFilterLTE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+	@ParameterizedTest
+	@ValueSource(strings = { "numeric", "int", "float", "number" })
+	public void testNumericFilterLTE(String type) {
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField6");
-		json.put("type", this.type);
+		json.put("type", type);
 		json.put("comparison", "lte");
 		json.put("value", "5");
 
@@ -145,11 +137,12 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getRawComparison()).isEqualTo("lte");
 	}
 
-	@Test
-	public void testNumericPropertyFilterLT() {
-		Map<String, Object> json = new HashMap<String, Object>();
+	@ParameterizedTest
+	@ValueSource(strings = { "numeric", "int", "float", "number" })
+	public void testNumericPropertyFilterLT(String type) {
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField");
-		json.put("type", this.type);
+		json.put("type", type);
 		json.put("comparison", "lt");
 		json.put("value", 12);
 
@@ -162,11 +155,12 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getRawComparison()).isEqualTo("lt");
 	}
 
-	@Test
-	public void testNumericPropertyFilterGT() {
-		Map<String, Object> json = new HashMap<String, Object>();
+	@ParameterizedTest
+	@ValueSource(strings = { "numeric", "int", "float", "number" })
+	public void testNumericPropertyFilterGT(String type) {
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField2");
-		json.put("type", this.type);
+		json.put("type", type);
 		json.put("comparison", "gt");
 		json.put("value", 13);
 
@@ -179,11 +173,12 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getRawComparison()).isEqualTo("gt");
 	}
 
-	@Test
-	public void testNumericPropertyFilterEQ() {
-		Map<String, Object> json = new HashMap<String, Object>();
+	@ParameterizedTest
+	@ValueSource(strings = { "numeric", "int", "float", "number" })
+	public void testNumericPropertyFilterEQ(String type) {
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField3");
-		json.put("type", this.type);
+		json.put("type", type);
 		json.put("comparison", "eq");
 		json.put("value", "1");
 
@@ -196,11 +191,12 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getRawComparison()).isEqualTo("eq");
 	}
 
-	@Test
-	public void testNumericPropertyFilterNE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+	@ParameterizedTest
+	@ValueSource(strings = { "numeric", "int", "float", "number" })
+	public void testNumericPropertyFilterNE(String type) {
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField4");
-		json.put("type", this.type);
+		json.put("type", type);
 		json.put("comparison", "ne");
 		json.put("value", "3");
 
@@ -213,11 +209,12 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getRawComparison()).isEqualTo("ne");
 	}
 
-	@Test
-	public void testNumericPropertyFilterGTE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+	@ParameterizedTest
+	@ValueSource(strings = { "numeric", "int", "float", "number" })
+	public void testNumericPropertyFilterGTE(String type) {
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField5");
-		json.put("type", this.type);
+		json.put("type", type);
 		json.put("comparison", "gte");
 		json.put("value", "4");
 
@@ -230,11 +227,12 @@ public class NumericFilterTest {
 		assertThat(numericFilter.getRawComparison()).isEqualTo("gte");
 	}
 
-	@Test
-	public void testNumericPropertyFilterLTE() {
-		Map<String, Object> json = new HashMap<String, Object>();
+	@ParameterizedTest
+	@ValueSource(strings = { "numeric", "int", "float", "number" })
+	public void testNumericPropertyFilterLTE(String type) {
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField6");
-		json.put("type", this.type);
+		json.put("type", type);
 		json.put("operator", "lte");
 		json.put("value", "5");
 
@@ -249,7 +247,7 @@ public class NumericFilterTest {
 
 	@Test
 	public void testNumericFilterWithoutType() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField");
 		json.put("value", 10);
 

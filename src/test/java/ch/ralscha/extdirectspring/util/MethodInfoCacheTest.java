@@ -16,23 +16,18 @@
 package ch.ralscha.extdirectspring.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
-import nl.jqno.equalsverifier.EqualsVerifier;
 
 public class MethodInfoCacheTest {
-
-	@Test
-	public void verifyEquals() {
-		EqualsVerifier.forClass(MethodInfoCache.Key.class).verify();
-	}
 
 	@Test
 	@ExtDirectMethod
@@ -66,79 +61,83 @@ public class MethodInfoCacheTest {
 
 	@Test
 	public void testFindMethodWithAnnotation() {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
-				"/testApplicationContextB.xml");
-		MethodInfoCache methodInfoCache = context.getBean(MethodInfoCache.class);
+		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+				"/testApplicationContextB.xml")) {
+			MethodInfoCache methodInfoCache = context.getBean(MethodInfoCache.class);
 
-		MethodInfo methodBInfo = methodInfoCache.get("springManagedBean", "methodB");
-		Method methodBWithAnnotation = MethodInfo
-				.findMethodWithAnnotation(methodBInfo.getMethod(), ExtDirectMethod.class);
-		assertThat(methodBWithAnnotation).isEqualTo(methodBInfo.getMethod());
+			MethodInfo methodBInfo = methodInfoCache.get("springManagedBean", "methodB");
+			Method methodBWithAnnotation = MethodInfo.findMethodWithAnnotation(
+					methodBInfo.getMethod(), ExtDirectMethod.class);
+			assertThat(methodBWithAnnotation).isEqualTo(methodBInfo.getMethod());
 
-		MethodInfo methodSubBInfo = methodInfoCache.get("springManagedSubBean",
-				"methodB");
-		methodBWithAnnotation = MethodInfo.findMethodWithAnnotation(
-				methodSubBInfo.getMethod(), ExtDirectMethod.class);
-		assertThat(methodSubBInfo.getMethod().equals(methodBWithAnnotation)).isFalse();
-		assertThat(methodBInfo.getMethod().equals(methodBWithAnnotation)).isTrue();
-		context.close();
+			MethodInfo methodSubBInfo = methodInfoCache.get("springManagedSubBean",
+					"methodB");
+			methodBWithAnnotation = MethodInfo.findMethodWithAnnotation(
+					methodSubBInfo.getMethod(), ExtDirectMethod.class);
+			assertThat(methodSubBInfo.getMethod().equals(methodBWithAnnotation))
+					.isFalse();
+			assertThat(methodBInfo.getMethod().equals(methodBWithAnnotation)).isTrue();
+		}
 	}
 
-	@Test(expected = NullPointerException.class)
-	public void testInvokeWithNull() throws IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
-		ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext(
-				"/testApplicationContextB.xml");
-		ExtDirectSpringUtil.invoke(null, null, null, null);
-		classPathXmlApplicationContext.close();
+	@Test
+	public void testInvokeWithNull() {
+		assertThrows(NullPointerException.class, () -> {
+			try (ClassPathXmlApplicationContext classPathXmlApplicationContext = new ClassPathXmlApplicationContext(
+					"/testApplicationContextB.xml")) {
+				ExtDirectSpringUtil.invoke(null, null, null, null);
+			}
+		});
 	}
 
-	@Test(expected = NoSuchBeanDefinitionException.class)
-	public void testNonExistingBeanAndMethod() throws IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
-				"/testApplicationContextB.xml");
-		MethodInfoCache methodInfoCache = context.getBean(MethodInfoCache.class);
-		MethodInfo info = methodInfoCache.get("springManagedBeanA", "methodA");
-		ExtDirectSpringUtil.invoke(context, "springManagedBeanA", info, null);
-		context.close();
+	@Test
+	public void testNonExistingBeanAndMethod() {
+		assertThrows(NoSuchBeanDefinitionException.class, () -> {
+			try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+					"/testApplicationContextB.xml")) {
+				MethodInfoCache methodInfoCache = context.getBean(MethodInfoCache.class);
+				MethodInfo info = methodInfoCache.get("springManagedBeanA", "methodA");
+				ExtDirectSpringUtil.invoke(context, "springManagedBeanA", info, null);
+			}
+		});
 	}
 
-	@Test(expected = NullPointerException.class)
-	public void testExistingWithouEdsAnnotation() throws IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
-		MethodInfoCache methodInfoCache = new MethodInfoCache();
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
-				"/testApplicationContextB.xml");
-		MethodInfo info = methodInfoCache.get("springManagedBean", "methodA");
-		ExtDirectSpringUtil.invoke(context, "springManagedBean", info, null);
-		context.close();
+	@Test
+	public void testExistingWithouEdsAnnotation() {
+		assertThrows(NullPointerException.class, () -> {
+			MethodInfoCache methodInfoCache = new MethodInfoCache();
+			try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+					"/testApplicationContextB.xml")) {
+				MethodInfo info = methodInfoCache.get("springManagedBean", "methodA");
+				ExtDirectSpringUtil.invoke(context, "springManagedBean", info, null);
+			}
+		});
 	}
 
 	@Test
 	public void testFindMethodAndInvoke() throws IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
 
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
-				"/testApplicationContextB.xml");
-		MethodInfoCache methodInfoCache = context.getBean(MethodInfoCache.class);
+		try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+				"/testApplicationContextB.xml")) {
+			MethodInfoCache methodInfoCache = context.getBean(MethodInfoCache.class);
 
-		MethodInfo infoB = methodInfoCache.get("springManagedBean", "methodB");
+			MethodInfo infoB = methodInfoCache.get("springManagedBean", "methodB");
 
-		assertThat((Boolean) ExtDirectSpringUtil.invoke(context, "springManagedBean",
-				infoB, null)).isFalse();
-		assertThat((Boolean) ExtDirectSpringUtil.invoke(context, "springManagedBean",
-				infoB, null)).isFalse();
+			assertThat((Boolean) ExtDirectSpringUtil.invoke(context, "springManagedBean",
+					infoB, null)).isFalse();
+			assertThat((Boolean) ExtDirectSpringUtil.invoke(context, "springManagedBean",
+					infoB, null)).isFalse();
 
-		MethodInfo infoSum = methodInfoCache.get("springManagedBean", "sum");
+			MethodInfo infoSum = methodInfoCache.get("springManagedBean", "sum");
 
-		assertThat(ExtDirectSpringUtil.invoke(context, "springManagedBean", infoSum,
-				new Object[] { 1, 2 })).isEqualTo(Integer.valueOf(3));
-		assertThat(ExtDirectSpringUtil.invoke(context, "springManagedBean", infoSum,
-				new Object[] { 6, 3 })).isEqualTo(Integer.valueOf(9));
+			assertThat(ExtDirectSpringUtil.invoke(context, "springManagedBean", infoSum,
+					new Object[] { 1, 2 })).isEqualTo(Integer.valueOf(3));
+			assertThat(ExtDirectSpringUtil.invoke(context, "springManagedBean", infoSum,
+					new Object[] { 6, 3 })).isEqualTo(Integer.valueOf(9));
 
-		assertThat(methodInfoCache.get("springManagedBean", "methodC")).isNull();
-		context.close();
+			assertThat(methodInfoCache.get("springManagedBean", "methodC")).isNull();
+		}
 	}
 
 }

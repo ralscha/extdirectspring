@@ -187,7 +187,7 @@ public class RemoteProviderSimpleNamed {
 			@DateTimeFormat(iso = ISO.DATE) LocalDate aDate,
 			@NumberFormat(style = NumberFormat.Style.PERCENT) BigDecimal percent) {
 
-		Map<String, Object> result = new HashMap<String, Object>();
+		Map<String, Object> result = new HashMap<>();
 		result.put("endDate", endDate);
 		result.put("jodaLocalDate", aDate);
 		result.put("percent", percent);

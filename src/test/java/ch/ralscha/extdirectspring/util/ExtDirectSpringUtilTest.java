@@ -16,6 +16,7 @@
 package ch.ralscha.extdirectspring.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 
@@ -23,7 +24,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.util.DigestUtils;
@@ -137,10 +138,12 @@ public class ExtDirectSpringUtilTest {
 		assertThat(expires.getMinuteOfDay()).isEqualTo(inSixMonths.getMinuteOfDay());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testAddCacheHeadersWithNullEtag() {
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		ExtDirectSpringUtil.addCacheHeaders(response, null, null);
+		assertThrows(IllegalArgumentException.class, () -> {
+			MockHttpServletResponse response = new MockHttpServletResponse();
+			ExtDirectSpringUtil.addCacheHeaders(response, null, null);
+		});
 	}
 
 	@Test
@@ -149,7 +152,7 @@ public class ExtDirectSpringUtilTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		byte[] data = "the response data".getBytes();
 		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + '"';
-		String contentType = "application/javascript;charset=UTF-8";
+		String contentType = "application/javascript;charset=utf-8";
 		ExtDirectSpringUtil.handleCacheableResponse(request, response, data, contentType);
 
 		assertThat(response.getStatus()).isEqualTo(200);
@@ -163,7 +166,7 @@ public class ExtDirectSpringUtilTest {
 	public void testHandleCacheableResponseWithIfNoneMatch() throws IOException {
 		byte[] data = "the response data".getBytes();
 		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + '"';
-		String contentType = "application/javascript;charset=UTF-8";
+		String contentType = "application/javascript;charset=utf-8";
 
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.addHeader("If-None-Match", etag);

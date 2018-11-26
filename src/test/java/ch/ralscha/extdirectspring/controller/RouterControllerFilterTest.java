@@ -24,13 +24,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -42,7 +42,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.Row;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:/testApplicationContext.xml")
 public class RouterControllerFilterTest {
@@ -54,23 +54,22 @@ public class RouterControllerFilterTest {
 
 	private static List<String> jsonList;
 
-	@Before
+	@BeforeEach
 	public void setupMockMvc() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
-	@BeforeClass
+	@BeforeAll
 	public static void readJson() throws IOException {
-		jsonList = new ArrayList<String>();
-		InputStream is = RouterControllerFilterTest.class
+		jsonList = new ArrayList<>();
+		try (InputStream is = RouterControllerFilterTest.class
 				.getResourceAsStream("/filterjson.txt");
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		String line = null;
-		while ((line = br.readLine()) != null) {
-			jsonList.add(line);
+				BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				jsonList.add(line);
+			}
 		}
-		br.close();
-		is.close();
 	}
 
 	@Test

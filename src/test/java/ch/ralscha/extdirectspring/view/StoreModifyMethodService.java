@@ -69,34 +69,34 @@ public class StoreModifyMethodService extends BaseViewService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
 	public ExtDirectStoreResult<Employee> resultSummaryView() {
-		ExtDirectStoreResult<Employee> result = new ExtDirectStoreResult<Employee>(
+		ExtDirectStoreResult<Employee> result = new ExtDirectStoreResult<>(
 				createEmployees(2));
 		result.setJsonView(Views.Summary.class);
 		return result;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public EdStoreResult resultSummaryViewEd() {
+	public EdStoreResult<?> resultSummaryViewEd() {
 		return EdStoreResult.success(createEmployees(2), Views.Summary.class);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
 	public ExtDirectStoreResult<Employee> resultDetailView() {
-		ExtDirectStoreResult<Employee> result = new ExtDirectStoreResult<Employee>(
+		ExtDirectStoreResult<Employee> result = new ExtDirectStoreResult<>(
 				createEmployees(2));
 		result.setJsonView(Views.Detail.class);
 		return result;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY)
-	public EdStoreResult resultDetailViewEd() {
+	public EdStoreResult<?> resultDetailViewEd() {
 		return EdStoreResult.success(createEmployees(2), Views.Detail.class);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY,
 			jsonView = Views.Summary.class)
 	public ExtDirectStoreResult<Employee> overrideResultDetailView() {
-		ExtDirectStoreResult<Employee> result = new ExtDirectStoreResult<Employee>(
+		ExtDirectStoreResult<Employee> result = new ExtDirectStoreResult<>(
 				createEmployees(2));
 		result.setJsonView(Views.Detail.class);
 		return result;
@@ -104,14 +104,14 @@ public class StoreModifyMethodService extends BaseViewService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY,
 			jsonView = Views.Summary.class)
-	public EdStoreResult overrideResultDetailViewEd() {
+	public EdStoreResult<?> overrideResultDetailViewEd() {
 		return EdStoreResult.success(createEmployees(2), Views.Detail.class);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY,
 			jsonView = Views.Summary.class)
 	public ExtDirectStoreResult<Employee> overrideResultNoView() {
-		ExtDirectStoreResult<Employee> result = new ExtDirectStoreResult<Employee>(
+		ExtDirectStoreResult<Employee> result = new ExtDirectStoreResult<>(
 				createEmployees(2));
 		result.setJsonView(ExtDirectMethod.NoJsonView.class);
 		return result;
@@ -119,7 +119,7 @@ public class StoreModifyMethodService extends BaseViewService {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY,
 			jsonView = Views.Summary.class)
-	public EdStoreResult overrideResultNoViewEd() {
+	public EdStoreResult<?> overrideResultNoViewEd() {
 		return EdStoreResult.success(createEmployees(2),
 				ExtDirectMethod.NoJsonView.class);
 	}

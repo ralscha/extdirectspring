@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.format.support.DefaultFormattingConversionService;
 
@@ -48,7 +48,7 @@ public class BooleanFilterTest {
 
 	@Test
 	public void testBooleanFilter() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField");
 		json.put("type", "boolean");
 		json.put("value", Boolean.FALSE);
@@ -62,7 +62,7 @@ public class BooleanFilterTest {
 
 	@Test
 	public void testBooleanNullFilter() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("field", "aField");
 		json.put("type", "boolean");
 		json.put("value", null);
@@ -76,7 +76,7 @@ public class BooleanFilterTest {
 
 	@Test
 	public void testBooleanPropertyFilter() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField");
 		json.put("type", "boolean");
 		json.put("value", Boolean.FALSE);
@@ -90,7 +90,7 @@ public class BooleanFilterTest {
 
 	@Test
 	public void testBooleanPropertyNullFilter() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField");
 		json.put("type", "boolean");
 		json.put("value", null);
@@ -104,7 +104,7 @@ public class BooleanFilterTest {
 
 	@Test
 	public void testBooleanFilterWithoutType() {
-		Map<String, Object> json = new HashMap<String, Object>();
+		Map<String, Object> json = new HashMap<>();
 		json.put("property", "aField");
 		json.put("value", Boolean.FALSE);
 

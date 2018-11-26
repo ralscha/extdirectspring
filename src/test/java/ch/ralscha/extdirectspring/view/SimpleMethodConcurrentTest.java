@@ -23,12 +23,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.assertj.core.data.MapEntry;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -37,7 +37,7 @@ import org.springframework.web.context.WebApplicationContext;
 import ch.ralscha.extdirectspring.bean.BeanMethod;
 import ch.ralscha.extdirectspring.controller.ControllerUtil;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:/testApplicationContextViewConcurrent.xml")
 public class SimpleMethodConcurrentTest extends BaseViewTest {
@@ -47,14 +47,14 @@ public class SimpleMethodConcurrentTest extends BaseViewTest {
 
 	private MockMvc mockMvc;
 
-	@Before
+	@BeforeEach
 	public void setupMockMvc() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
 	public void testMultiple1() {
-		List<BeanMethod> bms = new ArrayList<BeanMethod>();
+		List<BeanMethod> bms = new ArrayList<>();
 		bms.add(new BeanMethod("simpleMethodService", "noView"));
 		List<Map<String, Object>> results = ControllerUtil
 				.sendAndReceiveMultiple(this.mockMvc, bms);
@@ -66,7 +66,7 @@ public class SimpleMethodConcurrentTest extends BaseViewTest {
 
 	@Test
 	public void testMultiple2() {
-		List<BeanMethod> bms = new ArrayList<BeanMethod>();
+		List<BeanMethod> bms = new ArrayList<>();
 		bms.add(new BeanMethod("simpleMethodService", "noView"));
 		bms.add(new BeanMethod("simpleMethodService", "annotationSummaryView"));
 		bms.add(new BeanMethod("simpleMethodService", "annotationDetailView"));
@@ -75,7 +75,8 @@ public class SimpleMethodConcurrentTest extends BaseViewTest {
 		assertThat(results).hasSize(3);
 
 		int ix = 0;
-		for (MapEntry[] entries : Arrays.asList(noView(), summaryView(), detailView())) {
+		for (MapEntry<String, Object>[] entries : Arrays.asList(noView(), summaryView(),
+				detailView())) {
 			Map<String, Object> result = results.get(ix++);
 			assertThat(result).hasSize(entries.length);
 			assertThat(result).contains(entries);
@@ -84,7 +85,7 @@ public class SimpleMethodConcurrentTest extends BaseViewTest {
 
 	@Test
 	public void testMultiple3() {
-		List<BeanMethod> bms = new ArrayList<BeanMethod>();
+		List<BeanMethod> bms = new ArrayList<>();
 		bms.add(new BeanMethod("simpleMethodService", "subclassSummaryView"));
 		bms.add(new BeanMethod("simpleMethodService", "subclassDetailView"));
 		bms.add(new BeanMethod("simpleMethodService", "noView"));
@@ -95,8 +96,8 @@ public class SimpleMethodConcurrentTest extends BaseViewTest {
 		assertThat(results).hasSize(5);
 
 		int ix = 0;
-		for (MapEntry[] entries : Arrays.asList(summaryView(), detailView(), noView(),
-				detailView(), noView())) {
+		for (MapEntry<String, Object>[] entries : Arrays.asList(summaryView(),
+				detailView(), noView(), detailView(), noView())) {
 			Map<String, Object> result = results.get(ix++);
 			assertThat(result).hasSize(entries.length);
 			assertThat(result).contains(entries);

@@ -31,14 +31,14 @@ import javax.servlet.http.Cookie;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -50,7 +50,7 @@ import ch.ralscha.extdirectspring.provider.FormInfo;
 import ch.ralscha.extdirectspring.provider.RemoteProviderSimple.BusinessObject;
 import ch.ralscha.extdirectspring.provider.Row;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:/testApplicationContext.xml")
 public class RouterControllerSimpleTest {
@@ -60,12 +60,12 @@ public class RouterControllerSimpleTest {
 
 	private MockMvc mockMvc;
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeTest() {
 		Locale.setDefault(Locale.US);
 	}
 
-	@Before
+	@BeforeEach
 	public void setupMockMvc() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
@@ -408,7 +408,7 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void methodWithRequiredCookieValue() {
-		List<Cookie> cookies = new ArrayList<Cookie>();
+		List<Cookie> cookies = new ArrayList<>();
 		cookies.add(new Cookie("intCookie", "1"));
 		cookies.add(new Cookie("booleanCookie", "true"));
 		ControllerUtil.sendAndReceive(this.mockMvc, null, cookies, "remoteProviderSimple",

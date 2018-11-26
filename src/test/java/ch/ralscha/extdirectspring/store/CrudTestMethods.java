@@ -64,7 +64,7 @@ public class CrudTestMethods {
 	}
 
 	public void testRead(MockMvc mockMvc) throws Exception {
-		Map<String, Object> pagingParameters = new HashMap<String, Object>();
+		Map<String, Object> pagingParameters = new HashMap<>();
 		pagingParameters.put("page", 1);
 		pagingParameters.put("start", 0);
 		pagingParameters.put("limit", 50);
@@ -124,7 +124,7 @@ public class CrudTestMethods {
 	}
 
 	private void testUpdateRecordsOne(MockMvc mockMvc) throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
 		storeRequest.put("records", new Book(1, "an update", "9999999"));
 		String edRequest = ControllerUtil.createEdsRequest(this.serviceName, "update3", 1,
 				storeRequest);
@@ -139,8 +139,8 @@ public class CrudTestMethods {
 	}
 
 	private void testUpdateRecordsMany(MockMvc mockMvc) throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
-		List<Book> newBooks = new ArrayList<Book>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
+		List<Book> newBooks = new ArrayList<>();
 		newBooks.add(new Book(1, "an update", "9999999"));
 		newBooks.add(new Book(2, "a second update", "8888888"));
 
@@ -174,7 +174,7 @@ public class CrudTestMethods {
 	}
 
 	private void testUpdateMany(MockMvc mockMvc) throws Exception {
-		List<Book> newBooks = new ArrayList<Book>();
+		List<Book> newBooks = new ArrayList<>();
 		newBooks.add(new Book(1, "an update", "9999999"));
 		newBooks.add(new Book(2, "a second update", "8888888"));
 		String edRequest = ControllerUtil.createEdsRequest(this.serviceName, "update4", 1,
@@ -227,7 +227,7 @@ public class CrudTestMethods {
 	}
 
 	private void testCreateRecordsOne(MockMvc mockMvc) throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
 		storeRequest.put("records", new Book(-1, "Ext JS 3.0 Cookbook", "1847198708"));
 		String edRequest = ControllerUtil.createEdsRequest(this.serviceName, "create3", 1,
 				storeRequest);
@@ -243,8 +243,8 @@ public class CrudTestMethods {
 	}
 
 	private void testCreateRecordsMany(MockMvc mockMvc) throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
-		List<Book> newBooks = new ArrayList<Book>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
+		List<Book> newBooks = new ArrayList<>();
 		newBooks.add(new Book(-1, "Ext JS 3.0 Cookbook", "1847198708"));
 		newBooks.add(new Book(-1, "Learning Ext JS 3.2", "1849511209"));
 
@@ -279,7 +279,7 @@ public class CrudTestMethods {
 	}
 
 	private void testCreateMany(MockMvc mockMvc) throws Exception {
-		List<Book> newBooks = new ArrayList<Book>();
+		List<Book> newBooks = new ArrayList<>();
 		newBooks.add(new Book(-1, "Ext JS 3.0 Cookbook", "1847198708"));
 		newBooks.add(new Book(-1, "Learning Ext JS 3.2", "1849511209"));
 
@@ -297,8 +297,8 @@ public class CrudTestMethods {
 	}
 
 	private void testDeleteRecordsOne(MockMvc mockMvc) throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
-		storeRequest.put("records", new Integer(1));
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
+		storeRequest.put("records", Integer.valueOf(1));
 		String edRequest = ControllerUtil.createEdsRequest(this.serviceName, "delete3", 1,
 				storeRequest);
 
@@ -322,8 +322,8 @@ public class CrudTestMethods {
 	}
 
 	private void testDeleteRecordsMany(MockMvc mockMvc) throws Exception {
-		Map<String, Object> storeRequest = new LinkedHashMap<String, Object>();
-		List<Integer> booksToDelete = new ArrayList<Integer>();
+		Map<String, Object> storeRequest = new LinkedHashMap<>();
+		List<Integer> booksToDelete = new ArrayList<>();
 		booksToDelete.add(1);
 		booksToDelete.add(2);
 
@@ -380,7 +380,7 @@ public class CrudTestMethods {
 
 	private void testDeleteMany(MockMvc mockMvc) throws Exception {
 
-		List<Book> deletedBooks = new ArrayList<Book>();
+		List<Book> deletedBooks = new ArrayList<>();
 		deletedBooks.add(new Book(9, "Ext JS 3.0 Cookbook", "1847198708"));
 		deletedBooks.add(new Book(10, "Learning Ext JS 3.2", "1849511209"));
 

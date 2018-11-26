@@ -26,7 +26,7 @@ public class BaseService<T extends BaseModel> {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
 	public ExtDirectStoreResult<Book> update3(List<Book> updates) {
-		return new ExtDirectStoreResult<Book>(update4(updates));
+		return new ExtDirectStoreResult<>(update4(updates));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
@@ -39,8 +39,7 @@ public class BaseService<T extends BaseModel> {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
 	public ExtDirectStoreResult<Integer> delete3(List<Integer> deletes) {
-		return new ExtDirectStoreResult<Integer>(
-				deletes.toArray(new Integer[deletes.size()]));
+		return new ExtDirectStoreResult<>(deletes.toArray(new Integer[deletes.size()]));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
@@ -54,7 +53,7 @@ public class BaseService<T extends BaseModel> {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")
 	public ExtDirectStoreResult<Book> create3(List<Book> inserts) {
-		return new ExtDirectStoreResult<Book>(create4(inserts));
+		return new ExtDirectStoreResult<>(create4(inserts));
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "store")

@@ -17,7 +17,7 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
@@ -27,14 +27,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -47,7 +47,7 @@ import org.springframework.web.context.WebApplicationContext;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:/testApplicationContextN.xml")
 public class RouterControllerFormPostTest {
@@ -60,14 +60,14 @@ public class RouterControllerFormPostTest {
 	@Autowired
 	private ConfigurationService configurationService;
 
-	@Before
+	@BeforeEach
 	public void setupMockMvc() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
 	public void testCallNonExistsFormPostMethod() throws Exception {
-		Map<String, String> parameters = new LinkedHashMap<String, String>();
+		Map<String, String> parameters = new LinkedHashMap<>();
 		parameters.put("extTID", "11");
 		parameters.put("extAction", "remoteProviderSimple");
 		parameters.put("extMethod", "method1");
@@ -94,7 +94,7 @@ public class RouterControllerFormPostTest {
 		ReflectionTestUtils.setField(this.configurationService, "configuration", conf);
 		this.configurationService.afterPropertiesSet();
 
-		Map<String, String> parameters = new LinkedHashMap<String, String>();
+		Map<String, String> parameters = new LinkedHashMap<>();
 		parameters.put("extTID", "12");
 		parameters.put("extAction", "remoteProviderSimple");
 		parameters.put("extMethod", "method1");
@@ -139,7 +139,7 @@ public class RouterControllerFormPostTest {
 
 	@Test
 	public void testCallDirect() throws Exception {
-		Map<String, String> parameters = new LinkedHashMap<String, String>();
+		Map<String, String> parameters = new LinkedHashMap<>();
 		parameters.put("extTID", "12");
 		parameters.put("extAction", "formInfoController");
 		parameters.put("extMethod", "updateInfoDirect");
@@ -171,7 +171,7 @@ public class RouterControllerFormPostTest {
 
 	@Test
 	public void testCallDirectEd() throws Exception {
-		Map<String, String> parameters = new LinkedHashMap<String, String>();
+		Map<String, String> parameters = new LinkedHashMap<>();
 		parameters.put("extTID", "12");
 		parameters.put("extAction", "formInfoController");
 		parameters.put("extMethod", "updateInfoDirectEd");
@@ -204,7 +204,7 @@ public class RouterControllerFormPostTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testUpload() throws Exception {
-		MockMultipartHttpServletRequestBuilder request = fileUpload("/router");
+		MockMultipartHttpServletRequestBuilder request = multipart("/router");
 		request.accept(MediaType.ALL).characterEncoding("UTF-8")
 				.session(new MockHttpSession());
 
@@ -221,7 +221,7 @@ public class RouterControllerFormPostTest {
 		request.file("fileUpload", "the content of the file".getBytes());
 
 		MvcResult resultMvc = this.mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentType("text/html;charset=UTF-8"))
+				.andExpect(content().contentType("text/html;charset=utf-8"))
 				.andExpect(content().encoding("UTF-8")).andReturn();
 
 		String response = resultMvc.getResponse().getContentAsString();
@@ -248,13 +248,14 @@ public class RouterControllerFormPostTest {
 				entry("firstName", null), entry("success", Boolean.TRUE));
 		Map<String, Object> error = (Map<String, Object>) result.get("errors");
 		assertThat(error).containsKey("email");
-		assertThat((List<String>) error.get("email")).containsExactly("may not be empty");
+		assertThat((List<String>) error.get("email"))
+				.containsExactly("must not be empty");
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testUploadEd() throws Exception {
-		MockMultipartHttpServletRequestBuilder request = fileUpload("/router");
+		MockMultipartHttpServletRequestBuilder request = multipart("/router");
 		request.accept(MediaType.ALL).characterEncoding("UTF-8")
 				.session(new MockHttpSession());
 
@@ -271,7 +272,7 @@ public class RouterControllerFormPostTest {
 		request.file("fileUpload", "the content of the file".getBytes());
 
 		MvcResult resultMvc = this.mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentType("text/html;charset=UTF-8"))
+				.andExpect(content().contentType("text/html;charset=utf-8"))
 				.andExpect(content().encoding("UTF-8")).andReturn();
 
 		String response = resultMvc.getResponse().getContentAsString();
@@ -297,7 +298,8 @@ public class RouterControllerFormPostTest {
 				entry("success", Boolean.TRUE));
 		Map<String, Object> error = (Map<String, Object>) result.get("errors");
 		assertThat(error).containsKey("email");
-		assertThat((List<String>) error.get("email")).containsExactly("may not be empty");
+		assertThat((List<String>) error.get("email"))
+				.containsExactly("must not be empty");
 	}
 
 }

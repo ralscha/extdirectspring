@@ -57,7 +57,7 @@ public class RemoteProviderImplementation implements RemoteProviderInterface {
 		assertThat(request.getParams()).contains(entry("lastName", "Smith"));
 		assertThat(request.getParams()).contains(entry("active", Boolean.TRUE));
 
-		List<Row> result = new ArrayList<Row>();
+		List<Row> result = new ArrayList<>();
 		result.add(new Row(1, name, active, "" + age));
 		return result;
 	}

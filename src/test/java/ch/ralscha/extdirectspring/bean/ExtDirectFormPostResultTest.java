@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.assertj.core.data.MapEntry;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.validation.AbstractBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;

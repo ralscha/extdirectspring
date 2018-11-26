@@ -18,5 +18,6 @@
 		  p:streamResponse="true" 
 		  p:timeout="15000"
 		  p:providerType="websocket" />
-
+    
+    <bean id="inMemoryUserDetailsManager" class="org.springframework.security.provisioning.InMemoryUserDetailsManager" />
 </beans>

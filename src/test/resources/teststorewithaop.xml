@@ -18,5 +18,5 @@
   <mvc:annotation-driven />
 	
   <aop:aspectj-autoproxy />
-  
+  <bean id="inMemoryUserDetailsManager" class="org.springframework.security.provisioning.InMemoryUserDetailsManager" />
 </beans>

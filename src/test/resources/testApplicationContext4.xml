@@ -21,5 +21,6 @@
 		  p:timeout="300" 
 		  p:bufferLimit="3"
 		  p:synchronizeOnSession="true"/>
-
+    
+    <bean id="inMemoryUserDetailsManager" class="org.springframework.security.provisioning.InMemoryUserDetailsManager" />
 </beans>

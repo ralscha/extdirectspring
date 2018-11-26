@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -32,9 +31,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -44,21 +43,28 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 
 	private HttpPost post;
 
-	@Before
+	@BeforeEach
 	public void beforeTest() {
 		this.client = HttpClientBuilder.create().build();
 		this.post = new HttpPost("http://localhost:9998/controller/router");
 	}
 
-	@After
+	@AfterEach
 	public void afterTest() {
-		IOUtils.closeQuietly(this.client);
+		try {
+			if (this.client != null) {
+				this.client.close();
+			}
+		}
+		catch (final IOException ioe) {
+			// ignore
+		}
 	}
 
 	@Test
 	public void testPost() throws IOException {
 
-		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		List<NameValuePair> formparams = new ArrayList<>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
 		formparams
 				.add(new BasicNameValuePair("extAction", "exceptionFormPostController"));
@@ -70,25 +76,25 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 
 		this.post.setEntity(postEntity);
 
-		CloseableHttpResponse response = this.client.execute(this.post);
-		HttpEntity entity = response.getEntity();
-		assertThat(entity).isNotNull();
-		String responseString = EntityUtils.toString(entity);
-		ObjectMapper mapper = new ObjectMapper();
+		try (CloseableHttpResponse response = this.client.execute(this.post)) {
+			HttpEntity entity = response.getEntity();
+			assertThat(entity).isNotNull();
+			String responseString = EntityUtils.toString(entity);
+			ObjectMapper mapper = new ObjectMapper();
 
-		Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
-		assertThat(rootAsMap).hasSize(6);
-		assertThat(rootAsMap.get("method")).isEqualTo("throwAException");
-		assertThat(rootAsMap.get("type")).isEqualTo("exception");
-		assertThat(rootAsMap.get("action")).isEqualTo("exceptionFormPostController");
-		assertThat(rootAsMap.get("tid")).isEqualTo(3);
-		assertThat(rootAsMap.get("message")).isEqualTo("a null pointer");
-		assertThat(rootAsMap.get("where")).isNull();
+			Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
+			assertThat(rootAsMap).hasSize(6);
+			assertThat(rootAsMap.get("method")).isEqualTo("throwAException");
+			assertThat(rootAsMap.get("type")).isEqualTo("exception");
+			assertThat(rootAsMap.get("action")).isEqualTo("exceptionFormPostController");
+			assertThat(rootAsMap.get("tid")).isEqualTo(3);
+			assertThat(rootAsMap.get("message")).isEqualTo("a null pointer");
+			assertThat(rootAsMap.get("where")).isNull();
 
-		@SuppressWarnings("unchecked")
-		Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
-		assertThat(result).hasSize(1);
-		assertThat((Boolean) result.get("success")).isFalse();
-		IOUtils.closeQuietly(response);
+			@SuppressWarnings("unchecked")
+			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
+			assertThat(result).hasSize(1);
+			assertThat((Boolean) result.get("success")).isFalse();
+		}
 	}
 }
