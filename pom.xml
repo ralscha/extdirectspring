@@ -506,10 +506,8 @@
 				<configuration>
 					<header>${basedir}/src/main/config/header.txt</header>
 					<properties>
-						<owner>Ralph Schaer</owner>
 						<year>${project.inceptionYear}</year>
 						<currentYear>2018</currentYear>
-						<email>ralphschaer@gmail.com</email>
 					</properties>
 					<excludes>
 						<exclude>**/*.xml</exclude>
