@@ -17,13 +17,13 @@ package ch.ralscha.extdirectspring_itest;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 
 public class JettyTest2 {
 	private static Server server;
 
-	@BeforeClass
+	@BeforeAll
 	public static void startServer() throws Exception {
 		WebAppContext context = new WebAppContext("./src/test/webapp2", "/");
 
@@ -35,7 +35,7 @@ public class JettyTest2 {
 
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void stopServer() throws Exception {
 		server.stop();
 	}

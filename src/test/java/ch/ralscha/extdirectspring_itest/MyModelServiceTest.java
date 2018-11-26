@@ -32,9 +32,9 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -51,21 +51,22 @@ public class MyModelServiceTest extends JettyTest {
 
 	private HttpPost post;
 
-	@Before
+	@BeforeEach
 	public void beforeTest() {
 		this.client = HttpClientBuilder.create().build();
 		this.post = new HttpPost("http://localhost:9998/controller/router");
 	}
 
-	@After
+	@AfterEach
 	public void afterTest() {
 		try {
-            if (this.client != null) {
-            	this.client.close();
-            }
-        } catch (final IOException ioe) {
-            // ignore
-        }
+			if (this.client != null) {
+				this.client.close();
+			}
+		}
+		catch (final IOException ioe) {
+			// ignore
+		}
 	}
 
 	private static RemotingApi api() {

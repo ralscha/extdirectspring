@@ -16,6 +16,7 @@
 package ch.ralscha.extdirectspring.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 
@@ -23,7 +24,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.util.DigestUtils;
@@ -137,10 +138,12 @@ public class ExtDirectSpringUtilTest {
 		assertThat(expires.getMinuteOfDay()).isEqualTo(inSixMonths.getMinuteOfDay());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testAddCacheHeadersWithNullEtag() {
-		MockHttpServletResponse response = new MockHttpServletResponse();
-		ExtDirectSpringUtil.addCacheHeaders(response, null, null);
+		assertThrows(IllegalArgumentException.class, () -> {
+			MockHttpServletResponse response = new MockHttpServletResponse();
+			ExtDirectSpringUtil.addCacheHeaders(response, null, null);
+		});
 	}
 
 	@Test

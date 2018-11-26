@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.reflect.Method;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import ch.ralscha.extdirectspring.provider.FormInfoController;
 import ch.ralscha.extdirectspring.provider.FormInfoController2;
