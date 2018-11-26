@@ -27,14 +27,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -47,7 +47,7 @@ import org.springframework.web.context.WebApplicationContext;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:/testApplicationContextN.xml")
 public class RouterControllerFormPostTest {
@@ -60,7 +60,7 @@ public class RouterControllerFormPostTest {
 	@Autowired
 	private ConfigurationService configurationService;
 
-	@Before
+	@BeforeEach
 	public void setupMockMvc() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
@@ -248,7 +248,8 @@ public class RouterControllerFormPostTest {
 				entry("firstName", null), entry("success", Boolean.TRUE));
 		Map<String, Object> error = (Map<String, Object>) result.get("errors");
 		assertThat(error).containsKey("email");
-		assertThat((List<String>) error.get("email")).containsExactly("must not be empty");
+		assertThat((List<String>) error.get("email"))
+				.containsExactly("must not be empty");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -297,7 +298,8 @@ public class RouterControllerFormPostTest {
 				entry("success", Boolean.TRUE));
 		Map<String, Object> error = (Map<String, Object>) result.get("errors");
 		assertThat(error).containsKey("email");
-		assertThat((List<String>) error.get("email")).containsExactly("must not be empty");
+		assertThat((List<String>) error.get("email"))
+				.containsExactly("must not be empty");
 	}
 
 }

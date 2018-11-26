@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.assertj.core.data.MapEntry;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import ch.ralscha.extdirectspring.filter.Filter;
 import ch.ralscha.extdirectspring.filter.StringFilter;

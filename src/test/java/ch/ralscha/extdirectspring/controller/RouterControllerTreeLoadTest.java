@@ -26,13 +26,13 @@ import javax.servlet.http.Cookie;
 
 import org.joda.time.LocalDate;
 import org.joda.time.format.ISODateTimeFormat;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -42,7 +42,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad.Node;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:/testApplicationContext.xml")
 public class RouterControllerTreeLoadTest {
@@ -52,7 +52,7 @@ public class RouterControllerTreeLoadTest {
 
 	private MockMvc mockMvc;
 
-	@Before
+	@BeforeEach
 	public void setupMockMvc() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}

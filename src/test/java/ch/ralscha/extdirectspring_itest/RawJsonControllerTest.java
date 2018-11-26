@@ -15,8 +15,9 @@
  */
 package ch.ralscha.extdirectspring_itest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,7 +30,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -69,11 +70,11 @@ public class RawJsonControllerTest extends JettyTest {
 		try (CloseableHttpClient client = HttpClientBuilder.create().build();
 				CloseableHttpResponse response = client.execute(post)) {
 			HttpEntity entity = response.getEntity();
-			assertThat(entity).isNotNull();
+			assertNotNull(entity);
 			String responseString = EntityUtils.toString(entity);
 
-			assertThat(responseString).isNotNull();
-			assertThat(responseString).startsWith("[").endsWith("]");
+			assertNotNull(responseString);
+			assertTrue(responseString.startsWith("[") && responseString.endsWith("]"));
 
 			ObjectMapper mapper = new ObjectMapper();
 			Map<String, Object> rootAsMap = mapper.readValue(
@@ -88,12 +89,12 @@ public class RawJsonControllerTest extends JettyTest {
 			Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 			if (total != null) {
 				assertEquals(3, result.size());
-				assertThat((Integer) result.get("total")).isEqualTo(total);
+				assertEquals(total, result.get("total"));
 			}
 			else {
 				assertEquals(2, result.size());
 			}
-			assertThat((Boolean) result.get("success")).isEqualTo(success);
+			assertEquals(success, result.get("success"));
 
 			List<Map<String, Object>> records = (List<Map<String, Object>>) result
 					.get("records");

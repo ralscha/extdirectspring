@@ -27,13 +27,13 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -46,7 +46,7 @@ import org.springframework.web.context.WebApplicationContext;
 import ch.ralscha.extdirectspring.bean.api.ActionDoc;
 import ch.ralscha.extdirectspring.util.ApiCache;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration("classpath:/testApplicationContext.xml")
 public class ApiControllerWithDocumentationTest {
@@ -61,7 +61,7 @@ public class ApiControllerWithDocumentationTest {
 	@Autowired
 	private ApiCache apiCache;
 
-	@Before
+	@BeforeEach
 	public void setupApiController() throws Exception {
 		this.apiCache.clear();
 

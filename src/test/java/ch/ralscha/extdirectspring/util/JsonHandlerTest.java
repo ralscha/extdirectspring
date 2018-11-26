@@ -16,8 +16,9 @@
 package ch.ralscha.extdirectspring.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,10 +26,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -36,14 +37,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "classpath:/testApplicationContext.xml")
 public class JsonHandlerTest {
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSetNullObjectMapper() {
-		JsonHandler jsonHandler = new JsonHandler();
-		jsonHandler.setMapper(null);
+		assertThrows(IllegalArgumentException.class, () -> {
+			JsonHandler jsonHandler = new JsonHandler();
+			jsonHandler.setMapper(null);
+		});
 	}
 
 	@Test
