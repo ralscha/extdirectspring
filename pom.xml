@@ -45,7 +45,7 @@
 	</scm>
 
 	<properties>
-		<jackson.version>2.9.7</jackson.version>
+		<jackson.version>2.9.8</jackson.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -295,7 +295,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>5.3.7.Final</version>
+			<version>5.4.0.Final</version>
 			<scope>test</scope>
 		</dependency>
 
