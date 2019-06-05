@@ -16,6 +16,8 @@
 package ch.ralscha.extdirectspring.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
 
@@ -23,11 +25,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -128,6 +132,19 @@ public class AppExceptionHandlerTest {
 		assertThat(resp.getMessage()).isEqualTo("Houston, we have a problem");
 		assertThat(resp.getResult()).isNull();
 		assertThat(resp.getWhere()).isEqualTo("Space");
+
+	}
+	
+	@Test
+	public void testSendTextPlainRequest() throws Exception {
+
+		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
+				.contentType(MediaType.TEXT_PLAIN).characterEncoding("UTF-8");
+		String edsRequest = ControllerUtil.createEdsRequest("remoteProviderSimple", "method1",
+					false, 1, null, null);
+		request.content(edsRequest);
+		
+		this.mockMvc.perform(request).andExpect(status().is(400));
 
 	}
 }
