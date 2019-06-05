@@ -102,7 +102,7 @@ public class RouterController {
 		this.methodInfoCache = methodInfoCache;
 	}
 
-	@RequestMapping(value = "/poll/{beanName}/{method}/{event}", consumes = "application/json")
+	@RequestMapping(value = "/poll/{beanName}/{method}/{event}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void poll(@PathVariable("beanName") String beanName,
 			@PathVariable("method") String method, @PathVariable("event") String event,
 			HttpServletRequest request, HttpServletResponse response, Locale locale)
@@ -278,7 +278,7 @@ public class RouterController {
 	}
 
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction",
-			consumes = "application/json")
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void router(HttpServletRequest request, HttpServletResponse response,
 			Locale locale) throws IOException {
 
