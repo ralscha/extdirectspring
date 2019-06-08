@@ -102,7 +102,7 @@ public class RouterController {
 		this.methodInfoCache = methodInfoCache;
 	}
 
-	@RequestMapping(value = "/poll/{beanName}/{method}/{event}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
 	public void poll(@PathVariable("beanName") String beanName,
 			@PathVariable("method") String method, @PathVariable("event") String event,
 			HttpServletRequest request, HttpServletResponse response, Locale locale)
