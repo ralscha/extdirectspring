@@ -63,7 +63,7 @@ public class RouterControllerFormPostJsonTest {
 	@Test
 	public void testCallExistsFormPostMethod() throws Exception {
 		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
-				.contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
+				.contentType(MediaType.MULTIPART_FORM_DATA).characterEncoding("UTF-8");
 
 		request.param("extTID", "14");
 		request.param("extAction", "formInfoController3");
@@ -164,7 +164,7 @@ public class RouterControllerFormPostJsonTest {
 	@Test
 	public void testCallExistsFormPostMethodEd() throws Exception {
 		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
-				.contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
+				.contentType(MediaType.MULTIPART_FORM_DATA).characterEncoding("UTF-8");
 
 		request.param("extTID", "14");
 		request.param("extAction", "formInfoController3");

@@ -277,7 +277,8 @@ public class RouterController {
 		return null;
 	}
 
-	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction")
+	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction",
+			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void router(HttpServletRequest request, HttpServletResponse response,
 			Locale locale) throws IOException {
 
