@@ -42,19 +42,6 @@ The official Sencha [Ext.Direct forum](http://www.sencha.com/forum/forumdisplay.
 The library supports Ext JS 3, 4, 5 and 6 and Sencha Touch 2   
 
 
-## Indexer
-Version 1.8.0 contains a generated `/META-INF/spring.components` file. This allows you to use the library in a Spring project with the spring-context-indexer: https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#beans-scanning-index
-
-If your Spring application does not use the indexer you have to disable it.
-In a Spring Boot application you can do this with the following code
-
-```
- public static void main(String[] args) throws Exception {
- 	System.setProperty("spring.index.ignore", "true");
- 	SpringApplication.run(Main.class, args);
- }
-```
-
 ## Demo applications using extdirectspring
   * [eds-starter6-simple-jpa](https://github.com/ralscha/eds-starter6-simple-jpa)
   * [eds-starter6-simple-mongodb](https://github.com/ralscha/eds-starter6-simple-mongodb)
