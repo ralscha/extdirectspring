@@ -514,6 +514,7 @@
 						<exclude>.apt_generated/**</exclude>
 						<exclude>.factorypath</exclude>
 						<exclude>.editorconfig</exclude>
+						<exclude>.github</exclude>
 					</excludes>
 					<strictCheck>true</strictCheck>
 				</configuration>
