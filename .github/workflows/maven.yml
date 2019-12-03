@@ -14,4 +14,6 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: ./mvnw -B test --file pom.xml
+      run: ./mvnw -B clean test --file pom.xml
+    - name: Deploy to Sonatype
+      run: ./mvnw -B -Drepo.username=${{secrets.SONATYPE_USERNAME}} -Drepo.password=${{secrets.SONATYPE_PASSWORD}} clean deploy -DskipTests=true --settings mySettings.xml
