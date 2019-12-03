@@ -16,4 +16,4 @@ jobs:
     - name: Build with Maven
       run: ./mvnw -B clean test --file pom.xml
     - name: Deploy to Sonatype
-      run: ./mvnw -B -Drepo.username=${{secrets.SONATYPE_USERNAME}} -Drepo.password=${{secrets.SONATYPE_PASSWORD}} clean deploy -DskipTests=true --settings mySettings.xml
+      run: ./mvnw -B -Drepo.username=${{secrets.SONATYPE_USERNAME}} -Drepo.password=${{secrets.SONATYPE_PASSWORD}} clean deploy -DskipTests=true 
