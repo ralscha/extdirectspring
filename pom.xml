@@ -53,7 +53,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
-				<version>5.2.1.RELEASE</version>
+				<version>5.2.2.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -342,7 +342,7 @@
 				<version>3.1.1</version>
 				<configuration>
 					<links>
-						<link>https://docs.spring.io/spring/docs/5.2.1.RELEASE/javadoc-api/</link>
+						<link>https://docs.spring.io/spring/docs/5.2.2.RELEASE/javadoc-api/</link>
 						<link>https://docs.oracle.com/en/java/javase/11/docs/api/index.html</link>
 					</links>
 					<additionalOptions>-Xdoclint:none</additionalOptions>
