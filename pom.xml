@@ -53,7 +53,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
-				<version>5.2.2.RELEASE</version>
+				<version>5.2.4.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -115,32 +115,32 @@
 		<dependency>
 			<groupId>org.junit.platform</groupId>
 			<artifactId>junit-platform-launcher</artifactId>
-			<version>1.5.2</version>
+			<version>1.6.0</version>
 			<scope>test</scope>
 		</dependency>		
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-params</artifactId>
 			<scope>test</scope>
-			<version>5.5.2</version>
+			<version>5.6.0</version>
 		</dependency>		
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
 			<scope>test</scope>
-			<version>5.5.2</version>
+			<version>5.6.0</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.junit.platform</groupId>
 		    <artifactId>junit-platform-runner</artifactId>
-		    <version>1.5.2</version>
+		    <version>1.6.0</version>
 		    <scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>3.14.0</version>
+			<version>3.15.0</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -153,14 +153,14 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>1.9.4</version>
+			<version>1.9.5</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>1.9.4</version>
+			<version>1.9.5</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -202,7 +202,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.5.10</version>
+			<version>4.5.11</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -215,7 +215,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
-			<version>4.5.10</version>
+			<version>4.5.11</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -228,7 +228,7 @@
 		<dependency>
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>6.1.0.Final</version>
+			<version>6.1.2.Final</version>
 			<scope>test</scope>
 		</dependency>
 		
@@ -242,21 +242,21 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>5.2.1.RELEASE</version>
+			<version>5.2.2.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>5.2.1.RELEASE</version>
+			<version>5.2.2.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>5.2.1.RELEASE</version>
+			<version>5.2.2.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -356,7 +356,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.12.0</version>
+				<version>3.12.1</version>
 				<configuration>
 					<targetJdk>1.8</targetJdk>
 				</configuration>
