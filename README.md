@@ -11,8 +11,6 @@ The library supports all the features of Ext Direct:
   * Form post with file upload
   * Polling
 
-### See the library in action: https://demo.rasc.ch/eds/
-
 ## Maven
 ExtDirectSpring is available from the Central Maven Repository. 
 ```
