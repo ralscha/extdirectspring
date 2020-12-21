@@ -457,7 +457,7 @@ public class ApiControllerTest {
 		}
 
 		MvcResult result = mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentType(contentType)).andReturn();
+				.andExpect(content().contentTypeCompatibleWith(contentType)).andReturn();
 
 		if ("json".equals(params.getFormat())) {
 			compareJson(result, expectedApi, params);

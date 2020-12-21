@@ -221,7 +221,7 @@ public class RouterControllerFormPostTest {
 		request.file("fileUpload", "the content of the file".getBytes());
 
 		MvcResult resultMvc = this.mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentType("text/html;charset=utf-8"))
+				.andExpect(content().contentTypeCompatibleWith("text/html;charset=utf-8"))
 				.andExpect(content().encoding("UTF-8")).andReturn();
 
 		String response = resultMvc.getResponse().getContentAsString();
@@ -272,7 +272,7 @@ public class RouterControllerFormPostTest {
 		request.file("fileUpload", "the content of the file".getBytes());
 
 		MvcResult resultMvc = this.mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentType("text/html;charset=utf-8"))
+				.andExpect(content().contentTypeCompatibleWith("text/html;charset=utf-8"))
 				.andExpect(content().encoding("UTF-8")).andReturn();
 
 		String response = resultMvc.getResponse().getContentAsString();

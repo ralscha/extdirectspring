@@ -102,7 +102,7 @@ public class ControllerUtil {
 		}
 
 		MvcResult result = mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentType("application/json;charset=UTF-8"))
+				.andExpect(content().contentTypeCompatibleWith("application/json;charset=UTF-8"))
 				.andExpect(content().encoding("UTF-8")).andReturn();
 
 		return readDirectPollResponse(result.getResponse().getContentAsByteArray());
@@ -144,7 +144,7 @@ public class ControllerUtil {
 		}
 
 		return mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentType("application/json;charset=UTF-8"))
+				.andExpect(content().contentTypeCompatibleWith("application/json;charset=UTF-8"))
 				.andExpect(content().encoding("UTF-8")).andReturn();
 
 	}
