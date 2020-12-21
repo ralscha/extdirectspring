@@ -53,7 +53,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
-				<version>5.3.1</version>
+				<version>5.3.2</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -242,21 +242,21 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>5.4.1</version>
+			<version>5.4.2</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>5.4.1</version>
+			<version>5.4.2</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>5.4.1</version>
+			<version>5.4.2</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -288,7 +288,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>5.4.1.Final</version>
+			<version>5.4.2.Final</version>
 			<scope>test</scope>
 		</dependency>
 
