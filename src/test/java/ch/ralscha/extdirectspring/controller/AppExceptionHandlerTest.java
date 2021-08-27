@@ -134,16 +134,16 @@ public class AppExceptionHandlerTest {
 		assertThat(resp.getWhere()).isEqualTo("Space");
 
 	}
-	
+
 	@Test
 	public void testSendTextPlainRequest() throws Exception {
 
 		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
 				.contentType(MediaType.TEXT_PLAIN).characterEncoding("UTF-8");
-		String edsRequest = ControllerUtil.createEdsRequest("remoteProviderSimple", "method1",
-					false, 1, null, null);
+		String edsRequest = ControllerUtil.createEdsRequest("remoteProviderSimple",
+				"method1", false, 1, null, null);
 		request.content(edsRequest);
-		
+
 		this.mockMvc.perform(request).andExpect(status().is(400));
 
 	}

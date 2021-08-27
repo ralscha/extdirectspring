@@ -93,7 +93,8 @@ public class RouterControllerTreeLoadTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
 		requestParameters.put("foo", "foo");
-		requestParameters.put("today", DateTimeFormatter.ISO_DATE.format(LocalDate.now()));
+		requestParameters.put("today",
+				DateTimeFormatter.ISO_DATE.format(LocalDate.now()));
 
 		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderTreeLoad", "method2",

@@ -135,8 +135,9 @@ public class InfoServiceTest extends JettyTest {
 	@Test
 	public void testUpdateInfoUser2() throws IOException {
 		Locale.setDefault(Locale.GERMAN);
-		testUserPost("updateInfoUser2", "muss eine korrekt formatierte E-Mail-Adresse sein",
-				entry("lc", "ralph"), entry("success", Boolean.FALSE));
+		testUserPost("updateInfoUser2",
+				"muss eine korrekt formatierte E-Mail-Adresse sein", entry("lc", "ralph"),
+				entry("success", Boolean.FALSE));
 	}
 
 	@Test

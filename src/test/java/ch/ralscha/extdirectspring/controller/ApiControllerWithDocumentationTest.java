@@ -263,7 +263,8 @@ public class ApiControllerWithDocumentationTest {
 		request.param("group", params.getGroup());
 
 		MvcResult result = this.mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith("application/javascript")).andReturn();
+				.andExpect(content().contentTypeCompatibleWith("application/javascript"))
+				.andReturn();
 
 		ApiControllerTest.compare(result, ApiControllerTest.groupApisWithDoc("actionns"),
 				params);
@@ -282,7 +283,8 @@ public class ApiControllerWithDocumentationTest {
 		request.param("group", params.getGroup());
 
 		MvcResult result = this.mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith("application/javascript")).andReturn();
+				.andExpect(content().contentTypeCompatibleWith("application/javascript"))
+				.andReturn();
 
 		ApiControllerTest.compare(result, ApiControllerTest.groupApisWithDoc("actionns"),
 				params);

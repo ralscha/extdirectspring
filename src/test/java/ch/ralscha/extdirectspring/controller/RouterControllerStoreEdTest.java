@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -479,7 +480,7 @@ public class RouterControllerStoreEdTest {
 
 	@Test
 	public void testWithAdditionalParametersAndConversion() {
-		LocalDateTime today = LocalDateTime.now();
+		ZonedDateTime today = ZonedDateTime.now();
 		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("endDate", DateTimeFormatter.ISO_DATE_TIME.format(today));
 
@@ -488,7 +489,6 @@ public class RouterControllerStoreEdTest {
 				readRequest);
 
 		assertThat(storeResponse.records()).hasSize(50);
-
 	}
 
 	@Test

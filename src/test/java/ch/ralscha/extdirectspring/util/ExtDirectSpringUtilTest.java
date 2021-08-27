@@ -125,7 +125,8 @@ public class ExtDirectSpringUtilTest {
 				.isEqualTo("public, max-age=" + month * 30 * 24 * 60 * 60);
 
 		String expiresHeader = (String) response.getHeaderValue("Expires");
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z");
+		DateTimeFormatter fmt = DateTimeFormatter
+				.ofPattern("EEE, dd MMM yyyy HH:mm:ss z");
 		LocalDateTime expires = LocalDateTime.parse(expiresHeader, fmt);
 
 		LocalDateTime inSixMonths = LocalDateTime.now(ZoneOffset.UTC)

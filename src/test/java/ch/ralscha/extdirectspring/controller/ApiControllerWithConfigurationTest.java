@@ -299,8 +299,8 @@ public class ApiControllerWithConfigurationTest {
 					.isEqualTo("public, max-age=" + 6 * 30 * 24 * 60 * 60);
 
 			String expiresHeader = (String) response.getHeaderValue("Expires");
-			DateTimeFormatter fmt = DateTimeFormatter.
-					ofPattern("EEE, dd MMM yyyy HH:mm:ss z").withLocale(Locale.ENGLISH);
+			DateTimeFormatter fmt = DateTimeFormatter
+					.ofPattern("EEE, dd MMM yyyy HH:mm:ss z").withLocale(Locale.ENGLISH);
 			LocalDateTime expires = LocalDateTime.parse(expiresHeader, fmt);
 
 			LocalDateTime inSixMonths = LocalDateTime.now(ZoneOffset.UTC)

@@ -17,9 +17,9 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,8 +43,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.ralscha.extdirectspring.provider.FormInfo;
 import ch.ralscha.extdirectspring.provider.RemoteProviderSimple.BusinessObject;
@@ -192,24 +190,22 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void testWithConversion() throws IOException {
+	public void testWithConversion() {
 
-		LocalDateTime today = LocalDateTime.now();
+		ZonedDateTime today = ZonedDateTime.now();
+		LocalDate todayLd = LocalDate.now();
 
 		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil
 				.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method14",
 						Map.class, DateTimeFormatter.ISO_DATE_TIME.format(today),
-						"normalParameter", DateTimeFormatter.ISO_DATE_TIME.format(today),
+						"normalParameter", DateTimeFormatter.ISO_DATE.format(todayLd),
 						"99.9%");
 
-		assertThat(resultMap.get("endDate")).isEqualTo(today.getNano());
-		ObjectMapper mapper = new ObjectMapper();
+		assertThat(resultMap.get("endDate"))
+				.isEqualTo(Long.valueOf(today.toInstant().getEpochSecond()).intValue());
 
-		Map<String, Object> expectedValue = mapper
-				.readValue(mapper.writeValueAsString(today.toLocalDate()), Map.class);
-
-		assertThat((Map<String, Object>) resultMap.get("jodaLocalDate"))
-				.isEqualTo(expectedValue);
+		assertThat(resultMap.get("localDate"))
+				.isEqualTo(DateTimeFormatter.ISO_DATE.format(todayLd));
 		assertThat(resultMap.get("percent")).isEqualTo(0.999);
 		assertThat(resultMap.get("normalParameter")).isEqualTo("normalParameter");
 		assertThat(resultMap.get("remoteAddr")).isEqualTo("127.0.0.1");

@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -40,6 +41,7 @@ import org.assertj.core.data.Offset;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -198,8 +200,8 @@ public class RemoteProviderSimple {
 			@NumberFormat(style = NumberFormat.Style.PERCENT) BigDecimal percent) {
 
 		Map<String, Object> result = new HashMap<>();
-		result.put("endDate", endDate);
-		result.put("jodaLocalDate", aDate);
+		result.put("endDate", endDate.toInstant().getEpochSecond());
+		result.put("localDate", DateTimeFormatter.ISO_DATE.format(aDate));
 		result.put("percent", percent);
 		result.put("normalParameter", normalParameter);
 		result.put("remoteAddr", request.getRemoteAddr());

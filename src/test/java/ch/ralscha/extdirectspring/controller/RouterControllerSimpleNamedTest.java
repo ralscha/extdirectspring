@@ -271,7 +271,7 @@ public class RouterControllerSimpleNamedTest {
 
 	@Test
 	@SuppressWarnings("unchecked")
-	public void testWithConversion() throws IOException {
+	public void testWithConversion() {
 
 		LocalDate todayDate = LocalDate.now();
 		ZonedDateTime todayDateTime = ZonedDateTime.now();
@@ -285,15 +285,10 @@ public class RouterControllerSimpleNamedTest {
 		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil
 				.sendAndReceiveNamed(this.mockMvc, "remoteProviderSimpleNamed",
 						"method11", Map.class, params);
-
-		assertThat(resultMap.get("endDate")).isEqualTo(todayDateTime.getNano());
-		ObjectMapper mapper = new ObjectMapper();
-
-		Map<String, Object> expectedValue = mapper
-				.readValue(mapper.writeValueAsString(todayDate), Map.class);
-
-		assertThat((Map<String, Object>) resultMap.get("jodaLocalDate"))
-				.isEqualTo(expectedValue);
+		assertThat(resultMap.get("endDate")).isEqualTo(
+				Long.valueOf(todayDateTime.toInstant().getEpochSecond()).intValue());
+		assertThat(resultMap.get("localDate"))
+				.isEqualTo(DateTimeFormatter.ISO_DATE.format(todayDate));
 		assertThat(resultMap.get("percent")).isEqualTo(0.999);
 		assertThat(resultMap.get("normalParameter")).isEqualTo("normalParameter");
 		assertThat(resultMap.get("remoteAddr")).isEqualTo("127.0.0.1");
