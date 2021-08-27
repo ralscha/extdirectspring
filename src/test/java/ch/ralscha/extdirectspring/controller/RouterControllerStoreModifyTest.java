@@ -207,7 +207,7 @@ public class RouterControllerStoreModifyTest {
 		storeRequest.put("records", rowsToUpdate);
 		storeRequest.put("id", 11);
 		storeRequest.put("yesterday",
-				DateTimeFormatter.ISO_DATE_TIME.format(LocalDate.now().minusDays(1)));
+				DateTimeFormatter.ISO_DATE.format(LocalDate.now().minusDays(1)));
 		executeUpdate(action, storeRequest, "update4");
 	}
 

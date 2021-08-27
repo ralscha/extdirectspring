@@ -123,7 +123,8 @@ public class SimpleServiceTest extends JettyTest2 {
 
 			String expiresString = response.getFirstHeader("Expires").getValue();
 			DateTimeFormatter fmt = DateTimeFormatter
-					.ofPattern("E, dd MMM yyyy HH:mm:ss ZZZ").withLocale(Locale.ENGLISH);
+					.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz")
+					.withLocale(Locale.ENGLISH);
 
 			LocalDateTime expires = LocalDateTime.parse(expiresString, fmt);
 			LocalDateTime inSixMonths = LocalDateTime.now(ZoneOffset.UTC)
