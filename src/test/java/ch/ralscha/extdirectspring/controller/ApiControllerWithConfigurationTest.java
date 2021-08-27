@@ -21,14 +21,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -300,17 +299,17 @@ public class ApiControllerWithConfigurationTest {
 					.isEqualTo("public, max-age=" + 6 * 30 * 24 * 60 * 60);
 
 			String expiresHeader = (String) response.getHeaderValue("Expires");
-			DateTimeFormatter fmt = DateTimeFormat
-					.forPattern("EEE, dd MMM yyyy HH:mm:ss z").withLocale(Locale.ENGLISH);
-			DateTime expires = DateTime.parse(expiresHeader, fmt);
+			DateTimeFormatter fmt = DateTimeFormatter.
+					ofPattern("EEE, dd MMM yyyy HH:mm:ss z").withLocale(Locale.ENGLISH);
+			LocalDateTime expires = LocalDateTime.parse(expiresHeader, fmt);
 
-			DateTime inSixMonths = DateTime.now(DateTimeZone.UTC)
+			LocalDateTime inSixMonths = LocalDateTime.now(ZoneOffset.UTC)
 					.plusSeconds(6 * 30 * 24 * 60 * 60);
 			assertThat(expires.getYear()).isEqualTo(inSixMonths.getYear());
-			assertThat(expires.getMonthOfYear()).isEqualTo(inSixMonths.getMonthOfYear());
+			assertThat(expires.getMonth()).isEqualTo(inSixMonths.getMonth());
 			assertThat(expires.getDayOfMonth()).isEqualTo(inSixMonths.getDayOfMonth());
-			assertThat(expires.getHourOfDay()).isEqualTo(inSixMonths.getHourOfDay());
-			assertThat(expires.getMinuteOfDay()).isEqualTo(inSixMonths.getMinuteOfDay());
+			assertThat(expires.getHour()).isEqualTo(inSixMonths.getHour());
+			assertThat(expires.getMinute()).isEqualTo(inSixMonths.getMinute());
 		}
 	}
 

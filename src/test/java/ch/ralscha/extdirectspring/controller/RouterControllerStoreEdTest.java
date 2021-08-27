@@ -18,6 +18,8 @@ package ch.ralscha.extdirectspring.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -28,8 +30,6 @@ import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -479,9 +479,9 @@ public class RouterControllerStoreEdTest {
 
 	@Test
 	public void testWithAdditionalParametersAndConversion() {
-		DateTime today = new DateTime();
+		LocalDateTime today = LocalDateTime.now();
 		Map<String, Object> readRequest = new HashMap<>();
-		readRequest.put("endDate", ISODateTimeFormat.dateTime().print(today));
+		readRequest.put("endDate", DateTimeFormatter.ISO_DATE_TIME.format(today));
 
 		EdStoreResult<?> storeResponse = (EdStoreResult<?>) ControllerUtil.sendAndReceive(
 				this.mockMvc, "remoteProviderStoreRead", "method8Ed", EdStoreResult.class,

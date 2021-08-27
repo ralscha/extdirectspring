@@ -19,14 +19,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.extractProperty;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.joda.time.LocalDate;
-import org.joda.time.format.ISODateTimeFormat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -207,7 +207,7 @@ public class RouterControllerStoreModifyTest {
 		storeRequest.put("records", rowsToUpdate);
 		storeRequest.put("id", 11);
 		storeRequest.put("yesterday",
-				ISODateTimeFormat.date().print(new LocalDate().minusDays(1)));
+				DateTimeFormatter.ISO_DATE_TIME.format(LocalDate.now().minusDays(1)));
 		executeUpdate(action, storeRequest, "update4");
 	}
 
@@ -247,7 +247,7 @@ public class RouterControllerStoreModifyTest {
 		storeRequest.putAll(ControllerUtil.convertValue(row, Map.class));
 		storeRequest.put("aParam", 11);
 		storeRequest.put("yesterday",
-				ISODateTimeFormat.date().print(new LocalDate().minusDays(1)));
+				DateTimeFormatter.ISO_DATE.format(LocalDate.now().minusDays(1)));
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update4");
 	}
 

@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.provider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Service;
@@ -86,7 +86,7 @@ public class RemoteProviderStoreModifyArray {
 		}
 		else {
 			assertThat(yesterday).isNotNull();
-			assertThat(yesterday).isEqualTo(new LocalDate().minusDays(1));
+			assertThat(yesterday).isEqualTo(LocalDate.now().minusDays(1));
 			assertThat(id).isEqualTo(Integer.valueOf(11));
 		}
 		return rows.toArray(new Row[rows.size()]);

@@ -18,6 +18,9 @@ package ch.ralscha.extdirectspring_itest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -35,10 +38,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -123,17 +122,17 @@ public class SimpleServiceTest extends JettyTest2 {
 			assertThat(response.getFirstHeader("Content-Length")).isNotNull();
 
 			String expiresString = response.getFirstHeader("Expires").getValue();
-			DateTimeFormatter fmt = DateTimeFormat
-					.forPattern("E, dd MMM yyyy HH:mm:ss ZZZ").withLocale(Locale.ENGLISH);
+			DateTimeFormatter fmt = DateTimeFormatter
+					.ofPattern("E, dd MMM yyyy HH:mm:ss ZZZ").withLocale(Locale.ENGLISH);
 
-			DateTime expires = DateTime.parse(expiresString, fmt);
-			DateTime inSixMonths = DateTime.now(DateTimeZone.UTC)
+			LocalDateTime expires = LocalDateTime.parse(expiresString, fmt);
+			LocalDateTime inSixMonths = LocalDateTime.now(ZoneOffset.UTC)
 					.plusSeconds(6 * 30 * 24 * 60 * 60);
 			assertThat(expires.getYear()).isEqualTo(inSixMonths.getYear());
-			assertThat(expires.getMonthOfYear()).isEqualTo(inSixMonths.getMonthOfYear());
+			assertThat(expires.getMonth()).isEqualTo(inSixMonths.getMonth());
 			assertThat(expires.getDayOfMonth()).isEqualTo(inSixMonths.getDayOfMonth());
-			assertThat(expires.getHourOfDay()).isEqualTo(inSixMonths.getHourOfDay());
-			assertThat(expires.getMinuteOfDay()).isEqualTo(inSixMonths.getMinuteOfDay());
+			assertThat(expires.getHour()).isEqualTo(inSixMonths.getHour());
+			assertThat(expires.getMinute()).isEqualTo(inSixMonths.getMinute());
 
 			assertThat(response.getFirstHeader("ETag").getValue()).isNotNull();
 			assertThat(response.getFirstHeader("Cache-Control").getValue())

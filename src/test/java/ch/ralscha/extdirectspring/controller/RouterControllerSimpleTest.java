@@ -19,6 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -29,8 +31,6 @@ import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -194,15 +194,15 @@ public class RouterControllerSimpleTest {
 	@SuppressWarnings("unchecked")
 	public void testWithConversion() throws IOException {
 
-		DateTime today = new DateTime();
+		LocalDateTime today = LocalDateTime.now();
 
 		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil
 				.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method14",
-						Map.class, ISODateTimeFormat.dateTime().print(today),
-						"normalParameter", ISODateTimeFormat.date().print(today),
+						Map.class, DateTimeFormatter.ISO_DATE_TIME.format(today),
+						"normalParameter", DateTimeFormatter.ISO_DATE_TIME.format(today),
 						"99.9%");
 
-		assertThat(resultMap.get("endDate")).isEqualTo(today.getMillis());
+		assertThat(resultMap.get("endDate")).isEqualTo(today.getNano());
 		ObjectMapper mapper = new ObjectMapper();
 
 		Map<String, Object> expectedValue = mapper

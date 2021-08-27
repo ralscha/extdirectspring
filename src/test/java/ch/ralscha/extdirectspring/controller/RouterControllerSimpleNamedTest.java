@@ -19,6 +19,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -31,8 +34,6 @@ import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -272,11 +273,12 @@ public class RouterControllerSimpleNamedTest {
 	@SuppressWarnings("unchecked")
 	public void testWithConversion() throws IOException {
 
-		DateTime today = new DateTime();
+		LocalDate todayDate = LocalDate.now();
+		ZonedDateTime todayDateTime = ZonedDateTime.now();
 
 		Map<String, Object> params = new LinkedHashMap<>();
-		params.put("endDate", ISODateTimeFormat.dateTime().print(today));
-		params.put("aDate", ISODateTimeFormat.date().print(today));
+		params.put("endDate", DateTimeFormatter.ISO_DATE_TIME.format(todayDateTime));
+		params.put("aDate", DateTimeFormatter.ISO_DATE.format(todayDate));
 		params.put("normalParameter", "normalParameter");
 		params.put("percent", "99.9%");
 
@@ -284,11 +286,11 @@ public class RouterControllerSimpleNamedTest {
 				.sendAndReceiveNamed(this.mockMvc, "remoteProviderSimpleNamed",
 						"method11", Map.class, params);
 
-		assertThat(resultMap.get("endDate")).isEqualTo(today.getMillis());
+		assertThat(resultMap.get("endDate")).isEqualTo(todayDateTime.getNano());
 		ObjectMapper mapper = new ObjectMapper();
 
 		Map<String, Object> expectedValue = mapper
-				.readValue(mapper.writeValueAsString(today.toLocalDate()), Map.class);
+				.readValue(mapper.writeValueAsString(todayDate), Map.class);
 
 		assertThat((Map<String, Object>) resultMap.get("jodaLocalDate"))
 				.isEqualTo(expectedValue);

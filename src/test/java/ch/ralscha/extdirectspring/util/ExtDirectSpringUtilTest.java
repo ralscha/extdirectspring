@@ -19,11 +19,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -126,16 +125,16 @@ public class ExtDirectSpringUtilTest {
 				.isEqualTo("public, max-age=" + month * 30 * 24 * 60 * 60);
 
 		String expiresHeader = (String) response.getHeaderValue("Expires");
-		DateTimeFormatter fmt = DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss z");
-		DateTime expires = DateTime.parse(expiresHeader, fmt);
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z");
+		LocalDateTime expires = LocalDateTime.parse(expiresHeader, fmt);
 
-		DateTime inSixMonths = DateTime.now(DateTimeZone.UTC)
+		LocalDateTime inSixMonths = LocalDateTime.now(ZoneOffset.UTC)
 				.plusSeconds(month * 30 * 24 * 60 * 60);
 		assertThat(expires.getYear()).isEqualTo(inSixMonths.getYear());
-		assertThat(expires.getMonthOfYear()).isEqualTo(inSixMonths.getMonthOfYear());
+		assertThat(expires.getMonth()).isEqualTo(inSixMonths.getMonth());
 		assertThat(expires.getDayOfMonth()).isEqualTo(inSixMonths.getDayOfMonth());
-		assertThat(expires.getHourOfDay()).isEqualTo(inSixMonths.getHourOfDay());
-		assertThat(expires.getMinuteOfDay()).isEqualTo(inSixMonths.getMinuteOfDay());
+		assertThat(expires.getHour()).isEqualTo(inSixMonths.getHour());
+		assertThat(expires.getMinute()).isEqualTo(inSixMonths.getMinute());
 	}
 
 	@Test

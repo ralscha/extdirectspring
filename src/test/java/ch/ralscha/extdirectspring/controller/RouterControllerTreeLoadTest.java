@@ -17,6 +17,8 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,8 +26,6 @@ import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
-import org.joda.time.LocalDate;
-import org.joda.time.format.ISODateTimeFormat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -93,14 +93,14 @@ public class RouterControllerTreeLoadTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
 		requestParameters.put("foo", "foo");
-		requestParameters.put("today", ISODateTimeFormat.date().print(new LocalDate()));
+		requestParameters.put("today", DateTimeFormatter.ISO_DATE.format(LocalDate.now()));
 
 		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderTreeLoad", "method2",
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
-		String appendix = ":foo;" + new LocalDate().toString();
+		String appendix = ":foo;" + LocalDate.now().toString();
 		assertThat(nodes).hasSize(5).containsSequence(
 				new Node("n1", "Node 1" + appendix, false),
 				new Node("n2", "Node 2" + appendix, false),
@@ -111,14 +111,14 @@ public class RouterControllerTreeLoadTest {
 		requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
 		requestParameters.put("today",
-				ISODateTimeFormat.date().print(new LocalDate().plusDays(10)));
+				DateTimeFormatter.ISO_DATE.format(LocalDate.now().plusDays(10)));
 
 		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderTreeLoad", "method2",
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
-		appendix = ":defaultValue;" + new LocalDate().plusDays(10).toString();
+		appendix = ":defaultValue;" + LocalDate.now().plusDays(10).toString();
 		assertThat(nodes).hasSize(5).containsSequence(
 				new Node("n1", "Node 1" + appendix, false),
 				new Node("n2", "Node 2" + appendix, false),
