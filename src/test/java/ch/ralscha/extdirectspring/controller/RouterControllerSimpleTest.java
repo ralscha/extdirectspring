@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -192,7 +192,7 @@ public class RouterControllerSimpleTest {
 	@SuppressWarnings("unchecked")
 	public void testWithConversion() {
 
-		ZonedDateTime today = ZonedDateTime.now();
+		OffsetDateTime today = OffsetDateTime.now();
 		LocalDate todayLd = LocalDate.now();
 
 		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil

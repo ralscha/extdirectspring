@@ -18,7 +18,7 @@ package ch.ralscha.extdirectspring.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -541,7 +541,7 @@ public class RouterControllerStoreTest {
 
 	@Test
 	public void testWithAdditionalParametersAndConversion() {
-		ZonedDateTime today = ZonedDateTime.now();
+		OffsetDateTime today = OffsetDateTime.now();
 		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("endDate", DateTimeFormatter.ISO_DATE_TIME.format(today));
 
