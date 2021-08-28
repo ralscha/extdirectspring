@@ -543,7 +543,7 @@ public class RouterControllerStoreTest {
 	public void testWithAdditionalParametersAndConversion() {
 		OffsetDateTime today = OffsetDateTime.now();
 		Map<String, Object> readRequest = new HashMap<>();
-		readRequest.put("endDate", DateTimeFormatter.ISO_DATE_TIME.format(today));
+		readRequest.put("endDate", DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(today));
 
 		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
 				.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method8",

@@ -197,7 +197,7 @@ public class RouterControllerSimpleTest {
 
 		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil
 				.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method14",
-						Map.class, DateTimeFormatter.ISO_DATE_TIME.format(today),
+						Map.class, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(today),
 						"normalParameter", DateTimeFormatter.ISO_DATE.format(todayLd),
 						"99.9%");
 

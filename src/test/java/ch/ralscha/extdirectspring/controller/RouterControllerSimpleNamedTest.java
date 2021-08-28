@@ -274,7 +274,7 @@ public class RouterControllerSimpleNamedTest {
 		OffsetDateTime todayDateTime = OffsetDateTime.now();
 
 		Map<String, Object> params = new LinkedHashMap<>();
-		params.put("endDate", DateTimeFormatter.ISO_DATE_TIME.format(todayDateTime));
+		params.put("endDate", DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(todayDateTime));
 		params.put("aDate", DateTimeFormatter.ISO_DATE.format(todayDate));
 		params.put("normalParameter", "normalParameter");
 		params.put("percent", "99.9%");
