@@ -1,7 +1,7 @@
 ## ExtDirectSpring 
 ![Test Status](https://github.com/ralscha/extdirectspring/workflows/test/badge.svg)
 
-ExtDirectSpring is a library that connects Ext JS 3.x, 4.x, 5.x, 6.x and Sencha Touch 2.x applications with a Java/Spring back end, by implementing the [Ext Direct](http://www.sencha.com/products/extjs/extdirect/) specification. 
+ExtDirectSpring is a library that connects Ext JS 3.x, 4.x, 5.x, 6.x and Sencha Touch 2.x applications with a Java/Spring back end, by implementing the [Ext Direct](https://docs.sencha.com/extjs/7.4.0/guides/backend_connectors/direct/specification.html) specification. 
 The library supports all the features of Ext Direct:
   * Configuration with annotations
   * Simple remote calls
