@@ -15,7 +15,7 @@
  */
 package ch.ralscha.extdirectspring_itest;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Service;

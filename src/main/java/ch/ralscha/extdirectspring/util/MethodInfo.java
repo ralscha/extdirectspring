@@ -182,7 +182,7 @@ public final class MethodInfo {
 						extDirectMethodAnnotation.batched());
 			}
 			break;
-		case FORM_LOAD:
+		case FORM_LOAD, FORM_POST_JSON:
 			this.action = Action.create(method.getName(), 1,
 					extDirectMethodAnnotation.batched());
 			break;
@@ -201,11 +201,7 @@ public final class MethodInfo {
 		case FORM_POST:
 			this.action = Action.createFormHandler(method.getName(), 0);
 			break;
-		case FORM_POST_JSON:
-			this.action = Action.create(method.getName(), 1,
-					extDirectMethodAnnotation.batched());
-			break;
-		case POLL:
+			case POLL:
 			this.pollingProvider = new PollingProvider(beanName, method.getName(),
 					extDirectMethodAnnotation.event());
 			break;

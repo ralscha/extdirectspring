@@ -15,7 +15,7 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import ch.ralscha.extdirectspring.bean.BaseResponse;
 import ch.ralscha.extdirectspring.util.MethodInfo;
