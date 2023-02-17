@@ -17,7 +17,7 @@ package ch.ralscha.extdirectspring_itest;
 
 import java.io.IOException;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;

@@ -17,7 +17,7 @@ package ch.ralscha.extdirectspring.provider;
 
 import java.io.IOException;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -54,6 +54,7 @@ public class UploadService {
 		return resp;
 	}
 
+	@Valid
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2",
 			synchronizeOnSession = true)
 	public EdFormPostResult uploadEd(@RequestParam("fileUpload") MultipartFile file,
