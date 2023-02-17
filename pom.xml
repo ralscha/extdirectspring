@@ -495,13 +495,9 @@
 			<plugin>
 				<groupId>com.mycila</groupId>
 				<artifactId>license-maven-plugin</artifactId>
-				<version>3.0</version>
+				<version>4.1</version>
 				<configuration>
 					<header>${basedir}/src/main/config/header.txt</header>
-					<properties>
-						<year>${project.inceptionYear}</year>
-						<currentYear>2018</currentYear>
-					</properties>
 					<excludes>
 						<exclude>**/*.xml</exclude>
 						<exclude>**/*.txt</exclude>
