@@ -302,14 +302,14 @@
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.29.0-GA</version>
+			<version>3.29.2-GA</version>
 			<scope>test</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
-			<version>9.4.43.v20210629</version>
+			<version>9.4.44.v20210927</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -322,7 +322,7 @@
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-webapp</artifactId>
-			<version>9.4.43.v20210629</version>
+			<version>9.4.44.v20210927</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -341,8 +341,8 @@
 				<version>3.4.0</version>
 				<configuration>
 					<links>
-						<link>https://docs.spring.io/spring/docs/5.2.4.RELEASE/javadoc-api/</link>
-						<link>https://docs.oracle.com/en/java/javase/11/docs/api/index.html</link>
+						<link>https://docs.spring.io/spring-framework/docs/6.0.x/javadoc-api/</link>
+						<link>https://docs.oracle.com/en/java/javase/17/docs/api/index.html</link>
 					</links>
 					<additionalOptions>-Xdoclint:none</additionalOptions>
 				</configuration>
