@@ -17,7 +17,7 @@ package ch.ralscha.extdirectspring_itest;
 
 import java.util.Locale;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;

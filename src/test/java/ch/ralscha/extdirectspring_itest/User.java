@@ -15,8 +15,8 @@
  */
 package ch.ralscha.extdirectspring_itest;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 
 public class User {
 	private String name;

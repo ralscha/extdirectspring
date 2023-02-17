@@ -18,7 +18,7 @@ package ch.ralscha.extdirectspring_itest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Service;
