@@ -21,6 +21,7 @@ package ch.ralscha.extdirectspring.bean;
  * @see Field#setType(DataType)
  */
 public enum DataType {
+
 	STRING("string"), INTEGER("int"), FLOAT("float"), BOOLEAN("boolean"), DATE("date");
 
 	private final String name;

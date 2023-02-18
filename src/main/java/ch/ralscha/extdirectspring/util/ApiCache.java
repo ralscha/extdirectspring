@@ -50,4 +50,5 @@ public class ApiCache {
 	public void clear() {
 		this.cache.clear();
 	}
+
 }

@@ -34,35 +34,29 @@ public class ExtDirectFormPostResultTest {
 	@Test
 	public void testExtDirectFormPostResult() {
 		ExtDirectFormPostResult result = new ExtDirectFormPostResult();
-		assertThat(result.getResult()).hasSize(1)
-				.contains(MapEntry.entry("success", Boolean.TRUE));
+		assertThat(result.getResult()).hasSize(1).contains(MapEntry.entry("success", Boolean.TRUE));
 	}
 
 	@Test
 	public void testExtDirectFormPostResultBoolean() {
 		ExtDirectFormPostResult result = new ExtDirectFormPostResult(true);
-		assertThat(result.getResult()).hasSize(1)
-				.contains(MapEntry.entry("success", Boolean.TRUE));
+		assertThat(result.getResult()).hasSize(1).contains(MapEntry.entry("success", Boolean.TRUE));
 
 		result = new ExtDirectFormPostResult(false);
-		assertThat(result.getResult()).hasSize(1)
-				.contains(MapEntry.entry("success", Boolean.FALSE));
+		assertThat(result.getResult()).hasSize(1).contains(MapEntry.entry("success", Boolean.FALSE));
 	}
 
 	@Test
 	public void testExtDirectFormPostResultBindingResult() {
 		BindingResult br = new TestBindingResult(Collections.<FieldError>emptyList());
 		ExtDirectFormPostResult result = new ExtDirectFormPostResult(br);
-		assertThat(result.getResult()).hasSize(1)
-				.contains(MapEntry.entry("success", Boolean.TRUE));
+		assertThat(result.getResult()).hasSize(1).contains(MapEntry.entry("success", Boolean.TRUE));
 
 		FieldError error = new FieldError("testobject", "field1", "message");
 		br = new TestBindingResult(Collections.singletonList(error));
 		result = new ExtDirectFormPostResult(br);
-		assertThat(result.getResult()).hasSize(2)
-				.contains(MapEntry.entry("success", Boolean.FALSE));
-		Map<String, List<String>> errors = (Map<String, List<String>>) result.getResult()
-				.get("errors");
+		assertThat(result.getResult()).hasSize(2).contains(MapEntry.entry("success", Boolean.FALSE));
+		Map<String, List<String>> errors = (Map<String, List<String>>) result.getResult().get("errors");
 		assertThat(errors).isNotNull().hasSize(1);
 		assertThat(errors.get("field1")).containsExactly("message");
 	}
@@ -71,17 +65,13 @@ public class ExtDirectFormPostResultTest {
 	public void testExtDirectFormPostResultBindingResultBoolean() {
 		BindingResult br = new TestBindingResult(Collections.<FieldError>emptyList());
 		ExtDirectFormPostResult result = new ExtDirectFormPostResult(br, false);
-		assertThat(result.getResult()).hasSize(1)
-				.contains(MapEntry.entry("success", Boolean.FALSE));
+		assertThat(result.getResult()).hasSize(1).contains(MapEntry.entry("success", Boolean.FALSE));
 
-		br = new TestBindingResult(
-				Arrays.asList(new FieldError("testobject", "field1", "message"),
-						new FieldError("testobject", "field2", "second message")));
+		br = new TestBindingResult(Arrays.asList(new FieldError("testobject", "field1", "message"),
+				new FieldError("testobject", "field2", "second message")));
 		result = new ExtDirectFormPostResult(br, true);
-		assertThat(result.getResult()).hasSize(2)
-				.contains(MapEntry.entry("success", Boolean.TRUE));
-		Map<String, List<String>> errors = (Map<String, List<String>>) result.getResult()
-				.get("errors");
+		assertThat(result.getResult()).hasSize(2).contains(MapEntry.entry("success", Boolean.TRUE));
+		Map<String, List<String>> errors = (Map<String, List<String>>) result.getResult().get("errors");
 		assertThat(errors).isNotNull().hasSize(2);
 		assertThat(errors.get("field1")).containsExactly("message");
 		assertThat(errors.get("field2")).containsExactly("second message");
@@ -89,8 +79,7 @@ public class ExtDirectFormPostResultTest {
 		result.addError("field2", "another message");
 		errors = (Map<String, List<String>>) result.getResult().get("errors");
 		assertThat(errors).isNotNull().hasSize(2);
-		assertThat(errors.get("field2")).containsExactly("second message",
-				"another message");
+		assertThat(errors.get("field2")).containsExactly("second message", "another message");
 	}
 
 	@Test
@@ -102,11 +91,9 @@ public class ExtDirectFormPostResultTest {
 		result.addError("field3", "error_for_field3");
 		result.addError("field1", "error3");
 
-		assertThat(result.getResult()).hasSize(2)
-				.contains(MapEntry.entry("success", Boolean.FALSE));
+		assertThat(result.getResult()).hasSize(2).contains(MapEntry.entry("success", Boolean.FALSE));
 
-		Map<String, List<String>> errors = (Map<String, List<String>>) result.getResult()
-				.get("errors");
+		Map<String, List<String>> errors = (Map<String, List<String>>) result.getResult().get("errors");
 		assertThat(errors).isNotNull().hasSize(3);
 		assertThat(errors.get("field1")).containsExactly("error1", "error2", "error3");
 		assertThat(errors.get("field2")).containsExactly("error_for_field2");
@@ -121,14 +108,11 @@ public class ExtDirectFormPostResultTest {
 		result.addErrors("field3", Arrays.asList("errors_for_field3"));
 		result.addErrors("field1", Arrays.asList("errors4", "errors5"));
 
-		assertThat(result.getResult()).hasSize(2)
-				.contains(MapEntry.entry("success", Boolean.FALSE));
+		assertThat(result.getResult()).hasSize(2).contains(MapEntry.entry("success", Boolean.FALSE));
 
-		Map<String, List<String>> errors = (Map<String, List<String>>) result.getResult()
-				.get("errors");
+		Map<String, List<String>> errors = (Map<String, List<String>>) result.getResult().get("errors");
 		assertThat(errors).isNotNull().hasSize(3);
-		assertThat(errors.get("field1")).containsExactly("errors1", "errors2", "errors3",
-				"errors4", "errors5");
+		assertThat(errors.get("field1")).containsExactly("errors1", "errors2", "errors3", "errors4", "errors5");
 		assertThat(errors.get("field2")).containsExactly("errors_for_field2");
 		assertThat(errors.get("field3")).containsExactly("errors_for_field3");
 	}
@@ -139,23 +123,19 @@ public class ExtDirectFormPostResultTest {
 		result.addResultProperty("one", 1);
 		result.addResultProperty("two", "2");
 		result.addResultProperty("three", Boolean.TRUE);
-		assertThat(result.getResult()).hasSize(4).contains(
-				MapEntry.entry("success", Boolean.TRUE), MapEntry.entry("one", 1),
-				MapEntry.entry("two", "2"), MapEntry.entry("three", Boolean.TRUE));
+		assertThat(result.getResult()).hasSize(4).contains(MapEntry.entry("success", Boolean.TRUE),
+				MapEntry.entry("one", 1), MapEntry.entry("two", "2"), MapEntry.entry("three", Boolean.TRUE));
 
 	}
 
 	@Test
 	public void testSetSuccess() {
 		ExtDirectFormPostResult result = new ExtDirectFormPostResult();
-		assertThat(result.getResult()).hasSize(1)
-				.contains(MapEntry.entry("success", Boolean.TRUE));
+		assertThat(result.getResult()).hasSize(1).contains(MapEntry.entry("success", Boolean.TRUE));
 		result.setSuccess(false);
-		assertThat(result.getResult()).hasSize(1)
-				.contains(MapEntry.entry("success", Boolean.FALSE));
+		assertThat(result.getResult()).hasSize(1).contains(MapEntry.entry("success", Boolean.FALSE));
 		result.setSuccess(true);
-		assertThat(result.getResult()).hasSize(1)
-				.contains(MapEntry.entry("success", Boolean.TRUE));
+		assertThat(result.getResult()).hasSize(1).contains(MapEntry.entry("success", Boolean.TRUE));
 	}
 
 	private static class TestBindingResult extends AbstractBindingResult {
@@ -185,4 +165,5 @@ public class ExtDirectFormPostResultTest {
 		}
 
 	}
+
 }

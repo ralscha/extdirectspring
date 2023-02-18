@@ -33,8 +33,8 @@ public class DefaultRouterExceptionHandler implements RouterExceptionHandler {
 	}
 
 	@Override
-	public Object handleException(MethodInfo methodInfo, BaseResponse response,
-			Exception e, HttpServletRequest request) {
+	public Object handleException(MethodInfo methodInfo, BaseResponse response, Exception e,
+			HttpServletRequest request) {
 		Throwable cause;
 		if (e.getCause() != null) {
 			cause = e.getCause();
@@ -44,8 +44,7 @@ public class DefaultRouterExceptionHandler implements RouterExceptionHandler {
 		}
 
 		response.setType("exception");
-		response.setMessage(
-				this.configurationService.getConfiguration().getMessage(cause));
+		response.setMessage(this.configurationService.getConfiguration().getMessage(cause));
 
 		if (this.configurationService.getConfiguration().isSendStacktrace()) {
 			response.setWhere(ExtDirectSpringUtil.getStackTrace(cause));
@@ -54,10 +53,10 @@ public class DefaultRouterExceptionHandler implements RouterExceptionHandler {
 			response.setWhere(null);
 		}
 
-		if (methodInfo.isType(ExtDirectMethodType.FORM_POST)
-				|| methodInfo.isType(ExtDirectMethodType.FORM_POST_JSON)) {
+		if (methodInfo.isType(ExtDirectMethodType.FORM_POST) || methodInfo.isType(ExtDirectMethodType.FORM_POST_JSON)) {
 			return Collections.singletonMap("success", Boolean.FALSE);
 		}
 		return null;
 	}
+
 }

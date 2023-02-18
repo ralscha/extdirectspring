@@ -102,6 +102,7 @@ public class ApiRequestParams {
 		public ApiRequestParams build() {
 			return this.params;
 		}
+
 	}
 
 	public String getApiNs() {

@@ -16,8 +16,11 @@
 package ch.ralscha.extdirectspring.bean;
 
 public class BeanMethod {
+
 	private final String bean;
+
 	private final String method;
+
 	private final Object data;
 
 	private int tid;

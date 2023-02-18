@@ -23,8 +23,7 @@ public class DateFilterTest {
 
 	@Test
 	public void testDate() {
-		DateFilter filter = new DateFilter("field", "12.12.2010", "lt",
-				Comparison.LESS_THAN);
+		DateFilter filter = new DateFilter("field", "12.12.2010", "lt", Comparison.LESS_THAN);
 		assertThat(filter.getValue()).isEqualTo("12.12.2010");
 		assertThat(filter.getField()).isEqualTo("field");
 		assertThat(filter.getRawComparison()).isEqualTo("lt");
@@ -42,12 +41,12 @@ public class DateFilterTest {
 		assertThat(filter.getRawComparison()).isEqualTo("gt");
 		assertThat(filter.getComparison()).isEqualTo(Comparison.GREATER_THAN);
 
-		filter = new DateFilter("field3", "14.12.2010", "gte",
-				Comparison.GREATER_THAN_OR_EQUAL);
+		filter = new DateFilter("field3", "14.12.2010", "gte", Comparison.GREATER_THAN_OR_EQUAL);
 		assertThat(filter.getValue()).isEqualTo("14.12.2010");
 		assertThat(filter.getField()).isEqualTo("field3");
 		assertThat(filter.getRawComparison()).isEqualTo("gte");
 		assertThat(filter.getComparison()).isEqualTo(Comparison.GREATER_THAN_OR_EQUAL);
 
 	}
+
 }

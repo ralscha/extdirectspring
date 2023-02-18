@@ -63,13 +63,11 @@ public abstract class EdStoreResult<T> extends JsonViewHint {
 	public abstract String message();
 
 	public static <T> EdStoreResult<T> success(T record) {
-		return ImmutableEdStoreResult.of(Collections.singletonList(record), null,
-				Boolean.TRUE, null, null);
+		return ImmutableEdStoreResult.of(Collections.singletonList(record), null, Boolean.TRUE, null, null);
 	}
 
 	public static <T> EdStoreResult<T> success(T[] records) {
-		return ImmutableEdStoreResult.of(Arrays.asList(records), null, Boolean.TRUE, null,
-				null);
+		return ImmutableEdStoreResult.of(Arrays.asList(records), null, Boolean.TRUE, null, null);
 	}
 
 	public static <T> EdStoreResult<T> success(Collection<T> records) {
@@ -81,16 +79,13 @@ public abstract class EdStoreResult<T> extends JsonViewHint {
 	}
 
 	public static <T> EdStoreResult<T> success(Collection<T> records, Class<?> jsonView) {
-		ImmutableEdStoreResult<T> result = ImmutableEdStoreResult.of(records, null,
-				Boolean.TRUE, null, null);
+		ImmutableEdStoreResult<T> result = ImmutableEdStoreResult.of(records, null, Boolean.TRUE, null, null);
 		result.setJsonView(jsonView);
 		return result;
 	}
 
-	public static <T> EdStoreResult<T> success(Collection<T> records, Long total,
-			Class<?> jsonView) {
-		ImmutableEdStoreResult<T> result = ImmutableEdStoreResult.of(records, total,
-				Boolean.TRUE, null, null);
+	public static <T> EdStoreResult<T> success(Collection<T> records, Long total, Class<?> jsonView) {
+		ImmutableEdStoreResult<T> result = ImmutableEdStoreResult.of(records, total, Boolean.TRUE, null, null);
 		result.setJsonView(jsonView);
 		return result;
 	}
@@ -100,7 +95,9 @@ public abstract class EdStoreResult<T> extends JsonViewHint {
 	}
 
 	public static final class Builder<T> extends ImmutableEdStoreResult.Builder<T> {
+
 		// nothing here
+
 	}
 
 }

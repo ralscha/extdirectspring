@@ -56,8 +56,7 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 	@Test
 	public void testUpload() throws Exception {
 		MockMultipartHttpServletRequestBuilder request = multipart("/router");
-		request.accept(MediaType.ALL).characterEncoding("UTF-8")
-				.session(new MockHttpSession());
+		request.accept(MediaType.ALL).characterEncoding("UTF-8").session(new MockHttpSession());
 
 		request.param("extTID", "1");
 		request.param("extAction", "uploadService");
@@ -91,8 +90,7 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 	@Test
 	public void testUploadEd() throws Exception {
 		MockMultipartHttpServletRequestBuilder request = multipart("/router");
-		request.accept(MediaType.ALL).characterEncoding("UTF-8")
-				.session(new MockHttpSession());
+		request.accept(MediaType.ALL).characterEncoding("UTF-8").session(new MockHttpSession());
 
 		request.param("extTID", "1");
 		request.param("extAction", "uploadService");
@@ -122,4 +120,5 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 		assertThat(edsResponse.getAction()).isEqualTo("uploadService");
 		assertThat(edsResponse.getMethod()).isEqualTo("uploadEd");
 	}
+
 }

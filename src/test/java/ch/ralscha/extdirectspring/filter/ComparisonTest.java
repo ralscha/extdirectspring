@@ -56,4 +56,5 @@ public class ComparisonTest {
 	public void testNotFound() {
 		assertThat(Comparison.fromString("xy")).isNull();
 	}
+
 }

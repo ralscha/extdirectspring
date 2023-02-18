@@ -43,8 +43,7 @@ public class WrongFormPostController {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_POST)
-	public ExtDirectResponse updateInfo3(HttpServletRequest request,
-			HttpServletResponse response) {
+	public ExtDirectResponse updateInfo3(HttpServletRequest request, HttpServletResponse response) {
 		ExtDirectResponseBuilder.create(request, response).buildAndWrite();
 		return null;
 	}
@@ -55,4 +54,5 @@ public class WrongFormPostController {
 	public void updateInfo4(HttpServletRequest request, HttpServletResponse response) {
 		ExtDirectResponseBuilder.create(request, response).buildAndWrite();
 	}
+
 }

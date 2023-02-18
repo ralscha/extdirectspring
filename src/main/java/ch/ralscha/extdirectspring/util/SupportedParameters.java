@@ -31,9 +31,8 @@ import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
  */
 enum SupportedParameters {
 
-	SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class),
-	SESSION(HttpSession.class), LOCALE(Locale.class), PRINCIPAL(Principal.class),
-	EXT_DIRECT_REQUEST(ExtDirectRequest.class);
+	SERVLET_REQUEST(ServletRequest.class), SERVLET_RESPONSE(ServletResponse.class), SESSION(HttpSession.class),
+	LOCALE(Locale.class), PRINCIPAL(Principal.class), EXT_DIRECT_REQUEST(ExtDirectRequest.class);
 
 	private final Class<?> clazz;
 
@@ -50,7 +49,6 @@ enum SupportedParameters {
 
 	/**
 	 * Checks if the class is a supported parameter type.
-	 *
 	 * @param clazz
 	 * @return true if is supported, else false
 	 */
@@ -65,9 +63,8 @@ enum SupportedParameters {
 		return false;
 	}
 
-	public static Object resolveParameter(Class<?> parameterType,
-			HttpServletRequest request, HttpServletResponse response, Locale locale,
-			ExtDirectRequest extDirectRequest) {
+	public static Object resolveParameter(Class<?> parameterType, HttpServletRequest request,
+			HttpServletResponse response, Locale locale, ExtDirectRequest extDirectRequest) {
 
 		if (SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
 			return request;

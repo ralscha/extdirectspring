@@ -31,5 +31,7 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 @Inherited
 @Documented
 public @interface OptionalNamedMethod {
+
 	// nothing here
+
 }

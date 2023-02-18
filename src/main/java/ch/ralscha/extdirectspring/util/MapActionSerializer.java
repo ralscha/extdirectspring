@@ -33,8 +33,8 @@ import ch.ralscha.extdirectspring.bean.api.ActionDoc;
 public class MapActionSerializer extends JsonSerializer<Map<String, List<Action>>> {
 
 	@Override
-	public void serialize(Map<String, List<Action>> value, JsonGenerator jgen,
-			SerializerProvider provider) throws IOException {
+	public void serialize(Map<String, List<Action>> value, JsonGenerator jgen, SerializerProvider provider)
+			throws IOException {
 		if (null != value) {
 			jgen.writeStartObject();
 			for (Entry<String, List<Action>> entry : value.entrySet()) {
@@ -53,21 +53,16 @@ public class MapActionSerializer extends JsonSerializer<Map<String, List<Action>
 						if (actionDoc.isDeprecated()) {
 							jgen.writeRaw("\n\t* @deprecated");
 						}
-						jgen.writeRaw("\n\t* " + actionDoc.getName() + ": "
-								+ actionDoc.getMethodComment());
+						jgen.writeRaw("\n\t* " + actionDoc.getName() + ": " + actionDoc.getMethodComment());
 						jgen.writeRaw("\n\t* @author: " + actionDoc.getAuthor());
 						jgen.writeRaw("\n\t* @version: " + actionDoc.getVersion());
 						jgen.writeRaw("\n\t*");
-						for (Entry<String, String> entry2 : actionDoc.getParameters()
-								.entrySet()) {
-							jgen.writeRaw("\n\t* @param: [" + entry2.getKey() + "] "
-									+ entry2.getValue());
+						for (Entry<String, String> entry2 : actionDoc.getParameters().entrySet()) {
+							jgen.writeRaw("\n\t* @param: [" + entry2.getKey() + "] " + entry2.getValue());
 						}
 						jgen.writeRaw("\n\t* @return");
-						for (Entry<String, String> entry2 : actionDoc.getReturnMethod()
-								.entrySet()) {
-							jgen.writeRaw("\n\t*\t [" + entry2.getKey() + "] "
-									+ entry2.getValue());
+						for (Entry<String, String> entry2 : actionDoc.getReturnMethod().entrySet()) {
+							jgen.writeRaw("\n\t*\t [" + entry2.getKey() + "] " + entry2.getValue());
 						}
 						jgen.writeRaw("\n\t*/\n");
 					}

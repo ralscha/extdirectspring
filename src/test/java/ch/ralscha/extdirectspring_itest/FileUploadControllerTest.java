@@ -47,25 +47,19 @@ public class FileUploadControllerTest extends JettyTest {
 		try (CloseableHttpClient client = HttpClientBuilder.create().build();
 				InputStream is = getClass().getResourceAsStream("/UploadTestFile.txt")) {
 			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-			ContentBody cbFile = new InputStreamBody(is, ContentType.create("text/plain"),
-					"UploadTestFile.txt");
+			ContentBody cbFile = new InputStreamBody(is, ContentType.create("text/plain"), "UploadTestFile.txt");
 			builder.addPart("fileUpload", cbFile);
 			builder.addPart("extTID", new StringBody("2", ContentType.DEFAULT_TEXT));
-			builder.addPart("extAction",
-					new StringBody("fileUploadController", ContentType.DEFAULT_TEXT));
-			builder.addPart("extMethod",
-					new StringBody("uploadTest", ContentType.DEFAULT_TEXT));
+			builder.addPart("extAction", new StringBody("fileUploadController", ContentType.DEFAULT_TEXT));
+			builder.addPart("extMethod", new StringBody("uploadTest", ContentType.DEFAULT_TEXT));
 			builder.addPart("extType", new StringBody("rpc", ContentType.DEFAULT_TEXT));
-			builder.addPart("extUpload",
-					new StringBody("true", ContentType.DEFAULT_TEXT));
+			builder.addPart("extUpload", new StringBody("true", ContentType.DEFAULT_TEXT));
 
-			builder.addPart("name", new StringBody("Jimöäü",
-					ContentType.create("text/plain", Charset.forName("UTF-8"))));
-			builder.addPart("firstName",
-					new StringBody("Ralph", ContentType.DEFAULT_TEXT));
+			builder.addPart("name",
+					new StringBody("Jimöäü", ContentType.create("text/plain", Charset.forName("UTF-8"))));
+			builder.addPart("firstName", new StringBody("Ralph", ContentType.DEFAULT_TEXT));
 			builder.addPart("age", new StringBody("25", ContentType.DEFAULT_TEXT));
-			builder.addPart("email",
-					new StringBody("test@test.ch", ContentType.DEFAULT_TEXT));
+			builder.addPart("email", new StringBody("test@test.ch", ContentType.DEFAULT_TEXT));
 
 			post.setEntity(builder.build());
 			try (CloseableHttpResponse response = client.execute(post)) {
@@ -79,8 +73,7 @@ public class FileUploadControllerTest extends JettyTest {
 				assertThat(responseString).startsWith(prefix);
 				assertThat(responseString).endsWith(postfix);
 
-				String json = responseString.substring(prefix.length(),
-						responseString.length() - postfix.length());
+				String json = responseString.substring(prefix.length(), responseString.length() - postfix.length());
 
 				ObjectMapper mapper = new ObjectMapper();
 				Map<String, Object> rootAsMap = mapper.readValue(json, Map.class);
@@ -91,16 +84,14 @@ public class FileUploadControllerTest extends JettyTest {
 				assertThat(rootAsMap.get("tid")).isEqualTo(2);
 
 				@SuppressWarnings("unchecked")
-				Map<String, Object> result = (Map<String, Object>) rootAsMap
-						.get("result");
+				Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 				assertThat(result).hasSize(7);
 				assertThat(result.get("name")).isEqualTo("Jimöäü");
 				assertThat(result.get("firstName")).isEqualTo("Ralph");
 				assertThat(result.get("age")).isEqualTo(25);
 				assertThat(result.get("email")).isEqualTo("test@test.ch");
 				assertThat(result.get("fileName")).isEqualTo("UploadTestFile.txt");
-				assertThat(result.get("fileContents"))
-						.isEqualTo("contents of upload file");
+				assertThat(result.get("fileContents")).isEqualTo("contents of upload file");
 				assertThat(result.get("success")).isEqualTo(Boolean.TRUE);
 
 				EntityUtils.consume(resEntity);

@@ -262,8 +262,7 @@ public class NumericFilterTest {
 
 	@Test
 	public void testNumeric() {
-		NumericFilter filter = new NumericFilter("field", 42, "gt",
-				Comparison.GREATER_THAN);
+		NumericFilter filter = new NumericFilter("field", 42, "gt", Comparison.GREATER_THAN);
 		assertThat(filter.getValue()).isEqualTo(42);
 		assertThat(filter.getField()).isEqualTo("field");
 		assertThat(filter.getRawComparison()).isEqualTo("gt");
@@ -285,4 +284,5 @@ public class NumericFilterTest {
 		assertThat(filter.getRawComparison()).isEqualTo("lte");
 
 	}
+
 }

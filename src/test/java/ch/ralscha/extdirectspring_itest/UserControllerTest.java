@@ -85,8 +85,7 @@ public class UserControllerTest extends JettyTest {
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
 
-			Map<String, Object> rootAsMap = this.mapper.readValue(responseString,
-					Map.class);
+			Map<String, Object> rootAsMap = this.mapper.readValue(responseString, Map.class);
 			assertThat(rootAsMap).hasSize(5);
 			assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
 			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
@@ -101,8 +100,7 @@ public class UserControllerTest extends JettyTest {
 
 			Map<String, Object> errors = (Map<String, Object>) result.get("errors");
 			assertThat(errors).hasSize(1);
-			assertThat((List<String>) errors.get("email"))
-					.containsOnly("must not be empty");
+			assertThat((List<String>) errors.get("email")).containsOnly("must not be empty");
 		}
 	}
 
@@ -127,8 +125,7 @@ public class UserControllerTest extends JettyTest {
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
 
-			Map<String, Object> rootAsMap = this.mapper.readValue(responseString,
-					Map.class);
+			Map<String, Object> rootAsMap = this.mapper.readValue(responseString, Map.class);
 			assertThat(rootAsMap).hasSize(5);
 			assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
 			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
@@ -143,8 +140,7 @@ public class UserControllerTest extends JettyTest {
 
 			Map<String, Object> errors = (Map<String, Object>) result.get("errors");
 			assertThat(errors).hasSize(2);
-			assertThat((List<String>) errors.get("email")).contains("must not be empty",
-					"another email error");
+			assertThat((List<String>) errors.get("email")).contains("must not be empty", "another email error");
 			assertThat((List<String>) errors.get("name")).contains("a name error");
 		}
 	}
@@ -170,8 +166,7 @@ public class UserControllerTest extends JettyTest {
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
 
-			Map<String, Object> rootAsMap = this.mapper.readValue(responseString,
-					Map.class);
+			Map<String, Object> rootAsMap = this.mapper.readValue(responseString, Map.class);
 			assertThat(rootAsMap).hasSize(5);
 			assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
 			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
@@ -185,4 +180,5 @@ public class UserControllerTest extends JettyTest {
 			assertThat(result.get("success")).isEqualTo(Boolean.TRUE);
 		}
 	}
+
 }

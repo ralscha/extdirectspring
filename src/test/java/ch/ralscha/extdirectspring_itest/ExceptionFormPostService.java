@@ -26,10 +26,8 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 @Service
 public class ExceptionFormPostService {
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST,
-			group = "itest_upload_service")
-	public ExtDirectFormPostResult throwAException(
-			@SuppressWarnings("unused") HttpServletRequest request) {
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_upload_service")
+	public ExtDirectFormPostResult throwAException(@SuppressWarnings("unused") HttpServletRequest request) {
 		throw new NullPointerException("a null pointer");
 	}
 

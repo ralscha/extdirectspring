@@ -55,8 +55,7 @@ public class ExtDirectFormLoadResult extends JsonViewHint {
 
 	@Override
 	public String toString() {
-		return "ExtDirectFormLoadResult [data=" + this.data + ", success=" + this.success
-				+ "]";
+		return "ExtDirectFormLoadResult [data=" + this.data + ", success=" + this.success + "]";
 	}
 
 }

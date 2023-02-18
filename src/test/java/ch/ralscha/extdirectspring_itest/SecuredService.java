@@ -35,8 +35,7 @@ public class SecuredService {
 	public String setDate(String id, @DateTimeFormat(pattern = "dd/MM/yyyy") Date date,
 			@AuthenticationPrincipal UserDetails ud) {
 		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-		return id + "," + dateFormat.format(date) + ","
-				+ (ud != null ? ud.getUsername() : "");
+		return id + "," + dateFormat.format(date) + "," + (ud != null ? ud.getUsername() : "");
 	}
 
 	@ExtDirectMethod(group = "secured")
@@ -44,4 +43,5 @@ public class SecuredService {
 	public String secret(String param, @AuthenticationPrincipal UserDetails ud) {
 		return param.toUpperCase() + "," + (ud != null ? ud.getUsername() : "");
 	}
+
 }

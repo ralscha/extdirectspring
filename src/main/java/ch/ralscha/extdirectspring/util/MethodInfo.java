@@ -68,11 +68,9 @@ public final class MethodInfo {
 
 	private PollingProvider pollingProvider;
 
-	public MethodInfo(Class<?> clazz, ApplicationContext context, String beanName,
-			Method method) {
+	public MethodInfo(Class<?> clazz, ApplicationContext context, String beanName, Method method) {
 
-		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method,
-				ExtDirectMethod.class);
+		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
 
 		this.type = extDirectMethodAnnotation.value();
 
@@ -97,8 +95,7 @@ public final class MethodInfo {
 			this.method = method;
 			this.parameters = buildParameterList(clazz, method);
 
-			this.collectionType = extDirectMethodAnnotation.entryClass() == Object.class
-					? null
+			this.collectionType = extDirectMethodAnnotation.entryClass() == Object.class ? null
 					: extDirectMethodAnnotation.entryClass();
 
 			if (this.collectionType == null) {
@@ -114,10 +111,8 @@ public final class MethodInfo {
 		else {
 			if (method.getReturnType().equals(Void.TYPE)) {
 
-				RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method,
-						RequestMapping.class);
-				RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz,
-						RequestMapping.class);
+				RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
+				RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
 
 				String path = null;
 				if (hasValue(classAnnotation)) {
@@ -142,103 +137,91 @@ public final class MethodInfo {
 				}
 			}
 			else {
-				this.handlerMethod = new HandlerMethod(beanName, context, method)
-						.createWithResolvedBean();
+				this.handlerMethod = new HandlerMethod(beanName, context, method).createWithResolvedBean();
 			}
 		}
 
 		switch (this.type) {
-		case SIMPLE:
-			int paramLength = 0;
-			for (ParameterInfo parameter : this.parameters) {
-				if (parameter.isClientParameter()) {
-					paramLength++;
+			case SIMPLE:
+				int paramLength = 0;
+				for (ParameterInfo parameter : this.parameters) {
+					if (parameter.isClientParameter()) {
+						paramLength++;
+					}
 				}
-			}
-			this.action = Action.create(method.getName(), paramLength,
-					extDirectMethodAnnotation.batched());
-			break;
-		case SIMPLE_NAMED:
-			int noOfClientParameters = 0;
-			Class<?> parameterType = null;
+				this.action = Action.create(method.getName(), paramLength, extDirectMethodAnnotation.batched());
+				break;
+			case SIMPLE_NAMED:
+				int noOfClientParameters = 0;
+				Class<?> parameterType = null;
 
-			List<String> parameterNames = new ArrayList<>();
-			for (ParameterInfo parameter : this.parameters) {
-				if (parameter.isClientParameter()) {
-					noOfClientParameters++;
-					parameterType = parameter.getType();
-					parameterNames.add(parameter.getName());
+				List<String> parameterNames = new ArrayList<>();
+				for (ParameterInfo parameter : this.parameters) {
+					if (parameter.isClientParameter()) {
+						noOfClientParameters++;
+						parameterType = parameter.getType();
+						parameterNames.add(parameter.getName());
+					}
 				}
-			}
 
-			if (noOfClientParameters == 1 && Map.class.isAssignableFrom(parameterType)) {
-				this.action = Action.createNamed(method.getName(),
-						Collections.<String>emptyList(), Boolean.FALSE,
-						extDirectMethodAnnotation.batched());
-			}
-			else {
-				this.action = Action.createNamed(method.getName(),
-						Collections.unmodifiableList(parameterNames), null,
-						extDirectMethodAnnotation.batched());
-			}
-			break;
-		case FORM_LOAD, FORM_POST_JSON:
-			this.action = Action.create(method.getName(), 1,
-					extDirectMethodAnnotation.batched());
-			break;
-		case STORE_READ:
-		case STORE_MODIFY:
-		case TREE_LOAD:
-			List<String> metadataParams = new ArrayList<>();
-			for (ParameterInfo parameter : this.parameters) {
-				if (parameter.hasMetadataParamAnnotation()) {
-					metadataParams.add(parameter.getName());
+				if (noOfClientParameters == 1 && Map.class.isAssignableFrom(parameterType)) {
+					this.action = Action.createNamed(method.getName(), Collections.<String>emptyList(), Boolean.FALSE,
+							extDirectMethodAnnotation.batched());
 				}
-			}
-			this.action = Action.createTreeLoad(method.getName(), 1, metadataParams,
-					extDirectMethodAnnotation.batched());
-			break;
-		case FORM_POST:
-			this.action = Action.createFormHandler(method.getName(), 0);
-			break;
+				else {
+					this.action = Action.createNamed(method.getName(), Collections.unmodifiableList(parameterNames),
+							null, extDirectMethodAnnotation.batched());
+				}
+				break;
+			case FORM_LOAD, FORM_POST_JSON:
+				this.action = Action.create(method.getName(), 1, extDirectMethodAnnotation.batched());
+				break;
+			case STORE_READ:
+			case STORE_MODIFY:
+			case TREE_LOAD:
+				List<String> metadataParams = new ArrayList<>();
+				for (ParameterInfo parameter : this.parameters) {
+					if (parameter.hasMetadataParamAnnotation()) {
+						metadataParams.add(parameter.getName());
+					}
+				}
+				this.action = Action.createTreeLoad(method.getName(), 1, metadataParams,
+						extDirectMethodAnnotation.batched());
+				break;
+			case FORM_POST:
+				this.action = Action.createFormHandler(method.getName(), 0);
+				break;
 			case POLL:
-			this.pollingProvider = new PollingProvider(beanName, method.getName(),
-					extDirectMethodAnnotation.event());
-			break;
-		default:
-			throw new IllegalStateException(
-					"ExtDirectMethodType: " + this.type + " does not exists");
+				this.pollingProvider = new PollingProvider(beanName, method.getName(),
+						extDirectMethodAnnotation.event());
+				break;
+			default:
+				throw new IllegalStateException("ExtDirectMethodType: " + this.type + " does not exists");
 		}
 
-		this.action = extractDocumentationAnnotations(
-				extDirectMethodAnnotation.documentation());
+		this.action = extractDocumentationAnnotations(extDirectMethodAnnotation.documentation());
 
 	}
 
 	/**
 	 * The rule is: whatever has been given is taken as is the API documentation is non
 	 * critical, so any discrepancies will be silently ignored
-	 *
 	 * @param documentation
 	 * @return ActionDoc
 	 */
-	private Action extractDocumentationAnnotations(
-			ExtDirectMethodDocumentation documentation) {
+	private Action extractDocumentationAnnotations(ExtDirectMethodDocumentation documentation) {
 		if (!documentation.value().isEmpty()) {
-			ActionDoc actionDoc = new ActionDoc(getAction(), documentation.value(),
-					documentation.author(), documentation.version(),
-					documentation.deprecated());
+			ActionDoc actionDoc = new ActionDoc(getAction(), documentation.value(), documentation.author(),
+					documentation.version(), documentation.deprecated());
 			ExtDirectDocParameters docParameters = documentation.parameters();
 			if (null != docParameters) {
 				String[] params = docParameters.params();
-				String[] descriptions = docParameters.descriptions() == null
-						? new String[params.length]
+				String[] descriptions = docParameters.descriptions() == null ? new String[params.length]
 						: docParameters.descriptions();
 				if (params.length == descriptions.length) {
 					for (int i = 0; i < params.length; i++) {
 						actionDoc.getParameters().put(params[i],
-								descriptions[i] == null ? "No description"
-										: descriptions[i]);
+								descriptions[i] == null ? "No description" : descriptions[i]);
 					}
 				}
 				else {
@@ -249,14 +232,12 @@ public final class MethodInfo {
 			ExtDirectDocReturn docReturn = documentation.returnMethod();
 			if (null != docReturn) {
 				String[] properties = docReturn.properties();
-				String[] descriptions = docReturn.descriptions() == null
-						? new String[properties.length]
+				String[] descriptions = docReturn.descriptions() == null ? new String[properties.length]
 						: docReturn.descriptions();
 				if (properties.length == descriptions.length) {
 					for (int i = 0; i < properties.length; i++) {
 						actionDoc.getReturnMethod().put(properties[i],
-								descriptions[i] == null ? "No description"
-										: descriptions[i]);
+								descriptions[i] == null ? "No description" : descriptions[i]);
 					}
 				}
 				else {
@@ -270,8 +251,7 @@ public final class MethodInfo {
 	}
 
 	private static boolean hasValue(RequestMapping requestMapping) {
-		return requestMapping != null && requestMapping.value() != null
-				&& requestMapping.value().length > 0
+		return requestMapping != null && requestMapping.value() != null && requestMapping.value().length > 0
 				&& StringUtils.hasText(requestMapping.value()[0]);
 	}
 
@@ -280,8 +260,7 @@ public final class MethodInfo {
 
 		Class<?>[] parameterTypes = method.getParameterTypes();
 
-		Method methodWithAnnotation = findMethodWithAnnotation(method,
-				ExtDirectMethod.class);
+		Method methodWithAnnotation = findMethodWithAnnotation(method, ExtDirectMethod.class);
 		if (methodWithAnnotation == null) {
 			methodWithAnnotation = method;
 		}
@@ -344,13 +323,11 @@ public final class MethodInfo {
 	/**
 	 * Find a method that is annotated with a specific annotation. Starts with the method
 	 * and goes up to the superclasses of the class.
-	 *
 	 * @param method the starting method
 	 * @param annotation the annotation to look for
 	 * @return the method if there is a annotated method, else null
 	 */
-	public static Method findMethodWithAnnotation(Method method,
-			Class<? extends Annotation> annotation) {
+	public static Method findMethodWithAnnotation(Method method, Class<? extends Annotation> annotation) {
 		if (method.isAnnotationPresent(annotation)) {
 			return method;
 		}
@@ -358,8 +335,7 @@ public final class MethodInfo {
 		Class<?> cl = method.getDeclaringClass();
 		while (cl != null && cl != Object.class) {
 			try {
-				Method equivalentMethod = cl.getDeclaredMethod(method.getName(),
-						method.getParameterTypes());
+				Method equivalentMethod = cl.getDeclaredMethod(method.getName(), method.getParameterTypes());
 				if (equivalentMethod.isAnnotationPresent(annotation)) {
 					return equivalentMethod;
 				}

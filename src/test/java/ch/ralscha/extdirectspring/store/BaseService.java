@@ -64,4 +64,5 @@ public class BaseService<T extends BaseModel> {
 		}
 		return inserts;
 	}
+
 }

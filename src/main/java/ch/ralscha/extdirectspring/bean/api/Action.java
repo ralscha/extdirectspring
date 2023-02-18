@@ -49,18 +49,16 @@ public class Action {
 		return new Action(name, len, null, Boolean.TRUE, null, null, null);
 	}
 
-	public static Action createTreeLoad(String name, Integer len,
-			List<String> metadataParams, Boolean batched) {
+	public static Action createTreeLoad(String name, Integer len, List<String> metadataParams, Boolean batched) {
 		return new Action(name, len, batched, null, null, null, metadataParams);
 	}
 
-	public static Action createNamed(String name, List<String> params, Boolean strict,
-			Boolean batched) {
+	public static Action createNamed(String name, List<String> params, Boolean strict, Boolean batched) {
 		return new Action(name, null, batched, null, params, strict, null);
 	}
 
-	Action(String name, Integer len, Boolean batched, Boolean formHandler,
-			List<String> params, Boolean strict, List<String> metadataParams) {
+	Action(String name, Integer len, Boolean batched, Boolean formHandler, List<String> params, Boolean strict,
+			List<String> metadataParams) {
 		this.name = name;
 		this.len = len;
 
@@ -139,6 +137,7 @@ public class Action {
 	}
 
 	class Metadata {
+
 		@SuppressWarnings("hiding")
 		private final List<String> params;
 
@@ -149,5 +148,7 @@ public class Action {
 		public List<String> getParams() {
 			return this.params;
 		}
+
 	}
+
 }

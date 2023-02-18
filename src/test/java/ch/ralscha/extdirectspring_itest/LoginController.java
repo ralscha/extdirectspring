@@ -39,8 +39,8 @@ public class LoginController {
 	public void login() {
 		UserDetails ud = this.userManager.loadUserByUsername("jimi");
 		if (ud != null) {
-			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-					ud, null, ud.getAuthorities());
+			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(ud, null,
+					ud.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(token);
 		}
 	}

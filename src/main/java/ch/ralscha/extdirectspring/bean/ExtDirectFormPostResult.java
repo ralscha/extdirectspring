@@ -55,13 +55,12 @@ public class ExtDirectFormPostResult {
 		setSuccess(success);
 	}
 
-	public ExtDirectFormPostResult(Locale locale, MessageSource messageSource,
-			BindingResult bindingResult) {
+	public ExtDirectFormPostResult(Locale locale, MessageSource messageSource, BindingResult bindingResult) {
 		addErrors(locale, messageSource, bindingResult);
 	}
 
-	public ExtDirectFormPostResult(Locale locale, MessageSource messageSource,
-			BindingResult bindingResult, boolean success) {
+	public ExtDirectFormPostResult(Locale locale, MessageSource messageSource, BindingResult bindingResult,
+			boolean success) {
 		addErrors(locale, messageSource, bindingResult);
 		setSuccess(success);
 	}
@@ -70,21 +69,18 @@ public class ExtDirectFormPostResult {
 	 * Extracts errors from the bindingResult and inserts them into the error properties.
 	 * Sets the property success to false if there are errors. Sets the property success
 	 * to true if there are no errors.
-	 *
 	 * @param locale
 	 * @param messageSource
 	 * @param bindingResult
 	 */
-	private void addErrors(Locale locale, MessageSource messageSource,
-			BindingResult bindingResult) {
+	private void addErrors(Locale locale, MessageSource messageSource, BindingResult bindingResult) {
 		if (bindingResult != null && bindingResult.hasFieldErrors()) {
 			Map<String, List<String>> errorMap = new HashMap<>();
 			for (FieldError fieldError : bindingResult.getFieldErrors()) {
 				String message = fieldError.getDefaultMessage();
 				if (messageSource != null) {
 					Locale loc = locale != null ? locale : Locale.getDefault();
-					message = messageSource.getMessage(fieldError.getCode(),
-							fieldError.getArguments(), loc);
+					message = messageSource.getMessage(fieldError.getCode(), fieldError.getArguments(), loc);
 				}
 				List<String> fieldErrors = errorMap.get(fieldError.getField());
 
@@ -116,14 +112,13 @@ public class ExtDirectFormPostResult {
 	 * javax.validation.constraints.NotNull.message.fax=Fax number is mandatory)<br>
 	 * it will behave {@link #addErrors(Locale, MessageSource, BindingResult)} with a big
 	 * overhead
-	 *
 	 * @param locale locale for internationalization
 	 * @param messageSource source of validation code and message
 	 * @param bindingResult Errors list to resolve
 	 * @return this {@link #ExtDirectFormPostResult} for easy chaining
 	 */
-	public ExtDirectFormPostResult addErrorsResolveCode(Locale locale,
-			MessageSource messageSource, BindingResult bindingResult) {
+	public ExtDirectFormPostResult addErrorsResolveCode(Locale locale, MessageSource messageSource,
+			BindingResult bindingResult) {
 		if (bindingResult != null && bindingResult.hasFieldErrors()) {
 			Map<String, List<String>> errorMap = new HashMap<>();
 			for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -132,8 +127,7 @@ public class ExtDirectFormPostResult {
 					Locale loc = locale != null ? locale : Locale.getDefault();
 					for (String code : fieldError.getCodes()) {
 						try {
-							message = messageSource.getMessage(code,
-									fieldError.getArguments(), loc);
+							message = messageSource.getMessage(code, fieldError.getArguments(), loc);
 						}
 						catch (Exception e) {
 							/**
@@ -174,7 +168,6 @@ public class ExtDirectFormPostResult {
 	/**
 	 * Adds one error message to a specific field. Does not overwrite already existing
 	 * errors.
-	 *
 	 * @param field the name of the field
 	 * @param error the error message
 	 */
@@ -190,7 +183,6 @@ public class ExtDirectFormPostResult {
 	/**
 	 * Adds multiple error messages to a specific field. Does not overwrite already
 	 * existing errors.
-	 *
 	 * @param field the name of the field
 	 * @param errors a collection of error messages
 	 */
@@ -200,8 +192,7 @@ public class ExtDirectFormPostResult {
 		Assert.notNull(errors, "field must not be null");
 
 		// do not overwrite existing errors
-		Map<String, List<String>> errorMap = (Map<String, List<String>>) this.result
-				.get(ERRORS_PROPERTY);
+		Map<String, List<String>> errorMap = (Map<String, List<String>>) this.result.get(ERRORS_PROPERTY);
 		if (errorMap == null) {
 			errorMap = new HashMap<>();
 			addResultProperty(ERRORS_PROPERTY, errorMap);

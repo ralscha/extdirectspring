@@ -71,49 +71,41 @@ public class MyModelControlerTest extends JettyTest {
 
 	private static RemotingApi api() {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/controller/router", null);
-		remotingApi.addAction("myModelController",
-				Action.createFormHandler("method1", 0));
-		remotingApi.addAction("myModelController",
-				Action.createFormHandler("method2", 0));
+		remotingApi.addAction("myModelController", Action.createFormHandler("method1", 0));
+		remotingApi.addAction("myModelController", Action.createFormHandler("method2", 0));
 		remotingApi.addAction("myModelController", Action.createFormHandler("update", 0));
 		return remotingApi;
 	}
 
 	@Test
 	public void testApi() throws IOException {
-		HttpGet g = new HttpGet(
-				"http://localhost:9998/controller/api.js?group=itest_base");
+		HttpGet g = new HttpGet("http://localhost:9998/controller/api.js?group=itest_base");
 		try (CloseableHttpResponse response = this.client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
-			ApiControllerTest.compare(responseString, contentType, api(),
-					ApiRequestParams.builder().build());
+			ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, false);
 		}
 	}
 
 	@Test
 	public void testApiDebug() throws IOException {
-		HttpGet g = new HttpGet(
-				"http://localhost:9998/controller/api-debug.js?group=itest_base");
+		HttpGet g = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_base");
 		try (CloseableHttpResponse response = this.client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
-			ApiControllerTest.compare(responseString, contentType, api(),
-					ApiRequestParams.builder().build());
+			ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, false);
 		}
 	}
 
 	@Test
 	public void testApiFingerprinted() throws IOException {
-		HttpGet g = new HttpGet(
-				"http://localhost:9998/controller/api-1.1.1.js?group=itest_base");
+		HttpGet g = new HttpGet("http://localhost:9998/controller/api-1.1.1.js?group=itest_base");
 		try (CloseableHttpResponse response = this.client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
-			ApiControllerTest.compare(responseString, contentType, api(),
-					ApiRequestParams.builder().build());
+			ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, true);
 		}
 	}
@@ -125,8 +117,7 @@ public class MyModelControlerTest extends JettyTest {
 		callMethod("method2");
 	}
 
-	private void callMethod(String method)
-			throws IOException, JsonParseException, JsonMappingException {
+	private void callMethod(String method) throws IOException, JsonParseException, JsonMappingException {
 		List<NameValuePair> formparams = new ArrayList<>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
 		formparams.add(new BasicNameValuePair("extAction", "myModelController"));
@@ -156,4 +147,5 @@ public class MyModelControlerTest extends JettyTest {
 			assertThat((Boolean) result.get("success")).isTrue();
 		}
 	}
+
 }

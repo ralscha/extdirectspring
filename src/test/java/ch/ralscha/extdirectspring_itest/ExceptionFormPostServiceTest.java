@@ -125,4 +125,5 @@ public class ExceptionFormPostServiceTest extends JettyTest {
 			assertThat(rootAsMap.get("message")).isEqualTo("Server Error");
 		}
 	}
+
 }

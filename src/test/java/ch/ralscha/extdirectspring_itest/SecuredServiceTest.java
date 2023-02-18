@@ -37,8 +37,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class SecuredServiceTest extends JettyTest {
 
 	@Test
-	public void callSetDate()
-			throws IOException, JsonParseException, JsonMappingException {
+	public void callSetDate() throws IOException, JsonParseException, JsonMappingException {
 
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
@@ -56,11 +55,10 @@ public class SecuredServiceTest extends JettyTest {
 			String responseString = EntityUtils.toString(entity);
 
 			assertThat(responseString).isNotNull();
-			assertThat(responseString.startsWith("[") && responseString.endsWith("]"))
-					.isTrue();
+			assertThat(responseString.startsWith("[") && responseString.endsWith("]")).isTrue();
 			ObjectMapper mapper = new ObjectMapper();
-			Map<String, Object> rootAsMap = mapper.readValue(
-					responseString.substring(1, responseString.length() - 1), Map.class);
+			Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
+					Map.class);
 			assertThat(rootAsMap).hasSize(5);
 			assertThat(rootAsMap.get("result")).isEqualTo("102,26.04.2012,");
 			assertThat(rootAsMap.get("method")).isEqualTo("setDate");
@@ -71,8 +69,7 @@ public class SecuredServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void callSecretNotLoggedIn()
-			throws IOException, JsonParseException, JsonMappingException {
+	public void callSecretNotLoggedIn() throws IOException, JsonParseException, JsonMappingException {
 
 		HttpPost post = new HttpPost("http://localhost:9998/controller/router");
 
@@ -90,11 +87,10 @@ public class SecuredServiceTest extends JettyTest {
 			String responseString = EntityUtils.toString(entity);
 
 			assertThat(responseString).isNotNull();
-			assertThat(responseString.startsWith("[") && responseString.endsWith("]"))
-					.isTrue();
+			assertThat(responseString.startsWith("[") && responseString.endsWith("]")).isTrue();
 			ObjectMapper mapper = new ObjectMapper();
-			Map<String, Object> rootAsMap = mapper.readValue(
-					responseString.substring(1, responseString.length() - 1), Map.class);
+			Map<String, Object> rootAsMap = mapper.readValue(responseString.substring(1, responseString.length() - 1),
+					Map.class);
 			assertThat(rootAsMap).hasSize(5);
 			assertThat(rootAsMap.get("message")).isEqualTo("Server Error");
 			assertThat(rootAsMap.get("method")).isEqualTo("secret");
@@ -105,8 +101,7 @@ public class SecuredServiceTest extends JettyTest {
 	}
 
 	@Test
-	public void callSecretLoggedIn()
-			throws IOException, JsonParseException, JsonMappingException {
+	public void callSecretLoggedIn() throws IOException, JsonParseException, JsonMappingException {
 
 		try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
 
@@ -131,12 +126,10 @@ public class SecuredServiceTest extends JettyTest {
 				String responseString = EntityUtils.toString(entity);
 
 				assertThat(responseString).isNotNull();
-				assertThat(responseString.startsWith("[") && responseString.endsWith("]"))
-						.isTrue();
+				assertThat(responseString.startsWith("[") && responseString.endsWith("]")).isTrue();
 				ObjectMapper mapper = new ObjectMapper();
-				Map<String, Object> rootAsMap = mapper.readValue(
-						responseString.substring(1, responseString.length() - 1),
-						Map.class);
+				Map<String, Object> rootAsMap = mapper
+						.readValue(responseString.substring(1, responseString.length() - 1), Map.class);
 				assertThat(rootAsMap).hasSize(5);
 				assertThat(rootAsMap.get("result")).isEqualTo("RALPH,jimi");
 				assertThat(rootAsMap.get("method")).isEqualTo("secret");

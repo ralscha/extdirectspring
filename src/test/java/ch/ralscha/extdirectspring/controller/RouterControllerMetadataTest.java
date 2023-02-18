@@ -77,11 +77,11 @@ public class RouterControllerMetadataTest {
 		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("mp", "aMetadataValue");
 
-		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method1",
-						metadata, new TypeReference<ExtDirectStoreResult<Row>>() {
-							// nothing here
-						}, readRequest);
+		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderMetadata", "method1", metadata,
+				new TypeReference<ExtDirectStoreResult<Row>>() {
+					// nothing here
+				}, readRequest);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(50L);
 		assertThat(storeResponse.getRecords()).hasSize(50);
@@ -95,9 +95,8 @@ public class RouterControllerMetadataTest {
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
-				this.mockMvc, "remoteProviderMetadata", "method1", null, null,
-				readRequest);
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderMetadata", "method1", null, null, readRequest);
 	}
 
 	@Test
@@ -105,11 +104,11 @@ public class RouterControllerMetadataTest {
 		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("query", "firstname");
 
-		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method2", null,
-						new TypeReference<ExtDirectStoreResult<Row>>() {
-							// nothing here
-						}, readRequest);
+		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderMetadata", "method2", null,
+				new TypeReference<ExtDirectStoreResult<Row>>() {
+					// nothing here
+				}, readRequest);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(50L);
 		assertThat(storeResponse.getRecords()).hasSize(50);
@@ -130,8 +129,8 @@ public class RouterControllerMetadataTest {
 		metadata.put("mp", "aMetadataValue");
 
 		EdStoreResult<Map<String, Object>> storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method1Ed",
-						metadata, EdStoreResult.class, readRequest);
+				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method1Ed", metadata, EdStoreResult.class,
+						readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
@@ -147,9 +146,8 @@ public class RouterControllerMetadataTest {
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
-		storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method1Ed", null,
-						null, readRequest);
+		storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderMetadata", "method1Ed", null, null, readRequest);
 	}
 
 	@Test
@@ -158,8 +156,8 @@ public class RouterControllerMetadataTest {
 		readRequest.put("query", "firstname");
 
 		EdStoreResult<Map<String, Object>> storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method2Ed", null,
-						EdStoreResult.class, readRequest);
+				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method2Ed", null, EdStoreResult.class,
+						readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
@@ -175,9 +173,8 @@ public class RouterControllerMetadataTest {
 	@Test
 	public void testWithMetadataParameterOptional() {
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "method3", null,
-				new TypeReference<List<Row>>() {
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method3",
+				null, new TypeReference<List<Row>>() {
 					// nothing here
 				});
 		RouterControllerStoreTest.assert100Rows(rows, ":null");
@@ -188,8 +185,7 @@ public class RouterControllerMetadataTest {
 		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", "12");
 
-		rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "method3", metadata,
+		rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method3", metadata,
 				new TypeReference<List<Row>>() {
 					// nothing here
 				}, readRequest);
@@ -199,9 +195,8 @@ public class RouterControllerMetadataTest {
 	@Test
 	public void testWithMetadataParameterJava8Optional() {
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "method4", null,
-				new TypeReference<List<Row>>() {
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method4",
+				null, new TypeReference<List<Row>>() {
 					// nothing here
 				});
 		RouterControllerStoreTest.assert100Rows(rows, ":null");
@@ -212,8 +207,7 @@ public class RouterControllerMetadataTest {
 		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", "13");
 
-		rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "method4", metadata,
+		rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method4", metadata,
 				new TypeReference<List<Row>>() {
 					// nothing here
 				}, readRequest);
@@ -228,11 +222,11 @@ public class RouterControllerMetadataTest {
 		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", "10");
 
-		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method5",
-						metadata, new TypeReference<ExtDirectStoreResult<Row>>() {
-							// nothing here
-						}, readRequest);
+		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderMetadata", "method5", metadata,
+				new TypeReference<ExtDirectStoreResult<Row>>() {
+					// nothing here
+				}, readRequest);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(50L);
 		assertThat(storeResponse.getRecords()).hasSize(50);
@@ -245,9 +239,8 @@ public class RouterControllerMetadataTest {
 		readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
-				this.mockMvc, "remoteProviderMetadata", "method5", null,
-				new TypeReference<ExtDirectStoreResult<Row>>() {
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderMetadata", "method5", null, new TypeReference<ExtDirectStoreResult<Row>>() {
 					// nothing here
 				}, readRequest);
 
@@ -268,11 +261,11 @@ public class RouterControllerMetadataTest {
 		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", "10");
 
-		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method6",
-						metadata, new TypeReference<ExtDirectStoreResult<Row>>() {
-							// nothing here
-						}, readRequest);
+		ExtDirectStoreResult<Row> storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
+				this.mockMvc, "remoteProviderMetadata", "method6", metadata,
+				new TypeReference<ExtDirectStoreResult<Row>>() {
+					// nothing here
+				}, readRequest);
 
 		assertThat(storeResponse.getTotal()).isEqualTo(50L);
 		assertThat(storeResponse.getRecords()).hasSize(50);
@@ -285,9 +278,8 @@ public class RouterControllerMetadataTest {
 		readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(
-				this.mockMvc, "remoteProviderMetadata", "method6", null,
-				new TypeReference<ExtDirectStoreResult<Row>>() {
+		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderMetadata", "method6", null, new TypeReference<ExtDirectStoreResult<Row>>() {
 					// nothing here
 				}, readRequest);
 
@@ -309,8 +301,8 @@ public class RouterControllerMetadataTest {
 		metadata.put("id", "10");
 
 		EdStoreResult<Map<String, Object>> storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method5Ed",
-						metadata, EdStoreResult.class, readRequest);
+				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method5Ed", metadata, EdStoreResult.class,
+						readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
@@ -325,9 +317,8 @@ public class RouterControllerMetadataTest {
 		readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
-		storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method5Ed", null,
-						EdStoreResult.class, readRequest);
+		storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderMetadata", "method5Ed", null, EdStoreResult.class, readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
@@ -348,8 +339,8 @@ public class RouterControllerMetadataTest {
 		metadata.put("id", "10");
 
 		EdStoreResult<Map<String, Object>> storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method6Ed",
-						metadata, EdStoreResult.class, readRequest);
+				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method6Ed", metadata, EdStoreResult.class,
+						readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
@@ -364,9 +355,8 @@ public class RouterControllerMetadataTest {
 		readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
-		storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method6Ed", null,
-						EdStoreResult.class, readRequest);
+		storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderMetadata", "method6Ed", null, EdStoreResult.class, readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
@@ -388,8 +378,7 @@ public class RouterControllerMetadataTest {
 		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", 10);
 
-		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update1", storeRequest,
-				metadata);
+		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update1", storeRequest, metadata);
 	}
 
 	@Test
@@ -402,11 +391,9 @@ public class RouterControllerMetadataTest {
 		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", 1);
 
-		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update2", storeRequest,
-				metadata);
+		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update2", storeRequest, metadata);
 
-		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update2", storeRequest,
-				null);
+		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update2", storeRequest, null);
 	}
 
 	@Test
@@ -419,18 +406,14 @@ public class RouterControllerMetadataTest {
 		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", 2);
 
-		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update3", storeRequest,
-				metadata);
+		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update3", storeRequest, metadata);
 
-		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update3", storeRequest,
-				null);
+		executeUpdate(this.mockMvc, "remoteProviderMetadata", "update3", storeRequest, null);
 	}
 
-	private static void executeUpdate(MockMvc mockMvc, String action, String method,
-			Map<String, Object> storeRequest, Map<String, Object> metadata)
-			throws Exception {
-		String edRequest = ControllerUtil.createEdsRequest(action, method, false, 1,
-				storeRequest, metadata);
+	private static void executeUpdate(MockMvc mockMvc, String action, String method, Map<String, Object> storeRequest,
+			Map<String, Object> metadata) throws Exception {
+		String edRequest = ControllerUtil.createEdsRequest(action, method, false, 1, storeRequest, metadata);
 
 		MvcResult mvcResult = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
@@ -455,8 +438,7 @@ public class RouterControllerMetadataTest {
 			assertThat(storeResponse.get(0).getId()).isEqualTo(10);
 			assertThat(storeResponse.get(0).getName()).isEqualTo("Ralph");
 			assertThat(storeResponse.get(0).isAdmin()).isTrue();
-			assertThat(storeResponse.get(0).getSalary())
-					.isEqualTo(new BigDecimal("109.55"));
+			assertThat(storeResponse.get(0).getSalary()).isEqualTo(new BigDecimal("109.55"));
 		}
 		else {
 			Row storeResponse = ControllerUtil.convertValue(result, Row.class);
@@ -477,21 +459,17 @@ public class RouterControllerMetadataTest {
 		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", 2);
 
-		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "treeLoad1", metadata,
-				new TypeReference<List<Node>>() {/* nothinghere */
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderMetadata",
+				"treeLoad1", metadata, new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		String appendix = ":foo;2";
-		assertThat(nodes).hasSize(5).containsSequence(
-				new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false),
-				new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false),
-				new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
 
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "treeLoad1",
-				null, null, requestParameters);
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "treeLoad1", null, null,
+				requestParameters);
 	}
 
 	@Test
@@ -504,31 +482,23 @@ public class RouterControllerMetadataTest {
 		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", 22);
 
-		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "treeLoad2", metadata,
-				new TypeReference<List<Node>>() {/* nothinghere */
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderMetadata",
+				"treeLoad2", metadata, new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		String appendix = ":foo;22";
-		assertThat(nodes).hasSize(5).containsSequence(
-				new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false),
-				new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false),
-				new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
 
-		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "treeLoad2", null,
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "treeLoad2", null,
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		appendix = ":foo;22";
-		assertThat(nodes).hasSize(5).containsSequence(
-				new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false),
-				new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false),
-				new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
 	}
 
 	@Test
@@ -541,30 +511,23 @@ public class RouterControllerMetadataTest {
 		Map<String, Object> metadata = new HashMap<>();
 		metadata.put("id", 23);
 
-		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "treeLoad3", metadata,
-				new TypeReference<List<Node>>() {/* nothinghere */
+		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderMetadata",
+				"treeLoad3", metadata, new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		String appendix = ":foo;23";
-		assertThat(nodes).hasSize(5).containsSequence(
-				new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false),
-				new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false),
-				new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
 
-		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "treeLoad3", null,
+		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "treeLoad3", null,
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		appendix = ":foo;23";
-		assertThat(nodes).hasSize(5).containsSequence(
-				new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false),
-				new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false),
-				new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
+				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
+				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
 	}
+
 }

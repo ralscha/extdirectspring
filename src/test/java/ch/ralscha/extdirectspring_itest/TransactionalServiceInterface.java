@@ -21,4 +21,5 @@ public interface TransactionalServiceInterface {
 
 	@ExtDirectMethod(group = "transactional")
 	public String update(Integer id, String userName);
+
 }

@@ -16,6 +16,7 @@
 package ch.ralscha.extdirectspring_itest;
 
 public class Info {
+
 	private String userName;
 
 	public String getUserName() {

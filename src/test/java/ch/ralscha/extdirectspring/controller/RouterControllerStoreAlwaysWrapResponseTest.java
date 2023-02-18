@@ -57,10 +57,10 @@ public class RouterControllerStoreAlwaysWrapResponseTest {
 
 	@Test
 	public void testNoArgumentsNoRequestParameters() {
-		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method1",
-						new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
-						});
+		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderStoreRead", "method1",
+				new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
+				});
 		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()), "");
 	}
 
@@ -70,55 +70,50 @@ public class RouterControllerStoreAlwaysWrapResponseTest {
 		ExtDirectStoreReadRequest storeRead = new ExtDirectStoreReadRequest();
 		storeRead.setQuery("ralph");
 
-		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method1",
-						new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
-						}, storeRead);
+		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderStoreRead", "method1",
+				new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
+				}, storeRead);
 		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()), "");
 	}
 
 	@Test
 	public void testSupportedArguments() {
 
-		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method3",
-						new TypeReference<ExtDirectStoreResult<Row>>() {// nothing
-							// here
-						});
+		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderStoreRead", "method3", new TypeReference<ExtDirectStoreResult<Row>>() {// nothing
+					// here
+				});
 
-		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()),
-				":true;true:true;en");
+		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()), ":true;true:true;en");
 
 	}
 
 	@Test
 	public void testWithAdditionalParametersOptional() {
-		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method7",
-						new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
-						});
-		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()),
-				":null");
+		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderStoreRead", "method7",
+				new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
+				});
+		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()), ":null");
 
 		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("id", 11);
 		readRequest.put("query", "");
 
-		rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderStoreRead", "method7",
+		rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderStoreRead",
+				"method7",
 				new TypeReference<ExtDirectStoreResult<Row>>() {/* nothing_here */
 				}, readRequest);
-		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()),
-				":11");
+		RouterControllerStoreTest.assert100Rows(new ArrayList<>(rows.getRecords()), ":11");
 	}
 
 	@Test
 	public void testCreateWithDataSingle() {
-		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderStoreModifySingle",
-						"create1", new TypeReference<ExtDirectStoreResult<Row>>() {
-							/* nothing here */
-						}, new Row(10, "Ralph", true, "109.55"));
+		ExtDirectStoreResult<Row> rows = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderStoreModifySingle", "create1", new TypeReference<ExtDirectStoreResult<Row>>() {
+					/* nothing here */
+				}, new Row(10, "Ralph", true, "109.55"));
 		assertThat(rows.getRecords()).hasSize(1);
 		assertThat(rows.isSuccess()).isTrue();
 		Row row = rows.getRecords().iterator().next();

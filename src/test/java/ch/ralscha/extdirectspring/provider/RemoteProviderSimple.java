@@ -54,7 +54,9 @@ import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 public class RemoteProviderSimple {
 
 	private enum StatusEnum {
+
 		ACTIVE, INACTIVE
+
 	}
 
 	@ExtDirectMethod(group = "group1")
@@ -69,8 +71,7 @@ public class RemoteProviderSimple {
 
 	@ExtDirectMethod(group = "group2,groupX")
 	public String method3(long i, Double d, String s, ExtDirectRequest directRequest) {
-		return String.format("method3() called-%d-%.1f-%s-%s", i, d, s,
-				directRequest != null);
+		return String.format("method3() called-%d-%.1f-%s-%s", i, d, s, directRequest != null);
 	}
 
 	@ExtDirectMethod(group = "group2,groupX")
@@ -121,8 +122,8 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod(group = "groupX,group3")
-	public long method9(HttpServletResponse response, HttpServletRequest request,
-			HttpSession session, Locale locale, Principal principal) {
+	public long method9(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale,
+			Principal principal) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
@@ -132,8 +133,8 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod
-	public String method10(boolean flag, char aCharacter, StatusEnum status, int aInt,
-			long aLong, double aDouble, float aFloat, short aShort, byte aByte) {
+	public String method10(boolean flag, char aCharacter, StatusEnum status, int aInt, long aLong, double aDouble,
+			float aFloat, short aShort, byte aByte) {
 		assertThat(flag).isTrue();
 		assertThat(aCharacter).isEqualTo('c');
 		assertThat(status).isEqualTo(StatusEnum.ACTIVE);
@@ -143,8 +144,8 @@ public class RemoteProviderSimple {
 		assertThat(aFloat).isEqualTo(10.01f, Offset.offset(0.01f));
 		assertThat(aShort).isEqualTo((short) 1);
 		assertThat(aByte).isEqualTo((byte) 2);
-		return String.format("method10() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag,
-				aCharacter, status, aInt, aLong, aDouble, aFloat, aShort, aByte);
+		return String.format("method10() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, status, aInt, aLong,
+				aDouble, aFloat, aShort, aByte);
 	}
 
 	@ExtDirectMethod
@@ -169,9 +170,8 @@ public class RemoteProviderSimple {
 
 	@ExtDirectMethod
 	public String method13(boolean flag, HttpServletResponse response, char aCharacter,
-			final HttpServletRequest request, StatusEnum status, HttpSession session,
-			int aInt, long aLong, Locale locale, double aDouble, float aFloat,
-			Principal principal, short aShort, byte aByte) {
+			final HttpServletRequest request, StatusEnum status, HttpSession session, int aInt, long aLong,
+			Locale locale, double aDouble, float aFloat, Principal principal, short aShort, byte aByte) {
 
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
@@ -187,15 +187,14 @@ public class RemoteProviderSimple {
 		assertThat(aFloat).isEqualTo(10.01f, Offset.offset(0.01f));
 		assertThat(aShort).isEqualTo((short) 1);
 		assertThat(aByte).isEqualTo((byte) 2);
-		return String.format("method13() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag,
-				aCharacter, status, aInt, aLong, aDouble, aFloat, aShort, aByte);
+		return String.format("method13() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, status, aInt, aLong,
+				aDouble, aFloat, aShort, aByte);
 
 	}
 
 	@ExtDirectMethod
-	public Map<String, Object> method14(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
-			final String normalParameter, HttpServletRequest request,
-			@DateTimeFormat(iso = ISO.DATE) LocalDate aDate,
+	public Map<String, Object> method14(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate, final String normalParameter,
+			HttpServletRequest request, @DateTimeFormat(iso = ISO.DATE) LocalDate aDate,
 			@NumberFormat(style = NumberFormat.Style.PERCENT) BigDecimal percent) {
 
 		Map<String, Object> result = new HashMap<>();
@@ -218,29 +217,24 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod
-	public String method17(@RequestHeader(value = "anotherName",
-			defaultValue = "default") String header) {
+	public String method17(@RequestHeader(value = "anotherName", defaultValue = "default") String header) {
 		return header;
 	}
 
 	@ExtDirectMethod(synchronizeOnSession = true)
-	public String method18(
-			@RequestHeader(defaultValue = "default", required = false) String header) {
+	public String method18(@RequestHeader(defaultValue = "default", required = false) String header) {
 		return header;
 	}
 
 	@ExtDirectMethod(synchronizeOnSession = true)
-	public String method19(
-			@RequestHeader(defaultValue = "default1", required = false) String header1,
-			final Integer id,
+	public String method19(@RequestHeader(defaultValue = "default1", required = false) String header1, final Integer id,
 			@RequestHeader(defaultValue = "default2", required = false) String header2,
 			@RequestHeader(value = "last") String header3) {
 		return id + ";" + header1 + ";" + header2 + ";" + header3;
 	}
 
 	@ExtDirectMethod(synchronizeOnSession = true)
-	public String method20(@RequestHeader Integer intHeader,
-			@RequestHeader Boolean booleanHeader) {
+	public String method20(@RequestHeader Integer intHeader, @RequestHeader Boolean booleanHeader) {
 		return intHeader + ";" + booleanHeader;
 	}
 
@@ -318,14 +312,12 @@ public class RemoteProviderSimple {
 	}
 
 	@ExtDirectMethod
-	public String method27(@CookieValue Integer intCookie,
-			@CookieValue Boolean booleanCookie) {
+	public String method27(@CookieValue Integer intCookie, @CookieValue Boolean booleanCookie) {
 		return intCookie + ";" + booleanCookie;
 	}
 
 	@ExtDirectMethod
-	public String method28(@CookieValue(required = false,
-			defaultValue = "theDefaultValue") String stringCookie) {
+	public String method28(@CookieValue(required = false, defaultValue = "theDefaultValue") String stringCookie) {
 		return stringCookie;
 	}
 
@@ -350,6 +342,7 @@ public class RemoteProviderSimple {
 	}
 
 	public static final class BusinessObject {
+
 		private int id;
 
 		private String name;
@@ -392,9 +385,9 @@ public class RemoteProviderSimple {
 
 		@Override
 		public String toString() {
-			return "BusinessObject [id=" + this.id + ", name=" + this.name + ", bd="
-					+ this.bd + "]";
+			return "BusinessObject [id=" + this.id + ", name=" + this.name + ", bd=" + this.bd + "]";
 		}
 
 	}
+
 }

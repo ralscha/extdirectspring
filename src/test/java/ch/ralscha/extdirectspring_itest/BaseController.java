@@ -33,16 +33,15 @@ public abstract class BaseController<T> {
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public void update(HttpServletRequest request, HttpServletResponse response,
 			@SuppressWarnings("unused") @Valid T model, BindingResult result) {
-		ExtDirectResponseBuilder.create(request, response).addErrors(result)
-				.buildAndWrite();
+		ExtDirectResponseBuilder.create(request, response).addErrors(result).buildAndWrite();
 	}
 
-	public abstract void method1(HttpServletRequest request, HttpServletResponse response,
-			@Valid T model, BindingResult result);
+	public abstract void method1(HttpServletRequest request, HttpServletResponse response, @Valid T model,
+			BindingResult result);
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_base")
 	@RequestMapping(value = "/method2", method = RequestMethod.POST)
-	public abstract void method2(HttpServletRequest request, HttpServletResponse response,
-			@Valid T model, BindingResult result);
+	public abstract void method2(HttpServletRequest request, HttpServletResponse response, @Valid T model,
+			BindingResult result);
 
 }

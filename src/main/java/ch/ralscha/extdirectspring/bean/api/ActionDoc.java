@@ -57,8 +57,7 @@ public class ActionDoc extends Action {
 		super(name, null, null, null, params, null, null);
 	}
 
-	public ActionDoc(Action toCopy, String methodComment, String author, String version,
-			boolean deprecated) {
+	public ActionDoc(Action toCopy, String methodComment, String author, String version, boolean deprecated) {
 		super(toCopy);
 		this.methodComment = methodComment;
 		this.author = author;
@@ -155,4 +154,5 @@ public class ActionDoc extends Action {
 	public void setDeprecated(boolean deprecated) {
 		this.deprecated = deprecated;
 	}
+
 }

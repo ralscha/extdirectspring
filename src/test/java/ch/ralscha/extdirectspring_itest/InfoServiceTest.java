@@ -49,19 +49,13 @@ public class InfoServiceTest extends JettyTest {
 	private static RemotingApi api() {
 		RemotingApi remotingApi = new RemotingApi("remoting", "/controller/router", null);
 		remotingApi.addAction("infoService", Action.createFormHandler("updateInfo", 0));
-		remotingApi.addAction("infoService",
-				Action.createFormHandler("updateInfo2nd", 0));
+		remotingApi.addAction("infoService", Action.createFormHandler("updateInfo2nd", 0));
 
-		remotingApi.addAction("infoService",
-				Action.createFormHandler("updateInfoUser1", 0));
-		remotingApi.addAction("infoService",
-				Action.createFormHandler("updateInfoUser2", 0));
-		remotingApi.addAction("infoService",
-				Action.createFormHandler("updateInfoUser3", 0));
-		remotingApi.addAction("infoService",
-				Action.createFormHandler("updateInfoUser4", 0));
-		remotingApi.addAction("infoService",
-				Action.createFormHandler("updateInfoUser5", 0));
+		remotingApi.addAction("infoService", Action.createFormHandler("updateInfoUser1", 0));
+		remotingApi.addAction("infoService", Action.createFormHandler("updateInfoUser2", 0));
+		remotingApi.addAction("infoService", Action.createFormHandler("updateInfoUser3", 0));
+		remotingApi.addAction("infoService", Action.createFormHandler("updateInfoUser4", 0));
+		remotingApi.addAction("infoService", Action.createFormHandler("updateInfoUser5", 0));
 
 		remotingApi.sort();
 
@@ -70,45 +64,39 @@ public class InfoServiceTest extends JettyTest {
 
 	@Test
 	public void testApi() throws IOException {
-		HttpGet g = new HttpGet(
-				"http://localhost:9998/controller/api.js?group=itest_info_service");
+		HttpGet g = new HttpGet("http://localhost:9998/controller/api.js?group=itest_info_service");
 
 		try (CloseableHttpClient client = HttpClientBuilder.create().build();
 				CloseableHttpResponse response = client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
-			ApiControllerTest.compare(responseString, contentType, api(),
-					ApiRequestParams.builder().build());
+			ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, false);
 		}
 	}
 
 	@Test
 	public void testApiDebug() throws IOException {
-		HttpGet g = new HttpGet(
-				"http://localhost:9998/controller/api-debug.js?group=itest_info_service");
+		HttpGet g = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_info_service");
 
 		try (CloseableHttpClient client = HttpClientBuilder.create().build();
 				CloseableHttpResponse response = client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
-			ApiControllerTest.compare(responseString, contentType, api(),
-					ApiRequestParams.builder().build());
+			ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, false);
 		}
 	}
 
 	@Test
 	public void testApiFingerprinted() throws IOException {
-		HttpGet g = new HttpGet(
-				"http://localhost:9998/controller/api-1.2.1.js?group=itest_info_service");
+		HttpGet g = new HttpGet("http://localhost:9998/controller/api-1.2.1.js?group=itest_info_service");
 
 		try (CloseableHttpClient client = HttpClientBuilder.create().build();
 				CloseableHttpResponse response = client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
-			ApiControllerTest.compare(responseString, contentType, api(),
-					ApiRequestParams.builder().build());
+			ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, true);
 		}
 	}
@@ -128,43 +116,39 @@ public class InfoServiceTest extends JettyTest {
 
 		Locale.setDefault(Locale.US);
 
-		testUserPost("updateInfoUser1", "must be a well-formed email address",
-				entry("lc", "ralph"), entry("success", Boolean.FALSE));
+		testUserPost("updateInfoUser1", "must be a well-formed email address", entry("lc", "ralph"),
+				entry("success", Boolean.FALSE));
 	}
 
 	@Test
 	public void testUpdateInfoUser2() throws IOException {
 		Locale.setDefault(Locale.GERMAN);
-		testUserPost("updateInfoUser2",
-				"muss eine korrekt formatierte E-Mail-Adresse sein", entry("lc", "ralph"),
+		testUserPost("updateInfoUser2", "muss eine korrekt formatierte E-Mail-Adresse sein", entry("lc", "ralph"),
 				entry("success", Boolean.FALSE));
 	}
 
 	@Test
 	public void testUpdateInfoUser3() throws IOException {
 		Locale.setDefault(Locale.US);
-		testUserPost("updateInfoUser3", "Wrong E-Mail", entry("lc", "ralph"),
-				entry("success", Boolean.FALSE));
+		testUserPost("updateInfoUser3", "Wrong E-Mail", entry("lc", "ralph"), entry("success", Boolean.FALSE));
 	}
 
 	@Test
 	public void testUpdateInfoUser4() throws IOException {
 		Locale.setDefault(Locale.US);
-		testUserPost("updateInfoUser4", "Wrong E-Mail", entry("lc", "ralph"),
-				entry("success", Boolean.TRUE));
+		testUserPost("updateInfoUser4", "Wrong E-Mail", entry("lc", "ralph"), entry("success", Boolean.TRUE));
 	}
 
 	@Test
 	public void testUpdateInfoUser5() throws IOException {
 		Locale.setDefault(Locale.US);
-		testUserPost("updateInfoUser5", "Wrong E-Mail", entry("lc", "ralph"),
-				entry("success", Boolean.FALSE));
+		testUserPost("updateInfoUser5", "Wrong E-Mail", entry("lc", "ralph"), entry("success", Boolean.FALSE));
 	}
 
 	@SafeVarargs
 	@SuppressWarnings("unchecked")
-	private static void testUserPost(String method, String errorMsg,
-			MapEntry<String, Object>... entries) throws IOException {
+	private static void testUserPost(String method, String errorMsg, MapEntry<String, Object>... entries)
+			throws IOException {
 
 		try (CloseableHttpClient client = HttpClientBuilder.create().build()) {
 			HttpPost post = new HttpPost("http://localhost:9998/controller/router");
@@ -180,8 +164,7 @@ public class InfoServiceTest extends JettyTest {
 			formparams.add(new BasicNameValuePair("age", "1"));
 			formparams.add(new BasicNameValuePair("email", "invalidEmail"));
 
-			UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams,
-					"UTF-8");
+			UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
 
 			post.setEntity(postEntity);
 
@@ -191,16 +174,14 @@ public class InfoServiceTest extends JettyTest {
 				String responseString = EntityUtils.toString(entity);
 
 				ObjectMapper mapper = new ObjectMapper();
-				Map<String, Object> rootAsMap = mapper.readValue(responseString,
-						Map.class);
+				Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
 				assertThat(rootAsMap).hasSize(5);
 				assertThat(rootAsMap.get("method")).isEqualTo(method);
 				assertThat(rootAsMap.get("type")).isEqualTo("rpc");
 				assertThat(rootAsMap.get("action")).isEqualTo("infoService");
 				assertThat(rootAsMap.get("tid")).isEqualTo(1);
 
-				Map<String, Object> result = (Map<String, Object>) rootAsMap
-						.get("result");
+				Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 
 				int resultSize = entries.length;
 				if (errorMsg != null) {
@@ -212,8 +193,7 @@ public class InfoServiceTest extends JettyTest {
 				Map<String, Object> errors = (Map<String, Object>) result.get("errors");
 				if (errorMsg != null) {
 					assertThat(errors).isNotNull();
-					assertThat(((List<String>) errors.get("email")).get(0))
-							.isEqualTo(errorMsg);
+					assertThat(((List<String>) errors.get("email")).get(0)).isEqualTo(errorMsg);
 				}
 				else {
 					assertThat(errors).isNull();
@@ -234,8 +214,7 @@ public class InfoServiceTest extends JettyTest {
 			formparams.add(new BasicNameValuePair("extType", "rpc"));
 			formparams.add(new BasicNameValuePair("extUpload", "false"));
 			formparams.add(new BasicNameValuePair("userName", "RALPH"));
-			UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams,
-					"UTF-8");
+			UrlEncodedFormEntity postEntity = new UrlEncodedFormEntity(formparams, "UTF-8");
 
 			post.setEntity(postEntity);
 
@@ -245,16 +224,14 @@ public class InfoServiceTest extends JettyTest {
 				String responseString = EntityUtils.toString(entity);
 
 				ObjectMapper mapper = new ObjectMapper();
-				Map<String, Object> rootAsMap = mapper.readValue(responseString,
-						Map.class);
+				Map<String, Object> rootAsMap = mapper.readValue(responseString, Map.class);
 				assertThat(rootAsMap).hasSize(5);
 				assertThat(rootAsMap.get("method")).isEqualTo(method);
 				assertThat(rootAsMap.get("type")).isEqualTo("rpc");
 				assertThat(rootAsMap.get("action")).isEqualTo("infoService");
 				assertThat(rootAsMap.get("tid")).isEqualTo(1);
 
-				Map<String, Object> result = (Map<String, Object>) rootAsMap
-						.get("result");
+				Map<String, Object> result = (Map<String, Object>) rootAsMap.get("result");
 				assertThat(result).hasSize(2);
 				assertThat(result.get("user-name-lower-case")).isEqualTo("ralph");
 				assertThat(result.get("success")).isEqualTo(Boolean.TRUE);

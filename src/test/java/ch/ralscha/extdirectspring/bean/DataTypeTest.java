@@ -29,4 +29,5 @@ public class DataTypeTest {
 		assertThat(DataType.INTEGER.getName()).isEqualTo("int");
 		assertThat(DataType.STRING.getName()).isEqualTo("string");
 	}
+
 }

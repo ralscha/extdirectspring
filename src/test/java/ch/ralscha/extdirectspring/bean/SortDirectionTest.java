@@ -31,4 +31,5 @@ public class SortDirectionTest {
 
 		assertThat(SortDirection.fromString("xy")).isNull();
 	}
+
 }

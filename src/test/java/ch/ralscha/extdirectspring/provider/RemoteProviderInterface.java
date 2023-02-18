@@ -32,7 +32,7 @@ public interface RemoteProviderInterface {
 	String method3(long i, Double d, String s);
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, group = "interface")
-	List<Row> storeRead(ExtDirectStoreReadRequest request, String name, Integer age,
-			Boolean active, HttpServletRequest httpRequest);
+	List<Row> storeRead(ExtDirectStoreReadRequest request, String name, Integer age, Boolean active,
+			HttpServletRequest httpRequest);
 
 }

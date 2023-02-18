@@ -59,12 +59,10 @@ public class ExtDirectResponseBuilder {
 	 * Creates a builder that builds and writes the response of a FORM_POST method. Sets
 	 * the successful flag to true, can be changed with the {@link #successful()} and
 	 * {@link #unsuccessful()} methods.
-	 *
 	 * @param request the current http servlet request object
 	 * @param response the current http servlet response object
 	 */
-	public ExtDirectResponseBuilder(HttpServletRequest request,
-			HttpServletResponse response) {
+	public ExtDirectResponseBuilder(HttpServletRequest request, HttpServletResponse response) {
 		this.request = request;
 		this.response = response;
 
@@ -78,14 +76,11 @@ public class ExtDirectResponseBuilder {
 	 * Creates a builder instance.
 	 *
 	 * @see #ExtDirectResponseBuilder(HttpServletRequest, HttpServletResponse)
-	 *
 	 * @param request the current http servlet request object
 	 * @param response the current http servlet response object
-	 *
 	 * @return the created builder instance
 	 */
-	public static ExtDirectResponseBuilder create(HttpServletRequest request,
-			HttpServletResponse response) {
+	public static ExtDirectResponseBuilder create(HttpServletRequest request, HttpServletResponse response) {
 		return new ExtDirectResponseBuilder(request, response);
 	}
 
@@ -96,15 +91,13 @@ public class ExtDirectResponseBuilder {
 	 *
 	 * This is a method primarily used for implementations of
 	 * {@link HandlerExceptionResolver}.
-	 *
 	 * @param exception the exception that was thrown.
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder setException(Exception exception) {
 		unsuccessful();
 
-		WebApplicationContext ctx = RequestContextUtils
-				.findWebApplicationContext(this.request);
+		WebApplicationContext ctx = RequestContextUtils.findWebApplicationContext(this.request);
 		Configuration configuration;
 		try {
 			configuration = ctx.getBean(Configuration.class);
@@ -129,7 +122,6 @@ public class ExtDirectResponseBuilder {
 	/**
 	 * Adds an "errors" property in the response if there are any errors in the
 	 * bindingResult. Sets the success flag to false if there are errors.
-	 *
 	 * @param bindingResult
 	 * @return this instance
 	 */
@@ -141,7 +133,6 @@ public class ExtDirectResponseBuilder {
 	/**
 	 * Adds an "errors" property in the response if there are any errors in the
 	 * bindingResult. Sets the success flag to false if there are errors.
-	 *
 	 * @param locale
 	 * @param messageSource
 	 * @param bindingResult
@@ -155,8 +146,7 @@ public class ExtDirectResponseBuilder {
 				String message = fieldError.getDefaultMessage();
 				if (messageSource != null) {
 					Locale loc = locale != null ? locale : Locale.getDefault();
-					message = messageSource.getMessage(fieldError.getCode(),
-							fieldError.getArguments(), loc);
+					message = messageSource.getMessage(fieldError.getCode(), fieldError.getArguments(), loc);
 				}
 				List<String> fieldErrors = errorMap.get(fieldError.getField());
 
@@ -180,7 +170,6 @@ public class ExtDirectResponseBuilder {
 
 	/**
 	 * Add additional property to the response.
-	 *
 	 * @param key the key of the property
 	 * @param value the value of this property
 	 * @return this instance
@@ -192,7 +181,6 @@ public class ExtDirectResponseBuilder {
 
 	/**
 	 * Sets success flag to true.
-	 *
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder successful() {
@@ -202,7 +190,6 @@ public class ExtDirectResponseBuilder {
 
 	/**
 	 * Sets success flag to false.
-	 *
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder unsuccessful() {
@@ -212,7 +199,6 @@ public class ExtDirectResponseBuilder {
 
 	/**
 	 * Sets success flag to the provided parameter.
-	 *
 	 * @param flag the new success value
 	 * @return this instance
 	 */
@@ -223,7 +209,6 @@ public class ExtDirectResponseBuilder {
 
 	/**
 	 * Sets a specific JSON View (filter) that Jackson uses to serialize the response.
-	 *
 	 * @param jsonView
 	 */
 	public void setJsonView(Class<?> jsonView) {
@@ -237,12 +222,10 @@ public class ExtDirectResponseBuilder {
 	public void buildAndWrite() {
 
 		try {
-			RouterController routerController = RequestContextUtils
-					.findWebApplicationContext(this.request)
+			RouterController routerController = RequestContextUtils.findWebApplicationContext(this.request)
 					.getBean(RouterController.class);
 
-			routerController.writeJsonResponse(this.request, this.response,
-					this.extDirectResponse, this.jsonView);
+			routerController.writeJsonResponse(this.request, this.response, this.extDirectResponse, this.jsonView);
 
 		}
 		catch (IOException e) {

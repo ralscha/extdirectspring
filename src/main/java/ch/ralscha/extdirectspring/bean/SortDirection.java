@@ -21,6 +21,7 @@ package ch.ralscha.extdirectspring.bean;
  * @see SortInfo
  */
 public enum SortDirection {
+
 	ASCENDING("ASC"), DESCENDING("DESC");
 
 	private final String name;
@@ -43,4 +44,5 @@ public enum SortDirection {
 
 		return null;
 	}
+
 }

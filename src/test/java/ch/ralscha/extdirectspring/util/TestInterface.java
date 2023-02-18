@@ -16,5 +16,7 @@
 package ch.ralscha.extdirectspring.util;
 
 public interface TestInterface {
+
 	int aDummyMethod(String aValue);
+
 }

@@ -35,8 +35,7 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormLoadResult;
 @Service
 public class RemoteProviderFormLoad {
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3",
-			event = "test")
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3", event = "test")
 	public FormInfo method1(@RequestParam(value = "d") double d) {
 		FormInfo info = new FormInfo();
 		info.setBack(d);
@@ -54,11 +53,10 @@ public class RemoteProviderFormLoad {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-	public FormInfo method3(HttpServletResponse response, HttpServletRequest request,
-			HttpSession session, Locale locale) {
+	public FormInfo method3(HttpServletResponse response, HttpServletRequest request, HttpSession session,
+			Locale locale) {
 		FormInfo fi = new FormInfo();
-		fi.setResult((response != null) + ";" + (request != null) + ";"
-				+ (session != null) + ";" + locale);
+		fi.setResult((response != null) + ";" + (request != null) + ";" + (session != null) + ";" + locale);
 		return fi;
 	}
 
@@ -69,10 +67,8 @@ public class RemoteProviderFormLoad {
 		return fi;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3",
-			entryClass = String.class)
-	public ExtDirectFormLoadResult method5(
-			@RequestParam(value = "id", defaultValue = "1") int id,
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3", entryClass = String.class)
+	public ExtDirectFormLoadResult method5(@RequestParam(value = "id", defaultValue = "1") int id,
 			final HttpServletRequest servletRequest) {
 		FormInfo fi = new FormInfo();
 		fi.setResult(id + ";" + (servletRequest != null));
@@ -80,8 +76,7 @@ public class RemoteProviderFormLoad {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-	public ExtDirectFormLoadResult method6(
-			@RequestParam(value = "id", required = false) Integer id) {
+	public ExtDirectFormLoadResult method6(@RequestParam(value = "id", required = false) Integer id) {
 		return new ExtDirectFormLoadResult("TEST:" + id);
 	}
 
@@ -93,10 +88,8 @@ public class RemoteProviderFormLoad {
 		return edflr;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3",
-			entryClass = String.class)
-	public EdFormLoadResult method5Ed(
-			@RequestParam(value = "id", defaultValue = "1") int id,
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_LOAD, group = "group3", entryClass = String.class)
+	public EdFormLoadResult method5Ed(@RequestParam(value = "id", defaultValue = "1") int id,
 			final HttpServletRequest servletRequest) {
 		FormInfo fi = new FormInfo();
 		fi.setResult(id + ";" + (servletRequest != null));
@@ -104,8 +97,7 @@ public class RemoteProviderFormLoad {
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.FORM_LOAD)
-	public EdFormLoadResult method6Ed(
-			@RequestParam(value = "id", required = false) Integer id) {
+	public EdFormLoadResult method6Ed(@RequestParam(value = "id", required = false) Integer id) {
 		return EdFormLoadResult.success("TEST:" + id);
 	}
 

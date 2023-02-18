@@ -16,6 +16,7 @@
 package ch.ralscha.extdirectspring_itest;
 
 public class MyModel {
+
 	private String name;
 
 	public String getName() {

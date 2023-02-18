@@ -103,7 +103,9 @@ public @interface ExtDirectMethod {
 	 * @see ModelAndJsonView
 	 */
 	public static class NoJsonView {
+
 		// nothing here
+
 	}
 
 }

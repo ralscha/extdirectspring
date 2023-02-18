@@ -50,18 +50,19 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 public class RemoteProviderSimpleNamed {
 
 	private enum Workflow {
+
 		WAITING, PENDING, STARTED, FINISHED
+
 	}
 
 	@NamedEdsMethod
 	public String nonStrictMethod1(Map<String, Object> parameters) {
-		return String.format("nonStrictMethod1() called-%d-%.3f-%s", parameters.get("i"),
-				parameters.get("d"), parameters.get("s"));
+		return String.format("nonStrictMethod1() called-%d-%.3f-%s", parameters.get("i"), parameters.get("d"),
+				parameters.get("s"));
 	}
 
 	@NamedEdsMethod
-	public String nonStrictMethod2(HttpServletResponse response,
-			HttpServletRequest request, HttpSession session,
+	public String nonStrictMethod2(HttpServletResponse response, HttpServletRequest request, HttpSession session,
 			Map<String, Object> parameters, Locale locale) {
 
 		assertThat(response).isNotNull();
@@ -69,16 +70,14 @@ public class RemoteProviderSimpleNamed {
 		assertThat(session).isNotNull();
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
-		return String.format("nonStrictMethod2() called-%d-%.3f-%s", parameters.get("i"),
-				parameters.get("d"), parameters.get("s"));
+		return String.format("nonStrictMethod2() called-%d-%.3f-%s", parameters.get("i"), parameters.get("d"),
+				parameters.get("s"));
 	}
 
 	@NamedEdsMethod
-	public String nonStrictMethod3(@CookieValue("aSimpleCookie") String cookie,
-			Map<String, Object> parameters,
+	public String nonStrictMethod3(@CookieValue("aSimpleCookie") String cookie, Map<String, Object> parameters,
 			@RequestHeader("aSimpleHeader") String header) {
-		return String.format("nonStrictMethod3() called-%d-%s-%s", parameters.get("i"),
-				cookie, header);
+		return String.format("nonStrictMethod3() called-%d-%s-%s", parameters.get("i"), cookie, header);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
@@ -91,8 +90,7 @@ public class RemoteProviderSimpleNamed {
 		return String.format("method2() called-%d-%.3f-%s", i, d, s);
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named",
-			event = "test")
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named", event = "test")
 	public Boolean method3(String userName) {
 		if ("ralph".equals(userName)) {
 			return Boolean.TRUE;
@@ -103,8 +101,7 @@ public class RemoteProviderSimpleNamed {
 		return null;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named",
-			entryClass = String.class)
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named", entryClass = String.class)
 	public int method4(int a, int b) {
 		return a + b;
 	}
@@ -122,8 +119,8 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public long method6(HttpServletResponse response, HttpServletRequest request,
-			HttpSession session, Locale locale, Principal principal) {
+	public long method6(HttpServletResponse response, HttpServletRequest request, HttpSession session, Locale locale,
+			Principal principal) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
@@ -133,8 +130,8 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public String method7(boolean flag, char aCharacter, Workflow workflow, int aInt,
-			long aLong, double aDouble, float aFloat, short aShort, byte aByte) {
+	public String method7(boolean flag, char aCharacter, Workflow workflow, int aInt, long aLong, double aDouble,
+			float aFloat, short aShort, byte aByte) {
 		assertThat(flag).isTrue();
 		assertThat(aCharacter).isEqualTo('c');
 		assertThat(workflow).isEqualTo(Workflow.PENDING);
@@ -144,8 +141,8 @@ public class RemoteProviderSimpleNamed {
 		assertThat(aFloat).isEqualTo(10.01f, Offset.offset(0.01f));
 		assertThat(aShort).isEqualTo((short) 1);
 		assertThat(aByte).isEqualTo((byte) 2);
-		return String.format("method7() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag,
-				aCharacter, workflow, aInt, aLong, aDouble, aFloat, aShort, aByte);
+		return String.format("method7() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, workflow, aInt, aLong,
+				aDouble, aFloat, aShort, aByte);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
@@ -160,9 +157,8 @@ public class RemoteProviderSimpleNamed {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public String method10(boolean flag, HttpServletResponse response, char aCharacter,
-			final HttpServletRequest request, short aShort, byte aByte, Workflow workflow,
-			HttpSession session, int aInt, long aLong, Locale locale, double aDouble,
-			float aFloat, Principal principal) {
+			final HttpServletRequest request, short aShort, byte aByte, Workflow workflow, HttpSession session,
+			int aInt, long aLong, Locale locale, double aDouble, float aFloat, Principal principal) {
 
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
@@ -178,14 +174,13 @@ public class RemoteProviderSimpleNamed {
 		assertThat(aFloat).isEqualTo(10.01f, Offset.offset(0.01f));
 		assertThat(aShort).isEqualTo((short) 1);
 		assertThat(aByte).isEqualTo((byte) 2);
-		return String.format("method10() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag,
-				aCharacter, workflow, aInt, aLong, aDouble, aFloat, aShort, aByte);
+		return String.format("method10() called-%b-%c-%s-%d-%d-%.2f-%.2f-%d-%d", flag, aCharacter, workflow, aInt,
+				aLong, aDouble, aFloat, aShort, aByte);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public Map<String, Object> method11(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
-			final String normalParameter, HttpServletRequest request,
-			@DateTimeFormat(iso = ISO.DATE) LocalDate aDate,
+	public Map<String, Object> method11(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate, final String normalParameter,
+			HttpServletRequest request, @DateTimeFormat(iso = ISO.DATE) LocalDate aDate,
 			@NumberFormat(style = NumberFormat.Style.PERCENT) BigDecimal percent) {
 
 		Map<String, Object> result = new HashMap<>();
@@ -199,16 +194,14 @@ public class RemoteProviderSimpleNamed {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public ResultObject methodRP1(@RequestParam(value = "lastName") String name,
-			@RequestParam(value = "theAge") Integer age, Boolean active,
-			HttpServletRequest request) {
+			@RequestParam(value = "theAge") Integer age, Boolean active, HttpServletRequest request) {
 		assertThat(request).isNotNull();
 		return new ResultObject(name, age, active);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
 	public ResultObject methodRP2(HttpSession session,
-			@RequestParam(value = "lastName", required = false,
-					defaultValue = "myName") String name,
+			@RequestParam(value = "lastName", required = false, defaultValue = "myName") String name,
 			@RequestParam(value = "theAge", defaultValue = "20") Integer age,
 			@RequestParam(defaultValue = "true") Boolean active) {
 		assertThat(session).isNotNull();
@@ -216,8 +209,7 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public ResultObject methodRP3(HttpSession session,
-			@RequestParam(value = "lastName", required = false) String name,
+	public ResultObject methodRP3(HttpSession session, @RequestParam(value = "lastName", required = false) String name,
 			@RequestParam(value = "theAge", required = false) Integer age,
 			@RequestParam(required = false) Boolean active) {
 		assertThat(session).isNotNull();
@@ -230,14 +222,12 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public String methodCollection2(String name,
-			@RequestParam(required = false) List<TestObject> collections) {
+	public String methodCollection2(String name, @RequestParam(required = false) List<TestObject> collections) {
 		return String.format("2->%s;%s", name, collections);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public String methodCollection3(String name,
-			@SuppressWarnings("rawtypes") List collections) {
+	public String methodCollection3(String name, @SuppressWarnings("rawtypes") List collections) {
 		return String.format("3->%s;%s", name, collections);
 	}
 
@@ -254,8 +244,7 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public String methodArray2(String name,
-			@RequestParam(required = false) TestObject[] array) {
+	public String methodArray2(String name, @RequestParam(required = false) TestObject[] array) {
 		StringBuilder sb = new StringBuilder();
 		if (array != null) {
 			for (TestObject element : array) {
@@ -278,8 +267,7 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public String methodArray4(String name,
-			@RequestParam(required = false) TestObject... array) {
+	public String methodArray4(String name, @RequestParam(required = false) TestObject... array) {
 		StringBuilder sb = new StringBuilder();
 		if (array != null) {
 			for (TestObject element : array) {
@@ -290,38 +278,36 @@ public class RemoteProviderSimpleNamed {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public String withCookie(@CookieValue(value = "aSimpleCookie", required = false,
-			defaultValue = "defaultCookie") String cookie, Long i) {
-		return i + ":" + cookie;
-	}
-
-	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public String withRequiredCookie(@CookieValue(value = "aSimpleCookie") String cookie,
+	public String withCookie(
+			@CookieValue(value = "aSimpleCookie", required = false, defaultValue = "defaultCookie") String cookie,
 			Long i) {
 		return i + ":" + cookie;
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
-	public String withRequestHeader(@RequestHeader(value = "aSimpleHeader",
-			required = false, defaultValue = "defaultHeader") String header,
+	public String withRequiredCookie(@CookieValue(value = "aSimpleCookie") String cookie, Long i) {
+		return i + ":" + cookie;
+	}
+
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
+	public String withRequestHeader(
+			@RequestHeader(value = "aSimpleHeader", required = false, defaultValue = "defaultHeader") String header,
 			BigDecimal bd) {
 		return bd + ":" + header;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named",
-			batched = true)
-	public String withRequiredRequestHeader(
-			@RequestHeader(value = "aSimpleHeader") String header, BigDecimal bd) {
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named", batched = true)
+	public String withRequiredRequestHeader(@RequestHeader(value = "aSimpleHeader") String header, BigDecimal bd) {
 		return bd + ":" + header;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named",
-			batched = false)
+	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named", batched = false)
 	public String notBatched() {
 		return "ralph";
 	}
 
 	public static class TestObject {
+
 		private int id;
 
 		private String name;
@@ -376,13 +362,14 @@ public class RemoteProviderSimpleNamed {
 
 		@Override
 		public String toString() {
-			return "TestObject [id=" + this.id + ", name=" + this.name + ", active="
-					+ this.active + ", amount=" + this.amount + "]";
+			return "TestObject [id=" + this.id + ", name=" + this.name + ", active=" + this.active + ", amount="
+					+ this.amount + "]";
 		}
 
 	}
 
 	public static class ResultObject {
+
 		private String name;
 
 		private Integer age;
@@ -462,8 +449,7 @@ public class RemoteProviderSimpleNamed {
 
 		@Override
 		public String toString() {
-			return "ResultObject [name=" + this.name + ", age=" + this.age + ", active="
-					+ this.active + "]";
+			return "ResultObject [name=" + this.name + ", age=" + this.age + ", active=" + this.active + "]";
 		}
 
 	}

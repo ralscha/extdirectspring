@@ -21,6 +21,7 @@ import ch.ralscha.extdirectspring.bean.BaseResponse;
 import ch.ralscha.extdirectspring.util.MethodInfo;
 
 public interface RouterExceptionHandler {
-	Object handleException(MethodInfo methodInfo, BaseResponse response, Exception e,
-			HttpServletRequest request);
+
+	Object handleException(MethodInfo methodInfo, BaseResponse response, Exception e, HttpServletRequest request);
+
 }

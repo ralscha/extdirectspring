@@ -43,4 +43,5 @@ public class BeanNotSpringWExtDirectMethods {
 		// a dummy method
 		return null;
 	}
+
 }

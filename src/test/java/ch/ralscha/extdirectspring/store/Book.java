@@ -16,6 +16,7 @@
 package ch.ralscha.extdirectspring.store;
 
 public class Book extends BaseModel {
+
 	private String title;
 
 	private String isbn;

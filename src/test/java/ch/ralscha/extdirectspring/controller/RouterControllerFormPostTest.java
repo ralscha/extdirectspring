@@ -73,10 +73,8 @@ public class RouterControllerFormPostTest {
 		parameters.put("extMethod", "method1");
 		parameters.put("extType", "rpc");
 
-		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, null,
-				parameters, null, null, false);
-		ExtDirectResponse edsResponse = ControllerUtil
-				.readDirectResponse(result.getResponse().getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, null, parameters, null, null, false);
+		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(result.getResponse().getContentAsByteArray());
 
 		assertThat(edsResponse.getType()).isEqualTo("exception");
 		assertThat(edsResponse.getMessage()).isEqualTo("Server Error");
@@ -99,22 +97,18 @@ public class RouterControllerFormPostTest {
 		parameters.put("extAction", "remoteProviderSimple");
 		parameters.put("extMethod", "method1");
 		parameters.put("extType", "rpc");
-		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, null,
-				parameters, null, null, false);
-		ExtDirectResponse edsResponse = ControllerUtil
-				.readDirectResponse(result.getResponse().getContentAsByteArray());
+		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, null, parameters, null, null, false);
+		ExtDirectResponse edsResponse = ControllerUtil.readDirectResponse(result.getResponse().getContentAsByteArray());
 
 		assertThat(edsResponse.getType()).isEqualTo("exception");
 		assertThat(edsResponse.getMessage()).isEqualTo("something wrong");
-		assertThat(edsResponse.getWhere())
-				.isEqualTo("Bean or Method 'remoteProviderSimple.method1' not found");
+		assertThat(edsResponse.getWhere()).isEqualTo("Bean or Method 'remoteProviderSimple.method1' not found");
 
 		assertThat(edsResponse.getTid()).isEqualTo(12);
 		assertThat(edsResponse.getAction()).isEqualTo("remoteProviderSimple");
 		assertThat(edsResponse.getMethod()).isEqualTo("method1");
 
-		ReflectionTestUtils.setField(this.configurationService, "configuration",
-				new Configuration());
+		ReflectionTestUtils.setField(this.configurationService, "configuration", new Configuration());
 		this.configurationService.afterPropertiesSet();
 	}
 
@@ -133,8 +127,7 @@ public class RouterControllerFormPostTest {
 		request.param("salary", "12.3");
 		request.param("result", "theResult");
 
-		this.mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(forwardedUrl("updateInfo"));
+		this.mockMvc.perform(request).andExpect(status().isOk()).andExpect(forwardedUrl("updateInfo"));
 	}
 
 	@Test
@@ -150,8 +143,7 @@ public class RouterControllerFormPostTest {
 		parameters.put("salary", "12.3");
 		parameters.put("result", "theResult");
 
-		MvcResult resultMvc = ControllerUtil.performRouterRequest(this.mockMvc, null,
-				parameters, null, null, false);
+		MvcResult resultMvc = ControllerUtil.performRouterRequest(this.mockMvc, null, parameters, null, null, false);
 		ExtDirectResponse edsResponse = ControllerUtil
 				.readDirectResponse(resultMvc.getResponse().getContentAsByteArray());
 
@@ -164,9 +156,8 @@ public class RouterControllerFormPostTest {
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
-		assertThat(result).hasSize(6).contains(entry("name", "RALPH"), entry("age", 30),
-				entry("admin", Boolean.FALSE), entry("salary", 1012.3),
-				entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
+		assertThat(result).hasSize(6).contains(entry("name", "RALPH"), entry("age", 30), entry("admin", Boolean.FALSE),
+				entry("salary", 1012.3), entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
 	}
 
 	@Test
@@ -182,8 +173,7 @@ public class RouterControllerFormPostTest {
 		parameters.put("salary", "12.3");
 		parameters.put("result", "theResult");
 
-		MvcResult resultMvc = ControllerUtil.performRouterRequest(this.mockMvc, null,
-				parameters, null, null, false);
+		MvcResult resultMvc = ControllerUtil.performRouterRequest(this.mockMvc, null, parameters, null, null, false);
 		ExtDirectResponse edsResponse = ControllerUtil
 				.readDirectResponse(resultMvc.getResponse().getContentAsByteArray());
 
@@ -196,17 +186,15 @@ public class RouterControllerFormPostTest {
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
-		assertThat(result).hasSize(6).contains(entry("name", "RALPH"), entry("age", 30),
-				entry("admin", Boolean.FALSE), entry("salary", 1012.3),
-				entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
+		assertThat(result).hasSize(6).contains(entry("name", "RALPH"), entry("age", 30), entry("admin", Boolean.FALSE),
+				entry("salary", 1012.3), entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testUpload() throws Exception {
 		MockMultipartHttpServletRequestBuilder request = multipart("/router");
-		request.accept(MediaType.ALL).characterEncoding("UTF-8")
-				.session(new MockHttpSession());
+		request.accept(MediaType.ALL).characterEncoding("UTF-8").session(new MockHttpSession());
 
 		request.param("extTID", "1");
 		request.param("extAction", "uploadService");
@@ -242,22 +230,19 @@ public class RouterControllerFormPostTest {
 
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
 		assertThat(result).hasSize(8);
-		assertThat(result).contains(entry("e-mail", null), entry("age", 20),
-				entry("name", "Ralph"), entry("fileName", ""),
-				entry("fileContents", "the content of the file"),
-				entry("firstName", null), entry("success", Boolean.TRUE));
+		assertThat(result).contains(entry("e-mail", null), entry("age", 20), entry("name", "Ralph"),
+				entry("fileName", ""), entry("fileContents", "the content of the file"), entry("firstName", null),
+				entry("success", Boolean.TRUE));
 		Map<String, Object> error = (Map<String, Object>) result.get("errors");
 		assertThat(error).containsKey("email");
-		assertThat((List<String>) error.get("email"))
-				.containsExactly("must not be empty");
+		assertThat((List<String>) error.get("email")).containsExactly("must not be empty");
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testUploadEd() throws Exception {
 		MockMultipartHttpServletRequestBuilder request = multipart("/router");
-		request.accept(MediaType.ALL).characterEncoding("UTF-8")
-				.session(new MockHttpSession());
+		request.accept(MediaType.ALL).characterEncoding("UTF-8").session(new MockHttpSession());
 
 		request.param("extTID", "1");
 		request.param("extAction", "uploadService");
@@ -293,13 +278,11 @@ public class RouterControllerFormPostTest {
 
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
 		assertThat(result).hasSize(6);
-		assertThat(result).contains(entry("age", 20), entry("name", "Ralph"),
-				entry("fileName", ""), entry("fileContents", "the content of the file"),
-				entry("success", Boolean.TRUE));
+		assertThat(result).contains(entry("age", 20), entry("name", "Ralph"), entry("fileName", ""),
+				entry("fileContents", "the content of the file"), entry("success", Boolean.TRUE));
 		Map<String, Object> error = (Map<String, Object>) result.get("errors");
 		assertThat(error).containsKey("email");
-		assertThat((List<String>) error.get("email"))
-				.containsExactly("must not be empty");
+		assertThat((List<String>) error.get("email")).containsExactly("must not be empty");
 	}
 
 }

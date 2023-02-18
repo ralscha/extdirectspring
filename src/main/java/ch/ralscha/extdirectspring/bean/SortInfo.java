@@ -22,6 +22,7 @@ import java.util.Map;
  * ascending or descending. Ext JS can send more than one sort info in one request.
  */
 public class SortInfo {
+
 	private final String property;
 
 	private final SortDirection direction;
@@ -51,8 +52,7 @@ public class SortInfo {
 
 	@Override
 	public String toString() {
-		return "SortInfo [property=" + this.property + ", direction=" + this.direction
-				+ "]";
+		return "SortInfo [property=" + this.property + ", direction=" + this.direction + "]";
 	}
 
 }

@@ -28,6 +28,7 @@ import java.lang.annotation.Target;
 @Inherited
 @Documented
 public @interface ExtDirectDocParameters {
+
 	/**
 	 * (Optional) name of parameters
 	 * <p/>
@@ -45,4 +46,5 @@ public @interface ExtDirectDocParameters {
 	 * Defaults to empty.
 	 */
 	String[] descriptions() default {};
+
 }

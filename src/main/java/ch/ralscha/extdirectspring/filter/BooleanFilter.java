@@ -19,8 +19,7 @@ public class BooleanFilter extends Filter {
 
 	private final Boolean value;
 
-	public BooleanFilter(String field, Boolean value, String rawComparison,
-			Comparison comparison) {
+	public BooleanFilter(String field, Boolean value, String rawComparison, Comparison comparison) {
 		super(field, rawComparison, comparison);
 		this.value = value;
 	}
@@ -31,9 +30,8 @@ public class BooleanFilter extends Filter {
 
 	@Override
 	public String toString() {
-		return "BooleanFilter [value=" + this.value + ", getField()=" + getField()
-				+ ", getRawComparison()=" + getRawComparison() + ", getComparison()="
-				+ getComparison() + "]";
+		return "BooleanFilter [value=" + this.value + ", getField()=" + getField() + ", getRawComparison()="
+				+ getRawComparison() + ", getComparison()=" + getComparison() + "]";
 	}
 
 }

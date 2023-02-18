@@ -31,6 +31,7 @@ import org.springframework.core.convert.ConversionService;
  * @see StringFilter
  */
 public class Filter {
+
 	private final String field;
 
 	private final String rawComparison;
@@ -60,8 +61,7 @@ public class Filter {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static Filter createFilter(Map<String, Object> jsonData,
-			ConversionService conversionService) {
+	public static Filter createFilter(Map<String, Object> jsonData, ConversionService conversionService) {
 		String type = (String) jsonData.get("type");
 		Object source = jsonData.get("value");
 		String rawComparison = extractRawComparison(jsonData);
@@ -77,50 +77,40 @@ public class Filter {
 				// a filter from store.filter, create a Filter depending on the
 				// type of the value
 				if (source instanceof Number) {
-					return new NumericFilter(property, (Number) source, rawComparison,
-							comparisonFromJson);
+					return new NumericFilter(property, (Number) source, rawComparison, comparisonFromJson);
 				}
 				else if (source instanceof Boolean) {
-					return new BooleanFilter(property, (Boolean) source, rawComparison,
-							comparisonFromJson);
+					return new BooleanFilter(property, (Boolean) source, rawComparison, comparisonFromJson);
 				}
 				else if (source instanceof List) {
-					return new ListFilter(property, (List<?>) source, rawComparison,
-							comparisonFromJson);
+					return new ListFilter(property, (List<?>) source, rawComparison, comparisonFromJson);
 				}
-				return new StringFilter(property,
-						source != null ? source.toString() : null, rawComparison,
+				return new StringFilter(property, source != null ? source.toString() : null, rawComparison,
 						comparisonFromJson);
 			}
 
 			return null;
 		}
 
-		if (type.equals("numeric") || type.equals("int") || type.equals("float")
-				|| type.equals("number")) {
+		if (type.equals("numeric") || type.equals("int") || type.equals("float") || type.equals("number")) {
 			Number value = conversionService.convert(source, Number.class);
 			return new NumericFilter(property, value, rawComparison, comparisonFromJson);
 		}
 		else if (type.equals("string")) {
-			return new StringFilter(property, (String) source, rawComparison,
-					comparisonFromJson);
+			return new StringFilter(property, (String) source, rawComparison, comparisonFromJson);
 		}
 		else if (type.equals("date")) {
-			return new DateFilter(property, (String) source, rawComparison,
-					comparisonFromJson);
+			return new DateFilter(property, (String) source, rawComparison, comparisonFromJson);
 		}
 		else if (type.equals("list") || type.equals("combo")) {
 			if (source instanceof String) {
 				String[] values = ((String) source).split(",");
-				return new ListFilter(property, Arrays.asList(values), rawComparison,
-						comparisonFromJson);
+				return new ListFilter(property, Arrays.asList(values), rawComparison, comparisonFromJson);
 			}
-			return new ListFilter(property, (List<String>) source, rawComparison,
-					comparisonFromJson);
+			return new ListFilter(property, (List<String>) source, rawComparison, comparisonFromJson);
 		}
 		else if (type.equals("boolean")) {
-			return new BooleanFilter(property, (Boolean) source, rawComparison,
-					comparisonFromJson);
+			return new BooleanFilter(property, (Boolean) source, rawComparison, comparisonFromJson);
 		}
 
 		return null;

@@ -29,5 +29,7 @@ import org.springframework.context.annotation.ComponentScan;
  * </pre>
  */
 public interface ExtDirectSpring {
+
 	// nothing here. just a marker interface
+
 }

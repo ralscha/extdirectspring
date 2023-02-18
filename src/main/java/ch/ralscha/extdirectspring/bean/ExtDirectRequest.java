@@ -103,9 +103,8 @@ public class ExtDirectRequest {
 
 	@Override
 	public String toString() {
-		return "ExtDirectRequest [action=" + this.action + ", method=" + this.method
-				+ ", type=" + this.type + ", tid=" + this.tid + ", data=" + this.data
-				+ ", metadata=" + this.metadata + "]";
+		return "ExtDirectRequest [action=" + this.action + ", method=" + this.method + ", type=" + this.type + ", tid="
+				+ this.tid + ", data=" + this.data + ", metadata=" + this.metadata + "]";
 	}
 
 }

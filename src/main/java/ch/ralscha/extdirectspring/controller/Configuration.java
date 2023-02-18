@@ -36,6 +36,7 @@ import ch.ralscha.extdirectspring.util.JsonHandler;
  * Configuration class to configure different aspects of extdirectspring.
  */
 public class Configuration {
+
 	private String defaultExceptionMessage = "Server Error";
 
 	private boolean sendExceptionMessage = false;
@@ -102,7 +103,6 @@ public class Configuration {
 	 *
 	 * @see #setExceptionToMessage(Map)
 	 * @see #setDefaultExceptionMessage(String)
-	 *
 	 * @param defaultExceptionMessage new default exception message
 	 */
 	public void setDefaultExceptionMessage(String defaultExceptionMessage) {
@@ -125,7 +125,6 @@ public class Configuration {
 	 *
 	 * @see #setExceptionToMessage(Map)
 	 * @see #setDefaultExceptionMessage(String)
-	 *
 	 * @param sendExceptionMessage new flag
 	 */
 	public void setSendExceptionMessage(boolean sendExceptionMessage) {
@@ -143,7 +142,6 @@ public class Configuration {
 	 * Should only set to true in development.
 	 * <p>
 	 * Default value is false
-	 *
 	 * @param sendStacktrace new flag
 	 */
 	public void setSendStacktrace(boolean sendStacktrace) {
@@ -171,7 +169,6 @@ public class Configuration {
 	 *
 	 * @see #setDefaultExceptionMessage(String)
 	 * @see #setSendExceptionMessage(boolean)
-	 *
 	 * @param exceptionToMessage new mapping from exception to message
 	 */
 	public void setExceptionToMessage(Map<Class<?>, String> exceptionToMessage) {
@@ -185,7 +182,6 @@ public class Configuration {
 	/**
 	 * If alwaysWrapStoreResponse is true, responses of STORE_READ and STORE_MODIFY
 	 * methods are always wrapped in an {@link ExtDirectStoreResult} object.
-	 *
 	 * @param alwaysWrapStoreResponse new flag
 	 */
 	public void setAlwaysWrapStoreResponse(boolean alwaysWrapStoreResponse) {
@@ -203,7 +199,6 @@ public class Configuration {
 	 * <p>
 	 * Instead of globally enable this it's possible to set the flag on a per method basis
 	 * with {@link ExtDirectMethod#synchronizeOnSession()}.
-	 *
 	 * @param synchronizeOnSession new flag
 	 */
 	public void setSynchronizeOnSession(boolean synchronizeOnSession) {
@@ -220,7 +215,6 @@ public class Configuration {
 	 * of the <a href=
 	 * "http://docs.sencha.com/extjs/6.0/6.0.0-classic/#!/api/Ext.direct.RemotingProvider"
 	 * > RemotingProvider</a>.
-	 *
 	 * @param timeout new timeout value
 	 */
 	public void setTimeout(Integer timeout) {
@@ -238,7 +232,6 @@ public class Configuration {
 	 * <a href=
 	 * "http://docs.sencha.com/extjs/6.0/6.0.0-classic/#!/api/Ext.direct.RemotingProvider"
 	 * > RemotingProvider</a>.
-	 *
 	 * @param maxRetries new number of max retries
 	 */
 	public void setMaxRetries(Integer maxRetries) {
@@ -262,7 +255,6 @@ public class Configuration {
 	 * > RemotingProvider</a>.
 	 * <p>
 	 * Defaults to: 10
-	 *
 	 * @param enableBuffer new enableBuffer value
 	 */
 	public void setEnableBuffer(Object enableBuffer) {
@@ -282,7 +274,6 @@ public class Configuration {
 	 * Note that this option does nothing if {@link #enableBuffer} is set to `false`.
 	 * <p>
 	 * Defaults to: Number.MAX_VALUE
-	 *
 	 * @param bufferLimit new value for buffer limit
 	 */
 	public void setBufferLimit(Integer bufferLimit) {
@@ -296,7 +287,6 @@ public class Configuration {
 	 * @see #setDefaultExceptionMessage(String)
 	 * @see #setSendExceptionMessage(boolean)
 	 * @see #setExceptionToMessage(Map)
-	 *
 	 * @param exception the thrown exception
 	 * @return exception message
 	 */
@@ -338,7 +328,6 @@ public class Configuration {
 	 * with {@link ExtDirectMethod#streamResponse()}.
 	 * <p>
 	 * Default value is false
-	 *
 	 * @param streamResponse new flag
 	 */
 	public void setStreamResponse(boolean streamResponse) {
@@ -353,7 +342,6 @@ public class Configuration {
 	 * mime type is 'application/javascript'.
 	 * <p>
 	 * Default value is "application/javascript"
-	 *
 	 * @param jsContentType new Content-type
 	 */
 	public void setJsContentType(String jsContentType) {
@@ -380,10 +368,8 @@ public class Configuration {
 	 * @see #setBatchedMethodsExecutorService(ExecutorService)
 	 * @param batchedMethodsExecutionPolicy new policy
 	 */
-	public void setBatchedMethodsExecutionPolicy(
-			BatchedMethodsExecutionPolicy batchedMethodsExecutionPolicy) {
-		Assert.notNull(batchedMethodsExecutionPolicy,
-				"batchedMethodsExecutionPolicy must not be null");
+	public void setBatchedMethodsExecutionPolicy(BatchedMethodsExecutionPolicy batchedMethodsExecutionPolicy) {
+		Assert.notNull(batchedMethodsExecutionPolicy, "batchedMethodsExecutionPolicy must not be null");
 		this.batchedMethodsExecutionPolicy = batchedMethodsExecutionPolicy;
 	}
 
@@ -402,8 +388,7 @@ public class Configuration {
 	 * @see #setBatchedMethodsExecutionPolicy(BatchedMethodsExecutionPolicy)
 	 * @param batchedMethodsExecutorService the new thread pool
 	 */
-	public void setBatchedMethodsExecutorService(
-			ExecutorService batchedMethodsExecutorService) {
+	public void setBatchedMethodsExecutorService(ExecutorService batchedMethodsExecutorService) {
 		this.batchedMethodsExecutorService = batchedMethodsExecutorService;
 	}
 
@@ -417,7 +402,6 @@ public class Configuration {
 	 * <p>
 	 * Default value is "remoting" and it creates an Ext.direct.RemotingProvider on the
 	 * client side.
-	 *
 	 * @param providerType new provider type
 	 */
 	public void setProviderType(String providerType) {
@@ -432,7 +416,6 @@ public class Configuration {
 	 * Sets the passed domain to be included in the file upload's temporary frame. This is
 	 * used to grant the main document access to the POST response on the frame in a
 	 * cross-domain environment.
-	 *
 	 * @param frameDomain the new domain to set the frame to
 	 */
 	public void setFrameDomain(String frameDomain) {
@@ -447,7 +430,6 @@ public class Configuration {
 	 * Updates the script that is used to set the domain values on the file upload frame.
 	 * This is useful for cross-browser compatibility. If other browsers require a
 	 * modified script as workaround, frameDomainScript should allow for it.
-	 *
 	 * @param frameDomainScript the javascript code used to set the frame domain
 	 */
 	public void setFrameDomainScript(String frameDomainScript) {
@@ -462,7 +444,6 @@ public class Configuration {
 	 * Sets the name of the namespace in which the remotingApiVar variable will reside.
 	 * <p>
 	 * Defaults to Ext.app
-	 *
 	 * @param apiNs new namespace
 	 */
 	public void setApiNs(String apiNs) {
@@ -477,7 +458,6 @@ public class Configuration {
 	 * Sets the name of the namespace in which the actions will reside.
 	 * <p>
 	 * Defaults to none
-	 *
 	 * @param actionNs new namespace
 	 */
 	public void setActionNs(String actionNs) {
@@ -492,7 +472,6 @@ public class Configuration {
 	 * Changes the name of the remoting api variable.
 	 * <p>
 	 * Defaults to REMOTING_API
-	 *
 	 * @param remotingApiVar new remoting api varaible name
 	 */
 	public void setRemotingApiVar(String remotingApiVar) {
@@ -507,7 +486,6 @@ public class Configuration {
 	 * Changes the name of the polling urls object variable
 	 * <p>
 	 * Defaults to POLLING_URLS
-	 *
 	 * @param pollingUrlsVar new polling urls object variable name
 	 */
 	public void setPollingUrlsVar(String pollingUrlsVar) {
@@ -523,7 +501,6 @@ public class Configuration {
 	 * server name, port number, and server path (true) or only the server path (false)
 	 * <p>
 	 * Defaults to false
-	 *
 	 * @param fullRouterUrl new flag value
 	 */
 	public void setFullRouterUrl(boolean fullRouterUrl) {
@@ -541,7 +518,6 @@ public class Configuration {
 	 * The fullRouterUrl setting is ignored when this variable is not null
 	 * <p>
 	 * Defaults to null.
-	 *
 	 * @param baseRouterUrl new base router url
 	 */
 	public void setBaseRouterUrl(String baseRouterUrl) {
@@ -564,8 +540,7 @@ public class Configuration {
 		this.jsonHandler = jsonHandler;
 	}
 
-	public String postProcessRequestUrl(
-			@SuppressWarnings("unused") HttpServletRequest request,
+	public String postProcessRequestUrl(@SuppressWarnings("unused") HttpServletRequest request,
 			String requestUrlString) {
 		return requestUrlString;
 	}

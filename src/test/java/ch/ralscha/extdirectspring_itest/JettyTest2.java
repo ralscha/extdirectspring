@@ -21,6 +21,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
 public class JettyTest2 {
+
 	private static Server server;
 
 	@BeforeAll
@@ -39,4 +40,5 @@ public class JettyTest2 {
 	public static void stopServer() throws Exception {
 		server.stop();
 	}
+
 }

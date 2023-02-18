@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Field {
+
 	private final Map<String, Object> fieldData;
 
 	public Field(String name) {
@@ -46,4 +47,5 @@ public class Field {
 	public Map<String, Object> getFieldData() {
 		return Collections.unmodifiableMap(this.fieldData);
 	}
+
 }

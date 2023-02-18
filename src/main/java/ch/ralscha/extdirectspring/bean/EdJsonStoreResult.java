@@ -60,13 +60,11 @@ public abstract class EdJsonStoreResult extends JsonViewHint {
 	public abstract String message();
 
 	public static EdJsonStoreResult success(String record) {
-		return ImmutableEdJsonStoreResult.of(Collections.singletonList(record), null,
-				Boolean.TRUE, null, null);
+		return ImmutableEdJsonStoreResult.of(Collections.singletonList(record), null, Boolean.TRUE, null, null);
 	}
 
 	public static EdJsonStoreResult success(String[] records) {
-		return ImmutableEdJsonStoreResult.of(Arrays.asList(records), null, Boolean.TRUE,
-				null, null);
+		return ImmutableEdJsonStoreResult.of(Arrays.asList(records), null, Boolean.TRUE, null, null);
 	}
 
 	public static EdJsonStoreResult success(Collection<String> records) {
@@ -77,18 +75,14 @@ public abstract class EdJsonStoreResult extends JsonViewHint {
 		return ImmutableEdJsonStoreResult.of(records, total, Boolean.TRUE, null, null);
 	}
 
-	public static EdJsonStoreResult success(Collection<String> records,
-			Class<?> jsonView) {
-		ImmutableEdJsonStoreResult result = ImmutableEdJsonStoreResult.of(records, null,
-				Boolean.TRUE, null, null);
+	public static EdJsonStoreResult success(Collection<String> records, Class<?> jsonView) {
+		ImmutableEdJsonStoreResult result = ImmutableEdJsonStoreResult.of(records, null, Boolean.TRUE, null, null);
 		result.setJsonView(jsonView);
 		return result;
 	}
 
-	public static EdJsonStoreResult success(Collection<String> records, Long total,
-			Class<?> jsonView) {
-		ImmutableEdJsonStoreResult result = ImmutableEdJsonStoreResult.of(records, total,
-				Boolean.TRUE, null, null);
+	public static EdJsonStoreResult success(Collection<String> records, Long total, Class<?> jsonView) {
+		ImmutableEdJsonStoreResult result = ImmutableEdJsonStoreResult.of(records, total, Boolean.TRUE, null, null);
 		result.setJsonView(jsonView);
 		return result;
 	}
@@ -98,15 +92,16 @@ public abstract class EdJsonStoreResult extends JsonViewHint {
 	}
 
 	public static final class Builder extends ImmutableEdJsonStoreResult.Builder {
+
 		// nothing here
+
 	}
 
-	public final static class CollectionStringSerializer
-			extends JsonSerializer<Collection<String>> {
+	public final static class CollectionStringSerializer extends JsonSerializer<Collection<String>> {
 
 		@Override
-		public void serialize(Collection<String> values, JsonGenerator jgen,
-				SerializerProvider provider) throws IOException {
+		public void serialize(Collection<String> values, JsonGenerator jgen, SerializerProvider provider)
+				throws IOException {
 
 			StringBuilder sb = new StringBuilder();
 			sb.append("[");
@@ -123,4 +118,5 @@ public abstract class EdJsonStoreResult extends JsonViewHint {
 		}
 
 	}
+
 }

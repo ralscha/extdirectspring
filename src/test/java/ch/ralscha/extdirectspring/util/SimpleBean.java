@@ -50,4 +50,5 @@ class SimpleBean {
 	public void methodF() {
 		// nothing here
 	}
+
 }

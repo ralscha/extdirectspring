@@ -18,14 +18,21 @@ package ch.ralscha.extdirectspring.view;
 public abstract class Views {
 
 	public static class Summary {
+
 		/* noting_here */
+
 	}
 
 	public static class Detail extends Summary {
+
 		/* noting_here */
+
 	}
 
 	public static class Secret extends Detail {
+
 		/* noting_here */
+
 	}
+
 }

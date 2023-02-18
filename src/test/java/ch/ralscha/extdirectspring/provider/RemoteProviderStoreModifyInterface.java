@@ -42,9 +42,8 @@ public class RemoteProviderStoreModifyInterface {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Row.class)
-	public List<RowInterface> create2(List<RowInterface> rows,
-			HttpServletResponse response, final HttpServletRequest request,
-			HttpSession session, Locale locale) {
+	public List<RowInterface> create2(List<RowInterface> rows, HttpServletResponse response,
+			final HttpServletRequest request, HttpSession session, Locale locale) {
 		assertThat(response).isNotNull();
 		assertThat(request).isNotNull();
 		assertThat(session).isNotNull();
@@ -67,19 +66,16 @@ public class RemoteProviderStoreModifyInterface {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, entryClass = Row.class)
-	public List<RowInterface> update3(List<RowInterface> rows,
-			@RequestParam(value = "id", defaultValue = "1") int id,
+	public List<RowInterface> update3(List<RowInterface> rows, @RequestParam(value = "id", defaultValue = "1") int id,
 			HttpServletRequest servletRequest) {
 		assertThat(id).isEqualTo(1);
 		assertThat(servletRequest).isNotNull();
 		return rows;
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group2",
-			entryClass = Row.class)
-	public List<RowInterface> update4(
-			@RequestParam(value = "id", required = false) Integer id, @RequestParam(
-					required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate yesterday,
+	@ExtDirectMethod(value = ExtDirectMethodType.STORE_MODIFY, group = "group2", entryClass = Row.class)
+	public List<RowInterface> update4(@RequestParam(value = "id", required = false) Integer id,
+			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate yesterday,
 			final List<RowInterface> rows) {
 
 		if (id == null) {

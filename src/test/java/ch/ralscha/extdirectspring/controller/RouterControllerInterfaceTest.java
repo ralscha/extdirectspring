@@ -61,14 +61,13 @@ public class RouterControllerInterfaceTest {
 
 	@Test
 	public void testNoParameters() {
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderImplementation",
-				"method2", "method2() called");
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderImplementation", "method2", "method2() called");
 	}
 
 	@Test
 	public void testNoParameterAnnotation() {
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderImplementation",
-				"method3", "method3() called-21-3.1-aString2", 21, 3.1, "aString2");
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderImplementation", "method3",
+				"method3() called-21-3.1-aString2", 21, 3.1, "aString2");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -79,9 +78,8 @@ public class RouterControllerInterfaceTest {
 		readRequest.put("lastName", "Smith");
 		readRequest.put("active", Boolean.TRUE);
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderImplementation", "storeRead",
-				new TypeReference<List<Row>>() {/* nothing_here */
+		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderImplementation",
+				"storeRead", new TypeReference<List<Row>>() {/* nothing_here */
 				}, readRequest);
 
 		assertThat(rows).hasSize(1);
@@ -90,4 +88,5 @@ public class RouterControllerInterfaceTest {
 		assertThat(theRow.getName()).isEqualTo("Smith");
 		assertThat(theRow.getSalary()).isEqualTo(new BigDecimal("40"));
 	}
+
 }

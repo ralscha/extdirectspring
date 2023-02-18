@@ -114,4 +114,5 @@ public @interface ExtDirectMethodDocumentation {
 	 * Defaults to false.
 	 */
 	boolean deprecated() default false;
+
 }

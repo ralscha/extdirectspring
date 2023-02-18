@@ -80,8 +80,7 @@ public class RouterController {
 	public static final MediaType APPLICATION_JSON = new MediaType("application", "json",
 			ExtDirectSpringUtil.UTF8_CHARSET);
 
-	public static final MediaType TEXT_HTML = new MediaType("text", "html",
-			ExtDirectSpringUtil.UTF8_CHARSET);
+	public static final MediaType TEXT_HTML = new MediaType("text", "html", ExtDirectSpringUtil.UTF8_CHARSET);
 
 	private static final Log log = LogFactory.getLog(RouterController.class);
 
@@ -95,18 +94,17 @@ public class RouterController {
 	private Set<ExtRequestListener> extRequestListeners;
 
 	@Autowired
-	public RouterController(RequestMappingHandlerAdapter handlerAdapter,
-			ConfigurationService configurationService, MethodInfoCache methodInfoCache) {
+	public RouterController(RequestMappingHandlerAdapter handlerAdapter, ConfigurationService configurationService,
+			MethodInfoCache methodInfoCache) {
 		this.handlerAdapter = handlerAdapter;
 		this.configurationService = configurationService;
 		this.methodInfoCache = methodInfoCache;
 	}
 
 	@RequestMapping(value = "/poll/{beanName}/{method}/{event}")
-	public void poll(@PathVariable("beanName") String beanName,
-			@PathVariable("method") String method, @PathVariable("event") String event,
-			HttpServletRequest request, HttpServletResponse response, Locale locale)
-			throws Exception {
+	public void poll(@PathVariable("beanName") String beanName, @PathVariable("method") String method,
+			@PathVariable("event") String event, HttpServletRequest request, HttpServletResponse response,
+			Locale locale) throws Exception {
 
 		ExtDirectPollResponse directPollResponse = new ExtDirectPollResponse();
 		directPollResponse.setName(event);
@@ -117,13 +115,13 @@ public class RouterController {
 
 		if (methodInfo != null) {
 
-			streamResponse = this.configurationService.getConfiguration()
-					.isStreamResponse() || methodInfo.isStreamResponse();
+			streamResponse = this.configurationService.getConfiguration().isStreamResponse()
+					|| methodInfo.isStreamResponse();
 
 			try {
 
-				Object[] parameters = this.configurationService.getParametersResolver()
-						.prepareParameters(request, response, locale, methodInfo);
+				Object[] parameters = this.configurationService.getParametersResolver().prepareParameters(request,
+						response, locale, methodInfo);
 
 				if (this.configurationService.getConfiguration().isSynchronizeOnSession()
 						|| methodInfo.isSynchronizeOnSession()) {
@@ -132,14 +130,13 @@ public class RouterController {
 						Object mutex = WebUtils.getSessionMutex(session);
 						synchronized (mutex) {
 							Object result = ExtDirectSpringUtil.invoke(
-									this.configurationService.getApplicationContext(),
-									beanName, methodInfo, parameters);
+									this.configurationService.getApplicationContext(), beanName, methodInfo,
+									parameters);
 
 							if (result instanceof ModelAndJsonView) {
 								ModelAndJsonView modelAndJsonView = (ModelAndJsonView) result;
 								directPollResponse.setData(modelAndJsonView.getModel());
-								jsonView = getJsonView(modelAndJsonView,
-										methodInfo.getJsonView());
+								jsonView = getJsonView(modelAndJsonView, methodInfo.getJsonView());
 							}
 							else {
 								directPollResponse.setData(result);
@@ -148,14 +145,12 @@ public class RouterController {
 						}
 					}
 					else {
-						Object result = ExtDirectSpringUtil.invoke(
-								this.configurationService.getApplicationContext(),
+						Object result = ExtDirectSpringUtil.invoke(this.configurationService.getApplicationContext(),
 								beanName, methodInfo, parameters);
 						if (result instanceof ModelAndJsonView) {
 							ModelAndJsonView modelAndJsonView = (ModelAndJsonView) result;
 							directPollResponse.setData(modelAndJsonView.getModel());
-							jsonView = getJsonView(modelAndJsonView,
-									methodInfo.getJsonView());
+							jsonView = getJsonView(modelAndJsonView, methodInfo.getJsonView());
 						}
 						else {
 							directPollResponse.setData(result);
@@ -164,14 +159,12 @@ public class RouterController {
 					}
 				}
 				else {
-					Object result = ExtDirectSpringUtil.invoke(
-							this.configurationService.getApplicationContext(), beanName,
-							methodInfo, parameters);
+					Object result = ExtDirectSpringUtil.invoke(this.configurationService.getApplicationContext(),
+							beanName, methodInfo, parameters);
 					if (result instanceof ModelAndJsonView) {
 						ModelAndJsonView modelAndJsonView = (ModelAndJsonView) result;
 						directPollResponse.setData(modelAndJsonView.getModel());
-						jsonView = getJsonView(modelAndJsonView,
-								methodInfo.getJsonView());
+						jsonView = getJsonView(modelAndJsonView, methodInfo.getJsonView());
 					}
 					else {
 						directPollResponse.setData(result);
@@ -183,16 +176,13 @@ public class RouterController {
 			catch (Exception e) {
 				log.error("Error polling method '" + beanName + "." + method + "'",
 						e.getCause() != null ? e.getCause() : e);
-				directPollResponse.setData(
-						handleException(methodInfo, directPollResponse, e, request));
+				directPollResponse.setData(handleException(methodInfo, directPollResponse, e, request));
 			}
 		}
 		else {
-			log.error("Error invoking method '" + beanName + "." + method
-					+ "'. Method or Bean not found");
+			log.error("Error invoking method '" + beanName + "." + method + "'. Method or Bean not found");
 			handleMethodNotFoundError(directPollResponse, beanName, method);
-			streamResponse = this.configurationService.getConfiguration()
-					.isStreamResponse();
+			streamResponse = this.configurationService.getConfiguration().isStreamResponse();
 		}
 
 		writeJsonResponse(response, directPollResponse, jsonView, streamResponse);
@@ -200,8 +190,8 @@ public class RouterController {
 
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "extAction")
 	public String router(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("extAction") String extAction,
-			@RequestParam("extMethod") String extMethod) throws IOException {
+			@RequestParam("extAction") String extAction, @RequestParam("extMethod") String extMethod)
+			throws IOException {
 
 		ExtDirectResponse directResponse = new ExtDirectResponse(request);
 		MethodInfo methodInfo = this.methodInfoCache.get(extAction, extMethod);
@@ -212,8 +202,8 @@ public class RouterController {
 			return methodInfo.getForwardPath();
 		}
 		else if (methodInfo != null && methodInfo.getHandlerMethod() != null) {
-			streamResponse = this.configurationService.getConfiguration()
-					.isStreamResponse() || methodInfo.isStreamResponse();
+			streamResponse = this.configurationService.getConfiguration().isStreamResponse()
+					|| methodInfo.isStreamResponse();
 
 			HandlerMethod handlerMethod = methodInfo.getHandlerMethod();
 			try {
@@ -226,18 +216,15 @@ public class RouterController {
 					if (session != null) {
 						Object mutex = WebUtils.getSessionMutex(session);
 						synchronized (mutex) {
-							modelAndView = this.handlerAdapter.handle(request, response,
-									handlerMethod);
+							modelAndView = this.handlerAdapter.handle(request, response, handlerMethod);
 						}
 					}
 					else {
-						modelAndView = this.handlerAdapter.handle(request, response,
-								handlerMethod);
+						modelAndView = this.handlerAdapter.handle(request, response, handlerMethod);
 					}
 				}
 				else {
-					modelAndView = this.handlerAdapter.handle(request, response,
-							handlerMethod);
+					modelAndView = this.handlerAdapter.handle(request, response, handlerMethod);
 				}
 
 				Map<String, Object> model = modelAndView.getModel();
@@ -245,56 +232,47 @@ public class RouterController {
 					ExtDirectFormPostResult formPostResult = (ExtDirectFormPostResult) model
 							.get("extDirectFormPostResult");
 					directResponse.setResult(formPostResult.getResult());
-					directResponse.setJsonView(
-							getJsonView(formPostResult, methodInfo.getJsonView()));
+					directResponse.setJsonView(getJsonView(formPostResult, methodInfo.getJsonView()));
 				}
 				else if (model.containsKey("edFormPostResult")) {
-					EdFormPostResult formPostResult = (EdFormPostResult) model
-							.get("edFormPostResult");
+					EdFormPostResult formPostResult = (EdFormPostResult) model.get("edFormPostResult");
 					directResponse.setResult(formPostResult.result());
-					directResponse.setJsonView(
-							getJsonView(formPostResult, methodInfo.getJsonView()));
+					directResponse.setJsonView(getJsonView(formPostResult, methodInfo.getJsonView()));
 				}
 
 			}
 			catch (Exception e) {
-				log.error("Error calling method: " + extMethod,
-						e.getCause() != null ? e.getCause() : e);
-				directResponse.setResult(
-						handleException(methodInfo, directResponse, e, request));
+				log.error("Error calling method: " + extMethod, e.getCause() != null ? e.getCause() : e);
+				directResponse.setResult(handleException(methodInfo, directResponse, e, request));
 			}
 		}
 		else {
-			streamResponse = this.configurationService.getConfiguration()
-					.isStreamResponse();
-			log.error("Error invoking method '" + extAction + "." + extMethod
-					+ "'. Method  or Bean not found");
+			streamResponse = this.configurationService.getConfiguration().isStreamResponse();
+			log.error("Error invoking method '" + extAction + "." + extMethod + "'. Method  or Bean not found");
 			handleMethodNotFoundError(directResponse, extAction, extMethod);
 		}
-		writeJsonResponse(response, directResponse, null, streamResponse,
-				ExtDirectSpringUtil.isMultipart(request));
+		writeJsonResponse(response, directResponse, null, streamResponse, ExtDirectSpringUtil.isMultipart(request));
 
 		return null;
 	}
 
 	@RequestMapping(value = "/router", method = RequestMethod.POST, params = "!extAction",
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-	public void router(HttpServletRequest request, HttpServletResponse response,
-			Locale locale) throws IOException {
+	public void router(HttpServletRequest request, HttpServletResponse response, Locale locale) throws IOException {
 
-		Object requestData = this.configurationService.getJsonHandler()
-				.readValue(request.getInputStream(), Object.class);
+		Object requestData = this.configurationService.getJsonHandler().readValue(request.getInputStream(),
+				Object.class);
 
 		List<ExtDirectRequest> directRequests = null;
 		if (requestData instanceof Map) {
-			directRequests = Collections.singletonList(this.configurationService
-					.getJsonHandler().convertValue(requestData, ExtDirectRequest.class));
+			directRequests = Collections.singletonList(
+					this.configurationService.getJsonHandler().convertValue(requestData, ExtDirectRequest.class));
 		}
 		else if (requestData instanceof List) {
 			directRequests = new ArrayList<>();
 			for (Object oneRequest : (List<?>) requestData) {
-				directRequests.add(this.configurationService.getJsonHandler()
-						.convertValue(oneRequest, ExtDirectRequest.class));
+				directRequests.add(
+						this.configurationService.getJsonHandler().convertValue(oneRequest, ExtDirectRequest.class));
 			}
 		}
 
@@ -314,23 +292,19 @@ public class RouterController {
 
 	}
 
-	private void handleMethodCallsConcurrent(List<ExtDirectRequest> directRequests,
-			HttpServletRequest request, HttpServletResponse response, Locale locale)
-			throws IOException {
+	private void handleMethodCallsConcurrent(List<ExtDirectRequest> directRequests, HttpServletRequest request,
+			HttpServletResponse response, Locale locale) throws IOException {
 
 		List<Future<ExtDirectResponse>> futures = new ArrayList<>(directRequests.size());
 		for (ExtDirectRequest directRequest : directRequests) {
-			Callable<ExtDirectResponse> callable = createMethodCallCallable(directRequest,
-					request, response, locale);
-			futures.add(this.configurationService.getConfiguration()
-					.getBatchedMethodsExecutorService().submit(callable));
+			Callable<ExtDirectResponse> callable = createMethodCallCallable(directRequest, request, response, locale);
+			futures.add(
+					this.configurationService.getConfiguration().getBatchedMethodsExecutorService().submit(callable));
 		}
 
-		ObjectMapper objectMapper = this.configurationService.getJsonHandler()
-				.getMapper();
+		ObjectMapper objectMapper = this.configurationService.getJsonHandler().getMapper();
 		List<Object> directResponses = new ArrayList<>(directRequests.size());
-		boolean streamResponse = this.configurationService.getConfiguration()
-				.isStreamResponse();
+		boolean streamResponse = this.configurationService.getConfiguration().isStreamResponse();
 		for (Future<ExtDirectResponse> future : futures) {
 			try {
 				ExtDirectResponse directResponse = future.get();
@@ -342,8 +316,7 @@ public class RouterController {
 				else {
 					String jsonResult = objectMapper.writerWithView(jsonView)
 							.writeValueAsString(directResponse.getResult());
-					directResponses
-							.add(new ExtDirectResponseRaw(directResponse, jsonResult));
+					directResponses.add(new ExtDirectResponseRaw(directResponse, jsonResult));
 				}
 			}
 			catch (InterruptedException e) {
@@ -356,20 +329,17 @@ public class RouterController {
 		writeJsonResponse(response, directResponses, null, streamResponse);
 	}
 
-	private Callable<ExtDirectResponse> createMethodCallCallable(
-			final ExtDirectRequest directRequest, final HttpServletRequest request,
-			final HttpServletResponse response, final Locale locale) {
+	private Callable<ExtDirectResponse> createMethodCallCallable(final ExtDirectRequest directRequest,
+			final HttpServletRequest request, final HttpServletResponse response, final Locale locale) {
 		return () -> handleMethodCall(directRequest, request, response, locale);
 	}
 
-	private void handleMethodCallOne(ExtDirectRequest directRequest,
-			HttpServletRequest request, HttpServletResponse response, Locale locale)
-			throws IOException {
+	private void handleMethodCallOne(ExtDirectRequest directRequest, HttpServletRequest request,
+			HttpServletResponse response, Locale locale) throws IOException {
 
-		ExtDirectResponse directResponse = handleMethodCall(directRequest, request,
-				response, locale);
-		boolean streamResponse = this.configurationService.getConfiguration()
-				.isStreamResponse() || directResponse.isStreamResponse();
+		ExtDirectResponse directResponse = handleMethodCall(directRequest, request, response, locale);
+		boolean streamResponse = this.configurationService.getConfiguration().isStreamResponse()
+				|| directResponse.isStreamResponse();
 		Class<?> jsonView = directResponse.getJsonView();
 
 		Object responseObject;
@@ -377,30 +347,23 @@ public class RouterController {
 			responseObject = Collections.singleton(directResponse);
 		}
 		else {
-			ObjectMapper objectMapper = this.configurationService.getJsonHandler()
-					.getMapper();
-			String jsonResult = objectMapper.writerWithView(jsonView)
-					.writeValueAsString(directResponse.getResult());
-			responseObject = Collections
-					.singleton(new ExtDirectResponseRaw(directResponse, jsonResult));
+			ObjectMapper objectMapper = this.configurationService.getJsonHandler().getMapper();
+			String jsonResult = objectMapper.writerWithView(jsonView).writeValueAsString(directResponse.getResult());
+			responseObject = Collections.singleton(new ExtDirectResponseRaw(directResponse, jsonResult));
 		}
 
 		writeJsonResponse(response, responseObject, null, streamResponse);
 	}
 
-	private void handleMethodCallsSequential(List<ExtDirectRequest> directRequests,
-			HttpServletRequest request, HttpServletResponse response, Locale locale)
-			throws IOException {
+	private void handleMethodCallsSequential(List<ExtDirectRequest> directRequests, HttpServletRequest request,
+			HttpServletResponse response, Locale locale) throws IOException {
 		List<Object> directResponses = new ArrayList<>(directRequests.size());
-		boolean streamResponse = this.configurationService.getConfiguration()
-				.isStreamResponse();
+		boolean streamResponse = this.configurationService.getConfiguration().isStreamResponse();
 
-		ObjectMapper objectMapper = this.configurationService.getJsonHandler()
-				.getMapper();
+		ObjectMapper objectMapper = this.configurationService.getJsonHandler().getMapper();
 
 		for (ExtDirectRequest directRequest : directRequests) {
-			ExtDirectResponse directResponse = handleMethodCall(directRequest, request,
-					response, locale);
+			ExtDirectResponse directResponse = handleMethodCall(directRequest, request, response, locale);
 			streamResponse = streamResponse || directResponse.isStreamResponse();
 			Class<?> jsonView = directResponse.getJsonView();
 			if (jsonView == null) {
@@ -417,23 +380,20 @@ public class RouterController {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	ExtDirectResponse handleMethodCall(ExtDirectRequest directRequest,
-			HttpServletRequest request, HttpServletResponse response, Locale locale) {
+	ExtDirectResponse handleMethodCall(ExtDirectRequest directRequest, HttpServletRequest request,
+			HttpServletResponse response, Locale locale) {
 
 		ExtDirectResponse directResponse = new ExtDirectResponse(directRequest);
-		notifyExtRequestListenersBeforeRequest(directRequest, directResponse, request,
-				response, locale);
+		notifyExtRequestListenersBeforeRequest(directRequest, directResponse, request, response, locale);
 
 		try {
-			MethodInfo methodInfo = this.methodInfoCache.get(directRequest.getAction(),
-					directRequest.getMethod());
+			MethodInfo methodInfo = this.methodInfoCache.get(directRequest.getAction(), directRequest.getMethod());
 
 			if (methodInfo != null) {
 
 				try {
 					directResponse.setStreamResponse(methodInfo.isStreamResponse());
-					Object result = processRemotingRequest(request, response, locale,
-							directRequest, methodInfo);
+					Object result = processRemotingRequest(request, response, locale, directRequest, methodInfo);
 
 					if (result != null) {
 
@@ -446,20 +406,16 @@ public class RouterController {
 						if (methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
 								&& !(result instanceof ExtDirectFormLoadResult)
 								&& !(result instanceof EdFormLoadResult)) {
-							ExtDirectFormLoadResult formLoadResult = new ExtDirectFormLoadResult(
-									result);
+							ExtDirectFormLoadResult formLoadResult = new ExtDirectFormLoadResult(result);
 							if (result instanceof JsonViewHint) {
-								formLoadResult.setJsonView(
-										((JsonViewHint) result).getJsonView());
+								formLoadResult.setJsonView(((JsonViewHint) result).getJsonView());
 							}
 							result = formLoadResult;
 						}
 						else if ((methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)
 								|| methodInfo.isType(ExtDirectMethodType.STORE_READ))
-								&& !(result instanceof ExtDirectStoreResult)
-								&& !(result instanceof EdStoreResult)
-								&& this.configurationService.getConfiguration()
-										.isAlwaysWrapStoreResponse()) {
+								&& !(result instanceof ExtDirectStoreResult) && !(result instanceof EdStoreResult)
+								&& this.configurationService.getConfiguration().isAlwaysWrapStoreResponse()) {
 							if (result instanceof Collection) {
 								result = new ExtDirectStoreResult((Collection) result);
 							}
@@ -480,12 +436,10 @@ public class RouterController {
 
 						directResponse.setResult(result);
 						if (modelAndJsonView != null) {
-							directResponse.setJsonView(getJsonView(modelAndJsonView,
-									methodInfo.getJsonView()));
+							directResponse.setJsonView(getJsonView(modelAndJsonView, methodInfo.getJsonView()));
 						}
 						else {
-							directResponse.setJsonView(
-									getJsonView(result, methodInfo.getJsonView()));
+							directResponse.setJsonView(getJsonView(result, methodInfo.getJsonView()));
 						}
 
 					}
@@ -500,97 +454,84 @@ public class RouterController {
 				catch (Exception e) {
 					log.error("Error calling method: " + directRequest.getMethod(),
 							e.getCause() != null ? e.getCause() : e);
-					directResponse.setResult(
-							handleException(methodInfo, directResponse, e, request));
+					directResponse.setResult(handleException(methodInfo, directResponse, e, request));
 				}
 			}
 			else {
-				log.error("Error invoking method '" + directRequest.getAction() + "."
-						+ directRequest.getMethod() + "'. Method or Bean not found");
-				handleMethodNotFoundError(directResponse, directRequest.getAction(),
-						directRequest.getMethod());
+				log.error("Error invoking method '" + directRequest.getAction() + "." + directRequest.getMethod()
+						+ "'. Method or Bean not found");
+				handleMethodNotFoundError(directResponse, directRequest.getAction(), directRequest.getMethod());
 			}
 
 			return directResponse;
 		}
 		finally {
-			notifyExtRequestListenersAfterRequest(directRequest, directResponse, request,
-					response, locale);
+			notifyExtRequestListenersAfterRequest(directRequest, directResponse, request, response, locale);
 		}
 	}
 
 	private void notifyExtRequestListenersBeforeRequest(ExtDirectRequest directRequest,
-			ExtDirectResponse directResponse, HttpServletRequest request,
-			HttpServletResponse response, Locale locale) {
+			ExtDirectResponse directResponse, HttpServletRequest request, HttpServletResponse response, Locale locale) {
 		if (this.extRequestListeners != null) {
 			for (ExtRequestListener extrl : this.extRequestListeners) {
-				extrl.beforeRequest(directRequest, directResponse, request, response,
-						locale);
+				extrl.beforeRequest(directRequest, directResponse, request, response, locale);
 			}
 		}
 	}
 
-	private void notifyExtRequestListenersAfterRequest(ExtDirectRequest directRequest,
-			ExtDirectResponse directResponse, HttpServletRequest request,
-			HttpServletResponse response, Locale locale) {
+	private void notifyExtRequestListenersAfterRequest(ExtDirectRequest directRequest, ExtDirectResponse directResponse,
+			HttpServletRequest request, HttpServletResponse response, Locale locale) {
 		if (this.extRequestListeners != null) {
 			for (ExtRequestListener extrl : this.extRequestListeners) {
-				extrl.afterRequest(directRequest, directResponse, request, response,
-						locale);
+				extrl.afterRequest(directRequest, directResponse, request, response, locale);
 			}
 		}
 	}
 
-	public void writeJsonResponse(HttpServletRequest request,
-			HttpServletResponse response, Object responseObject, Class<?> jsonView)
-			throws IOException {
+	public void writeJsonResponse(HttpServletRequest request, HttpServletResponse response, Object responseObject,
+			Class<?> jsonView) throws IOException {
 		writeJsonResponse(response, responseObject, jsonView,
 				this.configurationService.getConfiguration().isStreamResponse(),
 				ExtDirectSpringUtil.isMultipart(request));
 	}
 
-	private void writeJsonResponse(HttpServletResponse response, Object responseObject,
-			Class<?> jsonView, boolean streamResponse) throws IOException {
+	private void writeJsonResponse(HttpServletResponse response, Object responseObject, Class<?> jsonView,
+			boolean streamResponse) throws IOException {
 		writeJsonResponse(response, responseObject, jsonView, streamResponse, false);
 	}
 
 	@SuppressWarnings("resource")
-	public void writeJsonResponse(HttpServletResponse response, Object responseObject,
-			Class<?> jsonView, boolean streamResponse, boolean isMultipart)
-			throws IOException {
+	public void writeJsonResponse(HttpServletResponse response, Object responseObject, Class<?> jsonView,
+			boolean streamResponse, boolean isMultipart) throws IOException {
 
-		ObjectMapper objectMapper = this.configurationService.getJsonHandler()
-				.getMapper();
+		ObjectMapper objectMapper = this.configurationService.getJsonHandler().getMapper();
 
 		if (isMultipart) {
 			response.setContentType(RouterController.TEXT_HTML.toString());
 			response.setCharacterEncoding(RouterController.TEXT_HTML.getCharset().name());
 
 			ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
-			bos.write(
-					"<html><body><textarea>".getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
+			bos.write("<html><body><textarea>".getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
 
 			String responseJson;
 			if (jsonView == null) {
 				responseJson = objectMapper.writeValueAsString(responseObject);
 			}
 			else {
-				responseJson = objectMapper.writerWithView(jsonView)
-						.writeValueAsString(responseObject);
+				responseJson = objectMapper.writerWithView(jsonView).writeValueAsString(responseObject);
 			}
 
 			responseJson = responseJson.replace("&quot;", "\\&quot;");
 			bos.write(responseJson.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
 
-			String frameDomain = this.configurationService.getConfiguration()
-					.getFrameDomain();
+			String frameDomain = this.configurationService.getConfiguration().getFrameDomain();
 			String frameDomainScript = "";
 			if (frameDomain != null) {
-				frameDomainScript = String.format(this.configurationService
-						.getConfiguration().getFrameDomainScript(), frameDomain);
+				frameDomainScript = String.format(this.configurationService.getConfiguration().getFrameDomainScript(),
+						frameDomain);
 			}
-			bos.write(("</textarea>" + frameDomainScript + "</body></html>")
-					.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
+			bos.write(
+					("</textarea>" + frameDomainScript + "</body></html>").getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
 
 			response.setContentLength(bos.size());
 			FileCopyUtils.copy(bos.toByteArray(), response.getOutputStream());
@@ -604,15 +545,13 @@ public class RouterController {
 
 			if (!streamResponse) {
 				ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
-				JsonGenerator jsonGenerator = objectMapper.getFactory()
-						.createGenerator(bos, JsonEncoding.UTF8);
+				JsonGenerator jsonGenerator = objectMapper.getFactory().createGenerator(bos, JsonEncoding.UTF8);
 
 				if (jsonView == null) {
 					objectMapper.writeValue(jsonGenerator, responseObject);
 				}
 				else {
-					objectMapper.writerWithView(jsonView).writeValue(jsonGenerator,
-							responseObject);
+					objectMapper.writerWithView(jsonView).writeValue(jsonGenerator, responseObject);
 				}
 
 				response.setContentLength(bos.size());
@@ -620,14 +559,13 @@ public class RouterController {
 				jsonGenerator.close();
 			}
 			else {
-				JsonGenerator jsonGenerator = objectMapper.getFactory()
-						.createGenerator(outputStream, JsonEncoding.UTF8);
+				JsonGenerator jsonGenerator = objectMapper.getFactory().createGenerator(outputStream,
+						JsonEncoding.UTF8);
 				if (jsonView == null) {
 					objectMapper.writeValue(jsonGenerator, responseObject);
 				}
 				else {
-					objectMapper.writerWithView(jsonView).writeValue(jsonGenerator,
-							responseObject);
+					objectMapper.writerWithView(jsonView).writeValue(jsonGenerator, responseObject);
 				}
 				jsonGenerator.close();
 			}
@@ -636,12 +574,11 @@ public class RouterController {
 		}
 	}
 
-	private Object processRemotingRequest(HttpServletRequest request,
-			HttpServletResponse response, Locale locale, ExtDirectRequest directRequest,
-			MethodInfo methodInfo) throws Exception {
+	private Object processRemotingRequest(HttpServletRequest request, HttpServletResponse response, Locale locale,
+			ExtDirectRequest directRequest, MethodInfo methodInfo) throws Exception {
 
-		Object[] parameters = this.configurationService.getParametersResolver()
-				.resolveParameters(request, response, locale, directRequest, methodInfo);
+		Object[] parameters = this.configurationService.getParametersResolver().resolveParameters(request, response,
+				locale, directRequest, methodInfo);
 
 		if (this.configurationService.getConfiguration().isSynchronizeOnSession()
 				|| methodInfo.isSynchronizeOnSession()) {
@@ -649,33 +586,27 @@ public class RouterController {
 			if (session != null) {
 				Object mutex = WebUtils.getSessionMutex(session);
 				synchronized (mutex) {
-					return ExtDirectSpringUtil.invoke(
-							this.configurationService.getApplicationContext(),
+					return ExtDirectSpringUtil.invoke(this.configurationService.getApplicationContext(),
 							directRequest.getAction(), methodInfo, parameters);
 				}
 			}
 		}
 
-		return ExtDirectSpringUtil.invoke(
-				this.configurationService.getApplicationContext(),
-				directRequest.getAction(), methodInfo, parameters);
+		return ExtDirectSpringUtil.invoke(this.configurationService.getApplicationContext(), directRequest.getAction(),
+				methodInfo, parameters);
 	}
 
-	private Object handleException(MethodInfo methodInfo, BaseResponse response,
-			Exception e, HttpServletRequest request) {
-		return this.configurationService.getRouterExceptionHandler()
-				.handleException(methodInfo, response, e, request);
+	private Object handleException(MethodInfo methodInfo, BaseResponse response, Exception e,
+			HttpServletRequest request) {
+		return this.configurationService.getRouterExceptionHandler().handleException(methodInfo, response, e, request);
 	}
 
-	private void handleMethodNotFoundError(BaseResponse response, String beanName,
-			String methodName) {
+	private void handleMethodNotFoundError(BaseResponse response, String beanName, String methodName) {
 		response.setType("exception");
-		response.setMessage(this.configurationService.getConfiguration()
-				.getDefaultExceptionMessage());
+		response.setMessage(this.configurationService.getConfiguration().getDefaultExceptionMessage());
 
 		if (this.configurationService.getConfiguration().isSendStacktrace()) {
-			response.setWhere(
-					"Bean or Method '" + beanName + "." + methodName + "' not found");
+			response.setWhere("Bean or Method '" + beanName + "." + methodName + "' not found");
 		}
 		else {
 			response.setWhere(null);

@@ -69,8 +69,7 @@ public class ExtDirectSpringUtilTest {
 		request.addHeader("Origin", "http://eds.rasc.ch");
 		request.addHeader("User-Agent",
 				"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.75 Safari/537.1");
-		request.addHeader("Content-Type",
-				"multipart/form-data; boundary=----WebKitFormBoundaryux6D0mMa2PlsY016");
+		request.addHeader("Content-Type", "multipart/form-data; boundary=----WebKitFormBoundaryux6D0mMa2PlsY016");
 
 		assertThat(ExtDirectSpringUtil.isMultipart(request)).isTrue();
 
@@ -85,8 +84,7 @@ public class ExtDirectSpringUtilTest {
 		request.addHeader("X-Requested-With", "XMLHttpRequest");
 		request.addHeader("User-Agent",
 				"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.75 Safari/537.1");
-		request.addHeader("Content-Type",
-				"application/x-www-form-urlencoded; charset=UTF-8");
+		request.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
 		assertThat(ExtDirectSpringUtil.isMultipart(request)).isFalse();
 
@@ -117,20 +115,16 @@ public class ExtDirectSpringUtilTest {
 		assertResponse(response, 3, "3", 12);
 	}
 
-	private static void assertResponse(MockHttpServletResponse response, int noOfHeaders,
-			String etag, int month) {
+	private static void assertResponse(MockHttpServletResponse response, int noOfHeaders, String etag, int month) {
 		assertThat(response.getHeaderNames()).hasSize(noOfHeaders);
 		assertThat(response.getHeader("ETag")).isEqualTo(etag);
-		assertThat(response.getHeader("Cache-Control"))
-				.isEqualTo("public, max-age=" + month * 30 * 24 * 60 * 60);
+		assertThat(response.getHeader("Cache-Control")).isEqualTo("public, max-age=" + month * 30 * 24 * 60 * 60);
 
 		String expiresHeader = (String) response.getHeaderValue("Expires");
-		DateTimeFormatter fmt = DateTimeFormatter
-				.ofPattern("EEE, dd MMM yyyy HH:mm:ss z");
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z");
 		LocalDateTime expires = LocalDateTime.parse(expiresHeader, fmt);
 
-		LocalDateTime inSixMonths = LocalDateTime.now(ZoneOffset.UTC)
-				.plusSeconds(month * 30 * 24 * 60 * 60);
+		LocalDateTime inSixMonths = LocalDateTime.now(ZoneOffset.UTC).plusSeconds(month * 30 * 24 * 60 * 60);
 		assertThat(expires.getYear()).isEqualTo(inSixMonths.getYear());
 		assertThat(expires.getMonth()).isEqualTo(inSixMonths.getMonth());
 		assertThat(expires.getDayOfMonth()).isEqualTo(inSixMonths.getDayOfMonth());
@@ -187,4 +181,5 @@ public class ExtDirectSpringUtilTest {
 		assertThat(response.getContentType()).isEqualTo(contentType);
 		assertThat(response.getContentAsByteArray()).isEqualTo(data);
 	}
+
 }

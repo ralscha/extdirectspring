@@ -56,8 +56,7 @@ public class SimpleMethodConcurrentTest extends BaseViewTest {
 	public void testMultiple1() {
 		List<BeanMethod> bms = new ArrayList<>();
 		bms.add(new BeanMethod("simpleMethodService", "noView"));
-		List<Map<String, Object>> results = ControllerUtil
-				.sendAndReceiveMultiple(this.mockMvc, bms);
+		List<Map<String, Object>> results = ControllerUtil.sendAndReceiveMultiple(this.mockMvc, bms);
 		assertThat(results).hasSize(1);
 		Map<String, Object> result = results.get(0);
 		assertThat(result).hasSize(noView().length);
@@ -70,13 +69,11 @@ public class SimpleMethodConcurrentTest extends BaseViewTest {
 		bms.add(new BeanMethod("simpleMethodService", "noView"));
 		bms.add(new BeanMethod("simpleMethodService", "annotationSummaryView"));
 		bms.add(new BeanMethod("simpleMethodService", "annotationDetailView"));
-		List<Map<String, Object>> results = ControllerUtil
-				.sendAndReceiveMultiple(this.mockMvc, bms);
+		List<Map<String, Object>> results = ControllerUtil.sendAndReceiveMultiple(this.mockMvc, bms);
 		assertThat(results).hasSize(3);
 
 		int ix = 0;
-		for (MapEntry<String, Object>[] entries : Arrays.asList(noView(), summaryView(),
-				detailView())) {
+		for (MapEntry<String, Object>[] entries : Arrays.asList(noView(), summaryView(), detailView())) {
 			Map<String, Object> result = results.get(ix++);
 			assertThat(result).hasSize(entries.length);
 			assertThat(result).contains(entries);
@@ -91,13 +88,12 @@ public class SimpleMethodConcurrentTest extends BaseViewTest {
 		bms.add(new BeanMethod("simpleMethodService", "noView"));
 		bms.add(new BeanMethod("simpleMethodService", "overrideSubclassDetailView"));
 		bms.add(new BeanMethod("simpleMethodService", "overrideSubclassNoView"));
-		List<Map<String, Object>> results = ControllerUtil
-				.sendAndReceiveMultiple(this.mockMvc, bms);
+		List<Map<String, Object>> results = ControllerUtil.sendAndReceiveMultiple(this.mockMvc, bms);
 		assertThat(results).hasSize(5);
 
 		int ix = 0;
-		for (MapEntry<String, Object>[] entries : Arrays.asList(summaryView(),
-				detailView(), noView(), detailView(), noView())) {
+		for (MapEntry<String, Object>[] entries : Arrays.asList(summaryView(), detailView(), noView(), detailView(),
+				noView())) {
 			Map<String, Object> result = results.get(ix++);
 			assertThat(result).hasSize(entries.length);
 			assertThat(result).contains(entries);

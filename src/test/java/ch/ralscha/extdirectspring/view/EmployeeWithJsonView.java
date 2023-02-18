@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import ch.ralscha.extdirectspring.bean.JsonViewHint;
 
 public class EmployeeWithJsonView extends JsonViewHint {
+
 	private Long id;
 
 	@JsonView(Views.Summary.class)

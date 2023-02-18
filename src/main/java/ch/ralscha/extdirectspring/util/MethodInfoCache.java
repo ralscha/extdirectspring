@@ -29,8 +29,7 @@ import org.springframework.stereotype.Service;
  * A simple cache for methods with key beanName/methodName
  */
 @Service
-public class MethodInfoCache
-		implements Iterable<Map.Entry<MethodInfoCache.Key, MethodInfo>> {
+public class MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, MethodInfo>> {
 
 	private final Map<Key, MethodInfo> cache;
 
@@ -40,21 +39,18 @@ public class MethodInfoCache
 
 	/**
 	 * Put a method into the MethodCache.
-	 *
 	 * @param beanName the name of the bean
 	 * @param clazz the class of the bean
 	 * @param method the method
 	 * @param context the Spring application context
 	 */
-	public void put(String beanName, Class<?> clazz, Method method,
-			ApplicationContext context) {
+	public void put(String beanName, Class<?> clazz, Method method, ApplicationContext context) {
 		MethodInfo info = new MethodInfo(clazz, context, beanName, method);
 		this.cache.put(new Key(beanName, method.getName()), info);
 	}
 
 	/**
 	 * Get a method from the MethodCache.
-	 *
 	 * @param beanName the name of the bean
 	 * @param methodName the name of the method
 	 * @return the found methodInfo object, null if there is no method found in the cache

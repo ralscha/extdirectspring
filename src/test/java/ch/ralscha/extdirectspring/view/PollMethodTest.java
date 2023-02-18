@@ -107,12 +107,10 @@ public class PollMethodTest extends BaseViewTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void callMethod(String bean, String method,
-			MapEntry<String, Object>... expectedEntries) {
+	private void callMethod(String bean, String method, MapEntry<String, Object>... expectedEntries) {
 		ExtDirectPollResponse response;
 		try {
-			response = ControllerUtil.performPollRequest(this.mockMvc, bean, method,
-					"theEvent", null, null);
+			response = ControllerUtil.performPollRequest(this.mockMvc, bean, method, "theEvent", null, null);
 			Map<String, Object> data = (Map<String, Object>) response.getData();
 			assertThat(data).hasSize(expectedEntries.length);
 			assertThat(data).contains(expectedEntries);
@@ -122,4 +120,5 @@ public class PollMethodTest extends BaseViewTest {
 		}
 
 	}
+
 }

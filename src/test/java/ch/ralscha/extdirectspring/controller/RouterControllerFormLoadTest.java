@@ -84,9 +84,8 @@ public class RouterControllerFormLoadTest {
 	public void testFormLoad() {
 		Map<String, Object> data = new HashMap<>();
 		data.put("d", 3.141);
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderFormLoad", "method1",
-						ExtDirectFormLoadResult.class, data);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderFormLoad", "method1", ExtDirectFormLoadResult.class, data);
 
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
@@ -97,25 +96,21 @@ public class RouterControllerFormLoadTest {
 		assertThat(info.getAge()).isEqualTo(31);
 		assertThat(info.getName()).isEqualTo("Bob");
 		assertThat(info.getSalary()).isEqualTo(new BigDecimal("10000.55"));
-		assertThat(info.getBirthday())
-				.isEqualTo(new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime());
+		assertThat(info.getBirthday()).isEqualTo(new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime());
 	}
 
 	@Test
 	public void testFormLoadReturnsNull() {
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderFormLoad", "method2",
-				null, Void.TYPE);
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderFormLoad", "method2", null, Void.TYPE);
 	}
 
 	@Test
 	public void testWithSupportedArguments() {
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderFormLoad", "method3",
-						ExtDirectFormLoadResult.class);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderFormLoad", "method3", ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
-		FormInfo formInfo = ControllerUtil.convertValue(wrapper.getData(),
-				FormInfo.class);
+		FormInfo formInfo = ControllerUtil.convertValue(wrapper.getData(), FormInfo.class);
 		assertThat(formInfo.getResult()).isEqualTo("true;true;true;en");
 	}
 
@@ -123,42 +118,37 @@ public class RouterControllerFormLoadTest {
 	public void testWithRequestParam() {
 		Map<String, Object> data = new HashMap<>();
 		data.put("id", 12);
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderFormLoad", "method4",
-						ExtDirectFormLoadResult.class, data);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderFormLoad", "method4", ExtDirectFormLoadResult.class, data);
 
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
-		FormInfo formInfo = ControllerUtil.convertValue(wrapper.getData(),
-				FormInfo.class);
+		FormInfo formInfo = ControllerUtil.convertValue(wrapper.getData(), FormInfo.class);
 		assertThat(formInfo.getResult()).isEqualTo("id=12;en");
 	}
 
 	@Test
 	public void testWithRequestParamDefaultValue() {
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderFormLoad", "method5",
-						ExtDirectFormLoadResult.class);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderFormLoad", "method5", ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
-		FormInfo formInfo = ControllerUtil.convertValue(wrapper.getData(),
-				FormInfo.class);
+		FormInfo formInfo = ControllerUtil.convertValue(wrapper.getData(), FormInfo.class);
 		assertThat(formInfo.getResult()).isEqualTo("1;true");
 	}
 
 	@Test
 	public void testWithRequestParamOptional() {
 
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderFormLoad", "method6",
-						ExtDirectFormLoadResult.class);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderFormLoad", "method6", ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isEqualTo("TEST:null");
 
 		Map<String, Object> data = new HashMap<>();
 		data.put("id", 11);
-		wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderFormLoad", "method6", ExtDirectFormLoadResult.class, data);
+		wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderFormLoad",
+				"method6", ExtDirectFormLoadResult.class, data);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isEqualTo("TEST:11");
 	}
@@ -168,26 +158,24 @@ public class RouterControllerFormLoadTest {
 		Map<String, Object> data = new HashMap<>();
 		data.put("data", "one");
 		data.put("success", Boolean.TRUE);
-		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderFormLoad", "method7",
-						ExtDirectFormLoadResult.class, data);
+		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderFormLoad", "method7", ExtDirectFormLoadResult.class, data);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isEqualTo("one");
 
 		data = new HashMap<>();
 		data.put("data", "two");
 		data.put("success", Boolean.FALSE);
-		wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderFormLoad", "method7", ExtDirectFormLoadResult.class, data);
+		wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderFormLoad",
+				"method7", ExtDirectFormLoadResult.class, data);
 		assertThat(wrapper.isSuccess()).isFalse();
 		assertThat(wrapper.getData()).isEqualTo("two");
 	}
 
 	@Test
 	public void testWithRequestParamDefaultValueEd() {
-		EdFormLoadResult wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(
-				this.mockMvc, "remoteProviderFormLoad", "method5Ed",
-				EdFormLoadResult.class);
+		EdFormLoadResult wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderFormLoad", "method5Ed", EdFormLoadResult.class);
 		assertThat(wrapper.success()).isTrue();
 		assertThat(wrapper.data()).isNotNull();
 		FormInfo formInfo = ControllerUtil.convertValue(wrapper.data(), FormInfo.class);
@@ -197,16 +185,15 @@ public class RouterControllerFormLoadTest {
 	@Test
 	public void testWithRequestParamOptionalEd() {
 
-		EdFormLoadResult wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(
-				this.mockMvc, "remoteProviderFormLoad", "method6Ed",
-				EdFormLoadResult.class);
+		EdFormLoadResult wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderFormLoad", "method6Ed", EdFormLoadResult.class);
 		assertThat(wrapper.success()).isTrue();
 		assertThat(wrapper.data()).isEqualTo("TEST:null");
 
 		Map<String, Object> data = new HashMap<>();
 		data.put("id", 11);
-		wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderFormLoad", "method6Ed", EdFormLoadResult.class, data);
+		wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderFormLoad", "method6Ed",
+				EdFormLoadResult.class, data);
 		assertThat(wrapper.success()).isTrue();
 		assertThat(wrapper.data()).isEqualTo("TEST:11");
 	}
@@ -216,17 +203,16 @@ public class RouterControllerFormLoadTest {
 		Map<String, Object> data = new HashMap<>();
 		data.put("data", "one");
 		data.put("success", Boolean.TRUE);
-		EdFormLoadResult wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(
-				this.mockMvc, "remoteProviderFormLoad", "method7Ed",
-				EdFormLoadResult.class, data);
+		EdFormLoadResult wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
+				"remoteProviderFormLoad", "method7Ed", EdFormLoadResult.class, data);
 		assertThat(wrapper.success()).isTrue();
 		assertThat(wrapper.data()).isEqualTo("one");
 
 		data = new HashMap<>();
 		data.put("data", "two");
 		data.put("success", Boolean.FALSE);
-		wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderFormLoad", "method7Ed", EdFormLoadResult.class, data);
+		wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderFormLoad", "method7Ed",
+				EdFormLoadResult.class, data);
 		assertThat(wrapper.success()).isFalse();
 		assertThat(wrapper.data()).isEqualTo("two");
 	}
@@ -237,23 +223,19 @@ public class RouterControllerFormLoadTest {
 
 		edRequests.add(ControllerUtil.createEdsRequest("remoteProvider", "method1", 1,
 				new Object[] { 3, 2.5, "string.param" }));
-		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderSimple", "method4",
-				2, new Object[] { 3, 2.5, "string.param" }));
-		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderSimple", "method1",
-				3, null));
+		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderSimple", "method4", 2,
+				new Object[] { 3, 2.5, "string.param" }));
+		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderSimple", "method1", 3, null));
 
 		Map<String, Object> data = new HashMap<>();
 		data.put("d", 1.1);
-		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderFormLoad",
-				"method1", 4, data));
+		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderFormLoad", "method1", 4, data));
 
 		data = new HashMap<>();
 		data.put("d", 2.2);
-		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderFormLoad",
-				"method1", 5, data));
+		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderFormLoad", "method1", 5, data));
 
-		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderSimple", "method6",
-				6, new Object[] { 20, 20 }));
+		edRequests.add(ControllerUtil.createEdsRequest("remoteProviderSimple", "method6", 6, new Object[] { 20, 20 }));
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("[");
@@ -263,8 +245,7 @@ public class RouterControllerFormLoadTest {
 		}
 		sb.replace(sb.length() - 1, sb.length(), "]");
 
-		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc,
-				sb.toString());
+		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, sb.toString());
 		List<ExtDirectResponse> responses = ControllerUtil
 				.readDirectResponses(result.getResponse().getContentAsByteArray());
 
@@ -286,8 +267,7 @@ public class RouterControllerFormLoadTest {
 		checkIntParameterResult(responses.get(5), 6, 40);
 	}
 
-	private static void checkIntParameterResult(ExtDirectResponse resp, int tid,
-			int result) {
+	private static void checkIntParameterResult(ExtDirectResponse resp, int tid, int result) {
 		assertThat(resp.getAction()).isEqualTo("remoteProviderSimple");
 		assertThat(resp.getMethod()).isEqualTo("method6");
 		assertThat(resp.getTid()).isEqualTo(tid);
@@ -307,8 +287,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(resp.getWhere()).isNull();
 	}
 
-	private static void checkFormLoadResult(ExtDirectResponse resp, double back,
-			int tid) {
+	private static void checkFormLoadResult(ExtDirectResponse resp, double back, int tid) {
 		assertThat(resp.getAction()).isEqualTo("remoteProviderFormLoad");
 		assertThat(resp.getMethod()).isEqualTo("method1");
 		assertThat(resp.getTid()).isEqualTo(tid);
@@ -317,8 +296,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(resp.getMessage()).isNull();
 		assertThat(resp.getResult()).isNotNull();
 
-		ExtDirectFormLoadResult wrapper = ControllerUtil.convertValue(resp.getResult(),
-				ExtDirectFormLoadResult.class);
+		ExtDirectFormLoadResult wrapper = ControllerUtil.convertValue(resp.getResult(), ExtDirectFormLoadResult.class);
 		assertThat(wrapper.isSuccess()).isTrue();
 		assertThat(wrapper.getData()).isNotNull();
 
@@ -329,8 +307,7 @@ public class RouterControllerFormLoadTest {
 		assertThat(info.getAge()).isEqualTo(31);
 		assertThat(info.getName()).isEqualTo("Bob");
 		assertThat(info.getSalary()).isEqualTo(new BigDecimal("10000.55"));
-		assertThat(info.getBirthday())
-				.isEqualTo(new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime());
+		assertThat(info.getBirthday()).isEqualTo(new GregorianCalendar(1980, Calendar.JANUARY, 15).getTime());
 	}
 
 	private static void checkNoParametersResponse(ExtDirectResponse resp, int tid) {

@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.view;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class Employee {
+
 	private Long id;
 
 	@JsonView(Views.Summary.class)

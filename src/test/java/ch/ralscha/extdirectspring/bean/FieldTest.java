@@ -51,4 +51,5 @@ public class FieldTest {
 		assertThat(fieldData).contains(entry("customProperty2", "aValue"));
 
 	}
+
 }

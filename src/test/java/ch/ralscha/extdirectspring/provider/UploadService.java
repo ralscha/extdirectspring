@@ -33,10 +33,9 @@ import ch.ralscha.extdirectspring_itest.User;
 @Service
 public class UploadService {
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2",
-			synchronizeOnSession = true)
-	public ExtDirectFormPostResult upload(@RequestParam("fileUpload") MultipartFile file,
-			@Valid User user, BindingResult result) throws IOException {
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2", synchronizeOnSession = true)
+	public ExtDirectFormPostResult upload(@RequestParam("fileUpload") MultipartFile file, @Valid User user,
+			BindingResult result) throws IOException {
 
 		ExtDirectFormPostResult resp = new ExtDirectFormPostResult(result, false);
 
@@ -55,10 +54,9 @@ public class UploadService {
 	}
 
 	@Valid
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2",
-			synchronizeOnSession = true)
-	public EdFormPostResult uploadEd(@RequestParam("fileUpload") MultipartFile file,
-			@Valid User user, BindingResult result) throws IOException {
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group2", synchronizeOnSession = true)
+	public EdFormPostResult uploadEd(@RequestParam("fileUpload") MultipartFile file, @Valid User user,
+			BindingResult result) throws IOException {
 
 		EdFormPostResult.Builder e = EdFormPostResult.builder();
 		e.addError(result);
@@ -85,4 +83,5 @@ public class UploadService {
 		e.success();
 		return e.build();
 	}
+
 }

@@ -29,4 +29,5 @@ public enum BatchedMethodsExecutionPolicy {
 	 * Executes methods concurrently in a thread pool
 	 */
 	CONCURRENT
+
 }

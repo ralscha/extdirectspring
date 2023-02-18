@@ -27,8 +27,7 @@ public class ListFilterTest {
 	@Test
 	public void testList() {
 		String[] values = { "one", "two", "three" };
-		ListFilter<String> filter = new ListFilter<>("field", Arrays.asList(values), null,
-				null);
+		ListFilter<String> filter = new ListFilter<>("field", Arrays.asList(values), null, null);
 
 		List<String> list = filter.getValue();
 		assertThat(list).hasSize(3);

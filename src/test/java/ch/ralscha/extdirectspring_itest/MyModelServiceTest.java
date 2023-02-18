@@ -79,39 +79,33 @@ public class MyModelServiceTest extends JettyTest {
 
 	@Test
 	public void testApi() throws IOException {
-		HttpGet g = new HttpGet(
-				"http://localhost:9998/controller/api.js?group=itest_base_service");
+		HttpGet g = new HttpGet("http://localhost:9998/controller/api.js?group=itest_base_service");
 		try (CloseableHttpResponse response = this.client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
-			ApiControllerTest.compare(responseString, contentType, api(),
-					ApiRequestParams.builder().build());
+			ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, false);
 		}
 	}
 
 	@Test
 	public void testApiDebug() throws IOException {
-		HttpGet g = new HttpGet(
-				"http://localhost:9998/controller/api-debug.js?group=itest_base_service");
+		HttpGet g = new HttpGet("http://localhost:9998/controller/api-debug.js?group=itest_base_service");
 		try (CloseableHttpResponse response = this.client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
-			ApiControllerTest.compare(responseString, contentType, api(),
-					ApiRequestParams.builder().build());
+			ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, false);
 		}
 	}
 
 	@Test
 	public void testApiFingerprinted() throws IOException {
-		HttpGet g = new HttpGet(
-				"http://localhost:9998/controller/api-1.1.1.js?group=itest_base_service");
+		HttpGet g = new HttpGet("http://localhost:9998/controller/api-1.1.1.js?group=itest_base_service");
 		try (CloseableHttpResponse response = this.client.execute(g)) {
 			String responseString = EntityUtils.toString(response.getEntity());
 			String contentType = response.getFirstHeader("Content-Type").getValue();
-			ApiControllerTest.compare(responseString, contentType, api(),
-					ApiRequestParams.builder().build());
+			ApiControllerTest.compare(responseString, contentType, api(), ApiRequestParams.builder().build());
 			SimpleServiceTest.assertCacheHeaders(response, true);
 		}
 	}
@@ -123,8 +117,7 @@ public class MyModelServiceTest extends JettyTest {
 		callMethod("method2");
 	}
 
-	private void callMethod(String method)
-			throws IOException, JsonParseException, JsonMappingException {
+	private void callMethod(String method) throws IOException, JsonParseException, JsonMappingException {
 		List<NameValuePair> formparams = new ArrayList<>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
 		formparams.add(new BasicNameValuePair("extAction", "myModelService"));
@@ -154,4 +147,5 @@ public class MyModelServiceTest extends JettyTest {
 			assertThat((Boolean) result.get("success")).isTrue();
 		}
 	}
+
 }

@@ -63,8 +63,7 @@ public class MetaData {
 	@SuppressWarnings("unchecked")
 	public void addField(Field field) {
 
-		List<Map<String, Object>> fields = (List<Map<String, Object>>) this.metaData
-				.get("fields");
+		List<Map<String, Object>> fields = (List<Map<String, Object>>) this.metaData.get("fields");
 
 		if (fields == null) {
 			fields = new ArrayList<>();

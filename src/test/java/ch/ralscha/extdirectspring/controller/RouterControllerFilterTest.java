@@ -62,8 +62,7 @@ public class RouterControllerFilterTest {
 	@BeforeAll
 	public static void readJson() throws IOException {
 		jsonList = new ArrayList<>();
-		try (InputStream is = RouterControllerFilterTest.class
-				.getResourceAsStream("/filterjson.txt");
+		try (InputStream is = RouterControllerFilterTest.class.getResourceAsStream("/filterjson.txt");
 				BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
 			String line = null;
 			while ((line = br.readLine()) != null) {
@@ -91,10 +90,9 @@ public class RouterControllerFilterTest {
 			assertThat(resp.getWhere()).isNull();
 			assertThat(resp.getResult()).isNotNull();
 
-			List<Row> rows = ControllerUtil.convertValue(resp.getResult(),
-					new TypeReference<List<Row>>() {
-						// nothing here
-					});
+			List<Row> rows = ControllerUtil.convertValue(resp.getResult(), new TypeReference<List<Row>>() {
+				// nothing here
+			});
 
 			assertThat(rows).hasSize(1);
 			assertThat(rows.get(0).getId()).isEqualTo(index);

@@ -90,4 +90,5 @@ public class MetaDataTest {
 		assertThat(field3).contains(entry("name", "country"));
 
 	}
+
 }

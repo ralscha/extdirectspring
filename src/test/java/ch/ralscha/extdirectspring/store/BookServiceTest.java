@@ -60,4 +60,5 @@ public class BookServiceTest {
 	public void testDelete() throws Exception {
 		new CrudTestMethods("bookService").testDelete(this.mockMvc);
 	}
+
 }

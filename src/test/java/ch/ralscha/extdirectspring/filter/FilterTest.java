@@ -275,4 +275,5 @@ public class FilterTest {
 		assertThat(filter.getRawComparison()).isNull();
 		assertThat(filter.getComparison()).isNull();
 	}
+
 }

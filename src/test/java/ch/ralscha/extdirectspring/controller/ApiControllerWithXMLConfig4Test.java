@@ -57,13 +57,11 @@ public class ApiControllerWithXMLConfig4Test {
 		config.setStreamResponse(true);
 		config.setBufferLimit(3);
 
-		ApiRequestParams params = ApiRequestParams.builder().apiNs("test").group("group2")
-				.configuration(config).build();
-		ApiControllerTest.runTest(this.mockMvc, params,
-				ApiControllerTest.group2Apis(null));
+		ApiRequestParams params = ApiRequestParams.builder().apiNs("test").group("group2").configuration(config)
+				.build();
+		ApiControllerTest.runTest(this.mockMvc, params, ApiControllerTest.group2Apis(null));
 
-		ApiControllerTest.runTest(this.mockMvc, params,
-				ApiControllerTest.group2Apis(null));
+		ApiControllerTest.runTest(this.mockMvc, params, ApiControllerTest.group2Apis(null));
 	}
 
 }

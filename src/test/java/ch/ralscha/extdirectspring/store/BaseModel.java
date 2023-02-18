@@ -16,6 +16,7 @@
 package ch.ralscha.extdirectspring.store;
 
 public class BaseModel {
+
 	private Integer id;
 
 	public Integer getId() {

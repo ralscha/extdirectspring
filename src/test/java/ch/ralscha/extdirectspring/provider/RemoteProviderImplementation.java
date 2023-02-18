@@ -42,10 +42,9 @@ public class RemoteProviderImplementation implements RemoteProviderInterface {
 	}
 
 	@Override
-	public List<Row> storeRead(ExtDirectStoreReadRequest request,
-			@RequestParam(value = "lastName") String name,
-			@RequestParam(value = "theAge", defaultValue = "40") Integer age,
-			Boolean active, final HttpServletRequest httpRequest) {
+	public List<Row> storeRead(ExtDirectStoreReadRequest request, @RequestParam(value = "lastName") String name,
+			@RequestParam(value = "theAge", defaultValue = "40") Integer age, Boolean active,
+			final HttpServletRequest httpRequest) {
 
 		assertThat(age.intValue()).isEqualTo(40);
 		assertThat(httpRequest).isNotNull();

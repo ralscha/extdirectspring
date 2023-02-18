@@ -31,11 +31,9 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 @Service
 public class FileUploadService {
 
-	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST,
-			group = "itest_upload_service", event = "test", entryClass = String.class,
-			synchronizeOnSession = true)
-	public ExtDirectFormPostResult uploadTest(
-			@RequestParam("fileUpload") MultipartFile file, @Valid User user,
+	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_upload_service", event = "test",
+			entryClass = String.class, synchronizeOnSession = true)
+	public ExtDirectFormPostResult uploadTest(@RequestParam("fileUpload") MultipartFile file, @Valid User user,
 			BindingResult result) throws IOException {
 
 		ExtDirectFormPostResult resp = new ExtDirectFormPostResult(result, false);

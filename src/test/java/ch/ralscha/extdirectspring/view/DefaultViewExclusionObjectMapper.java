@@ -29,4 +29,5 @@ public class DefaultViewExclusionObjectMapper extends ObjectMapper {
 		configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
 	}
+
 }

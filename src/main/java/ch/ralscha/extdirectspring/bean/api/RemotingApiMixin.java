@@ -23,6 +23,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import ch.ralscha.extdirectspring.util.MapActionSerializer;
 
 public abstract class RemotingApiMixin {
+
 	@JsonSerialize(using = MapActionSerializer.class)
 	abstract Map<String, List<Action>> getActions();
+
 }

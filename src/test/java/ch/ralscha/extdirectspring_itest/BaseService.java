@@ -28,16 +28,15 @@ import ch.ralscha.extdirectspring.bean.ExtDirectFormPostResult;
 public abstract class BaseService<T> {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_base_service")
-	public ExtDirectFormPostResult update(@SuppressWarnings("unused") @Valid T model,
-			BindingResult result) {
+	public ExtDirectFormPostResult update(@SuppressWarnings("unused") @Valid T model, BindingResult result) {
 		return new ExtDirectFormPostResult(result);
 	}
 
-	public abstract ExtDirectFormPostResult method1(HttpServletRequest request,
-			HttpServletResponse response, @Valid T model, BindingResult result);
+	public abstract ExtDirectFormPostResult method1(HttpServletRequest request, HttpServletResponse response,
+			@Valid T model, BindingResult result);
 
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "itest_base_service")
-	public abstract ExtDirectFormPostResult method2(HttpServletRequest request,
-			HttpServletResponse response, @Valid T model, BindingResult result);
+	public abstract ExtDirectFormPostResult method2(HttpServletRequest request, HttpServletResponse response,
+			@Valid T model, BindingResult result);
 
 }

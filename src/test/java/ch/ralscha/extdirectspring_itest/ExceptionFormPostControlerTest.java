@@ -66,8 +66,7 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 
 		List<NameValuePair> formparams = new ArrayList<>();
 		formparams.add(new BasicNameValuePair("extTID", "3"));
-		formparams
-				.add(new BasicNameValuePair("extAction", "exceptionFormPostController"));
+		formparams.add(new BasicNameValuePair("extAction", "exceptionFormPostController"));
 		formparams.add(new BasicNameValuePair("extMethod", "throwAException"));
 		formparams.add(new BasicNameValuePair("extType", "rpc"));
 		formparams.add(new BasicNameValuePair("extUpload", "false"));
@@ -97,4 +96,5 @@ public class ExceptionFormPostControlerTest extends JettyTest {
 			assertThat((Boolean) result.get("success")).isFalse();
 		}
 	}
+
 }

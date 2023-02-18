@@ -121,8 +121,7 @@ public class RawJsonController {
 		records.add(
 				"{ \"_id\" : { \"$oid\" : \"4cf8e5b8924e2334a0b99454\"} , \"username\" : \"francol\" , \"firstName\" : \"Franco\" , \"name\" : \"Lawrence\" , \"email\" : \"franco.lawrence@test.com\" , \"enabled\" : true , \"dob\" : { \"$date\" : \"1979-12-01T23:00:00Z\"} , \"noOfLogins\" : 3 , \"password\" : \"5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8\" , \"groups\" : [ \"user\"] , \"phoneNumber\" : [ { \"type\" : \"home\" , \"number\" : \"212 555-4321\"} , { \"type\" : \"fax\" , \"number\" : \"646 555-7654\"}]}");
 
-		return EdJsonStoreResult.builder().records(records).total(2L).success(false)
-				.build();
+		return EdJsonStoreResult.builder().records(records).total(2L).success(false).build();
 	}
 
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
@@ -148,4 +147,5 @@ public class RawJsonController {
 
 		return EdJsonStoreResult.success(records, 2L);
 	}
+
 }

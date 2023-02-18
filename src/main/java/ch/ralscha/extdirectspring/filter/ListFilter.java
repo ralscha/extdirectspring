@@ -21,8 +21,7 @@ public class ListFilter<T> extends Filter {
 
 	private final List<T> value;
 
-	public ListFilter(String field, List<T> value, String rawComparison,
-			Comparison comparison) {
+	public ListFilter(String field, List<T> value, String rawComparison, Comparison comparison) {
 		super(field, rawComparison, comparison);
 		this.value = value;
 	}
@@ -33,9 +32,8 @@ public class ListFilter<T> extends Filter {
 
 	@Override
 	public String toString() {
-		return "ListFilter [value=" + this.value + ", getField()=" + getField()
-				+ ", getRawComparison()=" + getRawComparison() + ", getComparison()="
-				+ getComparison() + "]";
+		return "ListFilter [value=" + this.value + ", getField()=" + getField() + ", getRawComparison()="
+				+ getRawComparison() + ", getComparison()=" + getComparison() + "]";
 	}
 
 }

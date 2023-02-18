@@ -34,10 +34,8 @@ public class SupportedParametersTest {
 		assertThat(SupportedParameters.values().length).isEqualTo(6);
 		assertThat(SupportedParameters.isSupported(String.class)).isFalse();
 		assertThat(SupportedParameters.isSupported(null)).isFalse();
-		assertThat(SupportedParameters.isSupported(MockHttpServletResponse.class))
-				.isTrue();
-		assertThat(SupportedParameters.isSupported(MockHttpServletRequest.class))
-				.isTrue();
+		assertThat(SupportedParameters.isSupported(MockHttpServletResponse.class)).isTrue();
+		assertThat(SupportedParameters.isSupported(MockHttpServletRequest.class)).isTrue();
 		assertThat(SupportedParameters.isSupported(MockHttpSession.class)).isTrue();
 		assertThat(SupportedParameters.isSupported(Locale.class)).isTrue();
 		assertThat(SupportedParameters.isSupported(Principal.class)).isTrue();
@@ -46,27 +44,24 @@ public class SupportedParametersTest {
 
 	@Test
 	public void testResolveParameter() {
-		MockHttpServletRequest request = new MockHttpServletRequest("POST",
-				"/action/api-debug.js");
+		MockHttpServletRequest request = new MockHttpServletRequest("POST", "/action/api-debug.js");
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		Locale en = Locale.ENGLISH;
 
 		ExtDirectRequest edr = new ExtDirectRequest();
 
-		assertThat(SupportedParameters.resolveParameter(String.class, request, response,
-				en, edr)).isNull();
-		assertThat(SupportedParameters.resolveParameter(MockHttpServletRequest.class,
-				request, response, en, edr)).isSameAs(request);
-		assertThat(SupportedParameters.resolveParameter(MockHttpSession.class, request,
-				response, en, edr)).isSameAs(request.getSession());
-		assertThat(SupportedParameters.resolveParameter(Principal.class, request,
-				response, en, edr)).isSameAs(request.getUserPrincipal());
-		assertThat(SupportedParameters.resolveParameter(MockHttpServletResponse.class,
-				request, response, en, edr)).isSameAs(response);
-		assertThat(SupportedParameters.resolveParameter(Locale.class, request, response,
-				en, edr)).isSameAs(en);
-		assertThat(SupportedParameters.resolveParameter(ExtDirectRequest.class, request,
-				response, en, edr)).isSameAs(edr);
+		assertThat(SupportedParameters.resolveParameter(String.class, request, response, en, edr)).isNull();
+		assertThat(SupportedParameters.resolveParameter(MockHttpServletRequest.class, request, response, en, edr))
+				.isSameAs(request);
+		assertThat(SupportedParameters.resolveParameter(MockHttpSession.class, request, response, en, edr))
+				.isSameAs(request.getSession());
+		assertThat(SupportedParameters.resolveParameter(Principal.class, request, response, en, edr))
+				.isSameAs(request.getUserPrincipal());
+		assertThat(SupportedParameters.resolveParameter(MockHttpServletResponse.class, request, response, en, edr))
+				.isSameAs(response);
+		assertThat(SupportedParameters.resolveParameter(Locale.class, request, response, en, edr)).isSameAs(en);
+		assertThat(SupportedParameters.resolveParameter(ExtDirectRequest.class, request, response, en, edr))
+				.isSameAs(edr);
 	}
 
 }

@@ -74,8 +74,7 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 		this(total, records, Boolean.TRUE, jsonView);
 	}
 
-	public ExtDirectStoreResult(Long total, Collection<T> records, Boolean success,
-			Class<?> jsonView) {
+	public ExtDirectStoreResult(Long total, Collection<T> records, Boolean success, Class<?> jsonView) {
 		this.total = total;
 		this.records = records;
 		this.success = success;
@@ -131,7 +130,6 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 	/**
 	 * Beware, for this message to be accessible in your callback operation, <br>
 	 * you <strong>must</strong> add in your model definition the messageProperty value
-	 *
 	 * @param message the message to set
 	 * @return this {@link ExtDirectStoreResult} instance
 	 */
@@ -142,9 +140,8 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 
 	@Override
 	public String toString() {
-		return "ExtDirectStoreResult [total=" + this.total + ", records=" + this.records
-				+ ", success=" + this.success + ", metaData=" + this.metaData
-				+ ", message=" + this.message + "]";
+		return "ExtDirectStoreResult [total=" + this.total + ", records=" + this.records + ", success=" + this.success
+				+ ", metaData=" + this.metaData + ", message=" + this.message + "]";
 	}
 
 }

@@ -106,8 +106,7 @@ public class StoreModifyMethodTest extends BaseViewTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void callMethod(String bean, String method,
-			MapEntry<String, Object>... expectedEntries) {
+	private void callMethod(String bean, String method, MapEntry<String, Object>... expectedEntries) {
 		Object obj = ControllerUtil.sendAndReceiveObject(this.mockMvc, bean, method);
 		List<Map<String, Object>> records;
 
@@ -116,9 +115,7 @@ public class StoreModifyMethodTest extends BaseViewTest {
 		}
 		else {
 			Map<String, Object> result = (Map<String, Object>) obj;
-			assertThat(result).hasSize(2)
-					.contains(MapEntry.entry("success", Boolean.TRUE))
-					.containsKey("records");
+			assertThat(result).hasSize(2).contains(MapEntry.entry("success", Boolean.TRUE)).containsKey("records");
 			records = (List<Map<String, Object>>) result.get("records");
 		}
 
@@ -137,4 +134,5 @@ public class StoreModifyMethodTest extends BaseViewTest {
 			}
 		}
 	}
+
 }

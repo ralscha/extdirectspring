@@ -48,18 +48,15 @@ public abstract class EdFormPostResult {
 	public abstract Map<String, Object> result();
 
 	public static EdFormPostResult success() {
-		return ImmutableEdFormPostResult.builder()
-				.putResult(SUCCESS_PROPERTY, Boolean.TRUE).build();
+		return ImmutableEdFormPostResult.builder().putResult(SUCCESS_PROPERTY, Boolean.TRUE).build();
 	}
 
 	public static EdFormPostResult success(Map<String, Object> result) {
-		return ImmutableEdFormPostResult.builder().result(result)
-				.putResult(SUCCESS_PROPERTY, Boolean.TRUE).build();
+		return ImmutableEdFormPostResult.builder().result(result).putResult(SUCCESS_PROPERTY, Boolean.TRUE).build();
 	}
 
 	public static EdFormPostResult create(BindingResult bindingResult) {
-		return ImmutableEdFormPostResult.builder().addErrors(null, null, bindingResult)
-				.build();
+		return ImmutableEdFormPostResult.builder().addErrors(null, null, bindingResult).build();
 	}
 
 	public static EdFormPostResult create(BindingResult bindingResult, boolean success) {
@@ -67,14 +64,12 @@ public abstract class EdFormPostResult {
 				.putResult(SUCCESS_PROPERTY, success).build();
 	}
 
-	public static EdFormPostResult create(Locale locale, MessageSource messageSource,
-			BindingResult bindingResult) {
-		return ImmutableEdFormPostResult.builder()
-				.addErrors(locale, messageSource, bindingResult).build();
+	public static EdFormPostResult create(Locale locale, MessageSource messageSource, BindingResult bindingResult) {
+		return ImmutableEdFormPostResult.builder().addErrors(locale, messageSource, bindingResult).build();
 	}
 
-	public static EdFormPostResult create(Locale locale, MessageSource messageSource,
-			BindingResult bindingResult, boolean success) {
+	public static EdFormPostResult create(Locale locale, MessageSource messageSource, BindingResult bindingResult,
+			boolean success) {
 		ImmutableEdFormPostResult.Builder builder = ImmutableEdFormPostResult.builder();
 		builder.addErrors(locale, messageSource, bindingResult);
 		return builder.putResult(SUCCESS_PROPERTY, success).build();
@@ -85,6 +80,7 @@ public abstract class EdFormPostResult {
 	}
 
 	public static abstract class Builder {
+
 		public abstract Builder result(Map<String, ? extends java.lang.Object> entries);
 
 		public abstract Builder putResult(String key, Object value);
@@ -95,22 +91,19 @@ public abstract class EdFormPostResult {
 		 * Extracts errors from the bindingResult and inserts them into the error
 		 * properties. Sets the property success to false if there are errors. Sets the
 		 * property success to true if there are no errors.
-		 *
 		 * @param builder
 		 * @param locale
 		 * @param messageSource
 		 * @param bindingResult
 		 */
-		public Builder addErrors(Locale locale, MessageSource messageSource,
-				BindingResult bindingResult) {
+		public Builder addErrors(Locale locale, MessageSource messageSource, BindingResult bindingResult) {
 			if (bindingResult != null && bindingResult.hasFieldErrors()) {
 				Map<String, List<String>> errorMap = new HashMap<>();
 				for (FieldError fieldError : bindingResult.getFieldErrors()) {
 					String message = fieldError.getDefaultMessage();
 					if (messageSource != null) {
 						Locale loc = locale != null ? locale : Locale.getDefault();
-						message = messageSource.getMessage(fieldError.getCode(),
-								fieldError.getArguments(), loc);
+						message = messageSource.getMessage(fieldError.getCode(), fieldError.getArguments(), loc);
 					}
 					List<String> fieldErrors = errorMap.get(fieldError.getField());
 
@@ -144,14 +137,12 @@ public abstract class EdFormPostResult {
 		 * javax.validation.constraints.NotNull.message.fax=Fax number is mandatory)<br>
 		 * it will behave {@link #addErrors(Locale, MessageSource, BindingResult)} with a
 		 * big overhead
-		 *
 		 * @param locale locale for internationalization
 		 * @param messageSource source of validation code and message
 		 * @param bindingResult Errors list to resolve
 		 * @return this {@link #ExtDirectFormPostResult} for easy chaining
 		 */
-		public Builder addErrorsResolveCode(Locale locale, MessageSource messageSource,
-				BindingResult bindingResult) {
+		public Builder addErrorsResolveCode(Locale locale, MessageSource messageSource, BindingResult bindingResult) {
 			if (bindingResult != null && bindingResult.hasFieldErrors()) {
 				Map<String, List<String>> errorMap = new HashMap<>();
 				for (FieldError fieldError : bindingResult.getFieldErrors()) {
@@ -160,8 +151,7 @@ public abstract class EdFormPostResult {
 						Locale loc = locale != null ? locale : Locale.getDefault();
 						for (String code : fieldError.getCodes()) {
 							try {
-								message = messageSource.getMessage(code,
-										fieldError.getArguments(), loc);
+								message = messageSource.getMessage(code, fieldError.getArguments(), loc);
 							}
 							catch (Exception e) {
 								/**
@@ -217,7 +207,6 @@ public abstract class EdFormPostResult {
 		/**
 		 * Adds one error message to a specific field. Does not overwrite already existing
 		 * errors.
-		 *
 		 * @param field the name of the field
 		 * @param error the error message
 		 */
@@ -230,7 +219,6 @@ public abstract class EdFormPostResult {
 		/**
 		 * Adds multiple error messages to a specific field. Does not overwrite already
 		 * existing errors.
-		 *
 		 * @param field the name of the field
 		 * @param errors a collection of error messages
 		 */

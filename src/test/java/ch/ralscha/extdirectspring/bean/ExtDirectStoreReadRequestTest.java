@@ -88,4 +88,5 @@ public class ExtDirectStoreReadRequestTest {
 		request.setParams(params);
 		assertThat(request.getParams()).hasSize(1).contains(MapEntry.entry("id", 10));
 	}
+
 }

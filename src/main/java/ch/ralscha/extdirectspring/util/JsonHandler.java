@@ -41,7 +41,6 @@ public class JsonHandler {
 
 	/**
 	 * Sets a new instance of {@link ObjectMapper}.
-	 *
 	 * @param mapper a new object mapper. must not be <code>null</code>
 	 */
 	public void setMapper(ObjectMapper mapper) {
@@ -60,7 +59,6 @@ public class JsonHandler {
 	/**
 	 * Converts an object into a JSON string. In case of an exception returns null and
 	 * logs the exception.
-	 *
 	 * @param obj the source object
 	 * @return obj JSON string, <code>null</code> if an exception occurred
 	 */
@@ -71,7 +69,6 @@ public class JsonHandler {
 	/**
 	 * Converts an object into a JSON string. In case of an exceptions returns null and
 	 * logs the exception.
-	 *
 	 * @param obj the source object
 	 * @param indent if true JSON is written in a human readable format, if false JSON is
 	 * written on one line
@@ -80,8 +77,7 @@ public class JsonHandler {
 	public String writeValueAsString(Object obj, boolean indent) {
 		try {
 			if (indent) {
-				return this.mapper.writer().withDefaultPrettyPrinter()
-						.writeValueAsString(obj);
+				return this.mapper.writer().withDefaultPrettyPrinter().writeValueAsString(obj);
 			}
 			return this.mapper.writeValueAsString(obj);
 		}
@@ -94,7 +90,6 @@ public class JsonHandler {
 	/**
 	 * Converts a JSON string into an object. In case of an exception returns null and
 	 * logs the exception.
-	 *
 	 * @param <T> type of the object to create
 	 * @param json string with the JSON
 	 * @param typeReference {@link TypeReference} instance of the desired result type
@@ -115,7 +110,6 @@ public class JsonHandler {
 	/**
 	 * Converts a JSON string into an object. In case of an exception returns null and
 	 * logs the exception.
-	 *
 	 * @param <T> type of the object to create
 	 * @param json string with the JSON
 	 * @param clazz class of object to create
@@ -134,7 +128,6 @@ public class JsonHandler {
 	/**
 	 * Converts a JSON string into an object. The input is read from an InputStream. In
 	 * case of an exception returns null and logs the exception.
-	 *
 	 * @param is a InputStream
 	 * @param clazz class of object to create
 	 * @return the converted object, null if there is an exception
@@ -151,7 +144,6 @@ public class JsonHandler {
 
 	/**
 	 * Converts one object into another.
-	 *
 	 * @param object the source
 	 * @param clazz the type of the target
 	 * @return the converted object
@@ -162,7 +154,6 @@ public class JsonHandler {
 
 	/**
 	 * Converts one object into another.
-	 *
 	 * @param object the source
 	 * @param toValueTypeRef the type of the target
 	 * @return the converted object
@@ -170,4 +161,5 @@ public class JsonHandler {
 	public <T> T convertValue(Object object, JavaType toValueTypeRef) {
 		return this.mapper.convertValue(object, toValueTypeRef);
 	}
+
 }

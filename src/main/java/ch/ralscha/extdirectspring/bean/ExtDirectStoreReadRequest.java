@@ -207,7 +207,6 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * Returns the first filter for the field.
-	 *
 	 * @param field name of the field
 	 * @return the first filter for the field. Null if not filter exists.
 	 */
@@ -223,7 +222,6 @@ public class ExtDirectStoreReadRequest {
 
 	/**
 	 * Returns all filters for a field
-	 *
 	 * @param field name of the field
 	 * @return a collection of filters for the field. Empty collection if no filter exists
 	 */
@@ -304,11 +302,10 @@ public class ExtDirectStoreReadRequest {
 
 	@Override
 	public String toString() {
-		return "ExtDirectStoreReadRequest [query=" + this.query + ", limit=" + this.limit
-				+ ", start=" + this.start + ", page=" + this.page + ", dir=" + this.dir
-				+ ", sort=" + this.sort + ", groupBy=" + this.groupBy + ", groupDir="
-				+ this.groupDir + ", sorters=" + this.sorters + ", groups=" + this.groups
-				+ ", filters=" + this.filters + ", params=" + this.params + "]";
+		return "ExtDirectStoreReadRequest [query=" + this.query + ", limit=" + this.limit + ", start=" + this.start
+				+ ", page=" + this.page + ", dir=" + this.dir + ", sort=" + this.sort + ", groupBy=" + this.groupBy
+				+ ", groupDir=" + this.groupDir + ", sorters=" + this.sorters + ", groups=" + this.groups + ", filters="
+				+ this.filters + ", params=" + this.params + "]";
 	}
 
 }

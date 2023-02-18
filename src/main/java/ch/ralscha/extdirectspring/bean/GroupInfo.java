@@ -23,6 +23,7 @@ import java.util.Map;
  * request.
  */
 public class GroupInfo {
+
 	private final String property;
 
 	private final SortDirection direction;
@@ -49,8 +50,7 @@ public class GroupInfo {
 
 	@Override
 	public String toString() {
-		return "GroupInfo [property=" + this.property + ", direction=" + this.direction
-				+ "]";
+		return "GroupInfo [property=" + this.property + ", direction=" + this.direction + "]";
 	}
 
 }

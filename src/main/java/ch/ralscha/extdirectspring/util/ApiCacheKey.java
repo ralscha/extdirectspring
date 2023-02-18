@@ -33,8 +33,8 @@ public final class ApiCacheKey {
 
 	private final boolean debug;
 
-	public ApiCacheKey(String apiNs, String actionNs, String remotingApiVar,
-			String pollingUrlsVar, String group, String routerUrl, boolean debug) {
+	public ApiCacheKey(String apiNs, String actionNs, String remotingApiVar, String pollingUrlsVar, String group,
+			String routerUrl, boolean debug) {
 		this.apiNs = apiNs;
 		this.actionNs = actionNs;
 		this.remotingApiVar = remotingApiVar;
@@ -62,9 +62,8 @@ public final class ApiCacheKey {
 
 	@Override
 	public int hashCode() {
-		return Arrays
-				.hashCode(new Object[] { this.apiNs, this.actionNs, this.remotingApiVar,
-						this.pollingUrlsVar, this.routerUrl, this.group, this.debug });
+		return Arrays.hashCode(new Object[] { this.apiNs, this.actionNs, this.remotingApiVar, this.pollingUrlsVar,
+				this.routerUrl, this.group, this.debug });
 	}
 
 }

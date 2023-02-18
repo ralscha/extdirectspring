@@ -64,33 +64,28 @@ public class DefaultViewExclusionTest {
 	}
 
 	@SafeVarargs
-	private final void callMethod(String bean, String method,
-			MapEntry<String, Object>... expectedEntries) {
-		Map<String, Object> result = ControllerUtil.sendAndReceiveMap(this.mockMvc, bean,
-				method);
+	private final void callMethod(String bean, String method, MapEntry<String, Object>... expectedEntries) {
+		Map<String, Object> result = ControllerUtil.sendAndReceiveMap(this.mockMvc, bean, method);
 		assertThat(result).hasSize(expectedEntries.length);
 		assertThat(result).contains(expectedEntries);
 	}
 
 	@SuppressWarnings("unchecked")
 	private static MapEntry<String, Object>[] noView() {
-		return new MapEntry[] { MapEntry.entry("id", 1),
-				MapEntry.entry("firstName", "firstName"),
+		return new MapEntry[] { MapEntry.entry("id", 1), MapEntry.entry("firstName", "firstName"),
 				MapEntry.entry("lastName", "lastName"), MapEntry.entry("phone", "phone"),
-				MapEntry.entry("address", "address"),
-				MapEntry.entry("secretKey", "mySecret") };
+				MapEntry.entry("address", "address"), MapEntry.entry("secretKey", "mySecret") };
 	}
 
 	@SuppressWarnings("unchecked")
 	private static MapEntry<String, Object>[] summaryView() {
-		return new MapEntry[] { MapEntry.entry("firstName", "firstName"),
-				MapEntry.entry("lastName", "lastName") };
+		return new MapEntry[] { MapEntry.entry("firstName", "firstName"), MapEntry.entry("lastName", "lastName") };
 	}
 
 	@SuppressWarnings("unchecked")
 	private static MapEntry<String, Object>[] detailView() {
-		return new MapEntry[] { MapEntry.entry("firstName", "firstName"),
-				MapEntry.entry("lastName", "lastName"), MapEntry.entry("phone", "phone"),
-				MapEntry.entry("address", "address") };
+		return new MapEntry[] { MapEntry.entry("firstName", "firstName"), MapEntry.entry("lastName", "lastName"),
+				MapEntry.entry("phone", "phone"), MapEntry.entry("address", "address") };
 	}
+
 }

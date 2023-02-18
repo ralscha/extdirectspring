@@ -97,10 +97,9 @@ public class ExtDirectResponse extends BaseResponse {
 
 	@Override
 	public String toString() {
-		return "ExtDirectResponse [tid=" + this.tid + ", action=" + this.action
-				+ ", method=" + this.method + ", result=" + this.result
-				+ ", streamResponse=" + this.streamResponse + ", jsonView="
-				+ this.jsonView + "]";
+		return "ExtDirectResponse [tid=" + this.tid + ", action=" + this.action + ", method=" + this.method
+				+ ", result=" + this.result + ", streamResponse=" + this.streamResponse + ", jsonView=" + this.jsonView
+				+ "]";
 	}
 
 }

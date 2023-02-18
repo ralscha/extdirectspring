@@ -145,13 +145,12 @@ public class FormLoadMethodTest extends BaseViewTest {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void callMethod(String bean, String method,
-			MapEntry<String, Object>... expectedEntries) {
-		Map<String, Object> result = ControllerUtil.sendAndReceiveMap(this.mockMvc, bean,
-				method);
+	private void callMethod(String bean, String method, MapEntry<String, Object>... expectedEntries) {
+		Map<String, Object> result = ControllerUtil.sendAndReceiveMap(this.mockMvc, bean, method);
 		assertThat(result).hasSize(2).contains(MapEntry.entry("success", Boolean.TRUE));
 		Map<String, Object> data = (Map<String, Object>) result.get("data");
 		assertThat(data).hasSize(expectedEntries.length);
 		assertThat(data).contains(expectedEntries);
 	}
+
 }

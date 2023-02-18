@@ -60,4 +60,5 @@ public class BookSubServiceWithAopTest {
 	public void testDelete() throws Exception {
 		new CrudTestMethods("bookSubAopService").testDelete(this.mockMvc);
 	}
+
 }

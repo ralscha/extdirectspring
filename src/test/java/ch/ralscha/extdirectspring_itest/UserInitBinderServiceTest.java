@@ -70,8 +70,7 @@ public class UserInitBinderServiceTest extends JettyTest {
 		Locale.setDefault(Locale.ENGLISH);
 		List<NameValuePair> formparams = new ArrayList<>();
 		formparams.add(new BasicNameValuePair("extTID", "1"));
-		formparams
-				.add(new BasicNameValuePair("extAction", "userServiceInitBinderService"));
+		formparams.add(new BasicNameValuePair("extAction", "userServiceInitBinderService"));
 		formparams.add(new BasicNameValuePair("extMethod", "updateUser"));
 		formparams.add(new BasicNameValuePair("extType", "rpc"));
 		formparams.add(new BasicNameValuePair("extUpload", "false"));
@@ -90,8 +89,7 @@ public class UserInitBinderServiceTest extends JettyTest {
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
 
-			Map<String, Object> rootAsMap = this.mapper.readValue(responseString,
-					Map.class);
+			Map<String, Object> rootAsMap = this.mapper.readValue(responseString, Map.class);
 			assertThat(rootAsMap).hasSize(5);
 			assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
 			assertThat(rootAsMap.get("type")).isEqualTo("rpc");
@@ -115,8 +113,7 @@ public class UserInitBinderServiceTest extends JettyTest {
 		Locale.setDefault(Locale.ENGLISH);
 		List<NameValuePair> formparams = new ArrayList<>();
 		formparams.add(new BasicNameValuePair("extTID", "2"));
-		formparams
-				.add(new BasicNameValuePair("extAction", "userServiceInitBinderService"));
+		formparams.add(new BasicNameValuePair("extAction", "userServiceInitBinderService"));
 		formparams.add(new BasicNameValuePair("extMethod", "updateUser"));
 		formparams.add(new BasicNameValuePair("extType", "rpc"));
 		formparams.add(new BasicNameValuePair("extUpload", "false"));
@@ -135,8 +132,7 @@ public class UserInitBinderServiceTest extends JettyTest {
 			assertThat(entity).isNotNull();
 			String responseString = EntityUtils.toString(entity);
 
-			Map<String, Object> rootAsMap = this.mapper.readValue(responseString,
-					Map.class);
+			Map<String, Object> rootAsMap = this.mapper.readValue(responseString, Map.class);
 			assertThat(rootAsMap).hasSize(5);
 			assertThat(rootAsMap.get("method")).isEqualTo("updateUser");
 			assertThat(rootAsMap.get("type")).isEqualTo("rpc");

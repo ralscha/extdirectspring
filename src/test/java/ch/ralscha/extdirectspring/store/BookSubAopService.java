@@ -41,4 +41,5 @@ public class BookSubAopService extends BaseService<Book> {
 		int total = request.getPage() + request.getLimit() + request.getStart();
 		return new ExtDirectStoreResult<>(total, read());
 	}
+
 }

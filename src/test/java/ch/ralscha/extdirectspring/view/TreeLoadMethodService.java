@@ -31,8 +31,7 @@ public class TreeLoadMethodService extends BaseViewService {
 		return createEmployees(2);
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD,
-			jsonView = Views.Summary.class)
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, jsonView = Views.Summary.class)
 	public List<Employee> annotationSummaryView() {
 		return createEmployees(2);
 	}
@@ -52,14 +51,12 @@ public class TreeLoadMethodService extends BaseViewService {
 		return new ModelAndJsonView(createEmployees(2), Views.Detail.class);
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD,
-			jsonView = Views.Summary.class)
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, jsonView = Views.Summary.class)
 	public ModelAndJsonView overrideMajDetailView() {
 		return new ModelAndJsonView(createEmployees(2), Views.Detail.class);
 	}
 
-	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD,
-			jsonView = Views.Summary.class)
+	@ExtDirectMethod(value = ExtDirectMethodType.TREE_LOAD, jsonView = Views.Summary.class)
 	public ModelAndJsonView overrideMajNoView() {
 		return new ModelAndJsonView(createEmployees(2), ExtDirectMethod.NoJsonView.class);
 	}
