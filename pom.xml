@@ -219,7 +219,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-			<version>3.1.5</version>
+			<version>3.2.0</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -272,7 +272,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>2.1.220</version>
+			<version>2.2.224</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -377,7 +377,7 @@
 			<plugin>
 				<groupId>io.spring.javaformat</groupId>
 				<artifactId>spring-javaformat-maven-plugin</artifactId>
-				<version>0.0.39</version>
+				<version>0.0.40</version>
 			</plugin>
 
 			<plugin>
