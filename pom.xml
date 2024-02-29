@@ -53,7 +53,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
-				<version>6.0.13</version>
+				<version>6.1.4</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -115,7 +115,7 @@
 		<dependency>
 			<groupId>org.junit.platform</groupId>
 			<artifactId>junit-platform-launcher</artifactId>
-			<version>1.10.1</version>
+			<version>1.10.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -128,7 +128,7 @@
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
 			<scope>test</scope>
-			<version>5.10.1</version>
+			<version>5.10.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.platform</groupId>
@@ -139,7 +139,7 @@
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
-			<version>3.25.2</version>
+			<version>3.25.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -165,7 +165,7 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.4.14</version>
+			<version>1.5.0</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -219,7 +219,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-			<version>3.2.2</version>
+			<version>3.2.3</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -377,7 +377,7 @@
 			<plugin>
 				<groupId>io.spring.javaformat</groupId>
 				<artifactId>spring-javaformat-maven-plugin</artifactId>
-				<version>0.0.40</version>
+				<version>0.0.41</version>
 			</plugin>
 
 			<plugin>
@@ -434,7 +434,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
-				<version>3.3.1</version>
+				<version>3.3.2</version>
 			</plugin>
 
 			<plugin>
