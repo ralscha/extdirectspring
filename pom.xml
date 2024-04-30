@@ -53,7 +53,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
-				<version>6.1.5</version>
+				<version>6.1.6</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -219,7 +219,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-			<version>3.2.4</version>
+			<version>3.2.5</version>
 			<scope>test</scope>
 		</dependency>
 
