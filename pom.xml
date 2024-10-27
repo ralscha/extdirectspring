@@ -53,7 +53,7 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-framework-bom</artifactId>
-				<version>6.1.13</version>
+				<version>6.1.14</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -122,13 +122,13 @@
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-params</artifactId>
 			<scope>test</scope>
-			<version>5.11.2</version>
+			<version>5.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
 			<scope>test</scope>
-			<version>5.11.2</version>
+			<version>5.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.platform</groupId>
@@ -219,7 +219,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-			<version>3.3.1</version>
+			<version>3.3.5</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -388,7 +388,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.3.1</version>
+				<version>3.3.5</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
