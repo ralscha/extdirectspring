@@ -100,7 +100,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.18.1</version>
+			<version>2.18.2</version>
 		</dependency>
 
 		<!-- APT dependencies -->
@@ -115,20 +115,20 @@
 		<dependency>
 			<groupId>org.junit.platform</groupId>
 			<artifactId>junit-platform-launcher</artifactId>
-			<version>1.11.3</version>
+			<version>1.11.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-params</artifactId>
 			<scope>test</scope>
-			<version>5.11.3</version>
+			<version>5.11.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
 			<scope>test</scope>
-			<version>5.11.3</version>
+			<version>5.11.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.platform</groupId>
@@ -165,7 +165,7 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.5.12</version>
+			<version>1.5.15</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -219,7 +219,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-			<version>3.3.5</version>
+			<version>3.4.1</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -327,7 +327,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
-				<version>3.4.0</version>
+				<version>3.6.0</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
