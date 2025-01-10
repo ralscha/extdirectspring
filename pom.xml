@@ -370,6 +370,9 @@
 					<testTarget>21</testTarget>
 					<encoding>UTF-8</encoding>
 					<useIncrementalCompilation>false</useIncrementalCompilation>
+					<compilerArgs>
+				       <arg>-parameters</arg>
+					</compilerArgs>
 				</configuration>
 			</plugin>
 
