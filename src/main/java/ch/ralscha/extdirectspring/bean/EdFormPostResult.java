@@ -134,7 +134,7 @@ public abstract class EdFormPostResult {
 		 * {@link org.springframework.validation.DefaultMessageCodesResolver}<br>
 		 * stop at first message found<br>
 		 * method is useless if no specific validation message have been set (example:
-		 * javax.validation.constraints.NotNull.message.fax=Fax number is mandatory)<br>
+		 * jakarta.validation.constraints.NotNull.message.fax=Fax number is mandatory)<br>
 		 * it will behave {@link #addErrors(Locale, MessageSource, BindingResult)} with a
 		 * big overhead
 		 * @param locale locale for internationalization

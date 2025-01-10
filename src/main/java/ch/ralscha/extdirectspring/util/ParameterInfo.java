@@ -65,12 +65,11 @@ public final class ParameterInfo {
 
 		MethodParameter methodParam = new MethodParameter(method, paramIndex);
 		methodParam.initParameterNameDiscovery(discoverer);
-		GenericTypeResolver.resolveParameterType(methodParam, clazz);
-
+		
 		this.name = methodParam.getParameterName();
 		this.typeDescriptor = new TypeDescriptor(methodParam);
 
-		Class<?> paramType = methodParam.getParameterType();
+		Class<?> paramType = methodParam.withContainingClass(clazz).getParameterType();
 		this.javaUtilOptional = paramType.getName().equals("java.util.Optional");
 
 		this.supportedParameter = SupportedParameters.isSupported(this.typeDescriptor.getObjectType());
