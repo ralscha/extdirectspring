@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -121,7 +122,7 @@ public class ExtDirectSpringUtilTest {
 		assertThat(response.getHeader("Cache-Control")).isEqualTo("public, max-age=" + month * 30 * 24 * 60 * 60);
 
 		String expiresHeader = (String) response.getHeaderValue("Expires");
-		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z");
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
 		LocalDateTime expires = LocalDateTime.parse(expiresHeader, fmt);
 
 		LocalDateTime inSixMonths = LocalDateTime.now(ZoneOffset.UTC).plusSeconds(month * 30 * 24 * 60 * 60);
