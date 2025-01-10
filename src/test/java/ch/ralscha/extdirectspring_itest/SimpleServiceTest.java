@@ -113,12 +113,12 @@ public class SimpleServiceTest extends JettyTest2 {
 	public static void assertCacheHeaders(HttpResponse response, boolean fingerprinted) {
 		if (fingerprinted) {
 			assertThat(response.getFirstHeader("Content-Type").getValue())
-					.isEqualTo("application/javascript;charset=utf-8");
+				.isEqualTo("application/javascript;charset=utf-8");
 			assertThat(response.getFirstHeader("Content-Length")).isNotNull();
 
 			String expiresString = response.getFirstHeader("Expires").getValue();
 			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz")
-					.withLocale(Locale.ENGLISH);
+				.withLocale(Locale.ENGLISH);
 
 			LocalDateTime expires = LocalDateTime.parse(expiresString, fmt);
 			LocalDateTime inSixMonths = LocalDateTime.now(ZoneOffset.UTC).plusSeconds(6 * 30 * 24 * 60 * 60);
@@ -134,7 +134,7 @@ public class SimpleServiceTest extends JettyTest2 {
 		}
 		else {
 			assertThat(response.getFirstHeader("Content-Type").getValue())
-					.isEqualTo("application/javascript;charset=utf-8");
+				.isEqualTo("application/javascript;charset=utf-8");
 			assertThat(response.getFirstHeader("Content-Length")).isNotNull();
 			assertThat(response.getFirstHeader("Expires")).isNull();
 			assertThat(response.getFirstHeader("ETag")).isNull();

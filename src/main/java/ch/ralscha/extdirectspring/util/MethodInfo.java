@@ -220,13 +220,13 @@ public final class MethodInfo {
 						: docParameters.descriptions();
 				if (params.length == descriptions.length) {
 					for (int i = 0; i < params.length; i++) {
-						actionDoc.getParameters().put(params[i],
-								descriptions[i] == null ? "No description" : descriptions[i]);
+						actionDoc.getParameters()
+							.put(params[i], descriptions[i] == null ? "No description" : descriptions[i]);
 					}
 				}
 				else {
-					LogFactory.getLog(MethodInfo.class).info(
-							"Documentation: skip generation of parameters, params size is different from descriptions size");
+					LogFactory.getLog(MethodInfo.class)
+						.info("Documentation: skip generation of parameters, params size is different from descriptions size");
 				}
 			}
 			ExtDirectDocReturn docReturn = documentation.returnMethod();
@@ -236,13 +236,13 @@ public final class MethodInfo {
 						: docReturn.descriptions();
 				if (properties.length == descriptions.length) {
 					for (int i = 0; i < properties.length; i++) {
-						actionDoc.getReturnMethod().put(properties[i],
-								descriptions[i] == null ? "No description" : descriptions[i]);
+						actionDoc.getReturnMethod()
+							.put(properties[i], descriptions[i] == null ? "No description" : descriptions[i]);
 					}
 				}
 				else {
-					LogFactory.getLog(MethodInfo.class).info(
-							"Documentation: skip generation of return method properties, properties size is different from descriptions size");
+					LogFactory.getLog(MethodInfo.class)
+						.info("Documentation: skip generation of return method properties, properties size is different from descriptions size");
 				}
 			}
 			return actionDoc;

@@ -223,7 +223,7 @@ public class ExtDirectResponseBuilder {
 
 		try {
 			RouterController routerController = RequestContextUtils.findWebApplicationContext(this.request)
-					.getBean(RouterController.class);
+				.getBean(RouterController.class);
 
 			routerController.writeJsonResponse(this.request, this.response, this.extDirectResponse, this.jsonView);
 

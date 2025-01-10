@@ -123,8 +123,9 @@ public class ExtDirectFormPostResultTest {
 		result.addResultProperty("one", 1);
 		result.addResultProperty("two", "2");
 		result.addResultProperty("three", Boolean.TRUE);
-		assertThat(result.getResult()).hasSize(4).contains(MapEntry.entry("success", Boolean.TRUE),
-				MapEntry.entry("one", 1), MapEntry.entry("two", "2"), MapEntry.entry("three", Boolean.TRUE));
+		assertThat(result.getResult()).hasSize(4)
+			.contains(MapEntry.entry("success", Boolean.TRUE), MapEntry.entry("one", 1), MapEntry.entry("two", "2"),
+					MapEntry.entry("three", Boolean.TRUE));
 
 	}
 

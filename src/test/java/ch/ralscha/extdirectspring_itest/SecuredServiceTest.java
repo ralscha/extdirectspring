@@ -131,7 +131,7 @@ public class SecuredServiceTest extends JettyTest {
 				assertThat(responseString.startsWith("[") && responseString.endsWith("]")).isTrue();
 				ObjectMapper mapper = new ObjectMapper();
 				Map<String, Object> rootAsMap = mapper
-						.readValue(responseString.substring(1, responseString.length() - 1), Map.class);
+					.readValue(responseString.substring(1, responseString.length() - 1), Map.class);
 				assertThat(rootAsMap).hasSize(5);
 				assertThat(rootAsMap.get("result")).isEqualTo("RALPH,jimi");
 				assertThat(rootAsMap.get("method")).isEqualTo("secret");

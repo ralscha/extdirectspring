@@ -72,7 +72,7 @@ public class CrudTestMethods {
 		String edRequest = ControllerUtil.createEdsRequest(this.serviceName, "readWithPaging", 1, pagingParameters);
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -125,7 +125,7 @@ public class CrudTestMethods {
 		String edRequest = ControllerUtil.createEdsRequest(this.serviceName, "update3", 1, storeRequest);
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -144,7 +144,7 @@ public class CrudTestMethods {
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -158,7 +158,7 @@ public class CrudTestMethods {
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -174,7 +174,7 @@ public class CrudTestMethods {
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -224,7 +224,7 @@ public class CrudTestMethods {
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -243,7 +243,7 @@ public class CrudTestMethods {
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -258,7 +258,7 @@ public class CrudTestMethods {
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -275,7 +275,7 @@ public class CrudTestMethods {
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -290,7 +290,7 @@ public class CrudTestMethods {
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -318,7 +318,7 @@ public class CrudTestMethods {
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -345,7 +345,7 @@ public class CrudTestMethods {
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -372,7 +372,7 @@ public class CrudTestMethods {
 
 		MvcResult result = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);

@@ -198,8 +198,8 @@ public class RemoteProviderOptional {
 
 	@OptionalNamedMethod
 	public Optional<String> namedMethod1(Optional<Long> i, Optional<Double> d, Optional<String> s) {
-		return Optional.of(
-				String.format("namedMethod1() called-%d-%.3f-%s", i.orElse(-1L), d.orElse(3.141), s.orElse("default")));
+		return Optional
+			.of(String.format("namedMethod1() called-%d-%.3f-%s", i.orElse(-1L), d.orElse(3.141), s.orElse("default")));
 	}
 
 	@OptionalNamedMethod

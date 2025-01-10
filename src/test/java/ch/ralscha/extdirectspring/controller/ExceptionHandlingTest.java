@@ -156,7 +156,7 @@ public class ExceptionHandlingTest {
 				new Object[] { 3, "xxx", "string.param" });
 		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -179,7 +179,7 @@ public class ExceptionHandlingTest {
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimple", "method11", 3, null);
 		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);

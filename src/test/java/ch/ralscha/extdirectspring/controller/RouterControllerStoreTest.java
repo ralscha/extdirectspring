@@ -78,7 +78,7 @@ public class RouterControllerStoreTest {
 		for (int i = 0; i < rows.size(); i += 2) {
 			assertThat(rows.get(i)).isEqualTo(new Row(i, "name: " + i + appendix, true, "" + (1000 + i)));
 			assertThat(rows.get(i + 1))
-					.isEqualTo(new Row(i + 1, "firstname: " + (i + 1) + appendix, false, "" + (10 + i + 1)));
+				.isEqualTo(new Row(i + 1, "firstname: " + (i + 1) + appendix, false, "" + (10 + i + 1)));
 		}
 	}
 
@@ -445,7 +445,7 @@ public class RouterControllerStoreTest {
 
 		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -644,7 +644,7 @@ public class RouterControllerStoreTest {
 
 		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);

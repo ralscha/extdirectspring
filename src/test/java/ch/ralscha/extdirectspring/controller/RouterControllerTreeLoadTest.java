@@ -68,8 +68,9 @@ public class RouterControllerTreeLoadTest {
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1", false), new Node("n2", "Node 2", false),
-				new Node("n3", "Node 3", false), new Node("n4", "Node 4", false), new Node("n5", "Node 5", false));
+		assertThat(nodes).hasSize(5)
+			.containsSequence(new Node("n1", "Node 1", false), new Node("n2", "Node 2", false),
+					new Node("n3", "Node 3", false), new Node("n4", "Node 4", false), new Node("n5", "Node 5", false));
 
 		requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "n1");
@@ -78,9 +79,10 @@ public class RouterControllerTreeLoadTest {
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
-		assertThat(nodes).hasSize(5).containsSequence(new Node("id1", "Node 1.1", true),
-				new Node("id2", "Node 1.2", true), new Node("id3", "Node 1.3", true), new Node("id4", "Node 1.4", true),
-				new Node("id5", "Node 1.5", true));
+		assertThat(nodes).hasSize(5)
+			.containsSequence(new Node("id1", "Node 1.1", true), new Node("id2", "Node 1.2", true),
+					new Node("id3", "Node 1.3", true), new Node("id4", "Node 1.4", true),
+					new Node("id5", "Node 1.5", true));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -97,9 +99,10 @@ public class RouterControllerTreeLoadTest {
 				}, requestParameters);
 
 		String appendix = ":foo;" + LocalDate.now().toString();
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5)
+			.containsSequence(new Node("n1", "Node 1" + appendix, false), new Node("n2", "Node 2" + appendix, false),
+					new Node("n3", "Node 3" + appendix, false), new Node("n4", "Node 4" + appendix, false),
+					new Node("n5", "Node 5" + appendix, false));
 
 		requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
@@ -110,9 +113,10 @@ public class RouterControllerTreeLoadTest {
 				}, requestParameters);
 
 		appendix = ":defaultValue;" + LocalDate.now().plusDays(10).toString();
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5)
+			.containsSequence(new Node("n1", "Node 1" + appendix, false), new Node("n2", "Node 2" + appendix, false),
+					new Node("n3", "Node 3" + appendix, false), new Node("n4", "Node 4" + appendix, false),
+					new Node("n5", "Node 5" + appendix, false));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -131,9 +135,10 @@ public class RouterControllerTreeLoadTest {
 
 		String appendix = ":defaultValue;value;true;true;true;en";
 
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5)
+			.containsSequence(new Node("n1", "Node 1" + appendix, false), new Node("n2", "Node 2" + appendix, false),
+					new Node("n3", "Node 3" + appendix, false), new Node("n4", "Node 4" + appendix, false),
+					new Node("n5", "Node 5" + appendix, false));
 
 		requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "n2");
@@ -146,9 +151,10 @@ public class RouterControllerTreeLoadTest {
 
 		appendix = ":f;value;true;true;true;en";
 
-		assertThat(nodes).hasSize(5).containsSequence(new Node("id1", "Node 2.1" + appendix, true),
-				new Node("id2", "Node 2.2" + appendix, true), new Node("id3", "Node 2.3" + appendix, true),
-				new Node("id4", "Node 2.4" + appendix, true), new Node("id5", "Node 2.5" + appendix, true));
+		assertThat(nodes).hasSize(5)
+			.containsSequence(new Node("id1", "Node 2.1" + appendix, true),
+					new Node("id2", "Node 2.2" + appendix, true), new Node("id3", "Node 2.3" + appendix, true),
+					new Node("id4", "Node 2.4" + appendix, true), new Node("id5", "Node 2.5" + appendix, true));
 	}
 
 	@Test
@@ -175,9 +181,10 @@ public class RouterControllerTreeLoadTest {
 
 		String appendix = ":true;true;true";
 
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5)
+			.containsSequence(new Node("n1", "Node 1" + appendix, false), new Node("n2", "Node 2" + appendix, false),
+					new Node("n3", "Node 3" + appendix, false), new Node("n4", "Node 4" + appendix, false),
+					new Node("n5", "Node 5" + appendix, false));
 
 		headers = new HttpHeaders();
 		headers.add("aHeader", "false");
@@ -187,9 +194,10 @@ public class RouterControllerTreeLoadTest {
 				}, requestParameters);
 
 		appendix = ":false;true;true";
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5)
+			.containsSequence(new Node("n1", "Node 1" + appendix, false), new Node("n2", "Node 2" + appendix, false),
+					new Node("n3", "Node 3" + appendix, false), new Node("n4", "Node 4" + appendix, false),
+					new Node("n5", "Node 5" + appendix, false));
 	}
 
 	@Test

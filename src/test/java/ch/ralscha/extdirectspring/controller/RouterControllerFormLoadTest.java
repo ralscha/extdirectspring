@@ -247,7 +247,7 @@ public class RouterControllerFormLoadTest {
 
 		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, sb.toString());
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(6);
 		ExtDirectResponse resp = responses.get(0);

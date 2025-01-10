@@ -115,7 +115,8 @@ public class RouterControllerFormPostTest {
 	@Test
 	public void testCallExistsFormPostMethod() throws Exception {
 		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
-				.contentType(MediaType.MULTIPART_FORM_DATA).characterEncoding("UTF-8");
+			.contentType(MediaType.MULTIPART_FORM_DATA)
+			.characterEncoding("UTF-8");
 
 		request.param("extTID", "12");
 		request.param("extAction", "formInfoController");
@@ -145,7 +146,7 @@ public class RouterControllerFormPostTest {
 
 		MvcResult resultMvc = ControllerUtil.performRouterRequest(this.mockMvc, null, parameters, null, null, false);
 		ExtDirectResponse edsResponse = ControllerUtil
-				.readDirectResponse(resultMvc.getResponse().getContentAsByteArray());
+			.readDirectResponse(resultMvc.getResponse().getContentAsByteArray());
 
 		assertThat(edsResponse.getType()).isEqualTo("rpc");
 		assertThat(edsResponse.getMessage()).isNull();
@@ -156,8 +157,9 @@ public class RouterControllerFormPostTest {
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
-		assertThat(result).hasSize(6).contains(entry("name", "RALPH"), entry("age", 30), entry("admin", Boolean.FALSE),
-				entry("salary", 1012.3), entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
+		assertThat(result).hasSize(6)
+			.contains(entry("name", "RALPH"), entry("age", 30), entry("admin", Boolean.FALSE), entry("salary", 1012.3),
+					entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
 	}
 
 	@Test
@@ -175,7 +177,7 @@ public class RouterControllerFormPostTest {
 
 		MvcResult resultMvc = ControllerUtil.performRouterRequest(this.mockMvc, null, parameters, null, null, false);
 		ExtDirectResponse edsResponse = ControllerUtil
-				.readDirectResponse(resultMvc.getResponse().getContentAsByteArray());
+			.readDirectResponse(resultMvc.getResponse().getContentAsByteArray());
 
 		assertThat(edsResponse.getType()).isEqualTo("rpc");
 		assertThat(edsResponse.getMessage()).isNull();
@@ -186,8 +188,9 @@ public class RouterControllerFormPostTest {
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
-		assertThat(result).hasSize(6).contains(entry("name", "RALPH"), entry("age", 30), entry("admin", Boolean.FALSE),
-				entry("salary", 1012.3), entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
+		assertThat(result).hasSize(6)
+			.contains(entry("name", "RALPH"), entry("age", 30), entry("admin", Boolean.FALSE), entry("salary", 1012.3),
+					entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -208,9 +211,11 @@ public class RouterControllerFormPostTest {
 
 		request.file("fileUpload", "the content of the file".getBytes());
 
-		MvcResult resultMvc = this.mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith("text/html;charset=utf-8"))
-				.andExpect(content().encoding("UTF-8")).andReturn();
+		MvcResult resultMvc = this.mockMvc.perform(request)
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith("text/html;charset=utf-8"))
+			.andExpect(content().encoding("UTF-8"))
+			.andReturn();
 
 		String response = resultMvc.getResponse().getContentAsString();
 		String prefix = "<html><body><textarea>";
@@ -219,7 +224,7 @@ public class RouterControllerFormPostTest {
 		String json = response.substring(prefix.length(), response.indexOf(suffix));
 
 		ExtDirectResponse edsResponse = ControllerUtil
-				.readDirectResponse(json.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
+			.readDirectResponse(json.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
 
 		assertThat(edsResponse.getType()).isEqualTo("rpc");
 		assertThat(edsResponse.getMessage()).isNull();
@@ -256,9 +261,11 @@ public class RouterControllerFormPostTest {
 
 		request.file("fileUpload", "the content of the file".getBytes());
 
-		MvcResult resultMvc = this.mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith("text/html;charset=utf-8"))
-				.andExpect(content().encoding("UTF-8")).andReturn();
+		MvcResult resultMvc = this.mockMvc.perform(request)
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith("text/html;charset=utf-8"))
+			.andExpect(content().encoding("UTF-8"))
+			.andReturn();
 
 		String response = resultMvc.getResponse().getContentAsString();
 		String prefix = "<html><body><textarea>";
@@ -267,7 +274,7 @@ public class RouterControllerFormPostTest {
 		String json = response.substring(prefix.length(), response.indexOf(suffix));
 
 		ExtDirectResponse edsResponse = ControllerUtil
-				.readDirectResponse(json.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
+			.readDirectResponse(json.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
 
 		assertThat(edsResponse.getType()).isEqualTo("rpc");
 		assertThat(edsResponse.getMessage()).isNull();

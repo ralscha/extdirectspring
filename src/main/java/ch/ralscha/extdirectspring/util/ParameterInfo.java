@@ -65,7 +65,7 @@ public final class ParameterInfo {
 
 		MethodParameter methodParam = new MethodParameter(method, paramIndex);
 		methodParam.initParameterNameDiscovery(discoverer);
-		
+
 		this.name = methodParam.getParameterName();
 		this.typeDescriptor = new TypeDescriptor(methodParam);
 
@@ -129,10 +129,12 @@ public final class ParameterInfo {
 				this.hasCookieValueAnnotation = true;
 				break;
 			}
-			else if (paramAnn.annotationType().getName()
-					.equals("org.springframework.security.web.bind.annotation.AuthenticationPrincipal")
-					|| paramAnn.annotationType().getName()
-							.equals("org.springframework.security.core.annotation.AuthenticationPrincipal")) {
+			else if (paramAnn.annotationType()
+				.getName()
+				.equals("org.springframework.security.web.bind.annotation.AuthenticationPrincipal")
+					|| paramAnn.annotationType()
+						.getName()
+						.equals("org.springframework.security.core.annotation.AuthenticationPrincipal")) {
 				this.hasAuthenticationPrincipalAnnotation = (Boolean) AnnotationUtils.getValue(paramAnn,
 						"errorOnInvalidType");
 			}

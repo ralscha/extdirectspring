@@ -51,8 +51,9 @@ public class ExtDirectResponseBuilderTest {
 		MockHttpServletRequest request = createRequest();
 
 		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
-		ExtDirectResponseBuilder.create(request, servletResponse).addResultProperty("additionalProperty", 11)
-				.buildAndWrite();
+		ExtDirectResponseBuilder.create(request, servletResponse)
+			.addResultProperty("additionalProperty", 11)
+			.buildAndWrite();
 
 		ExtDirectResponse response = ControllerUtil.readDirectResponse(servletResponse.getContentAsByteArray());
 		assertThat(response.getAction()).isEqualTo("action");
@@ -70,8 +71,10 @@ public class ExtDirectResponseBuilderTest {
 		assertThat(data.get("success")).isEqualTo(Boolean.TRUE);
 
 		servletResponse = new MockHttpServletResponse();
-		ExtDirectResponseBuilder.create(request, servletResponse).unsuccessful()
-				.addResultProperty("additionalProperty", 9).buildAndWrite();
+		ExtDirectResponseBuilder.create(request, servletResponse)
+			.unsuccessful()
+			.addResultProperty("additionalProperty", 9)
+			.buildAndWrite();
 		response = ControllerUtil.readDirectResponse(servletResponse.getContentAsByteArray());
 		data = (Map<String, Object>) response.getResult();
 		assertThat(data).hasSize(2);
@@ -91,8 +94,10 @@ public class ExtDirectResponseBuilderTest {
 		request.setParameter("extTID", "1");
 
 		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
-		ExtDirectResponseBuilder.create(request, servletResponse).addResultProperty("additionalProperty", Boolean.FALSE)
-				.addResultProperty("text", "a lot of &quot;text&quot;").buildAndWrite();
+		ExtDirectResponseBuilder.create(request, servletResponse)
+			.addResultProperty("additionalProperty", Boolean.FALSE)
+			.addResultProperty("text", "a lot of &quot;text&quot;")
+			.buildAndWrite();
 
 		assertThat(servletResponse.getContentType()).isEqualTo("text/html;charset=UTF-8");
 		String content = servletResponse.getContentAsString();

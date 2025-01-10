@@ -120,8 +120,8 @@ public class RouterController {
 
 			try {
 
-				Object[] parameters = this.configurationService.getParametersResolver().prepareParameters(request,
-						response, locale, methodInfo);
+				Object[] parameters = this.configurationService.getParametersResolver()
+					.prepareParameters(request, response, locale, methodInfo);
 
 				if (this.configurationService.getConfiguration().isSynchronizeOnSession()
 						|| methodInfo.isSynchronizeOnSession()) {
@@ -230,7 +230,7 @@ public class RouterController {
 				Map<String, Object> model = modelAndView.getModel();
 				if (model.containsKey("extDirectFormPostResult")) {
 					ExtDirectFormPostResult formPostResult = (ExtDirectFormPostResult) model
-							.get("extDirectFormPostResult");
+						.get("extDirectFormPostResult");
 					directResponse.setResult(formPostResult.getResult());
 					directResponse.setJsonView(getJsonView(formPostResult, methodInfo.getJsonView()));
 				}
@@ -260,8 +260,8 @@ public class RouterController {
 			consumes = MediaType.APPLICATION_JSON_VALUE)
 	public void router(HttpServletRequest request, HttpServletResponse response, Locale locale) throws IOException {
 
-		Object requestData = this.configurationService.getJsonHandler().readValue(request.getInputStream(),
-				Object.class);
+		Object requestData = this.configurationService.getJsonHandler()
+			.readValue(request.getInputStream(), Object.class);
 
 		List<ExtDirectRequest> directRequests = null;
 		if (requestData instanceof Map) {
@@ -271,8 +271,8 @@ public class RouterController {
 		else if (requestData instanceof List) {
 			directRequests = new ArrayList<>();
 			for (Object oneRequest : (List<?>) requestData) {
-				directRequests.add(
-						this.configurationService.getJsonHandler().convertValue(oneRequest, ExtDirectRequest.class));
+				directRequests
+					.add(this.configurationService.getJsonHandler().convertValue(oneRequest, ExtDirectRequest.class));
 			}
 		}
 
@@ -281,11 +281,11 @@ public class RouterController {
 				handleMethodCallOne(directRequests.get(0), request, response, locale);
 			}
 			else if (this.configurationService.getConfiguration()
-					.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.SEQUENTIAL) {
+				.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.SEQUENTIAL) {
 				handleMethodCallsSequential(directRequests, request, response, locale);
 			}
 			else if (this.configurationService.getConfiguration()
-					.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.CONCURRENT) {
+				.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.CONCURRENT) {
 				handleMethodCallsConcurrent(directRequests, request, response, locale);
 			}
 		}
@@ -298,8 +298,8 @@ public class RouterController {
 		List<Future<ExtDirectResponse>> futures = new ArrayList<>(directRequests.size());
 		for (ExtDirectRequest directRequest : directRequests) {
 			Callable<ExtDirectResponse> callable = createMethodCallCallable(directRequest, request, response, locale);
-			futures.add(
-					this.configurationService.getConfiguration().getBatchedMethodsExecutorService().submit(callable));
+			futures
+				.add(this.configurationService.getConfiguration().getBatchedMethodsExecutorService().submit(callable));
 		}
 
 		ObjectMapper objectMapper = this.configurationService.getJsonHandler().getMapper();
@@ -315,7 +315,7 @@ public class RouterController {
 				}
 				else {
 					String jsonResult = objectMapper.writerWithView(jsonView)
-							.writeValueAsString(directResponse.getResult());
+						.writeValueAsString(directResponse.getResult());
 					directResponses.add(new ExtDirectResponseRaw(directResponse, jsonResult));
 				}
 			}
@@ -371,7 +371,7 @@ public class RouterController {
 			}
 			else {
 				String jsonResult = objectMapper.writerWithView(jsonView)
-						.writeValueAsString(directResponse.getResult());
+					.writeValueAsString(directResponse.getResult());
 				directResponses.add(new ExtDirectResponseRaw(directResponse, jsonResult));
 			}
 		}
@@ -559,8 +559,8 @@ public class RouterController {
 				jsonGenerator.close();
 			}
 			else {
-				JsonGenerator jsonGenerator = objectMapper.getFactory().createGenerator(outputStream,
-						JsonEncoding.UTF8);
+				JsonGenerator jsonGenerator = objectMapper.getFactory()
+					.createGenerator(outputStream, JsonEncoding.UTF8);
 				if (jsonView == null) {
 					objectMapper.writeValue(jsonGenerator, responseObject);
 				}
@@ -577,8 +577,8 @@ public class RouterController {
 	private Object processRemotingRequest(HttpServletRequest request, HttpServletResponse response, Locale locale,
 			ExtDirectRequest directRequest, MethodInfo methodInfo) throws Exception {
 
-		Object[] parameters = this.configurationService.getParametersResolver().resolveParameters(request, response,
-				locale, directRequest, methodInfo);
+		Object[] parameters = this.configurationService.getParametersResolver()
+			.resolveParameters(request, response, locale, directRequest, methodInfo);
 
 		if (this.configurationService.getConfiguration().isSynchronizeOnSession()
 				|| methodInfo.isSynchronizeOnSession()) {

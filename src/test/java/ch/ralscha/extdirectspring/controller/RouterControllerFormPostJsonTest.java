@@ -63,7 +63,8 @@ public class RouterControllerFormPostJsonTest {
 	@Test
 	public void testCallExistsFormPostMethod() throws Exception {
 		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
-				.contentType(MediaType.MULTIPART_FORM_DATA).characterEncoding("UTF-8");
+			.contentType(MediaType.MULTIPART_FORM_DATA)
+			.characterEncoding("UTF-8");
 
 		request.param("extTID", "14");
 		request.param("extAction", "formInfoController3");
@@ -97,7 +98,7 @@ public class RouterControllerFormPostJsonTest {
 		}
 
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(resultMvc.getResponse().getContentAsByteArray());
+			.readDirectResponses(resultMvc.getResponse().getContentAsByteArray());
 		assertThat(responses).hasSize(1);
 
 		ExtDirectResponse edsResponse = responses.get(0);
@@ -111,8 +112,9 @@ public class RouterControllerFormPostJsonTest {
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
-		assertThat(result).hasSize(6).contains(entry("name", "RALPH"), entry("age", 30), entry("admin", Boolean.FALSE),
-				entry("salary", 1012.3), entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
+		assertThat(result).hasSize(6)
+			.contains(entry("name", "RALPH"), entry("age", 30), entry("admin", Boolean.FALSE), entry("salary", 1012.3),
+					entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -136,7 +138,7 @@ public class RouterControllerFormPostJsonTest {
 		}
 
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(resultMvc.getResponse().getContentAsByteArray());
+			.readDirectResponses(resultMvc.getResponse().getContentAsByteArray());
 		assertThat(responses).hasSize(1);
 
 		ExtDirectResponse edsResponse = responses.get(0);
@@ -159,7 +161,8 @@ public class RouterControllerFormPostJsonTest {
 	@Test
 	public void testCallExistsFormPostMethodEd() throws Exception {
 		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
-				.contentType(MediaType.MULTIPART_FORM_DATA).characterEncoding("UTF-8");
+			.contentType(MediaType.MULTIPART_FORM_DATA)
+			.characterEncoding("UTF-8");
 
 		request.param("extTID", "14");
 		request.param("extAction", "formInfoController3");
@@ -193,7 +196,7 @@ public class RouterControllerFormPostJsonTest {
 		}
 
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(resultMvc.getResponse().getContentAsByteArray());
+			.readDirectResponses(resultMvc.getResponse().getContentAsByteArray());
 		assertThat(responses).hasSize(1);
 
 		ExtDirectResponse edsResponse = responses.get(0);
@@ -207,8 +210,9 @@ public class RouterControllerFormPostJsonTest {
 
 		@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
-		assertThat(result).hasSize(6).contains(entry("name", "RALPH"), entry("age", 30), entry("admin", Boolean.FALSE),
-				entry("salary", 1012.3), entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
+		assertThat(result).hasSize(6)
+			.contains(entry("name", "RALPH"), entry("age", 30), entry("admin", Boolean.FALSE), entry("salary", 1012.3),
+					entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -220,7 +224,7 @@ public class RouterControllerFormPostJsonTest {
 		MvcResult resultMvc = null;
 		try {
 			resultMvc = ControllerUtil.performRouterRequest(this.mockMvc, ControllerUtil
-					.createEdsRequest("formInfoController3", "updateInfoJsonDirectErrorEd", 14, formInfo));
+				.createEdsRequest("formInfoController3", "updateInfoJsonDirectErrorEd", 14, formInfo));
 		}
 		catch (JsonProcessingException e) {
 			fail("perform post to /router" + e.getMessage());
@@ -232,7 +236,7 @@ public class RouterControllerFormPostJsonTest {
 		}
 
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(resultMvc.getResponse().getContentAsByteArray());
+			.readDirectResponses(resultMvc.getResponse().getContentAsByteArray());
 		assertThat(responses).hasSize(1);
 
 		ExtDirectResponse edsResponse = responses.get(0);

@@ -439,8 +439,8 @@ public final class ParametersResolver {
 					TypeFactory typeFactory = this.jsonHandler.getMapper().getTypeFactory();
 					if (methodParameter.getTypeDescriptor().isCollection()) {
 
-						JavaType elemType = typeFactory.constructType(
-								methodParameter.getTypeDescriptor().getElementTypeDescriptor().getType());
+						JavaType elemType = typeFactory
+							.constructType(methodParameter.getTypeDescriptor().getElementTypeDescriptor().getType());
 						TypeVariable<?>[] vars = rawType.getTypeParameters();
 						TypeBindings bindings;
 						if (vars == null || vars.length != 1) {
@@ -553,8 +553,8 @@ public final class ParametersResolver {
 				if (descriptor != null && descriptor.getWriteMethod() != null) {
 					try {
 
-						descriptor.getWriteMethod().invoke(to,
-								this.conversionService.convert(value, descriptor.getPropertyType()));
+						descriptor.getWriteMethod()
+							.invoke(to, this.conversionService.convert(value, descriptor.getPropertyType()));
 
 						foundParameters.add(key);
 					}

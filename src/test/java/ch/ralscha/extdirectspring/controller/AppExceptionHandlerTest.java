@@ -59,7 +59,7 @@ public class AppExceptionHandlerTest {
 				new Object[] { 3, "xxx", "string.param" });
 		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -80,7 +80,7 @@ public class AppExceptionHandlerTest {
 
 		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -100,7 +100,7 @@ public class AppExceptionHandlerTest {
 
 		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -119,7 +119,7 @@ public class AppExceptionHandlerTest {
 
 		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -136,8 +136,9 @@ public class AppExceptionHandlerTest {
 	@Test
 	public void testSendTextPlainRequest() throws Exception {
 
-		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL).contentType(MediaType.TEXT_PLAIN)
-				.characterEncoding("UTF-8");
+		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
+			.contentType(MediaType.TEXT_PLAIN)
+			.characterEncoding("UTF-8");
 		String edsRequest = ControllerUtil.createEdsRequest("remoteProviderSimple", "method1", false, 1, null, null);
 		request.content(edsRequest);
 

@@ -66,9 +66,11 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 
 		request.file("fileUpload", "the content of the file".getBytes());
 
-		MvcResult resultMvc = this.mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith("text/html;charset=utf-8"))
-				.andExpect(content().encoding("UTF-8")).andReturn();
+		MvcResult resultMvc = this.mockMvc.perform(request)
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith("text/html;charset=utf-8"))
+			.andExpect(content().encoding("UTF-8"))
+			.andReturn();
 
 		String response = resultMvc.getResponse().getContentAsString();
 		String prefix = "<html><body><textarea>";
@@ -77,7 +79,7 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 		String json = response.substring(prefix.length(), response.indexOf(suffix));
 
 		ExtDirectResponse edsResponse = ControllerUtil
-				.readDirectResponse(json.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
+			.readDirectResponse(json.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
 
 		assertThat(edsResponse.getType()).isEqualTo("rpc");
 		assertThat(edsResponse.getMessage()).isNull();
@@ -100,9 +102,11 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 
 		request.file("fileUpload", "the content of the file".getBytes());
 
-		MvcResult resultMvc = this.mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith("text/html;charset=utf-8"))
-				.andExpect(content().encoding("UTF-8")).andReturn();
+		MvcResult resultMvc = this.mockMvc.perform(request)
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith("text/html;charset=utf-8"))
+			.andExpect(content().encoding("UTF-8"))
+			.andReturn();
 
 		String response = resultMvc.getResponse().getContentAsString();
 		String prefix = "<html><body><textarea>";
@@ -111,7 +115,7 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 		String json = response.substring(prefix.length(), response.indexOf(suffix));
 
 		ExtDirectResponse edsResponse = ControllerUtil
-				.readDirectResponse(json.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
+			.readDirectResponse(json.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
 
 		assertThat(edsResponse.getType()).isEqualTo("rpc");
 		assertThat(edsResponse.getMessage()).isNull();

@@ -269,7 +269,7 @@ public class RouterControllerSimpleNamedTest {
 		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil.sendAndReceiveNamed(this.mockMvc,
 				"remoteProviderSimpleNamed", "method11", Map.class, params);
 		assertThat(resultMap.get("endDate"))
-				.isEqualTo(Long.valueOf(todayDateTime.toInstant().getEpochSecond()).intValue());
+			.isEqualTo(Long.valueOf(todayDateTime.toInstant().getEpochSecond()).intValue());
 		assertThat(resultMap.get("localDate")).isEqualTo(DateTimeFormatter.ISO_DATE.format(todayDate));
 		assertThat(resultMap.get("percent")).isEqualTo(0.999);
 		assertThat(resultMap.get("normalParameter")).isEqualTo("normalParameter");
@@ -457,7 +457,7 @@ public class RouterControllerSimpleNamedTest {
 		multiRequests.add(edRequest);
 		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 		assertResponse("remoteProviderSimpleNamed", "methodRP2", 2, new ResultObject("Olstead", 33, Boolean.FALSE),
 				responses);
 
@@ -576,7 +576,7 @@ public class RouterControllerSimpleNamedTest {
 
 		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(result.getResponse().getContentAsByteArray());
+			.readDirectResponses(result.getResponse().getContentAsByteArray());
 		assertResponse("remoteProviderSimpleNamed", "methodRP3", 2, new ResultObject("Olstead", 33, Boolean.FALSE),
 				responses);
 

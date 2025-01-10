@@ -310,8 +310,9 @@ public class RemoteProviderStoreRead {
 
 		}
 
-		return new ExtDirectStoreResult<Row>().setTotal(Long.valueOf(totalSize)).setRecords(rows)
-				.setSuccess(Boolean.TRUE);
+		return new ExtDirectStoreResult<Row>().setTotal(Long.valueOf(totalSize))
+			.setRecords(rows)
+			.setSuccess(Boolean.TRUE);
 
 	}
 
@@ -404,8 +405,10 @@ public class RemoteProviderStoreRead {
 
 		}
 
-		Builder<Row> builder = EdStoreResult.<Row>builder().records(rows).total(Long.valueOf(totalSize))
-				.message(message);
+		Builder<Row> builder = EdStoreResult.<Row>builder()
+			.records(rows)
+			.total(Long.valueOf(totalSize))
+			.message(message);
 		if (metaData != null) {
 			return builder.metaData(metaData.getMetaData()).build();
 		}

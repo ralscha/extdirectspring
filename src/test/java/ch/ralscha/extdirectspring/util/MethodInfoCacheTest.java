@@ -127,9 +127,9 @@ public class MethodInfoCacheTest {
 			MethodInfo infoSum = methodInfoCache.get("springManagedBean", "sum");
 
 			assertThat(ExtDirectSpringUtil.invoke(context, "springManagedBean", infoSum, new Object[] { 1, 2 }))
-					.isEqualTo(Integer.valueOf(3));
+				.isEqualTo(Integer.valueOf(3));
 			assertThat(ExtDirectSpringUtil.invoke(context, "springManagedBean", infoSum, new Object[] { 6, 3 }))
-					.isEqualTo(Integer.valueOf(9));
+				.isEqualTo(Integer.valueOf(9));
 
 			assertThat(methodInfoCache.get("springManagedBean", "methodC")).isNull();
 		}

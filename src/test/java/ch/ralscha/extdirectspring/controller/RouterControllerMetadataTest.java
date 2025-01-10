@@ -129,8 +129,8 @@ public class RouterControllerMetadataTest {
 		metadata.put("mp", "aMetadataValue");
 
 		EdStoreResult<Map<String, Object>> storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method1Ed", metadata, EdStoreResult.class,
-						readRequest);
+			.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method1Ed", metadata, EdStoreResult.class,
+					readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
@@ -156,8 +156,8 @@ public class RouterControllerMetadataTest {
 		readRequest.put("query", "firstname");
 
 		EdStoreResult<Map<String, Object>> storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method2Ed", null, EdStoreResult.class,
-						readRequest);
+			.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method2Ed", null, EdStoreResult.class,
+					readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
@@ -301,8 +301,8 @@ public class RouterControllerMetadataTest {
 		metadata.put("id", "10");
 
 		EdStoreResult<Map<String, Object>> storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method5Ed", metadata, EdStoreResult.class,
-						readRequest);
+			.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method5Ed", metadata, EdStoreResult.class,
+					readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
@@ -339,8 +339,8 @@ public class RouterControllerMetadataTest {
 		metadata.put("id", "10");
 
 		EdStoreResult<Map<String, Object>> storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil
-				.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method6Ed", metadata, EdStoreResult.class,
-						readRequest);
+			.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method6Ed", metadata, EdStoreResult.class,
+					readRequest);
 
 		assertThat(storeResponse.total()).isEqualTo(50L);
 		assertThat(storeResponse.records()).hasSize(50);
@@ -417,7 +417,7 @@ public class RouterControllerMetadataTest {
 
 		MvcResult mvcResult = ControllerUtil.performRouterRequest(mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil
-				.readDirectResponses(mvcResult.getResponse().getContentAsByteArray());
+			.readDirectResponses(mvcResult.getResponse().getContentAsByteArray());
 
 		assertThat(responses).hasSize(1);
 		ExtDirectResponse resp = responses.get(0);
@@ -464,9 +464,10 @@ public class RouterControllerMetadataTest {
 				}, requestParameters);
 
 		String appendix = ":foo;2";
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5)
+			.containsSequence(new Node("n1", "Node 1" + appendix, false), new Node("n2", "Node 2" + appendix, false),
+					new Node("n3", "Node 3" + appendix, false), new Node("n4", "Node 4" + appendix, false),
+					new Node("n5", "Node 5" + appendix, false));
 
 		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "treeLoad1", null, null,
 				requestParameters);
@@ -487,18 +488,20 @@ public class RouterControllerMetadataTest {
 				}, requestParameters);
 
 		String appendix = ":foo;22";
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5)
+			.containsSequence(new Node("n1", "Node 1" + appendix, false), new Node("n2", "Node 2" + appendix, false),
+					new Node("n3", "Node 3" + appendix, false), new Node("n4", "Node 4" + appendix, false),
+					new Node("n5", "Node 5" + appendix, false));
 
 		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "treeLoad2", null,
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		appendix = ":foo;22";
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5)
+			.containsSequence(new Node("n1", "Node 1" + appendix, false), new Node("n2", "Node 2" + appendix, false),
+					new Node("n3", "Node 3" + appendix, false), new Node("n4", "Node 4" + appendix, false),
+					new Node("n5", "Node 5" + appendix, false));
 	}
 
 	@Test
@@ -516,18 +519,20 @@ public class RouterControllerMetadataTest {
 				}, requestParameters);
 
 		String appendix = ":foo;23";
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5)
+			.containsSequence(new Node("n1", "Node 1" + appendix, false), new Node("n2", "Node 2" + appendix, false),
+					new Node("n3", "Node 3" + appendix, false), new Node("n4", "Node 4" + appendix, false),
+					new Node("n5", "Node 5" + appendix, false));
 
 		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "treeLoad3", null,
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
 		appendix = ":foo;23";
-		assertThat(nodes).hasSize(5).containsSequence(new Node("n1", "Node 1" + appendix, false),
-				new Node("n2", "Node 2" + appendix, false), new Node("n3", "Node 3" + appendix, false),
-				new Node("n4", "Node 4" + appendix, false), new Node("n5", "Node 5" + appendix, false));
+		assertThat(nodes).hasSize(5)
+			.containsSequence(new Node("n1", "Node 1" + appendix, false), new Node("n2", "Node 2" + appendix, false),
+					new Node("n3", "Node 3" + appendix, false), new Node("n4", "Node 4" + appendix, false),
+					new Node("n5", "Node 5" + appendix, false));
 	}
 
 }

@@ -60,8 +60,10 @@ public abstract class EdFormPostResult {
 	}
 
 	public static EdFormPostResult create(BindingResult bindingResult, boolean success) {
-		return ImmutableEdFormPostResult.builder().addErrors(null, null, bindingResult)
-				.putResult(SUCCESS_PROPERTY, success).build();
+		return ImmutableEdFormPostResult.builder()
+			.addErrors(null, null, bindingResult)
+			.putResult(SUCCESS_PROPERTY, success)
+			.build();
 	}
 
 	public static EdFormPostResult create(Locale locale, MessageSource messageSource, BindingResult bindingResult) {

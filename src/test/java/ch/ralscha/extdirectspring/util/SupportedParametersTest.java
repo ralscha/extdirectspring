@@ -52,16 +52,16 @@ public class SupportedParametersTest {
 
 		assertThat(SupportedParameters.resolveParameter(String.class, request, response, en, edr)).isNull();
 		assertThat(SupportedParameters.resolveParameter(MockHttpServletRequest.class, request, response, en, edr))
-				.isSameAs(request);
+			.isSameAs(request);
 		assertThat(SupportedParameters.resolveParameter(MockHttpSession.class, request, response, en, edr))
-				.isSameAs(request.getSession());
+			.isSameAs(request.getSession());
 		assertThat(SupportedParameters.resolveParameter(Principal.class, request, response, en, edr))
-				.isSameAs(request.getUserPrincipal());
+			.isSameAs(request.getUserPrincipal());
 		assertThat(SupportedParameters.resolveParameter(MockHttpServletResponse.class, request, response, en, edr))
-				.isSameAs(response);
+			.isSameAs(response);
 		assertThat(SupportedParameters.resolveParameter(Locale.class, request, response, en, edr)).isSameAs(en);
 		assertThat(SupportedParameters.resolveParameter(ExtDirectRequest.class, request, response, en, edr))
-				.isSameAs(edr);
+			.isSameAs(edr);
 	}
 
 }

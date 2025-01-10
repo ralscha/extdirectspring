@@ -75,7 +75,8 @@ public class ControllerUtil {
 			Map<String, String> params, HttpHeaders headers, List<Cookie> cookies, boolean withSession)
 			throws Exception {
 		MockHttpServletRequestBuilder request = post("/poll/" + bean + "/" + method + "/" + event).accept(MediaType.ALL)
-				.contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
+			.contentType(MediaType.APPLICATION_JSON)
+			.characterEncoding("UTF-8");
 
 		if (cookies != null) {
 			request.cookie(cookies.toArray(new Cookie[cookies.size()]));
@@ -95,9 +96,11 @@ public class ControllerUtil {
 			request.headers(headers);
 		}
 
-		MvcResult result = mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith("application/json;charset=UTF-8"))
-				.andExpect(content().encoding("UTF-8")).andReturn();
+		MvcResult result = mockMvc.perform(request)
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith("application/json;charset=UTF-8"))
+			.andExpect(content().encoding("UTF-8"))
+			.andReturn();
 
 		return readDirectPollResponse(result.getResponse().getContentAsByteArray());
 	}
@@ -110,7 +113,8 @@ public class ControllerUtil {
 			HttpHeaders headers, List<Cookie> cookies, boolean withSession) throws Exception {
 
 		MockHttpServletRequestBuilder request = post("/router").accept(MediaType.ALL)
-				.contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8");
+			.contentType(MediaType.APPLICATION_JSON)
+			.characterEncoding("UTF-8");
 
 		if (cookies != null) {
 			request.cookie(cookies.toArray(new Cookie[cookies.size()]));
@@ -135,9 +139,11 @@ public class ControllerUtil {
 			request.headers(headers);
 		}
 
-		return mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith("application/json;charset=UTF-8"))
-				.andExpect(content().encoding("UTF-8")).andReturn();
+		return mockMvc.perform(request)
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith("application/json;charset=UTF-8"))
+			.andExpect(content().encoding("UTF-8"))
+			.andReturn();
 
 	}
 

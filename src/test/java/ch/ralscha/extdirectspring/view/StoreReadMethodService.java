@@ -87,7 +87,7 @@ public class StoreReadMethodService extends BaseViewService {
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ, jsonView = Views.Summary.class)
 	public ExtDirectStoreResult<Employee> overrideResultNoView() {
 		ExtDirectStoreResult<Employee> result = new ExtDirectStoreResult<Employee>().setRecords(createEmployees(2))
-				.setSuccess(Boolean.TRUE);
+			.setSuccess(Boolean.TRUE);
 		result.setJsonView(ExtDirectMethod.NoJsonView.class);
 		return result;
 	}

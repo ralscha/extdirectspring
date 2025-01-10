@@ -78,7 +78,7 @@ public class RouterControllerFilterTest {
 		for (String json : jsonList) {
 			MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, json);
 			List<ExtDirectResponse> responses = ControllerUtil
-					.readDirectResponses(result.getResponse().getContentAsByteArray());
+				.readDirectResponses(result.getResponse().getContentAsByteArray());
 
 			assertThat(responses).hasSize(1);
 			ExtDirectResponse resp = responses.get(0);

@@ -247,15 +247,21 @@ public class ApiControllerWithDocumentationTest {
 	}
 
 	private void doRequestWithoutDocs(String url) throws Exception {
-		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns").actionNs("actionns").group("doc")
-				.configuration(this.configurationService.getConfiguration()).build();
+		ApiRequestParams params = ApiRequestParams.builder()
+			.apiNs("Ext.ns")
+			.actionNs("actionns")
+			.group("doc")
+			.configuration(this.configurationService.getConfiguration())
+			.build();
 		MockHttpServletRequestBuilder request = get(url).accept(MediaType.ALL).characterEncoding("UTF-8");
 		request.param("apiNs", params.getApiNs());
 		request.param("actionNs", params.getActionNs());
 		request.param("group", params.getGroup());
 
-		MvcResult result = this.mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith("application/javascript")).andReturn();
+		MvcResult result = this.mockMvc.perform(request)
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith("application/javascript"))
+			.andReturn();
 
 		ApiControllerTest.compare(result, ApiControllerTest.groupApisWithDoc("actionns"), params);
 		Assert.doesNotContain("/**", result.getResponse().getContentAsString(),
@@ -263,16 +269,22 @@ public class ApiControllerWithDocumentationTest {
 	}
 
 	private ActionDoc callApi(String method) throws Exception {
-		ApiRequestParams params = ApiRequestParams.builder().apiNs("Ext.ns").actionNs("actionns").group("doc")
-				.configuration(this.configurationService.getConfiguration()).build();
+		ApiRequestParams params = ApiRequestParams.builder()
+			.apiNs("Ext.ns")
+			.actionNs("actionns")
+			.group("doc")
+			.configuration(this.configurationService.getConfiguration())
+			.build();
 		MockHttpServletRequestBuilder request = get("/api-debug-doc.js").accept(MediaType.ALL)
-				.characterEncoding("UTF-8");
+			.characterEncoding("UTF-8");
 		request.param("apiNs", params.getApiNs());
 		request.param("actionNs", params.getActionNs());
 		request.param("group", params.getGroup());
 
-		MvcResult result = this.mockMvc.perform(request).andExpect(status().isOk())
-				.andExpect(content().contentTypeCompatibleWith("application/javascript")).andReturn();
+		MvcResult result = this.mockMvc.perform(request)
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith("application/javascript"))
+			.andReturn();
 
 		ApiControllerTest.compare(result, ApiControllerTest.groupApisWithDoc("actionns"), params);
 		ActionDoc doc = getCommentForMethod(result.getResponse().getContentAsString(), method);
