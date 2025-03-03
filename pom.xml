@@ -165,7 +165,7 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>1.5.16</version>
+			<version>1.5.17</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -389,7 +389,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.4.2</version>
+				<version>3.4.3</version>
 				<configuration>
 					<descriptors>
 						<descriptor>src/main/assembly/download-nodep.xml</descriptor>
@@ -472,7 +472,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.4.2</version>
+				<version>3.4.3</version>
 				<configuration>
 					<archive>
 						<manifestEntries>
