@@ -1,7 +1,7 @@
 ## ExtDirectSpring 
 ![Test Status](https://github.com/ralscha/extdirectspring/workflows/test/badge.svg)
 
-ExtDirectSpring is a library that connects Ext JS 3.x, 4.x, 5.x, 6.x, 7.x and Sencha Touch 2.x applications with a Java/Spring back end, by implementing the [Ext Direct](https://docs.sencha.com/extjs/7.4.0/guides/backend_connectors/direct/specification.html) specification. 
+ExtDirectSpring is a library that connects Ext JS 3.x, 4.x, 5.x, 6.x, 7.x and Sencha Touch 2.x applications with a Java/Spring back end, by implementing the [Ext Direct](https://docs.sencha.com/extjs/7.9.0/guides/backend_connectors/direct/specification.html) specification. 
 The library supports all the features of Ext Direct:
   * Configuration with annotations
   * Simple remote calls
@@ -28,7 +28,7 @@ The official Sencha [Ext.Direct forum](http://www.sencha.com/forum/forumdisplay.
 
 
 ## Minimum Requirements
-  * 2.0.0: Spring 6.0.5, Servlet 6.0.0, Jackson 2.14.2, Java 17 (Jakarta)
+  * 2.1.1: Spring 6.2.6, Servlet 6.1.0, Jackson 2.18.3, Java 17 (Jakarta)
   * 1.8.1: Spring 5.1.2, Servlet 3.0, Jackson 2.9, Java 1.8
   * 1.7.4: Spring 4.3.1, Servlet 3.0, Jackson 2.8, Java 1.6
   * 1.6.1: Spring 4.2.0, Servlet 3.0, Jackson 2.6, Java 1.6
