@@ -44,7 +44,7 @@ import ch.ralscha.extdirectspring.util.MethodInfoCache;
 @Service
 public class MethodRegistrar implements ApplicationListener<ContextRefreshedEvent>, Ordered {
 
-	private static final Log log = LogFactory.getLog(RouterController.class);
+	private static final Log log = LogFactory.getLog(MethodRegistrar.class);
 
 	private final MethodInfoCache methodInfoCache;
 
@@ -55,38 +55,41 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-
 		ApplicationContext context = (ApplicationContext) event.getSource();
-
 		String[] beanNames = context.getBeanNamesForType(Object.class);
-
+		int totalBeans = beanNames.length;
+		int totalMethods = 0;
+		int registeredMethods = 0;
 		for (String beanName : beanNames) {
-
-			Class<?> handlerType = context.getType(beanName);
-			final Class<?> userType = ClassUtils.getUserClass(handlerType);
-
-			Set<Method> methods = MethodIntrospector.selectMethods(userType,
-					(MethodFilter) method -> AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) != null);
-
-			for (Method method : methods) {
-				ExtDirectMethod directMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
-				final String beanAndMethodName = beanName + "." + method.getName();
-				if (directMethodAnnotation.value().isValid(beanAndMethodName, userType, method)) {
-					this.methodInfoCache.put(beanName, handlerType, method, event.getApplicationContext());
-
-					// /CLOVER:OFF
-					if (log.isDebugEnabled()) {
-						String info = "Register " + beanAndMethodName + "(" + directMethodAnnotation.value();
-						if (StringUtils.hasText(directMethodAnnotation.group())) {
-							info += ", " + directMethodAnnotation.group();
+			try {
+				Class<?> handlerType = context.getType(beanName);
+				final Class<?> userType = ClassUtils.getUserClass(handlerType);
+				Set<Method> methods = MethodIntrospector.selectMethods(userType,
+						(MethodFilter) method -> AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) != null);
+				totalMethods += methods.size();
+				for (Method method : methods) {
+					ExtDirectMethod directMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+					final String beanAndMethodName = beanName + "." + method.getName();
+					if (directMethodAnnotation.value().isValid(beanAndMethodName, userType, method)) {
+						this.methodInfoCache.put(beanName, handlerType, method, event.getApplicationContext());
+						registeredMethods++;
+						if (log.isDebugEnabled()) {
+							String info = "Register " + beanAndMethodName + "(" + directMethodAnnotation.value();
+							if (StringUtils.hasText(directMethodAnnotation.group())) {
+								info += ", " + directMethodAnnotation.group();
+							}
+							info += ")";
+							log.debug(info);
 						}
-						info += ")";
-						log.debug(info);
 					}
-					// /CLOVER:ON
 				}
+			} catch (Exception e) {
+				log.error("Exception while registering methods for bean: " + beanName, e);
 			}
-
+		}
+		log.info("MethodRegistrar: total beans scanned=" + totalBeans + ", total methods found=" + totalMethods + ", methods registered=" + registeredMethods);
+		if (registeredMethods == 0) {
+			log.warn("No ExtDirect methods registered. MethodInfoCache may be empty.");
 		}
 	}
 

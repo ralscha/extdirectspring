@@ -23,6 +23,7 @@ import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,6 +52,8 @@ import ch.ralscha.extdirectspring.util.MethodInfoCache;
  */
 @Controller
 public class ApiController {
+
+    private static final Log log = LogFactory.getLog(ApiController.class);
 
 	private final ConfigurationService configurationService;
 
@@ -206,14 +209,20 @@ public class ApiController {
 
 		if (!requestUrlString.contains("/api-debug-doc.js")) {
 			boolean debug = requestUrlString.contains("api-debug.js");
-
-			ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, group,
-					debug);
+			ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, group, debug);
 			String apiString = this.apiCache.get(apiKey);
 			if (apiString == null) {
-				apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, basePollUrl,
-						group, debug, false);
-				this.apiCache.put(apiKey, apiString);
+				try {
+					apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, basePollUrl,
+							group, debug, false);
+					if (apiString == null || apiString.trim().isEmpty()) {
+						log.warn("Generated API string is empty for key: " + apiKey);
+					}
+					this.apiCache.put(apiKey, apiString);
+				} catch (Exception e) {
+					log.error("Exception while building API string for key: " + apiKey, e);
+					throw new RuntimeException("Failed to build API string", e);
+				}
 			}
 			return apiString;
 		}
@@ -225,6 +234,20 @@ public class ApiController {
 
 	private String buildApiString(String apiNs, String actionNs, String remotingApiVar, String pollingUrlsVar,
 			String routerUrl, String basePollUrl, String group, boolean debug, boolean doc) {
+
+		if (this.methodInfoCache == null) {
+			log.error("MethodInfoCache is null in buildApiString");
+			throw new IllegalStateException("MethodInfoCache is not initialized");
+		}
+		int cacheSize = 0;
+		try {
+			cacheSize = (int) this.methodInfoCache.spliterator().getExactSizeIfKnown();
+		} catch (Exception e) {
+			log.warn("Could not determine MethodInfoCache size", e);
+		}
+		if (cacheSize == 0) {
+			log.warn("MethodInfoCache is empty when building API string");
+		}
 
 		RemotingApi remotingApi = new RemotingApi(this.configurationService.getConfiguration().getProviderType(),
 				routerUrl, actionNs);
@@ -290,7 +313,7 @@ public class ApiController {
 			}
 			catch (JsonProcessingException e) {
 				jsonConfig = null;
-				LogFactory.getLog(ApiController.class).info("serialize object to json", e);
+				log.info("serialize object to json", e);
 			}
 		}
 
@@ -376,16 +399,23 @@ public class ApiController {
 
 	private void buildRemotingApi(RemotingApi remotingApi, String requestedGroup) {
 		String group = requestedGroup != null ? requestedGroup.trim() : requestedGroup;
+		int found = 0;
+		int matched = 0;
 		for (Map.Entry<MethodInfoCache.Key, MethodInfo> entry : this.methodInfoCache) {
+			found++;
 			MethodInfo methodInfo = entry.getValue();
 			if (isSameGroup(group, methodInfo.getGroup())) {
+				matched++;
 				if (methodInfo.getAction() != null) {
 					remotingApi.addAction(entry.getKey().getBeanName(), methodInfo.getAction());
-				}
-				else if (methodInfo.getPollingProvider() != null) {
+				} else if (methodInfo.getPollingProvider() != null) {
 					remotingApi.addPollingProvider(methodInfo.getPollingProvider());
 				}
 			}
+		}
+		log.info("buildRemotingApi: total methods found=" + found + ", matched group=" + matched + ", group='" + group + "'");
+		if (matched == 0) {
+			log.warn("No methods matched the requested group: '" + group + "'");
 		}
 	}
 
@@ -417,7 +447,7 @@ public class ApiController {
 			return this.objectMapper.writeValueAsString(obj);
 		}
 		catch (Exception e) {
-			LogFactory.getLog(JsonHandler.class).info("serialize object to json", e);
+			log.info("serialize object to json", e);
 			return null;
 		}
 	}
