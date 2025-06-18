@@ -21,8 +21,8 @@ import java.util.Set;
 
 public enum Comparison {
 
-	LESS_THAN("lt", "<"), LESS_THAN_OR_EQUAL("lte", "le", "<="), GREATER_THAN("gt", ">"), GREATER_THAN_OR_EQUAL("gte", "ge", ">="),
-	EQUAL("eq", "="), NOT_EQUAL("ne", "!="), LIKE("like"), IN("in");
+	LESS_THAN("lt", "<"), LESS_THAN_OR_EQUAL("lte", "le", "<="), GREATER_THAN("gt", ">"),
+	GREATER_THAN_OR_EQUAL("gte", "ge", ">="), EQUAL("eq", "="), NOT_EQUAL("ne", "!="), LIKE("like"), IN("in");
 
 	private final Set<String> externalValues;
 

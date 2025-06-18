@@ -33,7 +33,6 @@ import ch.ralscha.extdirectspring.util.MethodInfoCache;
 @Service
 public class MethodRegistrar implements ApplicationListener<ContextRefreshedEvent>, Ordered {
 
-
 	private final MethodInfoCache methodInfoCache;
 
 	@Autowired
@@ -46,7 +45,7 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 		ApplicationContext context = (ApplicationContext) event.getSource();
 		this.methodInfoCache.populateMethodInfoCache(context);
 	}
-	
+
 	@Override
 	public int getOrder() {
 		return Ordered.LOWEST_PRECEDENCE - 1000;

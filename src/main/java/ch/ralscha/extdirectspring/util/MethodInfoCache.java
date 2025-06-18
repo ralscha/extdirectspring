@@ -41,7 +41,9 @@ import ch.ralscha.extdirectspring.controller.RouterController;
  */
 @Service
 public class MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, MethodInfo>> {
+
 	private static final Log log = LogFactory.getLog(MethodInfoCache.class);
+
 	private final Map<Key, MethodInfo> cache;
 
 	public MethodInfoCache() {
@@ -54,7 +56,7 @@ public class MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, 
 	public boolean isEmpty() {
 		return this.cache.isEmpty();
 	}
-	
+
 	/**
 	 * Put a method into the MethodCache.
 	 * @param beanName the name of the bean
@@ -149,4 +151,5 @@ public class MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, 
 
 		}
 	}
+
 }
