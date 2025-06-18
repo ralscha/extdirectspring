@@ -219,7 +219,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-			<version>3.4.5</version>
+			<version>3.5.0</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -389,7 +389,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.4.5</version>
+				<version>3.7.1</version>
 				<configuration>
 					<descriptors>
 						<descriptor>src/main/assembly/download-nodep.xml</descriptor>
