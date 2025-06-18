@@ -20,23 +20,41 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.MethodIntrospector;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.util.ReflectionUtils.MethodFilter;
+
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
+import ch.ralscha.extdirectspring.controller.RouterController;
 
 /**
  * A simple cache for methods with key beanName/methodName
  */
 @Service
 public class MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, MethodInfo>> {
-
+	private static final Log log = LogFactory.getLog(MethodInfoCache.class);
 	private final Map<Key, MethodInfo> cache;
 
 	public MethodInfoCache() {
 		this.cache = new HashMap<>();
 	}
 
+	/**
+	 * Is the cache empty?
+	 */
+	public boolean isEmpty() {
+		return this.cache.isEmpty();
+	}
+	
 	/**
 	 * Put a method into the MethodCache.
 	 * @param beanName the name of the bean
@@ -101,4 +119,34 @@ public class MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, 
 		this.cache.clear();
 	}
 
+	public void populateMethodInfoCache(ApplicationContext context) {
+		String[] beanNames = context.getBeanNamesForType(Object.class);
+
+		for (String beanName : beanNames) {
+
+			Class<?> handlerType = context.getType(beanName);
+			final Class<?> userType = ClassUtils.getUserClass(handlerType);
+
+			Set<Method> methods = MethodIntrospector.selectMethods(userType,
+					(MethodFilter) method -> AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) != null);
+
+			for (Method method : methods) {
+				ExtDirectMethod directMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+				final String beanAndMethodName = beanName + "." + method.getName();
+				if (directMethodAnnotation.value().isValid(beanAndMethodName, userType, method)) {
+					this.put(beanName, handlerType, method, context);
+
+					if (log.isDebugEnabled()) {
+						String info = "Register " + beanAndMethodName + "(" + directMethodAnnotation.value();
+						if (StringUtils.hasText(directMethodAnnotation.group())) {
+							info += ", " + directMethodAnnotation.group();
+						}
+						info += ")";
+						log.debug(info);
+					}
+				}
+			}
+
+		}
+	}
 }

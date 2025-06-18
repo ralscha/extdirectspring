@@ -375,6 +375,9 @@ public class ApiController {
 	}
 
 	private void buildRemotingApi(RemotingApi remotingApi, String requestedGroup) {
+		if (this.methodInfoCache.isEmpty()) {
+			this.methodInfoCache.populateMethodInfoCache(this.configurationService.getApplicationContext());
+		}
 		String group = requestedGroup != null ? requestedGroup.trim() : requestedGroup;
 		for (Map.Entry<MethodInfoCache.Key, MethodInfo> entry : this.methodInfoCache) {
 			MethodInfo methodInfo = entry.getValue();
