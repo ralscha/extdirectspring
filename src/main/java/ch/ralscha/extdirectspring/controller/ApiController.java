@@ -99,6 +99,7 @@ public class ApiController {
 			@RequestParam(value = "fullRouterUrl", required = false) Boolean fullRouterUrl,
 			@RequestParam(value = "format", required = false) String format,
 			@RequestParam(value = "baseRouterUrl", required = false) String baseRouterUrl, HttpServletRequest request,
+			@RequestParam(value = "cache", required = false, defaultValue = "true") boolean cache,
 			HttpServletResponse response) throws IOException {
 
 		if (format == null) {
@@ -106,7 +107,7 @@ public class ApiController {
 			response.setCharacterEncoding(ExtDirectSpringUtil.UTF8_CHARSET.name());
 
 			String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group,
-					fullRouterUrl, baseRouterUrl, request);
+					fullRouterUrl, baseRouterUrl, request, cache);
 
 			byte[] outputBytes = apiString.getBytes(ExtDirectSpringUtil.UTF8_CHARSET);
 			response.setContentLength(outputBytes.length);
@@ -124,7 +125,7 @@ public class ApiController {
 			boolean debug = requestUrlString.contains("api-debug.js");
 			String routerUrl = requestUrlString.replaceFirst("api[^/]*?\\.js", "router");
 
-			String apiString = buildApiJson(apiNs, actionNs, remotingApiVar, routerUrl, group, debug);
+			String apiString = buildApiJson(apiNs, actionNs, remotingApiVar, routerUrl, group, debug, cache);
 			byte[] outputBytes = apiString.getBytes(ExtDirectSpringUtil.UTF8_CHARSET);
 			response.setContentLength(outputBytes.length);
 
@@ -162,10 +163,11 @@ public class ApiController {
 			@RequestParam(value = "group", required = false) String group,
 			@RequestParam(value = "fullRouterUrl", required = false) Boolean fullRouterUrl,
 			@RequestParam(value = "baseRouterUrl", required = false) String baseRouterUrl, HttpServletRequest request,
+			@RequestParam(value = "cache", required = false, defaultValue = "true") boolean cache,
 			HttpServletResponse response) throws IOException {
 
 		String apiString = buildAndCacheApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group, fullRouterUrl,
-				baseRouterUrl, request);
+				baseRouterUrl, request, cache);
 
 		byte[] outputBytes = apiString.getBytes(ExtDirectSpringUtil.UTF8_CHARSET);
 		ExtDirectSpringUtil.handleCacheableResponse(request, response, outputBytes,
@@ -174,7 +176,7 @@ public class ApiController {
 
 	private String buildAndCacheApiString(String requestApiNs, String requestActionNs, String requestRemotingApiVar,
 			String requestPollingUrlsVar, String group, Boolean requestFullRouterUrl, String requestBaseRouterUrl,
-			HttpServletRequest request) {
+			HttpServletRequest request, boolean cache) {
 
 		Configuration configuration = this.configurationService.getConfiguration();
 		String apiNs = requestApiNs != null ? requestApiNs : configuration.getApiNs();
@@ -210,21 +212,21 @@ public class ApiController {
 			ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, group,
 					debug);
 			String apiString = this.apiCache.get(apiKey);
-			if (apiString == null) {
+			if (apiString == null || !cache) {
 				apiString = buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, basePollUrl,
-						group, debug, false);
+						group, debug, false, cache);
 				this.apiCache.put(apiKey, apiString);
 			}
 			return apiString;
 		}
 
 		return buildApiString(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, basePollUrl, group, true,
-				true);
+				true, cache);
 
 	}
 
 	private String buildApiString(String apiNs, String actionNs, String remotingApiVar, String pollingUrlsVar,
-			String routerUrl, String basePollUrl, String group, boolean debug, boolean doc) {
+			String routerUrl, String basePollUrl, String group, boolean debug, boolean doc, boolean cache) {
 
 		RemotingApi remotingApi = new RemotingApi(this.configurationService.getConfiguration().getProviderType(),
 				routerUrl, actionNs);
@@ -254,7 +256,7 @@ public class ApiController {
 			remotingApi.setBufferLimit(this.configurationService.getConfiguration().getBufferLimit());
 		}
 
-		buildRemotingApi(remotingApi, group);
+		buildRemotingApi(remotingApi, group, cache);
 
 		StringBuilder sb = new StringBuilder();
 
@@ -348,7 +350,7 @@ public class ApiController {
 	}
 
 	private String buildApiJson(String requestApiNs, String requestActionNs, String requestRemotingApiVar,
-			String routerUrl, String group, boolean debug) {
+			String routerUrl, String group, boolean debug, boolean cache) {
 
 		Configuration configuration = this.configurationService.getConfiguration();
 		String apiNs = requestApiNs != null ? requestApiNs : configuration.getApiNs();
@@ -368,14 +370,20 @@ public class ApiController {
 			remotingApi.setDescriptor(remotingApiVar);
 		}
 
-		buildRemotingApi(remotingApi, group);
+		buildRemotingApi(remotingApi, group, cache);
 
 		return writeValueAsString(remotingApi, debug);
 
 	}
 
-	private void buildRemotingApi(RemotingApi remotingApi, String requestedGroup) {
-		this.methodInfoCache.populateMethodInfoCache(this.configurationService.getApplicationContext());
+	private void buildRemotingApi(RemotingApi remotingApi, String requestedGroup, boolean cache) {
+		if (cache && this.methodInfoCache.isEmpty()) {
+			// populate the cache only once
+			this.methodInfoCache.populateMethodInfoCache(this.configurationService.getApplicationContext());
+		}
+		else {
+			this.methodInfoCache.populateMethodInfoCache(this.configurationService.getApplicationContext());
+		}
 		String group = requestedGroup != null ? requestedGroup.trim() : requestedGroup;
 		for (Map.Entry<MethodInfoCache.Key, MethodInfo> entry : this.methodInfoCache) {
 			MethodInfo methodInfo = entry.getValue();
