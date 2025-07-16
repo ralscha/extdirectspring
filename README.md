@@ -28,7 +28,7 @@ The official Sencha [Ext.Direct forum](http://www.sencha.com/forum/forumdisplay.
 
 
 ## Minimum Requirements
-  * 2.1.1: Spring 6.2.6, Servlet 6.1.0, Jackson 2.18.3, Java 17 (Jakarta)
+  * 2.1.5: Spring 6.2.6, Servlet 6.1.0, Jackson 2.18.3, Java 17 (Jakarta)
   * 1.8.1: Spring 5.1.2, Servlet 3.0, Jackson 2.9, Java 1.8
   * 1.7.4: Spring 4.3.1, Servlet 3.0, Jackson 2.8, Java 1.6
   * 1.6.1: Spring 4.2.0, Servlet 3.0, Jackson 2.6, Java 1.6
