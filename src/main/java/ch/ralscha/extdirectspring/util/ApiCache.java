@@ -37,8 +37,11 @@ public class ApiCache {
 	public String get(ApiCacheKey key) {
 		if (key != null) {
 			SoftReference<String> apiStringReference = this.cache.get(key);
-			if (apiStringReference != null && apiStringReference.get() != null) {
-				return apiStringReference.get();
+			if (apiStringReference != null) {
+				String value = apiStringReference.get();
+				if (value != null) {
+					return value;
+				}
 			}
 		}
 		return null;
