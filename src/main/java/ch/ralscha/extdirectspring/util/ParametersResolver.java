@@ -281,12 +281,12 @@ public final class ParametersResolver {
 						}
 					}
 
-					log.info("WebResolvers size:" + this.webArgumentResolvers.size());
-					log.info("ParamIndex:" + paramIndex);
+					log.debug("WebResolvers size:" + this.webArgumentResolvers.size());
+					log.debug("ParamIndex:" + paramIndex);
 
-					log.info("Request params size:" + request.getParameterMap().isEmpty());
-					log.info("Request params names:" + request.getParameterMap().keySet());
-					log.info("Direct Request:" + directRequest.toString());
+					log.debug("Request params size:" + request.getParameterMap().isEmpty());
+					log.debug("Request params names:" + request.getParameterMap().keySet());
+					log.debug("Direct Request:" + directRequest.toString());
 
 					MethodParameter p = new MethodParameter(methodInfo.getMethod(), paramIndex);
 					request.setAttribute("directRequest", directRequest);
@@ -295,11 +295,11 @@ public final class ParametersResolver {
 					Object result = WebArgumentResolver.UNRESOLVED;
 
 					for (WebArgumentResolver resolver : this.webArgumentResolvers) {
-						log.info("Resolving with:" + resolver.getClass().getCanonicalName());
+						log.debug("Resolving with:" + resolver.getClass().getCanonicalName());
 
 						result = resolver.resolveArgument(p, r);
 						if (result != WebArgumentResolver.UNRESOLVED) {
-							log.info("Resolved by:" + resolver.getClass().getCanonicalName());
+							log.debug("Resolved by:" + resolver.getClass().getCanonicalName());
 							parameters[paramIndex] = result;
 							break;
 						}
