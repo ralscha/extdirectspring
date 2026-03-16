@@ -17,11 +17,11 @@ package ch.ralscha.extdirectspring.util;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,7 +46,7 @@ public class MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, 
 	private final Map<Key, MethodInfo> cache;
 
 	public MethodInfoCache() {
-		this.cache = new HashMap<>();
+		this.cache = new ConcurrentHashMap<>();
 	}
 
 	/**
