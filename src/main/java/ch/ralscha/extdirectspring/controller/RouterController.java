@@ -321,6 +321,7 @@ public class RouterController {
 			}
 			catch (InterruptedException e) {
 				log.error("Error invoking method", e);
+				Thread.currentThread().interrupt();
 			}
 			catch (ExecutionException e) {
 				log.error("Error invoking method", e);
