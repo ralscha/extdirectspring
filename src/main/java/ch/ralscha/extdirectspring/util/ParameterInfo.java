@@ -137,6 +137,7 @@ public final class ParameterInfo {
 						.equals("org.springframework.security.core.annotation.AuthenticationPrincipal")) {
 				this.hasAuthenticationPrincipalAnnotation = (Boolean) AnnotationUtils.getValue(paramAnn,
 						"errorOnInvalidType");
+				break;
 			}
 		}
 	}
