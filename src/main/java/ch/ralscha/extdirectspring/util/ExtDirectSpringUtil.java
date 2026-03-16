@@ -21,6 +21,7 @@ import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -48,7 +49,7 @@ import ch.ralscha.extdirectspring.controller.ConfigurationService;
  */
 public final class ExtDirectSpringUtil {
 
-	public static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
+	public static final Charset UTF8_CHARSET = StandardCharsets.UTF_8;
 
 	private ExtDirectSpringUtil() {
 		// singleton
@@ -70,7 +71,7 @@ public final class ExtDirectSpringUtil {
 	 * @return true if request is a Multipart request (file upload)
 	 */
 	public static boolean isMultipart(HttpServletRequest request) {
-		if (!"post".equals(request.getMethod().toLowerCase())) {
+		if (!"post".equals(request.getMethod().toLowerCase(Locale.ROOT))) {
 			return false;
 		}
 		String contentType = request.getContentType();
