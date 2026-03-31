@@ -26,10 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Service;
@@ -57,6 +53,9 @@ import ch.ralscha.extdirectspring.filter.Filter;
 import ch.ralscha.extdirectspring.filter.ListFilter;
 import ch.ralscha.extdirectspring.filter.NumericFilter;
 import ch.ralscha.extdirectspring.filter.StringFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class RemoteProviderStoreRead {
@@ -526,7 +525,7 @@ public class RemoteProviderStoreRead {
 		return createEdStoreResult(request, "", null, null);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked", "cast" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@ExtDirectMethod(ExtDirectMethodType.STORE_READ)
 	public List<Row> methodFilter(@RequestParam("type") int type, ExtDirectStoreReadRequest request) {
 

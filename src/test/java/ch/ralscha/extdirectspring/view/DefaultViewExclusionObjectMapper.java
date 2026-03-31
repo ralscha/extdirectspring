@@ -15,19 +15,19 @@
  */
 package ch.ralscha.extdirectspring.view;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 public class DefaultViewExclusionObjectMapper extends ObjectMapper {
 
 	private static final long serialVersionUID = 1L;
 
 	public DefaultViewExclusionObjectMapper() {
-		super();
-
-		configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
+		super(JsonMapper.builder()
+			.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+			.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false));
 	}
 
 }

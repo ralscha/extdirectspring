@@ -15,14 +15,13 @@
  */
 package ch.ralscha.extdirectspring.provider;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponseBuilder;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class MyExceptionHandler implements HandlerExceptionResolver {

@@ -19,7 +19,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import org.springframework.core.DefaultParameterNameDiscoverer;
-import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.convert.TypeDescriptor;
@@ -70,7 +69,7 @@ public final class ParameterInfo {
 		this.typeDescriptor = new TypeDescriptor(methodParam);
 
 		Class<?> paramType = methodParam.withContainingClass(clazz).getParameterType();
-		this.javaUtilOptional = paramType.getName().equals("java.util.Optional");
+		this.javaUtilOptional = "java.util.Optional".equals(paramType.getName());
 
 		this.supportedParameter = SupportedParameters.isSupported(this.typeDescriptor.getObjectType());
 
@@ -85,8 +84,7 @@ public final class ParameterInfo {
 			this.hasCookieValueAnnotation = false;
 			this.hasAuthenticationPrincipalAnnotation = null;
 
-			if (RequestParam.class.isInstance(paramAnn)) {
-				RequestParam requestParam = (RequestParam) paramAnn;
+			if ((paramAnn instanceof RequestParam requestParam)) {
 				if (StringUtils.hasText(requestParam.value())) {
 					this.name = requestParam.value();
 				}
@@ -96,8 +94,7 @@ public final class ParameterInfo {
 				this.hasRequestParamAnnotation = true;
 				break;
 			}
-			else if (MetadataParam.class.isInstance(paramAnn)) {
-				MetadataParam metadataParam = (MetadataParam) paramAnn;
+			if ((paramAnn instanceof MetadataParam metadataParam)) {
 				if (StringUtils.hasText(metadataParam.value())) {
 					this.name = metadataParam.value();
 				}
@@ -107,8 +104,7 @@ public final class ParameterInfo {
 				this.hasMetadataParamAnnotation = true;
 				break;
 			}
-			else if (RequestHeader.class.isInstance(paramAnn)) {
-				RequestHeader requestHeader = (RequestHeader) paramAnn;
+			else if ((paramAnn instanceof RequestHeader requestHeader)) {
 				if (StringUtils.hasText(requestHeader.value())) {
 					this.name = requestHeader.value();
 				}
@@ -118,8 +114,7 @@ public final class ParameterInfo {
 				this.hasRequestHeaderAnnotation = true;
 				break;
 			}
-			else if (CookieValue.class.isInstance(paramAnn)) {
-				CookieValue cookieValue = (CookieValue) paramAnn;
+			else if ((paramAnn instanceof CookieValue cookieValue)) {
 				if (StringUtils.hasText(cookieValue.value())) {
 					this.name = cookieValue.value();
 				}
@@ -129,14 +124,13 @@ public final class ParameterInfo {
 				this.hasCookieValueAnnotation = true;
 				break;
 			}
-			else if (paramAnn.annotationType()
-				.getName()
-				.equals("org.springframework.security.web.bind.annotation.AuthenticationPrincipal")
-					|| paramAnn.annotationType()
-						.getName()
-						.equals("org.springframework.security.core.annotation.AuthenticationPrincipal")) {
-				this.hasAuthenticationPrincipalAnnotation = (Boolean) AnnotationUtils.getValue(paramAnn,
-						"errorOnInvalidType");
+			else if ("org.springframework.security.web.bind.annotation.AuthenticationPrincipal"
+				.equals(paramAnn.annotationType().getName())
+					|| "org.springframework.security.core.annotation.AuthenticationPrincipal"
+						.equals(paramAnn.annotationType().getName())) {
+				Object errorOnInvalidType = AnnotationUtils.getValue(paramAnn, "errorOnInvalidType");
+				this.hasAuthenticationPrincipalAnnotation = errorOnInvalidType instanceof Boolean booleanValue
+						? booleanValue : Boolean.FALSE;
 				break;
 			}
 		}
@@ -178,7 +172,7 @@ public final class ParameterInfo {
 	}
 
 	public boolean authenticationPrincipalAnnotationErrorOnInvalidType() {
-		return this.hasAuthenticationPrincipalAnnotation != null ? this.hasAuthenticationPrincipalAnnotation : false;
+		return Boolean.TRUE.equals(this.hasAuthenticationPrincipalAnnotation);
 	}
 
 	public boolean isRequired() {

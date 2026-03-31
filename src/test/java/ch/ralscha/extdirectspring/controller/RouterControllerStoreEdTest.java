@@ -44,7 +44,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 import ch.ralscha.extdirectspring.bean.EdStoreResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
@@ -561,7 +561,7 @@ public class RouterControllerStoreEdTest {
 	public void testMetadata() throws Exception {
 
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderStoreRead", "methodMetadataEd", 1,
-				new HashMap<String, Object>());
+				new HashMap<>());
 
 		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil

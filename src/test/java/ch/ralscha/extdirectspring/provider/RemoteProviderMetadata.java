@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -34,6 +32,7 @@ import ch.ralscha.extdirectspring.bean.EdStoreResult;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad.Node;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class RemoteProviderMetadata {

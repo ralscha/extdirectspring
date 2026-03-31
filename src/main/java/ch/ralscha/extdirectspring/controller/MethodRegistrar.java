@@ -42,7 +42,7 @@ public class MethodRegistrar implements ApplicationListener<ContextRefreshedEven
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
-		ApplicationContext context = (ApplicationContext) event.getSource();
+		ApplicationContext context = event.getSource();
 		this.methodInfoCache.populateMethodInfoCache(context);
 	}
 

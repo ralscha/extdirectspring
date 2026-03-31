@@ -702,9 +702,9 @@ public class ApiControllerWithConfigurationTest {
 			ApiControllerTest.assertContains(actionNs, lines);
 		}
 
-		String remotingJson = "{";
+		StringBuilder remotingJson = new StringBuilder("{");
 		for (int i = startRemotingApi + 1; i < startPollingApi; i++) {
-			remotingJson += lines[i];
+			remotingJson.append(lines[i]);
 		}
 
 		String pollingJson = "{";
@@ -727,7 +727,7 @@ public class ApiControllerWithConfigurationTest {
 			}
 		}
 
-		Map<String, Object> rootAsMap = ControllerUtil.readValue(remotingJson, Map.class);
+		Map<String, Object> rootAsMap = ControllerUtil.readValue(remotingJson.toString(), Map.class);
 		if (remotingApi.getNamespace() == null) {
 			if (3 + noOfconfigOptions != rootAsMap.size()) {
 				for (String key : rootAsMap.keySet()) {

@@ -46,11 +46,10 @@ public final class ApiCacheKey {
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof ApiCacheKey)) {
+		if (!(o instanceof ApiCacheKey other)) {
 			return false;
 		}
 
-		ApiCacheKey other = (ApiCacheKey) o;
 		return ExtDirectSpringUtil.equal(this.apiNs, other.apiNs)
 				&& ExtDirectSpringUtil.equal(this.actionNs, other.actionNs)
 				&& ExtDirectSpringUtil.equal(this.remotingApiVar, other.remotingApiVar)

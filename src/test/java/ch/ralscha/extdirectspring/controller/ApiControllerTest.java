@@ -873,7 +873,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("bookSubService", Action.create("create4", 1));
 
 		remotingApi.addAction("remoteProviderSimpleNamed",
-				Action.createNamed("method1", new ArrayList<String>(), null, null));
+				Action.createNamed("method1", new ArrayList<>(), null, null));
 		remotingApi.addAction("remoteProviderSimpleNamed",
 				Action.createNamed("method2", Arrays.asList("i", "d", "s"), null, null));
 		remotingApi.addAction("remoteProviderSimpleNamed",
@@ -883,7 +883,7 @@ public class ApiControllerTest {
 		remotingApi.addAction("remoteProviderSimpleNamed",
 				Action.createNamed("method5", Arrays.asList("d"), null, null));
 		remotingApi.addAction("remoteProviderSimpleNamed",
-				Action.createNamed("method6", new ArrayList<String>(), null, null));
+				Action.createNamed("method6", new ArrayList<>(), null, null));
 		remotingApi.addAction("remoteProviderSimpleNamed", Action.createNamed("method7", Arrays.asList("flag",
 				"aCharacter", "workflow", "aInt", "aLong", "aDouble", "aFloat", "aShort", "aByte"), null, null));
 		remotingApi.addAction("remoteProviderSimpleNamed",

@@ -27,7 +27,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.MethodIntrospector;
-import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils.MethodFilter;
@@ -95,11 +95,10 @@ public class MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, 
 
 		@Override
 		public boolean equals(Object o) {
-			if (!(o instanceof Key)) {
+			if (!(o instanceof Key other)) {
 				return false;
 			}
 
-			Key other = (Key) o;
 			return ExtDirectSpringUtil.equal(this.beanName, other.beanName)
 					&& ExtDirectSpringUtil.equal(this.methodName, other.methodName);
 		}
@@ -129,21 +128,25 @@ public class MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, 
 			final Class<?> userType = ClassUtils.getUserClass(handlerType);
 
 			Set<Method> methods = MethodIntrospector.selectMethods(userType,
-					(MethodFilter) method -> AnnotationUtils.findAnnotation(method, ExtDirectMethod.class) != null);
+					(MethodFilter) method -> AnnotatedElementUtils.findMergedAnnotation(method,
+							ExtDirectMethod.class) != null);
 
 			for (Method method : methods) {
-				ExtDirectMethod directMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+				ExtDirectMethod directMethodAnnotation = AnnotatedElementUtils.findMergedAnnotation(method,
+						ExtDirectMethod.class);
 				final String beanAndMethodName = beanName + "." + method.getName();
 				if (directMethodAnnotation.value().isValid(beanAndMethodName, userType, method)) {
 					this.put(beanName, handlerType, method, context);
 
 					if (log.isDebugEnabled()) {
-						String info = "Register " + beanAndMethodName + "(" + directMethodAnnotation.value();
+						StringBuilder info = new StringBuilder("Register ").append(beanAndMethodName)
+							.append("(")
+							.append(directMethodAnnotation.value());
 						if (StringUtils.hasText(directMethodAnnotation.group())) {
-							info += ", " + directMethodAnnotation.group();
+							info.append(", ").append(directMethodAnnotation.group());
 						}
-						info += ")";
-						log.debug(info);
+						info.append(")");
+						log.debug(info.toString());
 					}
 				}
 			}

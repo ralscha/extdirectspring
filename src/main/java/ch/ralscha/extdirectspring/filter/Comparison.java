@@ -26,7 +26,7 @@ public enum Comparison {
 
 	private final Set<String> externalValues;
 
-	private Comparison(String... values) {
+	Comparison(String... values) {
 		this.externalValues = new HashSet<>();
 		Collections.addAll(this.externalValues, values);
 	}

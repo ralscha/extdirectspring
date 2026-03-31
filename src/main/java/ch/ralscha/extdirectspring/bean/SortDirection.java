@@ -26,7 +26,7 @@ public enum SortDirection {
 
 	private final String name;
 
-	private SortDirection(String name) {
+	SortDirection(String name) {
 		this.name = name;
 	}
 
@@ -38,7 +38,7 @@ public enum SortDirection {
 		if (ASCENDING.getName().equalsIgnoreCase(name)) {
 			return ASCENDING;
 		}
-		else if (DESCENDING.getName().equalsIgnoreCase(name)) {
+		if (DESCENDING.getName().equalsIgnoreCase(name)) {
 			return DESCENDING;
 		}
 

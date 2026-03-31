@@ -13,11 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring_itest;
+package ch.ralscha.extdirectspring.provider;
 
-public class MyModel {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+
+public class UploadUser {
 
 	private String name;
+
+	private int age;
+
+	private String firstName;
+
+	@Email
+	@NotEmpty
+	private String email;
 
 	public String getName() {
 		return this.name;
@@ -25,6 +36,30 @@ public class MyModel {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getFirstName() {
+		return this.firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public int getAge() {
+		return this.age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

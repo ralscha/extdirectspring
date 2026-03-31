@@ -15,11 +15,11 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Represents the response of a Ext Direct call. Internal class

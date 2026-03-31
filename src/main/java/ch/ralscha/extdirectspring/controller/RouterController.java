@@ -28,11 +28,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +42,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.util.WebUtils;
-
-import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
@@ -70,6 +61,11 @@ import ch.ralscha.extdirectspring.bean.ModelAndJsonView;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.MethodInfo;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Main router controller that handles polling, form handler and normal Ext Direct calls.
@@ -133,8 +129,7 @@ public class RouterController {
 									this.configurationService.getApplicationContext(), beanName, methodInfo,
 									parameters);
 
-							if (result instanceof ModelAndJsonView) {
-								ModelAndJsonView modelAndJsonView = (ModelAndJsonView) result;
+							if (result instanceof ModelAndJsonView modelAndJsonView) {
 								directPollResponse.setData(modelAndJsonView.getModel());
 								jsonView = getJsonView(modelAndJsonView, methodInfo.getJsonView());
 							}
@@ -147,8 +142,7 @@ public class RouterController {
 					else {
 						Object result = ExtDirectSpringUtil.invoke(this.configurationService.getApplicationContext(),
 								beanName, methodInfo, parameters);
-						if (result instanceof ModelAndJsonView) {
-							ModelAndJsonView modelAndJsonView = (ModelAndJsonView) result;
+						if (result instanceof ModelAndJsonView modelAndJsonView) {
 							directPollResponse.setData(modelAndJsonView.getModel());
 							jsonView = getJsonView(modelAndJsonView, methodInfo.getJsonView());
 						}
@@ -161,8 +155,7 @@ public class RouterController {
 				else {
 					Object result = ExtDirectSpringUtil.invoke(this.configurationService.getApplicationContext(),
 							beanName, methodInfo, parameters);
-					if (result instanceof ModelAndJsonView) {
-						ModelAndJsonView modelAndJsonView = (ModelAndJsonView) result;
+					if (result instanceof ModelAndJsonView modelAndJsonView) {
 						directPollResponse.setData(modelAndJsonView.getModel());
 						jsonView = getJsonView(modelAndJsonView, methodInfo.getJsonView());
 					}
@@ -174,8 +167,7 @@ public class RouterController {
 
 			}
 			catch (Exception e) {
-				log.error("Error polling method '" + beanName + "." + method + "'",
-						e.getCause() != null ? e.getCause() : e);
+				log.error("Error polling method '" + beanName + "." + method + "'", rootCause(e));
 				directPollResponse.setData(handleException(methodInfo, directPollResponse, e, request));
 			}
 		}
@@ -201,7 +193,7 @@ public class RouterController {
 		if (methodInfo != null && methodInfo.getForwardPath() != null) {
 			return methodInfo.getForwardPath();
 		}
-		else if (methodInfo != null && methodInfo.getHandlerMethod() != null) {
+		if (methodInfo != null && methodInfo.getHandlerMethod() != null) {
 			streamResponse = this.configurationService.getConfiguration().isStreamResponse()
 					|| methodInfo.isStreamResponse();
 
@@ -242,7 +234,7 @@ public class RouterController {
 
 			}
 			catch (Exception e) {
-				log.error("Error calling method: " + extMethod, e.getCause() != null ? e.getCause() : e);
+				log.error("Error calling method: " + extMethod, rootCause(e));
 				directResponse.setResult(handleException(methodInfo, directResponse, e, request));
 			}
 		}
@@ -399,8 +391,8 @@ public class RouterController {
 					if (result != null) {
 
 						ModelAndJsonView modelAndJsonView = null;
-						if (result instanceof ModelAndJsonView) {
-							modelAndJsonView = (ModelAndJsonView) result;
+						if (result instanceof ModelAndJsonView currentModelAndJsonView) {
+							modelAndJsonView = currentModelAndJsonView;
 							result = modelAndJsonView.getModel();
 						}
 
@@ -408,8 +400,8 @@ public class RouterController {
 								&& !(result instanceof ExtDirectFormLoadResult)
 								&& !(result instanceof EdFormLoadResult)) {
 							ExtDirectFormLoadResult formLoadResult = new ExtDirectFormLoadResult(result);
-							if (result instanceof JsonViewHint) {
-								formLoadResult.setJsonView(((JsonViewHint) result).getJsonView());
+							if (result instanceof JsonViewHint jsonViewHint) {
+								formLoadResult.setJsonView(jsonViewHint.getJsonView());
 							}
 							result = formLoadResult;
 						}
@@ -417,20 +409,18 @@ public class RouterController {
 								|| methodInfo.isType(ExtDirectMethodType.STORE_READ))
 								&& !(result instanceof ExtDirectStoreResult) && !(result instanceof EdStoreResult)
 								&& this.configurationService.getConfiguration().isAlwaysWrapStoreResponse()) {
-							if (result instanceof Collection) {
-								result = new ExtDirectStoreResult((Collection) result);
+							if (result instanceof Collection collection) {
+								result = new ExtDirectStoreResult(collection);
 							}
 							else {
 								result = new ExtDirectStoreResult(result);
 							}
 						}
 						else if (methodInfo.isType(ExtDirectMethodType.FORM_POST_JSON)) {
-							if (result instanceof ExtDirectFormPostResult) {
-								ExtDirectFormPostResult formPostResult = (ExtDirectFormPostResult) result;
+							if (result instanceof ExtDirectFormPostResult formPostResult) {
 								result = formPostResult.getResult();
 							}
-							else if (result instanceof EdFormPostResult) {
-								EdFormPostResult formPostResult = (EdFormPostResult) result;
+							else if (result instanceof EdFormPostResult formPostResult) {
 								result = formPostResult.result();
 							}
 						}
@@ -444,17 +434,14 @@ public class RouterController {
 						}
 
 					}
-					else {
-						if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)
-								|| methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
-							directResponse.setResult(Collections.emptyList());
-						}
+					else if (methodInfo.isType(ExtDirectMethodType.STORE_MODIFY)
+							|| methodInfo.isType(ExtDirectMethodType.STORE_READ)) {
+						directResponse.setResult(Collections.emptyList());
 					}
 
 				}
 				catch (Exception e) {
-					log.error("Error calling method: " + directRequest.getMethod(),
-							e.getCause() != null ? e.getCause() : e);
+					log.error("Error calling method: " + directRequest.getMethod(), rootCause(e));
 					directResponse.setResult(handleException(methodInfo, directResponse, e, request));
 				}
 			}
@@ -546,29 +533,23 @@ public class RouterController {
 
 			if (!streamResponse) {
 				ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
-				JsonGenerator jsonGenerator = objectMapper.getFactory().createGenerator(bos, JsonEncoding.UTF8);
-
 				if (jsonView == null) {
-					objectMapper.writeValue(jsonGenerator, responseObject);
+					objectMapper.writeValue(bos, responseObject);
 				}
 				else {
-					objectMapper.writerWithView(jsonView).writeValue(jsonGenerator, responseObject);
+					objectMapper.writerWithView(jsonView).writeValue(bos, responseObject);
 				}
 
 				response.setContentLength(bos.size());
 				outputStream.write(bos.toByteArray());
-				jsonGenerator.close();
 			}
 			else {
-				JsonGenerator jsonGenerator = objectMapper.getFactory()
-					.createGenerator(outputStream, JsonEncoding.UTF8);
 				if (jsonView == null) {
-					objectMapper.writeValue(jsonGenerator, responseObject);
+					objectMapper.writeValue(outputStream, responseObject);
 				}
 				else {
-					objectMapper.writerWithView(jsonView).writeValue(jsonGenerator, responseObject);
+					objectMapper.writerWithView(jsonView).writeValue(outputStream, responseObject);
 				}
-				jsonGenerator.close();
 			}
 
 			outputStream.flush();
@@ -615,8 +596,8 @@ public class RouterController {
 	}
 
 	private static Class<?> getJsonView(Object result, Class<?> defaultJsonView) {
-		if (result instanceof JsonViewHint) {
-			Class<?> jsonView = ((JsonViewHint) result).getJsonView();
+		if (result instanceof JsonViewHint jsonViewHint) {
+			Class<?> jsonView = jsonViewHint.getJsonView();
 			if (jsonView != null) {
 				if (jsonView != ExtDirectMethod.NoJsonView.class) {
 					return jsonView;
@@ -625,6 +606,10 @@ public class RouterController {
 			}
 		}
 		return defaultJsonView;
+	}
+
+	private static Throwable rootCause(Exception e) {
+		return e.getCause() != null ? e.getCause() : e;
 	}
 
 }

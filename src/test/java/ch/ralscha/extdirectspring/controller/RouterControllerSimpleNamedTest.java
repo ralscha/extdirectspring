@@ -31,8 +31,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import jakarta.servlet.http.Cookie;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,6 +50,7 @@ import ch.ralscha.extdirectspring.provider.FormInfo;
 import ch.ralscha.extdirectspring.provider.RemoteProviderSimpleNamed.ResultObject;
 import ch.ralscha.extdirectspring.provider.RemoteProviderSimpleNamed.TestObject;
 import ch.ralscha.extdirectspring.provider.Row;
+import jakarta.servlet.http.Cookie;
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration

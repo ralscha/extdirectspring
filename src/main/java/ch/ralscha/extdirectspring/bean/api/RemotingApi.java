@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.bean.api;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +72,7 @@ public final class RemotingApi {
 		this.actions = new TreeMap<>(this.actions);
 
 		for (List<Action> action : this.actions.values()) {
-			Collections.sort(action, (o1, o2) -> o1.getName().compareTo(o2.getName()));
+			Collections.sort(action, Comparator.comparing(Action::getName));
 		}
 
 		Collections.sort(this.pollingProviders, (o1, o2) -> {

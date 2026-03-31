@@ -27,22 +27,20 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.ReflectionUtils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.controller.ConfigurationService;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Utility class
@@ -97,8 +95,8 @@ public final class ExtDirectSpringUtil {
 		ReflectionUtils.makeAccessible(handlerMethod);
 		Object result = handlerMethod.invoke(bean, params);
 
-		if (result != null && result instanceof Optional) {
-			return ((Optional<?>) result).orElse(null);
+		if (result instanceof Optional optional) {
+			return optional.orElse(null);
 		}
 
 		return result;
@@ -193,7 +191,7 @@ public final class ExtDirectSpringUtil {
 	 * @return the api configuration
 	 * @throws JsonProcessingException
 	 */
-	public static String generateApiString(ApplicationContext ctx) throws JsonProcessingException {
+	public static String generateApiString(ApplicationContext ctx) throws JacksonException {
 		return generateApiString(ctx, "REMOTING_API", "POLLING_URLS");
 	}
 
@@ -208,7 +206,7 @@ public final class ExtDirectSpringUtil {
 	 * @throws JsonProcessingException
 	 */
 	public static String generateApiString(ApplicationContext ctx, String remotingVarName, String pollingApiVarName)
-			throws JsonProcessingException {
+			throws JacksonException {
 		RemotingApi remotingApi = new RemotingApi(
 				ctx.getBean(ConfigurationService.class).getConfiguration().getProviderType(), "router", null);
 
@@ -227,7 +225,8 @@ public final class ExtDirectSpringUtil {
 		StringBuilder extDirectConfig = new StringBuilder(100);
 
 		extDirectConfig.append("var ").append(remotingVarName).append(" = ");
-		extDirectConfig.append(new ObjectMapper().writer().withDefaultPrettyPrinter().writeValueAsString(remotingApi));
+		ObjectMapper objectMapper = ctx.getBean(ConfigurationService.class).getJsonHandler().getMapper();
+		extDirectConfig.append(objectMapper.writer().withDefaultPrettyPrinter().writeValueAsString(remotingApi));
 		extDirectConfig.append(";");
 
 		List<PollingProvider> pollingProviders = remotingApi.getPollingProviders();

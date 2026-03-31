@@ -15,27 +15,20 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 /**
  * Represents the result of a FORM_LOAD method call.
  */
-@JsonSerialize(as = ImmutableEdFormLoadResult.class)
 @JsonDeserialize(as = ImmutableEdFormLoadResult.class)
-@Value.Style(visibility = ImplementationVisibility.PACKAGE)
-@Value.Immutable
+@JsonSerialize(as = ImmutableEdFormLoadResult.class)
 public abstract class EdFormLoadResult extends JsonViewHint {
 
-	@Value.Parameter
-	@Nullable
-	public abstract Object data();
+	@Nullable public abstract Object data();
 
-	@Value.Parameter
 	public abstract boolean success();
 
 	public static EdFormLoadResult success(Object data) {

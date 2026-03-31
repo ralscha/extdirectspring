@@ -21,8 +21,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,14 +36,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.json.JsonReadFeature;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import ch.ralscha.extdirectspring.bean.BeanMethod;
 import ch.ralscha.extdirectspring.bean.ExtDirectPollResponse;
@@ -55,11 +50,7 @@ import ch.ralscha.extdirectspring.util.JsonHandler;
 
 public class ControllerUtil {
 
-	private static ObjectMapper mapper = new ObjectMapper();
-
-	static {
-		mapper.configure(JsonParser.Feature.ALLOW_COMMENTS, true);
-	}
+	private static final ObjectMapper mapper = JsonMapper.builder().enable(JsonReadFeature.ALLOW_JAVA_COMMENTS).build();
 
 	public static ExtDirectPollResponse performPollRequest(MockMvc mockMvc, String bean, String method, String event,
 			Map<String, String> params, HttpHeaders headers) throws Exception {
@@ -183,7 +174,7 @@ public class ControllerUtil {
 		try {
 			return mapper.writeValueAsString(dr);
 		}
-		catch (JsonProcessingException e) {
+		catch (JacksonException e) {
 			fail("createEdsRequest: " + e.getMessage());
 		}
 		return null;
@@ -205,7 +196,7 @@ public class ControllerUtil {
 		try {
 			return mapper.writeValueAsString(edrs);
 		}
-		catch (JsonProcessingException e) {
+		catch (JacksonException e) {
 			fail("createEdsRequest: " + e.getMessage());
 		}
 		return null;
@@ -270,7 +261,7 @@ public class ControllerUtil {
 					createEdsRequest(bean, method, namedParameters, tid, requestData, metadata), null, headers, cookies,
 					withSession);
 		}
-		catch (JsonProcessingException e) {
+		catch (JacksonException e) {
 			fail("perform post to /router" + e.getMessage());
 			return null;
 		}
@@ -323,7 +314,7 @@ public class ControllerUtil {
 			result = performRouterRequest(mockMvc, createEdsRequest(bean, method, false, tid, null, null), null, null,
 					null, false);
 		}
-		catch (JsonProcessingException e) {
+		catch (JacksonException e) {
 			fail("perform post to /router" + e.getMessage());
 			return null;
 		}
@@ -360,7 +351,7 @@ public class ControllerUtil {
 		try {
 			result = performRouterRequest(mockMvc, createEdsRequest(beanMethods));
 		}
-		catch (JsonProcessingException e) {
+		catch (JacksonException e) {
 			fail("perform post to /router" + e.getMessage());
 			return null;
 		}
@@ -390,7 +381,11 @@ public class ControllerUtil {
 	@SuppressWarnings("unchecked")
 	public static <T> T readValue(String json, Class<?> clazz) {
 		try {
-			return (T) mapper.readValue(json, clazz);
+			String normalizedJson = json != null ? json.trim() : null;
+			if (normalizedJson != null && normalizedJson.endsWith(";")) {
+				normalizedJson = normalizedJson.substring(0, normalizedJson.length() - 1).trim();
+			}
+			return (T) mapper.readValue(normalizedJson, clazz);
 		}
 		catch (Exception e) {
 			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
@@ -414,13 +409,7 @@ public class ControllerUtil {
 																	 */
 					});
 		}
-		catch (JsonParseException e) {
-			throw new RuntimeException(e);
-		}
-		catch (JsonMappingException e) {
-			throw new RuntimeException(e);
-		}
-		catch (IOException e) {
+		catch (JacksonException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -429,13 +418,7 @@ public class ControllerUtil {
 		try {
 			return mapper.readValue(response, ExtDirectResponse.class);
 		}
-		catch (JsonParseException e) {
-			throw new RuntimeException(e);
-		}
-		catch (JsonMappingException e) {
-			throw new RuntimeException(e);
-		}
-		catch (IOException e) {
+		catch (JacksonException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -444,30 +427,16 @@ public class ControllerUtil {
 		try {
 			return mapper.readValue(response, ExtDirectPollResponse.class);
 		}
-		catch (JsonParseException e) {
-			throw new RuntimeException(e);
-		}
-		catch (JsonMappingException e) {
-			throw new RuntimeException(e);
-		}
-		catch (IOException e) {
+		catch (JacksonException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	public static byte[] writeAsByte(Object obj) {
 		try {
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			mapper.getFactory().createGenerator(bos, JsonEncoding.UTF8);
 			return mapper.writeValueAsBytes(obj);
 		}
-		catch (JsonGenerationException e) {
-			throw new RuntimeException(e);
-		}
-		catch (JsonMappingException e) {
-			throw new RuntimeException(e);
-		}
-		catch (IOException e) {
+		catch (JacksonException e) {
 			throw new RuntimeException(e);
 		}
 	}

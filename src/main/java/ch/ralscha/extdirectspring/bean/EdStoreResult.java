@@ -20,15 +20,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 /**
  * Class representing the result of STORE_READ and STORE_MODIFY methods.
@@ -36,31 +35,20 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  * @param <T> Type of the entry inside the collection
  */
 @JsonInclude(Include.NON_NULL)
-@JsonSerialize(as = ImmutableEdStoreResult.class)
 @JsonDeserialize(as = ImmutableEdStoreResult.class)
+@JsonSerialize(as = ImmutableEdStoreResult.class)
 @JsonPropertyOrder(value = { "metaData", "success", "total", "records", "message" })
-@Value.Style(visibility = ImplementationVisibility.PACKAGE)
-@Value.Immutable
 public abstract class EdStoreResult<T> extends JsonViewHint {
 
-	@Value.Parameter
 	public abstract Collection<T> records();
 
-	@Nullable
-	@Value.Parameter
-	public abstract Long total();
+	@Nullable public abstract Long total();
 
-	@Nullable
-	@Value.Parameter
-	public abstract Boolean success();
+	@Nullable public abstract Boolean success();
 
-	@Nullable
-	@Value.Parameter
-	public abstract Map<String, Object> metaData();
+	@Nullable public abstract Map<String, Object> metaData();
 
-	@Nullable
-	@Value.Parameter
-	public abstract String message();
+	@Nullable public abstract String message();
 
 	public static <T> EdStoreResult<T> success(T record) {
 		return ImmutableEdStoreResult.of(Collections.singletonList(record), null, Boolean.TRUE, null, null);

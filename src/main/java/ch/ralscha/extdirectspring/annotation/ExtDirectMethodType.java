@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -46,7 +46,8 @@ public enum ExtDirectMethodType {
 		@Override
 		public boolean isValid(String beanAndMethodName, Class<?> clazz, Method method) {
 
-			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+			ExtDirectMethod extDirectMethodAnnotation = AnnotatedElementUtils.findMergedAnnotation(method,
+					ExtDirectMethod.class);
 			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
 				log.warn("SIMPLE method '" + beanAndMethodName
 						+ "' does not support event attribute of @ExtDirectMethod");
@@ -61,7 +62,7 @@ public enum ExtDirectMethodType {
 
 			for (Annotation[] paramAnnotations : allParameterAnnotations) {
 				for (Annotation paramAnnotation : paramAnnotations) {
-					if (RequestParam.class.isInstance(paramAnnotation)) {
+					if ((paramAnnotation instanceof RequestParam)) {
 						log.error("SIMPLE method '" + beanAndMethodName
 								+ "' contains a non supported parameter annotation @RequestParam");
 						return false;
@@ -81,7 +82,8 @@ public enum ExtDirectMethodType {
 		@Override
 		public boolean isValid(String beanAndMethodName, Class<?> clazz, Method method) {
 
-			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+			ExtDirectMethod extDirectMethodAnnotation = AnnotatedElementUtils.findMergedAnnotation(method,
+					ExtDirectMethod.class);
 			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
 				log.warn("SIMPLE_NAMED method '" + beanAndMethodName
 						+ "' does not support event attribute of @ExtDirectMethod");
@@ -103,7 +105,8 @@ public enum ExtDirectMethodType {
 		@Override
 		public boolean isValid(String beanAndMethodName, Class<?> clazz, Method method) {
 
-			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+			ExtDirectMethod extDirectMethodAnnotation = AnnotatedElementUtils.findMergedAnnotation(method,
+					ExtDirectMethod.class);
 			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
 				log.warn("FORM_LOAD method '" + beanAndMethodName
 						+ "' does not support event attribute of @ExtDirectMethod");
@@ -125,7 +128,8 @@ public enum ExtDirectMethodType {
 		@Override
 		public boolean isValid(String beanAndMethodName, Class<?> clazz, Method method) {
 
-			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+			ExtDirectMethod extDirectMethodAnnotation = AnnotatedElementUtils.findMergedAnnotation(method,
+					ExtDirectMethod.class);
 			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
 				log.warn("STORE_READ method '" + beanAndMethodName
 						+ "' does not support event attribute of @ExtDirectMethod");
@@ -147,7 +151,8 @@ public enum ExtDirectMethodType {
 		@Override
 		public boolean isValid(String beanAndMethodName, Class<?> clazz, Method method) {
 
-			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+			ExtDirectMethod extDirectMethodAnnotation = AnnotatedElementUtils.findMergedAnnotation(method,
+					ExtDirectMethod.class);
 			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
 				log.warn("STORE_MODIFY method '" + beanAndMethodName
 						+ "' does not support event attribute of @ExtDirectMethod");
@@ -172,7 +177,7 @@ public enum ExtDirectMethodType {
 
 			if (method.getReturnType().equals(ExtDirectFormPostResult.class)
 					|| method.getReturnType().equals(EdFormPostResult.class)) {
-				ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method,
+				ExtDirectMethod extDirectMethodAnnotation = AnnotatedElementUtils.findMergedAnnotation(method,
 						ExtDirectMethod.class);
 				if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
 					log.warn("FORM_POST method '" + beanAndMethodName
@@ -184,7 +189,7 @@ public enum ExtDirectMethodType {
 							+ "' does not support entryClass attribute of @ExtDirectMethod");
 				}
 
-				if (extDirectMethodAnnotation.batched() == false) {
+				if (!extDirectMethodAnnotation.batched()) {
 					log.warn("FORM_POST method '" + beanAndMethodName
 							+ "' does not support batched attribute of @ExtDirectMethod");
 				}
@@ -193,23 +198,25 @@ public enum ExtDirectMethodType {
 			}
 			else if (method.getReturnType().equals(Void.TYPE)) {
 
-				if (AnnotationUtils.findAnnotation(method, ResponseBody.class) != null) {
+				if (AnnotatedElementUtils.findMergedAnnotation(method, ResponseBody.class) != null) {
 					log.warn("FORM_POST method '" + beanAndMethodName + "' should not have a @ResponseBody annotation");
 				}
 
-				if (AnnotationUtils.findAnnotation(clazz, Controller.class) == null) {
+				if (AnnotatedElementUtils.findMergedAnnotation(clazz, Controller.class) == null) {
 					log.error("FORM_POST method '" + beanAndMethodName + "' must be a member of a @Controller bean");
 					isValid = false;
 				}
 
-				final RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
+				final RequestMapping methodAnnotation = AnnotatedElementUtils.findMergedAnnotation(method,
+						RequestMapping.class);
 
 				if (methodAnnotation == null) {
 					log.error("FORM_POST method '" + beanAndMethodName + "' must be annotated with @RequestMapping");
 					isValid = false;
 				}
 
-				RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
+				RequestMapping classAnnotation = AnnotatedElementUtils.findMergedAnnotation(clazz,
+						RequestMapping.class);
 
 				boolean hasValue = false;
 
@@ -230,7 +237,7 @@ public enum ExtDirectMethodType {
 				if (methodAnnotation != null) {
 					boolean hasPostRequestMethod = false;
 					for (RequestMethod requestMethod : methodAnnotation.method()) {
-						if (requestMethod.equals(RequestMethod.POST)) {
+						if (RequestMethod.POST.equals(requestMethod)) {
 							hasPostRequestMethod = true;
 							break;
 						}
@@ -243,10 +250,10 @@ public enum ExtDirectMethodType {
 					}
 				}
 
-				ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method,
+				ExtDirectMethod extDirectMethodAnnotation = AnnotatedElementUtils.findMergedAnnotation(method,
 						ExtDirectMethod.class);
 
-				if (extDirectMethodAnnotation.batched() == false) {
+				if (!extDirectMethodAnnotation.batched()) {
 					log.warn("FORM_POST method '" + beanAndMethodName
 							+ "' does not support batched attribute of @ExtDirectMethod");
 				}
@@ -289,7 +296,8 @@ public enum ExtDirectMethodType {
 		@Override
 		public boolean isValid(String beanAndMethodName, Class<?> clazz, Method method) {
 
-			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+			ExtDirectMethod extDirectMethodAnnotation = AnnotatedElementUtils.findMergedAnnotation(method,
+					ExtDirectMethod.class);
 			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
 				log.warn("TREE_LOAD method '" + beanAndMethodName
 						+ "' does not support event attribute of @ExtDirectMethod");
@@ -311,14 +319,15 @@ public enum ExtDirectMethodType {
 		@Override
 		public boolean isValid(String beanAndMethodName, Class<?> clazz, Method method) {
 
-			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+			ExtDirectMethod extDirectMethodAnnotation = AnnotatedElementUtils.findMergedAnnotation(method,
+					ExtDirectMethod.class);
 
 			if (extDirectMethodAnnotation.entryClass() != Object.class) {
 				log.warn("POLL method '" + beanAndMethodName
 						+ "' does not support entryClass attribute of @ExtDirectMethod");
 			}
 
-			if (extDirectMethodAnnotation.batched() == false) {
+			if (!extDirectMethodAnnotation.batched()) {
 				log.warn("POLL method '" + beanAndMethodName
 						+ "' does not support batched attribute of @ExtDirectMethod");
 			}
@@ -334,13 +343,14 @@ public enum ExtDirectMethodType {
 		@Override
 		public boolean isValid(String beanAndMethodName, Class<?> clazz, Method method) {
 
-			ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+			ExtDirectMethod extDirectMethodAnnotation = AnnotatedElementUtils.findMergedAnnotation(method,
+					ExtDirectMethod.class);
 			if (StringUtils.hasText(extDirectMethodAnnotation.event())) {
 				log.warn("FORM_POST_JSON method '" + beanAndMethodName
 						+ "' does not support event attribute of @ExtDirectMethod");
 			}
 
-			if (extDirectMethodAnnotation.batched() == false) {
+			if (!extDirectMethodAnnotation.batched()) {
 				log.warn("FORM_POST_JSON method '" + beanAndMethodName
 						+ "' does not support batched attribute of @ExtDirectMethod");
 			}
@@ -351,7 +361,7 @@ public enum ExtDirectMethodType {
 							+ "' must not have a BindingResult parameter");
 					return false;
 				}
-				else if (clazzz.isAssignableFrom(MultipartFile.class)) {
+				if (clazzz.isAssignableFrom(MultipartFile.class)) {
 					log.error("FORM_POST_JSON method '" + beanAndMethodName
 							+ "' must not have a MultipartFile parameter");
 					return false;

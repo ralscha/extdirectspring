@@ -15,49 +15,38 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 @JsonInclude(Include.NON_NULL)
+@JsonDeserialize(as = ImmutableEdJsonStoreResult.class)
 @JsonSerialize(as = ImmutableEdJsonStoreResult.class)
 @JsonPropertyOrder(value = { "metaData", "success", "total", "records", "message" })
-@Value.Style(visibility = ImplementationVisibility.PACKAGE)
-@Value.Immutable
 public abstract class EdJsonStoreResult extends JsonViewHint {
 
-	@Value.Parameter
 	@JsonSerialize(using = CollectionStringSerializer.class)
 	public abstract Collection<String> records();
 
-	@Nullable
-	@Value.Parameter
-	public abstract Long total();
+	@Nullable public abstract Long total();
 
-	@Nullable
-	@Value.Parameter
-	public abstract Boolean success();
+	@Nullable public abstract Boolean success();
 
-	@Nullable
-	@Value.Parameter
-	public abstract MetaData metaData();
+	@Nullable public abstract MetaData metaData();
 
-	@Nullable
-	@Value.Parameter
-	public abstract String message();
+	@Nullable public abstract String message();
 
 	public static EdJsonStoreResult success(String record) {
 		return ImmutableEdJsonStoreResult.of(Collections.singletonList(record), null, Boolean.TRUE, null, null);
@@ -97,11 +86,10 @@ public abstract class EdJsonStoreResult extends JsonViewHint {
 
 	}
 
-	public final static class CollectionStringSerializer extends JsonSerializer<Collection<String>> {
+	public final static class CollectionStringSerializer extends ValueSerializer<Collection<String>> {
 
 		@Override
-		public void serialize(Collection<String> values, JsonGenerator jgen, SerializerProvider provider)
-				throws IOException {
+		public void serialize(Collection<String> values, JsonGenerator jgen, SerializationContext provider) {
 
 			StringBuilder sb = new StringBuilder();
 			sb.append("[");

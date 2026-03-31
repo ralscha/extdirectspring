@@ -20,9 +20,11 @@ import java.io.InputStream;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.Assert;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.MapperFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Object contains an {@link ObjectMapper} and provides convenient methods.
@@ -32,7 +34,7 @@ public class JsonHandler {
 	private ObjectMapper mapper;
 
 	public JsonHandler() {
-		this.mapper = new ObjectMapper();
+		this.mapper = JsonMapper.builder().configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true).build();
 	}
 
 	public JsonHandler(ObjectMapper mapper) {
@@ -93,10 +95,9 @@ public class JsonHandler {
 	 * @param <T> type of the object to create
 	 * @param json string with the JSON
 	 * @param typeReference {@link TypeReference} instance of the desired result type
-	 * {@link com.fasterxml.jackson.core.type.TypeReference}
+	 * {@link tools.jackson.core.type.TypeReference}
 	 * @return the created object, null if there was an exception
 	 */
-	@SuppressWarnings("unchecked")
 	public <T> T readValue(String json, TypeReference<T> typeReference) {
 		try {
 			return (T) this.mapper.readValue(json, typeReference);

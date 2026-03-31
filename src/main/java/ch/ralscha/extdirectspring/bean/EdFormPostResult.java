@@ -23,28 +23,25 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.immutables.value.Value;
-import org.immutables.value.Value.Style.ImplementationVisibility;
 import org.springframework.context.MessageSource;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 /**
  * Represents the result of a FORM_POST method call.
  */
+@JsonDeserialize(as = ImmutableEdFormPostResult.class)
 @JsonSerialize(as = ImmutableEdFormPostResult.class)
-@Value.Style(visibility = ImplementationVisibility.PACKAGE)
-@Value.Immutable
 public abstract class EdFormPostResult {
 
 	private static final String ERRORS_PROPERTY = "errors";
 
 	private static final String SUCCESS_PROPERTY = "success";
 
-	@Value.Parameter
 	public abstract Map<String, Object> result();
 
 	public static EdFormPostResult success() {

@@ -15,10 +15,9 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 import ch.ralscha.extdirectspring.bean.BaseResponse;
 import ch.ralscha.extdirectspring.util.MethodInfo;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface RouterExceptionHandler {
 

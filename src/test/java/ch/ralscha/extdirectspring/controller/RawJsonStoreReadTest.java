@@ -17,13 +17,9 @@ package ch.ralscha.extdirectspring.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,58 +31,53 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import tools.jackson.core.type.TypeReference;
-
-import ch.ralscha.extdirectspring.provider.Row;
-
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
-@ContextConfiguration("classpath:/testApplicationContext.xml")
-public class RouterControllerInterfaceTest {
+@ContextConfiguration("classpath:/testApplicationContextRawJson.xml")
+public class RawJsonStoreReadTest {
 
 	@Autowired
 	private WebApplicationContext wac;
 
 	private MockMvc mockMvc;
 
-	@BeforeAll
-	public static void beforeTest() {
-		Locale.setDefault(Locale.US);
-	}
-
 	@BeforeEach
-	public void setupMockMvc() throws Exception {
+	public void setupMockMvc() {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 
 	@Test
-	public void testNoParameters() {
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderImplementation", "method2", "method2() called");
+	public void testRawJsonStoreResults() {
+		assertStoreResult("listUsers1", null, true);
+		assertStoreResult("listUsers2", 2L, true);
+		assertStoreResult("listUsers3", 2L, false);
 	}
 
 	@Test
-	public void testNoParameterAnnotation() {
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderImplementation", "method3",
-				"method3() called-21-3.1-aString2", 21, 3.1, "aString2");
+	public void testEdJsonStoreResults() {
+		assertStoreResult("listUsers1Ed", null, true);
+		assertStoreResult("listUsers2Ed", 2L, true);
+		assertStoreResult("listUsers3Ed", 2L, false);
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
-	public void testWithRequestParamAnnotation() {
+	private void assertStoreResult(String method, Long total, boolean success) {
+		Map<String, Object> result = ControllerUtil.sendAndReceiveMap(this.mockMvc, "rawJsonController", method);
 
-		Map<String, Object> readRequest = new HashMap<>();
-		readRequest.put("lastName", "Smith");
-		readRequest.put("active", Boolean.TRUE);
+		if (total == null) {
+			assertThat(result).hasSize(2);
+		}
+		else {
+			assertThat(result).hasSize(3);
+			assertThat(((Number) result.get("total")).longValue()).isEqualTo(total.longValue());
+		}
 
-		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderImplementation",
-				"storeRead", new TypeReference<List<Row>>() {/* nothing_here */
-				}, readRequest);
+		assertThat(result).containsEntry("success", success);
 
-		assertThat(rows).hasSize(1);
-		Row theRow = rows.get(0);
-		assertThat(theRow.getId()).isEqualTo(1);
-		assertThat(theRow.getName()).isEqualTo("Smith");
-		assertThat(theRow.getSalary()).isEqualTo(new BigDecimal("40"));
+		List<Map<String, Object>> records = (List<Map<String, Object>>) result.get("records");
+		assertThat(records).hasSize(2);
+		assertThat(((Map<String, Object>) records.get(0).get("_id")).get("$oid")).isEqualTo("4cf8e5b8924e23349fb99454");
+		assertThat(((Map<String, Object>) records.get(1).get("_id")).get("$oid")).isEqualTo("4cf8e5b8924e2334a0b99454");
 	}
 
 }

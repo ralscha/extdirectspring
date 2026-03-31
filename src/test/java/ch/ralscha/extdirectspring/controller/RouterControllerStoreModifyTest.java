@@ -39,7 +39,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import tools.jackson.core.type.TypeReference;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.Row;
@@ -69,7 +69,7 @@ public class RouterControllerStoreModifyTest {
 
 	private void testCreateNoData(String action) {
 		Map<String, Object> storeRequest = new LinkedHashMap<>();
-		storeRequest.put("records", new ArrayList<Row>());
+		storeRequest.put("records", new ArrayList<>());
 
 		List<Row> rows = (List<Row>) ControllerUtil.sendAndReceive(this.mockMvc, action, "create1",
 				new TypeReference<List<Row>>() {/* nothing here */

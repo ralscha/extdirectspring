@@ -28,8 +28,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import jakarta.servlet.http.Cookie;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,12 +42,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.provider.Row;
+import jakarta.servlet.http.Cookie;
+import tools.jackson.core.type.TypeReference;
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
@@ -640,7 +638,7 @@ public class RouterControllerStoreTest {
 	public void testMetadata() throws Exception {
 
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderStoreRead", "methodMetadata", 1,
-				new HashMap<String, Object>());
+				new HashMap<>());
 
 		MvcResult result = ControllerUtil.performRouterRequest(this.mockMvc, edRequest);
 		List<ExtDirectResponse> responses = ControllerUtil

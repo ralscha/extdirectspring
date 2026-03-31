@@ -13,7 +13,6 @@
   
   <context:component-scan base-package="ch.ralscha.extdirectspring">
     <context:exclude-filter type="regex" expression="ch\.ralscha\.extdirectspring\.view\..*"/>
-    <context:exclude-filter type="regex" expression="ch\.ralscha\.extdirectspring_itest\..*"/>
   </context:component-scan>
 
   <mvc:annotation-driven />

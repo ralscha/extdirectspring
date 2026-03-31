@@ -80,8 +80,8 @@ public class ApiControllerWithDocumentationTest {
 	/**
 	 * to test the following need to activate Feature 'ALLOW_COMMENTS' for jackson parser
 	 * <p>
-	 * typical error is com.fasterxml.jackson.core.JsonParseException: Unexpected
-	 * character ('/' (code 47)): maybe a (non-standard) comment?
+	 * typical error is tools.jackson.core.JsonParseException: Unexpected character ('/'
+	 * (code 47)): maybe a (non-standard) comment?
 	 * @throws Exception
 	 */
 	@Test

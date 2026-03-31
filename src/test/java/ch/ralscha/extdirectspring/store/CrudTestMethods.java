@@ -28,11 +28,10 @@ import java.util.Map;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.controller.ControllerUtil;
+import tools.jackson.core.type.TypeReference;
 
 public class CrudTestMethods {
 

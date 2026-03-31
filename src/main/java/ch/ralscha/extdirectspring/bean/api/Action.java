@@ -76,12 +76,7 @@ public class Action {
 			this.formHandler = null;
 		}
 
-		if (params != null) {
-			this.params = params;
-		}
-		else {
-			this.params = null;
-		}
+		this.params = params;
 
 		if (strict != null && !strict.booleanValue()) {
 			this.strict = strict;

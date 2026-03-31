@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,8 +31,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StringUtils;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 
@@ -179,7 +178,7 @@ public class JsonHandlerTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testJsonList() throws IOException {
+	public void testJsonList() {
 		JsonHandler jsonHandler = new JsonHandler();
 		jsonHandler.setMapper(new ObjectMapper());
 		List<ExtDirectRequest> requests = new ArrayList<>();

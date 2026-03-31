@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.method.HandlerMethod;
@@ -70,7 +70,8 @@ public final class MethodInfo {
 
 	public MethodInfo(Class<?> clazz, ApplicationContext context, String beanName, Method method) {
 
-		ExtDirectMethod extDirectMethodAnnotation = AnnotationUtils.findAnnotation(method, ExtDirectMethod.class);
+		ExtDirectMethod extDirectMethodAnnotation = AnnotatedElementUtils.findMergedAnnotation(method,
+				ExtDirectMethod.class);
 
 		this.type = extDirectMethodAnnotation.value();
 
@@ -108,37 +109,35 @@ public final class MethodInfo {
 				}
 			}
 		}
-		else {
-			if (method.getReturnType().equals(Void.TYPE)) {
+		else if (method.getReturnType().equals(Void.TYPE)) {
 
-				RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
-				RequestMapping classAnnotation = AnnotationUtils.findAnnotation(clazz, RequestMapping.class);
+			RequestMapping methodAnnotation = AnnotatedElementUtils.findMergedAnnotation(method, RequestMapping.class);
+			RequestMapping classAnnotation = AnnotatedElementUtils.findMergedAnnotation(clazz, RequestMapping.class);
 
-				String path = null;
-				if (hasValue(classAnnotation)) {
-					path = classAnnotation.value()[0];
-				}
+			String path = null;
+			if (hasValue(classAnnotation)) {
+				path = classAnnotation.value()[0];
+			}
 
-				if (hasValue(methodAnnotation)) {
-					String methodPath = methodAnnotation.value()[0];
-					if (path != null) {
-						path = path + methodPath;
-					}
-					else {
-						path = methodPath;
-					}
-				}
-
+			if (hasValue(methodAnnotation)) {
+				String methodPath = methodAnnotation.value()[0];
 				if (path != null) {
-					if (path.charAt(0) == '/' && path.length() > 1) {
-						path = path.substring(1, path.length());
-					}
-					this.forwardPath = "forward:" + path;
+					path = path + methodPath;
+				}
+				else {
+					path = methodPath;
 				}
 			}
-			else {
-				this.handlerMethod = new HandlerMethod(beanName, context, method).createWithResolvedBean();
+
+			if (path != null) {
+				if (path.charAt(0) == '/' && path.length() > 1) {
+					path = path.substring(1);
+				}
+				this.forwardPath = "forward:" + path;
 			}
+		}
+		else {
+			this.handlerMethod = new HandlerMethod(beanName, context, method).createWithResolvedBean();
 		}
 
 		switch (this.type) {

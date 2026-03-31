@@ -15,7 +15,6 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.Executors;
 
@@ -27,7 +26,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.support.WebArgumentResolver;
 
 import ch.ralscha.extdirectspring.util.JsonHandler;
 import ch.ralscha.extdirectspring.util.ParametersResolver;
@@ -81,27 +79,23 @@ public class ConfigurationService implements InitializingBean, DisposableBean {
 			else if (conversionServices.size() == 1) {
 				this.configuration.setConversionService(conversionServices.values().iterator().next());
 			}
+			else if (conversionServices.containsKey("mvcConversionService")) {
+				this.configuration.setConversionService(conversionServices.get("mvcConversionService"));
+			}
 			else {
-				if (conversionServices.containsKey("mvcConversionService")) {
-					this.configuration.setConversionService(conversionServices.get("mvcConversionService"));
+				for (ConversionService conversionService : conversionServices.values()) {
+					if (conversionService instanceof FormattingConversionService) {
+						this.configuration.setConversionService(conversionService);
+						break;
+					}
 				}
-				else {
-					for (ConversionService conversionService : conversionServices.values()) {
-						if (conversionService instanceof FormattingConversionService) {
-							this.configuration.setConversionService(conversionService);
-							break;
-						}
-					}
-					if (this.configuration.getConversionService() == null) {
-						this.configuration.setConversionService(conversionServices.values().iterator().next());
-					}
+				if (this.configuration.getConversionService() == null) {
+					this.configuration.setConversionService(conversionServices.values().iterator().next());
 				}
 			}
 		}
 
-		Collection<WebArgumentResolver> webResolvers = this.context.getBeansOfType(WebArgumentResolver.class).values();
-		this.parametersResolver = new ParametersResolver(this.configuration.getConversionService(), this.jsonHandler,
-				webResolvers);
+		this.parametersResolver = new ParametersResolver(this.configuration.getConversionService(), this.jsonHandler);
 	}
 
 	@Override

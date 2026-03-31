@@ -40,8 +40,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.FormInfo;
 
@@ -88,10 +86,6 @@ public class RouterControllerFormPostJsonTest {
 			resultMvc = ControllerUtil.performRouterRequest(this.mockMvc,
 					ControllerUtil.createEdsRequest("formInfoController3", "updateInfoJsonDirect", 14, formInfo));
 		}
-		catch (JsonProcessingException e) {
-			fail("perform post to /router" + e.getMessage());
-			return;
-		}
 		catch (Exception e) {
 			fail("perform post to /router" + e.getMessage());
 			return;
@@ -127,10 +121,6 @@ public class RouterControllerFormPostJsonTest {
 		try {
 			resultMvc = ControllerUtil.performRouterRequest(this.mockMvc,
 					ControllerUtil.createEdsRequest("formInfoController3", "updateInfoJsonDirectError", 14, formInfo));
-		}
-		catch (JsonProcessingException e) {
-			fail("perform post to /router" + e.getMessage());
-			return;
 		}
 		catch (Exception e) {
 			fail("perform post to /router" + e.getMessage());
@@ -186,10 +176,6 @@ public class RouterControllerFormPostJsonTest {
 			resultMvc = ControllerUtil.performRouterRequest(this.mockMvc,
 					ControllerUtil.createEdsRequest("formInfoController3", "updateInfoJsonDirectEd", 14, formInfo));
 		}
-		catch (JsonProcessingException e) {
-			fail("perform post to /router" + e.getMessage());
-			return;
-		}
 		catch (Exception e) {
 			fail("perform post to /router" + e.getMessage());
 			return;
@@ -225,10 +211,6 @@ public class RouterControllerFormPostJsonTest {
 		try {
 			resultMvc = ControllerUtil.performRouterRequest(this.mockMvc, ControllerUtil
 				.createEdsRequest("formInfoController3", "updateInfoJsonDirectErrorEd", 14, formInfo));
-		}
-		catch (JsonProcessingException e) {
-			fail("perform post to /router" + e.getMessage());
-			return;
 		}
 		catch (Exception e) {
 			fail("perform post to /router" + e.getMessage());

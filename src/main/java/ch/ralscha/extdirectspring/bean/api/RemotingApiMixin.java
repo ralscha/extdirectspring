@@ -18,9 +18,8 @@ package ch.ralscha.extdirectspring.bean.api;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import ch.ralscha.extdirectspring.util.MapActionSerializer;
+import tools.jackson.databind.annotation.JsonSerialize;
 
 public abstract class RemotingApiMixin {
 

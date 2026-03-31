@@ -18,10 +18,7 @@ package ch.ralscha.extdirectspring.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +29,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import ch.ralscha.extdirectspring.bean.api.PollingProvider;
 import ch.ralscha.extdirectspring.bean.api.RemotingApi;
 import ch.ralscha.extdirectspring.bean.api.RemotingApiMixin;
@@ -44,6 +38,11 @@ import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
 import ch.ralscha.extdirectspring.util.JsonHandler;
 import ch.ralscha.extdirectspring.util.MethodInfo;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Spring managed controller that handles /api.jsp, /api-debug.js, /api-debug-doc.js and
@@ -174,6 +173,8 @@ public class ApiController {
 				this.configurationService.getConfiguration().getJsContentType());
 	}
 
+	private static final Pattern stripApiRegex_pattern = Pattern.compile("api[^/]*?\\.js");
+
 	private String buildAndCacheApiString(String requestApiNs, String requestActionNs, String requestRemotingApiVar,
 			String requestPollingUrlsVar, String group, Boolean requestFullRouterUrl, String requestBaseRouterUrl,
 			HttpServletRequest request, boolean cache) {
@@ -202,9 +203,9 @@ public class ApiController {
 
 		requestUrlString = configuration.postProcessRequestUrl(request, requestUrlString);
 
-		String stripApiRegex = "api[^/]*?\\.js";
-		String routerUrl = requestUrlString.replaceFirst(stripApiRegex, "") + "router";
-		String basePollUrl = requestUrlString.replaceFirst(stripApiRegex, "") + "poll";
+		Pattern stripApiRegex = stripApiRegex_pattern;
+		String routerUrl = stripApiRegex.matcher(requestUrlString).replaceFirst("") + "router";
+		String basePollUrl = stripApiRegex.matcher(requestUrlString).replaceFirst("") + "poll";
 
 		if (!requestUrlString.contains("/api-debug-doc.js")) {
 			boolean debug = requestUrlString.contains("api-debug.js");
@@ -235,12 +236,11 @@ public class ApiController {
 		remotingApi.setMaxRetries(this.configurationService.getConfiguration().getMaxRetries());
 
 		Object enableBuffer = this.configurationService.getConfiguration().getEnableBuffer();
-		if (enableBuffer instanceof String && StringUtils.hasText((String) enableBuffer)) {
-			String enableBufferString = (String) enableBuffer;
-			if (enableBufferString.equalsIgnoreCase("true")) {
+		if (enableBuffer instanceof String enableBufferString && StringUtils.hasText(enableBufferString)) {
+			if ("true".equalsIgnoreCase(enableBufferString)) {
 				remotingApi.setEnableBuffer(Boolean.TRUE);
 			}
-			else if (enableBufferString.equalsIgnoreCase("false")) {
+			else if ("false".equalsIgnoreCase(enableBufferString)) {
 				remotingApi.setEnableBuffer(Boolean.FALSE);
 			}
 			else {
@@ -285,12 +285,13 @@ public class ApiController {
 			jsonConfig = writeValueAsString(remotingApi, debug);
 		}
 		else {
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.addMixIn(RemotingApi.class, RemotingApiMixin.class);
+			ObjectMapper mapper = this.objectMapper.rebuild()
+				.addMixIn(RemotingApi.class, RemotingApiMixin.class)
+				.build();
 			try {
 				jsonConfig = mapper.writer().withDefaultPrettyPrinter().writeValueAsString(remotingApi);
 			}
-			catch (JsonProcessingException e) {
+			catch (JacksonException e) {
 				jsonConfig = null;
 				LogFactory.getLog(ApiController.class).info("serialize object to json", e);
 			}
@@ -377,11 +378,7 @@ public class ApiController {
 	}
 
 	private void buildRemotingApi(RemotingApi remotingApi, String requestedGroup, boolean cache) {
-		if (cache && this.methodInfoCache.isEmpty()) {
-			// populate the cache only once
-			this.methodInfoCache.populateMethodInfoCache(this.configurationService.getApplicationContext());
-		}
-		else {
+		if (!cache || this.methodInfoCache.isEmpty()) {
 			this.methodInfoCache.populateMethodInfoCache(this.configurationService.getApplicationContext());
 		}
 		String group = requestedGroup != null ? requestedGroup.trim() : requestedGroup;

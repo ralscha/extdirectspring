@@ -79,7 +79,7 @@ public class Filter {
 				if (source instanceof Number) {
 					return new NumericFilter(property, (Number) source, rawComparison, comparisonFromJson);
 				}
-				else if (source instanceof Boolean) {
+				if (source instanceof Boolean) {
 					return new BooleanFilter(property, (Boolean) source, rawComparison, comparisonFromJson);
 				}
 				else if (source instanceof List) {
@@ -92,24 +92,24 @@ public class Filter {
 			return null;
 		}
 
-		if (type.equals("numeric") || type.equals("int") || type.equals("float") || type.equals("number")) {
+		if ("numeric".equals(type) || "int".equals(type) || "float".equals(type) || "number".equals(type)) {
 			Number value = conversionService.convert(source, Number.class);
 			return new NumericFilter(property, value, rawComparison, comparisonFromJson);
 		}
-		else if (type.equals("string")) {
+		if ("string".equals(type)) {
 			return new StringFilter(property, (String) source, rawComparison, comparisonFromJson);
 		}
-		else if (type.equals("date")) {
+		else if ("date".equals(type)) {
 			return new DateFilter(property, (String) source, rawComparison, comparisonFromJson);
 		}
-		else if (type.equals("list") || type.equals("combo")) {
+		else if ("list".equals(type) || "combo".equals(type)) {
 			if (source instanceof String) {
 				String[] values = ((String) source).split(",");
 				return new ListFilter(property, Arrays.asList(values), rawComparison, comparisonFromJson);
 			}
 			return new ListFilter(property, (List<String>) source, rawComparison, comparisonFromJson);
 		}
-		else if (type.equals("boolean")) {
+		else if ("boolean".equals(type)) {
 			return new BooleanFilter(property, (Boolean) source, rawComparison, comparisonFromJson);
 		}
 

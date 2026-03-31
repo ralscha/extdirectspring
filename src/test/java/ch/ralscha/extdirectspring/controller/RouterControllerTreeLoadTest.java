@@ -24,8 +24,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.servlet.http.Cookie;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,9 +36,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-
 import ch.ralscha.extdirectspring.provider.RemoteProviderTreeLoad.Node;
+import jakarta.servlet.http.Cookie;
+import tools.jackson.core.type.TypeReference;
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration

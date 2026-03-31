@@ -1,0 +1,35 @@
+version: '3'
+
+vars:
+  MVNW: '{{if eq OS "windows"}}cmd /c mvnw.cmd{{else}}./mvnw{{end}}'
+
+tasks:
+  default:
+    desc: List all available tasks
+    cmds:
+      - task --list-all
+
+  clean:
+    desc: Clean the project
+    cmds:
+      - '{{.MVNW}} clean'
+
+  format:
+    desc: Run the Spring Java format plugin
+    cmds:
+      - '{{.MVNW}} spring-javaformat:apply'
+
+  verify:
+    desc: Run verify
+    cmds:
+      - '{{.MVNW}} clean verify'
+
+  coverage:
+    desc: Run tests and generate a JaCoCo coverage report
+    cmds:
+      - '{{.MVNW}} clean verify jacoco:report'
+
+  pitest:
+    desc: Run PIT mutation testing
+    cmds:
+      - '{{.MVNW}} org.pitest:pitest-maven:mutationCoverage'

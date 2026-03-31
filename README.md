@@ -1,7 +1,8 @@
 ## ExtDirectSpring 
 ![Test Status](https://github.com/ralscha/extdirectspring/workflows/test/badge.svg)
 
-ExtDirectSpring is a library that connects Ext JS 3.x, 4.x, 5.x, 6.x, 7.x and Sencha Touch 2.x applications with a Java/Spring back end, by implementing the [Ext Direct](https://docs.sencha.com/extjs/7.9.0/guides/backend_connectors/direct/specification.html) specification. 
+ExtDirectSpring is a library that connects Ext JS applications with a Java/Spring back end, by implementing the [Ext Direct](https://docs.sencha.com/extjs/7.9.0/guides/backend_connectors/direct/specification.html) specification.
+ 
 The library supports all the features of Ext Direct:
   * Configuration with annotations
   * Simple remote calls
@@ -23,11 +24,13 @@ ExtDirectSpring is available from the Central Maven Repository.
 
 
 ## Support
-If you have a question about extdirectspring post it in our [Google Group forum](https://groups.google.com/forum/#!forum/extdirectspring).
-The official Sencha [Ext.Direct forum](http://www.sencha.com/forum/forumdisplay.php?47-Ext.Direct) is a good place to look for an answer if you have a more general Ext.Direct question.  
+
+If you have a question about extdirectspring post it on [GitHub Discussions](https://github.com/ralscha/extdirectspring/discussions).
+Or if you want to report a bug or request a feature, please open an issue on [GitHub Issues](https://github.com/ralscha/extdirectspring/issues).
 
 
 ## Minimum Requirements
+  * 3.0.0: Spring 7.0.6, Servlet 6.1.0, Jackson 3.1.1, Java 17
   * 2.1.5: Spring 6.2.6, Servlet 6.1.0, Jackson 2.18.3, Java 17 (Jakarta)
   * 1.8.1: Spring 5.1.2, Servlet 3.0, Jackson 2.9, Java 1.8
   * 1.7.4: Spring 4.3.1, Servlet 3.0, Jackson 2.8, Java 1.6
@@ -37,8 +40,6 @@ The official Sencha [Ext.Direct forum](http://www.sencha.com/forum/forumdisplay.
   * 1.3.9: Spring 3.2.1, Servlet 2.4, Java 1.6
   * 1.2.3: Spring 3.1.2, Servlet 2.4, Java 1.6
   * 1.1.3: Spring 3.0.7, Servlet 2.4, Java 1.5
-
-The library supports Ext JS 3, 4, 5, 6 and 7 and Sencha Touch 2   
 
 
 ## Demo applications using extdirectspring

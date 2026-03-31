@@ -18,13 +18,12 @@ package ch.ralscha.extdirectspring.util;
 import java.security.Principal;
 import java.util.Locale;
 
+import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 
 /**
  * Enumeration of all supported parameter types.
@@ -36,7 +35,7 @@ enum SupportedParameters {
 
 	private final Class<?> clazz;
 
-	private SupportedParameters(Class<?> clazz) {
+	SupportedParameters(Class<?> clazz) {
 		this.clazz = clazz;
 	}
 
@@ -69,7 +68,7 @@ enum SupportedParameters {
 		if (SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
 			return request;
 		}
-		else if (SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
+		if (SERVLET_RESPONSE.getSupportedClass().isAssignableFrom(parameterType)) {
 			return response;
 		}
 		else if (SESSION.getSupportedClass().isAssignableFrom(parameterType)) {

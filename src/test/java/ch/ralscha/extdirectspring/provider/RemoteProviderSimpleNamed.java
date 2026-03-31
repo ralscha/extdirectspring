@@ -28,10 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.util.Objects;
 
 import org.assertj.core.data.Offset;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -44,6 +41,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 @SuppressWarnings("unused")
@@ -95,7 +95,7 @@ public class RemoteProviderSimpleNamed {
 		if ("ralph".equals(userName)) {
 			return Boolean.TRUE;
 		}
-		else if ("joe".equals(userName)) {
+		if ("joe".equals(userName)) {
 			return Boolean.FALSE;
 		}
 		return null;
@@ -321,7 +321,6 @@ public class RemoteProviderSimpleNamed {
 		}
 
 		public TestObject(int id, String name, Boolean active, BigDecimal amount) {
-			super();
 			this.id = id;
 			this.name = name;
 			this.active = active;
@@ -400,12 +399,7 @@ public class RemoteProviderSimpleNamed {
 
 		@Override
 		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + (this.active == null ? 0 : this.active.hashCode());
-			result = prime * result + (this.age == null ? 0 : this.age.hashCode());
-			result = prime * result + (this.name == null ? 0 : this.name.hashCode());
-			return result;
+			return Objects.hash(this.active, this.age, this.name);
 		}
 
 		@Override
@@ -413,35 +407,12 @@ public class RemoteProviderSimpleNamed {
 			if (this == obj) {
 				return true;
 			}
-			if (obj == null) {
-				return false;
-			}
-			if (getClass() != obj.getClass()) {
+			if (obj == null || getClass() != obj.getClass()) {
 				return false;
 			}
 			ResultObject other = (ResultObject) obj;
-			if (this.active == null) {
-				if (other.active != null) {
-					return false;
-				}
-			}
-			else if (!this.active.equals(other.active)) {
-				return false;
-			}
-			if (this.age == null) {
-				if (other.age != null) {
-					return false;
-				}
-			}
-			else if (!this.age.equals(other.age)) {
-				return false;
-			}
-			if (this.name == null) {
-				if (other.name != null) {
-					return false;
-				}
-			}
-			else if (!this.name.equals(other.name)) {
+			if (!Objects.equals(this.active, other.active) || !Objects.equals(this.age, other.age)
+					|| !Objects.equals(this.name, other.name)) {
 				return false;
 			}
 			return true;

@@ -16,6 +16,7 @@
 package ch.ralscha.extdirectspring.provider;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -35,7 +36,6 @@ public class Row implements Comparable<Row>, RowInterface {
 	}
 
 	public Row(int id, String name, boolean admin, String salary) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.admin = admin;
@@ -82,10 +82,7 @@ public class Row implements Comparable<Row>, RowInterface {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + this.id;
-		return result;
+		return Objects.hash(this.id);
 	}
 
 	@Override
@@ -93,10 +90,7 @@ public class Row implements Comparable<Row>, RowInterface {
 		if (this == obj) {
 			return true;
 		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
 		Row other = (Row) obj;

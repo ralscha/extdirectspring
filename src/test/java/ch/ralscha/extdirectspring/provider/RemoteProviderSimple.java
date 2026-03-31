@@ -33,10 +33,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import org.assertj.core.data.Offset;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -48,6 +44,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 @SuppressWarnings("unused")
@@ -93,7 +92,7 @@ public class RemoteProviderSimple {
 		if ("ralph".equals(userName)) {
 			return Boolean.TRUE;
 		}
-		else if ("joe".equals(userName)) {
+		if ("joe".equals(userName)) {
 			return Boolean.FALSE;
 		}
 		return null;
