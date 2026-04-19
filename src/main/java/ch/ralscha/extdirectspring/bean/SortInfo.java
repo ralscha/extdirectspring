@@ -33,6 +33,7 @@ public class SortInfo {
 	}
 
 	/**
+	 * Returns the property or field on which to sort.
 	 * @return the property/field on which to sort
 	 */
 	public String getProperty() {

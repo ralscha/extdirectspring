@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.provider;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Locale;
 
@@ -81,7 +82,7 @@ public class RemoteProviderStoreModify {
 		}
 		else {
 			assertThat(yesterday).isNotNull();
-			assertThat(yesterday).isEqualTo(LocalDate.now().minusDays(1));
+			assertThat(yesterday).isEqualTo(LocalDate.now(ZoneId.systemDefault()).minusDays(1));
 			assertThat(id).isEqualTo(Integer.valueOf(11));
 		}
 		return rows;

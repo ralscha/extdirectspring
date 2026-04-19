@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.provider;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Locale;
+import java.util.Locale;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -69,7 +70,7 @@ public class FormInfoController {
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
 	public ExtDirectFormPostResult updateInfoDirect(FormInfo formInfo, BindingResult result) {
 		ExtDirectFormPostResult e = new ExtDirectFormPostResult(result);
-		e.addResultProperty("name", formInfo.getName().toUpperCase());
+		e.addResultProperty("name", formInfo.getName().toUpperCase(Locale.ROOT));
 		e.addResultProperty("age", formInfo.getAge() + 10);
 		e.addResultProperty("admin", !formInfo.isAdmin());
 		BigDecimal bd = new BigDecimal("1000");
@@ -82,7 +83,7 @@ public class FormInfoController {
 	@ExtDirectMethod(value = ExtDirectMethodType.FORM_POST, group = "group3")
 	public EdFormPostResult updateInfoDirectEd(FormInfo formInfo, BindingResult result) {
 		EdFormPostResult.Builder e = EdFormPostResult.builder().addError(result);
-		e.putResult("name", formInfo.getName().toUpperCase());
+		e.putResult("name", formInfo.getName().toUpperCase(Locale.ROOT));
 		e.putResult("age", formInfo.getAge() + 10);
 		e.putResult("admin", !formInfo.isAdmin());
 		BigDecimal bd = new BigDecimal("1000");

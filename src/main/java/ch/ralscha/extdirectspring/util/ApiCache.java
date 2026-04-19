@@ -19,6 +19,7 @@ import java.lang.ref.SoftReference;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,7 +35,7 @@ public class ApiCache {
 		this.cache.put(key, new SoftReference<>(apiString));
 	}
 
-	public String get(ApiCacheKey key) {
+	public @Nullable String get(@Nullable ApiCacheKey key) {
 		if (key != null) {
 			SoftReference<String> apiStringReference = this.cache.get(key);
 			if (apiStringReference != null) {

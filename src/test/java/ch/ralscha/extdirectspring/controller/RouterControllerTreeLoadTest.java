@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -90,13 +91,14 @@ public class RouterControllerTreeLoadTest {
 		Map<String, Object> requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
 		requestParameters.put("foo", "foo");
-		requestParameters.put("today", DateTimeFormatter.ISO_DATE.format(LocalDate.now()));
+		LocalDate today = LocalDate.now(ZoneId.systemDefault());
+		requestParameters.put("today", DateTimeFormatter.ISO_DATE.format(today));
 
 		List<Node> nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderTreeLoad", "method2",
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
-		String appendix = ":foo;" + LocalDate.now().toString();
+		String appendix = ":foo;" + today;
 		assertThat(nodes).hasSize(5)
 			.containsSequence(new Node("n1", "Node 1" + appendix, false), new Node("n2", "Node 2" + appendix, false),
 					new Node("n3", "Node 3" + appendix, false), new Node("n4", "Node 4" + appendix, false),
@@ -104,13 +106,14 @@ public class RouterControllerTreeLoadTest {
 
 		requestParameters = new LinkedHashMap<>();
 		requestParameters.put("node", "root");
-		requestParameters.put("today", DateTimeFormatter.ISO_DATE.format(LocalDate.now().plusDays(10)));
+		LocalDate futureDate = today.plusDays(10);
+		requestParameters.put("today", DateTimeFormatter.ISO_DATE.format(futureDate));
 
 		nodes = (List<Node>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderTreeLoad", "method2",
 				new TypeReference<List<Node>>() {/* nothinghere */
 				}, requestParameters);
 
-		appendix = ":defaultValue;" + LocalDate.now().plusDays(10).toString();
+		appendix = ":defaultValue;" + futureDate;
 		assertThat(nodes).hasSize(5)
 			.containsSequence(new Node("n1", "Node 1" + appendix, false), new Node("n2", "Node 2" + appendix, false),
 					new Node("n3", "Node 3" + appendix, false), new Node("n4", "Node 4" + appendix, false),

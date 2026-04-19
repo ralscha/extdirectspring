@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- *
- */
 package ch.ralscha.extdirectspring.bean.api;
 
 import java.util.HashMap;
@@ -66,6 +63,7 @@ public class ActionDoc extends Action {
 	}
 
 	/**
+	 * Returns the method comment.
 	 * @return the methodComment
 	 */
 	public String getMethodComment() {
@@ -73,6 +71,7 @@ public class ActionDoc extends Action {
 	}
 
 	/**
+	 * Sets the method comment.
 	 * @param methodComment the methodComment to set
 	 */
 	public void setMethodComment(String methodComment) {
@@ -80,6 +79,7 @@ public class ActionDoc extends Action {
 	}
 
 	/**
+	 * Returns the author.
 	 * @return the author
 	 */
 	public String getAuthor() {
@@ -87,6 +87,7 @@ public class ActionDoc extends Action {
 	}
 
 	/**
+	 * Sets the author.
 	 * @param author the author to set
 	 */
 	public void setAuthor(String author) {
@@ -94,6 +95,7 @@ public class ActionDoc extends Action {
 	}
 
 	/**
+	 * Returns the version.
 	 * @return the version
 	 */
 	public String getVersion() {
@@ -101,6 +103,7 @@ public class ActionDoc extends Action {
 	}
 
 	/**
+	 * Sets the version.
 	 * @param version the version to set
 	 */
 	public void setVersion(String version) {
@@ -108,6 +111,7 @@ public class ActionDoc extends Action {
 	}
 
 	/**
+	 * Returns the documented parameters.
 	 * @return the parameters
 	 */
 	public Map<String, String> getParameters() {
@@ -118,6 +122,7 @@ public class ActionDoc extends Action {
 	}
 
 	/**
+	 * Sets the documented parameters.
 	 * @param parameters the parameters to set
 	 */
 	public void setParameters(Map<String, String> parameters) {
@@ -125,6 +130,7 @@ public class ActionDoc extends Action {
 	}
 
 	/**
+	 * Returns the documented return values.
 	 * @return the returnMethod
 	 */
 	public Map<String, String> getReturnMethod() {
@@ -135,6 +141,7 @@ public class ActionDoc extends Action {
 	}
 
 	/**
+	 * Sets the documented return values.
 	 * @param returnMethod the returnMethod to set
 	 */
 	public void setReturnMethod(Map<String, String> returnMethod) {
@@ -142,6 +149,7 @@ public class ActionDoc extends Action {
 	}
 
 	/**
+	 * Returns whether the action is deprecated.
 	 * @return the deprecated
 	 */
 	public boolean isDeprecated() {
@@ -149,6 +157,7 @@ public class ActionDoc extends Action {
 	}
 
 	/**
+	 * Sets whether the action is deprecated.
 	 * @param deprecated the deprecated to set
 	 */
 	public void setDeprecated(boolean deprecated) {

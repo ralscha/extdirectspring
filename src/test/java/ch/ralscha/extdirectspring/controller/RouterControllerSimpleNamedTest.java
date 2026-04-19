@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -158,14 +159,14 @@ public class RouterControllerSimpleNamedTest {
 	public void testResultTrue() {
 		Map<String, Object> params = new LinkedHashMap<>();
 		params.put("userName", "ralph");
-		ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderSimpleNamed", "method3", Boolean.TRUE, params);
+		ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderSimpleNamed", "method3", true, params);
 	}
 
 	@Test
 	public void testResultFalse() {
 		Map<String, Object> params = new LinkedHashMap<>();
 		params.put("userName", "joe");
-		ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderSimpleNamed", "method3", Boolean.FALSE, params);
+		ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderSimpleNamed", "method3", false, params);
 	}
 
 	@Test
@@ -199,7 +200,7 @@ public class RouterControllerSimpleNamedTest {
 				"method5", FormInfo.class, params);
 
 		assertThat(info.getBack()).isEqualTo(7.34);
-		assertThat(info.isAdmin()).isEqualTo(Boolean.FALSE);
+		assertThat(info.isAdmin()).isEqualTo(false);
 		assertThat(info.getAge()).isEqualTo(32);
 		assertThat(info.getName()).isEqualTo("John");
 		assertThat(info.getSalary()).isEqualTo(new BigDecimal("8720.2"));
@@ -256,8 +257,8 @@ public class RouterControllerSimpleNamedTest {
 	@SuppressWarnings("unchecked")
 	public void testWithConversion() {
 
-		LocalDate todayDate = LocalDate.now();
-		OffsetDateTime todayDateTime = OffsetDateTime.now();
+		LocalDate todayDate = LocalDate.now(ZoneId.systemDefault());
+		OffsetDateTime todayDateTime = OffsetDateTime.now(ZoneId.systemDefault());
 
 		Map<String, Object> params = new LinkedHashMap<>();
 		params.put("endDate", DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(todayDateTime));
@@ -278,7 +279,7 @@ public class RouterControllerSimpleNamedTest {
 
 	@Test
 	public void testDifferentParameterNames() {
-		ResultObject expectedResult = new ResultObject("Miller", 10, Boolean.TRUE);
+		ResultObject expectedResult = new ResultObject("Miller", 10, true);
 		Map<String, Object> params = new LinkedHashMap<>();
 		params.put("lastName", expectedResult.getName());
 		params.put("theAge", expectedResult.getAge());
@@ -292,7 +293,7 @@ public class RouterControllerSimpleNamedTest {
 	public void testCollections() {
 		Map<String, Object> params = new LinkedHashMap<>();
 		params.put("name", "first");
-		TestObject ce = new TestObject(23, "Meier", Boolean.FALSE, new BigDecimal("100.23"));
+		TestObject ce = new TestObject(23, "Meier", false, new BigDecimal("100.23"));
 		params.put("collections", Collections.singleton(ce));
 		String result = (String) ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderSimpleNamed",
 				"methodCollection1", String.class, params);
@@ -301,9 +302,9 @@ public class RouterControllerSimpleNamedTest {
 		params = new LinkedHashMap<>();
 		params.put("name", "2nd");
 		List<TestObject> list = new ArrayList<>();
-		list.add(new TestObject(1, "One", Boolean.TRUE, new BigDecimal("1.1")));
-		list.add(new TestObject(2, "Two", Boolean.FALSE, new BigDecimal("1.2")));
-		list.add(new TestObject(3, "Three", Boolean.TRUE, new BigDecimal("1.3")));
+		list.add(new TestObject(1, "One", true, new BigDecimal("1.1")));
+		list.add(new TestObject(2, "Two", false, new BigDecimal("1.2")));
+		list.add(new TestObject(3, "Three", true, new BigDecimal("1.3")));
 
 		params.put("collections", list);
 		result = (String) ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderSimpleNamed",
@@ -334,7 +335,7 @@ public class RouterControllerSimpleNamedTest {
 	public void testCollectionsWithoutGeneric() {
 		Map<String, Object> params = new LinkedHashMap<>();
 		params.put("name", "Joan1");
-		TestObject ce = new TestObject(33, "Meier", Boolean.TRUE, new BigDecimal("33.334"));
+		TestObject ce = new TestObject(33, "Meier", true, new BigDecimal("33.334"));
 		params.put("collections", Collections.singleton(ce));
 		String result = (String) ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderSimpleNamed",
 				"methodCollection3", String.class, params);
@@ -343,9 +344,9 @@ public class RouterControllerSimpleNamedTest {
 		params = new LinkedHashMap<>();
 		params.put("name", "Joan2");
 		List<TestObject> list = new ArrayList<>();
-		list.add(new TestObject(1, "1", Boolean.TRUE, new BigDecimal("1.1")));
-		list.add(new TestObject(2, "2", Boolean.FALSE, new BigDecimal("1.2")));
-		list.add(new TestObject(3, "3", Boolean.TRUE, new BigDecimal("1.3")));
+		list.add(new TestObject(1, "1", true, new BigDecimal("1.1")));
+		list.add(new TestObject(2, "2", false, new BigDecimal("1.2")));
+		list.add(new TestObject(3, "3", true, new BigDecimal("1.3")));
 
 		params.put("collections", list);
 		result = (String) ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderSimpleNamed",
@@ -365,7 +366,7 @@ public class RouterControllerSimpleNamedTest {
 	public void testArrays() {
 		Map<String, Object> params = new LinkedHashMap<>();
 		params.put("name", "arr1");
-		TestObject ce = new TestObject(23, "Meier", Boolean.FALSE, new BigDecimal("100.23"));
+		TestObject ce = new TestObject(23, "Meier", false, new BigDecimal("100.23"));
 		params.put("array", Collections.singleton(ce));
 		String result = (String) ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderSimpleNamed",
 				"methodArray1", String.class, params);
@@ -374,9 +375,9 @@ public class RouterControllerSimpleNamedTest {
 		params = new LinkedHashMap<>();
 		params.put("name", "arr2");
 		List<TestObject> list = new ArrayList<>();
-		list.add(new TestObject(1, "One", Boolean.TRUE, new BigDecimal("1.1")));
-		list.add(new TestObject(2, "Two", Boolean.FALSE, new BigDecimal("1.2")));
-		list.add(new TestObject(3, "Three", Boolean.TRUE, new BigDecimal("1.3")));
+		list.add(new TestObject(1, "One", true, new BigDecimal("1.1")));
+		list.add(new TestObject(2, "Two", false, new BigDecimal("1.2")));
+		list.add(new TestObject(3, "Three", true, new BigDecimal("1.3")));
 
 		params.put("array", list);
 		result = (String) ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderSimpleNamed", "methodArray1",
@@ -406,7 +407,7 @@ public class RouterControllerSimpleNamedTest {
 	public void testArraysEllipsis() {
 		Map<String, Object> params = new LinkedHashMap<>();
 		params.put("name", "arre1");
-		TestObject ce = new TestObject(24, "Kiere", Boolean.FALSE, new BigDecimal("1001.23"));
+		TestObject ce = new TestObject(24, "Kiere", false, new BigDecimal("1001.23"));
 		params.put("array", Collections.singleton(ce));
 		String result = (String) ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderSimpleNamed",
 				"methodArray3", String.class, params);
@@ -415,9 +416,9 @@ public class RouterControllerSimpleNamedTest {
 		params = new LinkedHashMap<>();
 		params.put("name", "arre2");
 		List<TestObject> list = new ArrayList<>();
-		list.add(new TestObject(1, "One1", Boolean.TRUE, new BigDecimal("1.1")));
-		list.add(new TestObject(2, "Two2", Boolean.FALSE, new BigDecimal("1.2")));
-		list.add(new TestObject(3, "Three3", Boolean.TRUE, new BigDecimal("1.3")));
+		list.add(new TestObject(1, "One1", true, new BigDecimal("1.1")));
+		list.add(new TestObject(2, "Two2", false, new BigDecimal("1.2")));
+		list.add(new TestObject(3, "Three3", true, new BigDecimal("1.3")));
 
 		params.put("array", list);
 		result = (String) ControllerUtil.sendAndReceiveNamed(this.mockMvc, "remoteProviderSimpleNamed", "methodArray3",
@@ -450,7 +451,7 @@ public class RouterControllerSimpleNamedTest {
 		Map<String, Object> params = new LinkedHashMap<>();
 		params.put("lastName", "Olstead");
 		params.put("theAge", "33");
-		params.put("active", Boolean.FALSE);
+		params.put("active", false);
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP2", true, 2, params,
 				null);
 		multiRequests.add(edRequest);
@@ -462,7 +463,7 @@ public class RouterControllerSimpleNamedTest {
 
 		params = new LinkedHashMap<>();
 		params.put("theAge", "33");
-		params.put("active", Boolean.FALSE);
+		params.put("active", false);
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP2", true, 3, params, null);
 		multiRequests.add(edRequest);
 
@@ -473,7 +474,7 @@ public class RouterControllerSimpleNamedTest {
 
 		params = new LinkedHashMap<>();
 		params.put("lastName", "Olstead");
-		params.put("active", Boolean.FALSE);
+		params.put("active", false);
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP2", true, 4, params, null);
 		multiRequests.add(edRequest);
 
@@ -494,7 +495,7 @@ public class RouterControllerSimpleNamedTest {
 				responses);
 
 		params = new LinkedHashMap<>();
-		params.put("active", Boolean.FALSE);
+		params.put("active", false);
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP2", true, 6, params, null);
 		multiRequests.add(edRequest);
 
@@ -568,7 +569,7 @@ public class RouterControllerSimpleNamedTest {
 		Map<String, Object> params = new LinkedHashMap<>();
 		params.put("lastName", "Olstead");
 		params.put("theAge", "33");
-		params.put("active", Boolean.FALSE);
+		params.put("active", false);
 		String edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP3", true, 2, params,
 				null);
 		multiRequests.add(edRequest);
@@ -581,7 +582,7 @@ public class RouterControllerSimpleNamedTest {
 
 		params = new LinkedHashMap<>();
 		params.put("theAge", "33");
-		params.put("active", Boolean.FALSE);
+		params.put("active", false);
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP3", true, 3, params, null);
 		multiRequests.add(edRequest);
 
@@ -592,7 +593,7 @@ public class RouterControllerSimpleNamedTest {
 
 		params = new LinkedHashMap<>();
 		params.put("lastName", "Olstead");
-		params.put("active", Boolean.FALSE);
+		params.put("active", false);
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP3", true, 4, params, null);
 		multiRequests.add(edRequest);
 
@@ -612,7 +613,7 @@ public class RouterControllerSimpleNamedTest {
 		assertResponse("remoteProviderSimpleNamed", "methodRP3", 5, new ResultObject("Olstead", 36, null), responses);
 
 		params = new LinkedHashMap<>();
-		params.put("active", Boolean.FALSE);
+		params.put("active", false);
 		edRequest = ControllerUtil.createEdsRequest("remoteProviderSimpleNamed", "methodRP3", true, 6, params, null);
 		multiRequests.add(edRequest);
 

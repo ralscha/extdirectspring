@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.util;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -38,7 +39,7 @@ public final class ParameterInfo {
 
 	private static final DefaultParameterNameDiscoverer discoverer = new DefaultParameterNameDiscoverer();
 
-	private String name;
+	private @Nullable String name;
 
 	private final TypeDescriptor typeDescriptor;
 
@@ -52,13 +53,13 @@ public final class ParameterInfo {
 
 	private boolean hasMetadataParamAnnotation;
 
-	private Boolean hasAuthenticationPrincipalAnnotation;
+	private @Nullable Boolean hasAuthenticationPrincipalAnnotation;
 
 	private boolean required;
 
 	private final boolean javaUtilOptional;
 
-	private String defaultValue;
+	private @Nullable String defaultValue;
 
 	public ParameterInfo(Class<?> clazz, Method method, int paramIndex) {
 
@@ -77,6 +78,9 @@ public final class ParameterInfo {
 
 		for (Annotation annotation : paramAnnotations) {
 			Annotation paramAnn = AnnotationUtils.synthesizeAnnotation(annotation, clazz);
+			if (paramAnn == null) {
+				continue;
+			}
 
 			this.hasRequestParamAnnotation = false;
 			this.hasMetadataParamAnnotation = false;
@@ -140,14 +144,14 @@ public final class ParameterInfo {
 		return this.typeDescriptor.getType();
 	}
 
-	public Class<?> getCollectionType() {
+	public @Nullable Class<?> getCollectionType() {
 		if (this.typeDescriptor.isCollection() && this.typeDescriptor.getElementTypeDescriptor() != null) {
 			return this.typeDescriptor.getElementTypeDescriptor().getType();
 		}
 		return null;
 	}
 
-	public String getName() {
+	public @Nullable String getName() {
 		return this.name;
 	}
 
@@ -179,7 +183,7 @@ public final class ParameterInfo {
 		return this.required;
 	}
 
-	public String getDefaultValue() {
+	public @Nullable String getDefaultValue() {
 		return this.defaultValue;
 	}
 

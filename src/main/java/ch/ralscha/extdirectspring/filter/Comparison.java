@@ -15,29 +15,33 @@
  */
 package ch.ralscha.extdirectspring.filter;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Locale;
 
 public enum Comparison {
 
 	LESS_THAN("lt", "<"), LESS_THAN_OR_EQUAL("lte", "le", "<="), GREATER_THAN("gt", ">"),
 	GREATER_THAN_OR_EQUAL("gte", "ge", ">="), EQUAL("eq", "="), NOT_EQUAL("ne", "!="), LIKE("like"), IN("in");
 
-	private final Set<String> externalValues;
+	private final String value1;
+
+	private final String value2;
+
+	private final String value3;
 
 	Comparison(String... values) {
-		this.externalValues = new HashSet<>();
-		Collections.addAll(this.externalValues, values);
+		this.value1 = values.length > 0 ? values[0] : null;
+		this.value2 = values.length > 1 ? values[1] : null;
+		this.value3 = values.length > 2 ? values[2] : null;
 	}
 
 	public boolean is(String externalValue) {
-		return this.externalValues.contains(externalValue);
+		return externalValue.equals(this.value1) || externalValue.equals(this.value2)
+				|| externalValue.equals(this.value3);
 	}
 
 	public static Comparison fromString(String externalValue) {
 		if (externalValue != null) {
-			final String externalValueLowerCase = externalValue.toLowerCase();
+			final String externalValueLowerCase = externalValue.toLowerCase(Locale.ROOT);
 			for (Comparison comparison : Comparison.values()) {
 				if (comparison.is(externalValueLowerCase)) {
 					return comparison;

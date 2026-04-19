@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.LogFactory;
+import org.jspecify.annotations.Nullable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.util.StringUtils;
@@ -44,29 +45,29 @@ import ch.ralscha.extdirectspring.bean.api.PollingProvider;
  */
 public final class MethodInfo {
 
-	private final String group;
+	private final @Nullable String group;
 
 	private final ExtDirectMethodType type;
 
-	private final Class<?> jsonView;
+	private final @Nullable Class<?> jsonView;
 
 	private final boolean synchronizeOnSession;
 
 	private final boolean streamResponse;
 
-	private List<ParameterInfo> parameters;
+	private @Nullable List<ParameterInfo> parameters;
 
-	private Method method;
+	private @Nullable Method method;
 
-	private String forwardPath;
+	private @Nullable String forwardPath;
 
-	private HandlerMethod handlerMethod;
+	private @Nullable HandlerMethod handlerMethod;
 
-	private Class<?> collectionType;
+	private @Nullable Class<?> collectionType;
 
 	private Action action;
 
-	private PollingProvider pollingProvider;
+	private @Nullable PollingProvider pollingProvider;
 
 	public MethodInfo(Class<?> clazz, ApplicationContext context, String beanName, Method method) {
 
@@ -141,7 +142,7 @@ public final class MethodInfo {
 		}
 
 		switch (this.type) {
-			case SIMPLE:
+			case SIMPLE -> {
 				int paramLength = 0;
 				for (ParameterInfo parameter : this.parameters) {
 					if (parameter.isClientParameter()) {
@@ -149,8 +150,8 @@ public final class MethodInfo {
 					}
 				}
 				this.action = Action.create(method.getName(), paramLength, extDirectMethodAnnotation.batched());
-				break;
-			case SIMPLE_NAMED:
+			}
+			case SIMPLE_NAMED -> {
 				int noOfClientParameters = 0;
 				Class<?> parameterType = null;
 
@@ -159,11 +160,14 @@ public final class MethodInfo {
 					if (parameter.isClientParameter()) {
 						noOfClientParameters++;
 						parameterType = parameter.getType();
-						parameterNames.add(parameter.getName());
+						String parameterName = parameter.getName();
+						if (parameterName != null) {
+							parameterNames.add(parameterName);
+						}
 					}
 				}
 
-				if (noOfClientParameters == 1 && Map.class.isAssignableFrom(parameterType)) {
+				if (noOfClientParameters == 1 && parameterType != null && Map.class.isAssignableFrom(parameterType)) {
 					this.action = Action.createNamed(method.getName(), Collections.<String>emptyList(), Boolean.FALSE,
 							extDirectMethodAnnotation.batched());
 				}
@@ -171,31 +175,26 @@ public final class MethodInfo {
 					this.action = Action.createNamed(method.getName(), Collections.unmodifiableList(parameterNames),
 							null, extDirectMethodAnnotation.batched());
 				}
-				break;
-			case FORM_LOAD, FORM_POST_JSON:
+			}
+			case FORM_LOAD, FORM_POST_JSON ->
 				this.action = Action.create(method.getName(), 1, extDirectMethodAnnotation.batched());
-				break;
-			case STORE_READ:
-			case STORE_MODIFY:
-			case TREE_LOAD:
+			case STORE_READ, STORE_MODIFY, TREE_LOAD -> {
 				List<String> metadataParams = new ArrayList<>();
 				for (ParameterInfo parameter : this.parameters) {
 					if (parameter.hasMetadataParamAnnotation()) {
-						metadataParams.add(parameter.getName());
+						String parameterName = parameter.getName();
+						if (parameterName != null) {
+							metadataParams.add(parameterName);
+						}
 					}
 				}
 				this.action = Action.createTreeLoad(method.getName(), 1, metadataParams,
 						extDirectMethodAnnotation.batched());
-				break;
-			case FORM_POST:
-				this.action = Action.createFormHandler(method.getName(), 0);
-				break;
-			case POLL:
-				this.pollingProvider = new PollingProvider(beanName, method.getName(),
-						extDirectMethodAnnotation.event());
-				break;
-			default:
-				throw new IllegalStateException("ExtDirectMethodType: " + this.type + " does not exists");
+			}
+			case FORM_POST -> this.action = Action.createFormHandler(method.getName(), 0);
+			case POLL -> this.pollingProvider = new PollingProvider(beanName, method.getName(),
+					extDirectMethodAnnotation.event());
+			default -> throw new IllegalStateException("ExtDirectMethodType: " + this.type + " does not exists");
 		}
 
 		this.action = extractDocumentationAnnotations(extDirectMethodAnnotation.documentation());
@@ -205,8 +204,8 @@ public final class MethodInfo {
 	/**
 	 * The rule is: whatever has been given is taken as is the API documentation is non
 	 * critical, so any discrepancies will be silently ignored
-	 * @param documentation
-	 * @return ActionDoc
+	 * @param documentation documentation annotation values
+	 * @return the action with documentation metadata applied
 	 */
 	private Action extractDocumentationAnnotations(ExtDirectMethodDocumentation documentation) {
 		if (!documentation.value().isEmpty()) {
@@ -249,7 +248,7 @@ public final class MethodInfo {
 		return this.action;
 	}
 
-	private static boolean hasValue(RequestMapping requestMapping) {
+	private static boolean hasValue(@Nullable RequestMapping requestMapping) {
 		return requestMapping != null && requestMapping.value() != null && requestMapping.value().length > 0
 				&& StringUtils.hasText(requestMapping.value()[0]);
 	}
@@ -271,23 +270,23 @@ public final class MethodInfo {
 		return params;
 	}
 
-	public Method getMethod() {
+	public @Nullable Method getMethod() {
 		return this.method;
 	}
 
-	public String getForwardPath() {
+	public @Nullable String getForwardPath() {
 		return this.forwardPath;
 	}
 
-	public HandlerMethod getHandlerMethod() {
+	public @Nullable HandlerMethod getHandlerMethod() {
 		return this.handlerMethod;
 	}
 
-	public List<ParameterInfo> getParameters() {
+	public @Nullable List<ParameterInfo> getParameters() {
 		return this.parameters;
 	}
 
-	public Class<?> getCollectionType() {
+	public @Nullable Class<?> getCollectionType() {
 		return this.collectionType;
 	}
 
@@ -295,7 +294,7 @@ public final class MethodInfo {
 		return this.type == methodType;
 	}
 
-	public Class<?> getJsonView() {
+	public @Nullable Class<?> getJsonView() {
 		return this.jsonView;
 	}
 
@@ -307,7 +306,7 @@ public final class MethodInfo {
 		return this.streamResponse;
 	}
 
-	public PollingProvider getPollingProvider() {
+	public @Nullable PollingProvider getPollingProvider() {
 		return this.pollingProvider;
 	}
 
@@ -315,7 +314,7 @@ public final class MethodInfo {
 		return this.action;
 	}
 
-	public String getGroup() {
+	public @Nullable String getGroup() {
 		return this.group;
 	}
 
@@ -326,7 +325,7 @@ public final class MethodInfo {
 	 * @param annotation the annotation to look for
 	 * @return the method if there is a annotated method, else null
 	 */
-	public static Method findMethodWithAnnotation(Method method, Class<? extends Annotation> annotation) {
+	public static @Nullable Method findMethodWithAnnotation(Method method, Class<? extends Annotation> annotation) {
 		if (method.isAnnotationPresent(annotation)) {
 			return method;
 		}

@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.logging.LogFactory;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.NumberUtils;
@@ -86,18 +87,19 @@ public class ApiController {
 	 * overrides default behavior that uses request.getRequestURI
 	 * @param request the HTTP servlet request
 	 * @param response the HTTP servlet response
-	 * @throws IOException
+	 * @throws IOException if writing the response fails
 	 */
 	@SuppressWarnings({ "resource" })
 	@RequestMapping(value = { "/api.js", "/api-debug.js", "/api-debug-doc.js" }, method = RequestMethod.GET)
-	public void api(@RequestParam(value = "apiNs", required = false) String apiNs,
-			@RequestParam(value = "actionNs", required = false) String actionNs,
-			@RequestParam(value = "remotingApiVar", required = false) String remotingApiVar,
-			@RequestParam(value = "pollingUrlsVar", required = false) String pollingUrlsVar,
-			@RequestParam(value = "group", required = false) String group,
-			@RequestParam(value = "fullRouterUrl", required = false) Boolean fullRouterUrl,
-			@RequestParam(value = "format", required = false) String format,
-			@RequestParam(value = "baseRouterUrl", required = false) String baseRouterUrl, HttpServletRequest request,
+	public void api(@RequestParam(value = "apiNs", required = false) @Nullable String apiNs,
+			@RequestParam(value = "actionNs", required = false) @Nullable String actionNs,
+			@RequestParam(value = "remotingApiVar", required = false) @Nullable String remotingApiVar,
+			@RequestParam(value = "pollingUrlsVar", required = false) @Nullable String pollingUrlsVar,
+			@RequestParam(value = "group", required = false) @Nullable String group,
+			@RequestParam(value = "fullRouterUrl", required = false) @Nullable Boolean fullRouterUrl,
+			@RequestParam(value = "format", required = false) @Nullable String format,
+			@RequestParam(value = "baseRouterUrl", required = false) @Nullable String baseRouterUrl,
+			HttpServletRequest request,
 			@RequestParam(value = "cache", required = false, defaultValue = "true") boolean cache,
 			HttpServletResponse response) throws IOException {
 
@@ -151,17 +153,18 @@ public class ApiController {
 	 * overrides default behavior that uses request.getRequestURI
 	 * @param request the HTTP servlet request
 	 * @param response the HTTP servlet response
-	 * @throws IOException
+	 * @throws IOException if writing the response fails
 	 */
 
 	@RequestMapping(value = "/api-{fingerprint}.js", method = RequestMethod.GET)
-	public void api(@RequestParam(value = "apiNs", required = false) String apiNs,
-			@RequestParam(value = "actionNs", required = false) String actionNs,
-			@RequestParam(value = "remotingApiVar", required = false) String remotingApiVar,
-			@RequestParam(value = "pollingUrlsVar", required = false) String pollingUrlsVar,
-			@RequestParam(value = "group", required = false) String group,
-			@RequestParam(value = "fullRouterUrl", required = false) Boolean fullRouterUrl,
-			@RequestParam(value = "baseRouterUrl", required = false) String baseRouterUrl, HttpServletRequest request,
+	public void api(@RequestParam(value = "apiNs", required = false) @Nullable String apiNs,
+			@RequestParam(value = "actionNs", required = false) @Nullable String actionNs,
+			@RequestParam(value = "remotingApiVar", required = false) @Nullable String remotingApiVar,
+			@RequestParam(value = "pollingUrlsVar", required = false) @Nullable String pollingUrlsVar,
+			@RequestParam(value = "group", required = false) @Nullable String group,
+			@RequestParam(value = "fullRouterUrl", required = false) @Nullable Boolean fullRouterUrl,
+			@RequestParam(value = "baseRouterUrl", required = false) @Nullable String baseRouterUrl,
+			HttpServletRequest request,
 			@RequestParam(value = "cache", required = false, defaultValue = "true") boolean cache,
 			HttpServletResponse response) throws IOException {
 
@@ -173,11 +176,12 @@ public class ApiController {
 				this.configurationService.getConfiguration().getJsContentType());
 	}
 
-	private static final Pattern stripApiRegex_pattern = Pattern.compile("api[^/]*?\\.js");
+	private static final Pattern STRIP_API_REGEX = Pattern.compile("api[^/]*?\\.js");
 
-	private String buildAndCacheApiString(String requestApiNs, String requestActionNs, String requestRemotingApiVar,
-			String requestPollingUrlsVar, String group, Boolean requestFullRouterUrl, String requestBaseRouterUrl,
-			HttpServletRequest request, boolean cache) {
+	private String buildAndCacheApiString(@Nullable String requestApiNs, @Nullable String requestActionNs,
+			@Nullable String requestRemotingApiVar, @Nullable String requestPollingUrlsVar, @Nullable String group,
+			@Nullable Boolean requestFullRouterUrl, @Nullable String requestBaseRouterUrl, HttpServletRequest request,
+			boolean cache) {
 
 		Configuration configuration = this.configurationService.getConfiguration();
 		String apiNs = requestApiNs != null ? requestApiNs : configuration.getApiNs();
@@ -203,14 +207,14 @@ public class ApiController {
 
 		requestUrlString = configuration.postProcessRequestUrl(request, requestUrlString);
 
-		Pattern stripApiRegex = stripApiRegex_pattern;
+		Pattern stripApiRegex = STRIP_API_REGEX;
 		String routerUrl = stripApiRegex.matcher(requestUrlString).replaceFirst("") + "router";
 		String basePollUrl = stripApiRegex.matcher(requestUrlString).replaceFirst("") + "poll";
 
 		if (!requestUrlString.contains("/api-debug-doc.js")) {
 			boolean debug = requestUrlString.contains("api-debug.js");
 
-			ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, routerUrl, group,
+			ApiCacheKey apiKey = new ApiCacheKey(apiNs, actionNs, remotingApiVar, pollingUrlsVar, group, routerUrl,
 					debug);
 			String apiString = this.apiCache.get(apiKey);
 			if (apiString == null || !cache) {
@@ -226,8 +230,8 @@ public class ApiController {
 
 	}
 
-	private String buildApiString(String apiNs, String actionNs, String remotingApiVar, String pollingUrlsVar,
-			String routerUrl, String basePollUrl, String group, boolean debug, boolean doc, boolean cache) {
+	private String buildApiString(String apiNs, @Nullable String actionNs, String remotingApiVar, String pollingUrlsVar,
+			String routerUrl, String basePollUrl, @Nullable String group, boolean debug, boolean doc, boolean cache) {
 
 		RemotingApi remotingApi = new RemotingApi(this.configurationService.getConfiguration().getProviderType(),
 				routerUrl, actionNs);
@@ -238,10 +242,10 @@ public class ApiController {
 		Object enableBuffer = this.configurationService.getConfiguration().getEnableBuffer();
 		if (enableBuffer instanceof String enableBufferString && StringUtils.hasText(enableBufferString)) {
 			if ("true".equalsIgnoreCase(enableBufferString)) {
-				remotingApi.setEnableBuffer(Boolean.TRUE);
+				remotingApi.setEnableBuffer(true);
 			}
 			else if ("false".equalsIgnoreCase(enableBufferString)) {
-				remotingApi.setEnableBuffer(Boolean.FALSE);
+				remotingApi.setEnableBuffer(false);
 			}
 			else {
 				Integer enableBufferMs = NumberUtils.parseNumber(enableBufferString, Integer.class);
@@ -350,8 +354,9 @@ public class ApiController {
 		return sb.toString();
 	}
 
-	private String buildApiJson(String requestApiNs, String requestActionNs, String requestRemotingApiVar,
-			String routerUrl, String group, boolean debug, boolean cache) {
+	private String buildApiJson(@Nullable String requestApiNs, @Nullable String requestActionNs,
+			@Nullable String requestRemotingApiVar, String routerUrl, @Nullable String group, boolean debug,
+			boolean cache) {
 
 		Configuration configuration = this.configurationService.getConfiguration();
 		String apiNs = requestApiNs != null ? requestApiNs : configuration.getApiNs();
@@ -377,7 +382,7 @@ public class ApiController {
 
 	}
 
-	private void buildRemotingApi(RemotingApi remotingApi, String requestedGroup, boolean cache) {
+	private void buildRemotingApi(RemotingApi remotingApi, @Nullable String requestedGroup, boolean cache) {
 		if (!cache || this.methodInfoCache.isEmpty()) {
 			this.methodInfoCache.populateMethodInfoCache(this.configurationService.getApplicationContext());
 		}
@@ -395,11 +400,11 @@ public class ApiController {
 		}
 	}
 
-	private static boolean isSameGroup(String requestedGroups, String annotationGroups) {
+	private static boolean isSameGroup(@Nullable String requestedGroups, @Nullable String annotationGroups) {
 		if (requestedGroups != null) {
 			if (!requestedGroups.isEmpty() && annotationGroups != null && !annotationGroups.isEmpty()) {
-				for (String requestedGroup : requestedGroups.split(",")) {
-					for (String annotationGroup : annotationGroups.split(",")) {
+				for (String requestedGroup : StringUtils.commaDelimitedListToStringArray(requestedGroups)) {
+					for (String annotationGroup : StringUtils.commaDelimitedListToStringArray(annotationGroups)) {
 						if (ExtDirectSpringUtil.equal(requestedGroup, annotationGroup)) {
 							return true;
 						}
@@ -415,14 +420,14 @@ public class ApiController {
 		return true;
 	}
 
-	private String writeValueAsString(Object obj, boolean indent) {
+	private @Nullable String writeValueAsString(Object obj, boolean indent) {
 		try {
 			if (indent) {
 				return this.objectMapper.writer().withDefaultPrettyPrinter().writeValueAsString(obj);
 			}
 			return this.objectMapper.writeValueAsString(obj);
 		}
-		catch (Exception e) {
+		catch (RuntimeException e) {
 			LogFactory.getLog(JsonHandler.class).info("serialize object to json", e);
 			return null;
 		}

@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -114,12 +115,12 @@ public class RouterControllerSimpleTest {
 
 	@Test
 	public void testResultTrue() {
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method5", Boolean.TRUE, "ralph");
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method5", true, "ralph");
 	}
 
 	@Test
 	public void testResultFalse() {
-		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method5", Boolean.FALSE, "joe");
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderSimple", "method5", false, "joe");
 	}
 
 	@Test
@@ -179,8 +180,8 @@ public class RouterControllerSimpleTest {
 	@SuppressWarnings("unchecked")
 	public void testWithConversion() {
 
-		OffsetDateTime today = OffsetDateTime.now();
-		LocalDate todayLd = LocalDate.now();
+		OffsetDateTime today = OffsetDateTime.now(ZoneId.systemDefault());
+		LocalDate todayLd = LocalDate.now(ZoneId.systemDefault());
 
 		Map<String, Object> resultMap = (Map<String, Object>) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderSimple", "method14", Map.class,

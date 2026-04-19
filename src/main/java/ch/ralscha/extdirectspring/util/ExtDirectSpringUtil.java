@@ -27,6 +27,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 import org.springframework.util.DigestUtils;
@@ -60,7 +61,7 @@ public final class ExtDirectSpringUtil {
 	 * @return true if objects are equal
 	 */
 	public static boolean equal(Object a, Object b) {
-		return a == b || a != null && a.equals(b);
+		return a == b || (a != null && a.equals(b));
 	}
 
 	/**
@@ -73,7 +74,7 @@ public final class ExtDirectSpringUtil {
 			return false;
 		}
 		String contentType = request.getContentType();
-		return contentType != null && contentType.toLowerCase().startsWith("multipart/");
+		return contentType != null && contentType.toLowerCase(Locale.ROOT).startsWith("multipart/");
 	}
 
 	/**
@@ -84,10 +85,10 @@ public final class ExtDirectSpringUtil {
 	 * @param params the parameters
 	 * @return the result of the method invocation
 	 * @throws IllegalArgumentException if there is no bean in the context
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException if the target method is inaccessible
+	 * @throws InvocationTargetException if the target method throws an exception
 	 */
-	public static Object invoke(ApplicationContext context, String beanName, MethodInfo methodInfo,
+	public static @Nullable Object invoke(ApplicationContext context, String beanName, MethodInfo methodInfo,
 			final Object[] params) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		Object bean = context.getBean(beanName);
 
@@ -102,7 +103,7 @@ public final class ExtDirectSpringUtil {
 		return result;
 	}
 
-	public static Object invoke(HttpServletRequest request, HttpServletResponse response, Locale locale,
+	public static @Nullable Object invoke(HttpServletRequest request, HttpServletResponse response, Locale locale,
 			ApplicationContext context, ExtDirectRequest directRequest, ParametersResolver parametersResolver,
 			MethodInfoCache cache) throws Exception {
 
@@ -126,7 +127,7 @@ public final class ExtDirectSpringUtil {
 		return sw.toString();
 	}
 
-	private final static long secondsInAMonth = 30L * 24L * 60L * 60L;
+	private static final long SECONDS_IN_A_MONTH = 30L * 24L * 60L * 60L;
 
 	/**
 	 * Adds Expires, ETag and Cache-Control response headers.
@@ -140,10 +141,10 @@ public final class ExtDirectSpringUtil {
 
 		long seconds;
 		if (month != null) {
-			seconds = month * secondsInAMonth;
+			seconds = month * SECONDS_IN_A_MONTH;
 		}
 		else {
-			seconds = 6L * secondsInAMonth;
+			seconds = 6L * SECONDS_IN_A_MONTH;
 		}
 
 		response.setDateHeader("Expires", System.currentTimeMillis() + seconds * 1000L);
@@ -161,7 +162,7 @@ public final class ExtDirectSpringUtil {
 	 * @param data the response data
 	 * @param contentType the content type of the data (i.e.
 	 * "application/javascript;charset=utf-8")
-	 * @throws IOException
+	 * @throws IOException if writing the response fails
 	 */
 	public static void handleCacheableResponse(HttpServletRequest request, HttpServletResponse response, byte[] data,
 			String contentType) throws IOException {
@@ -189,7 +190,7 @@ public final class ExtDirectSpringUtil {
 	 * for the variable names
 	 * @param ctx The spring applicationcontext
 	 * @return the api configuration
-	 * @throws JsonProcessingException
+	 * @throws JacksonException if serialization fails
 	 */
 	public static String generateApiString(ApplicationContext ctx) throws JacksonException {
 		return generateApiString(ctx, "REMOTING_API", "POLLING_URLS");
@@ -203,7 +204,7 @@ public final class ExtDirectSpringUtil {
 	 * @param pollingApiVarName name of the variable for the polling configuration (e.g.
 	 * POLLING_URLS)
 	 * @return the api configuration
-	 * @throws JsonProcessingException
+	 * @throws JacksonException if serialization fails
 	 */
 	public static String generateApiString(ApplicationContext ctx, String remotingVarName, String pollingApiVarName)
 			throws JacksonException {

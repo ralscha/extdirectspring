@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -209,7 +210,7 @@ public class RouterControllerFormPostTest {
 		request.param("salary", "12.3");
 		request.param("result", "theResult");
 
-		request.file("fileUpload", "the content of the file".getBytes());
+		request.file("fileUpload", "the content of the file".getBytes(StandardCharsets.UTF_8));
 
 		MvcResult resultMvc = this.mockMvc.perform(request)
 			.andExpect(status().isOk())
@@ -237,7 +238,7 @@ public class RouterControllerFormPostTest {
 		assertThat(result).hasSize(8);
 		assertThat(result).contains(entry("e-mail", null), entry("age", 20), entry("name", "Ralph"),
 				entry("fileName", ""), entry("fileContents", "the content of the file"), entry("firstName", null),
-				entry("success", Boolean.TRUE));
+				entry("success", true));
 		Map<String, Object> error = (Map<String, Object>) result.get("errors");
 		assertThat(error).containsKey("email");
 		assertThat((List<String>) error.get("email")).containsExactly("must not be empty");
@@ -259,7 +260,7 @@ public class RouterControllerFormPostTest {
 		request.param("salary", "12.3");
 		request.param("result", "theResult");
 
-		request.file("fileUpload", "the content of the file".getBytes());
+		request.file("fileUpload", "the content of the file".getBytes(StandardCharsets.UTF_8));
 
 		MvcResult resultMvc = this.mockMvc.perform(request)
 			.andExpect(status().isOk())

@@ -45,11 +45,11 @@ public abstract class EdFormPostResult {
 	public abstract Map<String, Object> result();
 
 	public static EdFormPostResult success() {
-		return ImmutableEdFormPostResult.builder().putResult(SUCCESS_PROPERTY, Boolean.TRUE).build();
+		return ImmutableEdFormPostResult.builder().putResult(SUCCESS_PROPERTY, true).build();
 	}
 
 	public static EdFormPostResult success(Map<String, Object> result) {
-		return ImmutableEdFormPostResult.builder().result(result).putResult(SUCCESS_PROPERTY, Boolean.TRUE).build();
+		return ImmutableEdFormPostResult.builder().result(result).putResult(SUCCESS_PROPERTY, true).build();
 	}
 
 	public static EdFormPostResult create(BindingResult bindingResult) {
@@ -90,10 +90,9 @@ public abstract class EdFormPostResult {
 		 * Extracts errors from the bindingResult and inserts them into the error
 		 * properties. Sets the property success to false if there are errors. Sets the
 		 * property success to true if there are no errors.
-		 * @param builder
-		 * @param locale
-		 * @param messageSource
-		 * @param bindingResult
+		 * @param locale locale for internationalization
+		 * @param messageSource source of validation code and message
+		 * @param bindingResult errors list to resolve
 		 */
 		public Builder addErrors(Locale locale, MessageSource messageSource, BindingResult bindingResult) {
 			if (bindingResult != null && bindingResult.hasFieldErrors()) {
@@ -114,15 +113,15 @@ public abstract class EdFormPostResult {
 					fieldErrors.add(message);
 				}
 				if (errorMap.isEmpty()) {
-					putResult(SUCCESS_PROPERTY, Boolean.TRUE);
+					putResult(SUCCESS_PROPERTY, true);
 				}
 				else {
 					putResult(ERRORS_PROPERTY, errorMap);
-					putResult(SUCCESS_PROPERTY, Boolean.FALSE);
+					putResult(SUCCESS_PROPERTY, false);
 				}
 			}
 			else {
-				putResult(SUCCESS_PROPERTY, Boolean.TRUE);
+				putResult(SUCCESS_PROPERTY, true);
 			}
 
 			return this;
@@ -139,7 +138,7 @@ public abstract class EdFormPostResult {
 		 * @param locale locale for internationalization
 		 * @param messageSource source of validation code and message
 		 * @param bindingResult Errors list to resolve
-		 * @return this {@link #ExtDirectFormPostResult} for easy chaining
+		 * @return this {@link Builder} for easy chaining
 		 */
 		public Builder addErrorsResolveCode(Locale locale, MessageSource messageSource, BindingResult bindingResult) {
 			if (bindingResult != null && bindingResult.hasFieldErrors()) {
@@ -153,10 +152,11 @@ public abstract class EdFormPostResult {
 								message = messageSource.getMessage(code, fieldError.getArguments(), loc);
 							}
 							catch (Exception e) {
-								/**
+								/*
 								 * expected if code/message doesn't exist, default
 								 * behavior to counter that, set to your message bundle,
-								 * {@link org.springframework.context.support.AbstractMessageSource#setUseCodeAsDefaultMessage(true)}
+								 * {@link org.springframework.context.support.
+								 * AbstractMessageSource#setUseCodeAsDefaultMessage(true)}
 								 * beware of side effects
 								 */
 							}
@@ -175,15 +175,15 @@ public abstract class EdFormPostResult {
 					fieldErrors.add(message);
 				}
 				if (errorMap.isEmpty()) {
-					putResult(SUCCESS_PROPERTY, Boolean.TRUE);
+					putResult(SUCCESS_PROPERTY, true);
 				}
 				else {
 					putResult(ERRORS_PROPERTY, errorMap);
-					putResult(SUCCESS_PROPERTY, Boolean.FALSE);
+					putResult(SUCCESS_PROPERTY, false);
 				}
 			}
 			else {
-				putResult(SUCCESS_PROPERTY, Boolean.TRUE);
+				putResult(SUCCESS_PROPERTY, true);
 			}
 			return this;
 		}
@@ -194,14 +194,16 @@ public abstract class EdFormPostResult {
 		}
 
 		public Builder fail() {
-			putResult(SUCCESS_PROPERTY, Boolean.FALSE);
+			putResult(SUCCESS_PROPERTY, false);
 			return this;
 		}
 
 		public Builder success() {
-			putResult(SUCCESS_PROPERTY, Boolean.TRUE);
+			putResult(SUCCESS_PROPERTY, true);
 			return this;
 		}
+
+		private final Map<String, List<String>> helper = new LinkedHashMap<>();
 
 		/**
 		 * Adds one error message to a specific field. Does not overwrite already existing
@@ -221,8 +223,6 @@ public abstract class EdFormPostResult {
 		 * @param field the name of the field
 		 * @param errors a collection of error messages
 		 */
-		private final Map<String, List<String>> helper = new LinkedHashMap<>();
-
 		public Builder addErrors(String field, List<String> errors) {
 			Assert.notNull(field, "field must not be null");
 			Assert.notNull(errors, "field must not be null");
@@ -235,7 +235,7 @@ public abstract class EdFormPostResult {
 			fieldErrors.addAll(errors);
 
 			putResult(ERRORS_PROPERTY, this.helper);
-			putResult(SUCCESS_PROPERTY, Boolean.FALSE);
+			putResult(SUCCESS_PROPERTY, false);
 
 			return this;
 		}

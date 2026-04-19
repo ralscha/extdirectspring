@@ -16,6 +16,7 @@
 package ch.ralscha.extdirectspring.provider;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import jakarta.validation.Valid;
 
@@ -39,7 +40,7 @@ public class UploadService {
 		ExtDirectFormPostResult resp = new ExtDirectFormPostResult(result, false);
 
 		if (file != null && !file.isEmpty()) {
-			resp.addResultProperty("fileContents", new String(file.getBytes()));
+			resp.addResultProperty("fileContents", new String(file.getBytes(), StandardCharsets.UTF_8));
 			resp.addResultProperty("fileName", file.getOriginalFilename());
 		}
 
@@ -61,7 +62,7 @@ public class UploadService {
 		e.addError(result);
 
 		if (file != null && !file.isEmpty()) {
-			e.putResult("fileContents", new String(file.getBytes()));
+			e.putResult("fileContents", new String(file.getBytes(), StandardCharsets.UTF_8));
 			e.putResult("fileName", file.getOriginalFilename());
 		}
 

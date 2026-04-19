@@ -69,9 +69,9 @@ public class ExtDirectFormPostResult {
 	 * Extracts errors from the bindingResult and inserts them into the error properties.
 	 * Sets the property success to false if there are errors. Sets the property success
 	 * to true if there are no errors.
-	 * @param locale
-	 * @param messageSource
-	 * @param bindingResult
+	 * @param locale locale for internationalization
+	 * @param messageSource source of validation code and message
+	 * @param bindingResult errors list to resolve
 	 */
 	private void addErrors(Locale locale, MessageSource messageSource, BindingResult bindingResult) {
 		if (bindingResult != null && bindingResult.hasFieldErrors()) {
@@ -92,11 +92,11 @@ public class ExtDirectFormPostResult {
 				fieldErrors.add(message);
 			}
 			if (errorMap.isEmpty()) {
-				addResultProperty(SUCCESS_PROPERTY, Boolean.TRUE);
+				addResultProperty(SUCCESS_PROPERTY, true);
 			}
 			else {
 				addResultProperty(ERRORS_PROPERTY, errorMap);
-				addResultProperty(SUCCESS_PROPERTY, Boolean.FALSE);
+				addResultProperty(SUCCESS_PROPERTY, false);
 			}
 		}
 		else {
@@ -130,11 +130,11 @@ public class ExtDirectFormPostResult {
 							message = messageSource.getMessage(code, fieldError.getArguments(), loc);
 						}
 						catch (Exception e) {
-							/**
+							/*
 							 * expected if code/message doesn't exist, default behavior to
-							 * counter that, set to your message bundle,
-							 * {@link org.springframework.context.support.AbstractMessageSource#setUseCodeAsDefaultMessage(true)}
-							 * beware of side effects
+							 * counter that, set to your message bundle, {@link
+							 * org.springframework.context.support.AbstractMessageSource#
+							 * setUseCodeAsDefaultMessage(true)} beware of side effects
 							 */
 						}
 						if (message != null && !message.equals(code)) {
@@ -152,11 +152,11 @@ public class ExtDirectFormPostResult {
 				fieldErrors.add(message);
 			}
 			if (errorMap.isEmpty()) {
-				addResultProperty(SUCCESS_PROPERTY, Boolean.TRUE);
+				addResultProperty(SUCCESS_PROPERTY, true);
 			}
 			else {
 				addResultProperty(ERRORS_PROPERTY, errorMap);
-				addResultProperty(SUCCESS_PROPERTY, Boolean.FALSE);
+				addResultProperty(SUCCESS_PROPERTY, false);
 			}
 		}
 		else {
@@ -177,7 +177,7 @@ public class ExtDirectFormPostResult {
 
 		addErrors(field, Collections.singletonList(error));
 
-		addResultProperty(SUCCESS_PROPERTY, Boolean.FALSE);
+		addResultProperty(SUCCESS_PROPERTY, false);
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class ExtDirectFormPostResult {
 		}
 		fieldErrors.addAll(errors);
 
-		addResultProperty(SUCCESS_PROPERTY, Boolean.FALSE);
+		addResultProperty(SUCCESS_PROPERTY, false);
 	}
 
 	public void addResultProperty(String key, Object value) {

@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.util;
 import java.io.InputStream;
 
 import org.apache.commons.logging.LogFactory;
+import org.jspecify.annotations.Nullable;
 import org.springframework.util.Assert;
 
 import tools.jackson.core.type.TypeReference;
@@ -52,6 +53,7 @@ public class JsonHandler {
 	}
 
 	/**
+	 * Returns the currently assigned {@link ObjectMapper}.
 	 * @return the currently assigned {@link ObjectMapper}
 	 */
 	public ObjectMapper getMapper() {
@@ -64,7 +66,7 @@ public class JsonHandler {
 	 * @param obj the source object
 	 * @return obj JSON string, <code>null</code> if an exception occurred
 	 */
-	public String writeValueAsString(Object obj) {
+	public @Nullable String writeValueAsString(Object obj) {
 		return writeValueAsString(obj, false);
 	}
 
@@ -76,14 +78,14 @@ public class JsonHandler {
 	 * written on one line
 	 * @return obj JSON string, <code>null</code> if an exception occurred
 	 */
-	public String writeValueAsString(Object obj, boolean indent) {
+	public @Nullable String writeValueAsString(Object obj, boolean indent) {
 		try {
 			if (indent) {
 				return this.mapper.writer().withDefaultPrettyPrinter().writeValueAsString(obj);
 			}
 			return this.mapper.writeValueAsString(obj);
 		}
-		catch (Exception e) {
+		catch (RuntimeException e) {
 			LogFactory.getLog(JsonHandler.class).info("serialize object to json", e);
 			return null;
 		}
@@ -98,11 +100,11 @@ public class JsonHandler {
 	 * {@link tools.jackson.core.type.TypeReference}
 	 * @return the created object, null if there was an exception
 	 */
-	public <T> T readValue(String json, TypeReference<T> typeReference) {
+	public <T> @Nullable T readValue(String json, TypeReference<T> typeReference) {
 		try {
 			return (T) this.mapper.readValue(json, typeReference);
 		}
-		catch (Exception e) {
+		catch (RuntimeException e) {
 			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
 			return null;
 		}
@@ -116,11 +118,11 @@ public class JsonHandler {
 	 * @param clazz class of object to create
 	 * @return the converted object, null if there is an exception
 	 */
-	public <T> T readValue(String json, Class<T> clazz) {
+	public <T> @Nullable T readValue(String json, Class<T> clazz) {
 		try {
 			return this.mapper.readValue(json, clazz);
 		}
-		catch (Exception e) {
+		catch (RuntimeException e) {
 			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
 			return null;
 		}
@@ -133,11 +135,11 @@ public class JsonHandler {
 	 * @param clazz class of object to create
 	 * @return the converted object, null if there is an exception
 	 */
-	public Object readValue(InputStream is, Class<Object> clazz) {
+	public @Nullable Object readValue(InputStream is, Class<Object> clazz) {
 		try {
 			return this.mapper.readValue(is, clazz);
 		}
-		catch (Exception e) {
+		catch (RuntimeException e) {
 			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);
 			return null;
 		}
@@ -159,6 +161,7 @@ public class JsonHandler {
 	 * @param toValueTypeRef the type of the target
 	 * @return the converted object
 	 */
+	@SuppressWarnings("TypeParameterUnusedInFormals")
 	public <T> T convertValue(Object object, JavaType toValueTypeRef) {
 		return this.mapper.convertValue(object, toValueTypeRef);
 	}

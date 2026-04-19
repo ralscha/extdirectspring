@@ -17,6 +17,8 @@ package ch.ralscha.extdirectspring.controller;
 
 import java.util.Collections;
 
+import org.jspecify.annotations.Nullable;
+
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.BaseResponse;
 import ch.ralscha.extdirectspring.util.ExtDirectSpringUtil;
@@ -32,7 +34,7 @@ public class DefaultRouterExceptionHandler implements RouterExceptionHandler {
 	}
 
 	@Override
-	public Object handleException(MethodInfo methodInfo, BaseResponse response, Exception e,
+	public @Nullable Object handleException(MethodInfo methodInfo, BaseResponse response, Exception e,
 			HttpServletRequest request) {
 		Throwable cause;
 		if (e.getCause() != null) {

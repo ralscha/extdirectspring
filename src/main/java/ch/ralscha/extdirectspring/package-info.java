@@ -13,16 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.ralscha.extdirectspring.controller;
+@NullMarked
+package ch.ralscha.extdirectspring;
 
-import org.jspecify.annotations.Nullable;
-
-import ch.ralscha.extdirectspring.bean.BaseResponse;
-import ch.ralscha.extdirectspring.util.MethodInfo;
-import jakarta.servlet.http.HttpServletRequest;
-
-public interface RouterExceptionHandler {
-
-	@Nullable Object handleException(MethodInfo methodInfo, BaseResponse response, Exception e, HttpServletRequest request);
-
-}
+import org.jspecify.annotations.NullMarked;

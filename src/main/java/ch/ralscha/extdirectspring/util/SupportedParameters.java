@@ -18,6 +18,8 @@ package ch.ralscha.extdirectspring.util;
 import java.security.Principal;
 import java.util.Locale;
 
+import org.jspecify.annotations.Nullable;
+
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -40,6 +42,7 @@ enum SupportedParameters {
 	}
 
 	/**
+	 * Returns the supported class.
 	 * @return the enclosing class
 	 */
 	public Class<?> getSupportedClass() {
@@ -48,7 +51,7 @@ enum SupportedParameters {
 
 	/**
 	 * Checks if the class is a supported parameter type.
-	 * @param clazz
+	 * @param clazz the class to inspect
 	 * @return true if is supported, else false
 	 */
 	public static boolean isSupported(Class<?> clazz) {
@@ -62,8 +65,8 @@ enum SupportedParameters {
 		return false;
 	}
 
-	public static Object resolveParameter(Class<?> parameterType, HttpServletRequest request,
-			HttpServletResponse response, Locale locale, ExtDirectRequest extDirectRequest) {
+	public static @Nullable Object resolveParameter(Class<?> parameterType, HttpServletRequest request,
+			HttpServletResponse response, Locale locale, @Nullable ExtDirectRequest extDirectRequest) {
 
 		if (SERVLET_REQUEST.getSupportedClass().isAssignableFrom(parameterType)) {
 			return request;

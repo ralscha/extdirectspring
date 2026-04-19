@@ -15,22 +15,6 @@
  */
 package ch.ralscha.extdirectspring.controller;
 
-/**
- * Copyright 2010-2012 Ralph Schaer <ralphschaer@gmail.com>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
@@ -157,7 +141,7 @@ public class RouterControllerFormLoadTest {
 	public void testResult() {
 		Map<String, Object> data = new HashMap<>();
 		data.put("data", "one");
-		data.put("success", Boolean.TRUE);
+		data.put("success", true);
 		ExtDirectFormLoadResult wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderFormLoad", "method7", ExtDirectFormLoadResult.class, data);
 		assertThat(wrapper.isSuccess()).isTrue();
@@ -165,7 +149,7 @@ public class RouterControllerFormLoadTest {
 
 		data = new HashMap<>();
 		data.put("data", "two");
-		data.put("success", Boolean.FALSE);
+		data.put("success", false);
 		wrapper = (ExtDirectFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderFormLoad",
 				"method7", ExtDirectFormLoadResult.class, data);
 		assertThat(wrapper.isSuccess()).isFalse();
@@ -202,7 +186,7 @@ public class RouterControllerFormLoadTest {
 	public void testResultEd() {
 		Map<String, Object> data = new HashMap<>();
 		data.put("data", "one");
-		data.put("success", Boolean.TRUE);
+		data.put("success", true);
 		EdFormLoadResult wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc,
 				"remoteProviderFormLoad", "method7Ed", EdFormLoadResult.class, data);
 		assertThat(wrapper.success()).isTrue();
@@ -210,7 +194,7 @@ public class RouterControllerFormLoadTest {
 
 		data = new HashMap<>();
 		data.put("data", "two");
-		data.put("success", Boolean.FALSE);
+		data.put("success", false);
 		wrapper = (EdFormLoadResult) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderFormLoad", "method7Ed",
 				EdFormLoadResult.class, data);
 		assertThat(wrapper.success()).isFalse();

@@ -121,6 +121,7 @@ public class ExtDirectStoreResult<T> extends JsonViewHint {
 	}
 
 	/**
+	 * Returns the message.
 	 * @return the message
 	 */
 	public String getMessage() {

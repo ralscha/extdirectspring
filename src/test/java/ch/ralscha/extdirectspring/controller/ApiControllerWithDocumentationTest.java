@@ -68,7 +68,7 @@ public class ApiControllerWithDocumentationTest {
 
 		Configuration config = new Configuration();
 		config.setTimeout(15000);
-		config.setEnableBuffer(Boolean.FALSE);
+		config.setEnableBuffer(false);
 		config.setMaxRetries(5);
 		config.setStreamResponse(true);
 		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
@@ -78,11 +78,10 @@ public class ApiControllerWithDocumentationTest {
 	}
 
 	/**
-	 * to test the following need to activate Feature 'ALLOW_COMMENTS' for jackson parser
+	 * Tests comment handling in generated documentation output.
 	 * <p>
-	 * typical error is tools.jackson.core.JsonParseException: Unexpected character ('/'
-	 * (code 47)): maybe a (non-standard) comment?
-	 * @throws Exception
+	 * This requires the Jackson parser feature that allows comments; otherwise parsing
+	 * fails with a {@code JsonParseException} on the first {@code /} character.
 	 */
 	@Test
 	public void testDoc1() throws Exception {

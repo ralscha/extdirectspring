@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -432,8 +433,7 @@ public class RouterControllerStoreEdTest {
 		readRequest = new HashMap<>();
 		readRequest.put("query", "name");
 
-		storeResponse = (EdStoreResult<?>) ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderStoreRead",
-				"method5", null, null, readRequest);
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderStoreRead", "method5", null, null, readRequest);
 	}
 
 	@Test
@@ -457,7 +457,7 @@ public class RouterControllerStoreEdTest {
 
 	@Test
 	public void testWithAdditionalParametersAndConversion() {
-		OffsetDateTime today = OffsetDateTime.now();
+		OffsetDateTime today = OffsetDateTime.now(ZoneId.systemDefault());
 		Map<String, Object> readRequest = new HashMap<>();
 		readRequest.put("endDate", DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX").format(today));
 

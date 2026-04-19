@@ -75,7 +75,7 @@ public class RouterControllerFormPostJsonTest {
 	@Test
 	public void testCallFormPostMethod() throws Exception {
 
-		FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal(12.3), "theResult");
+		FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal("12.3"), "theResult");
 
 		// Request Params are sent as part of the json content payload
 		formInfo.set("p1", 1000);
@@ -107,15 +107,15 @@ public class RouterControllerFormPostJsonTest {
 		@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
 		assertThat(result).hasSize(6)
-			.contains(entry("name", "RALPH"), entry("age", 30), entry("admin", Boolean.FALSE), entry("salary", 1012.3),
-					entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
+			.contains(entry("name", "RALPH"), entry("age", 30), entry("admin", false), entry("salary", 1012.3),
+					entry("result", "theResultRESULT"), entry("success", true));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testCallFormPostMethodError() throws Exception {
 
-		FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal(12.3), "theResult");
+		FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal("12.3"), "theResult");
 
 		MvcResult resultMvc = null;
 		try {
@@ -140,7 +140,7 @@ public class RouterControllerFormPostJsonTest {
 		assertThat(edsResponse.getType()).isEqualTo("rpc");
 
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
-		assertThat(result).hasSize(2).contains(entry("success", Boolean.FALSE));
+		assertThat(result).hasSize(2).contains(entry("success", false));
 		assertThat(result).hasSize(2).containsKey("errors");
 		Map age = (Map) result.get("errors");
 		assertThat(age).hasSize(1).containsKey("age");
@@ -165,7 +165,7 @@ public class RouterControllerFormPostJsonTest {
 	@Test
 	public void testCallFormPostMethodEd() throws Exception {
 
-		FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal(12.3), "theResult");
+		FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal("12.3"), "theResult");
 
 		// Request Params are sent as part of the json content payload
 		formInfo.set("p1", 1000);
@@ -197,15 +197,15 @@ public class RouterControllerFormPostJsonTest {
 		@SuppressWarnings("unchecked")
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
 		assertThat(result).hasSize(6)
-			.contains(entry("name", "RALPH"), entry("age", 30), entry("admin", Boolean.FALSE), entry("salary", 1012.3),
-					entry("result", "theResultRESULT"), entry("success", Boolean.TRUE));
+			.contains(entry("name", "RALPH"), entry("age", 30), entry("admin", false), entry("salary", 1012.3),
+					entry("result", "theResultRESULT"), entry("success", true));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Test
 	public void testCallFormPostMethodErrorEd() throws Exception {
 
-		FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal(12.3), "theResult");
+		FormInfo formInfo = new FormInfo("Ralph", 20, true, new BigDecimal("12.3"), "theResult");
 
 		MvcResult resultMvc = null;
 		try {
@@ -230,7 +230,7 @@ public class RouterControllerFormPostJsonTest {
 		assertThat(edsResponse.getType()).isEqualTo("rpc");
 
 		Map<String, Object> result = (Map<String, Object>) edsResponse.getResult();
-		assertThat(result).hasSize(2).contains(entry("success", Boolean.FALSE));
+		assertThat(result).hasSize(2).contains(entry("success", false));
 		assertThat(result).hasSize(2).containsKey("errors");
 		Map age = (Map) result.get("errors");
 		assertThat(age).hasSize(1).containsKey("age");

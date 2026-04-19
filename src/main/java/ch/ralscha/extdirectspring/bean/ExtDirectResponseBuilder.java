@@ -121,7 +121,7 @@ public class ExtDirectResponseBuilder {
 	/**
 	 * Adds an "errors" property in the response if there are any errors in the
 	 * bindingResult. Sets the success flag to false if there are errors.
-	 * @param bindingResult
+	 * @param bindingResult binding errors to add
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder addErrors(BindingResult bindingResult) {
@@ -132,9 +132,9 @@ public class ExtDirectResponseBuilder {
 	/**
 	 * Adds an "errors" property in the response if there are any errors in the
 	 * bindingResult. Sets the success flag to false if there are errors.
-	 * @param locale
-	 * @param messageSource
-	 * @param bindingResult
+	 * @param locale locale for internationalization
+	 * @param messageSource source of validation code and message
+	 * @param bindingResult binding errors to add
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder addErrors(Locale locale, MessageSource messageSource,
@@ -157,11 +157,11 @@ public class ExtDirectResponseBuilder {
 				fieldErrors.add(message);
 			}
 			if (errorMap.isEmpty()) {
-				addResultProperty("success", Boolean.TRUE);
+				addResultProperty("success", true);
 			}
 			else {
 				addResultProperty("errors", errorMap);
-				addResultProperty("success", Boolean.FALSE);
+				addResultProperty("success", false);
 			}
 		}
 		return this;
@@ -183,7 +183,7 @@ public class ExtDirectResponseBuilder {
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder successful() {
-		this.result.put("success", Boolean.TRUE);
+		this.result.put("success", true);
 		return this;
 	}
 
@@ -192,7 +192,7 @@ public class ExtDirectResponseBuilder {
 	 * @return this instance
 	 */
 	public ExtDirectResponseBuilder unsuccessful() {
-		this.result.put("success", Boolean.FALSE);
+		this.result.put("success", false);
 		return this;
 	}
 
@@ -208,7 +208,7 @@ public class ExtDirectResponseBuilder {
 
 	/**
 	 * Sets a specific JSON View (filter) that Jackson uses to serialize the response.
-	 * @param jsonView
+	 * @param jsonView the JSON view to use during serialization
 	 */
 	public void setJsonView(Class<?> jsonView) {
 		this.jsonView = jsonView;

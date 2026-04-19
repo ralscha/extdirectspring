@@ -15,6 +15,7 @@
  */
 package ch.ralscha.extdirectspring.bean;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -100,14 +101,14 @@ public final class ImmutableEdStoreResult<T> extends EdStoreResult<T> {
 		if (!(obj instanceof ImmutableEdStoreResult<?> other)) {
 			return false;
 		}
-		return this.records.equals(other.records) && Objects.equals(this.total, other.total)
-				&& Objects.equals(this.success, other.success) && Objects.equals(this.metaData, other.metaData)
-				&& Objects.equals(this.message, other.message);
+		return new ArrayList<>(this.records).equals(new ArrayList<>(other.records))
+				&& Objects.equals(this.total, other.total) && Objects.equals(this.success, other.success)
+				&& Objects.equals(this.metaData, other.metaData) && Objects.equals(this.message, other.message);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(this.records, this.total, this.success, this.metaData, this.message);
+		return Objects.hash(new ArrayList<>(this.records), this.total, this.success, this.metaData, this.message);
 	}
 
 	@Override

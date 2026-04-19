@@ -20,6 +20,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.nio.charset.StandardCharsets;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -64,7 +66,7 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 		request.param("extType", "rpc");
 		request.param("result", "theResult");
 
-		request.file("fileUpload", "the content of the file".getBytes());
+		request.file("fileUpload", "the content of the file".getBytes(StandardCharsets.UTF_8));
 
 		MvcResult resultMvc = this.mockMvc.perform(request)
 			.andExpect(status().isOk())
@@ -100,7 +102,7 @@ public class RouterControllerFormPostCrossDomainUploadTest {
 		request.param("extType", "rpc");
 		request.param("result", "theResult");
 
-		request.file("fileUpload", "the content of the file".getBytes());
+		request.file("fileUpload", "the content of the file".getBytes(StandardCharsets.UTF_8));
 
 		MvcResult resultMvc = this.mockMvc.perform(request)
 			.andExpect(status().isOk())

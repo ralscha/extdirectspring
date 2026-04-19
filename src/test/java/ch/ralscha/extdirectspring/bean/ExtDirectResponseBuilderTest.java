@@ -18,6 +18,7 @@ package ch.ralscha.extdirectspring.bean;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 
 import ch.ralscha.extdirectspring.controller.ControllerUtil;
@@ -68,7 +70,7 @@ public class ExtDirectResponseBuilderTest {
 		Map<String, Object> data = (Map<String, Object>) response.getResult();
 		assertThat(data).hasSize(2);
 		assertThat(data.get("additionalProperty")).isEqualTo(11);
-		assertThat(data.get("success")).isEqualTo(Boolean.TRUE);
+		assertThat(data.get("success")).isEqualTo(true);
 
 		servletResponse = new MockHttpServletResponse();
 		ExtDirectResponseBuilder.create(request, servletResponse)
@@ -79,7 +81,7 @@ public class ExtDirectResponseBuilderTest {
 		data = (Map<String, Object>) response.getResult();
 		assertThat(data).hasSize(2);
 		assertThat(data.get("additionalProperty")).isEqualTo(9);
-		assertThat(data.get("success")).isEqualTo(Boolean.FALSE);
+		assertThat(data.get("success")).isEqualTo(false);
 	}
 
 	@Test
@@ -95,13 +97,13 @@ public class ExtDirectResponseBuilderTest {
 
 		MockHttpServletResponse servletResponse = new MockHttpServletResponse();
 		ExtDirectResponseBuilder.create(request, servletResponse)
-			.addResultProperty("additionalProperty", Boolean.FALSE)
+			.addResultProperty("additionalProperty", false)
 			.addResultProperty("text", "a lot of &quot;text&quot;")
 			.buildAndWrite();
 
 		assertThat(servletResponse.getContentType()).isEqualTo("text/html;charset=UTF-8");
 		String content = servletResponse.getContentAsString();
-		assertThat(servletResponse.getContentLength()).isEqualTo(content.getBytes("UTF-8").length);
+		assertThat(servletResponse.getContentLength()).isEqualTo(content.getBytes(StandardCharsets.UTF_8).length);
 
 		assertThat(content).startsWith("<html><body><textarea>");
 		assertThat(content).endsWith("</textarea></body></html>");
@@ -111,7 +113,9 @@ public class ExtDirectResponseBuilderTest {
 		json = json.replace("\\&quot;", "\'");
 		ObjectMapper mapper = new ObjectMapper();
 
-		Map<String, Object> header = mapper.readValue(json, Map.class);
+		Map<String, Object> header = mapper.readValue(json, new TypeReference<Map<String, Object>>() {
+			// nothing here
+		});
 
 		assertThat(header.get("action")).isEqualTo("action");
 		assertThat(header.get("method")).isEqualTo("method");
@@ -123,7 +127,7 @@ public class ExtDirectResponseBuilderTest {
 		assertThat(result).hasSize(3);
 		assertThat((Boolean) result.get("success")).isTrue();
 		assertThat(result.get("text")).isEqualTo("a lot of 'text'");
-		assertThat(result.get("additionalProperty")).isEqualTo(Boolean.FALSE);
+		assertThat(result.get("additionalProperty")).isEqualTo(false);
 	}
 
 	@Test

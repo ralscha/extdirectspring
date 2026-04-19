@@ -30,6 +30,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.ConversionService;
@@ -69,14 +70,14 @@ public final class ParametersResolver {
 			"T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication()?.getPrincipal()");
 
 	/** Java 8's java.util.Optional.empty() */
-	private static Object javaUtilOptionalEmpty = null;
+	private static @Nullable Object javaUtilOptionalEmpty = null;
 
 	static {
 		try {
 			Class<?> clazz = ClassUtils.forName("java.util.Optional", ParametersResolver.class.getClassLoader());
 			javaUtilOptionalEmpty = ClassUtils.getMethod(clazz, "empty").invoke(null);
 		}
-		catch (Exception ex) {
+		catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | LinkageError ex) {
 			// Java 8 not available - conversion to Optional not supported then.
 		}
 	}
@@ -86,7 +87,7 @@ public final class ParametersResolver {
 		this.jsonHandler = jsonHandler;
 	}
 
-	public Object[] prepareParameters(HttpServletRequest request, HttpServletResponse response, Locale locale,
+	public @Nullable Object[] prepareParameters(HttpServletRequest request, HttpServletResponse response, Locale locale,
 			MethodInfo methodInfo) {
 		List<ParameterInfo> methodParameters = methodInfo.getParameters();
 		Object[] parameters = null;
@@ -119,14 +120,14 @@ public final class ParametersResolver {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Object[] resolveParameters(HttpServletRequest request, HttpServletResponse response, Locale locale,
+	public @Nullable Object[] resolveParameters(HttpServletRequest request, HttpServletResponse response, Locale locale,
 			ExtDirectRequest directRequest, MethodInfo methodInfo) throws Exception {
 
 		int jsonParamIndex = 0;
-		Map<String, Object> remainingParameters = null;
-		ExtDirectStoreReadRequest extDirectStoreReadRequest = null;
+		@Nullable Map<String, Object> remainingParameters = null;
+		@Nullable ExtDirectStoreReadRequest extDirectStoreReadRequest = null;
 
-		List<Object> directStoreModifyRecords = null;
+		@Nullable List<Object> directStoreModifyRecords = null;
 		Class<?> directStoreEntryClass;
 
 		if (methodInfo.isType(ExtDirectMethodType.STORE_READ) || methodInfo.isType(ExtDirectMethodType.FORM_LOAD)
@@ -155,8 +156,9 @@ public final class ParametersResolver {
 				if (obj instanceof List) {
 					directStoreModifyRecords = convertObjectEntriesToType((List<Object>) obj, directStoreEntryClass);
 				}
-				else {
-					Map<String, Object> jsonData = (Map<String, Object>) obj;
+				else if (obj instanceof Map<?, ?> rawJsonData) {
+					@SuppressWarnings("unchecked")
+					Map<String, Object> jsonData = (Map<String, Object>) rawJsonData;
 					Object records = jsonData.get("records");
 					if (records != null) {
 						if (records instanceof List) {
@@ -279,8 +281,8 @@ public final class ParametersResolver {
 		return parameters;
 	}
 
-	private Object resolveRequestParam(HttpServletRequest request, Map<String, Object> valueContainer,
-			final ParameterInfo parameterInfo) {
+	private @Nullable Object resolveRequestParam(@Nullable HttpServletRequest request,
+			@Nullable Map<String, Object> valueContainer, final ParameterInfo parameterInfo) {
 
 		if (parameterInfo.getName() != null) {
 			Object value;
@@ -317,7 +319,7 @@ public final class ParametersResolver {
 		return null;
 	}
 
-	private Object resolveRequestHeader(HttpServletRequest request, ParameterInfo parameterInfo) {
+	private @Nullable Object resolveRequestHeader(HttpServletRequest request, ParameterInfo parameterInfo) {
 		String value = request.getHeader(parameterInfo.getName());
 
 		if (value == null) {
@@ -342,7 +344,7 @@ public final class ParametersResolver {
 		return null;
 	}
 
-	private Object resolveCookieValue(HttpServletRequest request, ParameterInfo parameterInfo) {
+	private @Nullable Object resolveCookieValue(HttpServletRequest request, ParameterInfo parameterInfo) {
 
 		Cookie cookieValue = WebUtils.getCookie(request, parameterInfo.getName());
 		String value = cookieValue != null ? UriUtils.decode(cookieValue.getValue(), StandardCharsets.UTF_8)
@@ -366,7 +368,7 @@ public final class ParametersResolver {
 		return null;
 	}
 
-	private Object resolveAuthenticationPrincipal(ParameterInfo parameterInfo) {
+	private @Nullable Object resolveAuthenticationPrincipal(ParameterInfo parameterInfo) {
 		Object principal = this.getPrincipalExpression.getValue();
 
 		if (principal != null && !parameterInfo.getType().isAssignableFrom(principal.getClass())) {
@@ -378,7 +380,7 @@ public final class ParametersResolver {
 		return principal;
 	}
 
-	private Object convertValue(Object value, ParameterInfo methodParameter) {
+	private @Nullable Object convertValue(@Nullable Object value, ParameterInfo methodParameter) {
 		if (value != null) {
 			Class<?> rawType = methodParameter.getType();
 			if (rawType.equals(value.getClass())) {
@@ -553,7 +555,8 @@ public final class ParametersResolver {
 		return remainingParameters;
 	}
 
-	private List<Object> convertObjectEntriesToType(List<Object> records, Class<?> directStoreType) {
+	private @Nullable List<Object> convertObjectEntriesToType(@Nullable List<Object> records,
+			Class<?> directStoreType) {
 		if (records != null) {
 			List<Object> convertedList = new ArrayList<>();
 			for (Object record : records) {

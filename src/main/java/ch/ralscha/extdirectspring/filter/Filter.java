@@ -76,11 +76,11 @@ public class Filter {
 			if (property != null) {
 				// a filter from store.filter, create a Filter depending on the
 				// type of the value
-				if (source instanceof Number) {
-					return new NumericFilter(property, (Number) source, rawComparison, comparisonFromJson);
+				if (source instanceof Number number) {
+					return new NumericFilter(property, number, rawComparison, comparisonFromJson);
 				}
-				if (source instanceof Boolean) {
-					return new BooleanFilter(property, (Boolean) source, rawComparison, comparisonFromJson);
+				if (source instanceof Boolean b) {
+					return new BooleanFilter(property, b, rawComparison, comparisonFromJson);
 				}
 				else if (source instanceof List) {
 					return new ListFilter(property, (List<?>) source, rawComparison, comparisonFromJson);
@@ -103,8 +103,8 @@ public class Filter {
 			return new DateFilter(property, (String) source, rawComparison, comparisonFromJson);
 		}
 		else if ("list".equals(type) || "combo".equals(type)) {
-			if (source instanceof String) {
-				String[] values = ((String) source).split(",");
+			if (source instanceof String string) {
+				String[] values = string.split(",");
 				return new ListFilter(property, Arrays.asList(values), rawComparison, comparisonFromJson);
 			}
 			return new ListFilter(property, (List<String>) source, rawComparison, comparisonFromJson);

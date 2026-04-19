@@ -66,6 +66,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
+	 * Returns the text a user entered into a combobox with queryMode 'remote'.
 	 * @return the text a user entered into a combobox with queryMode 'remote'
 	 */
 	public String getQuery() {
@@ -77,6 +78,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
+	 * Returns the number of rows the DirectStore requests for paging.
 	 * @return the number of rows the DirectStore requests for paging
 	 */
 	public Integer getLimit() {
@@ -88,8 +90,9 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
+	 * Returns the start row for a paging request.
 	 * @return the start row from where to send records back for a paging request. start =
-	 * {@link #getLimit()} * ( {@link #getPage()}-1)
+	 * {@link #getLimit()} * ({@link #getPage()} - 1)
 	 */
 	public Integer getStart() {
 		return this.start;
@@ -100,6 +103,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
+	 * Returns the sorting order.
 	 * @return sorting order. "ASC" or "DESC".<br>
 	 * Ext JS 4.x and Touch 2 can send more than one sorters. Use {@link #getSorters()}
 	 * instead.
@@ -115,6 +119,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
+	 * Returns whether the sorting order is ascending.
 	 * @return true if sorting order is ascending.<br>
 	 * Ext JS 4.x and Touch 2 can send more than one sorters. Use {@link #getSorters()}
 	 * instead.
@@ -125,6 +130,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
+	 * Returns whether the sorting order is descending.
 	 * @return true if sorting order is descending.<br>
 	 * Ext JS 4.x and Touch 2 can send more than one sorters. Use {@link #getSorters()}
 	 * instead.
@@ -135,6 +141,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
+	 * Returns the field or property on which the sort should be applied.
 	 * @return the field/property on which the sort should be applied.<br>
 	 * Ext JS 4.x and Touch 2 can send more than one sorters. Use {@link #getSorters()}
 	 * instead.
@@ -148,6 +155,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
+	 * Returns the field or property name on which the grouping should occur.
 	 * @return the field/property name on which the grouping should occur.<br>
 	 * Ext JS 4.x and Touch 2 can send more than one group info. Use {@link #getGroups()}
 	 * instead.
@@ -161,6 +169,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
+	 * Returns the sorting order for a grouping request.
 	 * @return sorting order for a grouping request. "ASC" or "DESC".<br>
 	 * Ext JS 4.x and Touch 2 can send more than one group info. Use {@link #getGroups()}
 	 * instead.
@@ -174,6 +183,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
+	 * Returns whether the grouping sort order is ascending.
 	 * @return true if grouping sorting order is ascending.<br>
 	 * Ext JS 4.x and Touch 2 can send more than one group info. Use {@link #getGroups()}
 	 * instead.
@@ -184,6 +194,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
+	 * Returns whether the grouping sort order is descending.
 	 * @return true if grouping sorting order is descending.<br>
 	 * Ext JS 4.x and Touch 2 can send more than one group info. Use {@link #getGroups()}
 	 * instead.
@@ -194,6 +205,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
+	 * Returns the configured filters.
 	 * @return collection of filter implementations
 	 * @see BooleanFilter
 	 * @see DateFilter
@@ -210,7 +222,7 @@ public class ExtDirectStoreReadRequest {
 	 * @param field name of the field
 	 * @return the first filter for the field. Null if not filter exists.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "TypeParameterUnusedInFormals" })
 	public <T extends Filter> T getFirstFilterForField(String field) {
 		for (Filter filter : this.filters) {
 			if (filter.getField().equals(field)) {
@@ -247,6 +259,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
+	 * Returns the page number of a paging request.
 	 * @return page number of a paging request. page = ({@link #getStart()} /
 	 * {@link #getLimit()}) + 1
 	 */
@@ -258,6 +271,10 @@ public class ExtDirectStoreReadRequest {
 		this.page = page;
 	}
 
+	/**
+	 * Returns the configured sorters.
+	 * @return the configured sorters
+	 */
 	public List<SortInfo> getSorters() {
 		return Collections.unmodifiableList(this.sorters);
 	}
@@ -271,6 +288,10 @@ public class ExtDirectStoreReadRequest {
 		}
 	}
 
+	/**
+	 * Returns the configured groups.
+	 * @return the configured groups
+	 */
 	public List<GroupInfo> getGroups() {
 		return Collections.unmodifiableList(this.groups);
 	}
@@ -285,6 +306,7 @@ public class ExtDirectStoreReadRequest {
 	}
 
 	/**
+	 * Returns a map with all keys and values from extraParams.
 	 * @return a map with all the keys and values from <code>extraParams</code>
 	 */
 	public Map<String, Object> getParams() {

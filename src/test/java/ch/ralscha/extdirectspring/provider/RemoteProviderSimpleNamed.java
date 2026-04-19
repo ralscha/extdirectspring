@@ -57,8 +57,8 @@ public class RemoteProviderSimpleNamed {
 
 	@NamedEdsMethod
 	public String nonStrictMethod1(Map<String, Object> parameters) {
-		return String.format("nonStrictMethod1() called-%d-%.3f-%s", parameters.get("i"), parameters.get("d"),
-				parameters.get("s"));
+		return String.format("nonStrictMethod1() called-%d-%.3f-%s", ((Number) parameters.get("i")).longValue(),
+				((Number) parameters.get("d")).doubleValue(), parameters.get("s"));
 	}
 
 	@NamedEdsMethod
@@ -70,14 +70,15 @@ public class RemoteProviderSimpleNamed {
 		assertThat(session).isNotNull();
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
-		return String.format("nonStrictMethod2() called-%d-%.3f-%s", parameters.get("i"), parameters.get("d"),
-				parameters.get("s"));
+		return String.format("nonStrictMethod2() called-%d-%.3f-%s", ((Number) parameters.get("i")).longValue(),
+				((Number) parameters.get("d")).doubleValue(), parameters.get("s"));
 	}
 
 	@NamedEdsMethod
 	public String nonStrictMethod3(@CookieValue("aSimpleCookie") String cookie, Map<String, Object> parameters,
 			@RequestHeader("aSimpleHeader") String header) {
-		return String.format("nonStrictMethod3() called-%d-%s-%s", parameters.get("i"), cookie, header);
+		return String.format("nonStrictMethod3() called-%d-%s-%s", ((Number) parameters.get("i")).longValue(), cookie,
+				header);
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.SIMPLE_NAMED, group = "named")
@@ -407,10 +408,9 @@ public class RemoteProviderSimpleNamed {
 			if (this == obj) {
 				return true;
 			}
-			if (obj == null || getClass() != obj.getClass()) {
+			if (!(obj instanceof ResultObject other)) {
 				return false;
 			}
-			ResultObject other = (ResultObject) obj;
 			if (!Objects.equals(this.active, other.active) || !Objects.equals(this.age, other.age)
 					|| !Objects.equals(this.name, other.name)) {
 				return false;

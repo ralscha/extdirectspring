@@ -131,7 +131,7 @@ public class Action {
 		return this.batched;
 	}
 
-	class Metadata {
+	static class Metadata {
 
 		@SuppressWarnings("hiding")
 		private final List<String> params;

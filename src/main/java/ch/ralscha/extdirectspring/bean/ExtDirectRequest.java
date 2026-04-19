@@ -35,6 +35,7 @@ public class ExtDirectRequest {
 	private Map<String, Object> metadata;
 
 	/**
+	 * Returns the name of the spring managed bean.
 	 * @return name of the spring managed bean
 	 */
 	public String getAction() {
@@ -46,6 +47,7 @@ public class ExtDirectRequest {
 	}
 
 	/**
+	 * Returns the payload of the request.
 	 * @return payload of the request
 	 */
 	public Object getData() {
@@ -57,6 +59,7 @@ public class ExtDirectRequest {
 	}
 
 	/**
+	 * Returns the method name that is member of the spring managed bean.
 	 * @return method name that is member of the spring managed bean
 	 */
 	public String getMethod() {
@@ -68,6 +71,7 @@ public class ExtDirectRequest {
 	}
 
 	/**
+	 * Returns the transaction ID associated with this request.
 	 * @return the transaction ID that is associated with this request. The response has
 	 * to return the same tid
 	 */
@@ -80,6 +84,7 @@ public class ExtDirectRequest {
 	}
 
 	/**
+	 * Returns the type of the message.
 	 * @return the type of the message. "event" for polling or "rpc" for a method call
 	 */
 	public String getType() {
@@ -91,6 +96,7 @@ public class ExtDirectRequest {
 	}
 
 	/**
+	 * Returns metadata parameters.
 	 * @return metadata parameters
 	 */
 	public Map<String, Object> getMetadata() {

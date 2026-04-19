@@ -134,7 +134,7 @@ public class ApiControllerTest {
 	public void testWithActionNamespaceCustomConfig() throws Exception {
 
 		Configuration config = new Configuration();
-		config.setEnableBuffer(Boolean.FALSE);
+		config.setEnableBuffer(false);
 		config.setTimeout(10000);
 		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
 		this.configurationService.afterPropertiesSet();
@@ -174,7 +174,7 @@ public class ApiControllerTest {
 	@Test
 	public void testEmptyGroupCustomConfig() throws Exception {
 		Configuration config = new Configuration();
-		config.setEnableBuffer(Boolean.TRUE);
+		config.setEnableBuffer(true);
 		config.setTimeout(33333);
 		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
 		this.configurationService.afterPropertiesSet();
@@ -192,7 +192,7 @@ public class ApiControllerTest {
 	@Test
 	public void testBlankStringGroupCustomConfig() throws Exception {
 		Configuration config = new Configuration();
-		config.setEnableBuffer(Boolean.TRUE);
+		config.setEnableBuffer(true);
 		config.setTimeout(33333);
 		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
 		this.configurationService.afterPropertiesSet();
@@ -210,7 +210,7 @@ public class ApiControllerTest {
 	@Test
 	public void testBlankStringGroupCustomConfigBufferLimit() throws Exception {
 		Configuration config = new Configuration();
-		config.setEnableBuffer(Boolean.TRUE);
+		config.setEnableBuffer(true);
 		config.setTimeout(333);
 		config.setBufferLimit(4);
 		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
@@ -241,7 +241,7 @@ public class ApiControllerTest {
 	@Test
 	public void testUnknownGroupCustomConfig() throws Exception {
 		Configuration config = new Configuration();
-		config.setEnableBuffer(Boolean.TRUE);
+		config.setEnableBuffer(true);
 		ReflectionTestUtils.setField(this.configurationService, "configuration", config);
 		this.configurationService.afterPropertiesSet();
 
@@ -426,7 +426,7 @@ public class ApiControllerTest {
 			.actionNs("")
 			.remotingApiVar("TEST_RMT_API")
 			.pollingUrlsVar("TEST_POLL_URLS")
-			.fullRouterUrl(Boolean.TRUE)
+			.fullRouterUrl(true)
 			.group("group2")
 			.build();
 		runTest(this.mockMvc, params, group2Apis(null, "http://localhost/router"));
@@ -435,7 +435,7 @@ public class ApiControllerTest {
 			.apiNs("apiNs")
 			.remotingApiVar("TEST_RMT_API")
 			.pollingUrlsVar("TEST_POLL_URLS")
-			.fullRouterUrl(Boolean.TRUE)
+			.fullRouterUrl(true)
 			.group("group2")
 			.build();
 		runTest(this.mockMvc, params, group2Apis(null, "http://localhost/router"));
@@ -445,7 +445,7 @@ public class ApiControllerTest {
 			.actionNs("")
 			.remotingApiVar("TEST_RMT_API")
 			.pollingUrlsVar("TEST_POLL_URLS")
-			.fullRouterUrl(Boolean.FALSE)
+			.fullRouterUrl(false)
 			.group("group2")
 			.build();
 		runTest(this.mockMvc, params, group2Apis(null, "/router"));
@@ -454,7 +454,7 @@ public class ApiControllerTest {
 			.apiNs("apiNs")
 			.remotingApiVar("TEST_RMT_API")
 			.pollingUrlsVar("TEST_POLL_URLS")
-			.fullRouterUrl(Boolean.FALSE)
+			.fullRouterUrl(false)
 			.group("group2")
 			.build();
 		runTest(this.mockMvc, params, group2Apis(null, "/router"));
@@ -479,7 +479,7 @@ public class ApiControllerTest {
 			.pollingUrlsVar("TEST_POLL_URLS")
 			.group("group2")
 			.format("json")
-			.fullRouterUrl(Boolean.TRUE)
+			.fullRouterUrl(true)
 			.build();
 		runTest(this.mockMvc, params, group2Apis("ns", "http://localhost/router"));
 	}
@@ -505,7 +505,7 @@ public class ApiControllerTest {
 			.remotingApiVar("rapi")
 			.pollingUrlsVar("papi")
 			.group("group2")
-			.fullRouterUrl(Boolean.TRUE)
+			.fullRouterUrl(true)
 			.baseRouterUrl("service/test/")
 			.build();
 		runTest(this.mockMvc, params, group2Apis(null, "service/test/router"));
@@ -1423,7 +1423,7 @@ public class ApiControllerTest {
 			assertThat(action.get("len")).isEqualTo(expectedAction.getLen());
 
 			if (expectedAction.getBatched() != null && !expectedAction.getBatched().booleanValue()) {
-				assertThat(action.get("batched")).isEqualTo(Boolean.FALSE);
+				assertThat(action.get("batched")).isEqualTo(false);
 			}
 			else {
 				assertThat(action.containsKey("batched")).isFalse();
@@ -1437,8 +1437,8 @@ public class ApiControllerTest {
 			}
 
 			List<String> params = (List<String>) action.get("params");
-			assertTrue(params != null && expectedAction.getParams() != null
-					|| params == null && expectedAction.getParams() == null);
+			assertTrue((params != null && expectedAction.getParams() != null)
+					|| (params == null && expectedAction.getParams() == null));
 
 			if (expectedAction.getParams() != null) {
 				if (params == null) {

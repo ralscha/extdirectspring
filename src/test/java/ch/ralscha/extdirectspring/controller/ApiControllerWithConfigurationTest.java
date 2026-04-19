@@ -166,7 +166,7 @@ public class ApiControllerWithConfigurationTest {
 	@Test
 	public void testWithActionNamespaceCustomConfig() throws Exception {
 		Configuration config = new Configuration();
-		config.setEnableBuffer(Boolean.FALSE);
+		config.setEnableBuffer(false);
 		config.setTimeout(10000);
 
 		ApiRequestParams params = ApiRequestParams.builder()
@@ -207,7 +207,7 @@ public class ApiControllerWithConfigurationTest {
 	@Test
 	public void testEmptyGroupCustomConfig() throws Exception {
 		Configuration config = new Configuration();
-		config.setEnableBuffer(Boolean.TRUE);
+		config.setEnableBuffer(true);
 		config.setTimeout(33333);
 
 		ApiRequestParams params = ApiRequestParams.builder()
@@ -224,7 +224,7 @@ public class ApiControllerWithConfigurationTest {
 	@Test
 	public void testBlankStringGroupCustomConfig() throws Exception {
 		Configuration config = new Configuration();
-		config.setEnableBuffer(Boolean.TRUE);
+		config.setEnableBuffer(true);
 		config.setTimeout(33333);
 		config.setBufferLimit(null);
 
@@ -242,7 +242,7 @@ public class ApiControllerWithConfigurationTest {
 	@Test
 	public void testBlankStringGroupCustomConfigBufferLimit() throws Exception {
 		Configuration config = new Configuration();
-		config.setEnableBuffer(Boolean.TRUE);
+		config.setEnableBuffer(true);
 		config.setTimeout(222);
 		config.setBufferLimit(5);
 
@@ -272,7 +272,7 @@ public class ApiControllerWithConfigurationTest {
 	@Test
 	public void testUnknownGroupCustomConfig() throws Exception {
 		Configuration config = new Configuration();
-		config.setEnableBuffer(Boolean.TRUE);
+		config.setEnableBuffer(true);
 
 		ApiRequestParams params = ApiRequestParams.builder()
 			.apiNs("test")
@@ -479,7 +479,7 @@ public class ApiControllerWithConfigurationTest {
 			.actionNs("")
 			.remotingApiVar("TEST_RMT_API")
 			.pollingUrlsVar("TEST_POLL_URLS")
-			.fullRouterUrl(Boolean.TRUE)
+			.fullRouterUrl(true)
 			.group("group2")
 			.build();
 		updateConfiguration(params, null);
@@ -489,7 +489,7 @@ public class ApiControllerWithConfigurationTest {
 			.apiNs("apiNs")
 			.remotingApiVar("TEST_RMT_API")
 			.pollingUrlsVar("TEST_POLL_URLS")
-			.fullRouterUrl(Boolean.TRUE)
+			.fullRouterUrl(true)
 			.group("group2")
 			.build();
 		updateConfiguration(params, null);
@@ -500,7 +500,7 @@ public class ApiControllerWithConfigurationTest {
 			.actionNs("")
 			.remotingApiVar("TEST_RMT_API")
 			.pollingUrlsVar("TEST_POLL_URLS")
-			.fullRouterUrl(Boolean.FALSE)
+			.fullRouterUrl(false)
 			.group("group2")
 			.build();
 		updateConfiguration(params, null);
@@ -510,7 +510,7 @@ public class ApiControllerWithConfigurationTest {
 			.apiNs("apiNs")
 			.remotingApiVar("TEST_RMT_API")
 			.pollingUrlsVar("TEST_POLL_URLS")
-			.fullRouterUrl(Boolean.FALSE)
+			.fullRouterUrl(false)
 			.group("group2")
 			.build();
 		updateConfiguration(params, null);
@@ -537,7 +537,7 @@ public class ApiControllerWithConfigurationTest {
 			.pollingUrlsVar("TEST_POLL_URLS")
 			.group("group2")
 			.format("json")
-			.fullRouterUrl(Boolean.TRUE)
+			.fullRouterUrl(true)
 			.build();
 		updateConfiguration(params, null);
 		runTest(this.mockMvc, params, ApiControllerTest.group2Apis("ns", "http://localhost/router"));
@@ -565,7 +565,7 @@ public class ApiControllerWithConfigurationTest {
 			.remotingApiVar("rapi")
 			.pollingUrlsVar("papi")
 			.group("group2")
-			.fullRouterUrl(Boolean.TRUE)
+			.fullRouterUrl(true)
 			.baseRouterUrl("service/test/")
 			.build();
 		updateConfiguration(params, null);

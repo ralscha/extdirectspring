@@ -19,6 +19,11 @@ tasks:
     cmds:
       - '{{.MVNW}} spring-javaformat:apply'
 
+  sortpom:
+    desc: Sort pom.xml with SortPom
+    cmds:
+      - '{{.MVNW}} -B -ntp sortpom:sort'
+
   verify:
     desc: Run verify
     cmds:

@@ -52,7 +52,7 @@ public class ApiControllerWithXMLConfig4Test {
 
 		Configuration config = new Configuration();
 		config.setTimeout(300);
-		config.setEnableBuffer(Boolean.TRUE);
+		config.setEnableBuffer(true);
 		config.setMaxRetries(7);
 		config.setStreamResponse(true);
 		config.setBufferLimit(3);

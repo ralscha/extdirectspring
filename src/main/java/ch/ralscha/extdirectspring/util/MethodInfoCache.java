@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jspecify.annotations.Nullable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.MethodIntrospector;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -74,7 +75,7 @@ public class MethodInfoCache implements Iterable<Map.Entry<MethodInfoCache.Key, 
 	 * @param methodName the name of the method
 	 * @return the found methodInfo object, null if there is no method found in the cache
 	 */
-	public MethodInfo get(String beanName, String methodName) {
+	public @Nullable MethodInfo get(String beanName, String methodName) {
 		return this.cache.get(new Key(beanName, methodName));
 	}
 

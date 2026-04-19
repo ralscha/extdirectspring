@@ -17,6 +17,7 @@ package ch.ralscha.extdirectspring.provider;
 
 import java.math.BigDecimal;
 import java.util.Locale;
+import java.util.Locale;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -53,7 +54,7 @@ public class FormInfoController3 {
 			@RequestParam(value = "p2", required = true) String param2, @Valid FormInfo formInfo) {
 
 		ExtDirectFormPostResult e = new ExtDirectFormPostResult();
-		e.addResultProperty("name", formInfo.getName().toUpperCase());
+		e.addResultProperty("name", formInfo.getName().toUpperCase(Locale.ROOT));
 		e.addResultProperty("age", formInfo.getAge() + 10);
 		e.addResultProperty("admin", !formInfo.isAdmin());
 		BigDecimal bd = new BigDecimal("1000");
@@ -88,7 +89,7 @@ public class FormInfoController3 {
 			@RequestParam(value = "p2", required = true) String param2, @Valid FormInfo formInfo) {
 
 		EdFormPostResult.Builder e = EdFormPostResult.builder();
-		e.putResult("name", formInfo.getName().toUpperCase());
+		e.putResult("name", formInfo.getName().toUpperCase(Locale.ROOT));
 		e.putResult("age", formInfo.getAge() + 10);
 		e.putResult("admin", !formInfo.isAdmin());
 		BigDecimal bd = new BigDecimal("1000");

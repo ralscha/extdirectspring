@@ -73,13 +73,9 @@ public class RemoteProviderTreeLoad {
 			if (this == obj) {
 				return true;
 			}
-			if (obj == null) {
+			if (!(obj instanceof Node other)) {
 				return false;
 			}
-			if (getClass() != obj.getClass()) {
-				return false;
-			}
-			Node other = (Node) obj;
 			if (this.id == null) {
 				if (other.id != null) {
 					return false;

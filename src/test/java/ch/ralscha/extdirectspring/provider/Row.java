@@ -90,10 +90,9 @@ public class Row implements Comparable<Row>, RowInterface {
 		if (this == obj) {
 			return true;
 		}
-		if (obj == null || getClass() != obj.getClass()) {
+		if (!(obj instanceof Row other)) {
 			return false;
 		}
-		Row other = (Row) obj;
 		if (this.id != other.id) {
 			return false;
 		}
