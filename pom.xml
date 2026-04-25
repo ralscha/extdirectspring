@@ -49,7 +49,7 @@
     <jackson.version>3.1.2</jackson.version>
     <junit.version>6.0.3</junit.version>
     <spring.boot.version>4.0.5</spring.boot.version>
-    <spring.security.version>7.0.4</spring.security.version>
+    <spring.security.version>7.0.5</spring.security.version>
   </properties>
 
   <dependencyManagement>
