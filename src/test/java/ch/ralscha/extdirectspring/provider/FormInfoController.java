@@ -18,8 +18,6 @@ package ch.ralscha.extdirectspring.provider;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Locale;
-import java.util.Locale;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;

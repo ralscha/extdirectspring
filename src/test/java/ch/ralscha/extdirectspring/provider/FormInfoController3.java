@@ -17,8 +17,6 @@ package ch.ralscha.extdirectspring.provider;
 
 import java.math.BigDecimal;
 import java.util.Locale;
-import java.util.Locale;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
