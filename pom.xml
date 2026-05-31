@@ -375,9 +375,10 @@
           <testTarget>17</testTarget>
           <encoding>UTF-8</encoding>
           <useIncrementalCompilation>false</useIncrementalCompilation>
-
-
-          <fork>true</fork>
+          <compilerArgs>
+            <arg>-parameters</arg>
+            <arg>-proc:full</arg>
+          </compilerArgs>
         </configuration>
       </plugin>
 
@@ -526,5 +527,41 @@
     </plugins>
   </reporting>
 
+  <profiles>
+    <profile>
+      <id>error-prone</id>
+      <activation>
+        <jdk>[21,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <compilerArgs combine.children="append">
+                <arg>-XDcompilePolicy=simple</arg>
+                <arg>--should-stop=ifError=FLOW</arg>
+                <arg>-XDaddTypeAnnotationsToSymbol=true</arg>
+                <arg>-Xplugin:ErrorProne -Xep:NullAway:ERROR -Xep:FutureReturnValueIgnored:ERROR -Xep:StringSplitter:ERROR -Xep:CanonicalDuration:ERROR -Xep:InvalidLink:ERROR -Xep:UnrecognisedJavadocTag:ERROR -XepOpt:NullAway:OnlyNullMarked=true -XepOpt:NullAway:JSpecifyMode=true -XepOpt:NullAway:ExcludedClassAnnotations=javax.annotation.processing.Generated -XepExcludedPaths:.*/target/generated-sources/annotations/.*</arg>
+              </compilerArgs>
+              <annotationProcessorPaths combine.children="append">
+                <path>
+                  <groupId>com.google.errorprone</groupId>
+                  <artifactId>error_prone_core</artifactId>
+                  <version>2.49.0</version>
+                </path>
+                <path>
+                  <groupId>com.uber.nullaway</groupId>
+                  <artifactId>nullaway</artifactId>
+                  <version>0.13.2</version>
+                </path>
+              </annotationProcessorPaths>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
