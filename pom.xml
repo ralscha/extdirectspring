@@ -10,7 +10,7 @@
 
   <groupId>ch.ralscha</groupId>
   <artifactId>extdirectspring</artifactId>
-  <version>3.0.1</version>
+  <version>3.0.2-SNAPSHOT</version>
 
   <name>Ext.Direct Spring</name>
   <description>Implements the Ext.Direct specification with Java/Spring 7</description>
