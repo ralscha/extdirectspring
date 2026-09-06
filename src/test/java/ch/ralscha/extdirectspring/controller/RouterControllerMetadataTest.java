@@ -95,8 +95,7 @@ public class RouterControllerMetadataTest {
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
-		storeResponse = (ExtDirectStoreResult<Row>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "method1", null, null, readRequest);
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method1", null, null, readRequest);
 	}
 
 	@Test
@@ -146,8 +145,7 @@ public class RouterControllerMetadataTest {
 		readRequest.put("id", 10);
 		readRequest.put("query", "name");
 
-		storeResponse = (EdStoreResult<Map<String, Object>>) ControllerUtil.sendAndReceive(this.mockMvc,
-				"remoteProviderMetadata", "method1Ed", null, null, readRequest);
+		ControllerUtil.sendAndReceive(this.mockMvc, "remoteProviderMetadata", "method1Ed", null, null, readRequest);
 	}
 
 	@Test

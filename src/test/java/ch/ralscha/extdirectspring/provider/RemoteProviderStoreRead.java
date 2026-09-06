@@ -38,7 +38,6 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 import ch.ralscha.extdirectspring.bean.DataType;
 import ch.ralscha.extdirectspring.bean.EdStoreResult;
-import ch.ralscha.extdirectspring.bean.EdStoreResult.Builder;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreReadRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectStoreResult;
 import ch.ralscha.extdirectspring.bean.Field;
@@ -138,6 +137,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
+	@SuppressWarnings("JavaUtilDate")
 	public ExtDirectStoreResult<Row> method8(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
 			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(endDate).isNotNull();
@@ -183,6 +183,7 @@ public class RemoteProviderStoreRead {
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.STORE_READ)
+	@SuppressWarnings("JavaUtilDate")
 	public EdStoreResult<Row> method8Ed(@DateTimeFormat(iso = ISO.DATE_TIME) Date endDate,
 			final HttpServletRequest servletRequest, ExtDirectStoreReadRequest request) {
 		assertThat(endDate).isNotNull();
@@ -404,7 +405,7 @@ public class RemoteProviderStoreRead {
 
 		}
 
-		Builder<Row> builder = EdStoreResult.<Row>builder()
+		EdStoreResult.Builder<Row> builder = EdStoreResult.<Row>builder()
 			.records(rows)
 			.total(Long.valueOf(totalSize))
 			.message(message);
@@ -437,36 +438,36 @@ public class RemoteProviderStoreRead {
 			field.setType(DataType.INTEGER);
 			field.addCustomProperty("header", "ID");
 			field.addCustomProperty("width", 20);
-			field.addCustomProperty("sortable", Boolean.TRUE);
-			field.addCustomProperty("resizable", Boolean.TRUE);
-			field.addCustomProperty("hideable", Boolean.FALSE);
+			field.addCustomProperty("sortable", true);
+			field.addCustomProperty("resizable", true);
+			field.addCustomProperty("hideable", false);
 			metaData.addField(field);
 
 			field = new Field("name");
 			field.setType(DataType.STRING);
 			field.addCustomProperty("header", "Name");
 			field.addCustomProperty("width", 70);
-			field.addCustomProperty("sortable", Boolean.TRUE);
-			field.addCustomProperty("resizable", Boolean.TRUE);
-			field.addCustomProperty("hideable", Boolean.FALSE);
+			field.addCustomProperty("sortable", true);
+			field.addCustomProperty("resizable", true);
+			field.addCustomProperty("hideable", false);
 			metaData.addField(field);
 
 			field = new Field("admin");
 			field.setType(DataType.BOOLEAN);
 			field.addCustomProperty("header", "Administrator");
 			field.addCustomProperty("width", 30);
-			field.addCustomProperty("sortable", Boolean.TRUE);
-			field.addCustomProperty("resizable", Boolean.TRUE);
-			field.addCustomProperty("hideable", Boolean.TRUE);
+			field.addCustomProperty("sortable", true);
+			field.addCustomProperty("resizable", true);
+			field.addCustomProperty("hideable", true);
 			metaData.addField(field);
 
 			field = new Field("salary");
 			field.setType(DataType.FLOAT);
 			field.addCustomProperty("header", "Salary");
 			field.addCustomProperty("width", 50);
-			field.addCustomProperty("sortable", Boolean.FALSE);
-			field.addCustomProperty("resizable", Boolean.TRUE);
-			field.addCustomProperty("hideable", Boolean.TRUE);
+			field.addCustomProperty("sortable", false);
+			field.addCustomProperty("resizable", true);
+			field.addCustomProperty("hideable", true);
 			metaData.addField(field);
 
 			response.setMetaData(metaData);
@@ -487,36 +488,36 @@ public class RemoteProviderStoreRead {
 			field.setType(DataType.INTEGER);
 			field.addCustomProperty("header", "ID");
 			field.addCustomProperty("width", 20);
-			field.addCustomProperty("sortable", Boolean.TRUE);
-			field.addCustomProperty("resizable", Boolean.TRUE);
-			field.addCustomProperty("hideable", Boolean.FALSE);
+			field.addCustomProperty("sortable", true);
+			field.addCustomProperty("resizable", true);
+			field.addCustomProperty("hideable", false);
 			metaData.addField(field);
 
 			field = new Field("name");
 			field.setType(DataType.STRING);
 			field.addCustomProperty("header", "Name");
 			field.addCustomProperty("width", 70);
-			field.addCustomProperty("sortable", Boolean.TRUE);
-			field.addCustomProperty("resizable", Boolean.TRUE);
-			field.addCustomProperty("hideable", Boolean.FALSE);
+			field.addCustomProperty("sortable", true);
+			field.addCustomProperty("resizable", true);
+			field.addCustomProperty("hideable", false);
 			metaData.addField(field);
 
 			field = new Field("admin");
 			field.setType(DataType.BOOLEAN);
 			field.addCustomProperty("header", "Administrator");
 			field.addCustomProperty("width", 30);
-			field.addCustomProperty("sortable", Boolean.TRUE);
-			field.addCustomProperty("resizable", Boolean.TRUE);
-			field.addCustomProperty("hideable", Boolean.TRUE);
+			field.addCustomProperty("sortable", true);
+			field.addCustomProperty("resizable", true);
+			field.addCustomProperty("hideable", true);
 			metaData.addField(field);
 
 			field = new Field("salary");
 			field.setType(DataType.FLOAT);
 			field.addCustomProperty("header", "Salary");
 			field.addCustomProperty("width", 50);
-			field.addCustomProperty("sortable", Boolean.FALSE);
-			field.addCustomProperty("resizable", Boolean.TRUE);
-			field.addCustomProperty("hideable", Boolean.TRUE);
+			field.addCustomProperty("sortable", false);
+			field.addCustomProperty("resizable", true);
+			field.addCustomProperty("hideable", true);
 			metaData.addField(field);
 
 			return createEdStoreResult(request, "", null, metaData);
@@ -531,8 +532,7 @@ public class RemoteProviderStoreRead {
 
 		List<Filter> filters = new ArrayList<>(request.getFilters());
 		switch (type) {
-			case 1:
-			case 15: {
+			case 1, 15 -> {
 				assertThat(request.getFilters()).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
 
@@ -561,8 +561,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 2:
-			case 16: {
+			case 2, 16 -> {
 				assertThat(request.getFilters()).hasSize(2);
 				assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
 				assertThat(filters.get(1)).isInstanceOf(NumericFilter.class);
@@ -600,7 +599,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 3: {
+			case 3 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(BooleanFilter.class);
 
@@ -619,7 +618,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 4: {
+			case 4 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(BooleanFilter.class);
 
@@ -635,7 +634,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 5: {
+			case 5 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(StringFilter.class);
 
@@ -651,7 +650,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 6: {
+			case 6 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
@@ -668,7 +667,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 7: {
+			case 7 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
@@ -686,8 +685,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 8:
-			case 17: {
+			case 8, 17 -> {
 				assertThat(filters).hasSize(2);
 				assertThat(filters.get(0)).isInstanceOf(DateFilter.class);
 				assertThat(filters.get(1)).isInstanceOf(DateFilter.class);
@@ -723,8 +721,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 9:
-			case 18: {
+			case 9, 18 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(DateFilter.class);
 
@@ -747,7 +744,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 10: {
+			case 10 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(StringFilter.class);
 
@@ -763,7 +760,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 11: {
+			case 11 -> {
 				assertThat(request.getFilters()).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
 
@@ -781,7 +778,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 12: {
+			case 12 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(BooleanFilter.class);
 
@@ -797,7 +794,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 13: {
+			case 13 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
@@ -814,7 +811,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 14: {
+			case 14 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
@@ -832,7 +829,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 19: {
+			case 19 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(StringFilter.class);
 
@@ -848,7 +845,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 20: {
+			case 20 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(StringFilter.class);
 
@@ -864,7 +861,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 21: {
+			case 21 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(StringFilter.class);
 
@@ -880,7 +877,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 22: {
+			case 22 -> {
 				assertThat(request.getFilters()).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
 
@@ -909,7 +906,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 23: {
+			case 23 -> {
 				assertThat(request.getFilters()).hasSize(2);
 				assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
 				assertThat(filters.get(1)).isInstanceOf(NumericFilter.class);
@@ -942,7 +939,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 24: {
+			case 24 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(BooleanFilter.class);
 
@@ -968,7 +965,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 25: {
+			case 25 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(BooleanFilter.class);
 
@@ -991,7 +988,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 26: {
+			case 26 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(StringFilter.class);
 
@@ -1014,7 +1011,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 27: {
+			case 27 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
@@ -1038,7 +1035,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 28: {
+			case 28 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
@@ -1063,7 +1060,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 29: {
+			case 29 -> {
 				assertThat(request.getFilters()).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
 
@@ -1092,7 +1089,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 30: {
+			case 30 -> {
 				assertThat(request.getFilters()).hasSize(2);
 				assertThat(filters.get(0)).isInstanceOf(NumericFilter.class);
 				assertThat(filters.get(1)).isInstanceOf(NumericFilter.class);
@@ -1125,7 +1122,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 31: {
+			case 31 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
@@ -1152,7 +1149,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 32: {
+			case 32 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(ListFilter.class);
 
@@ -1180,7 +1177,7 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			case 33: {
+			case 33 -> {
 				assertThat(filters).hasSize(1);
 				assertThat(filters.get(0)).isInstanceOf(StringFilter.class);
 
@@ -1203,7 +1200,9 @@ public class RemoteProviderStoreRead {
 
 				return createResult(type);
 			}
-			default: // do nothing
+			default -> {
+				// do nothing
+			}
 		}
 
 		return Collections.emptyList();

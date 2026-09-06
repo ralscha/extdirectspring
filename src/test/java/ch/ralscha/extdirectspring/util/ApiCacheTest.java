@@ -53,7 +53,7 @@ public class ApiCacheTest {
 		assertThat(cache.get(key8)).isEqualTo("eight");
 		assertThat(cache.get(key9)).isEqualTo("nine");
 
-		assertThat(key1.equals("test")).isFalse();
+		assertThat(key1).isNotEqualTo("test");
 		assertThat(key1.equals(null)).isFalse();
 
 		assertThat(key1.equals(key1)).isTrue();

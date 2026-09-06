@@ -17,8 +17,9 @@ package ch.ralscha.extdirectspring.provider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,12 +36,12 @@ import ch.ralscha.extdirectspring.annotation.ExtDirectMethodType;
 
 @Service
 public class PollProvider {
+	private static final DateTimeFormatter POLL_TIME_FORMATTER = DateTimeFormatter
+		.ofPattern("yyyy/MM/dd 'at' hh:mm:ss");
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message1", group = "group2")
 	public String handleMessage1() {
-		Date now = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd 'at' hh:mm:ss");
-		return "Successfully polled at: " + formatter.format(now);
+		return currentPollMessage();
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message2", group = "group2", entryClass = String.class)
@@ -51,9 +52,7 @@ public class PollProvider {
 		assertThat(session).isNotNull();
 		assertThat(locale).isEqualTo(Locale.ENGLISH);
 
-		Date now = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd 'at' hh:mm:ss");
-		return "Successfully polled at: " + formatter.format(now);
+		return currentPollMessage();
 	}
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, event = "message3", group = "group4")
@@ -79,9 +78,12 @@ public class PollProvider {
 
 	@ExtDirectMethod(value = ExtDirectMethodType.POLL, group = "group2")
 	public String message6() {
-		Date now = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd 'at' hh:mm:ss");
-		return "Successfully polled at: " + formatter.format(now);
+		return currentPollMessage();
+	}
+
+	private static String currentPollMessage() {
+		return "Successfully polled at: "
+				+ POLL_TIME_FORMATTER.format(ZonedDateTime.now(ZoneId.systemDefault()));
 	}
 
 	/* Request Header */

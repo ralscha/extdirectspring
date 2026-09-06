@@ -378,14 +378,13 @@ public class ControllerUtil {
 		return results;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T> T readValue(String json, Class<?> clazz) {
+	public static <T> T readValue(String json, Class<T> clazz) {
 		try {
 			String normalizedJson = json != null ? json.trim() : null;
 			if (normalizedJson != null && normalizedJson.endsWith(";")) {
 				normalizedJson = normalizedJson.substring(0, normalizedJson.length() - 1).trim();
 			}
-			return (T) mapper.readValue(normalizedJson, clazz);
+			return mapper.readValue(normalizedJson, clazz);
 		}
 		catch (Exception e) {
 			LogFactory.getLog(JsonHandler.class).info("deserialize json to object", e);

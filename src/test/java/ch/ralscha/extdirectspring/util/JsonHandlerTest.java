@@ -54,13 +54,13 @@ public class JsonHandlerTest {
 		assertEquals("null", jsonHandler.writeValueAsString(null));
 		assertEquals("\"a\"", jsonHandler.writeValueAsString("a"));
 		assertEquals("1", jsonHandler.writeValueAsString(1));
-		assertEquals("true", jsonHandler.writeValueAsString(Boolean.TRUE));
+		assertEquals("true", jsonHandler.writeValueAsString(true));
 
 		Map<String, Object> map = new LinkedHashMap<>();
 		map.put("one", 1);
 		map.put("two", "2");
 		map.put("three", null);
-		map.put("four", Boolean.FALSE);
+		map.put("four", false);
 		map.put("five", new int[] { 1, 2 });
 
 		String expected = "{\"one\":1,\"two\":\"2\",\"three\":null,\"four\":false,\"five\":[1,2]}";
@@ -78,13 +78,13 @@ public class JsonHandlerTest {
 		assertEquals("null", jsonHandler.writeValueAsString(null, true));
 		assertEquals("\"a\"", jsonHandler.writeValueAsString("a", true));
 		assertEquals("1", jsonHandler.writeValueAsString(1, true));
-		assertEquals("true", jsonHandler.writeValueAsString(Boolean.TRUE, true));
+		assertEquals("true", jsonHandler.writeValueAsString(true, true));
 
 		Map<String, Object> map = new LinkedHashMap<>();
 		map.put("one", 1);
 		map.put("two", "2");
 		map.put("three", null);
-		map.put("four", Boolean.FALSE);
+		map.put("four", false);
 		map.put("five", new int[] { 1, 2 });
 
 		String expected = "{\n  \"one\" : 1,\n  \"two\" : \"2\",\n  \"three\" : null,\n  \"four\" : false,\n  \"five\" : [ 1, 2 ]\n}";

@@ -149,6 +149,7 @@ class ParametersResolverTest {
 		}
 
 		@ExtDirectMethod
+		@SuppressWarnings("NonApiType")
 		public ArrayList<Person> concrete(ArrayList<Person> value) {
 			return value;
 		}

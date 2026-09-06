@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class RouterControllerFilterTest {
 	public static void readJson() throws IOException {
 		jsonList = new ArrayList<>();
 		try (InputStream is = RouterControllerFilterTest.class.getResourceAsStream("/filterjson.txt");
-				BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+				BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
 			String line = null;
 			while ((line = br.readLine()) != null) {
 				jsonList.add(line);

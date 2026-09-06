@@ -55,7 +55,7 @@ public class MethodInfoCacheTest {
 		assertThat(key1.equals(key2)).isFalse();
 		assertThat(key1.equals(key3)).isFalse();
 
-		assertThat(key1.equals("test")).isFalse();
+		assertThat(key1).isNotEqualTo("test");
 	}
 
 	@Test

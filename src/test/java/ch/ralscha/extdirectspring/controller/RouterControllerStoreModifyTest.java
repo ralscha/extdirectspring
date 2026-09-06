@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.extractProperty;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -204,7 +205,8 @@ public class RouterControllerStoreModifyTest {
 		rowsToUpdate.add(new Row(10, "Ralph", true, "109.55"));
 		storeRequest.put("records", rowsToUpdate);
 		storeRequest.put("id", 11);
-		storeRequest.put("yesterday", DateTimeFormatter.ISO_DATE.format(LocalDate.now().minusDays(1)));
+		storeRequest.put("yesterday",
+				DateTimeFormatter.ISO_DATE.format(LocalDate.now(ZoneId.systemDefault()).minusDays(1)));
 		executeUpdate(action, storeRequest, "update4");
 	}
 
@@ -243,7 +245,8 @@ public class RouterControllerStoreModifyTest {
 		storeRequest = new LinkedHashMap<>();
 		storeRequest.putAll(ControllerUtil.convertValue(row, Map.class));
 		storeRequest.put("aParam", 11);
-		storeRequest.put("yesterday", DateTimeFormatter.ISO_DATE.format(LocalDate.now().minusDays(1)));
+		storeRequest.put("yesterday",
+				DateTimeFormatter.ISO_DATE.format(LocalDate.now(ZoneId.systemDefault()).minusDays(1)));
 		executeUpdate("remoteProviderStoreModifySingle", storeRequest, "update4");
 	}
 

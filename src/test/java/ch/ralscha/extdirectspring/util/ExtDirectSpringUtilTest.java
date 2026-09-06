@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -43,12 +44,12 @@ public class ExtDirectSpringUtilTest {
 		assertThat(ExtDirectSpringUtil.equal(false, true)).isFalse();
 		assertThat(ExtDirectSpringUtil.equal(false, null)).isFalse();
 
-		assertThat(ExtDirectSpringUtil.equal(Boolean.TRUE, Boolean.TRUE)).isTrue();
-		assertThat(ExtDirectSpringUtil.equal(Boolean.FALSE, Boolean.FALSE)).isTrue();
+		assertThat(ExtDirectSpringUtil.equal(true, true)).isTrue();
+		assertThat(ExtDirectSpringUtil.equal(false, false)).isTrue();
 
-		assertThat(ExtDirectSpringUtil.equal(Boolean.TRUE, Boolean.FALSE)).isFalse();
-		assertThat(ExtDirectSpringUtil.equal(Boolean.FALSE, Boolean.TRUE)).isFalse();
-		assertThat(ExtDirectSpringUtil.equal(Boolean.FALSE, null)).isFalse();
+		assertThat(ExtDirectSpringUtil.equal(true, false)).isFalse();
+		assertThat(ExtDirectSpringUtil.equal(false, true)).isFalse();
+		assertThat(ExtDirectSpringUtil.equal(false, null)).isFalse();
 
 		assertThat(ExtDirectSpringUtil.equal("a", "a")).isTrue();
 		assertThat(ExtDirectSpringUtil.equal("a", "b")).isFalse();
@@ -125,7 +126,7 @@ public class ExtDirectSpringUtilTest {
 		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
 		LocalDateTime expires = LocalDateTime.parse(expiresHeader, fmt);
 
-		LocalDateTime inSixMonths = LocalDateTime.now(ZoneOffset.UTC).plusSeconds(month * 30 * 24 * 60 * 60);
+		LocalDateTime inSixMonths = LocalDateTime.now(ZoneOffset.UTC).plusSeconds((long) month * 30 * 24 * 60 * 60);
 		assertThat(expires.getYear()).isEqualTo(inSixMonths.getYear());
 		assertThat(expires.getMonth()).isEqualTo(inSixMonths.getMonth());
 		assertThat(expires.getDayOfMonth()).isEqualTo(inSixMonths.getDayOfMonth());
@@ -145,7 +146,7 @@ public class ExtDirectSpringUtilTest {
 	public void testHandleCacheableResponseWithoutIfNoneMatch() throws IOException {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		byte[] data = "the response data".getBytes();
+		byte[] data = "the response data".getBytes(StandardCharsets.UTF_8);
 		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + '"';
 		String contentType = "application/javascript;charset=utf-8";
 		ExtDirectSpringUtil.handleCacheableResponse(request, response, data, contentType);
@@ -159,7 +160,7 @@ public class ExtDirectSpringUtilTest {
 
 	@Test
 	public void testHandleCacheableResponseWithIfNoneMatch() throws IOException {
-		byte[] data = "the response data".getBytes();
+		byte[] data = "the response data".getBytes(StandardCharsets.UTF_8);
 		String etag = "\"0" + DigestUtils.md5DigestAsHex(data) + '"';
 		String contentType = "application/javascript;charset=utf-8";
 
@@ -173,7 +174,7 @@ public class ExtDirectSpringUtilTest {
 		request = new MockHttpServletRequest();
 		request.addHeader("If-None-Match", etag);
 		response = new MockHttpServletResponse();
-		data = "new response data".getBytes();
+		data = "new response data".getBytes(StandardCharsets.UTF_8);
 		etag = "\"0" + DigestUtils.md5DigestAsHex(data) + '"';
 		ExtDirectSpringUtil.handleCacheableResponse(request, response, data, contentType);
 		assertThat(response.getStatus()).isEqualTo(200);
