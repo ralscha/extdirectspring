@@ -21,22 +21,119 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.util.HtmlUtils;
 
+import ch.ralscha.extdirectspring.annotation.ExtDirectMethod;
 import ch.ralscha.extdirectspring.bean.ExtDirectRequest;
 import ch.ralscha.extdirectspring.bean.ExtDirectResponse;
 import ch.ralscha.extdirectspring.provider.RemoteProviderSimple;
 import ch.ralscha.extdirectspring.util.MethodInfoCache;
 
 class RouterControllerEdgeCaseTest {
+
+	@ParameterizedTest
+	@ValueSource(strings = { "", "{", "null", "true", "42", "\"text\"", "[null]", "[42]", "{}",
+			"{\"action\":\"remoteProviderSimple\"}", "{\"action\":\"\",\"method\":\"method6\"}",
+			"{\"action\":\"remoteProviderSimple\",\"method\":\"method6\",\"tid\":{}}",
+			"[{\"action\":\"remoteProviderSimple\",\"method\":\"method6\",\"data\":[1,2]},null]" })
+	void routerRejectsInvalidRequestsBeforeInvokingAnyMethods(String body) throws Exception {
+		try (GenericApplicationContext context = createContext()) {
+			ConfigurationService service = createConfigurationService(context, new Configuration());
+			RouterController controller = new RouterController(null, service, createMethodInfoCache(context));
+			RecordingExtRequestListener listener = new RecordingExtRequestListener();
+			ReflectionTestUtils.setField(controller, "extRequestListeners", Set.of(listener));
+			MockHttpServletRequest request = new MockHttpServletRequest();
+			request.setContent(body.getBytes(StandardCharsets.UTF_8));
+			MockHttpServletResponse response = new MockHttpServletResponse();
+
+			controller.router(request, response, Locale.ENGLISH);
+
+			assertThat(response.getStatus()).isEqualTo(400);
+			assertThat(listener.beforeMethods).isEmpty();
+		}
+	}
+
+	@Test
+	void routerAcceptsEmptyBatch() throws Exception {
+		try (GenericApplicationContext context = createContext()) {
+			ConfigurationService service = createConfigurationService(context, new Configuration());
+			RouterController controller = new RouterController(null, service, createMethodInfoCache(context));
+			MockHttpServletRequest request = new MockHttpServletRequest();
+			request.setContent("[]".getBytes(StandardCharsets.UTF_8));
+			MockHttpServletResponse response = new MockHttpServletResponse();
+
+			controller.router(request, response, Locale.ENGLISH);
+
+			assertThat(response.getStatus()).isEqualTo(200);
+			assertThat(response.getContentAsString()).isEqualTo("[]");
+		}
+	}
+
+	@Test
+	void pollDoesNotInvokeRemotingMethods() throws Exception {
+		try (GenericApplicationContext context = new GenericApplicationContext()) {
+			CountingProvider provider = new CountingProvider();
+			context.registerBean("counter", CountingProvider.class, () -> provider);
+			context.refresh();
+			ConfigurationService service = createConfigurationService(context, new Configuration());
+			RouterController controller = new RouterController(null, service, createMethodInfoCache(context));
+			MockHttpServletResponse response = new MockHttpServletResponse();
+
+			controller.poll("counter", "increment", "event", new MockHttpServletRequest(), response, Locale.ENGLISH);
+
+			assertThat(provider.calls).isZero();
+			assertThat(
+					service.getJsonHandler().getMapper().readTree(response.getContentAsString()).get("type").asString())
+				.isEqualTo("exception");
+		}
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = { "</textarea><script>alert('upload')</script>", "</TeXtArEa><img src=x>",
+			"&quot; &#34; &#x3c; &amp; < > café" })
+	void multipartResponsePreservesJsonWithoutInterpretingHtml(String value) throws Exception {
+		try (GenericApplicationContext context = createContext()) {
+			ConfigurationService service = createConfigurationService(context, new Configuration());
+			RouterController controller = new RouterController(null, service, createMethodInfoCache(context));
+			MockHttpServletResponse response = new MockHttpServletResponse();
+
+			controller.writeJsonResponse(response, Map.of("result", value), null, false, true);
+
+			String html = response.getContentAsString();
+			String contents = html.substring("<html><body><textarea>".length(), html.indexOf("</textarea>"));
+			assertThat(contents).doesNotContain("<", ">");
+			assertThat(service.getJsonHandler()
+				.getMapper()
+				.readTree(HtmlUtils.htmlUnescape(contents))
+				.get("result")
+				.asString()).isEqualTo(value);
+			assertThat(response.getContentLength()).isEqualTo(response.getContentAsByteArray().length);
+			assertThat(response.getContentType()).startsWith("text/html");
+		}
+	}
+
+	public static class CountingProvider {
+
+		private int calls;
+
+		@ExtDirectMethod
+		public int increment() {
+			return ++this.calls;
+		}
+
+	}
 
 	@Test
 	void handleMethodCallNotifiesListenersBeforeAndAfterWhenInvocationFails() throws Exception {

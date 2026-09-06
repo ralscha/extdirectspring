@@ -17,9 +17,12 @@ package ch.ralscha.extdirectspring.util;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.util.Optional;
 
 import org.jspecify.annotations.Nullable;
 import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.convert.TypeDescriptor;
@@ -43,6 +46,8 @@ public final class ParameterInfo {
 
 	private final TypeDescriptor typeDescriptor;
 
+	private final Type genericType;
+
 	private final boolean supportedParameter;
 
 	private boolean hasRequestParamAnnotation;
@@ -63,14 +68,14 @@ public final class ParameterInfo {
 
 	public ParameterInfo(Class<?> clazz, Method method, int paramIndex) {
 
-		MethodParameter methodParam = new MethodParameter(method, paramIndex);
+		MethodParameter methodParam = new MethodParameter(method, paramIndex).withContainingClass(clazz);
 		methodParam.initParameterNameDiscovery(discoverer);
 
 		this.name = methodParam.getParameterName();
 		this.typeDescriptor = new TypeDescriptor(methodParam);
+		this.genericType = GenericTypeResolver.resolveType(methodParam.getGenericParameterType(), clazz);
 
-		Class<?> paramType = methodParam.withContainingClass(clazz).getParameterType();
-		this.javaUtilOptional = "java.util.Optional".equals(paramType.getName());
+		this.javaUtilOptional = methodParam.getParameterType() == Optional.class;
 
 		this.supportedParameter = SupportedParameters.isSupported(this.typeDescriptor.getObjectType());
 
@@ -193,6 +198,10 @@ public final class ParameterInfo {
 
 	public TypeDescriptor getTypeDescriptor() {
 		return this.typeDescriptor;
+	}
+
+	Type getGenericType() {
+		return this.genericType;
 	}
 
 	public boolean isClientParameter() {

@@ -19,13 +19,13 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
@@ -37,7 +37,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.util.ClassUtils;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
@@ -53,7 +52,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.JavaType;
-import tools.jackson.databind.type.TypeFactory;
 
 /**
  * Resolver of ExtDirectRequest parameters.
@@ -68,19 +66,6 @@ public final class ParametersResolver {
 
 	private final Expression getPrincipalExpression = new SpelExpressionParser().parseExpression(
 			"T(org.springframework.security.core.context.SecurityContextHolder).getContext().getAuthentication()?.getPrincipal()");
-
-	/** Java 8's java.util.Optional.empty() */
-	private static @Nullable Object javaUtilOptionalEmpty = null;
-
-	static {
-		try {
-			Class<?> clazz = ClassUtils.forName("java.util.Optional", ParametersResolver.class.getClassLoader());
-			javaUtilOptionalEmpty = ClassUtils.getMethod(clazz, "empty").invoke(null);
-		}
-		catch (ClassNotFoundException | IllegalAccessException | InvocationTargetException | LinkageError ex) {
-			// Java 8 not available - conversion to Optional not supported then.
-		}
-	}
 
 	public ParametersResolver(ConversionService conversionService, JsonHandler jsonHandler) {
 		this.conversionService = conversionService;
@@ -190,7 +175,7 @@ public final class ParametersResolver {
 		}
 		else if (methodInfo.isType(ExtDirectMethodType.SIMPLE_NAMED)) {
 			Map<String, Object> data = (Map<String, Object>) directRequest.getData();
-			if (data != null && !data.isEmpty()) {
+			if (data != null) {
 				remainingParameters = new HashMap<>(data);
 			}
 		}
@@ -247,6 +232,11 @@ public final class ParametersResolver {
 				else if (methodParameter.hasAuthenticationPrincipalAnnotation()) {
 					parameters[paramIndex] = resolveAuthenticationPrincipal(methodParameter);
 				}
+				else if (methodInfo.isType(ExtDirectMethodType.SIMPLE_NAMED)
+						&& Boolean.FALSE.equals(methodInfo.getAction().getStrict())
+						&& Map.class.isAssignableFrom(methodParameter.getType())) {
+					parameters[paramIndex] = convertValue(remainingParameters, methodParameter);
+				}
 				else if (remainingParameters != null && remainingParameters.containsKey(methodParameter.getName())) {
 					Object jsonValue = remainingParameters.get(methodParameter.getName());
 					parameters[paramIndex] = convertValue(jsonValue, methodParameter);
@@ -261,11 +251,11 @@ public final class ParametersResolver {
 
 					if (methodInfo.isType(ExtDirectMethodType.SIMPLE_NAMED)) {
 						if (Map.class.isAssignableFrom(methodParameter.getType())) {
-							parameters[paramIndex] = remainingParameters;
+							parameters[paramIndex] = convertValue(remainingParameters, methodParameter);
 							continue;
 						}
 						if (methodParameter.isJavaUtilOptional()) {
-							parameters[paramIndex] = javaUtilOptionalEmpty;
+							parameters[paramIndex] = Optional.empty();
 							continue;
 						}
 					}
@@ -307,7 +297,7 @@ public final class ParametersResolver {
 			// value is null and the parameter is java.util.Optional then return an empty
 			// Optional
 			if (parameterInfo.isJavaUtilOptional()) {
-				return javaUtilOptionalEmpty;
+				return Optional.empty();
 			}
 
 			if (parameterInfo.isRequired()) {
@@ -333,7 +323,7 @@ public final class ParametersResolver {
 		// value is null and the parameter is java.util.Optional then return an empty
 		// Optional
 		if (parameterInfo.isJavaUtilOptional()) {
-			return javaUtilOptionalEmpty;
+			return Optional.empty();
 		}
 
 		if (parameterInfo.isRequired()) {
@@ -357,7 +347,7 @@ public final class ParametersResolver {
 		// value is null and the parameter is java.util.Optional then return an empty
 		// Optional
 		if (parameterInfo.isJavaUtilOptional()) {
-			return javaUtilOptionalEmpty;
+			return Optional.empty();
 		}
 
 		if (parameterInfo.isRequired()) {
@@ -383,52 +373,32 @@ public final class ParametersResolver {
 	private @Nullable Object convertValue(@Nullable Object value, ParameterInfo methodParameter) {
 		if (value != null) {
 			Class<?> rawType = methodParameter.getType();
-			if (rawType.equals(value.getClass())) {
+			TypeDescriptor targetType = methodParameter.getTypeDescriptor();
+			if (rawType.equals(value.getClass()) && !targetType.getResolvableType().hasGenerics()) {
 				return value;
 			}
-			else if (this.conversionService.canConvert(TypeDescriptor.forObject(value),
-					methodParameter.getTypeDescriptor())) {
+			if (this.conversionService.canConvert(TypeDescriptor.forObject(value), targetType)) {
 
 				try {
-					return this.conversionService.convert(value, TypeDescriptor.forObject(value),
-							methodParameter.getTypeDescriptor());
+					return this.conversionService.convert(value, TypeDescriptor.forObject(value), targetType);
 				}
 				catch (ConversionFailedException e) {
-					// ignore this exception for collections and arrays.
-					// try to convert the value with jackson
-					TypeFactory typeFactory = this.jsonHandler.getMapper().getTypeFactory();
-					if (methodParameter.getTypeDescriptor().isCollection()) {
-						TypeDescriptor elementTypeDescriptor = methodParameter.getTypeDescriptor()
-							.getElementTypeDescriptor();
-						if (elementTypeDescriptor == null) {
-							throw e;
-						}
-						@SuppressWarnings("unchecked")
-						Class<? extends Collection> collectionType = (Class<? extends Collection>) rawType;
-						JavaType type = typeFactory.constructCollectionType(collectionType,
-								elementTypeDescriptor.getType());
-						return this.jsonHandler.convertValue(value, type);
+					// Jackson can bind structured values whose elements Spring cannot
+					// convert.
+					if (!targetType.isCollection() && !targetType.isArray() && !targetType.isMap()
+							&& !methodParameter.isJavaUtilOptional()) {
+						throw e;
 					}
-					else if (methodParameter.getTypeDescriptor().isArray()) {
-						TypeDescriptor elementTypeDescriptor = methodParameter.getTypeDescriptor()
-							.getElementTypeDescriptor();
-						if (elementTypeDescriptor == null) {
-							throw e;
-						}
-						JavaType type = typeFactory.constructArrayType(elementTypeDescriptor.getType());
-						return this.jsonHandler.convertValue(value, type);
-					}
-
-					throw e;
 				}
 			}
-			else {
-				return this.jsonHandler.convertValue(value, rawType);
-			}
+			JavaType type = this.jsonHandler.getMapper()
+				.getTypeFactory()
+				.constructType(methodParameter.getGenericType());
+			return this.jsonHandler.convertValue(value, type);
 
 		}
 		if (methodParameter.isJavaUtilOptional()) {
-			return javaUtilOptionalEmpty;
+			return Optional.empty();
 		}
 
 		return null;

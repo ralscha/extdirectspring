@@ -12,6 +12,24 @@ The library supports all the features of Ext Direct:
   * Form post with file upload
   * Polling
 
+Remote method parameters support generic types, including nested collections and maps,
+`Optional<T>`, and type parameters inherited from a base class. For example:
+
+```java
+@ExtDirectMethod
+public void saveTeams(Map<String, List<Person>> teams) {
+    // JSON objects in each team's list are bound to Person instances.
+}
+```
+
+JSON API discovery (`/api.js?format=json`) includes the configured timeout, retry,
+buffering, and batch buffer limit settings, just like JavaScript discovery.
+
+The JSON router returns HTTP 400 for malformed payloads, non-object batch entries,
+or requests without an action or method. It validates the entire batch before
+invoking methods. Polling URLs only invoke methods annotated with
+`@ExtDirectMethod(ExtDirectMethodType.POLL)`.
+
 ## Maven
 ExtDirectSpring is available from the Central Maven Repository. 
 ```

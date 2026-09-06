@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -65,6 +66,7 @@ import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 
 /**
@@ -109,7 +111,7 @@ public class RouterController {
 		boolean streamResponse;
 		Class<?> jsonView = null;
 
-		if (methodInfo != null) {
+		if (methodInfo != null && methodInfo.isType(ExtDirectMethodType.POLL)) {
 
 			streamResponse = this.configurationService.getConfiguration().isStreamResponse()
 					|| methodInfo.isStreamResponse();
@@ -119,51 +121,14 @@ public class RouterController {
 				Object[] parameters = this.configurationService.getParametersResolver()
 					.prepareParameters(request, response, locale, methodInfo);
 
-				if (this.configurationService.getConfiguration().isSynchronizeOnSession()
-						|| methodInfo.isSynchronizeOnSession()) {
-					HttpSession session = request.getSession(false);
-					if (session != null) {
-						Object mutex = WebUtils.getSessionMutex(session);
-						synchronized (mutex) {
-							Object result = ExtDirectSpringUtil.invoke(
-									this.configurationService.getApplicationContext(), beanName, methodInfo,
-									parameters);
-
-							if (result instanceof ModelAndJsonView modelAndJsonView) {
-								directPollResponse.setData(modelAndJsonView.getModel());
-								jsonView = getJsonView(modelAndJsonView, methodInfo.getJsonView());
-							}
-							else {
-								directPollResponse.setData(result);
-								jsonView = getJsonView(result, methodInfo.getJsonView());
-							}
-						}
-					}
-					else {
-						Object result = ExtDirectSpringUtil.invoke(this.configurationService.getApplicationContext(),
-								beanName, methodInfo, parameters);
-						if (result instanceof ModelAndJsonView modelAndJsonView) {
-							directPollResponse.setData(modelAndJsonView.getModel());
-							jsonView = getJsonView(modelAndJsonView, methodInfo.getJsonView());
-						}
-						else {
-							directPollResponse.setData(result);
-							jsonView = getJsonView(result, methodInfo.getJsonView());
-						}
-					}
+				Object result = invokeMethod(request, beanName, methodInfo, parameters);
+				if (result instanceof ModelAndJsonView modelAndJsonView) {
+					directPollResponse.setData(modelAndJsonView.getModel());
 				}
 				else {
-					Object result = ExtDirectSpringUtil.invoke(this.configurationService.getApplicationContext(),
-							beanName, methodInfo, parameters);
-					if (result instanceof ModelAndJsonView modelAndJsonView) {
-						directPollResponse.setData(modelAndJsonView.getModel());
-						jsonView = getJsonView(modelAndJsonView, methodInfo.getJsonView());
-					}
-					else {
-						directPollResponse.setData(result);
-						jsonView = getJsonView(result, methodInfo.getJsonView());
-					}
+					directPollResponse.setData(result);
 				}
+				jsonView = getJsonView(result, methodInfo.getJsonView());
 
 			}
 			catch (Exception e) {
@@ -255,33 +220,52 @@ public class RouterController {
 		Object requestData = this.configurationService.getJsonHandler()
 			.readValue(request.getInputStream(), Object.class);
 
-		List<ExtDirectRequest> directRequests = null;
+		List<ExtDirectRequest> directRequests;
+		try {
+			directRequests = readDirectRequests(requestData);
+		}
+		catch (IllegalArgumentException | JacksonException e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid Ext Direct request");
+			return;
+		}
+
+		if (directRequests.size() == 1) {
+			handleMethodCallOne(directRequests.get(0), request, response, locale);
+		}
+		else if (this.configurationService.getConfiguration()
+			.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.SEQUENTIAL) {
+			handleMethodCallsSequential(directRequests, request, response, locale);
+		}
+		else if (this.configurationService.getConfiguration()
+			.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.CONCURRENT) {
+			handleMethodCallsConcurrent(directRequests, request, response, locale);
+		}
+
+	}
+
+	private List<ExtDirectRequest> readDirectRequests(Object requestData) {
+		List<?> requests;
 		if (requestData instanceof Map) {
-			directRequests = Collections.singletonList(
-					this.configurationService.getJsonHandler().convertValue(requestData, ExtDirectRequest.class));
+			requests = Collections.singletonList(requestData);
 		}
-		else if (requestData instanceof List) {
-			directRequests = new ArrayList<>();
-			for (Object oneRequest : (List<?>) requestData) {
-				directRequests
-					.add(this.configurationService.getJsonHandler().convertValue(oneRequest, ExtDirectRequest.class));
-			}
+		else if (requestData instanceof List<?> batch) {
+			requests = batch;
+		}
+		else {
+			throw new IllegalArgumentException("Expected a request object or an array of requests");
 		}
 
-		if (directRequests != null) {
-			if (directRequests.size() == 1) {
-				handleMethodCallOne(directRequests.get(0), request, response, locale);
+		List<ExtDirectRequest> directRequests = new ArrayList<>(requests.size());
+		for (Object oneRequest : requests) {
+			if (!(oneRequest instanceof Map<?, ?> fields) || !(fields.get("action") instanceof String action)
+					|| !StringUtils.hasText(action) || !(fields.get("method") instanceof String method)
+					|| !StringUtils.hasText(method)) {
+				throw new IllegalArgumentException("Each request must specify an action and a method");
 			}
-			else if (this.configurationService.getConfiguration()
-				.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.SEQUENTIAL) {
-				handleMethodCallsSequential(directRequests, request, response, locale);
-			}
-			else if (this.configurationService.getConfiguration()
-				.getBatchedMethodsExecutionPolicy() == BatchedMethodsExecutionPolicy.CONCURRENT) {
-				handleMethodCallsConcurrent(directRequests, request, response, locale);
-			}
+			directRequests
+				.add(this.configurationService.getJsonHandler().convertValue(oneRequest, ExtDirectRequest.class));
 		}
-
+		return directRequests;
 	}
 
 	private void handleMethodCallsConcurrent(List<ExtDirectRequest> directRequests, HttpServletRequest request,
@@ -509,7 +493,8 @@ public class RouterController {
 				responseJson = objectMapper.writerWithView(jsonView).writeValueAsString(responseObject);
 			}
 
-			responseJson = responseJson.replace("&quot;", "\\&quot;");
+			// The browser decodes textarea entities before the client parses the JSON.
+			responseJson = responseJson.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
 			bos.write(responseJson.getBytes(ExtDirectSpringUtil.UTF8_CHARSET));
 
 			String frameDomain = this.configurationService.getConfiguration().getFrameDomain();
@@ -562,20 +547,25 @@ public class RouterController {
 		Object[] parameters = this.configurationService.getParametersResolver()
 			.resolveParameters(request, response, locale, directRequest, methodInfo);
 
+		return invokeMethod(request, directRequest.getAction(), methodInfo, parameters);
+	}
+
+	private Object invokeMethod(HttpServletRequest request, String beanName, MethodInfo methodInfo, Object[] parameters)
+			throws Exception {
 		if (this.configurationService.getConfiguration().isSynchronizeOnSession()
 				|| methodInfo.isSynchronizeOnSession()) {
 			HttpSession session = request.getSession(false);
 			if (session != null) {
 				Object mutex = WebUtils.getSessionMutex(session);
 				synchronized (mutex) {
-					return ExtDirectSpringUtil.invoke(this.configurationService.getApplicationContext(),
-							directRequest.getAction(), methodInfo, parameters);
+					return ExtDirectSpringUtil.invoke(this.configurationService.getApplicationContext(), beanName,
+							methodInfo, parameters);
 				}
 			}
 		}
 
-		return ExtDirectSpringUtil.invoke(this.configurationService.getApplicationContext(), directRequest.getAction(),
-				methodInfo, parameters);
+		return ExtDirectSpringUtil.invoke(this.configurationService.getApplicationContext(), beanName, methodInfo,
+				parameters);
 	}
 
 	private Object handleException(MethodInfo methodInfo, BaseResponse response, Exception e,

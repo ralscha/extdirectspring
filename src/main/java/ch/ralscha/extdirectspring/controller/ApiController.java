@@ -233,32 +233,7 @@ public class ApiController {
 	private String buildApiString(String apiNs, @Nullable String actionNs, String remotingApiVar, String pollingUrlsVar,
 			String routerUrl, String basePollUrl, @Nullable String group, boolean debug, boolean doc, boolean cache) {
 
-		RemotingApi remotingApi = new RemotingApi(this.configurationService.getConfiguration().getProviderType(),
-				routerUrl, actionNs);
-
-		remotingApi.setTimeout(this.configurationService.getConfiguration().getTimeout());
-		remotingApi.setMaxRetries(this.configurationService.getConfiguration().getMaxRetries());
-
-		Object enableBuffer = this.configurationService.getConfiguration().getEnableBuffer();
-		if (enableBuffer instanceof String enableBufferString && StringUtils.hasText(enableBufferString)) {
-			if ("true".equalsIgnoreCase(enableBufferString)) {
-				remotingApi.setEnableBuffer(true);
-			}
-			else if ("false".equalsIgnoreCase(enableBufferString)) {
-				remotingApi.setEnableBuffer(false);
-			}
-			else {
-				Integer enableBufferMs = NumberUtils.parseNumber(enableBufferString, Integer.class);
-				remotingApi.setEnableBuffer(enableBufferMs);
-			}
-		}
-		else if (enableBuffer instanceof Number || enableBuffer instanceof Boolean) {
-			remotingApi.setEnableBuffer(enableBuffer);
-		}
-
-		if (this.configurationService.getConfiguration().getBufferLimit() != null) {
-			remotingApi.setBufferLimit(this.configurationService.getConfiguration().getBufferLimit());
-		}
+		RemotingApi remotingApi = createRemotingApi(routerUrl, actionNs);
 
 		buildRemotingApi(remotingApi, group, cache);
 
@@ -366,8 +341,7 @@ public class ApiController {
 
 		String actionNs = requestActionNs != null ? requestActionNs : configuration.getActionNs();
 
-		RemotingApi remotingApi = new RemotingApi(this.configurationService.getConfiguration().getProviderType(),
-				routerUrl, actionNs);
+		RemotingApi remotingApi = createRemotingApi(routerUrl, actionNs);
 
 		if (StringUtils.hasText(apiNs)) {
 			remotingApi.setDescriptor(apiNs + "." + remotingApiVar);
@@ -380,6 +354,28 @@ public class ApiController {
 
 		return writeValueAsString(remotingApi, debug);
 
+	}
+
+	private RemotingApi createRemotingApi(String routerUrl, @Nullable String actionNs) {
+		Configuration configuration = this.configurationService.getConfiguration();
+		RemotingApi remotingApi = new RemotingApi(configuration.getProviderType(), routerUrl, actionNs);
+		remotingApi.setTimeout(configuration.getTimeout());
+		remotingApi.setMaxRetries(configuration.getMaxRetries());
+		remotingApi.setBufferLimit(configuration.getBufferLimit());
+
+		Object enableBuffer = configuration.getEnableBuffer();
+		if (enableBuffer instanceof String value && StringUtils.hasText(value)) {
+			if ("true".equalsIgnoreCase(value) || "false".equalsIgnoreCase(value)) {
+				remotingApi.setEnableBuffer(Boolean.valueOf(value));
+			}
+			else {
+				remotingApi.setEnableBuffer(NumberUtils.parseNumber(value, Integer.class));
+			}
+		}
+		else if (enableBuffer instanceof Number || enableBuffer instanceof Boolean) {
+			remotingApi.setEnableBuffer(enableBuffer);
+		}
+		return remotingApi;
 	}
 
 	private void buildRemotingApi(RemotingApi remotingApi, @Nullable String requestedGroup, boolean cache) {

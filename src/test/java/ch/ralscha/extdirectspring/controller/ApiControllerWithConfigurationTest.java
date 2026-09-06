@@ -30,6 +30,8 @@ import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -70,6 +72,28 @@ public class ApiControllerWithConfigurationTest {
 
 	@Autowired
 	private ApiCache apiCache;
+
+	@ParameterizedTest
+	@ValueSource(strings = { "true", "false", "25" })
+	void jsonDiscoveryIncludesProviderSettings(String enableBuffer) throws Exception {
+		Configuration config = this.configurationService.getConfiguration();
+		config.setEnableBuffer(enableBuffer);
+		config.setTimeout(12000);
+		config.setMaxRetries(2);
+		config.setBufferLimit(8);
+
+		String json = this.mockMvc.perform(get("/api.js").param("format", "json"))
+			.andExpect(status().isOk())
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+		Map<?, ?> api = this.configurationService.getJsonHandler().getMapper().readValue(json, Map.class);
+
+		assertThat(api.get("timeout")).isEqualTo(12000);
+		assertThat(api.get("maxRetries")).isEqualTo(2);
+		assertThat(api.get("bufferLimit")).isEqualTo(8);
+		assertThat(api.get("enableBuffer")).isEqualTo("25".equals(enableBuffer) ? 25 : Boolean.valueOf(enableBuffer));
+	}
 
 	@BeforeEach
 	public void setupApiController() throws Exception {

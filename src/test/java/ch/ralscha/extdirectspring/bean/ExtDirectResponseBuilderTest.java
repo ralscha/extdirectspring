@@ -32,6 +32,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.util.HtmlUtils;
 
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
@@ -109,8 +110,7 @@ public class ExtDirectResponseBuilderTest {
 		assertThat(content).endsWith("</textarea></body></html>");
 
 		String json = content.substring(content.indexOf("{"), content.lastIndexOf("}") + 1);
-		assertThat(json).contains("\\&quot;");
-		json = json.replace("\\&quot;", "\'");
+		json = HtmlUtils.htmlUnescape(json);
 		ObjectMapper mapper = new ObjectMapper();
 
 		Map<String, Object> header = mapper.readValue(json, new TypeReference<Map<String, Object>>() {
@@ -126,7 +126,7 @@ public class ExtDirectResponseBuilderTest {
 		Map<String, Object> result = (Map<String, Object>) header.get("result");
 		assertThat(result).hasSize(3);
 		assertThat((Boolean) result.get("success")).isTrue();
-		assertThat(result.get("text")).isEqualTo("a lot of 'text'");
+		assertThat(result.get("text")).isEqualTo("a lot of &quot;text&quot;");
 		assertThat(result.get("additionalProperty")).isEqualTo(false);
 	}
 
