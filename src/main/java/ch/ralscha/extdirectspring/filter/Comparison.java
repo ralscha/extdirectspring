@@ -42,7 +42,7 @@ public enum Comparison {
 	public static Comparison fromString(String externalValue) {
 		if (externalValue != null) {
 			final String externalValueLowerCase = externalValue.toLowerCase(Locale.ROOT);
-			for (Comparison comparison : Comparison.values()) {
+			for (Comparison comparison : values()) {
 				if (comparison.is(externalValueLowerCase)) {
 					return comparison;
 				}

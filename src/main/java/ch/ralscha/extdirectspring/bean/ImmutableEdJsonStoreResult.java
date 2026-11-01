@@ -183,7 +183,7 @@ public final class ImmutableEdJsonStoreResult extends EdJsonStoreResult {
 				throw new IllegalStateException(
 						"Cannot build EdJsonStoreResult, some of required attributes are not set [records]");
 			}
-			ImmutableEdJsonStoreResult result = ImmutableEdJsonStoreResult.of(this.records, this.total, this.success,
+			ImmutableEdJsonStoreResult result = of(this.records, this.total, this.success,
 					this.metaData, this.message);
 			result.setJsonView(this.jsonView);
 			return result;

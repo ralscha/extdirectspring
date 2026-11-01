@@ -56,7 +56,7 @@ enum SupportedParameters {
 	 */
 	public static boolean isSupported(Class<?> clazz) {
 		if (clazz != null) {
-			for (SupportedParameters supportedParameter : SupportedParameters.values()) {
+			for (SupportedParameters supportedParameter : values()) {
 				if (supportedParameter.clazz.isAssignableFrom(clazz)) {
 					return true;
 				}

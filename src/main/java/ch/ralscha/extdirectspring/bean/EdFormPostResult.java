@@ -80,7 +80,7 @@ public abstract class EdFormPostResult {
 
 	public static abstract class Builder {
 
-		public abstract Builder result(Map<String, ? extends java.lang.Object> entries);
+		public abstract Builder result(Map<String, ?> entries);
 
 		public abstract Builder putResult(String key, Object value);
 
@@ -151,7 +151,7 @@ public abstract class EdFormPostResult {
 							try {
 								message = messageSource.getMessage(code, fieldError.getArguments(), loc);
 							}
-							catch (Exception e) {
+							catch (Exception ignored) {
 								/*
 								 * expected if code/message doesn't exist, default
 								 * behavior to counter that, set to your message bundle,

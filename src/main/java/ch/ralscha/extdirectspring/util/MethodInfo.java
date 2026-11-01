@@ -338,7 +338,7 @@ public final class MethodInfo {
 					return equivalentMethod;
 				}
 			}
-			catch (NoSuchMethodException e) {
+			catch (NoSuchMethodException ignored) {
 				// do nothing here
 			}
 			cl = cl.getSuperclass();

@@ -62,7 +62,7 @@ public enum ExtDirectMethodType {
 
 			for (Annotation[] paramAnnotations : allParameterAnnotations) {
 				for (Annotation paramAnnotation : paramAnnotations) {
-					if ((paramAnnotation instanceof RequestParam)) {
+					if (paramAnnotation instanceof RequestParam) {
 						log.error("SIMPLE method '" + beanAndMethodName
 								+ "' contains a non supported parameter annotation @RequestParam");
 						return false;

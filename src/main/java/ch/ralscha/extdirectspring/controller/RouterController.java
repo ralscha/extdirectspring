@@ -479,8 +479,8 @@ public class RouterController {
 		ObjectMapper objectMapper = this.configurationService.getJsonHandler().getMapper();
 
 		if (isMultipart) {
-			response.setContentType(RouterController.TEXT_HTML.toString());
-			response.setCharacterEncoding(RouterController.TEXT_HTML.getCharset().name());
+			response.setContentType(TEXT_HTML.toString());
+			response.setCharacterEncoding(TEXT_HTML.getCharset().name());
 
 			ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
 			bos.write("<html><body><textarea>".getBytes(ExtDirectSpringUtil.UTF8_CHARSET));

@@ -132,7 +132,7 @@ public final class ImmutableEdFormPostResult extends EdFormPostResult {
 
 		@Override
 		public ImmutableEdFormPostResult build() {
-			return ImmutableEdFormPostResult.of(this.result);
+			return of(this.result);
 		}
 
 	}

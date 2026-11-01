@@ -129,7 +129,7 @@ public class ExtDirectFormPostResult {
 						try {
 							message = messageSource.getMessage(code, fieldError.getArguments(), loc);
 						}
-						catch (Exception e) {
+						catch (Exception ignored) {
 							/*
 							 * expected if code/message doesn't exist, default behavior to
 							 * counter that, set to your message bundle, {@link

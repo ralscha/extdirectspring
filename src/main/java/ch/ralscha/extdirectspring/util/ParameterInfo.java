@@ -93,7 +93,7 @@ public final class ParameterInfo {
 			this.hasCookieValueAnnotation = false;
 			this.hasAuthenticationPrincipalAnnotation = null;
 
-			if ((paramAnn instanceof RequestParam requestParam)) {
+			if (paramAnn instanceof RequestParam requestParam) {
 				if (StringUtils.hasText(requestParam.value())) {
 					this.name = requestParam.value();
 				}
@@ -103,7 +103,7 @@ public final class ParameterInfo {
 				this.hasRequestParamAnnotation = true;
 				break;
 			}
-			if ((paramAnn instanceof MetadataParam metadataParam)) {
+			if (paramAnn instanceof MetadataParam metadataParam) {
 				if (StringUtils.hasText(metadataParam.value())) {
 					this.name = metadataParam.value();
 				}
@@ -113,7 +113,7 @@ public final class ParameterInfo {
 				this.hasMetadataParamAnnotation = true;
 				break;
 			}
-			else if ((paramAnn instanceof RequestHeader requestHeader)) {
+			else if (paramAnn instanceof RequestHeader requestHeader) {
 				if (StringUtils.hasText(requestHeader.value())) {
 					this.name = requestHeader.value();
 				}
@@ -123,7 +123,7 @@ public final class ParameterInfo {
 				this.hasRequestHeaderAnnotation = true;
 				break;
 			}
-			else if ((paramAnn instanceof CookieValue cookieValue)) {
+			else if (paramAnn instanceof CookieValue cookieValue) {
 				if (StringUtils.hasText(cookieValue.value())) {
 					this.name = cookieValue.value();
 				}
